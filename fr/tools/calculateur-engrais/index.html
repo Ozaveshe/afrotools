@@ -82,7 +82,7 @@
   @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur d'engrais NPK","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://afrotools.com/fr/tools/calculateur-engrais/","inLanguage":"fr","isAccessibleForFree":true,"description":"Outil local pour estimer les besoins N-P2O5-K2O, les sacs, le coût et le rendement de référence.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/fertilizer-calc.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que signifient les nombres NPK sur un sac ?","acceptedAnswer":{"@type":"Answer","text":"Ils indiquent les pourcentages d'azote N, de phosphate P2O5 et de potasse K2O contenus dans l'engrais."}},{"@type":"Question","name":"Cet outil donne-t-il une recommandation agronomique officielle ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il convertit une recommandation saisie par l'utilisateur en sacs et coût. La dose doit venir d'une analyse de sol, d'un agronome, d'une fiche locale ou d'un service d'extension."}},{"@type":"Question","name":"Pourquoi y a-t-il des écarts nutriments ?","acceptedAnswer":{"@type":"Answer","text":"Un seul produit NPK peut couvrir un nutriment mais sur- ou sous-apporter les autres. L'outil affiche ces écarts pour faciliter la discussion avec un conseiller."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que signifient les nombres NPK sur un sac ?","acceptedAnswer":{"@type":"Answer","text":"Ils indiquent les pourcentages d'azote N, de phosphate P2O5 et de potasse K2O contenus dans l'engrais."}},{"@type":"Question","name":"Cet outil donne-t-il une recommandation agronomique officielle ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il utilise des hypothèses fixes par culture, sol et objectif pour comparer deux scénarios de produits. Confirmez les doses par une analyse de sol et un conseil agronomique local."}},{"@type":"Question","name":"Pourquoi y a-t-il des écarts nutriments ?","acceptedAnswer":{"@type":"Answer","text":"Un seul produit NPK peut couvrir un nutriment mais sur- ou sous-apporter les autres. L'outil affiche ces écarts pour faciliter la discussion avec un conseiller."}}]}</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-engrais/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fertilizer-calc/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-engrais/">
@@ -97,14 +97,14 @@
       <div>
         <p class="fert-kicker">Engrais et nutriments 2026</p>
         <h1>Estimez les besoins NPK, les sacs, le coût et le rendement de référence.</h1>
-        <p class="fert-lead">Choisissez la culture, le sol, l'objectif de rendement, la surface et la devise. AfroTools applique le même référentiel et le même moteur que l'application anglaise acceptée.</p>
+        <p class="fert-lead">Choisissez la culture, le sol, l'objectif de rendement, la surface et la devise. Les besoins et rendements reposent sur des hypothèses fixes du référentiel. Les prix par défaut sont des exemples non datés; vous pouvez saisir vos propres prix avec leur source et leur date.</p>
         <div class="fert-badges"><span class="fert-badge">N-P2O5-K2O</span><span class="fert-badge">Sacs 50 kg</span><span class="fert-badge">Sur/sous-apport</span><span class="fert-badge">Export local</span></div>
       </div>
       <aside class="fert-card fert-hero-card">
         <img class="hero-art fert-hero-art" src="/assets/img/tools/fertilizer-calc.webp" alt="Illustration du calcul des besoins en engrais NPK" width="768" height="512" decoding="async">
         <strong>4R</strong>
         <span>Bon produit, bonne dose, bon moment, bon endroit. Ce calcul aide la logistique; la recommandation doit rester locale et agronomique.</span>
-        <p class="fert-note">Planning estimate only: pas de prescription officielle, pas d'analyse de sol, pas de garantie de rendement.</p>
+        <p class="fert-note">Estimation de planification : ni prescription officielle, ni analyse de sol, ni garantie de rendement.</p>
       </aside>
     </div>
   </section>
@@ -129,10 +129,10 @@
     <aside class="fert-card fert-results" aria-label="Résultats engrais">
       <div><span class="fert-status watch" id="fertStatus">A vérifier</span><h2 id="fertTitle">La dose couvre le nutriment choisi mais cree des écarts.</h2><p class="fert-help" id="fertSummary">Modifiez le grade ou le nutriment à couvrir pour comparer les sacs.</p></div>
       <div class="fert-metrics">
-        <div class="fert-metric"><strong id="productKg">0 kg</strong><span>Produit total</span></div>
-        <div class="fert-metric"><strong id="bagCount">0</strong><span>Sacs à acheter</span></div>
-        <div class="fert-metric"><strong id="totalCost">0</strong><span>Coût total</span></div>
-        <div class="fert-metric"><strong id="nowKg">0 kg</strong><span>A appliquer maintenant</span></div>
+        <div class="fert-metric"><strong id="productKg">0 kg</strong><span>Besoins N / P2O5 / K2O</span></div>
+        <div class="fert-metric"><strong id="bagCount">0</strong><span>Sacs à acheter — option A</span></div>
+        <div class="fert-metric"><strong id="totalCost">0</strong><span>Coût des achats — option A</span></div>
+        <div class="fert-metric"><strong id="nowKg">0 kg</strong><span>Production totale de référence</span></div>
       </div>
       <section><h3>Breakdown nutriments</h3><ul class="fert-list" id="fertBreakdown"></ul></section>
       <section><h3>Actions</h3><ul class="fert-list" id="fertActions"></ul></section>
@@ -163,9 +163,10 @@ function line(text){out.line.textContent=text}document.getElementById("fertForm"
 })();
 </script>
 <script src="/data/agriculture/fertilizer-calc-data.js?v=b3e5adbb"></script>
-<script src="/engines/fertilizer-calc-engine.js?v=204154a9"></script>
+<script src="/engines/fertilizer-calc-engine.js?v=de7eb075"></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
-<script src="/assets/js/pages/fr-fertilizer-calc-controller.js?v=c89863e9"></script>
+<script src="/assets/js/lib/agriculture-report-pdf.js?v=6b281a57"></script>
+<script src="/assets/js/pages/fr-fertilizer-calc-controller.js?v=b6004ec4"></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>

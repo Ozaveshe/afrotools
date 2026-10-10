@@ -765,6 +765,8 @@
       if (!t || !i) {
         return "";
       }
+      var avoided = this.checkAvoid(o, a);
+      if (avoided) return avoided.reason;
       var n = [];
       if (t.nFixer && n.push("Fixes " + t.nFixed + " kg N/ha — replenishes nitrogen depleted by previous crop"),
       "cereal" === i.group && "legume" === t.group && n.push("Legume after cereal is the #1 rotation rule: restores soil N, breaks grass pest cycles"),
@@ -808,15 +810,17 @@
       return r > 0 ? Math.round(o / r) : 15;
     },
     calculate: function(a) {
-      var o = a.countryCode || "", r = a.prevCrop, t = parseInt(a.seasons) || 4, i = a.goal || "maximize_yield", n = a.soilCondition || "average", s = (a.availableCrops || Object.keys(e.cropProperties)).filter(function(a) {
-        return !!e.cropProperties[a];
-      });
-      if (s.length || (s = Object.keys(e.cropProperties)), !e.cropProperties[r]) {
-        return {
-          error: !0,
-          message: "Crop '" + r + "' not found in rotation database."
-        };
-      }
+      if (!a || typeof a !== "object" || Array.isArray(a)) return {error:true,status:"invalid-input",message:"Provide a rotation input object."};
+      var owns = function(key) { return typeof key === "string" && Object.prototype.hasOwnProperty.call(e.cropProperties,key); };
+      var o = a.countryCode === undefined ? "" : a.countryCode, r = a.prevCrop;
+      var seasonValue = a.seasons === undefined ? 4 : a.seasons;
+      var t = typeof seasonValue === "number" ? seasonValue : typeof seasonValue === "string" && /^[1-8]$/.test(seasonValue) ? Number(seasonValue) : NaN;
+      var i = a.goal === undefined ? "maximize_yield" : a.goal, n = a.soilCondition === undefined ? "average" : a.soilCondition;
+      if (typeof o !== "string" || (o !== "" && !/^[A-Z]{2}$/.test(o)) || !owns(r) || !Number.isInteger(t) || t < 1 || t > 8 || ["restore_soil","maximize_yield","minimize_pests","maximize_profit"].indexOf(i) < 0 || ["depleted","average","good","excellent"].indexOf(n) < 0) return {error:true,status:"invalid-input",message:"Use a known crop, goal and soil option, and one to eight whole seasons."};
+      var allowed = a.availableCrops === undefined ? Object.keys(e.cropProperties) : a.availableCrops;
+      if (!Array.isArray(allowed) || !allowed.length || !allowed.every(owns)) return {error:true,status:"invalid-available-crops",message:"Select known available crops; an empty or invalid list cannot generate a rotation."};
+      var s = Array.from(new Set(allowed));
+      if ((t > 1 && s.length < 2) || (t === 1 && s.length === 1 && s[0] === r)) return {error:true,status:"insufficient-available-crops",message:"Select enough different crops to form the requested rotation."};
       for (var u = this.findProvenRotation(o, r), l = this, c = [], p = r, m = [ r ], d = 0; d < t; d++) {
         var h = s.filter(function(e) {
           return e !== p;
@@ -840,8 +844,8 @@
           groupColor: this.getGroupColor(e.cropProperties[f].group),
           score: g ? g.score : 0,
           reason: this.generateReason(f, p, i),
-          intercrops: this.getIntercrops(f),
-          warning: null,
+          intercrops: this.getIntercrops(f).filter(function(item) { return s.indexOf(item.crop) !== -1; }),
+          warning: this.checkAvoid(p, f) ? this.checkAvoid(p, f).reason : null,
           nFixer: e.cropProperties[f].nFixer,
           nFixed: e.cropProperties[f].nFixed || 0,
           alternatives: h.slice(1, 3).map(function(e) {
@@ -861,7 +865,7 @@
         return e.nFixer;
       }).length, D = [], F = 0; F < c.length; F++) {
         var x = c[F], C = this.checkAvoid(x.prevCrop, x.crop);
-        C && x.score < 4 && D.push({
+        C && D.push({
           season: x.season,
           message: C.reason,
           crop1: x.prevCrop,

@@ -300,7 +300,7 @@ h1 em{color:#4ade80;font-style:normal}
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/crop-yield-tool-data.js?v=42999129"></script>
-<script src="/engines/crop-yield-tool-engine.js?v=b23e84e9"></script>
+<script src="/engines/crop-yield-tool-engine.js?v=043f6e71"></script>
 <script>
 var CROP_DATA=window.CROP_YIELD_TOOL_DATA.crops;
 var SYMBOLS=window.CROP_YIELD_TOOL_DATA.symbols;
@@ -319,7 +319,7 @@ function convertSize(){
   // Just a UX helper - sizes are converted in calculate()
 }
 
-function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
+function parseNum(s){return window.AfroTools.CropYieldToolEngine.parseNumber(s)}
 function fmt(n,cur){return(SYMBOLS[cur]||cur+' ')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
 
 ['marketPrice','inputCosts'].forEach(function(id){
@@ -339,7 +339,7 @@ function getSizeInHectares(){
 
 function calculate(){
   var model=window.AfroTools.CropYieldToolEngine.calculate({crop:document.getElementById('cropType').value,sizeUnit:document.getElementById('sizeUnit').value,currency:document.getElementById('currency').value,farmSize:document.getElementById('farmSize').value,yieldPerHa:document.getElementById('yieldPerHa').value,marketPrice:document.getElementById('marketPrice').value,inputCosts:document.getElementById('inputCosts').value},window.CROP_YIELD_TOOL_DATA);
-  if(!model.ok){var errors={'missing-size':'Please enter a valid farm size.','missing-yield':'Please enter expected yield per hectare.','missing-price':'Please enter the market price per ton.'};alert(errors[model.status]);return;}
+  if(!model.ok){var errors={'missing-size':'Please enter a valid farm size.','missing-yield':'Please enter expected yield per hectare.','missing-price':'Please enter the market price per ton.','invalid-costs':'Enter total costs of zero or more.','invalid-unit':'Select a supported area unit.','invalid-crop':'Select a supported crop.','invalid-currency':'Select a supported currency.','out-of-range':'Values are too large to calculate. Reduce the inputs.'};alert(errors[model.status]);return;}
   window.CROP_YIELD_TOOL_LAST_RESULT=model;
   var cur=model.input.currency,sizeHa=model.sizeHa,yieldPerHa=model.input.yieldPerHa,pricePerTon=model.input.marketPrice,inputCosts=model.input.inputCosts,totalYield=model.totalYield,grossRevenue=model.grossRevenue,netProfit=model.netProfit,roi=model.roi;
 

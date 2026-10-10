@@ -34,7 +34,7 @@ test('accepted English Farm Budget behavior delegates to the shared engine', asy
   expect(actual).toEqual(engine.calculate({
     countryCode: 'NG', crops: [{ crop: 'maize', area: 1 }], landMode: 'own',
     laborMode: 'family', mechanizationMode: 'manual', financeMode: 'cash',
-    startMonth: 4, rentOverride: '', loanRate: '', loanTerm: '6',
+    startMonth: 4,
   }, { data, farmCosts }));
   await expect(page.locator('#results')).toBeVisible();
   expect(failures).toEqual([]);
@@ -71,6 +71,10 @@ test('French Farm Budget full physical-route acceptance', async ({ page, context
   await page.fill('#loanRate', '9');
   await page.fill('#loanTerm', '6');
   await page.selectOption('#startMonth', '6');
+  // Explicit synthetic local-price fixtures, not source quotes.
+  for (const input of await page.locator('[data-budget-price=seedPricePerKg]').all()) await input.fill('20');
+  for (const input of await page.locator('[data-budget-price=marketPricePerTonne]').all()) await input.fill('1000');
+  await page.locator('[data-budget-price=fertilizerPricePerKg]').fill('10');
   const calculate = page.getByRole('button', { name: 'Calculer le budget' });
   await calculate.focus();
   await page.keyboard.press('Enter');
@@ -81,9 +85,9 @@ test('French Farm Budget full physical-route acceptance', async ({ page, context
     farmCosts: window.AfroTools.farmCosts,
   }));
   expect(runtime.result).toEqual(engine.calculate({
-    countryCode: 'SN', crops: [{ crop: 'groundnut', area: 2.5 }, { crop: 'millet', area: 1 }],
-    landMode: 'rent', rentOverride: '30000', laborMode: 'mixed', mechanizationMode: 'ox',
-    financeMode: 'loan', loanRate: '9', loanTerm: '6', startMonth: 6,
+    countryCode: 'SN', priceCurrency: 'XOF', fertilizerPricePerKg: 10, crops: [{ crop: 'groundnut', area: 2.5, seedPricePerKg: 20, marketPricePerTonne: 1000 }, { crop: 'millet', area: 1, seedPricePerKg: 20, marketPricePerTonne: 1000 }],
+    landMode: 'rent', rentOverride: 30000, laborMode: 'mixed', mechanizationMode: 'ox',
+    financeMode: 'loan', loanRate: 9, loanTerm: 6, startMonth: 6,
   }, { data, farmCosts: runtime.farmCosts }));
   expect(runtime.report.sources.donneesEnDirect).toBe(false);
   const cases = [

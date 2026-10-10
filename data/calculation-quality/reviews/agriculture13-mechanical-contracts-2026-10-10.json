@@ -1,0 +1,65 @@
+{
+  "reviewedBy": "Codex delivery reconciliation: mechanical implementation review; human CODEOWNERS review remains required",
+  "reviewedAt": "2026-10-10",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/tree/1266694ee408bcc4ae9bf22e668688165e60c2e5/engines/src",
+  "reason": "Scoped implementation registration for the frozen agriculture13 source packet and its native generated engines. The linked repository revision is implementation provenance, not an authority or freshness claim. Exact before/after digests and independent test owners are recorded below. No central golden fixture belongs to these six formulas, so fixtureDeltas is empty; all 417 central expectations must remain byte-identical. Existing source metadata, effective periods and lastVerified dates are preserved. No agronomic dataset, statutory rule, application schedule, provider rate or current price is newly certified. Future digest enforcement remains unchanged.",
+  "formulaIds": [
+    "formula-engines-agric-profit-engine",
+    "formula-engines-crop-rotation-engine",
+    "formula-engines-crop-yield-tool-engine",
+    "formula-engines-farm-budget-engine",
+    "formula-engines-fertilizer-calc-engine",
+    "formula-engines-harvest-date-engine"
+  ],
+  "fixtureDeltas": [],
+  "changes": [
+    {
+      "formulaId": "formula-engines-agric-profit-engine",
+      "artifactPath": "engines/agric-profit-engine.js",
+      "beforeDigest": "sha256:5e2b178eb0c5f38b9fad9d2ff8b74d75283180519319510c1860cd11dda8bcbf",
+      "afterDigest": "sha256:f2728f95ae2efe008cf3be3cb0d625c267c1bd9179ae3d6dffa45f93562adfb0",
+      "lastVerifiedPreserved": "2026-03-01",
+      "review": "Reject invalid or non-finite inputs and unknown identities; remove Nigerian scaled-price defaults for unsupported country/crop/method combinations. Preserve revenue and cost arithmetic, distinguish marketable from harvested break-even yield, include the entered proportional loss in harvested break-even, and use null when a threshold cannot be computed. tests/agric-profit-break-even.test.js and tests/agric-profit-input-boundary.test.js cover independent examples."
+    },
+    {
+      "formulaId": "formula-engines-crop-rotation-engine",
+      "artifactPath": "engines/crop-rotation-engine.js",
+      "beforeDigest": "sha256:88133661a559acc6032b3955170c43b99fa0cfa8287933e64f8c161f3ad30be2",
+      "afterDigest": "sha256:c3df0fb72dd2c0779f70fef082c07c77efbba9e66e81249082e2ace0a993edbe",
+      "lastVerifiedPreserved": "2026-03-01",
+      "review": "Reject malformed or insufficient available-crop lists and unsupported options. Retain existing ranking, crop properties and avoid-rule data; apply existing avoid warnings consistently in reasons, season warnings and aggregate warnings, and restrict suggested intercrops to selected availability. tests/crop-rotation-warning-consistency.test.js and tests/crop-rotation-input-boundary.test.js cover these contracts."
+    },
+    {
+      "formulaId": "formula-engines-crop-yield-tool-engine",
+      "artifactPath": "engines/crop-yield-tool-engine.js",
+      "beforeDigest": "sha256:28fc8360b7b755ec2ee98f4d77802b78bd1be38ee34b9f5b8b0d34fb9764ca8a",
+      "afterDigest": "sha256:34d3ee51bc454d841451fa25b718770ed30acc91f53c589210f5c79f7043283a",
+      "lastVerifiedPreserved": "2026-03-01",
+      "review": "Retain conversion constants and valid-input revenue arithmetic; reject malformed numeric strings, negative costs, unknown crop/unit/currency values and non-finite derived results. tests/crop-yield-tool-engine.test.js preserves existing valid baseline results and adds invalid-input boundaries."
+    },
+    {
+      "formulaId": "formula-engines-farm-budget-engine",
+      "artifactPath": "engines/farm-budget-engine.js",
+      "beforeDigest": "sha256:d75f8bee0e630ed4095f9c4ea661477845e4d3263855c5bb843c1ad4e9f3c4f5",
+      "afterDigest": "sha256:af1586766de125eb044236b2d209658e4cdc1aa0cb4b2d6c7ac9b63acc0b7bb0",
+      "lastVerifiedPreserved": "2026-03-01",
+      "review": "Require known countries and explicit local prices where a country reference is absent; preserve zero-valued user overrides and reject currency mismatches. Allocate 100 percent of the fertilizer cash budget over the two existing payment months instead of 80 percent. Calculate crop-mix break-even from total revenue divided by modeled tonnes, invariant to splitting a crop into rows. Retain existing cost/yield reference data and label references versus entered prices. tests/farm-budget-cashflow.test.js, tests/farm-budget-crop-mix.test.js, tests/farm-budget-local-prices.test.js and tests/farm-budget-input-boundary.test.js provide independent synthetic checks."
+    },
+    {
+      "formulaId": "formula-engines-fertilizer-calc-engine",
+      "artifactPath": "engines/fertilizer-calc-engine.js",
+      "beforeDigest": "sha256:60573c917c1202593f2bc5410b49e412eec3dfa6d85267409233820f3652daec",
+      "afterDigest": "sha256:7fd23f7981218e669083290d835f616037b28298d7c295e0a2f7a1728f42a064",
+      "lastVerifiedPreserved": "2026-03-01",
+      "review": "Retain existing nutrient targets and soil multipliers. Separate mathematical application amounts from rounded 50 kg bag purchases. Credit compound NPK or DAP nitrogen before calculating supplemental urea; expose supplied nutrients, excess and remaining product. Keep missing quotes unknown and user quotes explicitly unverified. Withdraw the legacy banana timetable that allocates 125 percent of potassium, without inventing a replacement agronomic schedule. tests/fertilizer-calc-engine.test.js covers 6930 profiles plus literal product-plan and quote cases. This is accounting for declared fertilizer grades, not certification of crop requirements, timing, current prices or application advice."
+    },
+    {
+      "formulaId": "formula-engines-harvest-date-engine",
+      "artifactPath": "engines/harvest-date-engine.js",
+      "beforeDigest": "sha256:cc6ffe4234e18abe4b5aee1a38dd51c62eb501fe99f9f1a479de0a2bb8b39582",
+      "afterDigest": "sha256:1efc1d2578c026340fe41552924fee4d638683a068418bae59de442e8f7d8625",
+      "lastVerifiedPreserved": "2026-03-01",
+      "review": "Preserve normal UTC maturity-day addition; format early valid years with four digits and reject invalid or greater-than-9999 output years. No maturity data or weather assumptions changed. tests/harvest-date-engine.test.js covers the date boundary."
+    }
+  ]
+}

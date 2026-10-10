@@ -36,6 +36,6 @@ for (const app of apps) {
 }
 const runtime = fs.readFileSync(path.join(ROOT, "assets/js/pages/sw-agriculture-assigned-parity.js"), "utf8");
 assert.doesNotMatch(runtime, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/, "local-only runtime");
-assert.match(runtime, /latest=null;box\.hidden=true;output\.textContent=""/, "fail-closed stale result clearing");
+assert.match(runtime, /latest=null;latestInputText=null;box\.hidden=true;output\.textContent=""/, "fail-closed result and input snapshot clearing");
 assert.match(runtime, /p\.tool!==cfg\.id\|\|p\.locale!=="sw"/, "scoped JSON reopen");
 console.log("sw-agriculture-assigned-static.test.js passed: exact 20 native generated candidates");
