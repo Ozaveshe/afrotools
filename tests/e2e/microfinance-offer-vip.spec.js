@@ -20,7 +20,7 @@ async function fillOffer(page) {
 }
 
 for (const [route, lang] of routes) {
-  test(`${lang} native offer worksheet is empty, functional and local`, async ({ page }) => {
+  test(`${lang} native offer worksheet is empty, functional and local`, async ({ page, baseURL }) => {
     const errors = [];
     const unexpectedExternal = [];
     page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
@@ -28,7 +28,7 @@ for (const [route, lang] of routes) {
     page.on("request", request => {
       const url = new URL(request.url());
       const sharedShellRequest = /fonts\.googleapis|fonts\.gstatic/.test(url.hostname) || url.href.includes("twemoji");
-      if (url.origin !== "http://127.0.0.1:4173" && !sharedShellRequest) unexpectedExternal.push(url.href);
+      if (url.origin !== new URL(baseURL).origin && !sharedShellRequest) unexpectedExternal.push(url.href);
     });
     await page.goto(route);
     await expect(page.locator("html")).toHaveAttribute("lang", lang);

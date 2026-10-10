@@ -76,6 +76,7 @@ function syncSchema(html, metadata) {
     try { data = JSON.parse(source); } catch { return whole; }
     const types = Array.isArray(data["@type"]) ? data["@type"] : [data["@type"]];
     if (!types.some((type) => ["WebApplication", "WebPage"].includes(type))) return whole;
+    if (data.name === metadata.schemaName && data.inLanguage === "sw") return whole;
     data.name = metadata.schemaName;
     data.inLanguage = "sw";
     return open + JSON.stringify(data) + close;

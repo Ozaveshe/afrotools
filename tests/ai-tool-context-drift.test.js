@@ -294,7 +294,12 @@ function run() {
   assert.ok(!advisorSource.includes('const TOOL_CONTEXT = {'));
   assert.ok(advisorSource.includes("require('./_shared/ai-tool-context.generated.js')"));
   representativeKeys.forEach(function (key) {
-    assert.strictEqual(advisor.__test__.getToolContext(key), generated[key]);
+    // Check bundle parity at the source time. Runtime expiry has its own future-clock regression.
+    const savedNow = Date.now;
+    try {
+      if (key === 'currency-converter') Date.now = () => Date.parse(freshlyBuilt.records[key].sourceRecord.facts.asOf);
+      assert.strictEqual(advisor.__test__.getToolContext(key), generated[key]);
+    } finally { Date.now = savedNow; }
   });
 
   console.log('ai-tool-context-drift.test.js passed');

@@ -15,14 +15,10 @@ const {
 const ROOT = path.resolve(__dirname, '../..');
 const FINANCE_PORT = Number(process.env.FRENCH_FINANCE_PLAYWRIGHT_PORT || 42973);
 const FINANCE_BASE_URL = `http://127.0.0.1:${FINANCE_PORT}`;
-const EXPECTED_SERVER_IDENTITY = {
-  workspaceRoot: ROOT,
-  baselineCommit: '8ce5cac175e42201968b1f7540752d6acf92d4ca',
-  sentinel: 'ccf6-fr-finance-result-mutation-v2',
-  port: FINANCE_PORT
-};
-const manifest = require('../../data/registry/french-finance-tax-market-data.json');
-const PART_DIR = path.join(ROOT, 'artifacts', 'french-finance-export-contract-parts');
+const { ENDPOINT, sha256, readFinanceProofIdentity } = require('../support/french-finance-proof-identity');
+const { readCurrentFinanceScope } = require('../support/french-finance-current-scope');
+const manifest = readCurrentFinanceScope(ROOT);
+const PART_DIR = path.resolve(process.env.FRENCH_FINANCE_EXPORT_PART_DIR || path.join(ROOT, 'artifacts', 'french-finance-export-contract-parts'));
 const CHUNK_SIZE = 6;
 const RUN_ID = process.env.FRENCH_FINANCE_EXPORT_RUN_ID || new Date().toISOString();
 const REQUESTED_PARTS = new Set(
@@ -73,8 +69,9 @@ function syntheticValue(input, rowIndex) {
     return '2026-07-28';
   }
   if (input.type === 'datetime-local') {
-    if (/(?:expir|expiry)/.test(signal)) return '2026-07-29T12:00';
-    return '2026-07-28T12:00';
+    // Fresh synthetic quote times; contexts use UTC so fixture and browser agree.
+    const offsetMinutes = /(?:expir|expiry)/.test(signal) ? 30 : -10;
+    return new Date(Date.now() + offsetMinutes * 60000).toISOString().slice(0, 16);
   }
   if (input.type === 'month') return '2026-07';
   if (input.type === 'url') return 'https://example.test/scenario-' + String(rowIndex + 1);
@@ -892,6 +889,7 @@ async function proveRequiredRow(browser, row, rowIndex) {
   debugLog('context:start');
   const context = await browser.newContext({
     viewport: { width: 375, height: 900 },
+    timezoneId: 'UTC',
     serviceWorkers: 'block',
     acceptDownloads: true
   });
@@ -971,6 +969,7 @@ async function proveRequiredRow(browser, row, rowIndex) {
   });
   debugLog('page:domcontentloaded');
   expect(response && response.status()).toBeLessThan(400);
+  expect(sha256(await response.body()), row.primaryFrenchFile + ' served HTML hash').toBe(row.sourceSha256);
   await page.waitForLoadState('load', { timeout: 10000 }).catch(() => {});
   await page.waitForTimeout(350);
   await page.waitForFunction(
@@ -1259,28 +1258,31 @@ async function proveWorkflowOnlyRow(browser, row, rowIndex) {
   return { fixture, validation };
 }
 
-fs.mkdirSync(PART_DIR, { recursive: true });
-expect(manifest.count).toBe(132);
+expect(manifest.count).toBe(116);
+expect(manifest.coverage.historicalRows).toBe(132);
+expect(manifest.coverage.logicalConsumers).toBe(116);
+expect(manifest.coverage.nativeOwners).toHaveLength(9);
+expect(manifest.coverage.disabledOwners).toHaveLength(1);
+expect(manifest.coverage.excludedAliases).toHaveLength(2);
 
 async function assertFinanceServerIdentity(browser) {
+  const EXPECTED_SERVER_IDENTITY = readFinanceProofIdentity(ROOT, FINANCE_PORT);
   const context = await browser.newContext({ serviceWorkers: 'block' });
   const page = await context.newPage();
   const response = await page.goto(
-    `${FINANCE_BASE_URL}/tests/fixtures/french-finance-worktree-sentinel.json`,
+    `${FINANCE_BASE_URL}${ENDPOINT}`,
     { waitUntil: 'domcontentloaded', timeout: 10000 }
   );
   expect(response && response.status()).toBe(200);
   const sentinel = JSON.parse(await page.locator('body').innerText());
-  expect(sentinel).toEqual(expect.objectContaining({
-    workspaceRoot: EXPECTED_SERVER_IDENTITY.workspaceRoot,
-    baselineCommit: EXPECTED_SERVER_IDENTITY.baselineCommit,
-    sentinel: EXPECTED_SERVER_IDENTITY.sentinel
-  }));
+  expect(sentinel).toEqual(EXPECTED_SERVER_IDENTITY);
   const exporterResponse = await context.request.get(
     `${FINANCE_BASE_URL}/assets/js/pages/french-finance-export-contract.js`
   );
   expect(exporterResponse.status()).toBe(200);
-  expect(await exporterResponse.text()).toContain('setWorkflowEvidence');
+  const exporterBytes = await exporterResponse.body();
+  expect(sha256(exporterBytes)).toBe(EXPECTED_SERVER_IDENTITY.exporterSha256);
+  expect(exporterBytes.toString()).toContain('setWorkflowEvidence');
   await context.close();
   return EXPECTED_SERVER_IDENTITY;
 }
@@ -1291,6 +1293,8 @@ for (let start = 0; start < manifest.rows.length; start += CHUNK_SIZE) {
   const scopedRows = manifest.rows.slice(start, start + CHUNK_SIZE);
   test(`French finance parsed export contracts ${part}: rows ${start + 1}-${start + scopedRows.length}`, async ({ browser }) => {
     test.setTimeout(Number(process.env.FRENCH_FINANCE_EXPORT_TEST_TIMEOUT || 480000));
+    if (!process.env.FRENCH_FINANCE_EXPORT_PART_DIR) throw new Error('Set a separate French finance part directory to preserve historical evidence.');
+    fs.mkdirSync(PART_DIR, { recursive: true });
     const serverIdentity = await assertFinanceServerIdentity(browser);
     const rows = [];
     for (let offset = 0; offset < scopedRows.length; offset += 1) {
@@ -1344,6 +1348,7 @@ for (let start = 0; start < manifest.rows.length; start += CHUNK_SIZE) {
         }
       }
       rows.push({
+        physicalFile: row.primaryFrenchFile,
         englishRoute: row.englishRoute,
         frenchRoute: row.frenchRoute,
         exportContract,
@@ -1356,10 +1361,14 @@ for (let start = 0; start < manifest.rows.length; start += CHUNK_SIZE) {
         schemaVersion: 2,
         runId: RUN_ID,
         serverIdentity,
+        coverage: manifest.coverage,
+        coverageSha256: manifest.coverageSha256,
         part,
         start,
         rows
-      }, null, 2)}\n`
+      }, null, 2)}\n`,
+      { flag: 'wx' }
     );
+    expect(rows.filter(row => !row.passed).map(row => ({ route: row.frenchRoute, errors: row.exportContract.workflowErrors }))).toEqual([]);
   });
 }

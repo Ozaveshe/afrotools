@@ -10,6 +10,20 @@ const repair = require("../scripts/repair-swahili-search-snippets");
 assert.strictEqual(repair.metadataFor("kenya", "kikokotoo-kodi-mshahara").title, "Kodi ya Mshahara — Kenya | AfroTools");
 assert.strictEqual(repair.metadataFor("dr-congo", "kikokotoo-gharama-ya-mfanyakazi").title, "Gharama ya Mfanyakazi — Kongo-Kinshasa | AfroTools");
 
+const preservedSchema = '<script type="application/ld+json">\n' + JSON.stringify({
+  "@type": "WebApplication", name: "Gharama ya Mfanyakazi — Kenya", inLanguage: "sw",
+  image: "https://afrotools.com/assets/img/tools/employee-cost.webp"
+}, null, 2) + '\n</script>';
+assert.strictEqual(repair.apply(preservedSchema, repair.metadataFor("kenya", "kikokotoo-gharama-ya-mfanyakazi")), preservedSchema,
+  "already-current schemas must preserve build-owned image fields and formatting");
+const staleSchema = preservedSchema.replace("Gharama ya Mfanyakazi — Kenya", "Stale name").replace('"inLanguage": "sw"', '"inLanguage": "en"');
+const repairedSchema = repair.apply(staleSchema, repair.metadataFor("kenya", "kikokotoo-gharama-ya-mfanyakazi"));
+const repairedData = JSON.parse(repairedSchema.match(/<script[^>]*>([\s\S]*?)<\/script>/)[1]);
+assert.strictEqual(repairedData.name, "Gharama ya Mfanyakazi — Kenya");
+assert.strictEqual(repairedData.inLanguage, "sw");
+assert.strictEqual(repairedData.image, "https://afrotools.com/assets/img/tools/employee-cost.webp");
+assert.strictEqual(repair.apply(repairedSchema, repair.metadataFor("kenya", "kikokotoo-gharama-ya-mfanyakazi")), repairedSchema);
+
 const result = repair.run({ write: false });
 assert.ok(result.targets >= 49, "the five Swahili country-employment families must remain explicitly governed");
 assert.deepStrictEqual(result.stale, [], "Swahili country-employment snippets must match their source owner");

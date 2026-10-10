@@ -27,7 +27,7 @@ assert.strictEqual(engine.getBreakdown("photography", result).length, 5);
 for (const token of [
   'lang="sw"', 'data-creator-pricing', 'data-manual-quote', 'data-sw-creator-workspace',
   'data-json', 'data-txt', 'data-reset', 'data-quote-calculate', 'data-quote-reset',
-  'https://afrotools.com/assets/img/tools/creator-pricing.webp',
+  'https://afrotools.com/assets/img/tools/zana-bei-za-mtayarishi-sw.webp',
   'https://afrotools.com/tools/creator-pricing/',
   '/assets/js/pages/creative/sw-creator-pricing-calculator.js',
   '/assets/js/pages/creative/sw-creator-pricing-workspace.js'

@@ -43,3 +43,53 @@ test('PDF history: interrupted migration leaves marker unset and legacy data rec
  await page.addInitScript(()=>{const original=IDBObjectStore.prototype.put;IDBObjectStore.prototype.put=function(...args){if(this.name==='recent-operations')throw new DOMException('Synthetic migration failure','QuotaExceededError');return original.apply(this,args)};window.restoreDatabase=()=>IDBObjectStore.prototype.put=original});
  const errors=await prepare(page,baseURL,'en',legacy);await expect(page.locator('#pdfHistoryError')).toBeVisible();let state=await snapshot(page);expect(state['recent-operations']).toEqual([]);expect(state['history-state']).toEqual([]);expect(state['recent-filesKeys']).toEqual(['legacy','unindexed']);expect(await page.evaluate(k=>localStorage.getItem(k),key)).toBe(legacy);await page.evaluate(()=>window.restoreDatabase());expect(await page.evaluate(async()=>(await window.AfroPdfHistory.list()).length)).toBe(1);state=await snapshot(page);expect(state['history-state']).toEqual([true]);expect(errors).toEqual([]);
 });
+
+for (const locale of Object.keys(routes)) {
+ test(locale+' PDF history status: late plan response preserves a failed save until retry',async({page,baseURL})=>{
+  const errors=await prepare(page,baseURL,locale,legacy);
+  await expect(page.locator('[data-pdf-history-id=legacy]')).toBeVisible();
+  await page.evaluate(async()=>{
+   window.AfroProGate={getStatus:()=>new Promise(resolve=>{window.resolvePendingPlan=resolve})};
+   window.dispatchEvent(new Event('afro-pro-gate-ready'));
+   await window.AfroPdfHistory.list();
+  });
+  const before=await snapshot(page);await fault(page,'recent-files','put');
+  expect(await page.evaluate(()=>window.pdfSaveOp('Synthetic new.pdf','Synthetic',new Uint8Array([7,8,9])))).toBeNull();
+  await expect(page.locator('#pdfHistoryError')).toBeVisible();
+  await page.evaluate(()=>window.resolvePendingPlan({isPro:true}));
+  await expect(page.locator('[data-pdf-history-status]')).toContainText('Pro');
+  await expect(page.locator('#pdfHistoryError')).toBeVisible();expect(await snapshot(page)).toEqual(before);
+  await page.evaluate(()=>window.restoreDatabase());
+  expect(await page.evaluate(async()=>!!await window.pdfSaveOp('Synthetic retry.pdf','Synthetic',new Uint8Array([7,8,9])))).toBe(true);
+  await expect(page.locator('#pdfHistoryError')).toHaveCount(0);expect(errors).toEqual([]);
+ });
+ test(locale+' PDF history status: in-flight list cannot erase a newer failed save',async({page,baseURL})=>{
+  const errors=await prepare(page,baseURL,locale,legacy);await expect(page.locator('[data-pdf-history-id=legacy]')).toBeVisible();
+  await page.evaluate(()=>{
+   window.AfroProGate=null;window.originalHistoryList=window.AfroPdfHistory.list;
+   window.AfroPdfHistory.list=()=>new Promise(resolve=>{window.resolvePendingHistory=resolve});
+   window.dispatchEvent(new Event('afro-auth-change'));
+  });
+  await page.waitForFunction(()=>typeof window.resolvePendingHistory==='function');
+  const before=await snapshot(page);await fault(page,'recent-files','put');
+  expect(await page.evaluate(()=>window.pdfSaveOp('Synthetic new.pdf','Synthetic',new Uint8Array([7,8,9])))).toBeNull();
+  await expect(page.locator('#pdfHistoryError')).toBeVisible();
+  await page.evaluate(async()=>{
+   window.oldHistoryCard=document.querySelector('[data-pdf-history-id=legacy]');
+   window.AfroPdfHistory.list=window.originalHistoryList;
+   window.resolvePendingHistory(await window.AfroPdfHistory.list());
+  });
+  await page.waitForFunction(()=>document.querySelector('[data-pdf-history-id=legacy]')!==window.oldHistoryCard);
+  await expect(page.locator('#pdfHistoryError')).toBeVisible();expect(await snapshot(page)).toEqual(before);
+  await page.evaluate(()=>window.restoreDatabase());
+  expect(await page.evaluate(async()=>!!await window.pdfSaveOp('Synthetic retry.pdf','Synthetic',new Uint8Array([7,8,9])))).toBe(true);
+  await expect(page.locator('#pdfHistoryError')).toHaveCount(0);expect(errors).toEqual([]);
+ });
+ test(locale+' PDF history status: successful background retry clears a read error',async({page,baseURL})=>{
+  const errors=await prepare(page,baseURL,locale,legacy);await expect(page.locator('[data-pdf-history-id=legacy]')).toBeVisible();const before=await snapshot(page);
+  await page.evaluate(()=>{window.AfroProGate=null;window.originalHistoryList=window.AfroPdfHistory.list;window.AfroPdfHistory.list=()=>Promise.reject(Object.assign(new Error('Synthetic read denial'),{code:'READ_FAILED'}));window.dispatchEvent(new Event('afro-auth-change'));});
+  await expect(page.locator('#pdfHistoryError')).toBeVisible();
+  await page.evaluate(()=>{window.AfroPdfHistory.list=window.originalHistoryList;window.dispatchEvent(new Event('afro-auth-change'));});
+  await expect(page.locator('#pdfHistoryError')).toHaveCount(0);await expect(page.locator('[data-pdf-history-id=legacy]')).toBeVisible();expect(await snapshot(page)).toEqual(before);expect(errors).toEqual([]);
+ });
+}

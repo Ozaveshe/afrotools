@@ -104,6 +104,11 @@ function translateMarkup(markup, routeExact) {
 }
 
 function localizeRouteOwnedRuntimeLiterals(html, app) {
+  if (app.id === 'meeting-minutes') {
+    // Preserve apostrophes when the hosting provider rewrites attribute quotes.
+    html = html.replace(/\baria-label="([^"]*)"/gi, (tag, value) =>
+      'aria-label="' + value.replace(/'/g, '&#39;') + '"');
+  }
   if (app.id === 'pdf-workspace') html = require('./lib/pdf-workspace-history-runtime').installPdfWorkspaceHistory(html);
   const literals = {
     'pdf-workspace': [
@@ -419,6 +424,17 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
     html = replaceMeta(html, 'og:image', artworkUrl);
     html = replaceMeta(html, 'og:image:alt', app.name);
     html = replaceMeta(html, 'twitter:image', artworkUrl);
+    if (app.id === 'meeting-minutes') {
+      const size = require('./lib/image-size').imageSizeFromUrl(artworkUrl, ROOT);
+      if (!size) throw new Error('Cannot read reviewed meeting artwork dimensions');
+      // Workspace pages are noindex, so the later OG pass does not repair these hints.
+      if (/<meta\b[^>]*property=["']og:image:width["']/i.test(html)) {
+        html = replaceMeta(html, 'og:image:width', String(size.w));
+      }
+      if (/<meta\b[^>]*property=["']og:image:height["']/i.test(html)) {
+        html = replaceMeta(html, 'og:image:height', String(size.h));
+      }
+    }
   }
   html = replaceDocumentRoutes(html, allRoutes);
   html = localizeSchemas(html, app, canonicalUrl, allRoutes, config.apps, routeExact, artworkUrl);

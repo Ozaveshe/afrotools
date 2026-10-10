@@ -13,6 +13,8 @@
   var rows = root.querySelector("[data-trade-rows]");
   var notes = root.querySelector("[data-trade-notes]");
   var lastReport = null;
+  var lastReportInputs = null;
+  var manualCopyArea = null;
 
   function utilityEngine() {
     if (!window.TradeUtilityEngine) {
@@ -791,6 +793,10 @@
 
   function render(reportData) {
     lastReport = reportData;
+    if (tool === "landed-cost") {
+      clearManualCopy();
+      lastReportInputs = JSON.stringify(currentPayload().inputs);
+    }
     summary.textContent = reportData.summary;
     metrics.replaceChildren();
     reportData.metrics.forEach(function (item) {
@@ -809,6 +815,10 @@
       wrap.className = "fr-trade-table-wrap";
       var table = document.createElement("table");
       table.className = "fr-trade-table";
+      if (tool === "landed-cost") {
+        table.tabIndex = 0;
+        table.setAttribute("aria-label", "Détail du coût rendu");
+      }
       var body = document.createElement("tbody");
       reportData.rows.forEach(function (row) {
         var tr = document.createElement("tr");
@@ -871,13 +881,91 @@
     status.textContent = "Export " + extension.toUpperCase() + " créé localement.";
   }
 
+  function clearManualCopy() {
+    if (manualCopyArea) manualCopyArea.remove();
+    manualCopyArea = null;
+  }
+
+  function invalidateLandedResult() {
+    if (tool !== "landed-cost") return;
+    lastReport = null;
+    lastReportInputs = null;
+    result.hidden = true;
+    clearManualCopy();
+  }
+
+  function landedResultIsCurrent(report, inputs) {
+    return lastReport === report && lastReportInputs === inputs &&
+      JSON.stringify(currentPayload().inputs) === inputs;
+  }
+
+  function showManualCopy(text) {
+    clearManualCopy();
+    manualCopyArea = document.createElement("div");
+    manualCopyArea.className = "fr-trade-field fr-trade-manual-copy";
+    var label = document.createElement("label");
+    label.htmlFor = "fr-trade-copy-result";
+    label.textContent = "Résultat à copier manuellement";
+    var field = document.createElement("textarea");
+    field.id = "fr-trade-copy-result";
+    field.readOnly = true;
+    field.rows = 8;
+    field.value = text;
+    manualCopyArea.appendChild(label);
+    manualCopyArea.appendChild(field);
+    result.appendChild(manualCopyArea);
+    status.dataset.state = "error";
+    status.textContent = "Copie automatique indisponible. Sélectionnez et copiez le texte ci-dessous.";
+    field.focus();
+    field.select();
+  }
+
+  function copyLandedReport(text) {
+    var report = lastReport;
+    var inputs = lastReportInputs;
+    clearManualCopy();
+    function failed() {
+      if (landedResultIsCurrent(report, inputs)) showManualCopy(text);
+    }
+    try {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") {
+        failed();
+        return;
+      }
+      Promise.resolve(navigator.clipboard.writeText(text)).then(function () {
+        if (!landedResultIsCurrent(report, inputs)) return;
+        status.dataset.state = "success";
+        status.textContent = "Résultat copié localement.";
+      }, failed);
+    } catch (error) {
+      failed();
+    }
+  }
+
   function exportFile(format) {
+    if (tool === "landed-cost" && lastReport && !landedResultIsCurrent(lastReport, lastReportInputs)) invalidateLandedResult();
     if (!lastReport) {
       status.dataset.state = "error";
       status.textContent = "Calculez d’abord un résultat.";
       return;
     }
     var output = textReport();
+    if (tool === "landed-cost" && format === "copy") {
+      copyLandedReport(output.text);
+      return;
+    }
+    if (tool === "landed-cost" && format === "print") {
+      clearManualCopy();
+      try {
+        window.print();
+        status.dataset.state = "success";
+        status.textContent = "Fenêtre d’impression demandée.";
+      } catch (error) {
+        status.dataset.state = "error";
+        status.textContent = "Impression indisponible. Vous pouvez exporter le résultat en PDF ou TXT.";
+      }
+      return;
+    }
     if (format === "json") {
       saveBlob(new Blob([JSON.stringify(output.data, null, 2)], { type: "application/json;charset=utf-8" }), "json");
     } else if (format === "txt") {
@@ -1083,6 +1171,7 @@
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     status.dataset.state = "";
+    invalidateLandedResult();
     try {
       render(handlers[tool]());
     } catch (error) {
@@ -1093,7 +1182,22 @@
     }
   });
 
+  if (tool === "landed-cost") {
+    function onLandedInputChange() {
+      if (!lastReport || landedResultIsCurrent(lastReport, lastReportInputs)) return;
+      invalidateLandedResult();
+      status.dataset.state = "";
+      status.textContent = "Champs modifiés. Recalculez avant de copier, imprimer ou exporter.";
+    }
+    form.addEventListener("input", onLandedInputChange);
+    form.addEventListener("change", onLandedInputChange);
+    window.addEventListener("beforeprint", function () {
+      if (lastReport && !landedResultIsCurrent(lastReport, lastReportInputs)) invalidateLandedResult();
+    });
+  }
+
   form.addEventListener("reset", function () {
+    invalidateLandedResult();
     window.setTimeout(function () {
       lastReport = null;
       result.hidden = true;

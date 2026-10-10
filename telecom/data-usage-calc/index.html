@@ -252,16 +252,74 @@ details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#4
   var qualityMultipliers = { low: 0.4, medium: 1.0, high: 2.5, hd: 5.0 };
   var barColors = ['#06B6D4','#0891b2','#14b8a6','#10b981','#059669','#0d9488','#0284c7'];
 
-  // populate countries
-  var codes = Object.keys(TELECOM_DATA.countries);
+  // Estimates work locally; the catalogue is only needed for recommendations.
+  function readCountries() {
+    return typeof TELECOM_DATA !== 'undefined' && TELECOM_DATA &&
+    TELECOM_DATA.countries && typeof TELECOM_DATA.countries === 'object' &&
+    !Array.isArray(TELECOM_DATA.countries) ? TELECOM_DATA.countries : {};
+  }
+  function countryCodes(value) {
+    return Object.keys(value).filter(function(code) {
+      return value[code] && typeof value[code] === 'object' &&
+        typeof value[code].name === 'string';
+    });
+  }
+  var countries = readCountries();
+  var codes = countryCodes(countries);
+  var retryState = 'idle';
+  var catalogueAvailable = codes.length > 0;
+  countrySelect.disabled = !catalogueAvailable;
+  recArea.setAttribute('aria-live', 'polite');
   for (var i = 0; i < codes.length; i++) {
-    var c = TELECOM_DATA.countries[codes[i]];
+    var c = countries[codes[i]];
     var opt = document.createElement('option');
     opt.value = codes[i];
     opt.textContent = c.name;
     countrySelect.appendChild(opt);
   }
   countrySelect.addEventListener('change', recalculate);
+  recArea.addEventListener('click', function(event) {
+    if (!event.target.closest('[data-retry-catalogue]') || retryState === 'loading' || catalogueAvailable) return;
+    retryState = 'loading';
+    recalculate();
+    var script = document.createElement('script');
+    var finished = false;
+    var timeout = window.setTimeout(function() { finish(false); }, 12000);
+    function finish(loaded) {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(timeout);
+      script.onload = script.onerror = null;
+      script.remove();
+      var nextCountries = loaded ? readCountries() : {};
+      var nextCodes = countryCodes(nextCountries);
+      if (!nextCodes.length) {
+        retryState = 'failed';
+        recalculate();
+        var retryButton = recArea.querySelector('[data-retry-catalogue]');
+        if (retryButton) retryButton.focus();
+        return;
+      }
+      countries = nextCountries;
+      codes = nextCodes;
+      catalogueAvailable = true;
+      retryState = 'idle';
+      countrySelect.innerHTML = '<option value="">Select a country</option>';
+      codes.forEach(function(code) {
+        var option = document.createElement('option');
+        option.value = code;
+        option.textContent = countries[code].name;
+        countrySelect.appendChild(option);
+      });
+      countrySelect.disabled = false;
+      recalculate();
+      countrySelect.focus();
+    }
+    script.onload = function() { finish(true); };
+    script.onerror = function() { finish(false); };
+    script.src = '/data/telecom/country-telecom-index.js?v=da00a655';
+    document.head.appendChild(script);
+  });
 
   // render activities
   var html = '';
@@ -344,12 +402,20 @@ html += '<select id="quality_' + act.id + '" aria-label="' + act.name + ' qualit
     breakdownArea.innerHTML = bkHtml;
 
     // recommendations
+    if (!catalogueAvailable) {
+      var retryMessage = retryState === 'loading' ? 'Loading plan catalogue...' :
+        retryState === 'failed' ? 'The catalogue could not be loaded. Your inputs and local estimate are unchanged.' :
+        'Plan recommendations are unavailable because the catalogue could not be loaded. Your usage estimate still works locally.';
+      recArea.innerHTML = '<div class="no-rec">' + retryMessage + '</div>' +
+        '<button type="button" data-retry-catalogue' + (retryState === 'loading' ? ' disabled' : '') + '>Retry plan recommendations</button>';
+      return;
+    }
     var code = countrySelect.value;
-    if (!code || !TELECOM_DATA.countries[code]) {
+    if (!code || !Object.prototype.hasOwnProperty.call(countries, code) || !countries[code]) {
       recArea.innerHTML = '<div class="no-rec">Select a country to see plan recommendations</div>';
       return;
     }
-    var country = TELECOM_DATA.countries[code];
+    var country = countries[code];
     var neededMB = totalMB * 1.1; // 10% buffer
     var candidates = [];
     var ops = country.operators || [];
@@ -404,7 +470,7 @@ html += '<select id="quality_' + act.id + '" aria-label="' + act.name + ' qualit
 <script src="/assets/js/telecom-toolkit.js?v=b6386004" defer></script>
 <script src="/assets/js/pages/telecom-freshness-guard.js?v=f72e2444" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/pages/telecom-tool-focus.js?v=eed2575b" defer></script>
+<script src="/assets/js/pages/telecom-tool-focus.js?v=ea0a70af" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 </body>
 </html>

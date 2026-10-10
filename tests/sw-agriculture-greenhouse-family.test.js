@@ -98,7 +98,7 @@ assert.strictEqual((hubHtml.match(/<li><a href="\/sw\/kilimo\/greenhouse\//g) ||
 assert.match(hubHtml, /FAOSTAT — bidhaa za mazao na mifugo<\/a>/);
 assert.match(hubHtml, /ulipitiwa 2026/);
 assert.match(hubHtml, /Kiwango cha uhakika/);
-assert.match(hubHtml, /greenhouse-cost-estimator/);
+assert.ok(hubHtml.includes('<img class="hero-art" src="/assets/img/tools/zana-gharama-za-greenhouse-sw.webp"'));
 assert.doesNotMatch(hubHtml, /&amp;amp;|â|Ã|Data sources:|For planning purposes|\b(?:Calculate|Download|Freshness|Confidence|Privacy|Results?)\b/);
 oracleRows.push({ englishId: hub.english.id, englishRoute: hub.english.routeKey, swahiliRoute: hub.swahili.routeKey, countryCode: null, validOracle: false, invalidOracle: false, status: 'hub-route-proof' });
 

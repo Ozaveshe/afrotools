@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadBindings, resolveReviewedToolArtwork } = require('./lib/reviewed-tool-image-bindings');
+const reviewedArtwork = loadBindings();
 
 const ROOT = path.resolve(__dirname, '..');
 const OWNER = 'scripts/build-sw-fintech-savings-family.js';
@@ -129,6 +131,7 @@ function absolute(route) {
 
 function render(app) {
   const route = `/sw/zana/${app.slug}/`;
+  app = { ...app, og: resolveReviewedToolArtwork(route, app.og, reviewedArtwork) };
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org', '@type': 'WebApplication', name: app.title,
     url: absolute(route), inLanguage: 'sw', applicationCategory: 'FinanceApplication',

@@ -2,6 +2,8 @@
 
 const path = require('path');
 const { defineConfig, devices } = require('@playwright/test');
+const { ENDPOINT } = require('./tests/support/french-finance-proof-identity');
+const chromiumExecutablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined;
 
 const financePort = Number(process.env.FRENCH_FINANCE_PLAYWRIGHT_PORT || 42973);
 const financeBaseUrl = `http://127.0.0.1:${financePort}`;
@@ -15,7 +17,7 @@ module.exports = defineConfig({
   reporter: [['list']],
   use: {
     baseURL: financeBaseUrl,
-    trace: 'retain-on-failure',
+    trace: 'off',
     serviceWorkers: 'block'
   },
   webServer: {
@@ -24,14 +26,15 @@ module.exports = defineConfig({
     env: {
       ...process.env,
       PORT: String(financePort),
-      AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES: '1'
+      AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES: '1',
+      AFROTOOLS_FRENCH_FINANCE_PROOF: '1'
     },
-    url: `${financeBaseUrl}/tests/fixtures/french-finance-worktree-sentinel.json`,
+    url: `${financeBaseUrl}${ENDPOINT}`,
     reuseExistingServer: false,
     timeout: 120000
   },
   projects: [{
     name: 'chromium',
-    use: { ...devices['Desktop Chrome'] }
+    use: { ...devices['Desktop Chrome'], launchOptions: chromiumExecutablePath ? { executablePath: chromiumExecutablePath } : undefined }
   }]
 });
