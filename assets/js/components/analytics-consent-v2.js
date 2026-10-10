@@ -48,6 +48,29 @@
     }
   };
 
+  var OPT_IN_COPY = {
+  "en": {
+    "message": "Analytics on this page starts only after you accept. Rejecting keeps analytics off on this page.",
+    "currentAccepted": "Current choice: analytics allowed on this page.",
+    "currentDeclined": "Current choice: analytics off on this page."
+  },
+  "fr": {
+    "message": "L’analyse sur cette page ne démarre qu’après votre accord. En cas de refus, elle reste désactivée sur cette page.",
+    "currentAccepted": "Choix actuel : analyse autorisée sur cette page.",
+    "currentDeclined": "Choix actuel : analyse désactivée sur cette page."
+  },
+  "sw": {
+    "message": "Uchanganuzi kwenye ukurasa huu huanza tu baada ya kukubali. Ukikataa, uchanganuzi unabaki umezimwa kwenye ukurasa huu.",
+    "currentAccepted": "Chaguo la sasa: uchanganuzi umeruhusiwa kwenye ukurasa huu.",
+    "currentDeclined": "Chaguo la sasa: uchanganuzi umezimwa kwenye ukurasa huu."
+  },
+  "ha": {
+    "message": "Nazari a wannan shafin zai fara ne kawai idan ka amince. Idan ka ƙi, nazari zai kasance a kashe a wannan shafin.",
+    "currentAccepted": "Zaɓin yanzu: an yarda da nazari a wannan shafin.",
+    "currentDeclined": "Zaɓin yanzu: an kashe nazari a wannan shafin."
+  }
+};
+
   function readConsent() {
     try {
       return window.localStorage.getItem(CONSENT_KEY);
@@ -76,7 +99,9 @@
 
   function languageCopy() {
     var language = (document.documentElement.lang || 'en').substring(0, 2).toLowerCase();
-    return COPY[language] || COPY.en;
+    var copy = COPY[language] || COPY.en;
+    if (!window.__afroAnalyticsRequiresOptIn) return copy;
+    return Object.assign({}, copy, OPT_IN_COPY[language] || OPT_IN_COPY.en);
   }
 
   function addStyles() {
