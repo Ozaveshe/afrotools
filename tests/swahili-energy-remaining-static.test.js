@@ -65,6 +65,7 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
   const fallbacks = read("data/localization/explicit-language-fallbacks.json");
   for (const app of SW_ENERGY_REMAINING_APPS) {
     const html = read(app.file);
+    const image = app.id === "outage-cost" ? "/assets/img/tools/zana-gharama-ya-kukatika-umeme-sw.webp" : app.image;
     assert.match(html, /<html\b[^>]*\blang="sw"/i, `${app.id}: native Swahili document`);
     const localeTokens = app.id === "prepaid-meter" ? [] : [
       `hreflang="en" href="https://afrotools.com${app.enRoute}"`,
@@ -73,7 +74,7 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
     ];
     const sharedTokens = [
       `data-sw-energy-app="${app.id}"`, `https://afrotools.com${app.swRoute}`,
-      ...localeTokens, app.image, `/engines/${app.engine}.js`,
+      ...localeTokens, image, `/engines/${app.engine}.js`,
     ];
     const productTokens = app.exactTariff ? [
       "/assets/js/pages/electricity-cost-prepaid-units.js", "/assets/js/pages/swahili-electricity-parity.js",
@@ -98,7 +99,8 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
     for (const forbidden of ["<iframe", "afrotools-language-fallback", "fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage"]) {
       assert.ok(!html.includes(forbidden), `${app.id}: ${forbidden}`);
     }
-    assert.ok(fs.existsSync(path.join(ROOT, app.image.slice(1))), `${app.id}: artwork`);
+    assert.ok(fs.existsSync(path.join(ROOT, image.slice(1))), `${app.id}: artwork`);
+    assert.ok(fs.existsSync(path.join(ROOT, app.image.slice(1))), `${app.id}: original artwork preserved`);
     assert.ok(registry.includes(app.swRoute), `${app.id}: registry`);
     assert.ok(!fallbacks.includes(app.file), `${app.id}: fallback removed`);
   }
