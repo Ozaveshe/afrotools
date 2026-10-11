@@ -53,7 +53,8 @@ for (const route of deficit) {
     const pdfStream = await pdfDownload.createReadStream();
     const pdfChunks = [];
     for await (const chunk of pdfStream) pdfChunks.push(chunk);
-    const parsed = await pdfParse(Buffer.concat(pdfChunks));
+    // Give the legacy parser an owned byte array, not a pooled Buffer view.
+    const parsed = await pdfParse(new Uint8Array(Buffer.concat(pdfChunks)));
     expect(parsed.text.length).toBeGreaterThan(60);
 
     await page.locator('[data-action="save"]').click();

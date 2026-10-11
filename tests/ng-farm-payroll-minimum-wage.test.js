@@ -1,0 +1,8 @@
+const test=require('node:test'),assert=require('node:assert/strict');
+const {compareWage}=require('../assets/js/lib/ng-farm-payroll-contributions.js');
+test('unknown coverage retains dated national reference without compliance boolean',()=>{const r=compareWage();assert.equal(r.status,'coverage-unknown');assert.equal(r.reference.amount,70000);assert.equal(r.reference.period,'month');assert.equal(r.compliant,undefined);assert.equal(r.comparedWageKobo,undefined);});
+test('confirmed exemption does not mean a passing wage comparison',()=>{const r=compareWage({coverage:'exempt-confirmed',monthlyWage:'1'});assert.equal(r.status,'exempt-confirmed');assert.equal(r.compliant,undefined);assert.equal(r.comparedWageKobo,undefined);});
+for(const [monthlyWage,status,difference] of [['69999.99','below-reference',-1],['70000','meets-reference',0],['70000.01','meets-reference',1]])test(monthlyWage+' compares at kobo precision',()=>{const r=compareWage({coverage:'applicable-confirmed',monthlyWage});assert.equal(r.status,status);assert.equal(r.differenceKobo,difference);assert.equal(r.eligibility,'user-confirmed');});
+for(const monthlyWage of ['',0,-10,'70000x','1e5','70000.001'])test('rejects invalid monthly wage '+monthlyWage,()=>{assert.equal(compareWage({coverage:'applicable-confirmed',monthlyWage}).valid,false);});
+test('does not infer coverage or daily minimum from worker type or count',()=>{for(const workerType of ['permanent','casual','seasonal','piece_rate']){const r=compareWage({workerType,numWorkers:10000,daysWorked:26,monthlyWage:'100000'});assert.equal(r.status,'coverage-unknown');assert.equal(r.reference.daily,undefined);}});
+test('unrecognized coverage fails explicitly',()=>assert.equal(compareWage({coverage:'toString'}).valid,false));

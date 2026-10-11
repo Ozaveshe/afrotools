@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="en">
 <head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="3369af90" async></script>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -354,6 +354,7 @@
           <select class="f-select" id="selSeason"></select>
         </div>
         <div class="field full">
+          <p id="yieldInputError" role="alert" aria-live="assertive"></p>
           <button type="button" class="calc-btn" onclick="calculate()">&#127793; Calculate Yield Estimate</button>
         </div>
       </div>
@@ -471,7 +472,7 @@
 <!-- ─── DATA & ENGINE ─── -->
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/ao-agri-data.js?v=5dd114ea"></script>
-<script src="/engines/crop-yield-engine.js?v=bb30597e"></script>
+<script src="/engines/crop-yield-engine.js?v=dba23ede"></script>
 
 <script>
 (function () {
@@ -565,14 +566,23 @@
   $('inpFarm').value = CD.agriStats.avgFarmSizeHa || 0.5;
 
   // ═══ CALCULATE ═══
+  function invalidateYieldResult() { $('resultsPanel').classList.remove('on'); }
+  ['inpFarm','selCrop','selRegion','selSoil','selIrrigation','selFertilizer','selSeed','selSeason'].forEach(function(id) {
+    $(id).addEventListener('input', invalidateYieldResult);
+    $(id).addEventListener('change', invalidateYieldResult);
+  });
   window.calculate = function () {
+    invalidateYieldResult();
+    $('yieldInputError').textContent = '';
+    var farmSize = Number($('inpFarm').value);
+    if (!Number.isFinite(farmSize) || farmSize < 0.1) { $('yieldInputError').textContent = 'Enter a farm size of at least 0.1 hectare.'; $('inpFarm').focus(); return; }
     var r = ENG.calculate({
       countryCode: CD.countryCode, cropId: $('selCrop').value, regionId: $('selRegion').value,
-      farmSizeHa: parseFloat($('inpFarm').value) || 1, soilType: $('selSoil').value,
+      farmSizeHa: farmSize, soilType: $('selSoil').value,
       irrigationType: $('selIrrigation').value, fertilizerUsage: $('selFertilizer').value,
       seedType: $('selSeed').value, season: $('selSeason').value
     }, CD, CDB);
-    if (r.error) { alert(r.message); return; }
+    if (r.error) { $('yieldInputError').textContent = r.message; return; }
 
     var panel = $('resultsPanel');
     panel.classList.add('on');
@@ -625,6 +635,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=3369af90" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>

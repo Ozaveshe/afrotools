@@ -54,7 +54,7 @@
         return {
           cropId: e.cropId,
           regionId: e.regionId,
-          farmSizeHa: parseFloat(e.farmSizeHa) || 1,
+          farmSizeHa: Number(e.farmSizeHa),
           soilType: e.soilType,
           irrigationType: e.irrigationType || e.irrigationLevel || "rainfed",
           fertilizerUsage: e.fertilizerUsage || e.fertilizerLevel || "medium",
@@ -62,6 +62,9 @@
           season: e.season || "main"
         };
       }(e || {}), s = a(i && i.crops, l.cropId), d = a(i && i.regions, l.regionId);
+      if (!Number.isFinite(l.farmSizeHa) || l.farmSizeHa <= 0) {
+        return { error: true, message: "Enter a finite farm size greater than zero." };
+      }
       if (!s || !d) {
         return {
           error: !0,
