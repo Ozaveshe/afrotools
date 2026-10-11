@@ -90,10 +90,10 @@ const copy = {
     privacyTitle: 'Sirri',
     privacy: 'Bayanan da ka shigar suna aiki a browser dinka. Ba a aika farashin gona, girman gona ko kudin aiki zuwa sabar AfroTools daga wannan panel.',
     trustTitle: 'Tushen bayanai da iyaka',
-    source: 'Source',
-    freshness: 'Freshness',
-    methodology: 'Methodology',
-    limitations: 'Limitations',
+    source: 'Tushen bayanai',
+    freshness: 'Sabunta bayanai',
+    methodology: 'Hanyar lissafi',
+    limitations: 'Iyakoki',
     freshnessText: 'An tsara wannan a matsayin kiyasin 2026; farashin kasuwa, yanayi, kwari, kudi da dokokin gida na iya canzawa.',
     methodologyText: 'Injin lissafi yana hada shigar da mai amfani da bayanan gona da aka ajiye a AfroTools. Sakamako yana taimakawa wajen tsara aiki, ba wai shawarar hukuma ba.',
     limitationsText: 'Tabbatar da farashi, iri, taki, ruwa, kasar gona, yanayi da shawarar jamiin fadakar da manoma kafin kashe kudi mai yawa.'
@@ -111,10 +111,10 @@ const copy = {
     privacyTitle: 'Faragha',
     privacy: 'Taarifa unazoingiza zinachakatwa kwenye browser yako. Paneli hii haitumi bei, ukubwa wa shamba au gharama zako kwa seva ya AfroTools.',
     trustTitle: 'Vyanzo na mipaka',
-    source: 'Source',
-    freshness: 'Freshness',
-    methodology: 'Methodology',
-    limitations: 'Limitations',
+    source: 'Chanzo',
+    freshness: 'Usasishaji wa data',
+    methodology: 'Mbinu ya kukokotoa',
+    limitations: 'Mipaka',
     freshnessText: 'Hii ni makadirio ya kupanga mwaka 2026; bei za soko, hali ya hewa, wadudu, gharama na sheria za eneo zinaweza kubadilika.',
     methodologyText: 'Injini ya kikokotoo huunganisha taarifa za mtumiaji na data za kilimo zilizohifadhiwa ndani ya AfroTools. Matokeo ni ya kupanga, si ushauri rasmi.',
     limitationsText: 'Thibitisha bei, mbegu, mbolea, maji, udongo, hali ya hewa na ushauri wa afisa ugani kabla ya kutumia fedha nyingi.'
@@ -184,7 +184,11 @@ function scriptBlock(page) {
     title: page.title,
     fallback: t.fallback,
     copied: t.copied,
-    downloaded: t.downloaded
+    downloaded: t.downloaded,
+    generatedLocally: page.lang === 'ha' ? 'An samar da wannan a cikin burauzarka.' : 'Muhtasari umetengenezwa ndani ya kivinjari chako.',
+    inputsLabel: page.lang === 'ha' ? 'Bayanan da aka shigar:' : 'Taarifa zilizoingizwa:',
+    resultsLabel: page.lang === 'ha' ? 'Sakamako:' : 'Matokeo:',
+    planningNote: page.lang === 'ha' ? "Wannan kiyasi ne don tsara aiki kawai. Tabbatar da farashin gida, yanayi, ƙasa, ruwa, sharuɗɗan mai saye da shawarar jami'in fadakar da manoma kafin kashe kuɗi." : "Haya ni makadirio ya kupanga tu. Thibitisha bei za eneo, hali ya hewa, udongo, maji, masharti ya mnunuzi na ushauri wa afisa ugani kabla ya kutumia fedha."
   })};
   function text(selector){
     var node = document.querySelector(selector);
@@ -199,7 +203,7 @@ function scriptBlock(page) {
       var value = field.options ? field.options[field.selectedIndex].text : field.value;
       if (value === undefined || value === null || String(value).trim() === '') return '';
       return label.textContent.replace(/\\s+/g,' ').trim() + ': ' + String(value).trim();
-    }).filter(Boolean).slice(0, 14);
+    }).filter(Boolean);
   }
   function results(){
     var selectors = ['#resultsPanel', '.results-wrap.on', '.ir-results.visible', '.ha-results.on', '.ha-results', '.ir-results', '.results-wrap'];
@@ -208,15 +212,15 @@ function scriptBlock(page) {
       var value = text(selector);
       if (value && out.indexOf(value) === -1) out.push(value);
     });
-    return out.join('\\n').slice(0, 2800);
+    return out.join('\\n');
   }
   function summary(){
-    var lines = ['AfroTools - ' + labels.title, 'Generated locally in this browser.', ''];
+    var lines = ['AfroTools - ' + labels.title, labels.generatedLocally, ''];
     var data = inputs();
-    if (data.length) lines.push('Inputs:\\n' + data.join('\\n'));
+    if (data.length) lines.push(labels.inputsLabel+'\\n' + data.join('\\n'));
     var result = results();
-    lines.push('', 'Results:', result || labels.fallback);
-    lines.push('', 'Note: planning estimate only. Verify local prices, weather, soil, water, buyer terms and extension advice before spending.');
+    lines.push('', labels.resultsLabel, result || labels.fallback);
+    lines.push('', labels.planningNote);
     return lines.join('\\n');
   }
   function setStatus(msg){
@@ -238,7 +242,7 @@ function scriptBlock(page) {
     var copyBtn = event.target.closest('[data-agri-copy]');
     var downloadBtn = event.target.closest('[data-agri-download]');
     if (!copyBtn && !downloadBtn) return;
-    var value = summary();
+${page.lang === 'ha' ? "    if (!document.querySelector('#resultsPanel.on')) { setStatus(labels.fallback); return; }\n" : ''}    var value = summary();
     if (copyBtn) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(value).then(function(){ setStatus(labels.copied); }).catch(function(){ setStatus(value); });
