@@ -66,7 +66,11 @@ test("Swahili Health hub lists every application once with correct SEO ownership
   assert.match(html, /<html\b[^>]*lang="sw"/i);
   assert.match(html, /<link rel="canonical" href="https:\/\/afrotools\.com\/sw\/afya\/">/i);
   assert.match(html, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/afya\/"/i);
-  assert.match(html, /"numberOfItems":42/);
+  const graph = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].flatMap(match => JSON.parse(match[1]));
+  const collection = graph.find(item => item["@type"] === "CollectionPage");
+  assert.ok(collection, "Health CollectionPage schema");
+  assert.equal(collection.mainEntity.numberOfItems, 42);
+  assert.equal(collection.mainEntity.itemListElement.length, 42);
   assert.equal((html.match(/class="swh-card"/g) || []).length, 42);
   assert.doesNotMatch(html, /fonts\.(?:googleapis|gstatic)\.com/i);
   for (const row of ROWS) {

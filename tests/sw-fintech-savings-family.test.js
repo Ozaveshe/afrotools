@@ -26,6 +26,7 @@ for (const app of apps) {
   assert.ok(html.includes(`href="https://afrotools.com${swRoute}"`), app.id);
   const artwork = resolveReviewedToolArtwork(swRoute, app.og);
   if (app.id === 'real-return') assert.strictEqual(artwork, '/assets/img/tools/zana-faida-halisi-baada-ya-mfumuko-sw.webp');
+  else if (app.id === 'tbill-calc') assert.strictEqual(artwork, '/assets/img/tools/zana-kikokotoo-hati-za-hazina-sw.webp');
   else assert.strictEqual(artwork, app.og);
   assert.ok(html.includes(`src="${artwork}"`), app.id);
   assert.ok(html.includes(`content="https://afrotools.com${artwork}"`), `${app.id}: artwork metadata`);
