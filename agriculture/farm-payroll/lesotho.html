@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="en">
 <head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="3369af90" async></script>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8">
 <meta name="afrotools-currency" content="LSL">
 <meta name="afrotools-formula-jurisdiction" content="LS">
@@ -204,7 +204,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       </div>
       <div class="field">
         <label class="f-label-text" for="inpNumWorkers">Number of Workers</label>
-        <input aria-label="Line item quantity" class="f-input" id="inpNumWorkers" type="number" min="1" step="1" value="1">
+        <input aria-label="Number of workers" class="f-input" id="inpNumWorkers" type="number" min="1" step="1" value="1">
         <div class="hint-text">Enter more than 1 to see total farm labour cost</div>
       </div>
 
@@ -263,6 +263,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   </div>
 </div>
 
+<p id="payrollValidationStatus" role="alert" aria-atomic="true"></p>
 <button type="button" class="calc-btn" onclick="runCalculation()">&#128204; Calculate Farm Payroll</button>
 
 <div class="results-wrap" id="resultsWrap">
@@ -334,8 +335,9 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="/data/agriculture/farm-payroll-data.js?v=ee306a00"></script>
-<script src="/engines/farm-payroll-engine.js?v=68a877ca"></script>
+<script src="/data/agriculture/farm-payroll-data.js?v=7cafaa21"></script>
+<script src="/engines/farm-payroll-engine.js?v=3997dcb3"></script>
+<script src="/assets/js/lib/farm-payroll-input-validation.js?v=27fe3eab"></script>
 <script>
 (function () {
   'use strict';
@@ -387,33 +389,32 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     btn.textContent = collapsed ? 'Expand' : 'Collapse';
   };
 
+  var payrollFields=['selWorkerType','inpNumWorkers','inpMonthlySalary','inpDailyRate','inpDaysWorked','inpRatePerUnit','inpUnitsCompleted','inpOvertimeHours','inpHousingValue','inpFoodValue'];
+  function invalidatePayrollResult(event){
+    if(event&&payrollFields.indexOf(event.target.id)<0)return;
+    document.getElementById('resultsWrap').classList.remove('on');
+    document.getElementById('payrollValidationStatus').textContent='';
+    payrollFields.forEach(function(id){var field=document.getElementById(id);if(field)field.removeAttribute('aria-invalid');});
+  }
+  document.addEventListener('input',invalidatePayrollResult);
+  document.addEventListener('change',invalidatePayrollResult);
   window.runCalculation = function () {
-    var wt = document.getElementById('selWorkerType').value;
-    var dailyRateEl = document.getElementById('inpDailyRate');
-    var daysEl = document.getElementById('inpDaysWorked');
-    var rateEl = document.getElementById('inpRatePerUnit');
-    var unitsEl = document.getElementById('inpUnitsCompleted');
-    var inputs = {
-      workerType:     wt,
-      grossPay:       parseFloat(wt === 'permanent'
-                        ? document.getElementById('inpMonthlySalary').value
-                        : (dailyRateEl ? dailyRateEl.value : 0)) || 0,
-      daysWorked:     parseFloat(daysEl ? daysEl.value : 26) || 26,
-      ratePerUnit:    parseFloat(rateEl ? rateEl.value : 0) || 0,
-      unitsCompleted: parseFloat(unitsEl ? unitsEl.value : 0) || 0,
-      overtimeHours:  parseFloat(document.getElementById('inpOvertimeHours').value) || 0,
-      inKindHousing:  parseFloat(document.getElementById('inpHousingValue').value) || 0,
-      inKindFood:     parseFloat(document.getElementById('inpFoodValue').value) || 0,
-      numWorkers:     parseInt(document.getElementById('inpNumWorkers').value) || 1
-    };
-
-    if (!ENG.calculate) { alert('Calculator not loaded. Please refresh.'); return; }
-    var r = ENG.calculate(inputs, CD);
-    if (r.error) { alert(r.message); return; }
+    invalidatePayrollResult();
+    var status=document.getElementById('payrollValidationStatus');
+    var validator=window.AfroTools.FarmPayrollValidation;
+    if(!validator||!ENG.calculate){status.textContent='The calculator could not load. Refresh the page and try again.';return;}
+    function value(id){var field=document.getElementById(id);return field?field.value:'';}
+    var wt=value('selWorkerType');
+    var checked=validator.validate({workerType:wt,numWorkers:value('inpNumWorkers'),grossPay:value(wt==='permanent'?'inpMonthlySalary':'inpDailyRate'),daysWorked:value('inpDaysWorked'),ratePerUnit:value('inpRatePerUnit'),unitsCompleted:value('inpUnitsCompleted'),overtimeHours:value('inpOvertimeHours'),inKindHousing:value('inpHousingValue'),inKindFood:value('inpFoodValue')});
+    if(!checked.valid){status.textContent=checked.message;var field=document.getElementById(checked.field);if(field){field.setAttribute('aria-invalid','true');field.focus();}return;}
+    var r;
+    try{r=ENG.calculate(checked.input,CD);}catch(error){status.textContent='The calculation could not be completed. Check the inputs and try again.';return;}
+    if(!r||r.error){status.textContent=r&&r.message?r.message:'The calculation could not be completed.';return;}
+    if(['baseGross','grossForDeductions','netPay','totalEmployerCost','farmMonthlyCost','farmAnnualCost'].some(function(key){return !Number.isFinite(r[key])||Math.abs(r[key])>Number.MAX_SAFE_INTEGER;})){status.textContent='The combined amounts are too large to calculate reliably. Reduce the amounts and try again.';return;}
     renderResults(r);
   };
 
-  function renderResults(r) {
+    function renderResults(r) {
     var wrap = document.getElementById('resultsWrap');
     wrap.classList.add('on');
     wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -495,6 +496,6 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=3369af90" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>
