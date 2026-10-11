@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 312 |
-| sw | 137 | 1 | 336 |
+| fr | 160 | 2 | 313 |
+| sw | 137 | 1 | 337 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 347 | 40 | 0 | 307 | 21 | 0 | 326 |
+| editorial | 348 | 40 | 0 | 308 | 21 | 0 | 327 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -321,6 +321,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/kenya-civil-marriage-documents-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/kenya-etims-credit-note-vat-return-reconciliation-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/kenya-etims-credit-note-vat-return-reconciliation-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-etims-expense-validation-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-etims-expense-validation-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-fringe-benefit-tax-employer-loans-2026/ | editorial | fr | — | missing | no localized route or owner file |

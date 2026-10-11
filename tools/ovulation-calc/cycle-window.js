@@ -92,7 +92,7 @@
       'Ne considérez pas les dates hors de cette période comme sûres pour des rapports sexuels non protégés.',
       'Sources : ACOG, méthodes d’observation de la fertilité ; NHS, informations sur les règles ; CDC, méthodes contraceptives.',
       'Sources vérifiées : 26 juillet 2026.',
-      'Créé localement. Aucun compte, e-mail, téléversement, envoi analytique ni enregistrement dans le navigateur.'
+      'Créé sur cet appareil. Aucun compte, aucune adresse e-mail ni aucun téléversement ne sont nécessaires pour créer ce rapport.'
     ].join('\n');
     return [
       'AFROTOOLS CYCLE WINDOW ESTIMATE',
@@ -109,7 +109,7 @@
       'Do not treat dates outside the span as safe for unprotected sex.',
       'Sources: ACOG fertility awareness methods; NHS periods guidance; CDC contraception methods.',
       'Sources checked: 26 July 2026.',
-      'Created locally. No account, email, upload, analytics or saved browser record.'
+      'Created on this device. No account, email address or upload is required to create this report.'
     ].join('\n');
   }
 

@@ -1,25 +1,25 @@
 # Blog Audit
 
-Generated: 2026-10-10T15:46:05.534Z
+Generated: 2026-10-11T18:11:41.965Z
 
 ## Summary
-- Posts audited: 357
-- Hub cards: 347 (0 still using default imagery before cleanup)
+- Posts audited: 358
+- Hub cards: 348 (0 still using default imagery before cleanup)
 - Posts using default images: 0
 - Posts with no external sources on fact-heavy topics: 0
 - Posts with obvious encoding issues: 0
 - Thin article bodies under 800 words: 0
 - Posts without a tool handoff: 2
 - Posts with fewer than two related blog links: 0
-- Fact-heavy posts with dated source review: 118
-- Fact-heavy posts with sources but no proven review date: 109
+- Fact-heavy posts with dated source review: 120
+- Fact-heavy posts with sources but no proven review date: 108
 - Average quality score: 94.7/100
-- Average word count: 1947
+- Average word count: 1945
 - Average AI-pattern hits: 0.3
 
 ## Category Counts
 - tools: 103
-- tax: 100
+- tax: 101
 - business: 78
 - data: 29
 - currency: 23
@@ -40,7 +40,6 @@ Generated: 2026-10-10T15:46:05.534Z
 - gratuity-severance-africa-2026: score 82, priority 3, words=2565, toolLinks=12, blogLinks=8, sourceState=sources-present-date-unproven
 - rental-yield-guide-africa: score 83, priority 3, words=1728, toolLinks=4, blogLinks=9, sourceState=sources-present-date-unproven
 - customs-clearance-documents-africa-2026: score 84, priority 3, words=2138, toolLinks=15, blogLinks=8, sourceState=sources-present-date-unproven
-- register-business-nigeria-cac-2026: score 84, priority 3, words=3239, toolLinks=1, blogLinks=9, sourceState=sources-present-date-unproven
 - african-startup-funding-2026: score 85, priority 3, words=2420, toolLinks=2, blogLinks=6, sourceState=sources-present-date-unproven
 - japa-guide-nigeria-canada-2026: score 86, priority 3, words=2003, toolLinks=3, blogLinks=8, sourceState=sources-present-date-unproven
 - rwanda-vat-guide-2026: score 86, priority 3, words=2184, toolLinks=4, blogLinks=9, sourceState=sources-present-date-unproven
@@ -50,6 +49,7 @@ Generated: 2026-10-10T15:46:05.534Z
 - vat-rates-africa-2026: score 86, priority 3, words=1823, toolLinks=1, blogLinks=9, sourceState=sources-present-date-unproven
 - best-p2p-platforms-nigeria-2026: score 87, priority 3, words=3961, toolLinks=5, blogLinks=8, sourceState=sources-present-date-unproven
 - south-africa-travel-allowance-2026-27: score 87, priority 3, words=2093, toolLinks=2, blogLinks=9, sourceState=sources-present-date-unproven
+- wedding-cost-nigeria-2026: score 87, priority 3, words=2397, toolLinks=0, blogLinks=8, sourceState=sources-present-date-unproven
 
 ## Notes
 - "Missing sources" means a fact-heavy post had no outbound sources at all. It does not automatically mean the content is wrong, but it does mean trust is weaker.

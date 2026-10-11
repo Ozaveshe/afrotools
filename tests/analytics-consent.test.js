@@ -231,3 +231,74 @@ assert.strictEqual(
 );
 
 console.log("analytics-consent.test.js passed");
+
+// Currency and checked-quote pages require opt-in. Similar route names keep
+// ordinary Consent Mode behavior, including declined-state measurement.
+const currencyConsentRoots = [
+  "/tools/currency-converter", "/fr/tools/convertisseur-devises",
+  "/sw/zana/kibadilishaji-sarafu", "/ha/kayan-aiki/canja-kudi"
+];
+const privateConsentRoots = [
+  "/tools/remittance-compare", "/tools/remittance-v2", "/crypto/remittance",
+  "/fr/crypto/remittance", "/sw/zana/ulinganisho-nukuu-za-kutuma-fedha"
+];
+const ordinaryConsentRoutes = [
+  "/", "/tools/salary-calculator/", "/tools/currency-converter-extra/",
+  "/fr/tools/convertisseur-devises/extra/", "/ha/kayan-aiki/canja-kudi-extra/"
+];
+function consentRouteContext(route, status) {
+  const context = createSandbox(status);
+  context.window.location.pathname = route;
+  vm.runInNewContext(lazySource, context.sandbox, { filename: "lazy-analytics.js" });
+  return context;
+}
+function googleTagCount(context) {
+  return context.inserted.filter(node => node.src.startsWith("https://www.googletagmanager.com/")).length;
+}
+let currencyInitialCases = 0;
+const consentRouteCases = [
+  ...currencyConsentRoots.flatMap(root => [root, root + "/", root + "/index.html", root + "/index.html/"].map(route => ({route, optIn:true}))),
+  ...privateConsentRoots.map(root => ({route:root + "/", optIn:true})),
+  ...ordinaryConsentRoutes.map(route => ({route, optIn:false}))
+];
+for (const {route, optIn} of consentRouteCases) {
+  for (const status of [null, "declined", "rejected", "accepted", "unexpected"]) {
+    const context = consentRouteContext(route, status);
+    const allowed = !optIn || status === "accepted";
+    assert.strictEqual(googleTagCount(context), allowed ? 1 : 0, `${route}: Google tag follows consent ${status}`);
+    assert.strictEqual(commandRows(context, "config", "G-D859CGF391").length, allowed ? 1 : 0, `${route}: no configuration before opt-in`);
+    assert.strictEqual(context.window["ga-disable-G-D859CGF391"], !allowed, `${route}: collection switch follows consent`);
+    const previousEvents = commandRows(context, "event").length;
+    if (typeof context.window.gtag === "function") context.window.gtag("event", "synthetic_consent_probe", {count:1});
+    else assert.strictEqual(allowed, false, `${route}: an inactive tag API is allowed only while collection is blocked`);
+    assert.strictEqual(commandRows(context, "event").length, previousEvents + (allowed ? 1 : 0), `${route}: blocked events are not queued`);
+    currencyInitialCases += 1;
+  }
+}
+let currencyTransitionCases = 0;
+for (const root of [...currencyConsentRoots, ...privateConsentRoots]) {
+  for (const withdrawal of ["declined", "rejected", null, "unexpected"]) {
+    for (const channel of ["event", "storage"]) {
+      const context = consentRouteContext(root + "/", null);
+      context.setConsent("accepted");
+      context.listeners["afrotools:cookie-consent"]({detail:{status:"accepted"}});
+      assert.strictEqual(googleTagCount(context), 1, `${root}: acceptance loads one tag`);
+      assert.strictEqual(context.window["ga-disable-G-D859CGF391"], false);
+      context.setConsent(withdrawal);
+      if (channel === "event") context.listeners["afrotools:cookie-consent"]({detail:{status:withdrawal}});
+      else context.listeners.storage({key:withdrawal === null ? null : "afrotools_cookie_consent", newValue:withdrawal});
+      assert.strictEqual(context.window["ga-disable-G-D859CGF391"], true, `${root}: ${channel} withdrawal disables collection`);
+      const before = commands(context).length;
+      context.window.gtag("event", "synthetic_withdrawn_event", {count:1});
+      context.window.gtag("config", "G-D859CGF391", {page_title:"Synthetic consent test"});
+      assert.strictEqual(commands(context).length, before, `${root}: withdrawal blocks event and config commands`);
+      context.setConsent("accepted");
+      context.listeners.storage({key:"afrotools_cookie_consent", newValue:"accepted"});
+      assert.strictEqual(context.window["ga-disable-G-D859CGF391"], false, `${root}: cross-tab acceptance restores collection`);
+      assert.strictEqual(googleTagCount(context), 1, `${root}: reacceptance does not reload the tag`);
+      assert.strictEqual(commandRows(context, "config", "G-D859CGF391").length, 1, `${root}: reacceptance does not duplicate configuration`);
+      currencyTransitionCases += 1;
+    }
+  }
+}
+console.log(`Currency consent regression: ${currencyInitialCases} initial states and ${currencyTransitionCases} withdrawal/reacceptance cases passed.`);
