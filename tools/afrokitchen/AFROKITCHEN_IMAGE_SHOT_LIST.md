@@ -3,7 +3,7 @@
 Use this as the working list for generating and saving recipe images.
 
 - Canonical recipe pages needing image coverage: 410
-- Recipes with at least one image detected: 396
+- Recipes with at least one image detected: 410
 - Gallery-ready recipes with three or more images: 8
 - Save finished images under `assets/img/kitchen/`
 - Preferred format: `.webp` at roughly 1600x1200 or 1200x900
@@ -326,7 +326,7 @@ Use this as the working list for generating and saving recipe images.
 | 312 | Isombe | Rwanda | stew | `isombe.webp` | /tools/afrokitchen/recipes/isombe/ | Finished Isombe, stew from Rwanda, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 313 | Isombe | Rwanda | stew | `isombe-rw.webp` | /tools/afrokitchen/recipes/isombe-rw/ | Finished Isombe, stew from Rwanda, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 314 | Rwandan Brochettes | Rwanda | main | `rwandan-brochettes.webp` | /tools/afrokitchen/recipes/rwandan-brochettes/ | Finished Rwandan Brochettes, main from Rwanda, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 315 | Rwandan Ikivuguto | Rwanda | beverage | `ikivuguto-rw.webp` | /tools/afrokitchen/recipes/ikivuguto-rw/ | Finished Rwandan Ikivuguto, beverage from Rwanda, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 315 | Ikivuguto | Rwanda | beverage | `ikivuguto-rw.webp` | /tools/afrokitchen/recipes/ikivuguto-rw/ | Finished Ikivuguto, beverage from Rwanda, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 316 | Urwagwa | Rwanda | beverage | `urwagwa-rw.webp` | /tools/afrokitchen/recipes/urwagwa-rw/ | Finished Urwagwa, beverage from Rwanda, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 317 | Angú de Banana | São Tomé and Príncipe | side | `angu-de-banana-st.webp` | /tools/afrokitchen/recipes/angu-de-banana-st/ | Finished Angú de Banana, side from São Tomé and Príncipe, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 318 | Banana Assada | São Tomé and Príncipe | snack | `banana-assada-st.webp` | /tools/afrokitchen/recipes/banana-assada-st/ | Finished Banana Assada, snack from São Tomé and Príncipe, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
@@ -345,8 +345,8 @@ Use this as the working list for generating and saving recipe images.
 | 331 | Grilled Fish Creole | Seychelles | main | `grilled-fish-creole.webp` | /tools/afrokitchen/recipes/grilled-fish-creole/ | Finished Grilled Fish Creole, main from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 332 | Kat-Kat Banane | Seychelles | main | `kat-kat-banane-sc.webp` | /tools/afrokitchen/recipes/kat-kat-banane-sc/ | Finished Kat-Kat Banane, main from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 333 | Ladob | Seychelles | dessert | `ladob.webp` | /tools/afrokitchen/recipes/ladob/ | Finished Ladob, dessert from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 334 | Ladob | Seychelles | dessert | `ladob-sc.webp` | /tools/afrokitchen/recipes/ladob-sc/ | Finished Ladob, dessert from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 335 | Octopus Curry | Seychelles | seafood | `octopus-curry-sc.webp` | /tools/afrokitchen/recipes/octopus-curry-sc/ | Finished Octopus Curry, seafood from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 334 | Ladob Patat | Seychelles | dessert | `ladob-sc.webp` | /tools/afrokitchen/recipes/ladob-sc/ | Finished Ladob Patat, dessert from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 335 | Octopus coconut curry | Seychelles | seafood | `octopus-curry-sc.webp` | /tools/afrokitchen/recipes/octopus-curry-sc/ | Finished Octopus coconut curry, seafood from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 336 | Satini Reken | Seychelles | salad | `satini-reken-sc.webp` | /tools/afrokitchen/recipes/satini-reken-sc/ | Finished Satini Reken, salad from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 337 | Shark Chutney | Seychelles | sauce | `shark-chutney.webp` | /tools/afrokitchen/recipes/shark-chutney/ | Finished Shark Chutney, sauce from Seychelles, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 338 | Banana Akara | Sierra Leone | breakfast | `akara-sl.webp` | /tools/afrokitchen/recipes/akara-sl/ | Finished Banana Akara, breakfast from Sierra Leone, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
@@ -374,7 +374,7 @@ Use this as the working list for generating and saving recipe images.
 | 360 | Karkade | South Sudan | beverage | `karkade-south-sudan-ss.webp` | /tools/afrokitchen/recipes/karkade-south-sudan-ss/ | Finished Karkade, beverage from South Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 361 | Kisra with Mulah | South Sudan | main | `kisra-mulah.webp` | /tools/afrokitchen/recipes/kisra-mulah/ | Finished Kisra with Mulah, main from South Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 362 | South Sudanese Asida | South Sudan | starch | `asida-south-sudan-ss.webp` | /tools/afrokitchen/recipes/asida-south-sudan-ss/ | Finished South Sudanese Asida, starch from South Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 363 | South Sudanese Kisra | South Sudan | bread | `kisra-south-sudan-ss.webp` | /tools/afrokitchen/recipes/kisra-south-sudan-ss/ | Finished South Sudanese Kisra, bread from South Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 363 | Kisra — sorghum and wheat version | South Sudan | bread | `kisra-south-sudan-ss.webp` | /tools/afrokitchen/recipes/kisra-south-sudan-ss/ | Finished Kisra — sorghum and wheat version, bread from South Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 364 | South Sudanese Shorba | South Sudan | soup | `shorba-south-sudan-ss.webp` | /tools/afrokitchen/recipes/shorba-south-sudan-ss/ | Finished South Sudanese Shorba, soup from South Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 365 | Agashe | Sudan | street-food | `agashe-sd.webp` | /tools/afrokitchen/recipes/agashe-sd/ | Finished Agashe, street-food from Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 366 | Basbousa | Sudan | dessert | `basbousa-sd.webp` | /tools/afrokitchen/recipes/basbousa-sd/ | Finished Basbousa, dessert from Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
@@ -383,7 +383,7 @@ Use this as the working list for generating and saving recipe images.
 | 369 | Mullah Ahmar Tagalia | Sudan | stew | `mullah-ahmar-tagalia-sd.webp` | /tools/afrokitchen/recipes/mullah-ahmar-tagalia-sd/ | Finished Mullah Ahmar Tagalia, stew from Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 370 | Shaiyah | Sudan | main | `shaiyah-sd.webp` | /tools/afrokitchen/recipes/shaiyah-sd/ | Finished Shaiyah, main from Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 371 | Chipsi Mayai | Tanzania | snack | `chipsi-mayai.webp` | /tools/afrokitchen/recipes/chipsi-mayai/ | Finished Chipsi Mayai, snack from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 372 | Mchemsho | Tanzania | main | `mchemsho-tz.webp` | /tools/afrokitchen/recipes/mchemsho-tz/ | Finished Mchemsho, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 372 | Mchemsho — beef and vegetables | Tanzania | main | `mchemsho-tz.webp` | /tools/afrokitchen/recipes/mchemsho-tz/ | Finished Mchemsho — beef and vegetables, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 373 | Ndizi na Nyama | Tanzania | main | `ndizi-nyama-tz.webp` | /tools/afrokitchen/recipes/ndizi-nyama-tz/ | Finished Ndizi na Nyama, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 374 | Tangawizi | Tanzania | beverage | `tangawizi-tz.webp` | /tools/afrokitchen/recipes/tangawizi-tz/ | Finished Tangawizi, beverage from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 375 | Tanzanian Mandazi | Tanzania | snack | `mandazi-tanzania-tz.webp` | /tools/afrokitchen/recipes/mandazi-tanzania-tz/ | Finished Tanzanian Mandazi, snack from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |

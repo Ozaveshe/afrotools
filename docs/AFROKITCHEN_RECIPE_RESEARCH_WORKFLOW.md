@@ -41,7 +41,23 @@ Outputs:
 
 Do not describe a recipe as source-confirmed unless it has an audit entry. Static route eligibility means the page can be generated; it does not mean the culinary facts have been externally checked.
 
-Keep source notes internal. AfroKitchen pages should read like a confident chef's recipe, not a research memo. Use the audit data to fix ingredients, timing, method, substitutions, and cultural context, but do not render citations or source-count cards on public recipe pages.
+Keep internal research deliberations in the audit. Reviewed adaptations show concise source links, the review date and whether AfroTools has kitchen-tested that version. Keep these disclosures with the recipe and its text export; do not imply that source review proves a kitchen test.
+
+Publication is separate from verification. `recipes.is_published` controls application list, detail and export eligibility; `is_verified` records verification separately. New records default to unpublished and unverified. The importer requires explicit boolean flags to change publication; omitting `is_published` on an existing recipe preserves its current value. Saved manifests without the new field retain the legacy verified-row fallback, but explicit `is_published: false` always excludes a row. Public database read policies are unchanged; this flag is not a confidentiality boundary.
+
+The publication migration `20261009185059_afrokitchen_publication_state.sql` was applied to AfroTools once on 2026-10-09. It backfilled the existing 410 public recipes without changing content or verification. Check the live migration history before any deployment; do not replay it.
+
+## Reviewed Method Corrections
+
+Maintain accepted method/image pairs in `data/afrokitchen/recipe-method-overrides.json`, their audit entries in `recipe-research-audit.json`, and image provenance in the dated image ledger. Run `npm run afrokitchen:reviewed-methods:build` to project the maintained corrections into the saved manifest, reviewed recipe pages, related cards, country/collection pages and discovery indexes. The normal build also invokes this owner. It does not read or write live data. The live manifest exporter uses the same projection so regeneration cannot silently restore an older method. Accepted dietary removals are maintained in `data/afrokitchen/reviewed-dietary-withdrawals.json`; the same owner reapplies them to recipe summaries and refreshes existing card labels without replacing their artwork. Keep the independent reviewed-withdrawal fixture aligned only after an explicit content review. Unknown source durations remain `null`, and Recipe structured data omits those duration fields rather than inventing zero-minute values.
+
+Unmeasured quantities remain unmeasured. The existing database numeric contract represents them as zero with an explicit unit/note such as “as needed”; display and export that note without inventing a quantity. Uncalculated nutrition stays null. Timers accompany the documented method and doneness checks; never use the generic 12-minute fermentation placeholder.
+
+The projection also refreshes `page_image` and `social_image`, and records `source_reviewed_at` separately from the live database `updated_at`. The sitemap owner uses that maintained review date for the corrected recipe and its containing hubs; rebuilding alone does not advance it.
+
+Deploy and verify the publication consumers and local image assets before applying any guarded live method/image/verification correction. A source projection, a live update and a production deployment require separate evidence. The sequential expansion importer is not a transactional recipe-repair tool.
+
+Validate with `npm run test:afrokitchen:publication`, the reviewed-method browser suite at 320/390px in both themes, and the release build/security/artifact checks. Browser checks must operate visible step navigation before starting a timer, parse downloaded TXT, retain source/testing disclosures and reject console, accessibility or overflow failures.
 
 ## Expansion Batches
 
@@ -68,6 +84,45 @@ The importer writes to live Supabase and merges matching entries into `data/afro
 `node scripts/generate-afrokitchen-static-pages.js`
 
 `npm run afrokitchen:research-queue`
+
+## Dietary Label Corrections
+
+Review the listed ingredients and optional variants before keeping an unconditional
+dietary label. Distinguish a confirmed ingredient conflict from an unspecified
+variant. Withdrawing a label does not certify the remaining labels or recipes.
+
+Use the correct-project Supabase MCP first. For existing recipes, apply only the
+reviewed tag fields with exact recipe/tag/ingredient guards in one transaction;
+do not run a full seed or expansion importer to change tags. Preserve media,
+ingredients, editorial content and unrelated tags. Maintain the corresponding
+seed, generator or authored batch, and check `static_recipe_patch` in the research
+audit so it cannot restore a withdrawn label.
+
+After the live correction, refresh only the reviewed slugs through the native
+manifest owner:
+
+```sh
+node scripts/export-afrokitchen-seo-manifest.js --refresh-diet-tags --slugs slug-one,slug-two
+node scripts/build-afrokitchen-recipe-index.js
+node scripts/generate-afrokitchen-static-pages.js --refresh-diet-labels
+```
+
+The scoped exporter accepts ordered tag removals only, checks recipe identities
+and ingredients, and updates recipe summaries in country and collection data.
+It preserves unrelated live image changes, other fields and generation dates.
+Native curated collection membership and counts are recomputed from the saved
+recipes and existing editorial rules. The page refresh also updates public menu
+tags, collection references, collection cards/counts and collection structured
+data. Retained cards keep their accepted image markup. Recipe refreshes preserve
+image markup, head ordering and other content while changing keywords and labels.
+Review a rejected guard instead of bypassing it. A method correction such as a
+new plant-only variant needs its own content review and regeneration.
+
+Run `node --test tests/afrokitchen-diet*.test.js`, the existing index
+and schema checks, and browser checks for filters, recipe metadata and country
+cards on the actual artifact. Verify a fresh browser after deployment: an already
+open page can retain its loaded recipe index. Keep source/build, live mutation
+and publisher deployment proof separate.
 
 ## Nutrition Meaning
 

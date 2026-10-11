@@ -98,7 +98,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-mapato-ya-okada-boda-sw",
+        "imageKey": "zana-mapato-ya-okada-boda-sw"
       },
       {
         "id": "zana-nauli-za-matatu-danfo-trotro-sw",
@@ -15505,7 +15507,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-gharama-ya-kukatika-umeme-sw",
+        "imageKey": "zana-gharama-ya-kukatika-umeme-sw"
       },
       {
         "id": "zana-kikokotoo-bili-ya-maji-sw",
@@ -15531,7 +15535,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-gharama-za-mafuta-sw",
+        "imageKey": "zana-gharama-za-mafuta-sw"
       },
       {
         "id": "zana-kikokotoo-luku-ya-umeme-sw",
@@ -15741,7 +15747,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-sacco-na-vyama-vya-akiba-sw",
+        "imageKey": "zana-kikokotoo-sacco-na-vyama-vya-akiba-sw"
       },
       {
         "id": "zana-thamani-halisi-sw",
@@ -16954,7 +16962,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-orodha-vifaa-sw",
+        "imageKey": "zana-orodha-vifaa-sw"
       },
       {
         "id": "zana-kikokotoo-mzigo-wa-umeme-sw",
@@ -18190,7 +18200,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ulinganisho-uhamishaji-pesa-sw",
+        "imageKey": "zana-ulinganisho-uhamishaji-pesa-sw"
       },
       {
         "id": "zana-viwango-benki-sw",
@@ -18409,7 +18421,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ada-soko-mtandaoni-sw",
+        "imageKey": "zana-ada-soko-mtandaoni-sw"
       },
       {
         "id": "zana-kikokotoo-burn-rate-sw",
@@ -18421,7 +18435,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-burn-rate-sw",
+        "imageKey": "zana-kikokotoo-burn-rate-sw"
       },
       {
         "id": "zana-kikokotoo-churn-rate-sw",
@@ -18433,7 +18449,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-churn-rate-sw",
+        "imageKey": "zana-kikokotoo-churn-rate-sw"
       },
       {
         "id": "zana-makisio-mtiririko-wa-fedha-sw",
