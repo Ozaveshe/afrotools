@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="fr">
 <head><meta name="afrotools-content-id" content="localized-discovery:fr:tools"><meta name="afrotools-source-owner" content="scripts/build-localized-discovery-pages.js">
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="3369af90" async></script>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2383,6 +2383,16 @@ function applySearchSuggestion(query){
 
 const frenchPublishedIds = new Set(Array.from(document.querySelectorAll('#toolsGrid [data-directory-record][data-id]'), node => node.dataset.id));
 
+// FRENCH_DIRECTORY_DIRECT_SEARCH_START
+function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
+  if (!terms.length) return tools;
+  const direct = tools.filter(tool => {
+    const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
+    return terms.every(term => text.includes(term));
+  });
+  return direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+}
+// FRENCH_DIRECTORY_DIRECT_SEARCH_END
 function renderTools(){
   applyInitialCategoryFilter();
   const grid = document.getElementById('toolsGrid');
@@ -2422,7 +2432,7 @@ function renderTools(){
 
   // Search
   if(searchTerms.length){
-    tools = tools.filter(t => toolMatchesSearch(t, searchTerms));
+    tools = filterFrenchDirectorySearch(tools, searchTerms, normalizeText, toolMatchesSearch);
   }
 
   // Sort
@@ -2534,6 +2544,6 @@ if (typeof onRegistryReady === 'function') {
   });
 }
 </script>
-<script src="/assets/js/lazy-analytics.js?v=3369af90" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>
