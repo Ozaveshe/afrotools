@@ -1646,14 +1646,34 @@
 `;
       if (markup === this._lastRenderedMarkup) return false;
       window.clearTimeout(this._styleFallbackTimer);
+      const hadFallback = this.hasAttribute('data-styles-fallback');
       this.removeAttribute('data-styles-ready');
-      this.removeAttribute('data-styles-fallback');
       this._lastRenderedMarkup = markup;
-      this.shadowRoot.innerHTML = markup;
+      const template = document.createElement('template');
+      template.innerHTML = markup;
+      const nextNodes = Array.from(template.content.childNodes);
+      // Locale assets change menu content, not the stylesheet or fallback
+      // contract. Keep those nodes connected so usable links never collapse
+      // and loaded/in-flight stylesheets do not restart during a refresh.
+      nextNodes.forEach((next, index) => {
+        const current = this.shadowRoot.childNodes[index];
+        const keep = current?.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE && (
+          (current.matches('style, link[rel="stylesheet"]') && current.isEqualNode(next)) ||
+          (current.matches('.styles-fallback') && next.matches('.styles-fallback') &&
+            current.innerHTML === next.innerHTML && current.getAttribute('aria-label') === next.getAttribute('aria-label'))
+        );
+        if (!keep) {
+          if (current) current.replaceWith(next);
+          else this.shadowRoot.append(next);
+        }
+      });
+      while (this.shadowRoot.childNodes.length > nextNodes.length) this.shadowRoot.lastChild.remove();
       const styleLinks = Array.from(this.shadowRoot.querySelectorAll('link[rel="stylesheet"]'));
       const fallback = this.shadowRoot.querySelector('.styles-fallback');
       // An older render's stylesheet events must never reveal a newer unstyled menu.
-      const isCurrentRender = () => this.shadowRoot.querySelector('.styles-fallback') === fallback;
+      const renderToken = {};
+      this._styleRenderToken = renderToken;
+      const isCurrentRender = () => this._styleRenderToken === renderToken;
       const showFallback = () => {
         if (!isCurrentRender() || this.hasAttribute('data-styles-ready')) return;
         fallback.hidden = false;
@@ -1677,6 +1697,7 @@
         link.addEventListener('load', revealIfStyled, { once: true });
         link.addEventListener('error', showFallback, { once: true });
       });
+      if (hadFallback) showFallback();
       revealIfStyled();
       if (!this.hasAttribute('data-styles-ready')) {
         this._styleFallbackTimer = window.setTimeout(showFallback, 1500);
