@@ -24,6 +24,18 @@
   }
   var o = {
     calculate: function(r, o, s, i) {
+      if (!r || r.farmSizeHa == null || r.farmSizeHa === '' || !Number.isFinite(Number(r.farmSizeHa)) || Number(r.farmSizeHa) <= 0) {
+        return { error: true, message: "Enter a finite farm area greater than zero." };
+      }
+      var numericFields = ['rowSpacing_cm', 'plantSpacing_cm', 'seedsPerHole'];
+      for (var fieldIndex = 0; fieldIndex < numericFields.length; fieldIndex++) {
+        var fieldName = numericFields[fieldIndex], value = r[fieldName];
+        if (value == null || value === '') continue;
+        if (!Number.isFinite(Number(value)) || Number(value) <= 0 || (fieldName === 'seedsPerHole' && !Number.isInteger(Number(value)))) {
+          return { error: true, message: "Enter positive spacing values and a whole number of seeds per hole." };
+        }
+      }
+
       var l = r.cropId;
       if (!l) {
         return {
@@ -38,7 +50,7 @@
           message: "Crop not found in seed database."
         };
       }
-      var d = e[r.seedQuality] || e.improved, g = a[r.fieldConditions] || a.average, p = t[r.intercrop] || 1, m = parseFloat(r.farmSizeHa) || 1, u = c.countryOverrides && c.countryOverrides[s] || {}, _ = {
+      var d = e[r.seedQuality] || e.improved, g = a[r.fieldConditions] || a.average, p = t[r.intercrop] || 1, m = Number(r.farmSizeHa), u = c.countryOverrides && c.countryOverrides[s] || {}, _ = {
         cropId: l,
         germRate: d,
         germRatePct: n(100 * d),

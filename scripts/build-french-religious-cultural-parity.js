@@ -282,6 +282,13 @@ ${renderWorkflowLinks(tool)}
 }
 
 function renderHub(manifest) {
+  const questions = [
+    { question: 'Comment trouver un outil adapté à ma tâche ?', answer: 'Parcourez les cartes ci-dessous ou recherchez un mot-clé dans le catalogue français. La recherche conserve la catégorie religion et culture. Utilisez des termes généraux, sans nom, coordonnées ni renseignements personnels.' },
+    { question: 'Un résultat remplace-t-il un avis religieux ou officiel ?', answer: 'Non. Ces outils servent à préparer une estimation ou un plan. Consultez les hypothèses, les sources et les limites indiquées dans chaque outil, puis faites confirmer votre situation par une personne compétente avant de prendre une décision.' },
+    { question: 'Que vérifier avant de réutiliser un résultat ?', answer: 'Vérifiez les données saisies, les unités, la période et les hypothèses retenues. Les pratiques et les règles peuvent varier selon la communauté et le pays. Conservez les limites du calcul avec votre résultat lorsque vous le partagez.' }
+  ];
+  const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: questions.map(item => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })) };
+  const faq = questions.map(item => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('');
   const itemList = manifest.tools.map((tool, index) => ({
     '@type': 'ListItem',
     position: index + 1,
@@ -330,6 +337,7 @@ function renderHub(manifest) {
   <link rel="stylesheet" href="/assets/css/design-system.css">
   <link rel="stylesheet" href="/assets/css/fr-religious-cultural-parity.css">
   <script type="application/ld+json">${jsonForHtml(schema)}</script>
+  <script type="application/ld+json">${jsonForHtml(faqSchema)}</script>
 </head>
 <body class="fr-rc-page">
   <a class="fr-rc-skip" href="#fr-rc-tools">Aller aux 22 outils</a>
@@ -341,10 +349,17 @@ function renderHub(manifest) {
       <p class="fr-rc-lede">${escapeHtml(manifest.hub.description)}</p>
       <ul class="fr-rc-trust" aria-label="Contrat de la catégorie"><li>22 outils sur 22</li><li>Calculs locaux</li><li>Sources et limites visibles</li><li>Aucune passerelle anglaise</li></ul>
     </header>
+    <form id="fr-rc-hub-search" action="/fr/all-tools/" method="get" role="search" aria-label="Rechercher un outil de religion et culture">
+      <input type="hidden" name="category" value="religious-cultural">
+      <div class="fr-rc-field"><label for="fr-rc-hub-query">Quel outil recherchez-vous ?</label><input id="fr-rc-hub-query" type="search" name="q" maxlength="200" aria-describedby="fr-rc-hub-search-help"></div>
+      <p id="fr-rc-hub-search-help">Saisissez un mot-clé général, sans données personnelles.</p>
+      <button class="fr-rc-button fr-rc-button-primary" type="submit">Rechercher dans cette catégorie</button>
+    </form>
     <section aria-labelledby="fr-rc-tools-title">
       <h2 id="fr-rc-tools-title">Les 22 outils canoniques</h2>
       <div class="fr-rc-tool-grid" id="fr-rc-tools">${cards}</div>
     </section>
+    <section id="fr-rc-hub-help" aria-labelledby="fr-rc-hub-help-title"><h2 id="fr-rc-hub-help-title">Bien utiliser ces outils</h2>${faq}</section>
   </main>
   <afro-footer></afro-footer>
   <script src="/assets/js/lib/dark-mode.js" defer></script>
@@ -399,6 +414,9 @@ function sourceOwnedMarkers(content) {
     /<link rel="canonical"[^>]*>/,
     /<script id="fr-rc-config" type="application\/json">[\s\S]*?<\/script>/,
     /data-tool="[^"]+"/,
+    /<form id="fr-rc-hub-search"[\s\S]*?<\/form>/,
+    /<section id="fr-rc-hub-help"[\s\S]*?<\/section>/,
+    /<script type="application\/ld\+json">[^<]*"@type":"FAQPage"[^<]*<\/script>/,
     /data-lobola-fr-(?:checklist|gifts)/,
     /data-action="useSavedPlan"/
   ];

@@ -43,6 +43,15 @@
   }
   var a = {
     calculate: function(t, a, o) {
+      var area = Number(t.farmSizeHa), target = t.targetYieldPerHa;
+      if (t.farmSizeHa == null || String(t.farmSizeHa).trim() === '' || !Number.isFinite(area) || area <= 0) return {error:true,message:'Enter a finite farm area greater than zero.'};
+      if (target != null && String(target).trim() !== '' && (!Number.isFinite(Number(target)) || Number(target) <= 0)) return {error:true,message:'Enter a finite target yield greater than zero, or leave it blank for the default.'};
+      var soil = t.soilTest || {}, keys = ['organicMatter','P_ppm','K_ppm'];
+      for (var idx = 0; idx < keys.length; idx++) {
+        var value = soil[keys[idx]];
+        if (value != null && String(value).trim() !== '' && (!Number.isFinite(Number(value)) || Number(value) < 0)) return {error:true,message:'Soil readings must be finite non-negative numbers.'};
+      }
+
       var n = i(a.crops, t.cropId), s = i(a.regions, t.regionId), l = o && o.crops && o.crops[t.cropId];
       if (!n) {
         return {
@@ -57,7 +66,7 @@
           message: "Nutrient data not available for this crop."
         };
       }
-      var u = parseFloat(t.targetYieldPerHa) || 1.3 * n.baseYieldPerHa, c = parseFloat(t.farmSizeHa) || 1, g = {
+      var u = target == null || String(target).trim() === '' ? 1.3 * n.baseYieldPerHa : Number(target), c = area, g = {
         N: p.N_kg_per_tonne * u,
         P: p.P2O5_kg_per_tonne * u,
         K: p.K2O_kg_per_tonne * u

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate all 54 farm-payroll country pages using simple string replacement."""
 import os
+from _ng_contributions import apply_nigeria_contributions
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -72,6 +73,8 @@ def generate(code, name, flag, slug, paye_link, fp_slug):
     content = content.replace('__FLAG__', flag)
     content = content.replace('__SLUG__', slug)
     content = content.replace('__FARM_PROFIT_SLUG__', fp_slug)
+    if code == 'NG':
+        content = apply_nigeria_contributions(content)
     path = os.path.join(DIR, slug + '.html')
     with open(path, 'w', encoding='utf-8') as f:
         f.write(content)
