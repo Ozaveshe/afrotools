@@ -18,7 +18,7 @@ const hub = rows.find(row => !row.country);
 function runtime() {
   const context = { window: {} };
   vm.createContext(context);
-  for (const file of ['data/agriculture/farm-payroll-data.js', 'engines/src/farm-payroll-engine.js']) {
+  for (const file of ['data/agriculture/farm-payroll-data.js', 'assets/js/lib/ng-farm-payroll-contributions.js', 'assets/js/lib/ng-farm-payroll-labour-assumptions.js', 'engines/src/farm-payroll-engine.js']) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, file), 'utf8'), context, { filename: file });
   }
   return context.window.AfroTools;

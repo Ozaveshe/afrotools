@@ -7,6 +7,7 @@
   var engine = app.FarmPayrollEngine;
   var country = null;
   var latest = null;
+  var ngForm = null;
 
   function byId(id) { return document.getElementById(id); }
   function value(id) { return Number(byId(id).value); }
@@ -16,7 +17,7 @@
   function money(input) {
     try {
       return new Intl.NumberFormat('sw', {
-        style: 'currency', currency: country.currency, maximumFractionDigits: 0
+        style: 'currency', currency: country.currency, maximumFractionDigits: config.countryCode === 'NG' ? 2 : 0
       }).format(Number(input) || 0);
     } catch (error) {
       return String(country.symbol || country.currency) + ' ' + number(input, 0);
@@ -52,6 +53,7 @@
       'Housing Levy': 'Tozo ya nyumba',
       'Social Insurance': 'Bima ya kijamii'
     };
+    if (ngForm && ngForm.labels[name]) return ngForm.labels[name];
     if (map[name]) return map[name];
     return name
       .replace(/\bHealth\b/g, 'Afya')
@@ -76,6 +78,7 @@
     byId('daysField').hidden = !daily;
     byId('rateField').hidden = !piece;
     byId('unitsField').hidden = !piece;
+    if (ngForm) [['grossField', 'grossPay', !piece], ['daysField', 'daysWorked', daily], ['rateField', 'ratePerUnit', piece], ['unitsField', 'unitsCompleted', piece]].forEach(function (field) { byId(field[0]).style.display = field[2] ? '' : 'none'; byId(field[1]).disabled = !field[2]; });
     byId('grossLabel').textContent = daily
       ? 'Malipo ya siku kwa mfanyakazi'
       : 'Mshahara ghafi wa mwezi kwa mfanyakazi';
@@ -86,7 +89,7 @@
     byId('numWorkers').value = '1';
     byId('grossPay').value = String(monthly);
     byId('daysWorked').value = '26';
-    byId('ratePerUnit').value = String(country.typicalDailyRate.mid / 5);
+    byId('ratePerUnit').value = ngForm ? '' : String(country.typicalDailyRate.mid / 5);
     byId('unitsCompleted').value = '80';
     byId('overtimeHours').value = '0';
     byId('inKindHousing').value = '0';
@@ -188,7 +191,7 @@
     byId('employerCost').textContent = money(result.totalEmployerCost);
     byId('farmMonthly').textContent = money(result.farmMonthlyCost);
     byId('farmAnnual').textContent = money(result.farmAnnualCost);
-    byId('minimumStatus').textContent = result.mwCheck
+    byId('minimumStatus').textContent = ngForm ? ngForm.wageSummary(result.mwCheck) : result.mwCheck
       ? (result.mwCheck.compliant ? 'Juu ya au sawa na rejea' : 'Chini ya rejea')
       : 'Hakuna ulinganisho';
     renderRows(result);
@@ -199,6 +202,7 @@
       'Likizo ya mwaka ya rejea: siku ' + (law.annualLeave_days || '?') + '.',
       'Sikukuu za umma za rejea: ' + (law.publicHolidays || '?') + '.'
     ];
+    if (ngForm) items = ngForm.labourText(result);
     byId('lawList').replaceChildren();
     items.forEach(function (text) {
       var li = document.createElement('li');
@@ -227,12 +231,18 @@
         makato: rows(result).filter(function (item) { return item.category === 'Kato la mfanyakazi'; }),
         jumlaMakato: result.totalDeductions,
         malipoHalisi: result.netPay,
+        michangoNigeria: result.contributionCalculation,
+        fedhaGhafi: result.cashGross,
+        fedhaHalisi: result.netCashPay,
         michangoMwajiri: rows(result).filter(function (item) { return item.category === 'Mchango wa mwajiri'; }),
         gharamaMwajiriKwaMfanyakazi: result.totalEmployerCost,
         gharamaShambaKwaMwezi: result.farmMonthlyCost,
         gharamaShambaKwaMwaka: result.farmAnnualCost,
         ukaguziKimaChaChini: result.mwCheck,
         huendaIkatozwaKodi: result.likelyTaxable,
+        makisioKaziNigeria: result.labourAssumptions,
+        bajetiLikizoMwezi: result.leaveProvision,
+        gharamaMwajiriBilaBajetiLikizo: result.employerCostBeforeLeaveBudget,
         sheriaKazi: {
           saaKwaSiku: result.laborLaw.maxHoursPerDay,
           saaKwaWiki: result.laborLaw.maxHoursPerWeek,
@@ -260,7 +270,7 @@
       config.countryName + ' (' + config.countryCode + ')',
       'Aina ya mfanyakazi: ' + config.workerTypes[latest.input.workerType],
       'Idadi ya wafanyakazi: ' + latest.input.numWorkers,
-      'Malipo ghafi yanayokatwa: ' + money(result.grossForDeductions),
+      (ngForm ? ngForm.labels.gross + ': ' : 'Malipo ghafi yanayokatwa: ') + money(result.grossForDeductions),
       'Jumla ya makato: ' + money(result.totalDeductions),
       'Malipo halisi kwa mfanyakazi: ' + money(result.netPay),
       'Gharama ya mwajiri kwa mfanyakazi: ' + money(result.totalEmployerCost),
@@ -272,7 +282,7 @@
       'Kiwango cha uhakika: ' + config.confidenceLabel,
       'Kadirio la kupanga tu; thibitisha viwango vya sasa kabla ya kulipa.',
       'Faragha: hesabu ya ndani ya kivinjari.'
-    ].join('\n');
+    ].concat(ngForm ? ngForm.text(result) : []).join('\n');
   }
   function download(content, type, filename) {
     var url = URL.createObjectURL(new Blob([content], { type: type }));
@@ -296,14 +306,20 @@
     return [
       ['nchi', 'code_nchi', 'aina_mfanyakazi', 'idadi_wafanyakazi', 'malipo_ghafi', 'jumla_makato', 'malipo_halisi', 'gharama_mwajiri', 'gharama_shamba_mwezi', 'gharama_shamba_mwaka', 'sarafu', 'chanzo', 'data_moja_kwa_moja'],
       values
-    ].map(function (row) { return row.map(csvCell).join(','); }).join('\r\n');
+    ].map(function (row, index) {
+      if (ngForm) row = row.concat(index === 0 ? ['michango_nigeria_json', 'fedha_ghafi', 'fedha_halisi', 'ulinganisho_kima_cha_chini_json', 'makisio_kazi_json', 'bajeti_likizo_mwezi', 'gharama_bila_bajeti_likizo'] : [JSON.stringify(latest.result.contributionCalculation), latest.result.cashGross, latest.result.netCashPay, JSON.stringify(latest.result.mwCheck), JSON.stringify(latest.result.labourAssumptions), latest.result.leaveProvision, latest.result.employerCostBeforeLeaveBudget]);
+      return row.map(csvCell).join(',');
+    }).join('\r\n');
   }
   function calculate() {
     byId('formError').textContent = '';
     setStatus('');
-    var input = inputObject();
+    var input = ngForm ? ngForm.validatePayroll(byId('formError')) : inputObject();
+    if (!input) { clearResult({ keepStatus: true }); return null; }
     if (!validate(input)) return null;
+    if (ngForm) { input.contributionSelection = ngForm.read(); input.minimumWageSelection = ngForm.readWage(); input.labourSelection = ngForm.readLabour(); }
     var result = engine.calculate(input, country);
+    if (ngForm && result && result.error) { ngForm.error(result, byId('formError')); return null; }
     if (!result || result.error) return fail('Injini ya mishahara ya nchi haikutoa matokeo.', byId('workerType'));
     latest = { input: input, result: result };
     if (root.__SW_AGRI_TEST__) root.__SW_AGRI_TEST__.latest = latest;
@@ -337,6 +353,12 @@
     } else if (name === 'pdf') {
       var JsPdf = root.jspdf && root.jspdf.jsPDF;
       if (!JsPdf) return setStatus('Utengenezaji wa PDF haupatikani.', true);
+      if (ngForm) {
+        if (!app.NigeriaPayrollPDF) return setStatus('Utengenezaji wa PDF haupatikani.', true);
+        app.NigeriaPayrollPDF.create(JsPdf, text).save(slug + '.pdf');
+        setStatus('Kitendo kimekamilika.');
+        return;
+      }
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
       var safeText = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       pdf.text(pdf.splitTextToSize(safeText, 500), 48, 58);
@@ -347,6 +369,13 @@
   function init() {
     if (!engine || !allData || !allData[config.countryCode]) throw new Error('Injini au hazina ya mishahara haipatikani.');
     country = allData[config.countryCode];
+    if (config.countryCode === 'NG') {
+      if (!app.NigeriaContributionForm) throw new Error('Fomu ya michango haipatikani.');
+      country = Object.assign({}, country, { contributionPolicy: 'NG-user-confirmed-v1' });
+      ngForm = app.NigeriaContributionForm.mount(byId('payrollForm'), 'sw');
+      byId('netPay').nextElementSibling.textContent = ngForm.labels.cash;
+      byId('gross').nextElementSibling.textContent = ngForm.labels.gross;
+    }
     defaults();
     setActionsEnabled(false);
     byId('workerType').addEventListener('change', syncType);
