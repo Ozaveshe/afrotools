@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { loadBindings, artworkId, applyReviewedBindings } = require('./lib/reviewed-tool-image-bindings');
 
 const ROOT = path.resolve(__dirname, '..');
 const IMAGE_DIR = path.join(ROOT, 'assets', 'img', 'tools');
@@ -61,6 +62,13 @@ function buildIndex(source) {
   const ownedIds = agricultureImageIds(source);
   const reviewed = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/image-generation/reviewed-shared-artwork.json'), 'utf8'));
   reviewed.tool_ids.forEach((id) => ownedIds.add(id));
+  loadBindings().forEach((binding) => {
+    const id = artworkId(binding);
+    ownedIds.add(id);
+    // Explicit reviewed WebP bindings take priority over older SVG siblings.
+    // applyReviewedBindings has already checked the exact file hash.
+    current[id] = 'webp';
+  });
   ownedIds.forEach((id) => {
     if (!Object.prototype.hasOwnProperty.call(current, id) && available.has(id)) {
       current[id] = available.get(id);
@@ -82,8 +90,9 @@ function run(options = {}) {
   if (matches.length !== 1) {
     throw new Error(`Expected one TOOL_CARD_IMAGE_EXTENSIONS index; found ${matches.length}.`);
   }
-  const { index, ownedImageIds } = buildIndex(source);
-  const next = source.replace(INDEX_PATTERN, renderIndex(index));
+  const boundSource = applyReviewedBindings(source);
+  const { index, ownedImageIds } = buildIndex(boundSource);
+  const next = boundSource.replace(INDEX_PATTERN, renderIndex(index));
   if (options.check) {
     if (next !== source) throw new Error('assets/js/components/tool-registry.js has a stale tool image index.');
   } else if (next !== source) {
@@ -93,7 +102,7 @@ function run(options = {}) {
     mode: options.check ? 'check' : 'write',
     imageIds: Object.keys(index).length,
     ownedImageIds,
-    scope: 'fr-agriculture-manifest-and-reviewed-shared-artwork',
+    scope: 'fr-agriculture-manifest-and-reviewed-shared-and-localized-artwork',
     registry: path.relative(ROOT, REGISTRY_PATH).replace(/\\/g, '/'),
   }, null, 2)}\n`);
   return index;

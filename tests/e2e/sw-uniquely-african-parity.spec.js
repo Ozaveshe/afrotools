@@ -8,7 +8,7 @@ const fixtures = require("../fixtures/fr-uniquely-african-english-oracles.json")
 
 const rows = manifest.rows.filter((row) => row.swahili.mode === "shared-engine");
 const fixturesById = new Map(fixtures.routes.map((fixture) => [fixture.id, fixture]));
-const evidencePath = path.resolve(__dirname, "../../reports/sw-uniquely-african-browser-evidence.json");
+const evidencePath = process.env.AFROTOOLS_SW_UNIQUELY_AFRICAN_EVIDENCE_PATH || path.resolve(__dirname, "../../reports/sw-uniquely-african-browser-evidence.json");
 const results = [];
 
 const invalidFields = {
@@ -295,6 +295,7 @@ for (const row of rows) {
     expect(await contrastRatio(page, ".ua-hero h1", ".ua-hero")).toBeGreaterThanOrEqual(4.5);
     const lightBackground = await page.locator("body").evaluate((node) => getComputedStyle(node).backgroundColor);
     await page.locator("html").evaluate((node) => { node.dataset.theme = "dark"; });
+    await expect.poll(() => page.locator("body").evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe(lightBackground);
     expect(await contrastRatio(page, ".ua-hero h1", ".ua-hero")).toBeGreaterThanOrEqual(4.5);
     const darkBackground = await page.locator("body").evaluate((node) => getComputedStyle(node).backgroundColor);
     expect(darkBackground).not.toBe(lightBackground);

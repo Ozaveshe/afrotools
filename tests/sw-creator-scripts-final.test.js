@@ -25,5 +25,5 @@ assert.match(engine.exportPlainText(swahili, "sw"), /Muundo: short \| Muda:/);
 assert.throws(() => engine.generateLocalScript({ topic: "", keyPoints: "Hoja" }, "sw"), /topic/);
 assert.throws(() => engine.generateLocalScript({ topic: "Mada", keyPoints: "" }, "sw"), /key point/);
 const html = fs.readFileSync(path.join(root, "sw/zana/script-za-video/index.html"), "utf8");
-assert.match(html, /data-sw-creator-workspace/); assert.match(html, /data-creator-scripts-native data-lang="sw"/); assert.match(html, /creator-scripts\.webp/);
+assert.match(html, /data-sw-creator-workspace/); assert.match(html, /data-creator-scripts-native data-lang="sw"/); assert.match(html, /zana-script-za-video-sw\.webp/);
 console.log("Swahili creator-scripts final: 13 assertions passed");

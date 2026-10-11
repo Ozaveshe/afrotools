@@ -42,7 +42,7 @@
       result.classList.add('on');live.textContent=document.getElementById('hl-result-title').textContent;
     }
     function exportText(){
-      if(!last)render();if(!last)return '';
+      render();if(!last)return '';
       var lines=[document.title];
       if(last.labels.lender)lines.push(document.querySelector('label[for="hl-lender"]').textContent+': '+last.labels.lender);
       if(last.labels.application)lines.push(document.querySelector('label[for="hl-application"]').textContent+': '+last.labels.application);
@@ -52,9 +52,10 @@
       return lines.join('\n');
     }
     form.addEventListener('submit',render);
+    form.addEventListener('input',function(){last=null;result.classList.remove('on');live.textContent='';});
     document.getElementById('hl-copy').addEventListener('click',function(){var value=exportText();if(!value)return;var done=function(){live.textContent=text.copied;};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(value).then(done).catch(function(){window.prompt('',value);});else window.prompt('',value);});
     document.getElementById('hl-download').addEventListener('click',function(){var value=exportText();if(!value)return;var blob=new Blob([value],{type:'text/plain;charset=utf-8'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='home-loan-application-file.txt';link.click();setTimeout(function(){URL.revokeObjectURL(link.href);},0);live.textContent=text.downloaded;});
-    document.getElementById('hl-print').addEventListener('click',function(){if(!last)render();if(last)window.print();});
+    document.getElementById('hl-print').addEventListener('click',function(){render();if(last)window.print();});
   }
   if(typeof document!=='undefined'){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();}
   return {summarize:summarize,cleanLabel:cleanLabel,MAX_ITEMS:MAX_ITEMS,MAX_LABEL_LENGTH:MAX_LABEL_LENGTH};

@@ -2,6 +2,8 @@
 
 const { renderFrenchAgriculturePage } = require('./fr-agriculture-page-shell');
 const { alternateEntries } = require('./fr-agriculture-hreflang');
+const { loadBindings, resolveReviewedToolArtwork } = require('./reviewed-tool-image-bindings');
+const reviewedArtwork = loadBindings();
 
 function escapeHtml(value) {
   return String(value == null ? '' : value).replace(/[&<>"']/g, character => ({
@@ -41,6 +43,7 @@ function renderSwahiliAgriculturePage(options) {
   };
   let html = renderFrenchAgriculturePage({
     ...options,
+    artwork: resolveReviewedToolArtwork(row.swahili.route, options.artwork, reviewedArtwork),
     row: fakeFrenchRow
   });
 

@@ -133,9 +133,25 @@ for(const file of ['tool-registry.js','tool-registry.min.js']) {
   vm.createContext(tools);
   vm.runInContext(fs.readFileSync(path.join(ROOT,'assets/js/components',file),'utf8'),tools);
   for(const id of sharedArtwork.tool_ids) {
-    const row = tools.AFRO_TOOLS.find(r=>r.id===id);
-    assert.ok(row);
-    assert.equal(tools.getToolCardImagePath(row),'/assets/img/tools/'+id+'.webp',file+' '+id);
+    const consumers = tools.AFRO_TOOLS.filter(r=>(r.imageId || r.sourceId || r.id)===id);
+    assert.ok(consumers.length, 'Reviewed image must have a registry consumer: ' + id);
+    for (const row of consumers) {
+      assert.equal(tools.getToolCardImagePath(row),'/assets/img/tools/'+id+'.webp',file+' '+row.id);
+    }
+    const review = sharedArtwork.tool_reviews.find(r=>r.id===id);
+    if (!review?.bindings) {
+      const original = tools.AFRO_TOOLS.find(r=>r.id===id);
+      assert.ok(original, 'Existing reviewed tool must retain its original registry row: ' + id);
+      assert.equal(tools.getToolCardImagePath(original),'/assets/img/tools/'+id+'.webp',file+' '+id);
+    }
+    if (review?.bindings) {
+      assert.deepEqual(Array.from(consumers, r=>r.id).sort(), review.bindings.map(r=>r.id).sort(), 'Exact reviewed consumer scope: ' + id);
+      for (const binding of review.bindings) {
+        const row = consumers.find(r=>r.id===binding.id);
+        assert.equal(row.href, binding.route, 'Reviewed route: ' + binding.id);
+        assert.equal(row.lang || 'en', binding.lang, 'Reviewed language: ' + binding.id);
+      }
+    }
   }
 }
 console.log(`PASS: 63 incoming assets, 60 placements, ${Object.keys(aliases).length} canonical image aliases, metadata preserved, 200 unique gaps, reference scan clean.`);

@@ -49,7 +49,7 @@ test('country privacy qualifications, educational acronyms and hiding language s
   assert.match(api.translate(rules.get('NG').notes), /LGA.*NYSC.*hiari/);
   assert.match(api.translate(rules.get('KE').notes), /KCSE\/KCPE.*isipokuwa.*waziwazi/);
   assert.match(api.translate(rules.get('ZA').warning), /umri.*hali ya ndoa.*jinsia.*rangi.*picha.*namba.*sheria/);
-  assert.match(api.translate(rules.get('INTL').warning), /isipokuwa.*sheria/);
+  assert.match(api.translate(rules.get('INTL').warning), /Mahitaji hutofautiana.*maelekezo ya tangazo.*zisizohusiana na kazi/);
   assert.equal(api.translate('State of origin'), 'Jimbo la asili');
   assert.equal(api.translate('Other African'), 'Nchi nyingine ya Afrika');
   assert.equal(api.translate('Hide risky fields'), 'Ficha sehemu za taarifa nyeti');

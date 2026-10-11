@@ -88,5 +88,33 @@ test("unsupported combinations, unsafe bounds and stale rules fail closed",()=>{
 });
 
 test("freshness distinguishes review and source dates from an unpublished effective date",()=>{
-  assert.deepEqual(engine.freshness(fresh),{fresh:true,reviewedAt:"2026-07-23",sourceUpdatedAt:"2026-05-20",reviewDueAt:"2026-10-21",effectiveDate:null});
+  assert.deepEqual(engine.freshness(fresh),{fresh:true,reviewedAt:"2026-10-09",sourceUpdatedAt:"2026-09-15",reviewDueAt:"2026-10-21",effectiveDate:null});
+});
+
+// Official country pricing: https://paystack.com/za/pricing, observed 2026-10-09.
+test("South African local fixed fee is waived strictly below ZAR 10, including VAT",()=>{
+  for(const [amount,fee,net,waived] of [[.01,0,.01,true],[1,.03,.97,true],[9.99,.33,9.66,true],[10,1.48,8.52,false],[10.01,1.48,8.53,false]]){
+    const result=calculate("ZA","local",amount,10);
+    assert.equal(result.perTransaction.fee,fee);
+    assert.equal(result.perTransaction.net,net);
+    assert.equal(result.breakdown.fixedWaived,waived);
+    assert.equal(result.breakdown.fixedFee,waived?0:1);
+    assert.equal(result.monthly.fee,Math.round(fee*1000)/100);
+  }
+  assert.equal(calculate("ZA","international",1).perTransaction.fee,1.19);
+  assert.equal(calculate("ZA","international",1).breakdown.fixedWaived,false);
+  assert.equal(calculate("ZA","eft",1).perTransaction.fee,.02);
+});
+
+test("South African target-net search finds the global minimum across the R10 fee jump",()=>{
+  // Independent integer oracle: 2.9% and 15% VAT = 3335/100000;
+  // the fixed R1 adds 115 fee cents at and above 1000 charge cents.
+  function feeCents(cents){return Math.floor((cents*3335+(cents<1000?0:11500000)+50000)/100000)}
+  for(let target=1;target<=1200;target++){
+    let charge=target;
+    while(charge-feeCents(charge)<target)charge++;
+    const result=calculate("ZA","local",10,1,target/100).grossUp;
+    assert.equal(Math.round(result.charge*100),charge,"target cents "+target);
+    assert.equal(Math.round(result.net*100),charge-feeCents(charge));
+  }
 });

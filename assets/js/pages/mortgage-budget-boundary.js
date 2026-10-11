@@ -50,7 +50,13 @@
     }
     form.addEventListener('submit',calculate);
     form.addEventListener('input',function(){if(last){last=null;result.classList.remove('on');live.textContent='';}});
-    document.getElementById('mb-copy').addEventListener('click',function(){var value=exportText();if(!value)return;var done=function(){live.textContent=text.copied;};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(value).then(done).catch(function(){window.prompt('',value);});else window.prompt('',value);});
+    document.getElementById('mb-copy').addEventListener('click',function(){
+      var value=exportText();if(!value)return;var snapshot=last;
+      Promise.resolve().then(function(){
+        if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function')throw new Error('Clipboard unavailable');
+        return navigator.clipboard.writeText(value);
+      }).then(function(){if(last===snapshot)live.textContent=text.copied;},function(){if(last===snapshot)downloadText();});
+    });
     document.getElementById('mb-download').addEventListener('click',downloadText);
     document.getElementById('mb-pdf').addEventListener('click',downloadPdf);
   }

@@ -113,7 +113,10 @@ test('all 66 physical owners are native French apps with route and SEO contracts
       );
     }
     assert.match(html, /property="og:locale" content="fr_FR"/, row.frenchRoute);
-    assert.match(html, /"inLanguage":"fr"/, row.frenchRoute);
+    const structuredData = Array.from(html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi),
+      (match) => JSON.parse(match[1])).flat();
+    const appMetadata = structuredData.find((item) => item['@type'] === 'WebApplication' && item.url === `https://afrotools.com${row.frenchRoute}/`);
+    assert.equal(appMetadata?.inLanguage, 'fr', row.frenchRoute);
     assert.match(html, /Aucun compte, e-mail ou appel IA n’est requis/, row.frenchRoute);
     assert.equal(row.nativeRuntime, true, row.frenchRoute);
     assert.equal(row.artworkExists, true, row.frenchRoute);

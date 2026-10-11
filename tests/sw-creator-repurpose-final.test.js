@@ -33,7 +33,7 @@ assert.throws(() => engine.generateLocalOutputs(source, "blog_post", [], "sw"), 
 const html = fs.readFileSync(path.join(root, "sw/zana/kubadilisha-maudhui-kwa-majukwaa/index.html"), "utf8");
 assert.match(html, /id="copyPlan"/);
 assert.match(html, /data-creator-repurpose-native data-lang="sw"/);
-assert.match(html, /creator-repurpose\.webp/);
+assert.match(html, /zana-kubadilisha-maudhui-kwa-majukwaa-sw-wave8\.webp/);
 assert.doesNotMatch(html, /data-creator-repurpose-native[^]*action=/);
 
 console.log("Swahili creator-repurpose final: 15 assertions passed");

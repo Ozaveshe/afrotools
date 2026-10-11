@@ -3,7 +3,7 @@
   'use strict';
   var DB = 'afrotools-pdf-workspace', FILES = 'recent-files', ITEMS = 'recent-operations', STATE = 'history-state';
   var ready = null, section = document.getElementById('pdf-saved-section'), grid = document.getElementById('pdf-saved-grid');
-  var limit = 2, isPro = false, renderVersion = 0;
+  var limit = 2, isPro = false, renderVersion = 0, errorVersion = 0, operationError = false;
   function failure(code) { var e = new Error(code); e.code = code; return e; }
   function open() {
     return new Promise(function (resolve, reject) {
@@ -91,7 +91,10 @@
     };
     return messages[key][language()==='fr'?1:language()==='sw'?2:0];
   }
-  function report(error) {
+  function report(error, fromOperation) {
+    if (operationError && !fromOperation) return;
+    operationError = !!fromOperation;
+    errorVersion++;
     var message = error.code === 'BLOCKED' ? copy('blocked') : error.code === 'MISSING' ? copy('missing') : error.code === 'INVALID_PDF' ? copy('invalid') : window.SaveState ? window.SaveState.message(error,language()) : copy('blocked');
     if (section) section.style.display='';
     var status=document.getElementById('pdfHistoryError');
@@ -99,13 +102,16 @@
     if (status) status.textContent=message;
     if (typeof window.toast==='function') window.toast(message,1);
   }
-  function clearError() { var status=document.getElementById('pdfHistoryError');if(status)status.remove(); }
-  async function render() {
+  function clearError() { operationError=false;var status=document.getElementById('pdfHistoryError');if(status)status.remove(); }
+  async function render(clearOperationError) {
     if (!section || !grid) return;
-    var version=++renderVersion;
+    if(clearOperationError)clearError();
+    var version=++renderVersion, observedErrorVersion=errorVersion;
     try {
       var all=await store.list();if(version!==renderVersion)return;
-      clearError();grid.replaceChildren();section.style.display='';
+      // A plan/list refresh must not acknowledge a failed user operation.
+      if(errorVersion===observedErrorVersion && (clearOperationError || !operationError))clearError();
+      grid.replaceChildren();section.style.display='';
       var head=section.querySelector('[data-pdf-history-status]');
       if(!head){head=document.createElement('div');head.dataset.pdfHistoryStatus='';grid.before(head);}
       head.textContent=all.length?copy(isPro?'pro':'free'):copy('empty');
@@ -120,16 +126,17 @@
       });
     } catch(e) { if(version===renderVersion)report(e); }
   }
-  window.pdfSaveOp=async function(name,operation,bytes){try{var item=await store.save(name,operation,bytes);await render();return item;}catch(e){report(e);return null;}};
-  window.pdfDelSaved=async function(id){if(!window.confirm(copy('remove')))return false;try{await store.remove(id);await render();var next=grid.querySelector('button')||section.querySelector('[data-pdf-history-status]');if(next){next.tabIndex=0;next.focus();}return true;}catch(e){report(e);return false;}};
+  window.pdfSaveOp=async function(name,operation,bytes){try{var item=await store.save(name,operation,bytes);await render(true);return item;}catch(e){report(e,true);return null;}};
+  window.pdfDelSaved=async function(id){if(!window.confirm(copy('remove')))return false;try{await store.remove(id);await render(true);var next=grid.querySelector('button')||section.querySelector('[data-pdf-history-status]');if(next){next.tabIndex=0;next.focus();}return true;}catch(e){report(e,true);return false;}};
   window.pdfResumeSaved=async function(id){
+    var observedErrorVersion=errorVersion;
     try{
       var result=await store.get(id);if(!result.item||!result.bytes)throw failure('MISSING');
       var opened=await window.queueWorkspaceFile(new File([result.bytes],result.item.title,{type:'application/pdf'}));
       if(opened===false)throw failure('INVALID_PDF');
-      if(opened===true)clearError();
+      if(opened===true && errorVersion===observedErrorVersion)clearError();
     }
-    catch(e){if(typeof window.hideP==='function')window.hideP();report(e.code?e:failure('READ_FAILED'));}
+    catch(e){if(typeof window.hideP==='function')window.hideP();report(e.code?e:failure('READ_FAILED'),true);}
   };
   function readJson(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch(_){return null;}}
   function validExpiry(value){if(!value)return true;var ms=Date.parse(value);return Number.isNaN(ms)||ms>Date.now();}

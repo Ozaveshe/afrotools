@@ -8,6 +8,20 @@ const lexicon = require('../data/localization/sw-document-pdf-lexicon.json').rou
 const { apps } = require('../scripts/build-swahili-document-pdf-parity.js');
 const root = path.join(__dirname, '..');
 
+test('Swahili CV metadata uses the reviewed image for the application and primary page image', () => {
+  const html = fs.readFileSync(path.join(root, 'sw/zana/mjenzi-cv/index.html'), 'utf8');
+  const image = 'https://afrotools.com/assets/img/tools/zana-mjenzi-cv-sw.webp';
+  const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map(match => JSON.parse(match[1]));
+  const application = schemas.find(schema => schema['@type'] === 'SoftwareApplication');
+  const page = schemas.find(schema => schema['@type'] === 'WebPage');
+  assert.equal(application.image, image);
+  assert.equal(page.image, image);
+  assert.equal(page.primaryImageOfPage.url, image);
+  assert.ok(html.includes(`<meta property="og:image" content="${image}">`));
+  assert.ok(html.includes(`<meta name="twitter:image" content="${image}">`));
+});
+
 test('contextual overrides survive the scoped generator and static page payload', () => {
   for (const [id, entries] of Object.entries(overrides)) {
     const app = apps.find((row) => row.id === id);

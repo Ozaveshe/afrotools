@@ -1,0 +1,95 @@
+{
+  "reviewedAt": "2026-10-11",
+  "sourceCommit": "2a141508c1bba6fe0d9daed440ed88ac03e5f97d",
+  "reviewer": "Codex delivery reconciliation",
+  "scope": "Re-review only the existing guest core-calculator and basic-account product boundaries after their October 10 expiry. No broader capability, financial accuracy, availability, or forever-free certification.",
+  "claims": [
+    {
+      "key": "free.public-core",
+      "evidence": [
+        "docs/PRO-FENCE.md",
+        "assets/js/lib/pro-plan.js",
+        "assets/js/pro-gate.js",
+        "tests/e2e/free-demand-cohort.spec.js"
+      ],
+      "finding": "The current fence preserves guest inputs and results while paid features have separate terms. Native guest tests exercised ten entry routes at 320px and 390px and concrete calculations, local saves, clipboard and parsed exports without a subscription. These are representative checks, not exhaustive certification of every tool or its external data."
+    },
+    {
+      "key": "free.account-creation",
+      "evidence": [
+        "assets/js/components/auth-modal.js",
+        "assets/js/afro-auth.js",
+        "docs/PRO-FENCE.md",
+        "tests/e2e/auth-funnel.spec.js"
+      ],
+      "finding": "The modal passes email, name, password and country to signup. The source signup boundary calls Supabase auth.signUp with tier free and has no checkout, subscription or payment call. Native tests confirm the guest signup entry and distinguish Pro/API intents and account-required saves. No real account was created; email delivery, live provider availability and paid entitlement execution were not certified."
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "docs/PRO-FENCE.md",
+      "sha256": "501d4858de285703e41f32c844835f27f58a8d6e0fbb7adb4b64793b87ad9cbf"
+    },
+    {
+      "path": "assets/js/lib/pro-plan.js",
+      "sha256": "5c39eb4f73048f467eafa4784c60dc8f03d49001b31cf5f35782320c2df17e3e"
+    },
+    {
+      "path": "assets/js/components/auth-modal.js",
+      "sha256": "3ad8b61e2e0e962b286dfc5212d18483635b5539cce3d7dd8cf33acdeb92d81a"
+    },
+    {
+      "path": "assets/js/afro-auth.js",
+      "sha256": "d381f024fa9aec3b6c7fb66716a3c4bbe27424618d88fd852880f3b35014d79d"
+    },
+    {
+      "path": "assets/js/pro-gate.js",
+      "sha256": "3e7cf35e04841af3512caf64e82bfa0a94625ab59d0dd6b833f77c6c7bbfe056"
+    },
+    {
+      "path": "tests/e2e/free-demand-cohort.spec.js",
+      "sha256": "067bd6028e7e423d75a2f5286edbcd57911944e1185484a9cbf7b53d5b608965"
+    },
+    {
+      "path": "tests/e2e/auth-funnel.spec.js",
+      "sha256": "eeb0be881a2fa2c6e52024b4018171c4940926cf429cd7de7de7483b50ce3f1d"
+    }
+  ],
+  "validation": {
+    "browser": {
+      "cases": 18,
+      "unexpected": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "retries": 0,
+      "completedAt": "2026-10-11T00:49:14.075Z",
+      "executionSha256": "ca219d783030e90fae2626b0b02bb733ea3c94c555391645cbe4c115cc83cd9f",
+      "reportSha256": "84dcf22d3be1e827bb3b31634942efc0b204f4ad3d39348ac9b4309d3dc6f20c",
+      "logSha256": "928e8afbcc0eb4c2095435c4d5da56b07dc026209eb6f00e017c2865947a2d3c",
+      "tests": [
+        "tests/e2e/free-demand-cohort.spec.js",
+        "tests/e2e/auth-funnel.spec.js"
+      ],
+      "networkPolicy": "GET/HEAD/OPTIONS only; browser network writes blocked. Synthetic local fixtures; no real signup or payment."
+    },
+    "sourceBoundaryReviewSha256": "5f5efb268a2fd56fb39b83ffbdeb99c248b9f07684faeff24c9e221de9bcb96b",
+    "retainedFailures": [
+      "Initial deploy build correctly failed the two expired claims.",
+      "The first evidence harness had an incorrect server working directory and ran zero tests.",
+      "The first complete evidence run passed 16 and failed 2 because the old test did not open the document-options disclosure. The corrected test adds one normal summary click; all output, real-clipboard and invalid-input assertions are unchanged."
+    ]
+  },
+  "nextReview": "2026-11-10",
+  "unchanged": [
+    "approved meanings",
+    "permitted wording",
+    "translations",
+    "prohibited absolutes",
+    "expiry validation",
+    "pricing",
+    "entitlements",
+    "signup implementation",
+    "all other claim records"
+  ],
+  "liveMutations": []
+}

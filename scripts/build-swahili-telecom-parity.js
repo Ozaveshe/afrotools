@@ -305,10 +305,10 @@ function page(app) {
         <form id="telecom-form" novalidate>
           <div class="tel-fields">${app.fields}</div>
           <div class="tel-button-row">
-            <button class="tel-button" type="submit">Kokotoa kwa snapshot</button>
+            <button class="tel-button" type="submit" disabled>Kokotoa kwa snapshot</button>
             <button class="tel-button secondary" id="telecom-reset" type="reset">Anza upya</button>
           </div>
-          <p class="tel-error" id="telecom-errors" role="alert" aria-live="assertive"></p>
+          <p class="tel-error" id="telecom-errors" role="alert" aria-live="assertive">Hesabu bado haipatikani. Unaweza kuendelea kuhariri sehemu zako.</p>
         </form>
       </section>
       <div class="tel-aside">
@@ -323,7 +323,7 @@ function page(app) {
             <button class="tel-button secondary" id="telecom-copy" type="button" hidden disabled>Nakili muhtasari</button>
             <button class="tel-button secondary" id="telecom-download-txt" type="button" hidden disabled>Pakua TXT</button>
             <button class="tel-button secondary" id="telecom-download-json" type="button" hidden disabled>Pakua JSON</button>
-            <label class="tel-file-label" for="telecom-import">Fungua JSON tena<input id="telecom-import" type="file" accept="application/json,.json"></label>
+            <label class="tel-file-label" for="telecom-import">Fungua JSON tena<input id="telecom-import" type="file" accept="application/json,.json" disabled></label>
           </div>
           <p class="tel-export-status" id="telecom-export-status" role="status" aria-live="polite"></p>
         </section>
