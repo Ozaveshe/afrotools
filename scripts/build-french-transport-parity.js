@@ -1113,7 +1113,7 @@ function sourceProof(app, sourceManifest, parityManifest) {
     <ul>${sourceLinks || '<li>Aucune source liée dans le registre Transport ; vérification manuelle obligatoire.</li>'}</ul>
   </details>
   ${carDirectory ? `<div class="fr-transport-proof__actions">
-    <a class="secondary" href="/tools/car-import-cost/">Préparer un devis d’import modifiable</a>
+    <a class="secondary" href="/fr/tools/cout-importation-voiture/">Préparer un devis d’import modifiable</a>
   </div>` : `<div class="fr-transport-proof__actions">
     <button type="button" data-fr-transport-download-text>Télécharger le résumé TXT</button>
     <button type="button" class="secondary" data-fr-transport-download-pdf>Télécharger le PDF local</button>
