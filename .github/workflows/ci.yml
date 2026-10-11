@@ -75,8 +75,8 @@ jobs:
   build:
     name: Build and audit
     runs-on: ubuntu-latest
-    # Preserve cumulative artifact checks, including customs export recovery.
-    timeout-minutes: 60
+    # Preserve cumulative artifact checks and the five-locale navbar failure matrix.
+    timeout-minutes: 75
 
     steps:
       - name: Checkout repository
@@ -105,6 +105,14 @@ jobs:
 
       - name: Install Chromium for optimized artifact checks
         run: npx playwright install chromium --with-deps
+
+      - name: Verify navbar resilience and guest account boundaries
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4271'
+        run: npx playwright test tests/e2e/navbar-stylesheet-resilience.spec.js tests/e2e/navbar-mobile-layout.spec.js tests/e2e/free-demand-cohort.spec.js tests/e2e/auth-funnel.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
       - name: Verify education journeys and shared accessibility in the optimized artifact
         env:

@@ -24,6 +24,7 @@ for (const ghana of [true, false]) test(`${ghana ? 'Ghana' : 'Naira'} amount wor
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(ghana ? routes[0] : routes[1]);
   await page.locator('#amount').fill('12,500.75');
+  await page.locator('details.document-options > summary').click();
   await page.locator('#caseMode').selectOption('title');
   const expected = ghana ? 'Ghana Cedis Twelve Thousand Five Hundred and Pesewas Seventy-Five Only' : 'Twelve Thousand Five Hundred Naira and Seventy-Five Kobo Only';
   const button = page.getByRole('button', { name: ghana ? 'Copy Words' : 'Copy to Clipboard', exact: true });
