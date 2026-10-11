@@ -7,64 +7,47 @@
  * ── Environment variables required (set in Netlify dashboard) ───────────────
  *   WHATSAPP_TOKEN          — Meta Cloud API access token
  *   WHATSAPP_PHONE_ID       — WhatsApp Business phone number ID (not the number itself)
+ *   WHATSAPP_APP_SECRET     — Meta app secret for webhook signature verification
+ *   WHATSAPP_GRAPH_VERSION  — Explicit verified Graph API version, e.g. v23.0
  *   WHATSAPP_VERIFY_TOKEN   — Webhook verification token you chose in Meta dashboard
  *   SUPABASE_DATA_URL       — https://zpclagtgczsygrgztlts.supabase.co
  *   SUPABASE_DATA_SERVICE_ROLE_KEY — service role key for data project
  *
- * ── Meta API Setup (pre-requisites) ─────────────────────────────────────────
- *   1. Meta Business Account verified for AfroTools
- *   2. WhatsApp Business API access approved (apply at developers.facebook.com)
- *   3. Dedicated phone number registered (cannot be an existing WhatsApp number)
- *   4. Webhook URL: https://afrotools.com/.netlify/functions/afrowork-whatsapp
- *   5. Webhook subscribed to: messages, message_deliveries, message_reads
- *
- * ── Supabase schema (run migration once approved) ───────────────────────────
- *   See supabase/migrations/whatsapp-bot.sql
- *
- * ── Supabase schema SQL ──────────────────────────────────────────────────────
- * create table wb_conversations (
- *   id               uuid primary key default gen_random_uuid(),
- *   phone_hash       text not null unique,
- *   country_code     text,
- *   first_message_at timestamptz default now(),
- *   last_message_at  timestamptz default now(),
- *   message_count    integer default 1
- * );
- * create index on wb_conversations(phone_hash);
- *
- * create table wb_usage_log (
- *   id               uuid primary key default gen_random_uuid(),
- *   conversation_id  uuid references wb_conversations(id),
- *   intent_type      text,
- *   country_code     text,
- *   success          boolean default true,
- *   response_time_ms integer,
- *   created_at       timestamptz default now()
- * );
- * create index on wb_usage_log(created_at desc);
- * create index on wb_usage_log(intent_type);
+ * Activation, migration and recovery: docs/WHATSAPP-DELIVERY-RUNBOOK.md.
+ * Apply the receipt migration before enabling delivery. Operational usage logs
+ * do not store phone hashes or message bodies.
  */
 
 'use strict';
 
 const crypto       = require('crypto');
+const { createDeliveryStore, withDeliveryReceipt } = require('./_shared/whatsapp-delivery-store');
 const payeEngines  = require('./_engines/index');
+const hrRuntime = require('./_shared/whatsapp-hr-runtime');
 const BotEngine    = require('../../engines/whatsapp-bot-engine');
 
 // ── Config ───────────────────────────────────────────────────────────────────
 const WA_TOKEN        = process.env.WHATSAPP_TOKEN;
 const WA_PHONE_ID     = process.env.WHATSAPP_PHONE_ID;
-const VERIFY_TOKEN    = process.env.WHATSAPP_VERIFY_TOKEN || 'afrotools-wa-verify';
+const VERIFY_TOKEN    = process.env.WHATSAPP_VERIFY_TOKEN;
 const SUPABASE_URL    = process.env.SUPABASE_DATA_URL    || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY    = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 const SITE_URL        = 'https://afrotools.com';
-const WA_API_BASE     = 'https://graph.facebook.com/v19.0';
+// Verify provider support before activation; syntax alone does not establish support.
+const WA_GRAPH_VERSION = process.env.WHATSAPP_GRAPH_VERSION || '';
+const WA_API_BASE = /^v[1-9]\d*\.0$/.test(WA_GRAPH_VERSION)
+  ? 'https://graph.facebook.com/' + WA_GRAPH_VERSION : null;
+const deliveryStore = createDeliveryStore({ url: SUPABASE_URL, key: SUPABASE_KEY, fetchImpl: (url, options) => fetch(url, options) });
 
 // ── Main handler ─────────────────────────────────────────────────────────────
 exports.handler = async function (event) {
   // 1. GET — Meta webhook verification challenge
   if (event.httpMethod === 'GET') {
+    if (!VERIFY_TOKEN) return { statusCode: 503, body: 'Webhook verification is not configured' };
     var params = event.queryStringParameters || {};
+    if (params['hub.mode'] !== 'subscribe' || typeof params['hub.challenge'] !== 'string' || !params['hub.challenge']) {
+      return { statusCode: 400, body: 'Invalid verification request' };
+    }
     if (params['hub.verify_token'] === VERIFY_TOKEN) {
       return { statusCode: 200, body: params['hub.challenge'] || '' };
     }
@@ -73,61 +56,100 @@ exports.handler = async function (event) {
 
   // 2. POST — Incoming message payload
   if (event.httpMethod === 'POST') {
+    if (!WA_TOKEN || !WA_PHONE_ID || !process.env.WHATSAPP_APP_SECRET || !WA_API_BASE) {
+      return { statusCode: 503, body: 'Webhook delivery is not configured' };
+    }
+    if (typeof event.body !== 'string') return { statusCode: 400, body: 'Invalid request body' };
+    var rawBody = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString('utf8') : event.body;
+    var signatureEvent = Object.assign({}, event, { body: rawBody });
     // Verify Meta webhook signature
-    if (!verifySignature(event)) {
+    if (!verifySignature(signatureEvent)) {
       console.warn('[wa-bot] Signature mismatch — ignoring');
-      return { statusCode: 200, body: 'OK' }; // Always 200 to Meta
+      return { statusCode: 403, body: 'Forbidden' };
     }
 
     var body;
     try {
-      body = JSON.parse(event.body);
+      body = JSON.parse(rawBody);
     } catch (e) {
       return { statusCode: 200, body: 'OK' };
     }
 
-    // Extract message from Meta's nested payload
-    var entry   = (body.entry  || [])[0];
-    var change  = (entry && (entry.changes || [])[0]) || null;
-    var value   = change && change.value;
-    var message = value  && (value.messages || [])[0];
-
-    // Ignore non-message webhooks (status updates, etc.)
-    if (!message || message.type !== 'text') {
-      return { statusCode: 200, body: 'OK' };
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return { statusCode: 400, body: 'Invalid payload' };
     }
 
-    var from      = message.from;                   // E.164 phone number
-    var msgText   = (message.text && message.text.body || '').trim();
-    var startTime = Date.now();
-
-    // 3. Detect intent
-    var intent = BotEngine.detectIntent(msgText);
-
-    // 4. Build response
-    var responseText;
-    var success = true;
-    try {
-      responseText = await handleIntent(intent, msgText);
-    } catch (err) {
-      console.error('[wa-bot] handleIntent error:', err.message);
-      responseText = '⚠️ Something went wrong. Please try again or type HELP for commands.';
-      success = false;
+    var messages = [];
+    for (var entry of (Array.isArray(body.entry) ? body.entry : [])) {
+      for (var change of (entry && Array.isArray(entry.changes) ? entry.changes : [])) {
+        var value = change && change.value;
+        for (var message of (value && Array.isArray(value.messages) ? value.messages : [])) {
+          if (!message || message.type !== 'text') continue;
+          if (typeof message.id !== 'string' || !message.id.trim() || message.id.length > 512 ||
+              typeof message.from !== 'string' || !/^\d{5,20}$/.test(message.from) ||
+              !message.text || typeof message.text.body !== 'string') {
+            return { statusCode: 400, body: 'Invalid text message' };
+          }
+          if (message.text.body.trim()) messages.push(message);
+        }
+      }
     }
-
-    // 5. Send reply via WhatsApp Cloud API
-    await sendWhatsAppMessage(from, responseText);
-
-    // 6. Log usage to Supabase (non-blocking, don't await)
-    logUsage(from, intent, success, Date.now() - startTime).catch(function (e) {
-      console.warn('[wa-bot] Log failed:', e.message);
-    });
+    if (messages.length && !deliveryStore.configured) {
+      return { statusCode: 503, body: 'Delivery receipt store is not configured' };
+    }
+    var deliveryFailed = false;
+    for (var textMessage of messages) {
+      try { await withDeliveryReceipt(deliveryStore, textMessage.id, beforeSend => processTextMessage(textMessage, beforeSend)); }
+      catch (_) {
+        console.warn('[wa-bot] Message delivery incomplete');
+        deliveryFailed = true;
+      }
+    }
+    if (deliveryFailed) return { statusCode: 503, body: 'Delivery incomplete' };
 
     return { statusCode: 200, body: 'OK' };
   }
 
   return { statusCode: 405, body: 'Method Not Allowed' };
 };
+
+async function processTextMessage(message, beforeSend) {
+    var from      = message.from;                   // Meta phone number format
+    var msgText   = message.text.body.trim();
+    if (!msgText) return;
+    var startTime = Date.now();
+
+    // 3. Detect intent
+    // Consent is per request and must be an explicit command, never inferred from the question.
+    var aiConsentCommand = /^AI CONSENT:\s*([\s\S]+)$/i.exec(msgText);
+    var requestText = aiConsentCommand ? aiConsentCommand[1].trim() : msgText;
+    var intent = BotEngine.detectIntent(requestText);
+    if (aiConsentCommand && requestText) {
+      intent.type = 'law';
+      intent.aiConsent = true;
+    }
+
+    // 4. Build response
+    var responseText;
+    var success = true;
+    try {
+      responseText = await handleIntent(intent, requestText);
+    } catch (err) {
+      console.error('[wa-bot] Response generation failed');
+      responseText = '⚠️ Something went wrong. Please try again or type HELP for commands.';
+      success = false;
+    }
+
+    // 5. Send reply via WhatsApp Cloud API
+    await beforeSend();
+    await sendWhatsAppMessage(from, responseText);
+
+    // 6. Complete the bounded usage request before this serverless invocation ends
+    await logUsage(intent, success, Date.now() - startTime).catch(function () {
+      console.warn('[wa-bot] Usage recording failed');
+    });
+
+}
 
 // ── Intent router ─────────────────────────────────────────────────────────────
 async function handleIntent(intent, rawText) {
@@ -167,85 +189,50 @@ async function handleIntent(intent, rawText) {
 
 // ── PAYE handler ──────────────────────────────────────────────────────────────
 function handlePaye(intent) {
-  var cc = intent.country;
-  var gross = intent.salary;
-
-  if (!cc) {
-    return (
-      '🌍 Which country? Include the country name in your message.\n\n' +
-      '*Examples:*\nPAYE Nigeria 450000\nPAYE Kenya 120000\nPAYE Ghana 5000'
-    );
+  var cc = String(intent.country || '').toUpperCase();
+  var gross = Number(intent.salary);
+  if (!cc) return 'Which country? Include the country name. Example: PAYE Nigeria 450000';
+  if (!Number.isFinite(gross) || gross <= 0 || !Number.isFinite(gross * 12)) {
+    return 'Enter a finite, positive gross monthly salary. Example: PAYE ' + countryName(cc) + ' 300000';
   }
-  if (!gross || gross <= 0) {
-    return (
-      '💰 How much is the gross monthly salary?\n\n' +
-      '*Example:* PAYE ' + countryName(cc) + ' 300000'
-    );
-  }
-
   var engine = payeEngines.get(cc);
-  if (!engine) {
-    return (
-      BotEngine.getFlag(cc) + ' PAYE calculation for ' + countryName(cc) + ' is coming soon.\n\n' +
-      '_Try: PAYE Nigeria, Kenya, Ghana, South Africa, or Tanzania._'
-    );
-  }
-
+  if (!engine) return 'No payroll model is available for this country. Browse ' + SITE_URL + '/salary-tax/';
   try {
-    var result = engine.calculate({ gross: gross, frequency: 'monthly' });
-    var sym = (BotEngine.CURRENCIES[cc] || {}).symbol || cc + ' ';
-
+    var calculation = engine.calculate({ grossAnnual: gross * 12 });
+    var result = calculation && calculation.result;
+    var tax = calculation && calculation.tax;
+    var net = result && result.netMonthly;
+    var annualTax = tax && tax.netTax;
+    if (!result || !tax || !Number.isFinite(net) || !Number.isFinite(annualTax)) {
+      throw new Error('Payroll model returned an incomplete result');
+    }
+    var sym = (BotEngine.CURRENCIES[cc] || {}).symbol || engine.currency + ' ';
+    var metadata = calculation.meta || {};
+    var effectiveOn = new Date().toISOString().slice(0, 10);
+    var coverage = payeEngines.resolve(cc, effectiveOn);
     var lines = [
-      BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' PAYE Calculation*',
-      'Monthly Gross: ' + sym + BotEngine.fmtNum(gross),
+      BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' payroll estimate*',
+      'Monthly gross: ' + sym + BotEngine.fmtNum(gross),
+      'Annual income tax: ' + sym + BotEngine.fmtNum(annualTax),
+      'Total employee deductions per month: ' + sym + BotEngine.fmtNum(gross - net),
+      '*Estimated net pay: ' + sym + BotEngine.fmtNum(net) + '*',
+      'Effective income-tax rate: ' + (annualTax / (gross * 12) * 100).toFixed(2) + '%',
       '',
-      '*Deductions:*'
+      'Uses the country model default settings; personal reliefs and optional deductions may change your result.',
+      'Monthly net uses the default pay-month; seasonal deductions can differ from an annual average.',
+      'Model: ' + (metadata.regime || 'default settings'),
+      'Model updated: ' + (metadata.lastUpdated || engine.lastUpdated || 'not recorded')
     ];
-
-    var totalDeductions = 0;
-
-    if (result.paye > 0) {
-      lines.push('PAYE / Income Tax: ' + sym + BotEngine.fmtNum(result.paye));
-      totalDeductions += result.paye;
+    if (!coverage.ok) {
+      lines.push('Current-date coverage is not verified. Check the applicable tax year and official rules before using this estimate for payroll.');
+    } else {
+      lines.push('Model period: ' + (coverage.formula.effectiveFrom || 'not date-specific') + ' to ' + (coverage.formula.effectiveTo || 'no end date recorded') + '. Verify applicable rules and inputs before filing.');
     }
-    if (result.pensionEmployee > 0) {
-      lines.push('Pension (employee): ' + sym + BotEngine.fmtNum(result.pensionEmployee));
-      totalDeductions += result.pensionEmployee;
-    }
-    if (result.nhf > 0) {
-      lines.push('NHF (2.5%): ' + sym + BotEngine.fmtNum(result.nhf));
-      totalDeductions += result.nhf;
-    }
-    if (result.socialSecurity > 0) {
-      lines.push('Social Security: ' + sym + BotEngine.fmtNum(result.socialSecurity));
-      totalDeductions += result.socialSecurity;
-    }
-    if (result.uif > 0) {
-      lines.push('UIF (1%): ' + sym + BotEngine.fmtNum(result.uif));
-      totalDeductions += result.uif;
-    }
-    if (totalDeductions > 0) {
-      lines.push('Total deductions: ' + sym + BotEngine.fmtNum(totalDeductions));
-    }
-
-    var net = gross - totalDeductions;
-    var effectiveRate = gross > 0 ? ((result.paye / gross) * 100).toFixed(1) : '0.0';
-
-    lines.push('');
-    lines.push('*Net Pay: ' + sym + BotEngine.fmtNum(net) + '*');
-    lines.push('Effective tax rate: ' + effectiveRate + '%');
-    lines.push('');
-    lines.push('🔗 Full breakdown: ' + SITE_URL + '/salary-tax/payroll/');
-    lines.push('');
+    lines.push('Adjust assumptions and review sources: ' + SITE_URL + '/salary-tax/');
     lines.push('_Type HELP for more commands_');
-
     return lines.join('\n');
-  } catch (err) {
-    console.error('[wa-bot] PAYE calc error:', err.message);
-    return (
-      '⚠️ Could not calculate PAYE for ' + countryName(cc) + ' right now.\n' +
-      '🔗 Try the web tool: ' + SITE_URL + '/salary-tax/payroll/'
-    );
+  } catch (_) {
+    return 'Could not produce a valid payroll estimate. Review the country calculator at ' + SITE_URL + '/salary-tax/';
   }
 }
 
@@ -259,47 +246,45 @@ function handleMinwage(intent) {
     );
   }
 
-  // Static minimum wage data for top 8 countries
-  // TODO: expand via Supabase afrowork_regulatory_changes table
-  var data = {
-    NG: { monthly: 70000, daily: 3182, hourly: 397, currency: '₦', law: 'National Minimum Wage Act 2019 (amended 2024)', updated: 'Jul 2024' },
-    KE: { monthly: 15120, daily: 504, hourly: 63, currency: 'KSh', law: 'Regulation of Wages (General) Order 2022', updated: 'May 2022' },
-    ZA: { monthly: 4576, daily: 229, hourly: 28.79, currency: 'R', law: 'National Minimum Wage Act 9 of 2018', updated: 'Mar 2024' },
-    GH: { monthly: 1902, daily: 63.4, hourly: 7.93, currency: 'GH₵', law: 'Labour Act 2003 (NLC review)', updated: 'Jan 2024' },
-    TZ: { monthly: 80000, daily: 2667, hourly: 333, currency: 'TSh', law: 'Written Laws (Miscellaneous Amendments) Act 2022', updated: 'Jun 2022' },
-    UG: { monthly: 136000, daily: 4533, hourly: 567, currency: 'USh', law: 'Employment Act 2006', updated: 'Jan 2020' },
-    RW: { monthly: 30000, daily: 1000, hourly: 125, currency: 'RF', law: 'Labour Law No. 66/2018', updated: 'Jan 2019' },
-    ET: { monthly: null, daily: null, hourly: null, currency: 'Br', law: 'No statutory minimum wage (Labour Proclamation 1156/2019)', updated: 'N/A', note: 'Ethiopia has no statutory minimum wage. Sector agreements apply.' }
-  };
-
-  var d = data[cc];
-  if (!d) {
-    return (
-      BotEngine.getFlag(cc) + ' Minimum wage data for ' + countryName(cc) + ' is coming soon.\n' +
-      '🔗 Check: ' + SITE_URL + '/tools/minimum-wage/'
-    );
+  var record = hrRuntime.minimumWages[cc];
+  if (!record) return 'No wage reference is available for this country. Check the applicable official sources: ' + SITE_URL + '/tools/minimum-wage/';
+  var national = record.nationalMinimum || {};
+  var symbol = record.symbol || record.currency || cc;
+  var lines = [BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' wage reference*', ''];
+  function addRates(data, prefix) {
+    var count = 0;
+    ['monthly', 'daily', 'hourly'].forEach(function (unit) {
+      if (Number.isFinite(data[unit]) && data[unit] > 0) {
+        lines.push(prefix + unit + ': ' + (data.currency || symbol) + ' ' + data[unit].toLocaleString('en-US', { maximumFractionDigits: 2 }));
+        count++;
+      }
+    });
+    return count;
   }
-
-  if (d.note) {
-    return (
-      BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Minimum Wage*\n\n' +
-      '⚠️ ' + d.note + '\n\n' +
-      '📋 Law: ' + d.law + '\n' +
-      '🔗 More: ' + SITE_URL + '/tools/minimum-wage/\n\n' +
-      '_Type HELP for more commands_'
-    );
+  var sectors = Array.isArray(record.sectorRates) ? record.sectorRates : [];
+  if (sectors.length) {
+    lines.push('Rates depend on sector, occupation or location. These are recorded examples, not a single rate for every worker.');
+    sectors.forEach(function (sector) {
+      lines.push('');
+      lines.push(sector.sector + ':');
+      if (!addRates(sector, 'Recorded ')) lines.push('No single numeric rate is recorded; review the applicable schedule.');
+      if (sector.notes) lines.push('Reference note: ' + sector.notes);
+    });
+  } else if (!addRates(national, 'Recorded ')) {
+    lines.push('No single numeric national rate is available in this reference. This does not establish that no legal minimum applies.');
   }
-
-  return (
-    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Minimum Wage*\n\n' +
-    (d.monthly ? 'Monthly:  *' + d.currency + ' ' + BotEngine.fmtNum(d.monthly) + '*\n' : '') +
-    (d.daily   ? 'Daily:    ' + d.currency + ' ' + BotEngine.fmtNum(d.daily) + '\n' : '') +
-    (d.hourly  ? 'Hourly:   ' + d.currency + ' ' + d.hourly.toFixed(2) + '\n' : '') +
-    '\n📋 Law: ' + d.law +
-    '\n🗓️ Updated: ' + d.updated +
-    '\n🔗 Full details: ' + SITE_URL + '/tools/minimum-wage/' +
-    '\n\n_Type HELP for more commands_'
-  );
+  if (national.effectiveDate) lines.push('Recorded effective date: ' + national.effectiveDate);
+  if (record.lastVerified) lines.push('Dataset verification date: ' + record.lastVerified);
+  if (national.notes) lines.push('Basis: ' + national.notes);
+  if (national.law) lines.push('Recorded legal reference: ' + national.law);
+  (record.sources || []).forEach(function (source) {
+    if (typeof source.url === 'string' && /^https:\/\//.test(source.url)) lines.push('Source: ' + source.url);
+  });
+  lines.push('');
+  lines.push('Current-date coverage is not verified. Check the effective period, worker category and official source. Daily or monthly equivalents may use planning assumptions.');
+  lines.push('Review the full reference: ' + SITE_URL + '/tools/minimum-wage/');
+  lines.push('_Type HELP for more commands_');
+  return lines.join('\n');
 }
 
 // ── Overtime handler ──────────────────────────────────────────────────────────
@@ -314,45 +299,46 @@ function handleOvertime(intent, rawText) {
       '*Example:* OT Nigeria 200000 8 hours weekday'
     );
   }
-  if (!gross) {
+  if (!Number.isFinite(gross) || gross <= 0) {
     return (
       '💰 Include your monthly salary.\n\n' +
       '*Example:* OT ' + countryName(cc) + ' 200000 8 hours weekday'
     );
   }
-  if (!otParams.hours) {
+  if (!Number.isFinite(otParams.hours) || otParams.hours <= 0) {
     return (
       '⏰ How many overtime hours?\n\n' +
       '*Example:* OT ' + countryName(cc) + ' ' + BotEngine.fmtNum(gross) + ' 8 hours weekday'
     );
   }
 
-  // Overtime multipliers by day type and country
-  var multipliers = {
-    NG: { weekday: 1.25, weekend: 1.5, public_holiday: 2.0 },
-    KE: { weekday: 1.5,  weekend: 2.0, public_holiday: 3.0 },
-    ZA: { weekday: 1.5,  weekend: 2.0, public_holiday: 2.0 },
-    GH: { weekday: 1.5,  weekend: 2.0, public_holiday: 2.5 },
-    TZ: { weekday: 1.5,  weekend: 2.0, public_holiday: 2.0 },
-    UG: { weekday: 1.5,  weekend: 2.0, public_holiday: 2.0 }
-  };
-
-  var countryMultipliers = multipliers[cc] || { weekday: 1.5, weekend: 2.0, public_holiday: 2.0 };
-  var multiplier = countryMultipliers[otParams.dayType] || 1.5;
-  var sym = (BotEngine.CURRENCIES[cc] || {}).symbol || cc + ' ';
-
-  // Hourly rate (assume 8hr/day × 22 working days)
-  var hourlyRate = gross / (8 * 22);
-  var otPay = hourlyRate * multiplier * otParams.hours;
+  var rule = hrRuntime.overtimeRules[cc];
+  var category = { weekday: 'weekday', weekend: 'weekend', public_holiday: 'publicHoliday' }[otParams.dayType];
+  var aliases = { weekday: ['weekday', 'daytime', 'day'], weekend: ['weekend'], publicHoliday: ['publicHoliday'] };
+  var rates = rule && rule.overtimeRate;
+  var tiered = rates && Object.keys(rates).some(function (key) { return /first|next|beyond/i.test(key); });
+  if (!rates || !category || tiered || !aliases[category].some(function (key) { return Number.isFinite(rates[key]) && rates[key] > 0; })) {
+    return 'This country and overtime category are not supported by the WhatsApp estimate. Tiered rates and rest-day eligibility need additional inputs. Review the applicable rules: ' + SITE_URL + '/tools/overtime-calc/';
+  }
+  var result = hrRuntime.calculateOvertime({ country: cc, monthlySalary: gross, overtimeHours: otParams.hours, dayType: category });
+  if (!result || !Number.isFinite(result.overtimePay) || !Number.isFinite(result.hourlyRate) || !Number.isFinite(result.totalPay)) {
+    return 'The salary or overtime hours are too large to calculate. Enter smaller positive values.';
+  }
+  var multiplier = result.otMultiplier;
+  var hourlyRate = result.hourlyRate;
+  var otPay = result.overtimePay;
+  var sym = result.symbol;
+  var weeklyHours = result.standardHours.weekly;
   var dayTypeLabel = { weekday: 'Weekday', weekend: 'Weekend', public_holiday: 'Public Holiday' }[otParams.dayType];
 
   return (
-    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Overtime Calculation*\n\n' +
+    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Overtime Estimate*\n\n' +
     'Monthly salary: ' + sym + BotEngine.fmtNum(gross) + '\n' +
     'Hourly rate: ' + sym + hourlyRate.toFixed(2) + '\n' +
     'Overtime type: ' + dayTypeLabel + ' (' + multiplier + '×)\n' +
     'Hours worked: ' + otParams.hours + ' hrs\n\n' +
     '*Overtime Pay: ' + sym + BotEngine.fmtNum(otPay) + '*\n\n' +
+    'Uses the web calculator model: ' + weeklyHours + ' hours/week × 4.33 weeks/month. The multiplier is an unverified reference assumption, not confirmation of your statutory entitlement. Check your contract, eligibility and current official rules.\n\n' +
     '🔗 Detailed calc: ' + SITE_URL + '/tools/overtime-calc/\n\n' +
     '_Type HELP for more commands_'
   );
@@ -368,34 +354,33 @@ function handleLeave(intent) {
     );
   }
 
-  var leave = {
-    NG: { annual: 6, sick: 12, maternity: 12, maternityPay: '100%', paternity: 3, law: 'Labour Act Cap L1' },
-    KE: { annual: 21, sick: 30, maternity: 13, maternityPay: '100%', paternity: 14, law: 'Employment Act 2007' },
-    ZA: { annual: 15, sick: 30, maternity: 16, maternityPay: '0% (UIF claim)', paternity: 10, law: 'Basic Conditions of Employment Act 75 of 1997' },
-    GH: { annual: 15, sick: 12, maternity: 12, maternityPay: '100%', paternity: 0, law: 'Labour Act 2003 (Act 651)' },
-    TZ: { annual: 28, sick: 126, maternity: 12, maternityPay: '100%', paternity: 3, law: 'Employment and Labour Relations Act 2004' },
-    UG: { annual: 21, sick: 30, maternity: 13, maternityPay: '100% for first 3 months', paternity: 4, law: 'Employment Act 2006' },
-    RW: { annual: 18, sick: 15, maternity: 12, maternityPay: '100%', paternity: 4, law: 'Labour Law No. 66/2018' }
-  };
-
-  var d = leave[cc];
-  if (!d) {
-    return (
-      BotEngine.getFlag(cc) + ' Leave data for ' + countryName(cc) + ' is coming soon.\n' +
-      '🔗 Check: ' + SITE_URL + '/tools/leave-calculator/'
-    );
-  }
-
-  return (
-    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Leave Entitlements*\n\n' +
-    '🌴 Annual leave: *' + d.annual + ' working days*\n' +
-    '🤒 Sick leave: ' + d.sick + ' days/year\n' +
-    '🤱 Maternity: ' + d.maternity + ' weeks (' + d.maternityPay + ' pay)\n' +
-    (d.paternity > 0 ? '👨 Paternity: ' + d.paternity + ' days\n' : '') +
-    '\n📋 Law: ' + d.law +
-    '\n🔗 Full details: ' + SITE_URL + '/tools/leave-calculator/' +
-    '\n\n_Type HELP for more commands_'
-  );
+  var record = hrRuntime.leaveEntitlements[cc];
+  if (!record) return 'No leave reference is available for this country. Review the applicable rules: ' + SITE_URL + '/tools/leave-calculator/';
+  var lines = [BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' leave reference*'];
+  var categories = [['annualLeave', 'Annual leave'], ['sickLeave', 'Sick leave'], ['maternityLeave', 'Maternity leave'], ['paternityLeave', 'Paternity leave'], ['compassionateLeave', 'Compassionate leave'], ['familyResponsibility', 'Family responsibility']];
+  categories.forEach(function (category) {
+    var data = record[category[0]];
+    if (!data) return;
+    lines.push('');
+    lines.push('*' + category[1] + '*');
+    var numeric = false;
+    ['days', 'weeks'].forEach(function (unit) {
+      if (Number.isFinite(data[unit]) && data[unit] > 0) {
+        lines.push('Recorded duration: ' + data[unit] + ' ' + unit);
+        numeric = true;
+      }
+    });
+    if (!numeric) lines.push('No positive duration is recorded; check current law and employer policy.');
+    [['per', 'Period'], ['accrual', 'Accrual / basis'], ['pay', 'Recorded pay terms'], ['eligibility', 'Eligibility'], ['law', 'Legal reference'], ['notes', 'Reference note']].forEach(function (field) {
+      if (data[field[0]]) lines.push(field[1] + ': ' + data[field[0]]);
+    });
+  });
+  if (record.lastVerified) lines.push('Dataset verification date: ' + record.lastVerified);
+  lines.push('');
+  lines.push('Current-date coverage is not verified. Working and calendar days, service periods and pay conditions differ. Confirm the applicable official rules and your contract.');
+  lines.push('Review the full reference: ' + SITE_URL + '/tools/leave-calculator/');
+  lines.push('_Type HELP for more commands_');
+  return lines.join('\n');
 }
 
 // ── Pension / social security handler ─────────────────────────────────────────
@@ -422,9 +407,9 @@ function handlePension(intent) {
       '*Examples:*\nPENSION Nigeria 300000\nNSSF Kenya 120000\nGEPF South Africa 25000'
     );
   }
-  if (!gross) {
+  if (!Number.isFinite(gross) || gross <= 0) {
     return (
-      '💰 Include your monthly salary.\n\n' +
+      '💰 Include a positive monthly pensionable salary.\n\n' +
       '*Example:* PENSION ' + countryName(cc) + ' 300000'
     );
   }
@@ -464,9 +449,12 @@ function handlePension(intent) {
     erContrib = gross * s.er;
   }
   var total = eeContrib + erContrib;
+  if (![eeContrib, erContrib, total].every(Number.isFinite)) {
+    return 'The contribution inputs are too large to calculate. Check your pensionable earnings.';
+  }
 
   return (
-    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Pension / Social Security*\n\n' +
+    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' Pension / Social Security estimate*\n\n' +
     'Scheme: ' + s.name + '\n' +
     'Monthly salary: ' + sym + BotEngine.fmtNum(gross) + '\n\n' +
     '*Contributions:*\n' +
@@ -475,6 +463,7 @@ function handlePension(intent) {
     'Total: *' + sym + BotEngine.fmtNum(total) + '*\n\n' +
     (s.tiered ? '_Uses the entered salary as pensionable earnings; confirm the payroll basis._\n\n' : '') +
     (s.gepf ? '_Uses pensionable salary and the 13% other-member employer rate. Services employers contribute 16%; use the full calculator to select that category._\n\n' : '') +
+    'Uses entered pay as pensionable earnings. Current-period scheme coverage, thresholds and eligibility are not verified here. Confirm your earnings basis and official scheme rules in the linked tool.\n\n' +
     '🏦 Regulator: ' + s.body + '\n' +
     '📋 Law: ' + s.law + '\n' +
     '🔗 Full calc: ' + SITE_URL + s.link + '\n\n' +
@@ -493,9 +482,6 @@ function handleDeadline(intent) {
       '*Examples:*\nDEADLINE Nigeria\ndeadlines Kenya\nPAYE deadline Ghana'
     );
   }
-
-  var now = new Date();
-  var month = now.toLocaleString('en-US', { month: 'long' });
 
   var deadlines = {
     NG: [
@@ -532,16 +518,18 @@ function handleDeadline(intent) {
   }
 
   var lines = [
-    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' — ' + month + ' Deadlines*',
+    BotEngine.getFlag(cc) + ' *' + countryName(cc) + ' — Deadline reference rules*',
     ''
   ];
 
   dd.forEach(function (d) {
     lines.push('📅 *' + d.label + '*');
-    lines.push('   Due: ' + month + ' ' + d.day + ' (' + d.note + ')');
+    lines.push('   Reference rule: ' + d.note);
+    if (/payday/i.test(d.note)) lines.push('   Exact date requires your payday and the applicable working-day calendar.');
   });
 
   lines.push('');
+  lines.push('These reference rules have not been verified for the current filing period. Confirm the obligation, reporting period, holiday adjustments and any official extensions.');
   lines.push('🔗 Full calendar: ' + SITE_URL + '/tools/compliance-calendar/');
   lines.push('');
   lines.push('_Type HELP for more commands_');
@@ -581,6 +569,17 @@ async function handleSalaryBenchmark(intent, rawText) {
 
 // ── Labour law / natural language handler ──────────────────────────────────────
 async function handleLabourLaw(intent, rawText) {
+  if (intent.aiConsent !== true) {
+    return [
+      'Optional AI help: your question and country would be sent to the AfroTools AI service and its configured AI provider.',
+      'Do not include names, identity numbers, employer records or other unnecessary personal details.',
+      'To agree for one question, send: AI CONSENT: followed by your question.',
+      'This agreement applies only to that message. Ordinary messages do not enable AI.',
+      'Local alternative: use the calculators and source links at ' + SITE_URL + '/afrowork/',
+      'Privacy notice: ' + SITE_URL + '/privacy/'
+    ].join('\n\n');
+  }
+
   if (!WA_TOKEN) {
     // Fallback without AI (no token in dev)
     return (
@@ -596,12 +595,15 @@ async function handleLabourLaw(intent, rawText) {
   try {
     var aiRes = await fetch(SITE_URL + '/.netlify/functions/ai-advisor', {
       method: 'POST',
+      signal: AbortSignal.timeout(12000),
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         tool: 'labour-law-advisor',
         message: rawText,
         country: intent.country,
-        channel: 'whatsapp'
+        channel: 'whatsapp',
+        aiConsent: 'accepted',
+        aiContentConsent: 'accepted'
       })
     });
 
@@ -624,7 +626,7 @@ async function handleLabourLaw(intent, rawText) {
       '_Type HELP for more commands_'
     );
   } catch (err) {
-    console.warn('[wa-bot] AI advisor error:', err.message);
+    console.warn('[wa-bot] AI advisor request failed');
     return (
       '⚖️ *Labour Law Advisor*\n\n' +
       'Get a detailed legal answer at:\n' +
@@ -650,13 +652,13 @@ function ambiguousResponse() {
 
 // ── Send WhatsApp message via Meta Cloud API ──────────────────────────────────
 async function sendWhatsAppMessage(to, text) {
-  if (!WA_TOKEN || !WA_PHONE_ID) {
-    console.warn('[wa-bot] WA_TOKEN or WA_PHONE_ID not set — message not sent');
-    return;
+  if (!WA_TOKEN || !WA_PHONE_ID || !WA_API_BASE) {
+    throw new Error('WhatsApp delivery is not configured');
   }
   var url = WA_API_BASE + '/' + WA_PHONE_ID + '/messages';
   var res = await fetch(url, {
     method: 'POST',
+    signal: AbortSignal.timeout(8000),
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + WA_TOKEN
@@ -670,69 +672,56 @@ async function sendWhatsAppMessage(to, text) {
     })
   });
   if (!res.ok) {
-    var errBody = await res.text();
-    console.error('[wa-bot] Meta API error:', res.status, errBody);
+    console.error('[wa-bot] Meta API request failed', { status: res.status });
+    var rejected = new Error('WhatsApp delivery rejected');
+    rejected.deliveryRejected = true;
+    throw rejected;
   }
+  var accepted = await res.json();
+  if (!accepted || !Array.isArray(accepted.messages) || typeof accepted.messages[0]?.id !== 'string' || !accepted.messages[0].id) {
+    throw new Error('WhatsApp delivery acknowledgement is uncertain');
+  }
+
 }
 
-// ── Log conversation usage to Supabase ───────────────────────────────────────
-async function logUsage(phone, intent, success, responseTimeMs) {
+// ── Log non-identifying operational usage to Supabase ───────────────────────────────────────
+async function logUsage(intent, success, responseTimeMs) {
   if (!SUPABASE_KEY) return;
-
-  var phoneHash = crypto.createHash('sha256').update(phone).digest('hex');
-  var headers = {
-    'apikey': SUPABASE_KEY,
-    'Authorization': 'Bearer ' + SUPABASE_KEY,
-    'Content-Type': 'application/json',
-    'Prefer': 'resolution=merge-duplicates'
-  };
-
-  // Upsert conversation record (hash is unique key)
-  var convRes = await fetch(SUPABASE_URL + '/rest/v1/wb_conversations', {
+  if (SUPABASE_URL !== 'https://zpclagtgczsygrgztlts.supabase.co') {
+    console.warn('[wa-bot] Usage recording project is not configured for AfroTools');
+    return;
+  }
+  // Operational event only: no phone, stable phone hash, message or salary is retained.
+  var response = await fetch(SUPABASE_URL + '/rest/v1/wb_usage_log', {
     method: 'POST',
-    headers: Object.assign({}, headers, { 'Prefer': 'on_conflict=phone_hash' }),
+    signal: AbortSignal.timeout(4000),
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal'
+    },
     body: JSON.stringify({
-      phone_hash: phoneHash,
-      country_code: intent.country,
-      last_message_at: new Date().toISOString()
-    })
-  });
-
-  var convData = await convRes.json();
-  var convId = Array.isArray(convData) ? (convData[0] && convData[0].id) : (convData && convData.id);
-
-  // Insert usage log entry
-  await fetch(SUPABASE_URL + '/rest/v1/wb_usage_log', {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({
-      conversation_id: convId || null,
+      conversation_id: null,
       intent_type: intent.type,
       country_code: intent.country,
       success: success,
       response_time_ms: responseTimeMs
     })
   });
+  if (!response.ok) console.warn('[wa-bot] Usage recording rejected', { status: response.status });
 }
 
 // ── Verify Meta webhook signature ──────────────────────────────────────────────
 function verifySignature(event) {
   var appSecret = process.env.WHATSAPP_APP_SECRET;
-  if (!appSecret) return true; // Skip in dev/when not configured
-
-  var sig = (event.headers || {})['x-hub-signature-256'] || '';
-  if (!sig.startsWith('sha256=')) return false;
-
-  var expected = 'sha256=' + crypto
-    .createHmac('sha256', appSecret)
-    .update(event.body || '')
-    .digest('hex');
-
-  try {
-    return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
-  } catch (_) {
-    return false;
-  }
+  if (!appSecret) return false;
+  var headers = event.headers || {};
+  var key = Object.keys(headers).find(function (name) { return name.toLowerCase() === 'x-hub-signature-256'; });
+  var sig = key && headers[key];
+  if (typeof sig !== 'string' || !/^sha256=[a-f0-9]{64}$/i.test(sig)) return false;
+  var expected = crypto.createHmac('sha256', appSecret).update(event.body || '').digest();
+  return crypto.timingSafeEqual(Buffer.from(sig.slice(7), 'hex'), expected);
 }
 
 // ── Utility: country code → name ──────────────────────────────────────────────

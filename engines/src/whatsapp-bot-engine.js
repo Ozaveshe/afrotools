@@ -437,26 +437,27 @@
       }
       return null;
     },
-    parseSalary: function(a) {
-      var e = (a || "").replace(/[₦KSh R GH₵ TSh USh Br E£ MAD CFA]/g, " "), n = (e = e.replace(/\b(NGN|KES|ZAR|GHS|TZS|UGX|ETB|EGP|MAD|XOF|ZMW|RWF|BWP|NAD|USD)\b/gi, " ")).match(/(\d[\d,]*\.?\d*)\s*(k|m|thousand|million)?\b/i);
-      if (!n) {
-        return null;
-      }
-      var i = parseFloat(n[1].replace(/,/g, ""));
-      if (isNaN(i)) {
-        return null;
-      }
-      var r = (n[2] || "").toLowerCase();
-      return "k" !== r && "thousand" !== r || (i *= 1e3), "m" !== r && "million" !== r || (i *= 1e6),
-      i;
+    parseSalary: function(text) {
+      var value = String(text || '')
+        .replace(/(?:^|\s)[+-]?\d[\d,]*(?:\.\d+)?\s*(?:hours?|hrs?|h)\b/gi, ' ')
+        .replace(/₦|₵|£|€|\$/g, ' ')
+        .replace(/\b(?:NGN|KES|KSh|ZAR|GHS|GH₵|TZS|TSh|UGX|USh|ETB|EGP|MAD|XOF|ZMW|RWF|BWP|NAD|USD|R)(?=\s|\d)/gi, ' ');
+      var match = value.match(/(?:^|[\s:])([+-]?\d[\d,]*(?:\.\d+)?)(?:\s*(thousand|million|k|m))?(?=$|[\s!?;])/i);
+      if (!match || !/^[+]?\d+(?:\.\d+)?$|^[+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(match[1])) return null;
+      var amount = Number(match[1].replace(/,/g, ''));
+      var scale = (match[2] || '').toLowerCase();
+      if (scale === 'k' || scale === 'thousand') amount *= 1000;
+      if (scale === 'm' || scale === 'million') amount *= 1000000;
+      return Number.isFinite(amount) && amount > 0 ? amount : null;
     },
-    parseOvertimeParams: function(a) {
-      var e = null, n = "weekday", i = a.match(/(\d+\.?\d*)\s*h(ours?)?/i);
-      return i && (e = parseFloat(i[1])), /public\s+holiday|ph\b/i.test(a) ? n = "public_holiday" : /weekend|sunday|saturday|sat\b|sun\b/i.test(a) && (n = "weekend"),
-      {
-        hours: e,
-        dayType: n
-      };
+    parseOvertimeParams: function(text) {
+      var value = String(text || '');
+      var match = value.match(/(?:^|\s)([+-]?\d+(?:\.\d+)?)\s*(?:hours?|hrs?|h)\b/i);
+      var hours = match ? Number(match[1]) : null;
+      if (!Number.isFinite(hours) || hours <= 0) hours = null;
+      var dayType = /public\s+holiday|\bph\b/i.test(value) ? 'public_holiday'
+        : /\b(?:weekend|sunday|saturday|sat|sun)\b/i.test(value) ? 'weekend' : 'weekday';
+      return { hours: hours, dayType: dayType };
     },
     formatCurrency: function(a, e) {
       var n = this.CURRENCIES[e];
@@ -469,7 +470,7 @@
       return this.FLAGS[a] || "🌍";
     },
     buildHelpMessage: function() {
-      return "👋 *Welcome to AfroTools — Africa's #1 payroll calculator.*\n\nI can help with:\n📊 *PAYE & net pay* — type: PAYE Nigeria 300000\n💰 *Minimum wage* — type: MINWAGE Kenya\n⏰ *Overtime* — type: OT Ghana 150000 4 hours\n🌴 *Leave entitlements* — type: LEAVE South Africa\n🏦 *Pension / social security* — type: PENSION Nigeria 300000\n📅 *Compliance deadlines* — type: DEADLINE Kenya\n📊 *Salary benchmarks* — type: SALARY software engineer Lagos\n⚖️ *Labour law* — type: LAW can my employer dock my pay Nigeria\n\n🌍 I cover all *54 African countries*.\n\n_Powered by AfroTools.com — free for everyone, forever._";
+      return "👋 *AfroTools payroll and work references*\n\nCommands:\n📊 PAYE Nigeria 300000\n💰 MINWAGE Kenya\n⏰ OT Ghana 150000 4 hours weekday\n🌴 LEAVE South Africa\n🏦 PENSION Nigeria 300000\n📅 DEADLINE Kenya\n📊 SALARY software engineer Lagos\n⚖️ LAW your question and country\n\nCountry recognition does not guarantee that every command has a supported model. Check model dates, assumptions and official sources.\n\nAI questions require explicit consent for each message. Use AI CONSENT: followed by your question only after reviewing the notice. Avoid personal identifiers.\n\nhttps://afrotools.com/afrowork/whatsapp/";
     },
     getIntentLabel: function(a) {
       var e = this.INTENT_PATTERNS.find(function(e) {

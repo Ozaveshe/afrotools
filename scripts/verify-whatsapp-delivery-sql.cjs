@@ -1,0 +1,35 @@
+const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
+// Supply an external, pinned PGlite install; no production dependency or network calls.
+const path=require('node:path');
+if(!process.argv[2] || !process.argv[3]) throw new Error('Usage: node scripts/verify-whatsapp-delivery-sql.cjs <pglite-package-directory> <evidence-directory>');
+const runtimePath=path.resolve(process.argv[2]);
+const runtimeVersion=JSON.parse(fs.readFileSync(path.join(runtimePath,'package.json'),'utf8')).version;
+assert.equal(runtimeVersion,'0.5.8','Use the validated PGlite version');
+const {PGlite}=require(runtimePath);
+const proofDirectory=path.resolve(process.argv[3]);
+fs.mkdirSync(proofDirectory,{recursive:true});
+const root=path.resolve(__dirname,'..');
+const migration='supabase/migrations/20261012214500_whatsapp_delivery_receipts.sql';
+(async()=>{const db=new PGlite();await db.exec('create role anon;create role authenticated;create role service_role;');const sql=fs.readFileSync(root+'/'+migration,'utf8');await db.exec(sql);const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222';let assertions=0;const eq=(x,y)=>{assert.equal(x,y);assertions++;};const claim=async(k,t)=>(await db.query('select public.claim_whatsapp_delivery($1,$2) as result',[k,t])).rows[0].result;const move=async(k,t,state)=>(await db.query('select public.transition_whatsapp_delivery($1,$2,$3) as result',[k,t,state])).rows[0].result;const k='a'.repeat(64),l='b'.repeat(64),m='c'.repeat(64);
+eq(await claim(k,a),'claimed');eq(await claim(k,b),'busy');eq(await move(k,b,'sending'),false);eq(await move(k,a,'sent'),false);eq(await move(k,a,'sending'),true);eq(await claim(k,b),'busy');eq(await move(k,a,'sent'),true);eq(await claim(k,b),'done');
+eq(await claim(l,a),'claimed');await db.query("update public.wb_delivery_receipts set lease_expires_at=now()-interval '1 minute' where message_key=$1",[l]);eq(await claim(l,b),'claimed');eq(await move(l,a,'sending'),false);eq(await move(l,b,'sending'),true);await db.query("update public.wb_delivery_receipts set lease_expires_at=now()-interval '1 minute' where message_key=$1",[l]);eq(await claim(l,a),'uncertain');eq(await move(l,b,'retryable'),false);eq(await move(l,b,'sent'),true);eq(await claim(l,a),'done');
+eq(await claim(m,a),'claimed');eq(await move(m,a,'sending'),true);eq(await move(m,a,'retryable'),true);eq(await claim(m,b),'claimed');
+await db.exec('set role anon');await assert.rejects(()=>db.query('select * from public.wb_delivery_receipts'),/permission denied/);assertions++;await assert.rejects(()=>claim('d'.repeat(64),a),/permission denied/);assertions++;await db.exec('reset role;set role service_role');eq(await claim('d'.repeat(64),a),'claimed');await db.exec('reset role');
+const columns=(await db.query("select column_name from information_schema.columns where table_name='wb_delivery_receipts' order by ordinal_position")).rows.map(r=>r.column_name);assert.deepEqual(columns,['message_key','state','attempt_token','lease_expires_at','created_at','updated_at']);assertions++;
+await db.exec('set role service_role');
+const {createDeliveryStore,withDeliveryReceipt}=require(root+'/netlify/functions/_shared/whatsapp-delivery-store');
+const store=createDeliveryStore({key:'synthetic',fetchImpl:async(url,options)=>{
+ const args=JSON.parse(options.body);const transition=url.endsWith('/transition_whatsapp_delivery');
+ const result=await db.query(transition?'select public.transition_whatsapp_delivery($1,$2,$3) as result':'select public.claim_whatsapp_delivery($1,$2) as result',transition?[args.p_message_key,args.p_attempt_token,args.p_state]:[args.p_message_key,args.p_attempt_token]);
+ return {ok:true,json:async()=>result.rows[0].result};
+}});
+const first=store.receipt('wamid.SYNTHETIC_INTEGRATION'),second=store.receipt('wamid.SYNTHETIC_INTEGRATION');eq(await store.claim(first),'claimed');eq(await store.claim(second),'busy');await store.transition(first,'sending');await store.transition(first,'sent');eq(await store.claim(second),'done');await assert.rejects(()=>store.transition(second,'sending'),/lease or state changed/);assertions++;
+await db.exec('reset role');
+let sends=0;
+eq(await withDeliveryReceipt(store,'wamid.SYNTHETIC_DONE',async beforeSend=>{await beforeSend();sends++;}),'sent');
+eq(await withDeliveryReceipt(store,'wamid.SYNTHETIC_DONE',async()=>{sends++;}),'duplicate');eq(sends,1);
+await assert.rejects(()=>withDeliveryReceipt(store,'wamid.SYNTHETIC_REJECT',async beforeSend=>{await beforeSend();const e=new Error('Synthetic provider rejection');e.deliveryRejected=true;throw e;}),/provider rejection/);assertions++;
+eq(await withDeliveryReceipt(store,'wamid.SYNTHETIC_REJECT',async beforeSend=>{await beforeSend();sends++;}),'sent');
+await assert.rejects(()=>withDeliveryReceipt(store,'wamid.SYNTHETIC_UNCERTAIN',async beforeSend=>{await beforeSend();throw new Error('Synthetic transport timeout');}),/transport timeout/);assertions++;
+const before=sends;await assert.rejects(()=>withDeliveryReceipt(store,'wamid.SYNTHETIC_UNCERTAIN',async()=>{sends++;}),/pending reconciliation/);assertions++;eq(sends,before);
+const proof={at:new Date().toISOString(),status:'passed',assertions,migration,sha256:crypto.createHash('sha256').update(sql).digest('hex'),runtime:'PGlite0.5.8 local PostgreSQL',qualification:'Actual local SQL/PLpgSQL state and privilege tests. PGlite serializes its single connection; no real multi-session contention or live Supabase migration proof.',liveMigrationApplied:false};fs.writeFileSync(path.join(proofDirectory,'delivery-sql-proof.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify(proof));await db.close();})().catch(e=>{console.error(e);process.exitCode=1});
