@@ -16,6 +16,7 @@ const {
   FRENCH_ENERGY_APPS
 } = require('./lib/french-energy-parity-contract');
 const { FRENCH_CATEGORIES } = require('./lib/french-category-directory');
+const { repairFrenchDirectorySearch } = require('./lib/french-directory-search');
 const { enhanceCategory, ROUTES: LOCALIZED_CATEGORY_ROUTES } = require('./lib/localized-category-standard');
 const { countryRows: localizedCountryRows, enhanceCountry } = require('./lib/localized-country-standard');
 const {
@@ -500,6 +501,7 @@ function applyInitialCategoryFilter(){
     "const frenchTools = AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/') && frenchPublishedIds.has(t.id));"
   );
   html = html.replace('  if(input && input.value.trim()) resetFilterToAll();', '  // Keep the selected category and country while searching.');
+  html = repairFrenchDirectorySearch(html);
   output(rel, html);
 }
 repairFrenchDirectoryFilters();

@@ -6,14 +6,14 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 313 |
+| fr | 161 | 2 | 312 |
 | sw | 137 | 1 | 337 |
 
 ## By surface class
 
 | Class | English routes | FR pass | FR under standard | FR missing | SW pass | SW under standard | SW missing |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
+| category-hub | 32 | 31 | 0 | 1 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
 | editorial | 348 | 40 | 0 | 308 | 21 | 0 | 327 |
@@ -677,6 +677,5 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
 | /pro/ | product-entry | sw | — | missing | no localized route or owner file |
-| /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
 | /status/ | public-status | fr | — | missing | no localized route or owner file |
 | /status/ | public-status | sw | — | missing | no localized route or owner file |
