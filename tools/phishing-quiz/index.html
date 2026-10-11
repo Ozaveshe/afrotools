@@ -54,7 +54,7 @@ a{text-decoration:none;color:inherit}
 .quiz-option{width:100%;text-align:left;font-family:inherit;color:inherit}.quiz-option:focus-visible{outline:3px solid #2563eb;outline-offset:2px}.quiz-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.quiz-export-status{font-size:.85rem;color:#475569;margin-top:8px;min-height:1.3em}
 html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#475569;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html[data-theme="dark"] body{background:var(--en-bg);color:var(--en-text)}html[data-theme="dark"] .quiz-card,html[data-theme="dark"] .quiz-scenario,html[data-theme="dark"] .quiz-option,html[data-theme="dark"] .tip-item,html[data-theme="dark"] .tool-verification-card{background:#111c2f;color:var(--en-text);border-color:var(--en-border)}html[data-theme="dark"] .quiz-card.answered-correct,html[data-theme="dark"] .quiz-option.selected-correct,html[data-theme="dark"] .quiz-option.reveal-correct,html[data-theme="dark"] .quiz-explanation.correct-exp{background:#102b22;color:#bbf7d0;border-color:#22c55e}html[data-theme="dark"] .quiz-card.answered-wrong,html[data-theme="dark"] .quiz-option.selected-wrong,html[data-theme="dark"] .quiz-explanation.wrong-exp{background:#321820;color:#fecaca;border-color:#ef4444}html[data-theme="dark"] .quiz-question,html[data-theme="dark"] #progressLabel{color:var(--en-text)!important}html[data-theme="dark"] #scoreLabel,html[data-theme="dark"] .quiz-export-status,html[data-theme="dark"] .q-status{color:var(--en-muted)!important}
 @media(prefers-color-scheme:dark){html:not([data-theme]){--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#475569;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html:not([data-theme]) body{background:var(--en-bg);color:var(--en-text)}html:not([data-theme]) .quiz-card,html:not([data-theme]) .quiz-scenario,html:not([data-theme]) .quiz-option,html:not([data-theme]) .tip-item,html:not([data-theme]) .tool-verification-card{background:#111c2f;color:var(--en-text);border-color:var(--en-border)}html:not([data-theme]) .quiz-card.answered-correct,html:not([data-theme]) .quiz-option.selected-correct,html:not([data-theme]) .quiz-option.reveal-correct,html:not([data-theme]) .quiz-explanation.correct-exp{background:#102b22;color:#bbf7d0;border-color:#22c55e}html:not([data-theme]) .quiz-card.answered-wrong,html:not([data-theme]) .quiz-option.selected-wrong,html:not([data-theme]) .quiz-explanation.wrong-exp{background:#321820;color:#fecaca;border-color:#ef4444}html:not([data-theme]) .quiz-question,html:not([data-theme]) #progressLabel{color:var(--en-text)!important}html:not([data-theme]) #scoreLabel,html:not([data-theme]) .quiz-export-status,html:not([data-theme]) .q-status{color:var(--en-muted)!important}}
-@media print{afro-navbar,afro-footer,.en-tool-hero,#startScreen,#quizScreen,.df-upgrade,.df-faq,afro-related-tools,.security-focus-rail,.quiz-actions{display:none!important}body{background:#fff!important;color:#000!important}#resultsScreen{display:block!important}.en-tool-layout{max-width:none!important}.en-card,.en-results{box-shadow:none!important;border:1px solid #bbb!important}}
+@media print{afro-navbar,afro-footer,.en-tool-hero,#startScreen,#quizScreen,.df-upgrade,.df-faq,afro-related-tools,.security-focus-rail,.quiz-actions{display:none!important}body{background:#fff!important;color:#000!important}.en-tool-layout{max-width:none!important}.en-card,.en-results{box-shadow:none!important;border:1px solid #bbb!important}}
 </style>
 <meta property="og:url" content="https://afrotools.com/tools/phishing-quiz/">
 <meta name="twitter:card" content="summary_large_image">
@@ -460,7 +460,9 @@ function copyQuizSummary(){
 function fallbackCopy(text,done){
   var textarea=document.createElement('textarea');
   textarea.value=text;textarea.setAttribute('readonly','');textarea.style.position='fixed';textarea.style.opacity='0';
-  document.body.appendChild(textarea);textarea.select();document.execCommand('copy');textarea.remove();done();
+  var active=document.activeElement,copied=false;
+  try{document.body.appendChild(textarea);textarea.select();copied=document.execCommand('copy')===true;}catch(error){copied=false;}finally{textarea.remove();if(active&&typeof active.focus==='function')active.focus();}
+  if(copied)done();else document.getElementById('quizExportStatus').textContent='Copy was blocked. Use Print or save PDF to keep your training summary.';
 }
 
 function restartQuiz(){
@@ -472,7 +474,7 @@ function restartQuiz(){
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/pages/security-focus.js?v=571d331e" defer></script>
+<script src="/assets/js/pages/security-focus.js?v=15704c11" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=09c215fa" defer></script>
 </body>
