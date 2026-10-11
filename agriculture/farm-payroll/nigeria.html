@@ -173,7 +173,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       <span aria-current="page">Nigeria</span>
     </nav>
     <h1><span aria-hidden="true">&#127475;&#127468;</span> Nigeria <em>Farm Worker Payroll Calculator</em></h1>
-    <p class="tool-hero-sub">Calculate farm worker wages, deductions, and take-home pay in Nigeria. Covers permanent staff, casual daily workers, seasonal harvesters, and piece-rate workers &#8212; with agricultural minimum wage compliance check.</p>
+    <p class="tool-hero-sub">Calculate farm worker wages, deductions, and take-home pay in Nigeria. Covers permanent staff, casual daily workers, seasonal harvesters, and piece-rate workers &#8212; with a dated national minimum-wage reference and explicit coverage choices.</p>
     <div class="hero-badges">
       <span class="badge badge-blue">&#128119; 4 Worker Types</span>
       <span class="badge badge-grey">&#128204; Min Wage Check</span>
@@ -202,7 +202,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       </div>
       <div class="field">
         <label class="f-label-text" for="inpNumWorkers">Number of Workers</label>
-        <input aria-label="Line item quantity" class="f-input" id="inpNumWorkers" type="number" min="1" step="1" value="1">
+        <input aria-label="Number of workers" class="f-input" id="inpNumWorkers" type="number" min="1" step="1" value="1">
         <div class="hint-text">Enter more than 1 to see total farm labour cost</div>
       </div>
 
@@ -250,7 +250,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       <div class="field">
         <label class="f-label-text" for="inpHousingValue">Housing Value <span class="f-label-hint">(monthly, local currency)</span></label>
         <input class="f-input" id="inpHousingValue" type="number" min="0" step="1" value="0">
-        <div class="hint-text">Estimated rental value of accommodation provided. Added to gross for deduction purposes.</div>
+        <div class="hint-text">Estimated cost of accommodation provided. It is an in-kind benefit, not cash take-home pay. Contribution bases are entered separately.</div>
       </div>
       <div class="field">
         <label class="f-label-text" for="inpFoodValue">Food / Rations Value <span class="f-label-hint">(monthly, local currency)</span></label>
@@ -261,6 +261,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   </div>
 </div>
 
+<section class="card" aria-labelledby="ngContributionHeading"><div class="card-body"><h2 id="ngContributionHeading">Private-sector contribution choices</h2><p id="ngContributionHelp">Confirm which schemes apply with the employer or scheme administrator. Worker type and number of workers do not determine eligibility here. Amounts below are per worker per month.</p><div class="form-grid"><div class="field"><label class="f-label-text" for="ng_pension">Pension scheme</label><select class="f-select" id="ng_pension" aria-describedby="ngContributionHelp"><option value="">Choose confirmed arrangement</option><option value="standard">Covered: employee 8%, employer 10%</option><option value="not-applicable">Confirmed not applicable</option></select></div><div class="field"><label class="f-label-text" for="ng_health">Health contribution scheme</label><select class="f-select" id="ng_health" aria-describedby="ngContributionHelp"><option value="">Choose confirmed arrangement</option><option value="basic">Basic salary: employee 5%, employer 10%</option><option value="consolidated">Consolidated salary: employee 1.75%, employer 3.25%</option><option value="not-applicable">Confirmed not applicable</option></select></div><div class="field"><label class="f-label-text" for="ng_housing">National Housing Fund participation</label><select class="f-select" id="ng_housing" aria-describedby="ngContributionHelp"><option value="">Choose confirmed arrangement</option><option value="participating">Eligible worker chooses to contribute</option><option value="not-participating">Worker does not participate</option></select></div><div class="field"><label class="f-label-text" for="ng_wageCoverage">National minimum-wage coverage</label><select class="f-select" id="ng_wageCoverage" aria-describedby="ngContributionHelp"><option value="">Choose confirmed arrangement</option><option value="unknown">Not yet confirmed</option><option value="applicable-confirmed">Confirmed covered by the national minimum</option><option value="exempt-confirmed">Confirmed exemption applies</option></select></div><div class="field"><label class="f-label-text" for="ng_leaveBudget">Separate leave budget</label><select class="f-select" id="ng_leaveBudget" aria-describedby="ngContributionHelp"><option value="">Choose confirmed arrangement</option><option value="exclude">Exclude leave budgeting</option><option value="include">Include a separately confirmed leave budget</option></select></div><div class="field" id="ng_row_pensionablePay" hidden><label class="f-label-text" for="ng_pensionablePay">Monthly pensionable emoluments (NGN)</label><input class="f-input" id="ng_pensionablePay" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_pensionablePay"><p class="hint-text" id="ng_hint_pensionablePay">Use the employment contract basis, including at least basic pay, housing and transport allowances.</p></div><div class="field" id="ng_row_healthBasicPay" hidden><label class="f-label-text" for="ng_healthBasicPay">Monthly basic salary for health contributions (NGN)</label><input class="f-input" id="ng_healthBasicPay" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_healthBasicPay"><p class="hint-text" id="ng_hint_healthBasicPay">Use this only for the basic-salary health scheme.</p></div><div class="field" id="ng_row_healthConsolidatedPay" hidden><label class="f-label-text" for="ng_healthConsolidatedPay">Monthly consolidated salary for health contributions (NGN)</label><input class="f-input" id="ng_healthConsolidatedPay" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_healthConsolidatedPay"><p class="hint-text" id="ng_hint_healthConsolidatedPay">Use this only for the applicable consolidated-salary health scheme.</p></div><div class="field" id="ng_row_housingMonthlyIncome" hidden><label class="f-label-text" for="ng_housingMonthlyIncome">Monthly income for housing contribution (NGN)</label><input class="f-input" id="ng_housingMonthlyIncome" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_housingMonthlyIncome"><p class="hint-text" id="ng_hint_housingMonthlyIncome">Enter the eligible participating worker’s contribution basis.</p></div><div class="field" id="ng_row_monthlyWage" hidden><label class="f-label-text" for="ng_monthlyWage">Monthly wage for comparison (NGN)</label><input class="f-input" id="ng_monthlyWage" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_monthlyWage"><p class="hint-text" id="ng_hint_monthlyWage">Enter the agreed monthly wage to compare with the national reference. Do not convert the reference into a daily agricultural minimum. Confirm which earnings count.</p></div><div class="field" id="ng_row_overtimeHourlyPay" hidden><label class="f-label-text" for="ng_overtimeHourlyPay">Agreed total pay per overtime hour (NGN)</label><input class="f-input" id="ng_overtimeHourlyPay" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_overtimeHourlyPay"><p class="hint-text" id="ng_hint_overtimeHourlyPay">Enter the total agreed overtime hourly pay, not only the premium. Working hours and overtime arrangements must be confirmed.</p></div><div class="field" id="ng_row_leavePayBase" hidden><label class="f-label-text" for="ng_leavePayBase">Monthly cash basis for leave pay (NGN)</label><input class="f-input" id="ng_leavePayBase" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_leavePayBase"><p class="hint-text" id="ng_hint_leavePayBase">Confirm the applicable cash pay basis, excluding overtime and other allowances.</p></div><div class="field" id="ng_row_leaveDays" hidden><label class="f-label-text" for="ng_leaveDays">Annual leave days to budget</label><input class="f-input" id="ng_leaveDays" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_leaveDays"><p class="hint-text" id="ng_hint_leaveDays">Use the confirmed entitlement for this worker and service period. This is budgeting, not payment in lieu of leave.</p></div><div class="field" id="ng_row_paidDaysPerMonth" hidden><label class="f-label-text" for="ng_paidDaysPerMonth">Paid days per month for leave budgeting</label><input class="f-input" id="ng_paidDaysPerMonth" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="ng_hint_paidDaysPerMonth"><p class="hint-text" id="ng_hint_paidDaysPerMonth">Enter the paid-day divisor for the confirmed pay basis; no universal working week is assumed.</p></div></div><p class="hint-text">Reference guidance: <a href="https://www.pencom.gov.ng/wp-content/uploads/2023/09/FREQUENTLY-ASKED-QUESTIONS-2023.pdf">PenCom 2023</a>, <a href="https://www.nhia.gov.ng/faq/">NHIA</a>, <a href="https://nipc.gov.ng/assets/resources/business-facilitation-miscellaneous-provisions-act-2022/business-facilitation-misc-provisions-act-2022.pdf">Housing Fund amendment (2023)</a>. PAYE is calculated separately.</p><p class="hint-text">The 2019 Act lists exemptions including seasonal agriculture, certain part-time or piece-rate arrangements, and establishments with fewer than 25 persons. Confirm current applicability; the worker count above is not establishment headcount. <a href="https://archive.gazettes.africa/archive/ng/2019/ng-government-gazette-supplement-dated-2019-04-23-no-62.pdf">2019 Act, sections 3, 4 and 17</a>; <a href="https://www.pencom.gov.ng/wp-content/uploads/2024/12/Circular-on-Implementation-of-Minimum-Wage.pdf">Official 2024 rate reference</a>.</p></div></section>
+<p id="payrollValidationStatus" role="alert" aria-atomic="true"></p>
 <button type="button" class="calc-btn" onclick="runCalculation()">&#128204; Calculate Farm Payroll</button>
 
 <div class="results-wrap" id="resultsWrap">
@@ -268,7 +270,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   <div class="card">
     <div class="payslip-hero">
       <div class="payslip-net" id="resNetPay"></div>
-      <div class="payslip-label">Net Take-Home Pay (per worker)</div>
+      <div class="payslip-label">Cash Take-Home Before PAYE (per worker)</div>
       <div class="payslip-sub" id="resGrossSub"></div>
     </div>
     <div class="card-body">
@@ -286,7 +288,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   </div>
 
   <div class="card">
-    <div class="card-head"><span class="card-title">&#128204; Minimum Wage Compliance</span></div>
+    <div class="card-head"><span class="card-title">&#128204; National Minimum-Wage Comparison</span></div>
     <div class="card-body">
       <div id="mwCheckBox"></div>
       <div class="labor-law-box" id="laborLawBox"></div>
@@ -302,7 +304,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
 </div>
 
-<p class="sources-footer">Data sources: ILO NATLEX database &bull; national labour ministry gazettes &bull; AfroTools research (2024). For formal tax computation, use the PAYE calculator linked above. Minimum wages are approximate and subject to annual revision.</p>
+<p class="sources-footer">Legacy labour assumptions: ILO NATLEX database &bull; national labour ministry gazettes &bull; AfroTools research (2024). Nigeria contribution and minimum-wage references are linked above and carry their own dates. Remaining labour assumptions are not verified as current. Confirm scheme eligibility and wage coverage before using this planning estimate. For formal tax computation, use the PAYE calculator linked above.</p>
 </main>
 
 <section class="seo-content agri-country-facts" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
@@ -338,6 +340,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
 <script src="/data/agriculture/farm-payroll-data.js?v=ee306a00"></script>
 <script src="/engines/farm-payroll-engine.js?v=68a877ca"></script>
+<script src="/assets/js/lib/farm-payroll-input-validation.js"></script>
+<script src="/assets/js/lib/ng-farm-payroll-contributions.js"></script><script src="/assets/js/lib/ng-farm-payroll-labour-assumptions.js"></script>
 <script>
 (function () {
   'use strict';
@@ -346,6 +350,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   var COUNTRY_NAME = 'Nigeria';
   var FARM_PROFIT_SLUG = 'nigeria';
   var CD = (window.AfroTools.FarmPayrollData || {})[COUNTRY_CODE] || {};
+  CD = Object.assign({}, CD, { contributionPolicy: "NG-user-confirmed-v1" });
   var ENG = window.AfroTools.FarmPayrollEngine || {};
   var sym = CD.symbol || '';
   var currency = CD.currency || '';
@@ -354,17 +359,10 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     var lbls = document.querySelectorAll('[id^="lblCurrency"]');
     for (var i = 0; i < lbls.length; i++) { lbls[i].textContent = '(' + currency + ')'; }
 
-    var mwHint = document.getElementById('hintMinWage');
-    if (mwHint) {
-      var mw = CD.agriMinWage_monthly || CD.nationalMinWage_monthly;
-      mwHint.textContent = mw
-        ? 'Agricultural minimum wage: ' + sym + mw.toLocaleString() + '/month'
-        : 'No legislated minimum wage in ' + COUNTRY_NAME;
-    }
-    var dHint = document.getElementById('hintDailyMin');
-    if (dHint && CD.agriMinWage_daily) {
-      dHint.textContent = 'Agricultural daily minimum: ' + sym + CD.agriMinWage_daily.toLocaleString();
-    }
+    var mwHint=document.getElementById("hintMinWage");
+    if(mwHint)mwHint.textContent="National monthly reference: NGN 70,000, effective 29 July 2024. Coverage must be confirmed.";
+    var dHint=document.getElementById("hintDailyMin");
+    if(dHint)dHint.textContent="A monthly national reference is not a verified daily agricultural minimum.";
     var prHint = document.getElementById('hintPieceRate');
     if (prHint && CD.typicalDailyRate) {
       prHint.textContent = 'Typical daily earnings: ' + sym + (CD.typicalDailyRate.low || 0).toLocaleString() + ' \u2013 ' + sym + (CD.typicalDailyRate.high || 0).toLocaleString();
@@ -389,46 +387,61 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     btn.textContent = collapsed ? 'Expand' : 'Collapse';
   };
 
+  var payrollFields=['selWorkerType','inpNumWorkers','inpMonthlySalary','inpDailyRate','inpDaysWorked','inpRatePerUnit','inpUnitsCompleted','inpOvertimeHours','inpHousingValue','inpFoodValue'];
+  var ngContributionFields = ["pension","health","housing","wageCoverage","leaveBudget","pensionablePay","healthBasicPay","healthConsolidatedPay","housingMonthlyIncome","monthlyWage","overtimeHourlyPay","leavePayBase","leaveDays","paidDaysPerMonth"];
+  payrollFields = payrollFields.concat(ngContributionFields.map(function (key) { return "ng_" + key; }));
+  function syncContributionFields(){
+    var show={monthlyWage:document.getElementById("ng_wageCoverage").value==="applicable-confirmed",pensionablePay:document.getElementById("ng_pension").value==="standard",healthBasicPay:document.getElementById("ng_health").value==="basic",healthConsolidatedPay:document.getElementById("ng_health").value==="consolidated",housingMonthlyIncome:document.getElementById("ng_housing").value==="participating"};
+    show.overtimeHourlyPay=Number(document.getElementById("inpOvertimeHours").value)>0;
+    show.leavePayBase=show.leaveDays=show.paidDaysPerMonth=document.getElementById("ng_leaveBudget").value==="include";
+    Object.keys(show).forEach(function(key){document.getElementById("ng_row_"+key).hidden=!show[key];document.getElementById("ng_row_"+key).style.display=show[key]?"":"none";document.getElementById("ng_"+key).disabled=!show[key];});
+  }
+  document.addEventListener("change",syncContributionFields);
+  document.addEventListener("input",syncContributionFields);
+  document.addEventListener("DOMContentLoaded",syncContributionFields);
+  function invalidatePayrollResult(event){
+    if(event&&payrollFields.indexOf(event.target.id)<0)return;
+    document.getElementById('resultsWrap').classList.remove('on');
+    document.getElementById('payrollValidationStatus').textContent='';
+    payrollFields.forEach(function(id){var field=document.getElementById(id);if(field)field.removeAttribute('aria-invalid');});
+  }
+  document.addEventListener('input',invalidatePayrollResult);
+  document.addEventListener('change',invalidatePayrollResult);
   window.runCalculation = function () {
-    var wt = document.getElementById('selWorkerType').value;
-    var dailyRateEl = document.getElementById('inpDailyRate');
-    var daysEl = document.getElementById('inpDaysWorked');
-    var rateEl = document.getElementById('inpRatePerUnit');
-    var unitsEl = document.getElementById('inpUnitsCompleted');
-    var inputs = {
-      workerType:     wt,
-      grossPay:       parseFloat(wt === 'permanent'
-                        ? document.getElementById('inpMonthlySalary').value
-                        : (dailyRateEl ? dailyRateEl.value : 0)) || 0,
-      daysWorked:     parseFloat(daysEl ? daysEl.value : 26) || 26,
-      ratePerUnit:    parseFloat(rateEl ? rateEl.value : 0) || 0,
-      unitsCompleted: parseFloat(unitsEl ? unitsEl.value : 0) || 0,
-      overtimeHours:  parseFloat(document.getElementById('inpOvertimeHours').value) || 0,
-      inKindHousing:  parseFloat(document.getElementById('inpHousingValue').value) || 0,
-      inKindFood:     parseFloat(document.getElementById('inpFoodValue').value) || 0,
-      numWorkers:     parseInt(document.getElementById('inpNumWorkers').value) || 1
-    };
-
-    if (!ENG.calculate) { alert('Calculator not loaded. Please refresh.'); return; }
-    var r = ENG.calculate(inputs, CD);
-    if (r.error) { alert(r.message); return; }
+    invalidatePayrollResult();
+    var status=document.getElementById('payrollValidationStatus');
+    var validator=window.AfroTools.FarmPayrollValidation;
+    if(!validator||!ENG.calculate){status.textContent='The calculator could not load. Refresh the page and try again.';return;}
+    function value(id){var field=document.getElementById(id);return field?field.value:'';}
+    var wt=value('selWorkerType');
+    var checked=validator.validate({workerType:wt,numWorkers:value('inpNumWorkers'),grossPay:value(wt==='permanent'?'inpMonthlySalary':'inpDailyRate'),daysWorked:value('inpDaysWorked'),ratePerUnit:value('inpRatePerUnit'),unitsCompleted:value('inpUnitsCompleted'),overtimeHours:value('inpOvertimeHours'),inKindHousing:value('inpHousingValue'),inKindFood:value('inpFoodValue')});
+    if(!checked.valid){status.textContent=checked.message;var field=document.getElementById(checked.field);if(field){field.setAttribute('aria-invalid','true');field.focus();}return;}
+    checked.input.contributionSelection={sector:"private"};
+    ngContributionFields.forEach(function(key){checked.input.contributionSelection[key]=value("ng_"+key);});
+    checked.input.minimumWageSelection={coverage:value("ng_wageCoverage"),monthlyWage:value("ng_monthlyWage")};
+    checked.input.labourSelection={};
+    ["overtimeHourlyPay","leaveBudget","leavePayBase","leaveDays","paidDaysPerMonth"].forEach(function(key){checked.input.labourSelection[key]=value("ng_"+key);});
+    var r;
+    try{r=ENG.calculate(checked.input,CD);}catch(error){status.textContent='The calculation could not be completed. Check the inputs and try again.';return;}
+    if(!r||r.error){status.textContent=r&&r.message?r.message:'The calculation could not be completed.';var invalid=r&&document.getElementById('ng_'+r.field);if(invalid){invalid.setAttribute('aria-invalid','true');invalid.focus();}else{status.setAttribute('tabindex','-1');status.focus();}return;}
+    if(['baseGross','grossForDeductions','netPay','totalEmployerCost','farmMonthlyCost','farmAnnualCost'].some(function(key){return !Number.isFinite(r[key])||Math.abs(r[key])>Number.MAX_SAFE_INTEGER;})){status.textContent='The combined amounts are too large to calculate reliably. Reduce the amounts and try again.';return;}
     renderResults(r);
   };
 
-  function renderResults(r) {
+    function renderResults(r) {
     var wrap = document.getElementById('resultsWrap');
     wrap.classList.add('on');
     wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     document.getElementById('resNetPay').textContent = r.fNet;
-    document.getElementById('resGrossSub').textContent = 'Gross: ' + r.fGross + '  |  Deductions: ' + r.fDeductions;
+    document.getElementById('resGrossSub').textContent = 'Total remuneration including in-kind benefits: ' + r.fGross + '  |  Deductions: ' + r.fDeductions;
 
     var pt = document.getElementById('payslipTable');
     var ptRows = '<tr class="section-head"><td colspan="3">Earnings</td></tr>';
     ptRows += '<tr><td class="indent">Base Pay</td><td class="amount">' + r.sym + fmt(r.baseGross) + '</td><td class="pct"></td></tr>';
     if (r.overtimePay > 0) ptRows += '<tr><td class="indent">Overtime Pay</td><td class="amount">' + r.sym + fmt(r.overtimePay) + '</td><td class="pct"></td></tr>';
     if (r.inKindValue > 0) ptRows += '<tr><td class="indent">In-Kind Benefits</td><td class="amount">' + r.sym + fmt(r.inKindValue) + '</td><td class="pct"></td></tr>';
-    ptRows += '<tr class="total-row"><td>Gross Pay</td><td class="amount">' + r.fGross + '</td><td class="pct">100%</td></tr>';
+    ptRows += '<tr class="total-row"><td>Total remuneration including in-kind benefits</td><td class="amount">' + r.fGross + '</td><td class="pct">100%</td></tr>';
     if (r.deductions && r.deductions.length) {
       ptRows += '<tr class="section-head"><td colspan="3">Deductions</td></tr>';
       r.deductions.forEach(function (d) {
@@ -437,9 +450,10 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       });
       ptRows += '<tr><td class="indent" style="color:#94a3b8;font-size:0.75rem;" colspan="3">PAYE Tax: <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">' + COUNTRY_NAME + ' PAYE Calculator &rarr;</a></td></tr>';
     } else {
-      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No statutory deductions apply (informal farm workers typically exempt). <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
+      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No contributions are included under the arrangements you selected. This is not an exemption decision. <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
     }
-    ptRows += '<tr class="total-row"><td><strong>Net Take-Home</strong></td><td class="amount positive-val">' + r.fNet + '</td><td class="pct"></td></tr>';
+    if (r.inKindValue > 0) ptRows += '<tr><td>Less non-cash benefits</td><td class="amount">-' + r.sym + fmt(r.inKindValue) + '</td><td></td></tr>';
+    ptRows += '<tr class="total-row"><td><strong>Cash Take-Home Before PAYE</strong></td><td class="amount positive-val">' + r.fNet + '</td><td class="pct"></td></tr>';
     pt.innerHTML = ptRows;
 
     var mg = document.getElementById('metricsGrid');
@@ -459,27 +473,15 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     etRows += '<tr class="total-row"><td><strong>Total Cost to Employer</strong></td><td class="amount">' + r.fEmployerCost + '</td></tr>';
     et.innerHTML = etRows;
 
-    var mwBox = document.getElementById('mwCheckBox');
-    if (r.mwCheck) {
-      var mc = r.mwCheck;
-      var cls = mc.compliant ? 'ok' : 'warn';
-      var icon = mc.compliant ? '&#9989;' : '&#9888;&#65039;';
-      var mwLabel = mc.isDaily ? '/day' : '/month';
-      var diffText = mc.compliant
-        ? r.sym + fmt(mc.diff) + mwLabel + ' above agricultural minimum wage'
-        : r.sym + fmt(mc.diff) + mwLabel + ' BELOW agricultural minimum wage';
-      mwBox.innerHTML = '<div class="mw-check ' + cls + '">' + icon + ' Agricultural minimum in ' + COUNTRY_NAME + ': ' + r.sym + mc.minWage.toLocaleString() + mwLabel + '. Your rate is ' + diffText + '.</div>';
-    } else {
-      mwBox.innerHTML = '<div class="mw-check ok">&#9432; ' + COUNTRY_NAME + ' does not have a legislated agricultural minimum wage. Wages are set by market rates and negotiation.</div>';
-    }
-
-    var ll = r.laborLaw || {};
-    document.getElementById('laborLawBox').innerHTML = '<strong>Labour Law Summary &#8212; ' + COUNTRY_NAME + '</strong><br>'
-      + (ll.maxHoursPerDay ? 'Max ' + ll.maxHoursPerDay + ' hrs/day, ' + (ll.maxHoursPerWeek || 40) + ' hrs/week &bull; ' : '')
-      + (ll.overtimeRate ? 'Overtime at ' + ll.overtimeRate + '&times; &bull; ' : '')
-      + (ll.annualLeave_days ? ll.annualLeave_days + ' days annual leave &bull; ' : '')
-      + (ll.publicHolidays ? ll.publicHolidays + ' public holidays' : '')
-      + (ll.notes ? '<br><span style="color:#64748b;">' + ll.notes + '</span>' : '');
+    var mwBox=document.getElementById("mwCheckBox"),mc=r.mwCheck;
+    var wageMessages={"coverage-unknown":"Coverage is not confirmed; no compliance result has been calculated.","exempt-confirmed":"You confirmed an exemption. No minimum-wage comparison has been applied.","below-reference":"The entered monthly wage is below the national reference.","meets-reference":"The entered monthly wage meets or exceeds the national reference. This comparison does not establish overall payroll compliance."};
+    mwBox.textContent=(wageMessages[mc.status]||"Coverage needs review.")+" National reference: NGN 70,000 per month, effective 29 July 2024.";
+    if(mc.comparedWageKobo!=null)mwBox.textContent+=" Compared monthly wage: NGN "+fmt(mc.comparedWageKobo/100)+"; difference: "+(mc.differenceKobo<0?"-":"+")+"NGN "+fmt(Math.abs(mc.differenceKobo)/100)+".";
+    var labour=r.labourAssumptions, summary="Working hours and overtime pay depend on the applicable agreement. Leave eligibility and cash pay basis must be confirmed. This optional budget is not an employer contribution or payment in lieu of leave.";
+    if(labour.overtimeHourlyPayKobo!=null)summary+=" Agreed total pay per overtime hour: NGN "+fmt(labour.overtimeHourlyPayKobo/100)+".";
+    summary+=" Monthly leave budget per worker: NGN "+fmt(r.leaveProvision)+" ("+(labour.leave.included?"included":"excluded")+"). Employer cost before leave budget: NGN "+fmt(r.employerCostBeforeLeaveBudget)+".";
+    if(labour.leave.included)summary+=" Leave cash basis: NGN "+fmt(labour.leave.monthlyPayBasisKobo/100)+"; annual days: "+labour.leave.annualDays+"; paid days per month: "+labour.leave.paidDaysPerMonth+".";
+    document.getElementById("laborLawBox").textContent=summary;
 
     document.getElementById('crossTools').innerHTML = '<a class="cross-tool-card" href="' + (r.payeLink || '#') + '"><span class="cross-tool-icon">&#128181;</span><div class="cross-tool-text"><div class="cross-tool-name">' + COUNTRY_NAME + ' PAYE Calculator</div><div class="cross-tool-desc">Compute exact income tax</div></div></a>'
       + '<a class="cross-tool-card" href="/agriculture/farm-profit/' + FARM_PROFIT_SLUG + '"><span class="cross-tool-icon">&#128202;</span><div class="cross-tool-text"><div class="cross-tool-name">Farm Profit/Loss Calculator</div><div class="cross-tool-desc">Full farm profitability analysis</div></div></a>'
@@ -488,7 +490,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
   function fmt(n) {
     if (!isFinite(n)) return '0';
-    return Math.round(Math.abs(n)).toLocaleString('en-US');
+    return Math.abs(n).toLocaleString('en-NG', {minimumFractionDigits:2,maximumFractionDigits:2});
   }
 
   document.addEventListener('DOMContentLoaded', init);
