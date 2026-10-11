@@ -13,15 +13,29 @@
   var txtButton = document.getElementById('telecom-download-txt');
   var jsonButton = document.getElementById('telecom-download-json');
   var importInput = document.getElementById('telecom-import');
-  if (!data || !engine || !locale || !configNode || !form || !resultNode || !errorNode) return;
+  // Prevent native submission before any dependency/configuration early return.
+  if (form) form.addEventListener('submit', function preventNativeSubmission(event) { event.preventDefault(); });
+  var submitButton = form && form.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.disabled = true;
+  if (importInput) importInput.disabled = true;
+  if (!engine || !locale || !configNode || !form || !resultNode || !errorNode || !exportStatus || !copyButton || !txtButton || !jsonButton || !importInput) {
+    if (errorNode) errorNode.textContent = "Hesabu bado haipatikani. Unaweza kuendelea kuhariri sehemu zako.";
+    return;
+  }
 
   var config;
   try {
     config = JSON.parse(configNode.textContent);
+    if (!config || typeof config !== 'object' || !Object.prototype.hasOwnProperty.call(engine, config.kind) || typeof engine[config.kind] !== 'function') throw new Error('invalid_config');
   } catch (error) {
     errorNode.textContent = "Mipangilio ya zana hii haipatikani.";
     return;
   }
+
+  var catalogueAvailable = Boolean(data && data.countries && typeof data.countries === 'object' && Object.keys(data.countries).length);
+  var localEstimateOnly = !catalogueAvailable && config.kind === 'dataUsage' && typeof engine.estimateDataUsage === 'function';
+  if (!catalogueAvailable && !localEstimateOnly) { errorNode.textContent = "Orodha ya zana hii haipatikani. Unaweza kuendelea kuhariri sehemu zako."; return; }
+  if (localEstimateOnly && submitButton) submitButton.textContent = "Kadiria matumizi yangu";
 
   var latest = null;
   var errorMessages = {
@@ -102,7 +116,53 @@
       + '</tbody></table></div>';
   }
 
+  var catalogueRetryInFlight = false;
+  function retryCatalogue() {
+    if (!localEstimateOnly || catalogueRetryInFlight) return;
+    catalogueRetryInFlight = true;
+    var controls = document.querySelectorAll('[data-telecom-retry]');
+    Array.prototype.forEach.call(controls, function (button) { button.disabled = true; });
+    errorNode.textContent = "Inapakia orodha…";
+    var script = document.createElement('script');
+    var finished = false;
+    function finish(loaded) {
+      if (finished) return;
+      finished = true;
+      root.clearTimeout(timer);
+      script.onload = script.onerror = null;
+      script.remove();
+      catalogueRetryInFlight = false;
+      Array.prototype.forEach.call(controls, function (button) { button.disabled = false; });
+      var recovered = loaded && (typeof TELECOM_DATA !== 'undefined' ? TELECOM_DATA : root.TELECOM_DATA);
+      if (!recovered || !recovered.countries || typeof recovered.countries !== 'object' || !Object.keys(recovered.countries).length) {
+        errorNode.textContent = "Orodha bado haipatikani. Makadirio yako ya ndani na maingizo yako yamehifadhiwa.";
+        return;
+      }
+      var preserved = snapshotInputs();
+      data = recovered;
+      localEstimateOnly = false;
+      Array.prototype.forEach.call(form.querySelectorAll('[data-country-select]'), function (select) { select.disabled = false; });
+      populateCountries();
+      Object.keys(preserved).forEach(function (name) { var field = form.elements.namedItem(name); if (field) field.value = preserved[name]; });
+      updateDependentFields();
+      clearLatestResult();
+      var pageSource = document.getElementById('telecom-page-source');
+      if (pageSource) pageSource.innerHTML = sourceNotice({ source: engine.snapshotState(data) });
+      errorNode.textContent = "Orodha imepakiwa. Chagua nchi ili kulinganisha vifurushi vilivyohifadhiwa.";
+    }
+    script.onload = function () { finish(true); };
+    script.onerror = function () { finish(false); };
+    var timer = root.setTimeout(function () { finish(false); }, 12000);
+    script.src = '/data/telecom/country-telecom-index.js';
+    document.head.appendChild(script);
+  }
+  document.addEventListener('click', function (event) {
+    var button = event.target && event.target.closest && event.target.closest('[data-telecom-retry]');
+    if (button) retryCatalogue();
+  });
+
   function sourceNotice(result) {
+    if (localEstimateOnly) return '<aside class="sw-telecom-source" data-source-state="unavailable" role="status"><strong>Makadirio ya matumizi ya ndani</strong><p>Mapendekezo ya vifurushi hayapatikani. Makadirio haya yanatumia matumizi yako na makadirio ya ndani pekee.</p><button type="button" data-telecom-retry>Jaribu kupakia orodha tena</button></aside>';
     var source = result.source || engine.snapshotState(data);
     var date = source.reviewedAt || "tarehe haijulikani";
     var age = source.ageDays === null ? '' : ' · ' + source.ageDays + " siku";
@@ -319,7 +379,7 @@
           ];
         }));
     } else {
-      html += "<p>Hakuna kifurushi cha mwezi kilichohifadhiwa kinacholingana na hitaji.</p>";
+      html += localEstimateOnly ? '<p>Mapendekezo ya vifurushi hayapatikani. Makadirio haya yanatumia matumizi yako na makadirio ya ndani pekee.</p>' : "<p>Hakuna kifurushi cha mwezi kilichohifadhiwa kinacholingana na hitaji.</p>";
     }
     return html;
   }
@@ -343,6 +403,7 @@
 
   function populateCountries() {
     Array.prototype.forEach.call(form.querySelectorAll('[data-country-select]'), function (select) {
+      if (localEstimateOnly) { select.disabled = true; return; }
       var requireKind = select.getAttribute('data-country-requires');
       var current = select.value;
       select.innerHTML = "<option value=\"\">Chagua nchi</option>";
@@ -363,7 +424,7 @@
 
   function updateDependentFields() {
     var countryInput = form.querySelector('[name="country"]');
-    var country = countryInput && data.countries[countryInput.value];
+    var country = countryInput && data && data.countries && data.countries[countryInput.value];
     var operator = form.querySelector('[name="operator"]');
     if (operator) {
       var current = operator.value;
@@ -501,12 +562,17 @@
       errorNode.textContent = "Sahihisha sehemu zinazohitajika kabla ya kukokotoa tena.";
       return null;
     }
-    var calculate = engine[config.kind];
+    var calculate = localEstimateOnly ? engine.estimateDataUsage : engine[config.kind];
     if (typeof calculate !== 'function') {
       errorNode.textContent = "Injini ya zana hii haipatikani.";
       return null;
     }
-    var result = calculate(data, collect());
+    var result = localEstimateOnly ? calculate(collect()) : calculate(data, collect());
+    if (result && result.ok && localEstimateOnly) {
+      result.recommendedPlans = [];
+      result.recommendationsStatus = 'unavailable';
+      result.source = null;
+    }
     if (!result || !result.ok) {
       errorNode.textContent = errorMessages[result && result.error] || "Haiwezekani kutoa matokeo kwa data hizi.";
       return null;
@@ -522,7 +588,7 @@
       kind: config.kind,
       route: config.route,
       engineVersion: engine.version,
-      datasetReviewedAt: data.lastUpdated || null,
+      datasetReviewedAt: localEstimateOnly ? null : ((data && data.lastUpdated) || null),
       inputs: snapshotInputs(),
       result: result
     };
@@ -549,17 +615,23 @@
   }
 
   function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-    var area = document.createElement('textarea');
-    area.value = text;
-    area.setAttribute('readonly', '');
-    area.style.position = 'fixed';
-    area.style.opacity = '0';
-    document.body.appendChild(area);
-    area.select();
-    document.execCommand('copy');
-    area.remove();
-    return Promise.resolve();
+    return Promise.resolve().then(function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+      var previousFocus = document.activeElement;
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      try {
+        area.select();
+        if (!document.execCommand('copy')) throw new Error('Copy unavailable');
+      } finally {
+        area.remove();
+        if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+      }
+    });
   }
 
   function txtSummary() {
@@ -567,8 +639,8 @@
     return [
       config.title,
       "Njia: " + config.route,
-      "Snapshot: " + (data.lastUpdated || "haijulikani"),
-      "Uhakika: mdogo - data ya kupanga iliyohifadhiwa",
+      localEstimateOnly ? "Makadirio ya matumizi ya ndani" : "Snapshot: " + ((data && data.lastUpdated) || "haijulikani"),
+      localEstimateOnly ? "Mapendekezo ya vifurushi hayapatikani. Makadirio haya yanatumia matumizi yako na makadirio ya ndani pekee." : "Uhakika: mdogo - data ya kupanga iliyohifadhiwa",
       '',
       resultNode.innerText.trim(),
       '',
@@ -605,8 +677,9 @@
   copyButton.addEventListener('click', function () {
     var text = txtSummary();
     if (!text) { errorNode.textContent = "Tengeneza matokeo kwanza."; return; }
-    copyText(text).then(function () { exportStatus.textContent = "Muhtasari umenakiliwa."; })
-      .catch(function () { exportStatus.textContent = "Kunakili kumeshindikana. Tumia upakuaji wa TXT."; });
+    var copiedResult = latest;
+    copyText(text).then(function () { if (latest === copiedResult) exportStatus.textContent = "Muhtasari umenakiliwa."; })
+      .catch(function () { if (latest === copiedResult) exportStatus.textContent = "Kunakili kumeshindikana. Tumia upakuaji wa TXT."; });
   });
   txtButton.addEventListener('click', function () {
     var text = txtSummary();
@@ -659,4 +732,7 @@
   if (pageSource) {
     pageSource.innerHTML = sourceNotice({ source: state });
   }
+  if (submitButton) submitButton.disabled = false;
+  importInput.disabled = false;
+  errorNode.textContent = '';
 })(typeof window !== 'undefined' ? window : globalThis);

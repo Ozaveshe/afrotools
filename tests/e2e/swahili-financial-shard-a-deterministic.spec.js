@@ -3,9 +3,12 @@ const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
 const forex = {
+  // Synthetic values using the supported provider response contract.
+  schemaVersion: 1,
+  retained_rate_codes: [],
   base: 'USD',
   rates: { USD: 1, NGN: 1400, KES: 130, GHS: 12, ZAR: 18, EUR: 0.9, GBP: 0.78 },
-  source: 'synthetic-fixture',
+  source: 'fawazahmed',
   timestamp: new Date().toISOString()
 };
 

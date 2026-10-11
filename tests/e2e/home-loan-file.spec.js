@@ -165,8 +165,14 @@ test('FR 375 light: localized status, TXT and five deliberate handoffs', async (
   await expect(page.locator('#hl-result-title')).toHaveText('1 justificatif prêt');
   await expect(page.locator('#hl-gathering')).toHaveText('1');
   const text = await downloadText(page);
-  expect(text).toContain('Libellé de la banque (facultatif): Banque A');
-  expect(text).toContain('Justificatif d’identité: Prêt');
+  expect(text).toContain('Libellé de la banque (facultatif) : Banque A');
+  expect(text).toContain('État du justificatif d’identité : Prêt');
+  expect(text).toContain('Prêts : 1');
+  expect(text).toContain('En collecte : 1');
+  expect(text).toContain('À mettre à jour : 1');
+  expect(text).toContain('Non commencés : 6');
+  expect(text).toContain('Non demandés : 1');
+  expect(text).not.toContain('CopierTélécharger');
   expect(text).toContain('ne mesure ni l’éligibilité ni les chances d’accord');
   const handoffs = await page.locator('#specialists .hl-link').evaluateAll((links) => links.map((link) => new URL(link.href).pathname));
   expect(handoffs).toEqual(['/fr/tools/capacite-emprunt/','/fr/tools/calculateur-hypothecaire/','/fr/tools/premier-achat-immobilier/','/fr/tools/comparateur-prets/','/fr/tools/frais-transfert-propriete/']);

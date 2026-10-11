@@ -177,7 +177,7 @@
     }
     function countryLabel(key){var values={"Nationality": ["Nationalité", "Uraia"], "Date of birth": ["Date de naissance", "Tarehe ya kuzaliwa"], "Marital status": ["État civil", "Hali ya ndoa"], "Origin": ["Origine", "Asili"], "LGA": ["Collectivité locale", "Eneo la serikali za mitaa"], "ID": ["Identifiant", "Kitambulisho"], "Licence": ["Permis", "Leseni"], "Gender": ["Genre", "Jinsia"], "Health": ["Santé", "Afya"], "Military service": ["Service militaire", "Huduma ya kijeshi"], "Religion": ["Religion", "Dini"]};var lang=String(e.document && e.document.documentElement.lang || "en").split("-")[0];return (values[key] && values[key][lang==="fr"?0:lang==="sw"?1:2] || key)+": ";}
     function p(e) {
-        var t = (e = e || {}).skills || {}, o = a(t.h), n = a(t.s), r = a(t.t), s = l([ e.fn, e.ln ].filter(Boolean).join(" ")) || copy.name, d = l(e.title) || copy.title, p = [ e.email, [ e.phoneCode, e.phone ].filter(Boolean).join(" "), e.altPhone, e.loc, e.linkedin, e.github, e.web, e.portfolio ].map(l).filter(Boolean), g = e.sp ? [ e.nat && countryLabel("Nationality") + e.nat, e.dob && countryLabel("Date of birth") + (i.fmtDOB ? i.fmtDOB(e.dob) : e.dob), e.mar && countryLabel("Marital status") + e.mar, e.so && countryLabel("Origin") + e.so, e.lga && countryLabel("LGA") + e.lga, e.idNumber && countryLabel("ID") + e.idNumber, e.dlStatus && countryLabel("Licence") + e.dlStatus,e.gen && countryLabel("Gender")+e.gen,e.healthStatus && countryLabel("Health")+e.healthStatus,e.milStatus && countryLabel("Military service")+e.milStatus,e.religion && countryLabel("Religion")+e.religion ].filter(Boolean) : [];
+        var t = (e = e || {}).skills || {}, o = a(t.h), n = a(t.s), r = a(t.t), s = l([ e.fn, e.ln ].filter(Boolean).join(" ")) || copy.name, d = l(e.title) || copy.title, p = [ e.email, l(e.phone) ? [ e.phoneCode, e.phone ].filter(Boolean).join(" ") : "", e.altPhone, e.loc, e.linkedin, e.github, e.web, e.portfolio ].map(l).filter(Boolean), g = e.sp ? [ e.nat && countryLabel("Nationality") + e.nat, e.dob && countryLabel("Date of birth") + (i.fmtDOB ? i.fmtDOB(e.dob) : e.dob), e.mar && countryLabel("Marital status") + e.mar, e.so && countryLabel("Origin") + e.so, e.lga && countryLabel("LGA") + e.lga, e.idNumber && countryLabel("ID") + e.idNumber, e.dlStatus && countryLabel("Licence") + e.dlStatus,e.gen && countryLabel("Gender")+e.gen,e.healthStatus && countryLabel("Health")+e.healthStatus,e.milStatus && countryLabel("Military service")+e.milStatus,e.religion && countryLabel("Religion")+e.religion ].filter(Boolean) : [];
         return {
             data: e,
             name: c(s),
@@ -201,7 +201,7 @@
                 return [e.n,e.i,e.y,e.t,e.org,e.e,e.p,e.rel].some(l);
             }),
             languages: (e.langs || []).filter(function(e) {
-                return [e.l,e.lv].some(l);
+                return l(e.l);
             }),
             refs: e.showRefs ? (e.refs || []).filter(function(e) {
                 return [e.n,e.i,e.y,e.t,e.org,e.e,e.p,e.rel].some(l);
@@ -328,7 +328,7 @@
         }), {
             rule: n,
             tight: !0
-        }), f(copy.section8, '<div style="font-size:9px;line-height:1.5">' + z(o.hard.concat(o.soft).concat(o.tools), " | ") + "</div>", {
+        }), f(copy.section8, o.hard.length || o.soft.length || o.tools.length ? '<div style="font-size:9px;line-height:1.5">' + z(o.hard.concat(o.soft).concat(o.tools), " | ") + "</div>" : "", {
             rule: n,
             tight: !0
         }), f(copy.section9, m(o.projects), {

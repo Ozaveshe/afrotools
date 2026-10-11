@@ -15,6 +15,20 @@ const DIRECTORY = require('../data/tool-directory.json');
 const EVIDENCE = require('../reports/french-document-pdf-parity-evidence.json');
 const MISSING_ARTWORK = require('../reports/french-document-pdf-missing-artwork.json');
 
+test('French meeting workspace regeneration keeps dimensions bound to its reviewed artwork', () => {
+  const app = CONFIG.apps.find((row) => row.id === 'meeting-minutes');
+  const artwork = require('../data/localization/fr-document-pdf-artwork.json');
+  const lexicon = require('../data/localization/fr-document-pdf-lexicon.json');
+  const { transform } = require('../scripts/build-french-document-pdf-parity');
+  const output = transform(read(app.englishWorkspaceFile), app, CONFIG, lexicon, artwork, { workspace: true });
+  const image = meta(output, 'og:image');
+  const size = require('../scripts/lib/image-size').imageSizeFromUrl(image, ROOT);
+  assert.ok(size, 'Reviewed image must be measurable');
+  assert.equal(meta(output, 'og:image:width'), String(size.w));
+  assert.equal(meta(output, 'og:image:height'), String(size.h));
+  assert.match(meta(output, 'robots'), /noindex/);
+});
+
 function read(relativeFile) {
   return fs.readFileSync(path.join(ROOT, relativeFile), 'utf8');
 }

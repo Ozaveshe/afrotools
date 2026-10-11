@@ -99,7 +99,7 @@
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=f8df4ae1';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=5210b10e';
   // NAVBAR_CSS_HREF_END
 
   // ANIMATIONS_JS_HREF_START
@@ -719,6 +719,7 @@
       if (this._outsideFn) document.removeEventListener('click', this._outsideFn);
       if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
       if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
+      if (this._menuResizeFn) window.removeEventListener('resize', this._menuResizeFn);
       if (this._navigationRefreshFn) {
         document.removeEventListener('focusin', this._navigationRefreshFn);
         document.removeEventListener('click', this._navigationRefreshFn);
@@ -1259,6 +1260,7 @@
         signIn:       isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign in',
         ariaNav:      isSw ? 'Urambazaji mkuu'              : isFr ? 'Navigation principale'                            : 'Main navigation',
         ariaMenu:     isSw ? 'Menyu ya urambazaji'          : isFr ? 'Menu de navigation'                               : 'Navigation menu',
+        closeMenu:    isSw ? 'Funga menyu' : isFr ? 'Fermer le menu' : lang === 'ha' ? 'Rufe jerin zaɓi' : lang === 'yo' ? 'Pa àkójọ aṣàyàn' : 'Close menu',
         ariaSearch:   isSw ? 'Tafuta zana'                  : isFr ? 'Rechercher des outils'                            : 'Search tools',
         megaNote:     isSw ? 'Nchi 54 za Afrika · bure · bila usajili'       : isFr ? '54 pays africains · gratuit · sans inscription': '54 African countries · Core use without a paid subscription · no sign-up required',
         browseAll:    isSw ? 'Tazama zana zote →'           : isFr ? 'Voir tous les outils →'                           : 'Browse all tools →',
@@ -1419,7 +1421,24 @@
       if (T_BY_LANG[lang]) Object.assign(T, T_BY_LANG[lang]);
 
       const markup = `
-        <style>:host(:not([data-styles-ready])){visibility:hidden}</style>
+        <style>
+          :host(:not([data-styles-ready])) { display: block; max-width: 100%; height: 64px; visibility: hidden; overflow: hidden; }
+          :host(:not([data-styles-ready])) > :not(style):not(link):not(.styles-fallback) { display: none; }
+          @media (max-width:480px) { :host(:not([data-styles-ready])) { height: 56px; } }
+          .styles-fallback { display: none; }
+          :host([data-styles-fallback]) { height: auto; visibility: visible; overflow: visible; }
+          :host([data-styles-fallback]) .styles-fallback {
+            display: flex; flex-wrap: wrap; gap: 4px; box-sizing: border-box; max-width: 100%;
+            padding: 8px; border-bottom: 1px solid #e5eaf2; background: #fff; color: #172033;
+            font: 600 14px/1.4 system-ui, sans-serif;
+          }
+          .styles-fallback a {
+            display: flex; align-items: center; box-sizing: border-box; min-height: 44px;
+            max-width: 100%; padding: 8px; color: inherit; overflow-wrap: anywhere;
+          }
+          .styles-fallback a:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+          :host(.theme-dark) .styles-fallback { background: #172033; color: #f8fafc; border-color: #475569; }
+        </style>
         <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
         <link rel="stylesheet" href="/assets/css/navbar-language-switcher.css?v=2">
         <style>
@@ -1448,6 +1467,12 @@
             .burger { display: flex; flex: 0 0 44px; }
           }
         </style>
+        <div class="styles-fallback" role="navigation" aria-label="${T.ariaNav}" hidden>
+          <a href="${T.homeHref}" aria-label="${T.homeLabel}">AFROTOOLS</a>
+          <a href="${T.browseHref}">${T.browseAll}</a>
+          <a href="${T.salaryHref}">${T.salaryTax}</a>
+          <a href="${T.pdfHref}">${T.pdfTools || 'PDF'}</a>
+        </div>
         <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
             <a href="${T.homeHref}" class="logo" aria-label="${T.homeLabel}">
@@ -1548,6 +1573,9 @@
         </div>
 
         <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}" aria-hidden="true">
+          <div class="mob-theme-section">
+            <button class="mob-theme-toggle" id="mobClose" type="button">${this._escapeHtml(T.closeMenu)}<span aria-hidden="true">×</span></button>
+          </div>
           <div class="mob-search-bar">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
@@ -1617,30 +1645,63 @@
 
 `;
       if (markup === this._lastRenderedMarkup) return false;
+      window.clearTimeout(this._styleFallbackTimer);
+      const hadFallback = this.hasAttribute('data-styles-fallback');
       this.removeAttribute('data-styles-ready');
       this._lastRenderedMarkup = markup;
-      this.shadowRoot.innerHTML = markup;
-      const styleLinks = Array.from(this.shadowRoot.querySelectorAll('link[rel="stylesheet"]'));
-      let pendingStyles = styleLinks.length;
-      let revealed = false;
-      const reveal = () => {
-        if (revealed) return;
-        revealed = true;
-        this.setAttribute('data-styles-ready', '');
-      };
-      const settled = () => {
-        pendingStyles -= 1;
-        if (pendingStyles <= 0) reveal();
-      };
-      styleLinks.forEach(link => {
-        if (link.sheet) settled();
-        else {
-          link.addEventListener('load', settled, { once: true });
-          link.addEventListener('error', settled, { once: true });
+      const template = document.createElement('template');
+      template.innerHTML = markup;
+      const nextNodes = Array.from(template.content.childNodes);
+      // Locale assets change menu content, not the stylesheet or fallback
+      // contract. Keep those nodes connected so usable links never collapse
+      // and loaded/in-flight stylesheets do not restart during a refresh.
+      nextNodes.forEach((next, index) => {
+        const current = this.shadowRoot.childNodes[index];
+        const keep = current?.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE && (
+          (current.matches('style, link[rel="stylesheet"]') && current.isEqualNode(next)) ||
+          (current.matches('.styles-fallback') && next.matches('.styles-fallback') &&
+            current.innerHTML === next.innerHTML && current.getAttribute('aria-label') === next.getAttribute('aria-label'))
+        );
+        if (!keep) {
+          if (current) current.replaceWith(next);
+          else this.shadowRoot.append(next);
         }
       });
-      if (!styleLinks.length) reveal();
-      window.setTimeout(reveal, 1500);
+      while (this.shadowRoot.childNodes.length > nextNodes.length) this.shadowRoot.lastChild.remove();
+      const styleLinks = Array.from(this.shadowRoot.querySelectorAll('link[rel="stylesheet"]'));
+      const fallback = this.shadowRoot.querySelector('.styles-fallback');
+      // An older render's stylesheet events must never reveal a newer unstyled menu.
+      const renderToken = {};
+      this._styleRenderToken = renderToken;
+      const isCurrentRender = () => this._styleRenderToken === renderToken;
+      const showFallback = () => {
+        if (!isCurrentRender() || this.hasAttribute('data-styles-ready')) return;
+        fallback.hidden = false;
+        this.setAttribute('data-styles-fallback', '');
+      };
+      const stylesAreUsable = () => styleLinks.length > 0 && styleLinks.every(link => {
+        // Failed requests can expose stylesheet objects with unreadable rules.
+        try { return Boolean(link.sheet && link.sheet.cssRules.length); }
+        catch (error) { return false; }
+      });
+      const revealIfStyled = () => {
+        if (!isCurrentRender() || !stylesAreUsable()) return;
+        const restoreFocus = fallback.contains(this.shadowRoot.activeElement);
+        window.clearTimeout(this._styleFallbackTimer);
+        this.setAttribute('data-styles-ready', '');
+        this.removeAttribute('data-styles-fallback');
+        fallback.hidden = true;
+        if (restoreFocus) this.shadowRoot.querySelector('.logo').focus({ preventScroll: true });
+      };
+      styleLinks.forEach(link => {
+        link.addEventListener('load', revealIfStyled, { once: true });
+        link.addEventListener('error', showFallback, { once: true });
+      });
+      if (hadFallback) showFallback();
+      revealIfStyled();
+      if (!this.hasAttribute('data-styles-ready')) {
+        this._styleFallbackTimer = window.setTimeout(showFallback, 1500);
+      }
       return true;
     }
 
@@ -1769,6 +1830,7 @@
         if (mobileCountrySearchResults) mobileCountrySearchResults.innerHTML = '';
       };
       const setMenuOpen = (isOpen) => {
+        const wasOpen = this._menuOpen;
         this._menuOpen = isOpen;
         this.classList.toggle('menu-open', this._menuOpen);
         burger?.classList.toggle('open', this._menuOpen);
@@ -1778,10 +1840,38 @@
         if (this._menuOpen) {
           closeMenus();
           this._lockBodyScroll();
+          sr.getElementById('mobClose')?.focus({ preventScroll: true });
           return;
         }
         this._unlockBodyScroll();
         resetMobileSearch();
+        if (wasOpen) burger?.focus({ preventScroll: true });
+      };
+      sr.getElementById('mobClose')?.addEventListener('click', () => setMenuOpen(false));
+      if (this._menuResizeFn) window.removeEventListener('resize', this._menuResizeFn);
+      this._menuResizeFn = () => {
+        if (this._menuOpen && window.innerWidth > 940) {
+          setMenuOpen(false);
+          sr.querySelector('.logo')?.focus({ preventScroll: true });
+        }
+      };
+      window.addEventListener('resize', this._menuResizeFn);
+
+      // Include controls inside nested country-selector shadow roots in tab order.
+      const mobileTabStops = () => {
+        const stops = [];
+        const visit = root => {
+          root.querySelectorAll('*').forEach(element => {
+            if (element.matches('a[href], button, input, select, textarea, [tabindex]') &&
+                element.tabIndex >= 0 && !element.matches(':disabled') &&
+                element.getClientRects().length && getComputedStyle(element).visibility !== 'hidden') {
+              stops.push(element);
+            }
+            if (element.shadowRoot) visit(element.shadowRoot);
+          });
+        };
+        if (mob) visit(mob);
+        return stops;
       };
 
       // Click toggle
@@ -1868,6 +1958,17 @@
       // Escape
       if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
       this._keydownFn = e => {
+        // Nested country menus and native fallback dialogs own their keys first.
+        if (e.defaultPrevented || sr.querySelector('dialog[open]')) return;
+        if (e.key === 'Tab' && this._menuOpen) {
+          const stops = mobileTabStops();
+          const active = e.composedPath()[0];
+          const index = stops.indexOf(active);
+          if (stops.length && (index === -1 || (e.shiftKey ? index === 0 : index === stops.length - 1))) {
+            e.preventDefault();
+            stops[e.shiftKey ? stops.length - 1 : 0].focus();
+          }
+        }
         if (e.key === 'Escape') {
           closeMenus();
           closeLanguageMenu();

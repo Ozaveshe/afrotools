@@ -43,6 +43,7 @@ function build() {
     }
   }
   const shared = JSON.parse(read(OUT + '/reviewed-shared-artwork.json'));
+  for (const item of require('./lib/reviewed-tool-image-bindings').loadBindings()) reviewed.set(item.path, { sha256: item.sha256, text_status: item.text_status, locale_reuse: item.locale_reuse, review_note: item.note });
   for (const item of JSON.parse(read(OUT + '/reviewed-images.json')).images) reviewed.set(item.path, { ...item, review_note:item.note });
   for (const item of JSON.parse(read(OUT + '/recipe-image-aliases.json')).hero_reviews || []) reviewed.set(item.path, { ...item, review_note:item.note });
   for (const item of JSON.parse(read(OUT + '/kitchen-imported-2026-10-09.json')).images) {

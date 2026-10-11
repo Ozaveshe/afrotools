@@ -361,10 +361,10 @@ function page(app) {
         <form id="telecom-form" novalidate>
           <div class="tel-fields">${app.fields}</div>
           <div class="tel-button-row">
-            <button class="tel-button" type="submit">Calculer avec le snapshot</button>
+            <button class="tel-button" type="submit" disabled>Calculer avec le snapshot</button>
             <button class="tel-button secondary" id="telecom-reset" type="reset">Réinitialiser</button>
           </div>
-          <p class="tel-error" id="telecom-errors" role="alert" aria-live="assertive"></p>
+          <p class="tel-error" id="telecom-errors" role="alert" aria-live="assertive">Le calcul n’est pas encore disponible. Vos champs restent modifiables.</p>
         </form>
       </section>
       <div class="tel-aside">
@@ -382,7 +382,7 @@ function page(app) {
             <button class="tel-button secondary" id="telecom-download-txt" type="button" hidden disabled>Télécharger TXT</button>
             <button class="tel-button secondary" id="telecom-download-json" type="button" hidden disabled>Télécharger JSON</button>
             <label class="tel-file-label" for="telecom-import">Rouvrir un JSON
-              <input id="telecom-import" type="file" accept="application/json,.json">
+              <input id="telecom-import" type="file" accept="application/json,.json" disabled>
             </label>
           </div>
           <p class="tel-export-status" id="telecom-export-status" role="status" aria-live="polite"></p>

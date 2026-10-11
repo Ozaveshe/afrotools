@@ -70,7 +70,7 @@ test("country lock exposes only supported channels and ZA-only VAT",async({page}
 test("local TXT, CSV, full JSON and parser-readable PDF exports work",async({page})=>{
   await open(page,"/tools/paystack-calculator/");await calculate(page,"10000");
   let pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download TXT"}).click();let file=await pending;expect(fs.readFileSync(await file.path(),"utf8")).toContain("Deterministic planning estimate only");
-  pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download CSV"}).click();file=await pending;const csv=fs.readFileSync(await file.path(),"utf8");expect(csv).toContain("source_updated");expect(csv).toContain("2026-05-20");
+  pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download CSV"}).click();file=await pending;const csv=fs.readFileSync(await file.path(),"utf8");expect(csv).toContain("source_updated");expect(csv).toContain("2026-09-15");
   pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download full JSON"}).click();file=await pending;const json=JSON.parse(fs.readFileSync(await file.path(),"utf8"));expect(json.result.freshness.effectiveDate).toBeNull();expect(json.scope).toContain("stamp duty");
   pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download PDF"}).click();file=await pending;const parsed=await pdfParse(fs.readFileSync(await file.path()));expect(parsed.text).toContain("Paystack merchant fee planning report");expect(parsed.text).toContain("Effective date: Not published");
 });

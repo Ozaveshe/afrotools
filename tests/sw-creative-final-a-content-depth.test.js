@@ -61,4 +61,19 @@ for (const [owner, [slug, before]] of Object.entries(rows)) {
   assert.doesNotMatch(sw, /Fungua zana kamili ya Kiingereza|Open the full English|AI-powered|reach ya uhakika/i);
 }
 
-console.log("Swahili Creative A content-depth floors passed: 11/11 routes exceed prior visible depth and English semantic structure floors.");
+const { inject } = require("../scripts/lib/sw-creative-final-a-depth");
+const hashtagRoute = "/sw/zana/hashtag-za-maudhui/";
+const titleLink = '<a href="/sw/zana/hashtag-za-maudhui/" class="cht-app-logo"><span>#</span> TagWave</a>';
+const nativeBody = `<body><header>${titleLink}<button id="historyBtn">Historia</button></header><main><input id="topicInput"></main></body>`;
+const promoted = inject(nativeBody, "creator-hashtags", hashtagRoute);
+assert.ok(promoted.includes(`<h1 class="swfa-native-app-title" style="margin:0;font:inherit">${titleLink}</h1>`), "native visible title becomes the static H1 without changing its link/text");
+assert.ok(promoted.includes('<button id="historyBtn">Historia</button>'));
+assert.ok(promoted.includes('<input id="topicInput">'));
+assert.equal(inject(promoted, "creator-hashtags", hashtagRoute), promoted, "heading and depth injection remain idempotent");
+const existingHeading = nativeBody.replace('<main>', '<main><h1>Existing native heading</h1>');
+assert.equal((inject(existingHeading, "creator-hashtags", hashtagRoute).match(/<h1\b/g) || []).length, 1, "existing native H1 is preserved");
+assert.throws(() => inject('<body><main></main></body>', "creator-hashtags", hashtagRoute), /expected one native visible title/, "source drift cannot silently lose the heading");
+const hashtagHtml = fs.readFileSync(path.join(ROOT, "sw/zana/hashtag-za-maudhui/index.html"), "utf8");
+assert.match(hashtagHtml, /<h1\b[^>]*>[\s\S]*?class="cht-app-logo"[\s\S]*?<\/h1>/, "installed native page retains visible H1");
+
+console.log("Swahili Creative A content-depth floors passed: 11/11 routes and native hashtag heading preservation.");

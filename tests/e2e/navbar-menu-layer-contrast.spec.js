@@ -56,7 +56,9 @@ for (const width of [320, 390]) {
           foreground: getComputedStyle(login).color,
           background: getComputedStyle(menu).backgroundColor,
           hostZ: Number(getComputedStyle(host).zIndex),
-          assistantZ: Number(getComputedStyle(document.querySelector('afro-site-assistant')).zIndex),
+          // The native-dialog assistant host uses auto (stack level zero).
+          // Actual pointer coverage is verified separately by the hit assertion.
+          assistantZ: parseInt(getComputedStyle(document.querySelector('afro-site-assistant')).zIndex, 10) || 0,
           hit: document.elementFromPoint(x, y)?.tagName,
           overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         };

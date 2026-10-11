@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { loadBindings } = require("./lib/reviewed-tool-image-bindings");
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -72,6 +73,8 @@ const PAGES = [
 
 function html(page) {
   const url = `https://afrotools.com${page.route}`;
+  const reviewedArtwork = loadBindings().find((binding) => binding.route === page.route && binding.status === "reviewed_same_tool_binding");
+  const imagePath = reviewedArtwork ? reviewedArtwork.path : `/assets/img/tools/${page.id}.webp`;
   const englishUrl = `https://afrotools.com${page.englishRoute}`;
   const frenchUrl = `https://afrotools.com${page.frenchRoute}`;
   const schema = JSON.stringify({
@@ -84,8 +87,8 @@ function html(page) {
     operatingSystem: "Web",
     inLanguage: "sw",
     isAccessibleForFree: true,
-    image: `https://afrotools.com/assets/img/tools/${page.id}.webp`
-  });
+    image: `https://afrotools.com${imagePath}`
+  }, null, 2);
   return `<!doctype html>
 <html lang="sw">
 <head>
@@ -102,9 +105,11 @@ function html(page) {
   <meta property="og:title" content="${page.title} | AfroTools">
   <meta property="og:description" content="${page.description}">
   <meta property="og:url" content="${url}">
-  <meta property="og:image" content="https://afrotools.com/assets/img/tools/${page.id}.webp">
+  <meta property="og:image" content="https://afrotools.com${imagePath}">
   <meta name="twitter:card" content="summary_large_image">
-  <script type="application/ld+json">${schema}</script>
+  <script type="application/ld+json">
+${schema}
+</script>
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
   <link rel="stylesheet" href="/assets/css/sw-trade-utility.css">
   <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
@@ -122,7 +127,7 @@ function html(page) {
         <p>${page.intro}</p>
         <div class="swtu-badges"><span>Hakuna usajili</span><span>Hakuna data inayotumwa</span><span>${page.exportLabel || "Exports za ndani"}</span></div>
       </div>
-      <img src="/assets/img/tools/${page.id}.webp" alt="" width="320" height="200">
+      <img src="${imagePath}" alt="" width="320" height="200">
     </header>
     <section class="swtu-privacy" aria-label="Faragha">
       <strong>Faragha ya ndani:</strong> maelezo unayoandika hubaki kwenye kifaa hiki. Hifadhi, pakua au shiriki tu kwa kitendo chako mwenyewe. Hakuna simu ya AI au mtandao inayotuma maudhui ya fomu.

@@ -2,6 +2,8 @@
 const fs = require("node:fs"),
   path = require("node:path");
 const ROOT = path.resolve(__dirname, "..");
+const { loadBindings, resolveReviewedToolArtwork } = require("./lib/reviewed-tool-image-bindings");
+const reviewedArtwork = loadBindings();
 const clipPage = require("./lib/build-sw-creator-clip-page.js");
 const workspacePage = require("./lib/build-sw-creative-workspace-page.js");
 const contentDepth = require("./lib/sw-creative-final-a-depth.js");
@@ -429,7 +431,7 @@ function j(value) {
 function page(owner, cfg) {
   const canonical = `/sw/zana/${cfg.slug}/`,
     en = `/tools/${owner}/`,
-    image = `/assets/img/tools/${owner}.webp`,
+    image = resolveReviewedToolArtwork(canonical, `/assets/img/tools/${owner}.webp`, reviewedArtwork),
     schema = {
       "@context": "https://schema.org",
       "@type": "WebApplication",
@@ -474,13 +476,19 @@ function buttons(items) {
 function aiPanel() {
   return `<section class="swfa-consent" data-ai-panel><h3>Msaidizi wa AI (hiari)</h3><p>Media kit ya ndani inafanya kazi bila AI. Ukichagua AI, kagua kwanza taarifa zitakazotumwa.</p><label><input type="checkbox" data-ai-consent> Nimekagua payload na nakubali kuituma kwa AfroTools AI kwa ombi hili.</label><div class="swfa-field"><label for="swfa-ai-preview">Payload ya kukagua</label><textarea id="swfa-ai-preview" data-ai-preview readonly></textarea></div><div class="swfa-actions"><button class="swfa-button secondary" type="button" data-ai-refresh>Sasisha onyesho</button><button class="swfa-button" type="button" data-ai-run>Tuma kwa AI</button></div></section>`;
 }
+const appsArg = process.argv.find(arg => arg.startsWith("--apps="));
+const selectedApps = appsArg ? new Set(appsArg.slice(7).split(",").filter(Boolean)) : null;
+if (selectedApps && (!selectedApps.size || [...selectedApps].some(owner => !Object.prototype.hasOwnProperty.call(apps, owner)))) {
+  throw new Error("--apps requires known Creative app owners");
+}
 for (const [owner, cfg] of Object.entries(apps)) {
+  if (selectedApps && !selectedApps.has(owner)) continue;
   const enRoute = `/tools/${owner}/`,
     swRoute = `/sw/zana/${cfg.slug}/`;
-  for (const [route, lang, href] of [
+  for (const [route, lang, href] of (selectedApps ? [] : [
     [enRoute, "sw", swRoute],
     [cfg.fr, "sw", swRoute],
-  ]) {
+  ])) {
     const file = routeFile(route);
     if (!fs.existsSync(file))
       throw new Error(`${owner}: reciprocal file missing ${route}`);
@@ -499,4 +507,4 @@ for (const [owner, cfg] of Object.entries(apps)) {
     ),
   );
 }
-console.log(`Built ${Object.keys(apps).length} native Swahili Creative apps.`);
+console.log(`Built ${selectedApps ? selectedApps.size : Object.keys(apps).length} native Swahili Creative apps.`);

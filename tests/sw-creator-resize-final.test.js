@@ -42,6 +42,6 @@ assert.equal(swahili.presets.all.length, 12);
 const html = fs.readFileSync(path.join(root, "sw/zana/resize-ya-mtayarishi/index.html"), "utf8");
 assert.match(html, /id="preset"/);
 assert.match(html, /id="crzApp"/);
-assert.match(html, /creator-resize\.webp/);
+assert.match(html, /zana-resize-ya-mtayarishi-sw\.webp/);
 assert.match(html, /Faili au pixel hazitumwi kwa AfroTools, AI au seva/);
 console.log("Swahili creator-resize final: 12 assertions passed");

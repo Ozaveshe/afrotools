@@ -83,3 +83,56 @@ test('mobile menu returns focus to its trigger on Escape and still closes by tri
   await expect(menu).toBeHidden();
   await expect(burger).toHaveAttribute('aria-expanded', 'false');
 });
+
+for (const route of ['/', '/ha/', '/yo/']) {
+  test(`mobile dialog contains keyboard focus and releases it on close: ${route}`, async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+    for (const width of [320, 390]) {
+      await page.setViewportSize({ width, height: 740 });
+      await page.goto(route);
+      const navbar = page.locator('afro-navbar');
+      const burger = navbar.locator('.burger');
+      const close = navbar.locator('#mobClose');
+      const last = navbar.locator('.mob-login');
+      await burger.focus();
+      await burger.press('Enter');
+      await expect(close).toBeFocused();
+      await expect(close).toHaveAccessibleName(({ '/': 'Close menu', '/ha/': 'Rufe jerin zaɓi', '/yo/': 'Pa àkójọ aṣàyàn' })[route]);
+      await close.press('Shift+Tab');
+      await expect(last).toBeFocused();
+      await last.press('Tab');
+      await expect(close).toBeFocused();
+      await close.press('Tab');
+      await expect(navbar.locator('.mob-search-input')).toBeFocused();
+
+      const country = navbar.locator('.mob afro-country-selector');
+      await country.locator('.cs-trigger').focus();
+      await country.locator('.cs-trigger').press('Enter');
+      await expect(country.locator('.cs-search')).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(country.locator('.cs-panel')).toBeHidden();
+      await expect(navbar.locator('.mob')).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(burger).toBeFocused();
+      await expect(navbar.locator('.mob')).toBeHidden();
+
+      await burger.press('Enter');
+      await expect(close).toBeFocused();
+      await close.press('Space');
+      await expect(burger).toBeFocused();
+      await expect(navbar.locator('.mob')).toBeHidden();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    }
+    await burgerForResize(page);
+  });
+}
+
+async function burgerForResize(page) {
+  const navbar = page.locator('afro-navbar');
+  await navbar.locator('.burger').click();
+  await expect(navbar.locator('#mobClose')).toBeFocused();
+  await page.setViewportSize({ width: 1200, height: 900 });
+  await expect(navbar.locator('.mob')).toBeHidden();
+  await expect(navbar.locator('.logo')).toBeFocused();
+  expect(await page.evaluate(() => document.body.style.position)).not.toBe('fixed');
+}

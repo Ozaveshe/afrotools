@@ -263,6 +263,7 @@ function buildUserContextPrompt(userCtx) {
 }
 
 const TOOL_CONTEXT = require('./_shared/ai-tool-context.generated.js');
+const { guardForexContext } = require('./_shared/ai-tool-context-freshness.js');
 
 function getToolContext(tool) {
   if (tool === 'jamb-study-plan') return 'Help a Nigerian student organise a study schedule within the supplied dates, subjects and available minutes. Return only the JSON shape requested in the user message. Do not promise a score, predict exam topics, invent an official timetable or claim that practice content is available.';
@@ -271,7 +272,7 @@ function getToolContext(tool) {
     tool = 'jamb-tutor-' + studySubject[1];
     if (studySubject[1] === 'accounts' && !TOOL_CONTEXT[tool]) return 'Help the student understand principles of accounts, bookkeeping and financial statements with worked learning examples. Do not treat study examples as professional financial advice.';
   }
-  return tool && TOOL_CONTEXT[tool] ? TOOL_CONTEXT[tool] : '';
+  return guardForexContext(tool, tool && TOOL_CONTEXT[tool] ? TOOL_CONTEXT[tool] : '');
 }
 
 // Tool affinity map — suggests related tools after a calculation

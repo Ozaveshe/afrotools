@@ -61,8 +61,10 @@ for (const row of rows) {
   assert.match(sw, new RegExp(`<code>${row.english.id}</code>`));
   assert.match(sw, /Kiwango cha uhakika/);
   assert.match(sw, /picha tuli ya utafiti wa 2024/);
-  assert.ok(fs.existsSync(path.join(ROOT, row.artwork.file)), `${row.english.id} artwork`);
-  assert.match(sw, new RegExp(`property="og:image" content="https://afrotools.com/${row.artwork.file.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+  const artwork = row.country ? row.artwork.file : 'assets/img/tools/zana-mishahara-ya-wafanyakazi-wa-shamba-sw.webp';
+  assert.ok(fs.existsSync(path.join(ROOT, artwork)), `${row.english.id} artwork`);
+  assert.ok(sw.includes(`<img class="hero-art" src="/${artwork}"`), `${row.swahili.route} visible artwork`);
+  assert.match(sw, new RegExp(`property="og:image" content="https://afrotools.com/${artwork.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
   assert.match(sw, new RegExp(`property="og:url" content="https://afrotools.com${row.swahili.route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
 
   if (!row.country) {
@@ -75,7 +77,7 @@ for (const row of rows) {
       swahiliRoute: row.swahili.routeKey,
       countryCode: null,
       countryName: null,
-      artwork: row.artwork.file,
+      artwork,
       oracle: '54-country hub, named source, freshness, confidence and reciprocal locale mesh'
     });
     continue;

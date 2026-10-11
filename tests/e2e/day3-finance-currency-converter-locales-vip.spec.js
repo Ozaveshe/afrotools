@@ -1,6 +1,8 @@
 const { test, expect } = require('@playwright/test');
 
 const fresh = {
+  schemaVersion: 1,
+  retained_rate_codes: [],
   base: 'USD',
   rates: { USD: 1, NGN: 1400, KES: 130, GHS: 12, ZAR: 18, EUR: 0.9, GBP: 0.78, XOF: 600, XAF: 600, CDF: 2850, MAD: 10, TND: 3.1 },
   source: 'fawazahmed',
@@ -110,16 +112,16 @@ test('French route rejects a non-USD API base and accepts the valid USD fallback
   await page.route('**/api/forex?base=USD', route => route.fulfill({
     status: 200,
     contentType: 'application/json',
-    body: JSON.stringify({ ...fresh, base: 'EUR', source: 'wrong-base-api' })
+    body: JSON.stringify({ ...fresh, base: 'EUR', source: 'fawazahmed' })
   }));
   await page.route('**/data/forex/latest.json', route => route.fulfill({
     status: 200,
     contentType: 'application/json',
-    body: JSON.stringify({ ...fresh, source: 'committed-fallback' })
+    body: JSON.stringify({ ...fresh, source: 'frankfurter' })
   }));
   await page.goto('/fr/tools/convertisseur-devises/');
   await expect(page.locator('#fxStatus')).toHaveText('Snapshot daté prêt');
-  await expect(page.locator('#fxSourceLabel')).toContainText('committed-fallback');
+  await expect(page.locator('#fxSourceLabel')).toContainText('frankfurter');
   await expect(page.locator('#fxConvert')).toBeEnabled();
 });
 
