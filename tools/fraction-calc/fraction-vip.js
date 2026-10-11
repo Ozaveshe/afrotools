@@ -147,9 +147,13 @@
     textarea.className = 'copy-fallback';
     document.body.appendChild(textarea);
     textarea.select();
-    var copied = document.execCommand('copy');
-    textarea.remove();
-    return copied;
+    try {
+      return document.execCommand('copy');
+    } catch (error) {
+      return false;
+    } finally {
+      textarea.remove();
+    }
   }
 
   function copyReport() {
@@ -158,9 +162,11 @@
       setStatus('Calculate a fraction before copying.', true);
       return;
     }
-    var copy = navigator.clipboard && navigator.clipboard.writeText
-      ? navigator.clipboard.writeText(text)
-      : Promise.resolve(fallbackCopy(text));
+    var copy = Promise.resolve().then(function () {
+      return navigator.clipboard && navigator.clipboard.writeText
+        ? navigator.clipboard.writeText(text)
+        : fallbackCopy(text);
+    });
     copy.then(function (value) {
       setStatus(value === false ? 'Copy failed. Download the TXT solution instead.' : 'Solution copied.', value === false);
     }).catch(function () {
@@ -204,6 +210,21 @@
     setStatus('Inputs and visible result cleared. Session history is unchanged.', false);
     byId('n1').focus();
   }
+
+  function invalidateResult() {
+    clearInvalid();
+    if (!current) return;
+    current = null;
+    byId('resultBox').hidden = true;
+    byId('stepsBox').hidden = true;
+    setStatus('Inputs changed. Calculate again before copying, downloading or printing.', false);
+  }
+
+  document.querySelectorAll('.fraction-row input').forEach(function (input) {
+    input.addEventListener('input', invalidateResult);
+    input.addEventListener('change', invalidateResult);
+  });
+  byId('op').addEventListener('change', invalidateResult);
 
   byId('calculateFraction').addEventListener('click', calculate);
   byId('copyFractionReport').addEventListener('click', copyReport);

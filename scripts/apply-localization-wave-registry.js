@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { applyReviewedBindings } = require("./lib/reviewed-tool-image-bindings");
 const {
   writeFileSyncWithRetry,
   renameSyncWithRetry,
@@ -140,7 +141,7 @@ function build() {
   if (arrayStart < 0 || arrayEnd < 0) throw new Error("Could not locate AFRO_TOOLS array boundary");
   return {
     original,
-    next: `${source.slice(0, arrayEnd)}\n${rows}${source.slice(arrayEnd)}`,
+    next: applyReviewedBindings(`${source.slice(0, arrayEnd)}\n${rows}${source.slice(arrayEnd)}`),
   };
 }
 
@@ -157,4 +158,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { stripBlock };
+module.exports = { stripBlock, build };
