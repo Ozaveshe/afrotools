@@ -60,6 +60,9 @@ jobs:
       - name: Verify forex context expiry at runtime
         run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js
 
+
+      - name: Verify AfroKitchen publication and reviewed method contracts
+        run: npm run test:afrokitchen:publication
       - name: Verify private command-centre contracts
         run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
 
@@ -182,6 +185,13 @@ jobs:
           AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
           PORT: '4199'
         run: npx playwright test tests/e2e/telecom-recovery.spec.js tests/e2e/french-telecom-parity.spec.js tests/e2e/swahili-telecom-parity.spec.js tests/e2e/day11-telecom-energy-workflows.spec.js --grep-invert "loads every Day 11 canonical route|executes every canonical owner" --project=chromium --workers=2 --retries=0 --trace=off
+
+      - name: Verify reviewed AfroKitchen dietary labels in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4204'
+        run: npx playwright test tests/e2e/afrokitchen-dietary-labels.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
       - name: Verify guest copy recovery and Business Planner PDF exports
         env:
@@ -316,6 +326,13 @@ jobs:
           PORT: '4198'
         run: npx playwright test tests/e2e/fraction-calc-vip.spec.js tests/e2e/fraction-export-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off
 
+
+      - name: Verify reviewed recipe methods and shared recipe controls in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4231'
+        run: npx playwright test tests/e2e/afrokitchen-reviewed-methods.spec.js tests/e2e/afrokitchen-cooking-timers.spec.js tests/e2e/afrokitchen-recipe-copy.spec.js --project=chromium --workers=2 --retries=0 --trace=off
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
