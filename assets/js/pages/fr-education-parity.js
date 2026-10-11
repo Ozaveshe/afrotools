@@ -11,6 +11,7 @@
 
   const config = JSON.parse(configNode.textContent);
   let current = null;
+  let calculationVersion = 0;
 
   function pathValue(object, path) {
     return String(path).split(".").reduce((value, key) => value == null ? undefined : value[key], object);
@@ -46,9 +47,10 @@
       return result;
     },
     "exam-countdown"(input, api) {
-      const state = api.dateState(input.examDate, new Date("2026-07-29T12:00:00Z"));
-      const phase = api.planningPhase(state.days, state.kind);
-      return { ok: state.kind !== "invalid", days: state.days, kind: state.kind, phase: phase.label, name: input.name, meaning: input.meaning };
+      const state = api.dateState(input.examDate, new Date());
+      const phase = api.planningPhase(state.days, state.kind, input.meaning);
+      const phaseLabels = {"Past date — keep for history or update": "Date passée — conserver dans l’historique ou mettre à jour", "Deadline today": "Date limite aujourd’hui", "Submission preparation": "Préparation du dépôt", "Today": "Aujourd’hui", "Final week": "Dernière semaine", "Timed practice": "Entraînement chronométré", "Revision build": "Révisions approfondies", "Foundation": "Préparation de base"};
+      return { ok: state.kind !== "invalid", days: state.days, kind: state.kind, phase: phaseLabels[phase.label] || phase.label, name: input.name, meaning: input.meaning };
     },
     flashcards(input, api) {
       const cards = api.parseCards(input.deck);
@@ -95,7 +97,7 @@
     fraction(input, api) {
       return api.calculate({
         left: { whole: "", numerator: input.leftNumerator, denominator: input.leftDenominator },
-        operation: input.operation,
+        operation: ({ add: 'add', subtract: 'sub', multiply: 'mul', divide: 'div' })[input.operation] || input.operation,
         right: { whole: "", numerator: input.rightNumerator, denominator: input.rightDenominator }
       });
     },
@@ -154,6 +156,7 @@
     word(input, api) {
       const stats = api.analyse(input.text, {});
       const limits = api.evaluateLimits(stats, input);
+      if (!limits.valid) return { ok: false };
       return Object.assign({}, stats, { limitState: limits.state });
     },
     percentage(input, api) {
@@ -325,9 +328,20 @@
     if (Array.isArray(value)) return value.length ? value.map(display).join(" · ") : "0";
     if (/^-?\d+\.\d+%?$/.test(String(value))) return String(value).replace(".", ",");
     const translations = {
+      "Fallback feed": "Données de secours",
+      "at-or-above": "Objectif atteint ou dépassé",
+      "over": "Au-dessus de la limite",
+      "under": "Sous le minimum",
+      "unset": "Aucune limite définie",
+      "inside": "Dans la plage prévue",
+      "above": "Au-dessus du maximum",
+      "unknown": "Non déterminé",
+      "high": "Forte pression sur le budget",
+      "lower": "Pression plus faible sur le budget",
       "Bachelor's minimum": "Minimum pour une licence",
       "Timed practice": "Entraînement chronométré",
       upcoming: "À venir",
+      today: "Aujourd’hui", past: "Date passée",
       met: "Respectée",
       one: "Une solution",
       decimal: "Décimal",
@@ -361,15 +375,22 @@
   }
 
   async function run() {
+    const version = ++calculationVersion;
+    current = null;
+    resultPanel.classList.remove("show");
+    statusNode.className = "status";
+    statusNode.textContent = "Calcul en cours…";
     const input = values();
     try {
       const emptyRequired = Array.from(form.querySelectorAll("[required]")).some((field) => String(field.value || "").trim() === "");
       if (emptyRequired) throw new Error("required");
       const output = await runners[config.recipe](input, engine(config.global));
+      if (version !== calculationVersion) return;
       if (!valid(output)) throw new Error("invalid");
       current = { schemaVersion: 1, locale: "fr", toolId: config.id, title: config.title, checkedAt: new Date().toISOString(), inputs: input, result: output, boundary: "Planification locale uniquement; aucune décision officielle." };
       render(output);
     } catch (_) {
+      if (version !== calculationVersion) return;
       current = null;
       resultPanel.classList.remove("show");
       statusNode.className = "status error";
@@ -403,6 +424,7 @@
   }
 
   async function pdf() {
+    const version = calculationVersion;
     if (!window.jspdf || !window.jspdf.jsPDF) {
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
@@ -412,6 +434,7 @@
         document.head.appendChild(script);
       });
     }
+    if (version !== calculationVersion || !current) return;
     const doc = new window.jspdf.jsPDF();
     const lines = doc.splitTextToSize(textReport(), 175);
     doc.text(lines, 18, 20);
@@ -419,17 +442,21 @@
   }
 
   form.addEventListener("submit", (event) => { event.preventDefault(); void run(); });
-  form.addEventListener("reset", () => {
-    setTimeout(() => {
-      current = null;
-      resultPanel.classList.remove("show");
-      statusNode.textContent = "";
-    }, 0);
-  });
+  function invalidateCalculation(message) {
+    calculationVersion += 1;
+    current = null;
+    resultPanel.classList.remove("show");
+    statusNode.className = "status";
+    statusNode.textContent = message;
+  }
+  form.addEventListener("input", () => invalidateCalculation("Les données ont changé. Relancez le calcul avant d’exporter."));
+  form.addEventListener("change", () => invalidateCalculation("Les données ont changé. Relancez le calcul avant d’exporter."));
+  form.addEventListener("reset", () => invalidateCalculation(""));
   document.querySelectorAll("[data-action]").forEach((button) => {
     button.addEventListener("click", async () => {
       if (!current) return;
       const action = button.dataset.action;
+      const version = calculationVersion;
       try {
         if (action === "copy") await navigator.clipboard.writeText(textReport());
         if (action === "json") download(`${safeJson(current)}\n`, "application/json", "json");
@@ -438,8 +465,10 @@
         if (action === "pdf") await pdf();
         if (action === "save") localStorage.setItem(`afrotools:fr-education:${config.id}`, safeJson(current));
         if (action === "print") window.print();
+        if (version !== calculationVersion) return;
         statusNode.textContent = action === "save" ? "Résultat enregistré uniquement sur cet appareil." : "Action terminée localement.";
       } catch (_) {
+        if (version !== calculationVersion) return;
         statusNode.className = "status error";
         statusNode.textContent = "Cette action locale est indisponible dans ce navigateur.";
       }
