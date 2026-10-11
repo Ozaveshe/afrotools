@@ -34,7 +34,7 @@ a{text-decoration:none;color:inherit}
 .vip-export{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}.vip-export .en-btn{flex:1 1 190px}.vip-status{min-height:24px;margin:10px 0 0;color:var(--en-muted);font-size:.86rem;line-height:1.5}.vip-source-note{margin:0 0 24px;padding:14px 16px;border:1px solid var(--en-border);border-radius:8px;background:var(--en-card);color:var(--en-muted);font-size:.86rem;line-height:1.6}.vip-source-note strong{color:var(--en-text)}
 html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#334155;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html[data-theme="dark"] body{background:var(--en-bg);color:var(--en-text)}html[data-theme="dark"] .en-input,html[data-theme="dark"] .en-select,html[data-theme="dark"] .en-results-table,html[data-theme="dark"] .check-item,html[data-theme="dark"] .security-focus-rail,html[data-theme="dark"] .security-action-brief__card,html[data-theme="dark"] .security-action-brief__output,html[data-theme="dark"] .security-action-brief__checks li{background:#111c2f!important;color:var(--en-text)!important;border-color:var(--en-border)!important}html[data-theme="dark"] .check-item:has(input:checked){background:#17243a!important}html[data-theme="dark"] .en-tip-text,html[data-theme="dark"] .security-action-brief__note{color:#fed7aa!important}
 @media(prefers-color-scheme:dark){html:not([data-theme]){--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#334155;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html:not([data-theme]) body{background:var(--en-bg);color:var(--en-text)}html:not([data-theme]) .en-input,html:not([data-theme]) .en-select,html:not([data-theme]) .check-item{background:#111c2f;color:var(--en-text);border-color:var(--en-border)}}
-@media print{afro-navbar,.en-tool-hero,.security-focus-rail,.en-form-actions,.vip-export,.df-upgrade,.df-faq,afro-related-tools,afro-footer{display:none!important}.en-tool-layout{max-width:none;padding:0}.en-results{display:block!important}.en-card,.en-results-hero{break-inside:avoid;box-shadow:none}}
+@media print{afro-navbar,.en-tool-hero,.security-focus-rail,.en-form-actions,.vip-export,.df-upgrade,.df-faq,afro-related-tools,afro-footer{display:none!important}.en-tool-layout{max-width:none;padding:0}.en-results.on{display:block!important}.en-results:not(.on){display:none!important}.en-card,.en-results-hero{break-inside:avoid;box-shadow:none}}
 </style>
 <meta property="og:url" content="https://afrotools.com/tools/cybersecurity-assessment/">
 <meta name="twitter:card" content="summary_large_image">
@@ -77,7 +77,7 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does the cybersecurity score measure?","acceptedAnswer":{"@type":"Answer","text":"It measures the 20 controls you mark as present across six domains, with a limited penalty for recent incidents."}},{"@type":"Question","name":"Is this a cybersecurity audit or compliance certificate?","acceptedAnswer":{"@type":"Answer","text":"No. It is a local self-assessment for planning. Verify technical findings and current legal or sector duties with qualified specialists."}},{"@type":"Question","name":"Does the assessment upload security details?","acceptedAnswer":{"@type":"Answer","text":"The assessment runs in the browser. Do not enter credentials, customer records, incident evidence, private keys, or other sensitive material."}}]}
 </script>
-<link rel="canonical" href="https://afrotools.com/tools/cybersecurity-assessment/">
+<style>@media print{#afro-cookie-consent,.security-action-brief,.vip-status,button{display:none!important}html:root,html:root[data-theme],html:root[data-theme] body,html:root[data-theme] body *,html:root #results,html:root #results *{background:#fff!important;color:#111!important;box-shadow:none!important;text-shadow:none!important}html:root{color-scheme:light!important}.en-card{break-inside:auto!important}.en-metrics{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}.en-metric,.check-item{break-inside:avoid}.en-tool-layout::before{content:"AfroTools - Cybersecurity Self-Assessment";display:block;font-size:18pt;font-weight:700;margin-bottom:12pt;color:#111}}</style><style>@media print{html:root[data-theme] body .en-card,html:root[data-theme] body .en-card *,html:root[data-theme] body .check-item,html:root[data-theme] body .check-item *{background:#fff!important;color:#111!important;box-shadow:none!important;text-shadow:none!important}}</style><style>@media screen{html:root:not([data-theme="dark"]) #results .en-results-hero,html:root:not([data-theme="dark"]) #results .en-results-hero *{color:#1e293b!important}}</style><link rel="canonical" href="https://afrotools.com/tools/cybersecurity-assessment/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cybersecurity-assessment/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/evaluation-risque-cybersecurite/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tathmini-ya-usalama-wa-kidijitali/">
@@ -222,9 +222,9 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
       <div class="en-results-hero-inner">
         <div class="en-results-hero-grid">
           <div>
-            <div class="en-results-hero-label">Overall Risk Score</div>
+            <div class="en-results-hero-label">Checklist Readiness Score</div>
             <div class="en-results-hero-value" id="overallScore">0/100</div>
-            <div class="en-results-hero-sub" id="riskLabel"></div>
+            <div class="en-results-hero-sub" id="riskLabel"></div><p class="en-results-hero-sub">Higher is better: selected controls earn points; reported recent incidents reduce the score. This is a self-reported planning checklist, not a measured risk probability or security certification.</p>
           </div>
           <div class="en-results-hero-aside">
             <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Grade</div>
@@ -235,7 +235,7 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
     </div>
     <div class="en-metrics" id="domainScores"></div>
     <div class="en-card">
-      <div class="en-card-title"><div class="en-card-title-icon">&#x26a0;&#xfe0f;</div>Top 3 Vulnerabilities &amp; Recommended Actions</div>
+      <div class="en-card-title"><div class="en-card-title-icon">&#x26a0;&#xfe0f;</div>Top 3 Missing Controls &amp; Recommended Actions</div>
       <div id="vulnerabilities"></div>
     </div>
     <div class="en-card">
@@ -253,6 +253,7 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
       <button type="button" class="en-btn en-btn-secondary" onclick="copyAssessment()">Copy assessment summary</button>
       <button type="button" class="en-btn en-btn-secondary" onclick="printAssessment()">Print or save PDF</button>
     </div>
+    <p class="vip-source-note"><strong>Technical references:</strong> <a href="https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver">NIST password guidance</a>; <a href="https://www.cisa.gov/eviction-strategies-tool/info-countermeasures/CM0025">CISA remote access guidance</a>; <a href="https://help.malwarebytes.com/hc/en-us/articles/49849786059035-Free-vs-Paid-Malwarebytes-Security-features">Malwarebytes protection features</a>. Reviewed 11 October 2026. These technical references do not establish local legal compliance.</p>
     <p class="vip-source-note"><strong>Source and freshness:</strong> this is a deterministic planning checklist, not a live threat feed or regulatory database. Verify current authority guidance, breach duties, sector rules, insurance conditions, and technical findings before treating any action as sufficient.</p>
   </div>
 </div>
@@ -299,8 +300,8 @@ var DOMAINS=[
   {label:'Security Awareness',max:15,checks:['sec_training','phishing_sim','sec_policy'],pts:5},
   {label:'Incident Response',max:10,checks:['incident_plan','incident_drill'],pts:5}
 ];
-var RECS={firewall:'Deploy a firewall (pfSense free, or router-level filtering). Priority: CRITICAL.',vpn:'Set up VPN for all remote workers (ProtonVPN free tier, or OpenVPN). Priority: HIGH.',wifi_secure:'Upgrade WiFi to WPA3/WPA2 and change default router password immediately. Priority: HIGH.',network_monitor:'Install basic network monitoring (free: Wireshark for analysis, Nagios for alerts). Priority: MEDIUM.',encryption:'Enable full-disk encryption on all computers (BitLocker/FileVault). Priority: HIGH.',backup:'Implement 3-2-1 backup rule: 3 copies, 2 media types, 1 offsite. Test monthly. Priority: CRITICAL.',data_policy:'Create a simple data retention and deletion policy. Priority: MEDIUM.',privacy_policy:'Publish a privacy policy — required under NDPR and POPIA. Priority: HIGH (legal requirement).',mfa:'Enable 2FA on all accounts immediately — especially email, banking, and cloud services. Free: Google Authenticator. Priority: CRITICAL.',least_priv:'Review who has access to what — remove unnecessary admin rights. Priority: HIGH.',pw_policy:'Enforce minimum 12-character passwords. Use a password manager (Bitwarden free). Priority: HIGH.',access_review:'Review all user accounts quarterly and deactivate former employees. Priority: MEDIUM.',antivirus:'Install antivirus on all devices (Malwarebytes Free, Windows Defender). Priority: HIGH.',os_updates:'Enable automatic OS updates on all devices — this patches most exploited vulnerabilities. Priority: HIGH.',device_policy:'Create a basic BYOD (Bring Your Own Device) policy and enable remote wipe capability. Priority: MEDIUM.',sec_training:'Run free security awareness training (Cybrary, Google Safety Centre). Priority: HIGH.',phishing_sim:'Run phishing simulation (free: GoPhish). Test staff awareness quarterly. Priority: MEDIUM.',sec_policy:'Document a one-page security policy — acceptable use, password rules, incident reporting. Priority: MEDIUM.',incident_plan:'Write a basic incident response plan (template available from NITDA Nigeria). Priority: HIGH.',incident_drill:'Run a tabletop incident drill once a year — simulate a phishing attack or ransomware. Priority: MEDIUM.'};
-var COMP={NG:'NDPR (Nigeria Data Protection Regulation)',KE:'Kenya Data Protection Act 2019',ZA:'POPIA (Protection of Personal Information Act)',GH:'Data Protection Act 2012',EG:'Personal Data Protection Law 2020'};
+var RECS={firewall:'Deploy a firewall (pfSense free, or router-level filtering). Priority: CRITICAL.',vpn:'Use organization-managed remote access with MFA and access limited to required services. Keep the gateway patched; choose a business VPN or zero-trust access service appropriate to your systems. Priority: HIGH.',wifi_secure:'Upgrade WiFi to WPA3/WPA2 and change default router password immediately. Priority: HIGH.',network_monitor:'Install basic network monitoring (free: Wireshark for analysis, Nagios for alerts). Priority: MEDIUM.',encryption:'Enable full-disk encryption on all computers (BitLocker/FileVault). Priority: HIGH.',backup:'Implement 3-2-1 backup rule: 3 copies, 2 media types, 1 offsite. Test monthly. Priority: CRITICAL.',data_policy:'Create a simple data retention and deletion policy. Priority: MEDIUM.',privacy_policy:'Prepare a clear privacy notice for your actual data processing. Check the selected authority reference and confirm applicable transparency duties with a qualified adviser. Priority: HIGH.',mfa:'Enable 2FA on all accounts immediately — especially email, banking, and cloud services. Free: Google Authenticator. Priority: CRITICAL.',least_priv:'Review who has access to what — remove unnecessary admin rights. Priority: HIGH.',pw_policy:'Use unique passwords and a password manager. For password-only sign-in, NIST SP 800-63B-4 specifies at least 15 characters; passwords used with MFA may have a minimum of 8. Match the service and applicable policy, and block common or compromised passwords. Priority: HIGH.',access_review:'Review all user accounts quarterly and deactivate former employees. Priority: MEDIUM.',antivirus:'Enable supported real-time endpoint protection appropriate to each device and keep it updated. Check protection status; a free on-demand malware scanner alone does not provide continuous protection. Priority: HIGH.',os_updates:'Enable automatic OS updates on all devices — this patches most exploited vulnerabilities. Priority: HIGH.',device_policy:'Create a basic BYOD (Bring Your Own Device) policy and enable remote wipe capability. Priority: MEDIUM.',sec_training:'Run free security awareness training (Cybrary, Google Safety Centre). Priority: HIGH.',phishing_sim:'Run phishing simulation (free: GoPhish). Test staff awareness quarterly. Priority: MEDIUM.',sec_policy:'Document a one-page security policy — acceptable use, password rules, incident reporting. Priority: MEDIUM.',incident_plan:'Write a basic incident response plan (template available from NITDA Nigeria). Priority: HIGH.',incident_drill:'Run a tabletop incident drill once a year — simulate a phishing attack or ransomware. Priority: MEDIUM.'};
+var COMP={"NG": "Nigeria Data Protection Act 2023 — Nigeria Data Protection Commission (NDPC). <a href=\"https://ndpc.gov.ng/download/nigeria-data-protection-act-2023\">Official legal framework reference</a>", "KE": "Kenya Data Protection Act 2019 — Office of the Data Protection Commissioner (ODPC). <a href=\"https://www.odpc.go.ke/data-protection-laws-kenya/\">Official legal framework reference</a>", "ZA": "Protection of Personal Information Act 2013 (POPIA) — Information Regulator. <a href=\"https://inforegulator.org.za/acts/\">Official legal framework reference</a>", "GH": "Data Protection Act 2012 (Act 843) — Data Protection Commission. <a href=\"https://dpc.gov.gh/documents/\">Official legal framework reference</a>", "EG": "Personal Data Protection Law 151 of 2020 and Executive Regulations 816 of 2025 — Personal Data Protection Center (PDPC). <a href=\"https://www.pdpc.gov.eg/\">Official legal framework reference</a>"};
 var CONTROL_PRIORITY={backup:0,mfa:1,incident_plan:2,encryption:3,os_updates:4,firewall:5,pw_policy:6,privacy_policy:7,antivirus:8,least_priv:9,sec_training:10,wifi_secure:11,access_review:12,data_policy:13,network_monitor:14,vpn:15,device_policy:16,sec_policy:17,phishing_sim:18,incident_drill:19};
 function calculate(){
   var country=document.getElementById('country').value;
@@ -320,7 +321,7 @@ function calculate(){
   if(incidents==='major') totalScore-=15;
   totalScore=Math.max(0,Math.min(100,totalScore));
   var grade=totalScore>=90?'A':totalScore>=75?'B':totalScore>=60?'C':totalScore>=45?'D':'F';
-  var riskLabel={A:'Low Risk — Strong security posture',B:'Moderate Risk — A few gaps to address',C:'Elevated Risk — Several critical gaps',D:'High Risk — Significant vulnerabilities',F:'Critical Risk — Immediate action required'}[grade];
+  var riskLabel={A:'High checklist readiness',B:'Good checklist readiness',C:'Partial checklist readiness',D:'Limited checklist readiness',F:'Low checklist readiness'}[grade];
   document.getElementById('overallScore').textContent=totalScore+'/100';
   document.getElementById('riskLabel').textContent=riskLabel;
   document.getElementById('gradeDisplay').textContent=grade;
@@ -337,10 +338,10 @@ function calculate(){
   top3.forEach(function(c,i){
     var rec=RECS[c]||'Review and implement this security control.';
     vulnHtml+='<div style="padding:14px 16px;border:1px solid var(--en-border,#e2e8f0);border-radius:10px;border-left:4px solid '+(i===0?'#ef4444':i===1?'#f97316':'#f59e0b')+'">'+
-      '<div style="font-size:.8rem;font-weight:700;color:'+(i===0?'#dc2626':i===1?'#ea580c':'#d97706')+';margin-bottom:4px">#'+(i+1)+' '+(i===0?'CRITICAL':i===1?'HIGH':'MEDIUM')+' — Missing: '+c.replace(/_/g,' ').toUpperCase()+'</div>'+
+      '<div style="font-size:.8rem;font-weight:700;color:'+(i===0?'#dc2626':i===1?'#ea580c':'#d97706')+';margin-bottom:4px">Review order #'+(i+1)+' — Missing: '+c.replace(/_/g,' ').toUpperCase()+'</div>'+
       '<div style="font-size:.87rem;color:#334155;line-height:1.5">'+rec+'</div></div>';
   });
-  if(top3.length===0) vulnHtml+='<div class="en-notice">Excellent! No critical gaps found. Keep reviewing quarterly.</div>';
+  if(top3.length===0) vulnHtml+='<div class="en-notice">All listed controls are marked present. Verify their effectiveness with evidence; this checklist does not establish that your systems are secure.</div>';
   vulnHtml+='</div>';
   document.getElementById('vulnerabilities').innerHTML=vulnHtml;
   var compLaw=COMP[country]||'Local data protection regulation';
@@ -351,7 +352,7 @@ function calculate(){
     '<div class="en-notice"><strong>Authority context to verify: '+compLaw+'</strong><br>This checklist does not determine legal compliance or a notification deadline. Confirm the current law, regulator guidance, sector rules, incident facts, and any cross-border duties with qualified advisers.</div>'+
     '<div class="en-notice" style="margin-top:12px"><strong>Profile context:</strong> '+industry.replace(/\b\w/g,function(c){return c.toUpperCase();})+', '+employees+' employees, '+dataSensitivity+'-sensitivity data. These fields describe the review context; they do not secretly change the transparent control score.</div>'+
     '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;font-size:.87rem">'+
-    ['Privacy Policy published — required for public-facing websites','Backup and recovery procedures in place','Access control with 2FA on critical systems','Data encryption at rest and in transit','Breach notification procedure documented'].map(function(req,i){
+    ['Published privacy policy marked present','Regular tested backups marked present','Multi-factor authentication marked present','Data encryption at rest marked present','Documented incident response plan marked present'].map(function(req,i){
       var met=[hasPrivacy,hasBackup,hasMFA,document.getElementById('encryption').checked,document.getElementById('incident_plan').checked][i];
       return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--en-border,#e2e8f0)"><span>'+(met?'✅':'❌')+'</span><span>'+(met?'<strong>':'<span style="color:#64748b">')+req+(met?'</strong>':'</span>')+'</span></div>';
     }).join('')+'</div>';
@@ -359,12 +360,19 @@ function calculate(){
   document.getElementById('assessmentStatus').textContent='Assessment ready. Confirm each selected control with evidence and verify current legal and sector requirements.';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function assessmentSummary(){return ['Cybersecurity self-assessment',document.getElementById('overallScore').textContent+' - '+document.getElementById('riskLabel').textContent,'Grade: '+document.getElementById('gradeDisplay').textContent,'Planning checklist only; verify controls with evidence and confirm current legal and sector requirements.'].join('\n');}
+function invalidateAssessment(){
+  document.getElementById('results').classList.remove('on');
+  document.getElementById('assessmentStatus').textContent='Answers changed. Run the assessment again before copying or printing.';
+}
+var assessmentFields=['country','industry','employees','dataSensitivity','incidents'];
+DOMAINS.forEach(function(domain){assessmentFields=assessmentFields.concat(domain.checks);});
+assessmentFields.forEach(function(id){var field=document.getElementById(id);if(field){['input','change'].forEach(function(event){field.addEventListener(event,invalidateAssessment);});}});
+function assessmentSummary(){return ['Cybersecurity self-assessment','Checklist readiness: '+document.getElementById('overallScore').textContent+' - '+document.getElementById('riskLabel').textContent,'Checklist grade: '+document.getElementById('gradeDisplay').textContent,'Higher scores mean more selected controls, with deductions for reported recent incidents. This is not a measured risk probability or security certification. Verify controls with evidence and confirm current legal and sector requirements.'].join('\n');}
 function copyAssessment(){var status=document.getElementById('assessmentStatus');if(!document.getElementById('results').classList.contains('on')){status.textContent='Run the assessment before copying a summary.';return;}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(assessmentSummary()).then(function(){status.textContent='Assessment summary copied.';}).catch(function(){status.textContent='Copy was blocked. Use Print or save PDF instead.';});}else{status.textContent='Clipboard access is unavailable. Use Print or save PDF instead.';}}
 function printAssessment(){var status=document.getElementById('assessmentStatus');if(!document.getElementById('results').classList.contains('on')){status.textContent='Run the assessment before printing it.';return;}status.textContent='Opening the browser print dialog. Choose Save as PDF to keep a local copy.';window.print();}
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/pages/security-focus.js?v=571d331e" defer></script>
+<script src="/assets/js/pages/security-focus.js?v=15704c11" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=3369af90" defer></script>
 </body>
