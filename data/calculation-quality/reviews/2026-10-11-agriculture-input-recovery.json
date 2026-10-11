@@ -1,0 +1,24 @@
+{
+  "reviewedBy": "Codex delivery technical review; agricultural authority review is not claimed",
+  "reviewedAt": "2026-10-11",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/commit/f67a5578701743249f5908cde202113e6b51f736",
+  "reason": "Compared all four changed engine sources with this exact baseline. Changes reject invalid farm areas, invalid optional seed spacing and seed counts, invalid irrigation month/method selections, and invalid fertilizer yield/soil inputs. Hidden one-hectare fallbacks are removed. No agronomic coefficients, prices or climate data are changed. Native comparison across 54 countries preserves 18408 valid calculation outputs exactly; 2322 invalid scenarios are rejected. The separate committed regression covers 3618 invalid-input scenarios. Technical digest reconciliation does not validate local agricultural calibration, tariffs, market prices or scientific assumptions.",
+  "formulaIds": [
+    "formula-engines-irrigation-engine",
+    "formula-engines-seed-rate-engine",
+    "formula-engines-fertilizer-engine",
+    "formula-engines-crop-yield-engine"
+  ],
+  "fixtureDeltas": [],
+  "evidence": {
+    "baseline": "f67a5578701743249f5908cde202113e6b51f736",
+    "countries": 54,
+    "validOutputsUnchanged": { "irrigation": 3510, "seedRate": 2136, "fertilizer": 8424, "cropYield": 4338 },
+    "invalidInputsRejected": { "irrigation": 594, "seedRate": 594, "fertilizer": 756, "cropYield": 378 },
+    "regressionTest": "tests/agriculture-input-recovery.test.js"
+  },
+  "limitations": [
+    "Valid-output equivalence preserves existing behavior; it does not establish that existing reference data are accurate or fresh.",
+    "Full native checks, browser checks and exact-commit CI remain required before READY."
+  ]
+}

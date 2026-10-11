@@ -143,7 +143,7 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
 
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/sz-agri-data.js?v=1b1f0652"></script>
-<script src="/engines/irrigation-engine.js?v=4591ba97"></script>
+<script src="/engines/irrigation-engine.js?v=ba737492"></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
 <script>
 (function(){
@@ -166,11 +166,12 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
   function download(content,type,name){var url=URL.createObjectURL(new Blob([content],{type:type})),anchor=document.createElement('a');anchor.href=url;anchor.download=name;document.body.appendChild(anchor);anchor.click();anchor.remove();setTimeout(function(){URL.revokeObjectURL(url)},0)}
   function cell(value){var text=String(value==null?'':value);return /[",\r\n]/.test(text)?'"'+text.replace(/"/g,'""')+'"':text}
   function copy(text){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text);var area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();return Promise.resolve()}
+  function costBasis(cost){return cost.type==='pump'?'Dhana ya gharama ya kusukuma: USD '+cost.ratePerM3+' kwa m³; makadirio ya kupanga, si bei rasmi ya eneo iliyothibitishwa.':'Bei katika rejea: '+cost.currency+' '+cost.ratePerM3+' kwa m³; thibitisha tarehe na uhalali wa eneo.'}
   function swResult(){
     if(!latest)return null;
     var result=latest.result;
-    if(result.mode==='season')return {hali:'mzunguko',zao:cropName(latest.input.cropId,result.cropName),eneo:cfg.regionNames[latest.input.regionId]||result.regionName,ukubwaHekta:result.farmSizeHa,njia:method(result.irrigationMethod),ufanisiAsilimia:result.efficiencyPercent,majiJumlaM3:result.totalWater_m3,wastaniKilaSikuM3:result.dailyAvgVolume_m3,majiYanayopoteaM3:result.waterWasted_m3,mchangoMvuaM3:result.totalRainfallContrib_m3,gharama:result.costEstimate,miezi:result.monthlyData.map(function(item){return {mwezi:month(item.month),hatua:stage(item.stage),mvuaMm:item.rainfall_mm,hitajiBrutoMm:item.gir_mm_month}})};
-    return {hali:'mwezi',zao:cropName(latest.input.cropId,result.cropName),eneo:cfg.regionNames[latest.input.regionId]||result.regionName,ukubwaHekta:result.farmSizeHa,njia:method(result.irrigationMethod),ufanisiAsilimia:result.efficiencyPercent,mwezi:month(result.month),hatua:stage(result.growthStage),majiJumlaM3:result.monthVolume_m3,wastaniKilaSikuM3:result.dailyVolume_m3,majiYanayopoteaM3:result.waterLost_m3,majiKwaMaraM3:result.perEvent_m3,gharama:result.costEstimate};
+    if(result.mode==='season')return {hali:'mzunguko',zao:cropName(latest.input.cropId,result.cropName),eneo:cfg.regionNames[latest.input.regionId]||result.regionName,ukubwaHekta:result.farmSizeHa,njia:method(result.irrigationMethod),ufanisiAsilimia:result.efficiencyPercent,majiJumlaM3:result.totalWater_m3,wastaniKilaSikuM3:result.dailyAvgVolume_m3,majiYanayopoteaM3:result.waterWasted_m3,mchangoMvuaM3:result.totalRainfallContrib_m3,msingiGharama:costBasis(result.costEstimate),gharama:result.costEstimate,miezi:result.monthlyData.map(function(item){return {mwezi:month(item.month),hatua:stage(item.stage),mvuaMm:item.rainfall_mm,hitajiBrutoMm:item.gir_mm_month}})};
+    return {hali:'mwezi',zao:cropName(latest.input.cropId,result.cropName),eneo:cfg.regionNames[latest.input.regionId]||result.regionName,ukubwaHekta:result.farmSizeHa,njia:method(result.irrigationMethod),ufanisiAsilimia:result.efficiencyPercent,mwezi:month(result.month),hatua:stage(result.growthStage),majiJumlaM3:result.monthVolume_m3,wastaniKilaSikuM3:result.dailyVolume_m3,majiYanayopoteaM3:result.waterLost_m3,majiKwaMaraM3:result.perEvent_m3,msingiGharama:costBasis(result.costEstimate),gharama:result.costEstimate};
   }
   function report(){
     return latest?{schemaVersion:1,zana:'umwagiliaji',lugha:'sw',nchi:{code:cfg.countryCode,jina:cfg.countryName,sarafu:cfg.countryCurrency,alama:cfg.countryCurrencySymbol},imetengenezwa:new Date().toISOString(),maingizo:latest.input,matokeo:swResult(),vyanzo:{maelezo:cfg.sourceLabel,upya:cfg.dataReviewed,dataMojaKwaMoja:false,dataFile:'data/agriculture/'+cfg.countryCode.toLowerCase()+'-agri-data.js',engine:'engines/src/irrigation-engine.js#calculate'},kiwangoChaKuamini:'Makadirio ya kupanga; thibitisha hali ya eneo.',faragha:'Hesabu ya ndani; hakuna maingizo yanayotumwa.'}:null
@@ -179,7 +180,7 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
     var result=swResult();
     if(!result)return '';
     var cost=result.gharama||{};
-    return ['AfroTools — makadirio ya umwagiliaji',cfg.countryName,'Zao: '+result.zao,'Eneo: '+result.eneo,'Njia: '+result.njia,'Ukubwa: '+num(result.ukubwaHekta)+' ha','Maji ya kupeleka: '+num(result.majiJumlaM3)+' m³','Wastani wa kila siku: '+num(result.wastaniKilaSikuM3)+' m³','Maji yanayopotea: '+num(result.majiYanayopoteaM3)+' m³','Ufanisi: '+result.ufanisiAsilimia+'%','Gharama ya injini: '+num(cost.total)+' '+(cost.currency||''),'Sarafu ya nchi: '+cfg.countryCurrency+' ('+cfg.countryCurrencySymbol+')','','Vyanzo: '+cfg.sourceLabel,'Upya: rejea tuli '+cfg.dataReviewed+', hakuna data ya moja kwa moja.','Kiwango cha kuamini: makadirio ya kupanga; thibitisha mtiririko, bei na hali ya eneo.','Faragha: hesabu ya ndani ya kivinjari.'].join('\n')
+    return ['AfroTools — makadirio ya umwagiliaji',cfg.countryName,'Zao: '+result.zao,'Eneo: '+result.eneo,'Njia: '+result.njia,'Ukubwa: '+num(result.ukubwaHekta)+' ha','Maji ya kupeleka: '+num(result.majiJumlaM3)+' m³','Wastani wa kila siku: '+num(result.wastaniKilaSikuM3)+' m³','Maji yanayopotea: '+num(result.majiYanayopoteaM3)+' m³','Ufanisi: '+result.ufanisiAsilimia+'%','Gharama ya injini: '+num(cost.total)+' '+(cost.currency||''),result.msingiGharama,'Sarafu ya nchi: '+cfg.countryCurrency+' ('+cfg.countryCurrencySymbol+')','','Vyanzo: '+cfg.sourceLabel,'Upya: rejea tuli '+cfg.dataReviewed+', hakuna data ya moja kwa moja.','Kiwango cha kuamini: makadirio ya kupanga; thibitisha mtiririko, bei na hali ya eneo.','Faragha: hesabu ya ndani ya kivinjari.'].join('\n')
   }
   function init(){
     if(!data||!cropDb||!engine)throw new Error('Injini au data ya umwagiliaji haipatikani.');
@@ -223,8 +224,8 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
     if(action==='save')try{localStorage.setItem('afrotools:sw-agriculture:irrigation:'+cfg.countryCode,JSON.stringify(object));status('Matokeo yamehifadhiwa kwenye kifaa hiki.')}catch(error){status('Hifadhi ya ndani imezuiwa.',true)}
     if(action==='txt')download('\ufeff'+text,'text/plain;charset=utf-8',slug+'.txt');
     if(action==='json')download(JSON.stringify(object,null,2),'application/json;charset=utf-8',slug+'.json');
-    if(action==='csv'){var result=swResult(),lines=[['nchi','code_nchi','zao','eneo','ukubwa_hekta','njia','maji_jumla_m3','maji_kila_siku_m3','maji_yanayopotea_m3','ufanisi_asilimia','sarafu_nchi','data_moja_kwa_moja'],[cfg.countryName,cfg.countryCode,result.zao,result.eneo,result.ukubwaHekta,result.njia,result.majiJumlaM3,result.wastaniKilaSikuM3,result.majiYanayopoteaM3,result.ufanisiAsilimia,cfg.countryCurrency,'hapana']];download('\ufeff'+lines.map(function(row){return row.map(cell).join(',')}).join('\r\n'),'text/csv;charset=utf-8',slug+'.csv')}
-    if(action==='pdf'){var Pdf=window.jspdf&&window.jspdf.jsPDF;if(!Pdf){status('PDF haipatikani sasa.',true);return}var pdf=new Pdf({unit:'pt',format:'a4'}),safe=text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’‘]/g,"'").replace(/[—–]/g,'-');pdf.text(pdf.splitTextToSize(safe,500),48,58);pdf.save(slug+'.pdf')}
+    if(action==='csv'){var result=swResult(),lines=[['nchi','code_nchi','zao','eneo','ukubwa_hekta','njia','maji_jumla_m3','maji_kila_siku_m3','maji_yanayopotea_m3','ufanisi_asilimia','sarafu_nchi','gharama_kadirio','sarafu_gharama','bei_kwa_m3','msingi_gharama','data_moja_kwa_moja'],[cfg.countryName,cfg.countryCode,result.zao,result.eneo,result.ukubwaHekta,result.njia,result.majiJumlaM3,result.wastaniKilaSikuM3,result.majiYanayopoteaM3,result.ufanisiAsilimia,cfg.countryCurrency,result.gharama.total,result.gharama.type==='pump'?'USD':result.gharama.currency,result.gharama.ratePerM3,result.msingiGharama,'hapana']];download('\ufeff'+lines.map(function(row){return row.map(cell).join(',')}).join('\r\n'),'text/csv;charset=utf-8',slug+'.csv')}
+    if(action==='pdf'){var Pdf=window.jspdf&&window.jspdf.jsPDF;if(!Pdf){status('PDF haipatikani sasa.',true);return}var pdf=new Pdf({unit:'pt',format:'a4'}),safe=text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’‘]/g,"'").replace(/[—–]/g,'-').replace(/[\u00a0\u202f]/g,' ').replace(/&amp;/g,'&').replace(' ('+cfg.countryCurrencySymbol+')','').split(cfg.countryCurrencySymbol||'\u0000').join(cfg.countryCurrency);pdf.text(pdf.splitTextToSize(safe,500),48,58);pdf.save(slug+'.pdf')}
   });
   window.__SW_AGRI_TEST__={calculate:calculate,invalidateResult:invalidateResult,latest:null,engine:engine,data:data,config:cfg,reportObject:report};
   try{init()}catch(error){id('formError').textContent=error.message;console.error(error)}
@@ -251,6 +252,6 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
 })();
 </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=3369af90" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>

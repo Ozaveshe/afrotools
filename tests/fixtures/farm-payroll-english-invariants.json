@@ -29,448 +29,572 @@
   },
   "owners": {
     "engine": "engines/src/farm-payroll-engine.js",
-    "engineSha256": "2d5f72e43b7833be70363cb2449e3a98bbf02480ff7879d8d9165ff35c8afa44",
+    "engineSha256": "5e713ef7f65b56d64f8158a276eb2cdabe5c48d58fa51444c463cfab7dbe4d89",
     "data": "data/agriculture/farm-payroll-data.js",
-    "dataSha256": "110a1975f944fad5ca9ed5461113a9e884664170c968cc3c63165dee590140d8",
+    "dataSha256": "68a9ee0404cbd583071bd1aec8694ddc774490b0ce604c85feab4a9b6092ffe3",
     "hub": "agriculture/farm-payroll/index.html",
-    "hubSha256": "6f6a21db929347872e304cdf522ccd525a141636b127fd41d39c6b0c8b42d004"
+    "hubSha256": "c81db030b251b05c42e8f60484d5e3aacd6288435185a92512d3de1691f09823"
   },
   "countries": {
     "NG": {
       "route": "/agriculture/farm-payroll/nigeria",
       "file": "agriculture/farm-payroll/nigeria.html",
-      "pageSha256": "5689d8dfabe4b901ffdfd2d1a27a7ddda64e66d58d1a1dbd3acc40364b03f5a8",
+      "pageSha256": "9f1b9be6c980c3c62d3ca13aa0acdb168f26605925b51e98f3efa527a7343684",
       "currency": "NGN",
       "symbol": "₦",
       "minimums": {
-        "nationalMonthly": 30000,
+        "nationalMonthly": 70000,
         "nationalHourly": null,
-        "agricultureMonthly": 30000,
-        "agricultureDaily": 1000
+        "agricultureMonthly": null,
+        "agricultureDaily": null
       },
-      "typicalDailyRate": {
-        "low": 1500,
-        "mid": 3000,
-        "high": 5000
-      },
+      "typicalDailyRate": null,
       "cases": [
         {
           "id": "permanent-standard",
           "input": {
+            "contributionSelection": {
+              "sector": "private",
+              "pension": "not-applicable",
+              "health": "not-applicable",
+              "housing": "not-participating"
+            },
+            "minimumWageSelection": {
+              "coverage": "unknown"
+            },
+            "labourSelection": {
+              "leaveBudget": "exclude",
+              "overtimeHourlyPay": "1500"
+            },
+            "inKindHousing": 0,
+            "inKindFood": 0,
             "workerType": "permanent",
             "numWorkers": 3,
-            "grossPay": 36000,
-            "overtimeHours": 8,
-            "inKindHousing": 6000,
-            "inKindFood": 3000
+            "grossPay": 100000,
+            "overtimeHours": 8
           },
           "output": {
             "sym": "₦",
             "currency": "NGN",
             "workerType": "permanent",
             "numWorkers": 3,
-            "baseGross": 36000,
-            "overtimePay": 830.7852074078347,
-            "inKindValue": 9000,
-            "grossForDeductions": 45830.78520740783,
-            "deductions": [
-              {
-                "name": "Contributory Pension",
-                "rate": 8,
-                "amount": 3666.4628165926265,
-                "notes": "Formal sector, 3+ employees"
-              },
-              {
-                "name": "NHIS",
-                "rate": 5,
-                "amount": 2291.5392603703917,
-                "notes": "Employer 10%, employee 5%"
-              },
-              {
-                "name": "NHF",
-                "rate": 2.5,
-                "amount": 1145.7696301851959,
-                "notes": "Formal sector only"
-              }
-            ],
-            "totalDeductions": 7103.771707148214,
-            "netPay": 38727.01350025962,
-            "employerContributions": [
-              {
-                "name": "Annual Leave Provision",
-                "amount": 881.3612539886121
-              }
-            ],
-            "totalEmployerExtra": 881.3612539886121,
-            "totalEmployerCost": 46712.14646139644,
-            "farmMonthlyGross": 137492.3556222235,
-            "farmMonthlyNet": 116181.04050077886,
-            "farmMonthlyCost": 140136.43938418932,
-            "farmAnnualCost": 1681637.2726102718,
+            "baseGross": 100000,
+            "overtimePay": 12000,
+            "inKindValue": 0,
+            "grossForDeductions": 112000,
+            "deductions": [],
+            "totalDeductions": 0,
+            "netPay": 112000,
+            "employerContributions": [],
+            "totalEmployerExtra": 0,
+            "totalEmployerCost": 112000,
+            "farmMonthlyGross": 336000,
+            "farmMonthlyNet": 336000,
+            "farmMonthlyCost": 336000,
+            "farmAnnualCost": 4032000,
             "mwCheck": {
-              "compliant": true,
-              "minWage": 30000,
-              "gross": 45830.78520740783,
-              "diff": 15830.785207407833,
-              "diffPct": 52.76928402469277
+              "valid": true,
+              "status": "coverage-unknown",
+              "reference": {
+                "amount": 70000,
+                "currency": "NGN",
+                "period": "month",
+                "effectiveFrom": "2024-07-29",
+                "sourceId": "ng-national-minimum-wage-amendment-2024",
+                "coverageSourceId": "ng-national-minimum-wage-2019-section-4"
+              }
             },
-            "likelyTaxable": false,
+            "likelyTaxable": null,
             "laborLaw": {
-              "maxHoursPerDay": 8,
-              "maxHoursPerWeek": 40,
-              "overtimeRate": 1.5,
-              "annualLeave_days": 6,
-              "publicHolidays": 11,
-              "notes": "Most farm workers informal. Probation 3 months. Severance: 1 week/year service."
+              "sourceId": "ng-labour-act-sections-13-18-19",
+              "assumptions": "user-confirmed",
+              "currentLawVerified": false
             },
             "payeLink": "/nigeria/ng-salary-tax.html",
             "payeCountryName": "Nigeria",
-            "typicalDailyRate": {
-              "low": 1500,
-              "mid": 3000,
-              "high": 5000
+            "typicalDailyRate": null,
+            "fGross": "₦112,000.00",
+            "fNet": "₦112,000.00",
+            "fDeductions": "₦0.00",
+            "fEmployerCost": "₦112,000.00",
+            "fFarmMonthlyCost": "₦336,000.00",
+            "fFarmAnnualCost": "₦4,032,000.00",
+            "contributionCalculation": {
+              "valid": true,
+              "country": "NG",
+              "sector": "private",
+              "selections": {
+                "pension": "not-applicable",
+                "health": "not-applicable",
+                "housing": "not-participating"
+              },
+              "rows": [],
+              "employeeKobo": 0,
+              "employerKobo": 0,
+              "eligibility": "user-confirmed",
+              "currentLawVerified": false
             },
-            "fGross": "₦45,831",
-            "fNet": "₦38,727",
-            "fDeductions": "₦7,104",
-            "fEmployerCost": "₦46,712",
-            "fFarmMonthlyCost": "₦140,136",
-            "fFarmAnnualCost": "₦1,681,637"
+            "labourAssumptions": {
+              "valid": true,
+              "currency": "NGN",
+              "overtimeHours": 8,
+              "overtimeHourlyPayKobo": 150000,
+              "overtimePayKobo": 1200000,
+              "leaveMonthlyBudgetKobo": 0,
+              "leave": {
+                "included": false
+              },
+              "assumptions": "user-confirmed",
+              "overtimeBasis": "agreed-total-hourly-overtime-pay",
+              "leaveTreatment": "separate-budget-not-payment-in-lieu",
+              "currentLawVerified": false,
+              "sourceId": "ng-labour-act-sections-13-18-19"
+            },
+            "employerCostBeforeLeaveBudget": 112000,
+            "cashGross": 112000,
+            "netCashPay": 112000,
+            "netRemuneration": 112000,
+            "totalEmployerContributions": 0,
+            "leaveProvision": 0
           }
         },
         {
           "id": "permanent-below-minimum",
           "input": {
+            "contributionSelection": {
+              "sector": "private",
+              "pension": "not-applicable",
+              "health": "not-applicable",
+              "housing": "not-participating"
+            },
+            "minimumWageSelection": {
+              "coverage": "applicable-confirmed",
+              "monthlyWage": "60000"
+            },
+            "labourSelection": {
+              "leaveBudget": "exclude",
+              "overtimeHourlyPay": "1500"
+            },
+            "inKindHousing": 0,
+            "inKindFood": 0,
             "workerType": "permanent",
             "numWorkers": 1,
-            "grossPay": 22500,
-            "overtimeHours": 0,
-            "inKindHousing": 0,
-            "inKindFood": 0
+            "grossPay": 60000,
+            "overtimeHours": 0
           },
           "output": {
             "sym": "₦",
             "currency": "NGN",
             "workerType": "permanent",
             "numWorkers": 1,
-            "baseGross": 22500,
+            "baseGross": 60000,
             "overtimePay": 0,
             "inKindValue": 0,
-            "grossForDeductions": 22500,
-            "deductions": [
-              {
-                "name": "Contributory Pension",
-                "rate": 8,
-                "amount": 1800,
-                "notes": "Formal sector, 3+ employees"
-              },
-              {
-                "name": "NHIS",
-                "rate": 5,
-                "amount": 1125,
-                "notes": "Employer 10%, employee 5%"
-              },
-              {
-                "name": "NHF",
-                "rate": 2.5,
-                "amount": 562.5,
-                "notes": "Formal sector only"
-              }
-            ],
-            "totalDeductions": 3487.5,
-            "netPay": 19012.5,
-            "employerContributions": [
-              {
-                "name": "Annual Leave Provision",
-                "amount": 432.6923076923077
-              }
-            ],
-            "totalEmployerExtra": 432.6923076923077,
-            "totalEmployerCost": 22932.69230769231,
-            "farmMonthlyGross": 22500,
-            "farmMonthlyNet": 19012.5,
-            "farmMonthlyCost": 22932.69230769231,
-            "farmAnnualCost": 275192.3076923077,
+            "grossForDeductions": 60000,
+            "deductions": [],
+            "totalDeductions": 0,
+            "netPay": 60000,
+            "employerContributions": [],
+            "totalEmployerExtra": 0,
+            "totalEmployerCost": 60000,
+            "farmMonthlyGross": 60000,
+            "farmMonthlyNet": 60000,
+            "farmMonthlyCost": 60000,
+            "farmAnnualCost": 720000,
             "mwCheck": {
-              "compliant": false,
-              "minWage": 30000,
-              "gross": 22500,
-              "diff": 7500,
-              "diffPct": 25
+              "valid": true,
+              "status": "below-reference",
+              "reference": {
+                "amount": 70000,
+                "currency": "NGN",
+                "period": "month",
+                "effectiveFrom": "2024-07-29",
+                "sourceId": "ng-national-minimum-wage-amendment-2024",
+                "coverageSourceId": "ng-national-minimum-wage-2019-section-4"
+              },
+              "comparedWageKobo": 6000000,
+              "differenceKobo": -1000000,
+              "eligibility": "user-confirmed"
             },
-            "likelyTaxable": false,
+            "likelyTaxable": null,
             "laborLaw": {
-              "maxHoursPerDay": 8,
-              "maxHoursPerWeek": 40,
-              "overtimeRate": 1.5,
-              "annualLeave_days": 6,
-              "publicHolidays": 11,
-              "notes": "Most farm workers informal. Probation 3 months. Severance: 1 week/year service."
+              "sourceId": "ng-labour-act-sections-13-18-19",
+              "assumptions": "user-confirmed",
+              "currentLawVerified": false
             },
             "payeLink": "/nigeria/ng-salary-tax.html",
             "payeCountryName": "Nigeria",
-            "typicalDailyRate": {
-              "low": 1500,
-              "mid": 3000,
-              "high": 5000
+            "typicalDailyRate": null,
+            "fGross": "₦60,000.00",
+            "fNet": "₦60,000.00",
+            "fDeductions": "₦0.00",
+            "fEmployerCost": "₦60,000.00",
+            "fFarmMonthlyCost": "₦60,000.00",
+            "fFarmAnnualCost": "₦720,000.00",
+            "contributionCalculation": {
+              "valid": true,
+              "country": "NG",
+              "sector": "private",
+              "selections": {
+                "pension": "not-applicable",
+                "health": "not-applicable",
+                "housing": "not-participating"
+              },
+              "rows": [],
+              "employeeKobo": 0,
+              "employerKobo": 0,
+              "eligibility": "user-confirmed",
+              "currentLawVerified": false
             },
-            "fGross": "₦22,500",
-            "fNet": "₦19,013",
-            "fDeductions": "₦3,488",
-            "fEmployerCost": "₦22,933",
-            "fFarmMonthlyCost": "₦22,933",
-            "fFarmAnnualCost": "₦275,192"
+            "labourAssumptions": {
+              "valid": true,
+              "currency": "NGN",
+              "overtimeHours": 0,
+              "overtimeHourlyPayKobo": null,
+              "overtimePayKobo": 0,
+              "leaveMonthlyBudgetKobo": 0,
+              "leave": {
+                "included": false
+              },
+              "assumptions": "user-confirmed",
+              "overtimeBasis": "agreed-total-hourly-overtime-pay",
+              "leaveTreatment": "separate-budget-not-payment-in-lieu",
+              "currentLawVerified": false,
+              "sourceId": "ng-labour-act-sections-13-18-19"
+            },
+            "employerCostBeforeLeaveBudget": 60000,
+            "cashGross": 60000,
+            "netCashPay": 60000,
+            "netRemuneration": 60000,
+            "totalEmployerContributions": 0,
+            "leaveProvision": 0
           }
         },
         {
           "id": "casual-standard",
           "input": {
+            "contributionSelection": {
+              "sector": "private",
+              "pension": "not-applicable",
+              "health": "not-applicable",
+              "housing": "not-participating"
+            },
+            "minimumWageSelection": {
+              "coverage": "unknown"
+            },
+            "labourSelection": {
+              "leaveBudget": "exclude",
+              "overtimeHourlyPay": "1500"
+            },
+            "inKindHousing": 0,
+            "inKindFood": 0,
             "workerType": "casual",
             "numWorkers": 7,
-            "grossPay": 3000,
-            "daysWorked": 26,
-            "overtimeHours": 4,
-            "inKindHousing": 0,
-            "inKindFood": 6000
+            "grossPay": 5000,
+            "daysWorked": 20,
+            "overtimeHours": 4
           },
           "output": {
             "sym": "₦",
             "currency": "NGN",
             "workerType": "casual",
             "numWorkers": 7,
-            "baseGross": 78000,
-            "overtimePay": 900.0173080251543,
-            "inKindValue": 6000,
-            "grossForDeductions": 84900.01730802516,
-            "deductions": [
-              {
-                "name": "Contributory Pension",
-                "rate": 8,
-                "amount": 6792.001384642012,
-                "notes": "Formal sector, 3+ employees"
-              },
-              {
-                "name": "NHIS",
-                "rate": 5,
-                "amount": 4245.000865401258,
-                "notes": "Employer 10%, employee 5%"
-              },
-              {
-                "name": "NHF",
-                "rate": 2.5,
-                "amount": 2122.500432700629,
-                "notes": "Formal sector only"
-              }
-            ],
-            "totalDeductions": 13159.5026827439,
-            "netPay": 71740.51462528126,
-            "employerContributions": [
-              {
-                "name": "Annual Leave Provision",
-                "amount": 1632.6926405389452
-              }
-            ],
-            "totalEmployerExtra": 1632.6926405389452,
-            "totalEmployerCost": 86532.7099485641,
-            "farmMonthlyGross": 594300.1211561761,
-            "farmMonthlyNet": 502183.6023769688,
-            "farmMonthlyCost": 605728.9696399487,
-            "farmAnnualCost": 7268747.635679385,
+            "baseGross": 100000,
+            "overtimePay": 6000,
+            "inKindValue": 0,
+            "grossForDeductions": 106000,
+            "deductions": [],
+            "totalDeductions": 0,
+            "netPay": 106000,
+            "employerContributions": [],
+            "totalEmployerExtra": 0,
+            "totalEmployerCost": 106000,
+            "farmMonthlyGross": 742000,
+            "farmMonthlyNet": 742000,
+            "farmMonthlyCost": 742000,
+            "farmAnnualCost": 8904000,
             "mwCheck": {
-              "compliant": true,
-              "minWage": 1000,
-              "gross": 3000,
-              "diff": 2000,
-              "diffPct": 200,
-              "isDaily": true
+              "valid": true,
+              "status": "coverage-unknown",
+              "reference": {
+                "amount": 70000,
+                "currency": "NGN",
+                "period": "month",
+                "effectiveFrom": "2024-07-29",
+                "sourceId": "ng-national-minimum-wage-amendment-2024",
+                "coverageSourceId": "ng-national-minimum-wage-2019-section-4"
+              }
             },
-            "likelyTaxable": true,
+            "likelyTaxable": null,
             "laborLaw": {
-              "maxHoursPerDay": 8,
-              "maxHoursPerWeek": 40,
-              "overtimeRate": 1.5,
-              "annualLeave_days": 6,
-              "publicHolidays": 11,
-              "notes": "Most farm workers informal. Probation 3 months. Severance: 1 week/year service."
+              "sourceId": "ng-labour-act-sections-13-18-19",
+              "assumptions": "user-confirmed",
+              "currentLawVerified": false
             },
             "payeLink": "/nigeria/ng-salary-tax.html",
             "payeCountryName": "Nigeria",
-            "typicalDailyRate": {
-              "low": 1500,
-              "mid": 3000,
-              "high": 5000
+            "typicalDailyRate": null,
+            "fGross": "₦106,000.00",
+            "fNet": "₦106,000.00",
+            "fDeductions": "₦0.00",
+            "fEmployerCost": "₦106,000.00",
+            "fFarmMonthlyCost": "₦742,000.00",
+            "fFarmAnnualCost": "₦8,904,000.00",
+            "contributionCalculation": {
+              "valid": true,
+              "country": "NG",
+              "sector": "private",
+              "selections": {
+                "pension": "not-applicable",
+                "health": "not-applicable",
+                "housing": "not-participating"
+              },
+              "rows": [],
+              "employeeKobo": 0,
+              "employerKobo": 0,
+              "eligibility": "user-confirmed",
+              "currentLawVerified": false
             },
-            "fGross": "₦84,900",
-            "fNet": "₦71,741",
-            "fDeductions": "₦13,160",
-            "fEmployerCost": "₦86,533",
-            "fFarmMonthlyCost": "₦605,729",
-            "fFarmAnnualCost": "₦7,268,748"
+            "labourAssumptions": {
+              "valid": true,
+              "currency": "NGN",
+              "overtimeHours": 4,
+              "overtimeHourlyPayKobo": 150000,
+              "overtimePayKobo": 600000,
+              "leaveMonthlyBudgetKobo": 0,
+              "leave": {
+                "included": false
+              },
+              "assumptions": "user-confirmed",
+              "overtimeBasis": "agreed-total-hourly-overtime-pay",
+              "leaveTreatment": "separate-budget-not-payment-in-lieu",
+              "currentLawVerified": false,
+              "sourceId": "ng-labour-act-sections-13-18-19"
+            },
+            "employerCostBeforeLeaveBudget": 106000,
+            "cashGross": 106000,
+            "netCashPay": 106000,
+            "netRemuneration": 106000,
+            "totalEmployerContributions": 0,
+            "leaveProvision": 0
           }
         },
         {
           "id": "seasonal-short",
           "input": {
+            "contributionSelection": {
+              "sector": "private",
+              "pension": "not-applicable",
+              "health": "not-applicable",
+              "housing": "not-participating"
+            },
+            "minimumWageSelection": {
+              "coverage": "unknown"
+            },
+            "labourSelection": {
+              "leaveBudget": "exclude",
+              "overtimeHourlyPay": "1500"
+            },
+            "inKindHousing": 0,
+            "inKindFood": 0,
             "workerType": "seasonal",
             "numWorkers": 12,
-            "grossPay": 1500,
+            "grossPay": 5000,
             "daysWorked": 14,
-            "overtimeHours": 0,
-            "inKindHousing": 0,
-            "inKindFood": 0
+            "overtimeHours": 0
           },
           "output": {
             "sym": "₦",
             "currency": "NGN",
             "workerType": "seasonal",
             "numWorkers": 12,
-            "baseGross": 21000,
+            "baseGross": 70000,
             "overtimePay": 0,
             "inKindValue": 0,
-            "grossForDeductions": 21000,
-            "deductions": [
-              {
-                "name": "Contributory Pension",
-                "rate": 8,
-                "amount": 1680,
-                "notes": "Formal sector, 3+ employees"
-              },
-              {
-                "name": "NHIS",
-                "rate": 5,
-                "amount": 1050,
-                "notes": "Employer 10%, employee 5%"
-              },
-              {
-                "name": "NHF",
-                "rate": 2.5,
-                "amount": 525,
-                "notes": "Formal sector only"
-              }
-            ],
-            "totalDeductions": 3255,
-            "netPay": 17745,
-            "employerContributions": [
-              {
-                "name": "Annual Leave Provision",
-                "amount": 403.84615384615387
-              }
-            ],
-            "totalEmployerExtra": 403.84615384615387,
-            "totalEmployerCost": 21403.846153846152,
-            "farmMonthlyGross": 252000,
-            "farmMonthlyNet": 212940,
-            "farmMonthlyCost": 256846.15384615381,
-            "farmAnnualCost": 3082153.846153846,
+            "grossForDeductions": 70000,
+            "deductions": [],
+            "totalDeductions": 0,
+            "netPay": 70000,
+            "employerContributions": [],
+            "totalEmployerExtra": 0,
+            "totalEmployerCost": 70000,
+            "farmMonthlyGross": 840000,
+            "farmMonthlyNet": 840000,
+            "farmMonthlyCost": 840000,
+            "farmAnnualCost": 10080000,
             "mwCheck": {
-              "compliant": true,
-              "minWage": 1000,
-              "gross": 1500,
-              "diff": 500,
-              "diffPct": 50,
-              "isDaily": true
+              "valid": true,
+              "status": "coverage-unknown",
+              "reference": {
+                "amount": 70000,
+                "currency": "NGN",
+                "period": "month",
+                "effectiveFrom": "2024-07-29",
+                "sourceId": "ng-national-minimum-wage-amendment-2024",
+                "coverageSourceId": "ng-national-minimum-wage-2019-section-4"
+              }
             },
-            "likelyTaxable": false,
+            "likelyTaxable": null,
             "laborLaw": {
-              "maxHoursPerDay": 8,
-              "maxHoursPerWeek": 40,
-              "overtimeRate": 1.5,
-              "annualLeave_days": 6,
-              "publicHolidays": 11,
-              "notes": "Most farm workers informal. Probation 3 months. Severance: 1 week/year service."
+              "sourceId": "ng-labour-act-sections-13-18-19",
+              "assumptions": "user-confirmed",
+              "currentLawVerified": false
             },
             "payeLink": "/nigeria/ng-salary-tax.html",
             "payeCountryName": "Nigeria",
-            "typicalDailyRate": {
-              "low": 1500,
-              "mid": 3000,
-              "high": 5000
+            "typicalDailyRate": null,
+            "fGross": "₦70,000.00",
+            "fNet": "₦70,000.00",
+            "fDeductions": "₦0.00",
+            "fEmployerCost": "₦70,000.00",
+            "fFarmMonthlyCost": "₦840,000.00",
+            "fFarmAnnualCost": "₦10,080,000.00",
+            "contributionCalculation": {
+              "valid": true,
+              "country": "NG",
+              "sector": "private",
+              "selections": {
+                "pension": "not-applicable",
+                "health": "not-applicable",
+                "housing": "not-participating"
+              },
+              "rows": [],
+              "employeeKobo": 0,
+              "employerKobo": 0,
+              "eligibility": "user-confirmed",
+              "currentLawVerified": false
             },
-            "fGross": "₦21,000",
-            "fNet": "₦17,745",
-            "fDeductions": "₦3,255",
-            "fEmployerCost": "₦21,404",
-            "fFarmMonthlyCost": "₦256,846",
-            "fFarmAnnualCost": "₦3,082,154"
+            "labourAssumptions": {
+              "valid": true,
+              "currency": "NGN",
+              "overtimeHours": 0,
+              "overtimeHourlyPayKobo": null,
+              "overtimePayKobo": 0,
+              "leaveMonthlyBudgetKobo": 0,
+              "leave": {
+                "included": false
+              },
+              "assumptions": "user-confirmed",
+              "overtimeBasis": "agreed-total-hourly-overtime-pay",
+              "leaveTreatment": "separate-budget-not-payment-in-lieu",
+              "currentLawVerified": false,
+              "sourceId": "ng-labour-act-sections-13-18-19"
+            },
+            "employerCostBeforeLeaveBudget": 70000,
+            "cashGross": 70000,
+            "netCashPay": 70000,
+            "netRemuneration": 70000,
+            "totalEmployerContributions": 0,
+            "leaveProvision": 0
           }
         },
         {
           "id": "piece-rate",
           "input": {
+            "contributionSelection": {
+              "sector": "private",
+              "pension": "not-applicable",
+              "health": "not-applicable",
+              "housing": "not-participating"
+            },
+            "minimumWageSelection": {
+              "coverage": "unknown"
+            },
+            "labourSelection": {
+              "leaveBudget": "exclude",
+              "overtimeHourlyPay": "1500"
+            },
+            "inKindHousing": 0,
+            "inKindFood": 0,
             "workerType": "piece_rate",
             "numWorkers": 5,
-            "ratePerUnit": 600,
+            "ratePerUnit": 1000,
             "unitsCompleted": 80,
-            "overtimeHours": 3,
-            "inKindHousing": 3000,
-            "inKindFood": 3000
+            "overtimeHours": 3
           },
           "output": {
             "sym": "₦",
             "currency": "NGN",
             "workerType": "piece_rate",
             "numWorkers": 5,
-            "baseGross": 48000,
-            "overtimePay": 415.39260370391736,
-            "inKindValue": 6000,
-            "grossForDeductions": 54415.39260370392,
-            "deductions": [
-              {
-                "name": "Contributory Pension",
-                "rate": 8,
-                "amount": 4353.231408296314,
-                "notes": "Formal sector, 3+ employees"
-              },
-              {
-                "name": "NHIS",
-                "rate": 5,
-                "amount": 2720.7696301851956,
-                "notes": "Employer 10%, employee 5%"
-              },
-              {
-                "name": "NHF",
-                "rate": 2.5,
-                "amount": 1360.3848150925978,
-                "notes": "Formal sector only"
+            "baseGross": 80000,
+            "overtimePay": 4500,
+            "inKindValue": 0,
+            "grossForDeductions": 84500,
+            "deductions": [],
+            "totalDeductions": 0,
+            "netPay": 84500,
+            "employerContributions": [],
+            "totalEmployerExtra": 0,
+            "totalEmployerCost": 84500,
+            "farmMonthlyGross": 422500,
+            "farmMonthlyNet": 422500,
+            "farmMonthlyCost": 422500,
+            "farmAnnualCost": 5070000,
+            "mwCheck": {
+              "valid": true,
+              "status": "coverage-unknown",
+              "reference": {
+                "amount": 70000,
+                "currency": "NGN",
+                "period": "month",
+                "effectiveFrom": "2024-07-29",
+                "sourceId": "ng-national-minimum-wage-amendment-2024",
+                "coverageSourceId": "ng-national-minimum-wage-2019-section-4"
               }
-            ],
-            "totalDeductions": 8434.385853574107,
-            "netPay": 45981.00675012981,
-            "employerContributions": [
-              {
-                "name": "Annual Leave Provision",
-                "amount": 1046.449857763537
-              }
-            ],
-            "totalEmployerExtra": 1046.449857763537,
-            "totalEmployerCost": 55461.84246146746,
-            "farmMonthlyGross": 272076.9630185196,
-            "farmMonthlyNet": 229905.03375064905,
-            "farmMonthlyCost": 277309.2123073373,
-            "farmAnnualCost": 3327710.547688048,
-            "mwCheck": null,
-            "likelyTaxable": false,
+            },
+            "likelyTaxable": null,
             "laborLaw": {
-              "maxHoursPerDay": 8,
-              "maxHoursPerWeek": 40,
-              "overtimeRate": 1.5,
-              "annualLeave_days": 6,
-              "publicHolidays": 11,
-              "notes": "Most farm workers informal. Probation 3 months. Severance: 1 week/year service."
+              "sourceId": "ng-labour-act-sections-13-18-19",
+              "assumptions": "user-confirmed",
+              "currentLawVerified": false
             },
             "payeLink": "/nigeria/ng-salary-tax.html",
             "payeCountryName": "Nigeria",
-            "typicalDailyRate": {
-              "low": 1500,
-              "mid": 3000,
-              "high": 5000
+            "typicalDailyRate": null,
+            "fGross": "₦84,500.00",
+            "fNet": "₦84,500.00",
+            "fDeductions": "₦0.00",
+            "fEmployerCost": "₦84,500.00",
+            "fFarmMonthlyCost": "₦422,500.00",
+            "fFarmAnnualCost": "₦5,070,000.00",
+            "contributionCalculation": {
+              "valid": true,
+              "country": "NG",
+              "sector": "private",
+              "selections": {
+                "pension": "not-applicable",
+                "health": "not-applicable",
+                "housing": "not-participating"
+              },
+              "rows": [],
+              "employeeKobo": 0,
+              "employerKobo": 0,
+              "eligibility": "user-confirmed",
+              "currentLawVerified": false
             },
-            "fGross": "₦54,415",
-            "fNet": "₦45,981",
-            "fDeductions": "₦8,434",
-            "fEmployerCost": "₦55,462",
-            "fFarmMonthlyCost": "₦277,309",
-            "fFarmAnnualCost": "₦3,327,711"
+            "labourAssumptions": {
+              "valid": true,
+              "currency": "NGN",
+              "overtimeHours": 3,
+              "overtimeHourlyPayKobo": 150000,
+              "overtimePayKobo": 450000,
+              "leaveMonthlyBudgetKobo": 0,
+              "leave": {
+                "included": false
+              },
+              "assumptions": "user-confirmed",
+              "overtimeBasis": "agreed-total-hourly-overtime-pay",
+              "leaveTreatment": "separate-budget-not-payment-in-lieu",
+              "currentLawVerified": false,
+              "sourceId": "ng-labour-act-sections-13-18-19"
+            },
+            "employerCostBeforeLeaveBudget": 84500,
+            "cashGross": 84500,
+            "netCashPay": 84500,
+            "netRemuneration": 84500,
+            "totalEmployerContributions": 0,
+            "leaveProvision": 0
           }
         }
       ]
@@ -478,7 +602,7 @@
     "KE": {
       "route": "/agriculture/farm-payroll/kenya",
       "file": "agriculture/farm-payroll/kenya.html",
-      "pageSha256": "b63db5e94fe1c911862bb2b667460e264747da4b509c7a48fa780c821cc8a6ae",
+      "pageSha256": "de56672d68cf8bccbd04831e03dd3db03d3f1b74a3fd58745a75e65501e3a556",
       "currency": "KES",
       "symbol": "KSh",
       "minimums": {
@@ -917,7 +1041,7 @@
     "ZA": {
       "route": "/agriculture/farm-payroll/south-africa",
       "file": "agriculture/farm-payroll/south-africa.html",
-      "pageSha256": "20d3fba1fa4ba8d47c57140012435e34a15acff9ca29737fd108f264edb306a9",
+      "pageSha256": "b1166a522657ab1d34c101712bf03f8edebba8e16a5e253e2fb1d622bd4ab6b9",
       "currency": "ZAR",
       "symbol": "R",
       "minimums": {
@@ -1301,7 +1425,7 @@
     "GH": {
       "route": "/agriculture/farm-payroll/ghana",
       "file": "agriculture/farm-payroll/ghana.html",
-      "pageSha256": "bb3fb77510a014b963fb3461b8eda0f7438f0ab85351cf3d317cb741e09ecb2b",
+      "pageSha256": "da1d6c799ca28a2b9bce40437d6cc8cdb1f8b85dab6bb6823140aac037f292b7",
       "currency": "GHS",
       "symbol": "GH₵",
       "minimums": {
@@ -1668,7 +1792,7 @@
     "ET": {
       "route": "/agriculture/farm-payroll/ethiopia",
       "file": "agriculture/farm-payroll/ethiopia.html",
-      "pageSha256": "8f3d24347ed12565c1cca6f014566977857f7043e6d3d6d7a4189bc4f8c249e5",
+      "pageSha256": "a60331ffdbd3e05fd9e45770129ca121cdf719342cca0869d109585b3a2d2d19",
       "currency": "ETB",
       "symbol": "Br",
       "minimums": {
@@ -2035,7 +2159,7 @@
     "EG": {
       "route": "/agriculture/farm-payroll/egypt",
       "file": "agriculture/farm-payroll/egypt.html",
-      "pageSha256": "795bb93411eded6631b6947c06c6a90eda8fc0d5482533e4032c97cd72db33f2",
+      "pageSha256": "b567a9ae8807a9787c4bd56bb6ccb9e159724aa49a914a70a85ee2b63f230a13",
       "currency": "EGP",
       "symbol": "E£",
       "minimums": {
@@ -2414,7 +2538,7 @@
     "TZ": {
       "route": "/agriculture/farm-payroll/tanzania",
       "file": "agriculture/farm-payroll/tanzania.html",
-      "pageSha256": "e87b8bf820c05a69e9960fa2f54f86169b489b3195cfd77a2db8ba2a783ac8ab",
+      "pageSha256": "a370e976aaa46439f2534b7239582bd627b2c4b49ca0462dd57771894437f4ff",
       "currency": "TZS",
       "symbol": "TZS",
       "minimums": {
@@ -2823,7 +2947,7 @@
     "CI": {
       "route": "/agriculture/farm-payroll/cote-d-ivoire",
       "file": "agriculture/farm-payroll/cote-d-ivoire.html",
-      "pageSha256": "ba8aff1a622df5b4d9aae400c50ce2afaaae7f04ba9ffcde80f3ecae1a980b21",
+      "pageSha256": "2e3125ca9bdcf9bb8e952dccd3d7d41bffee94546ff8152480015c86fb58000b",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -3232,7 +3356,7 @@
     "CM": {
       "route": "/agriculture/farm-payroll/cameroon",
       "file": "agriculture/farm-payroll/cameroon.html",
-      "pageSha256": "7f4462e4b28db472c95390422ac0c1cd2ddea05ab9d27c5f778e3a8e9a6cf2eb",
+      "pageSha256": "07874ac0d481d53aa4bfd05425ac1c68979182b88678506bbd902d1909871880",
       "currency": "XAF",
       "symbol": "FCFA",
       "minimums": {
@@ -3641,7 +3765,7 @@
     "SN": {
       "route": "/agriculture/farm-payroll/senegal",
       "file": "agriculture/farm-payroll/senegal.html",
-      "pageSha256": "63355c6b013e5a9440831cc6b1b709700ef28260fe56e5240a0d965dfff2a6f1",
+      "pageSha256": "c8a040f306966a804f026b859ee5ab4605ee66893919204cb42248666e9a7149",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -4050,7 +4174,7 @@
     "MA": {
       "route": "/agriculture/farm-payroll/morocco",
       "file": "agriculture/farm-payroll/morocco.html",
-      "pageSha256": "1cf0a2d4969d8e7f6f36a64ab70ac2aaae7c857fa250155a73d5740886b4bae8",
+      "pageSha256": "d4888b26a9e5d8229491b0a89c9d1697c6716bf20cca3731d13530aa32fa76d9",
       "currency": "MAD",
       "symbol": "MAD",
       "minimums": {
@@ -4459,7 +4583,7 @@
     "DZ": {
       "route": "/agriculture/farm-payroll/algeria",
       "file": "agriculture/farm-payroll/algeria.html",
-      "pageSha256": "d5ead218e75a9f7118952e7d438dcdad990e2430535a309b6cf19722c78b776d",
+      "pageSha256": "7c935dc143038e1dd54a9ac35a5c8d552ec6504752ab184d881e2486f6c0b7b5",
       "currency": "DZD",
       "symbol": "DA",
       "minimums": {
@@ -4868,7 +4992,7 @@
     "UG": {
       "route": "/agriculture/farm-payroll/uganda",
       "file": "agriculture/farm-payroll/uganda.html",
-      "pageSha256": "317c675e01bf535b4dec11f77ea2457be4e9dddadb90b0c404e5d827f45d9733",
+      "pageSha256": "35a8072ec502d474593b5a02c4cd5d9ff78adbf8450804091cfd856e965dbf3e",
       "currency": "UGX",
       "symbol": "USh",
       "minimums": {
@@ -5247,7 +5371,7 @@
     "MZ": {
       "route": "/agriculture/farm-payroll/mozambique",
       "file": "agriculture/farm-payroll/mozambique.html",
-      "pageSha256": "e3aa53e50c155762edeb56448af38d95af28b6d3e96764674e2408da741d45d7",
+      "pageSha256": "5a32e0c4dde33941ce4d775836e1dd1e6820937a5f8ad7e1e55cb32d71603123",
       "currency": "MZN",
       "symbol": "MZN",
       "minimums": {
@@ -5626,7 +5750,7 @@
     "ZW": {
       "route": "/agriculture/farm-payroll/zimbabwe",
       "file": "agriculture/farm-payroll/zimbabwe.html",
-      "pageSha256": "000241075d24abb2871ef71382bc996bf37cee2d404cd1d4dfa63629035113bc",
+      "pageSha256": "f7202858acdb5f19e06afcb5055f14f3593e762057998058491fadac152ccfb3",
       "currency": "ZWG",
       "symbol": "ZWG",
       "minimums": {
@@ -6005,7 +6129,7 @@
     "ZM": {
       "route": "/agriculture/farm-payroll/zambia",
       "file": "agriculture/farm-payroll/zambia.html",
-      "pageSha256": "0beb01535814903c240a858e9fffd08dc0790912d31278ceea485a5bb878b203",
+      "pageSha256": "20ea1a8cc3a6c1da32bcd322ad91fa2f728efaa5be28fc990e76d193bce8329b",
       "currency": "ZMW",
       "symbol": "ZMW",
       "minimums": {
@@ -6384,7 +6508,7 @@
     "MW": {
       "route": "/agriculture/farm-payroll/malawi",
       "file": "agriculture/farm-payroll/malawi.html",
-      "pageSha256": "f0ed23208c8d537d673a51b4e6b22c775bdee433bb9d1efc53d38c7c982e917e",
+      "pageSha256": "fc1705d5c945a41f7487bfebaadd85eb1a498ef482a54dd254f2ff2d3fa2b09b",
       "currency": "MWK",
       "symbol": "MWK",
       "minimums": {
@@ -6763,7 +6887,7 @@
     "CD": {
       "route": "/agriculture/farm-payroll/dr-congo",
       "file": "agriculture/farm-payroll/dr-congo.html",
-      "pageSha256": "53151c6dd6cae157c28b3d3f9d0099746dc160514a47a4e9478c24c5a4ce63be",
+      "pageSha256": "cc5cae1e52cef6d5f6fcca88c0dbdf27fe346688f1b81f26774181264f495e87",
       "currency": "CDF",
       "symbol": "FC",
       "minimums": {
@@ -7142,7 +7266,7 @@
     "AO": {
       "route": "/agriculture/farm-payroll/angola",
       "file": "agriculture/farm-payroll/angola.html",
-      "pageSha256": "6821b637f9adcda4e0e1d38af16c07eb54b3911c43c74ea7ed88baa20a98be61",
+      "pageSha256": "491276057031bddad9e037e1bb5cc5a77e260d6f5ca2e9f21d1b0aecc3518f26",
       "currency": "AOA",
       "symbol": "Kz",
       "minimums": {
@@ -7521,7 +7645,7 @@
     "RW": {
       "route": "/agriculture/farm-payroll/rwanda",
       "file": "agriculture/farm-payroll/rwanda.html",
-      "pageSha256": "fceaabba208cb453694974f3f41d91091fc19de591ad20bf75f8a51e22da8f17",
+      "pageSha256": "3773509c3ffd22ab38d03066256678e4d36eddcce0242b2984320c486cc599ae",
       "currency": "RWF",
       "symbol": "RWF",
       "minimums": {
@@ -7930,7 +8054,7 @@
     "ML": {
       "route": "/agriculture/farm-payroll/mali",
       "file": "agriculture/farm-payroll/mali.html",
-      "pageSha256": "c5d65d2e15b2317ec75f26d6c52bb69c13f8934893063afce9b8cc96108ea1e8",
+      "pageSha256": "73500e6eb915130e72747d1d28540d3456f42bf4a8558543b19fdefd0f5b5958",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -8339,7 +8463,7 @@
     "BF": {
       "route": "/agriculture/farm-payroll/burkina-faso",
       "file": "agriculture/farm-payroll/burkina-faso.html",
-      "pageSha256": "bcc71300ca4d5c76debe84a7457e5c27eaf109943125d5735588e302a0aa30e7",
+      "pageSha256": "b181e66c59abe89a075425aca56dc4493ca15fd8c904310dc5b4e610210209e9",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -8718,7 +8842,7 @@
     "TN": {
       "route": "/agriculture/farm-payroll/tunisia",
       "file": "agriculture/farm-payroll/tunisia.html",
-      "pageSha256": "f3f38e399f25ff04eb5235310d9c1b507fd7f0e0ec23776536ab7cc67a4db109",
+      "pageSha256": "4c352b4f4e8afe0bd1dc502a5d288672daae49807532bdf7b9ab4c0372e57fbb",
       "currency": "TND",
       "symbol": "TND",
       "minimums": {
@@ -9127,7 +9251,7 @@
     "MG": {
       "route": "/agriculture/farm-payroll/madagascar",
       "file": "agriculture/farm-payroll/madagascar.html",
-      "pageSha256": "5ae0401e69f5847605fbcf95b72a5483273a7b67f4b1f6d8e3160594b79951d5",
+      "pageSha256": "940563cc71ff48a1375caae4982b58ad619dbf8239e33f989d7dea417401d2c7",
       "currency": "MGA",
       "symbol": "Ar",
       "minimums": {
@@ -9536,7 +9660,7 @@
     "BJ": {
       "route": "/agriculture/farm-payroll/benin",
       "file": "agriculture/farm-payroll/benin.html",
-      "pageSha256": "44960d8b7098969ef0eabcc44bbda0cc3a9e7e4da32602450744c993c0532f86",
+      "pageSha256": "8e3cd949ee5090587f0c20961cd9e5fc123bf5dc681bddfd21c046756d84f718",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -9915,7 +10039,7 @@
     "GA": {
       "route": "/agriculture/farm-payroll/gabon",
       "file": "agriculture/farm-payroll/gabon.html",
-      "pageSha256": "24195caa93ab19b62113a782f79c9f7cf751b7de6ec2f3c0f3c532f338bbdbeb",
+      "pageSha256": "4bb77fdbee447f31859a9ab7b17c2dd809a1cca9cb87f2fcd55f85aa3de83c3e",
       "currency": "XAF",
       "symbol": "FCFA",
       "minimums": {
@@ -10324,7 +10448,7 @@
     "TG": {
       "route": "/agriculture/farm-payroll/togo",
       "file": "agriculture/farm-payroll/togo.html",
-      "pageSha256": "1027f7a60d0516a11acd11644b8addac4a87a9a67b8a64637417a15339a3c3e6",
+      "pageSha256": "40f311f6c22a44b8cf3ebfa00491f8c474cc720e09419b98da94b399091bc210",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -10703,7 +10827,7 @@
     "NE": {
       "route": "/agriculture/farm-payroll/niger",
       "file": "agriculture/farm-payroll/niger.html",
-      "pageSha256": "72234b0251cfeb83cdcf0dff446aa215df6c323ee97191657cad6c17410676f4",
+      "pageSha256": "368692eccaa26b6e54acc5f4a7f02011c41645829ace7a71c3f58fd3056f6d2d",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -11082,7 +11206,7 @@
     "GN": {
       "route": "/agriculture/farm-payroll/guinea",
       "file": "agriculture/farm-payroll/guinea.html",
-      "pageSha256": "be923ada8c310723a59e41f60eb00587c40fb889768c654a0c921b2f41629686",
+      "pageSha256": "d6ac98cf7c0af0ba100463602bc81f9256650cb5329a7b938b6b07439e86a127",
       "currency": "GNF",
       "symbol": "GNF",
       "minimums": {
@@ -11461,7 +11585,7 @@
     "NA": {
       "route": "/agriculture/farm-payroll/namibia",
       "file": "agriculture/farm-payroll/namibia.html",
-      "pageSha256": "012a44f3acbb917da9ca9e29134fde309a212c8a5b3ae8fdaea63bdf2f52387c",
+      "pageSha256": "4626c1aae2615c1bd9f57b4190ec061902d61e88021bcde8cd0f8bd3699d775c",
       "currency": "NAD",
       "symbol": "N$",
       "minimums": {
@@ -11840,7 +11964,7 @@
     "BW": {
       "route": "/agriculture/farm-payroll/botswana",
       "file": "agriculture/farm-payroll/botswana.html",
-      "pageSha256": "ce74ea3d1fd83f90bdbdcc691ac113f245650e0187e20bb4e17c11316e0fc8f2",
+      "pageSha256": "51226d3c63dfde39b45437614a36dcc98b4b997934249376229713dafa032688",
       "currency": "BWP",
       "symbol": "P",
       "minimums": {
@@ -12219,7 +12343,7 @@
     "MU": {
       "route": "/agriculture/farm-payroll/mauritius",
       "file": "agriculture/farm-payroll/mauritius.html",
-      "pageSha256": "a0ad503caf046379a87a821033c237159e4755cb0f18181ab849e8f9ea93914a",
+      "pageSha256": "67332c38e632ccbe9a97bb16aceb7c22d892d83b3306fb30dd750db9d928adc6",
       "currency": "MUR",
       "symbol": "Rs",
       "minimums": {
@@ -12628,7 +12752,7 @@
     "BI": {
       "route": "/agriculture/farm-payroll/burundi",
       "file": "agriculture/farm-payroll/burundi.html",
-      "pageSha256": "7d8a334290e98a38e0d13f10843221006fcc5031c04b1745587343aff738d340",
+      "pageSha256": "e082379a18ff35b83d5b31f7f447355bcf1dd4cb749de81393be1790556bd979",
       "currency": "BIF",
       "symbol": "BIF",
       "minimums": {
@@ -13007,7 +13131,7 @@
     "SL": {
       "route": "/agriculture/farm-payroll/sierra-leone",
       "file": "agriculture/farm-payroll/sierra-leone.html",
-      "pageSha256": "afc86c327ab58b0d9644cddbfc67e98ec851e3dae3b1e69a8bffa827d0210339",
+      "pageSha256": "539d66a1fb33b2a0caff5217a8266d523c6ee90b6a0a9bfe6ce7c375543af898",
       "currency": "SLL",
       "symbol": "Le",
       "minimums": {
@@ -13386,7 +13510,7 @@
     "LR": {
       "route": "/agriculture/farm-payroll/liberia",
       "file": "agriculture/farm-payroll/liberia.html",
-      "pageSha256": "a54ac40130599e37ed30cc851e3db2251205405ea063ed416eef3e91bcb383e0",
+      "pageSha256": "cb54b36549edfba5c4591361327bd39ba56dfdbb65b034f2e90f3c66a9248f57",
       "currency": "LRD",
       "symbol": "L$",
       "minimums": {
@@ -13765,7 +13889,7 @@
     "CG": {
       "route": "/agriculture/farm-payroll/congo-brazzaville",
       "file": "agriculture/farm-payroll/congo-brazzaville.html",
-      "pageSha256": "52f1920e33354c9efd80b2cc99d281e2bb2810470a656f96980206fc58f6d293",
+      "pageSha256": "0a40a1e9ebb12188e475a87171e8e2b496405bb5d671ab7c524810de0d4dfffa",
       "currency": "XAF",
       "symbol": "FCFA",
       "minimums": {
@@ -14144,7 +14268,7 @@
     "TD": {
       "route": "/agriculture/farm-payroll/chad",
       "file": "agriculture/farm-payroll/chad.html",
-      "pageSha256": "13a6b623c40dea6b5fbf6a451556fc3ad3f460e3d98143271c51c8fd792310e6",
+      "pageSha256": "b1be9d4651709e7bc009b0a3f9699f838c5fabbe7b8a90935fbd1b646965af8f",
       "currency": "XAF",
       "symbol": "FCFA",
       "minimums": {
@@ -14523,7 +14647,7 @@
     "SZ": {
       "route": "/agriculture/farm-payroll/eswatini",
       "file": "agriculture/farm-payroll/eswatini.html",
-      "pageSha256": "757a6b9d787f041c2fb281fae85dfebbaa428e2e5ff3624eafc4b3f7836bc12b",
+      "pageSha256": "d62ece79079bbbe1870d7e4bf778f062b23ec71cbea0340ce1860d94ff7fe48d",
       "currency": "SZL",
       "symbol": "SZL",
       "minimums": {
@@ -14902,7 +15026,7 @@
     "LS": {
       "route": "/agriculture/farm-payroll/lesotho",
       "file": "agriculture/farm-payroll/lesotho.html",
-      "pageSha256": "25ea8a1d7423efd4ef4e53e383a317712383b9a79004fe4c02e86a0619cbb14b",
+      "pageSha256": "8394959d7bba1b2a5342365de0729fbece70332d8cfaef99a360b9023f641414",
       "currency": "LSL",
       "symbol": "LSL",
       "minimums": {
@@ -15281,7 +15405,7 @@
     "CV": {
       "route": "/agriculture/farm-payroll/cabo-verde",
       "file": "agriculture/farm-payroll/cabo-verde.html",
-      "pageSha256": "5030e9622aaad1fab41672d74e4ee6aaf370370d344c8dccc3a4f4283305e42d",
+      "pageSha256": "d562cad658479eb6311b980e8645e105083f09f3ecf666871dbbb28d54f2e903",
       "currency": "CVE",
       "symbol": "CVE",
       "minimums": {
@@ -15690,7 +15814,7 @@
     "GQ": {
       "route": "/agriculture/farm-payroll/equatorial-guinea",
       "file": "agriculture/farm-payroll/equatorial-guinea.html",
-      "pageSha256": "73305c164b42c070a5ec930a6f27336e37c904f756af88ed28eaf06d9a71d16a",
+      "pageSha256": "3427153133e65856552ac656832febc9849cac023c4c07b30a9a58940e522687",
       "currency": "XAF",
       "symbol": "FCFA",
       "minimums": {
@@ -16069,7 +16193,7 @@
     "CF": {
       "route": "/agriculture/farm-payroll/central-african-republic",
       "file": "agriculture/farm-payroll/central-african-republic.html",
-      "pageSha256": "c8ee83b707c96f775d2ca5aeead0cd8589074416e87ebf13acfa8cf412594d33",
+      "pageSha256": "c0ef7dba58b04e5e4157cc23645530aba077c7e4cc885a503e68d3b4ece69b6d",
       "currency": "XAF",
       "symbol": "FCFA",
       "minimums": {
@@ -16448,7 +16572,7 @@
     "GM": {
       "route": "/agriculture/farm-payroll/gambia",
       "file": "agriculture/farm-payroll/gambia.html",
-      "pageSha256": "986690ac64e30e90d500eceffc980371187c75ecf7ddee5100d0e05fcf56f487",
+      "pageSha256": "6c2b85d20e9928f843e823fec219fc8439609026ac3803de765763cf2bfa10d0",
       "currency": "GMD",
       "symbol": "D",
       "minimums": {
@@ -16827,7 +16951,7 @@
     "MR": {
       "route": "/agriculture/farm-payroll/mauritania",
       "file": "agriculture/farm-payroll/mauritania.html",
-      "pageSha256": "52c2eea70da8740b423d060777f224e34edc57d1e7a66d309362a5d3af0c1d22",
+      "pageSha256": "3593142dcf141eae89f98aec5220669d175d315b849954e7bc8ae676d5fe6d3d",
       "currency": "MRU",
       "symbol": "UM",
       "minimums": {
@@ -17206,7 +17330,7 @@
     "GW": {
       "route": "/agriculture/farm-payroll/guinea-bissau",
       "file": "agriculture/farm-payroll/guinea-bissau.html",
-      "pageSha256": "d633957f6caff2a96b56ec865c1ec206e3304aabc72aabda35591b63f716fa88",
+      "pageSha256": "901662f9937b6fceb37c6e7f6f55d10e0101d22a4996df009978b9274f99cff1",
       "currency": "XOF",
       "symbol": "CFA",
       "minimums": {
@@ -17585,7 +17709,7 @@
     "DJ": {
       "route": "/agriculture/farm-payroll/djibouti",
       "file": "agriculture/farm-payroll/djibouti.html",
-      "pageSha256": "b0464534684f515c39894850ef5645787f9436300d8c3b9a159a7f5963f5f2ab",
+      "pageSha256": "caaf4d6ad250bf05f33fa7fa61c041cfd1ac55739c094e3038e240dda1f1adb7",
       "currency": "DJF",
       "symbol": "Fdj",
       "minimums": {
@@ -17964,7 +18088,7 @@
     "ER": {
       "route": "/agriculture/farm-payroll/eritrea",
       "file": "agriculture/farm-payroll/eritrea.html",
-      "pageSha256": "cc23cced609b7d849c4f284e88d5b169ea89372365b13630b03775228c959d26",
+      "pageSha256": "0a11e3e06bfc13bbad5bde9fe6da00dcfa3729de89ea47c03dd6933d5a75a627",
       "currency": "ERN",
       "symbol": "Nfk",
       "minimums": {
@@ -18331,7 +18455,7 @@
     "SS": {
       "route": "/agriculture/farm-payroll/south-sudan",
       "file": "agriculture/farm-payroll/south-sudan.html",
-      "pageSha256": "9458ecb0fd516001472055ac621324020fc80132ae6c4affe19feb5e59c56d72",
+      "pageSha256": "7661591cebe4491902ae0ce164b406b1013746de18d5f828c22fbf40a0588502",
       "currency": "SSP",
       "symbol": "SSP",
       "minimums": {
@@ -18698,7 +18822,7 @@
     "SO": {
       "route": "/agriculture/farm-payroll/somalia",
       "file": "agriculture/farm-payroll/somalia.html",
-      "pageSha256": "f49db0f74268b53c9efd9a6bd5f05522b327e3f4d46359ec3be8d2fe28c03028",
+      "pageSha256": "6ad74cfb84a049ecd51fe40a3d0413cd9263f46a7f492395d782a5fb5a1be440",
       "currency": "SOS",
       "symbol": "SOS",
       "minimums": {
@@ -19030,7 +19154,7 @@
     "SD": {
       "route": "/agriculture/farm-payroll/sudan",
       "file": "agriculture/farm-payroll/sudan.html",
-      "pageSha256": "f31c6238543a6ca6fc36ef9f42e38745f3a6e3e7c0d241c29fc7efb8c88e9eb1",
+      "pageSha256": "f43e25b67560b6d35f45cf6e65edeef68d6ed4d42e8bccaadc2dd8227b25000b",
       "currency": "SDG",
       "symbol": "SDG",
       "minimums": {
@@ -19397,7 +19521,7 @@
     "LY": {
       "route": "/agriculture/farm-payroll/libya",
       "file": "agriculture/farm-payroll/libya.html",
-      "pageSha256": "efe79012ec79aef610f07a35f170a932bc7c16ee9fd645b470a078545026759c",
+      "pageSha256": "28ec1a69dcdbe26bf623e88a40836aa62d6bc29fb192c025f91e2d0c685f76e6",
       "currency": "LYD",
       "symbol": "LD",
       "minimums": {
@@ -19776,7 +19900,7 @@
     "ST": {
       "route": "/agriculture/farm-payroll/sao-tome-and-principe",
       "file": "agriculture/farm-payroll/sao-tome-and-principe.html",
-      "pageSha256": "5f36093107249d6bfc75fc2276e9d6037de18fb64f96df70a22a411248b2126e",
+      "pageSha256": "fc7cfb8cc9b8e9ace6e078e20edbd1fa40b46dfb1cad5681c566fce276e07226",
       "currency": "STN",
       "symbol": "Db",
       "minimums": {
@@ -20155,7 +20279,7 @@
     "SC": {
       "route": "/agriculture/farm-payroll/seychelles",
       "file": "agriculture/farm-payroll/seychelles.html",
-      "pageSha256": "20240a001eaa7483e94edb05d761afd95cfa87a0488c87883ee065da7e725315",
+      "pageSha256": "7b80c539b415c86180a1d9122edbf8942d2c26a3e6a3b52cd3c1f368b348f08a",
       "currency": "SCR",
       "symbol": "SCR",
       "minimums": {
@@ -20564,7 +20688,7 @@
     "KM": {
       "route": "/agriculture/farm-payroll/comoros",
       "file": "agriculture/farm-payroll/comoros.html",
-      "pageSha256": "c1937e25f3ef7195d98d92a49a0bb579a71f89efeae7fa29d009331f609683d8",
+      "pageSha256": "5443500c79f4d44712e291a4a7c8d94a4ba2e091670e2ef336e445299e28a57f",
       "currency": "KMF",
       "symbol": "CF",
       "minimums": {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="en">
 <head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="3369af90" async></script>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8">
 <meta name="afrotools-currency" content="XAF">
 <meta name="afrotools-formula-jurisdiction" content="GQ">
@@ -392,6 +392,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
       </div>
 
       <div class="ir-field full">
+        <p id="irInputError" role="alert"></p>
         <button type="button" class="ir-btn ir-btn-primary" onclick="calculate()">&#128167; Calculate Water Needs</button>
       </div>
     </div>
@@ -399,6 +400,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
 
   <!-- ─── RESULTS ─── -->
   <div class="ir-results" id="resultsPanel">
+      <p id="irCostBasis"></p>
 
     <!-- Single Month Results -->
     <div id="singleResults" style="display:none;">
@@ -613,7 +615,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
 <!-- ─── DATA & ENGINE ─── -->
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/gq-agri-data.js?v=cdbfd230"></script>
-<script src="/engines/irrigation-engine.js?v=4591ba97"></script>
+<script src="/engines/irrigation-engine.js?v=ba737492"></script>
 
 <script>
 (function () {
@@ -633,6 +635,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
   function fmtInt(n) {
     if (typeof n !== 'number' || isNaN(n)) return '0';
     return n.toLocaleString('en', { maximumFractionDigits: 0 });
+  }
+  function showCostBasis(cost) {
+    $('irCostBasis').textContent = cost.type === 'pump'
+      ? 'Pumping-cost assumption: USD ' + cost.ratePerM3 + ' per cubic metre. This planning estimate is not a verified local tariff; confirm your actual pumping cost before budgeting.'
+      : 'Reference water rate: ' + cost.currency + cost.ratePerM3 + ' per cubic metre. Confirm its date and local applicability before budgeting.';
   }
   function fmtCost(cost) {
     if (!cost || !cost.hasEstimate) return '\u2014';
@@ -708,18 +715,33 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
   /* ═══════════════════════════════════════════
    * CALCULATE
    * ═══════════════════════════════════════════ */
+  function invalidateIrrigationResult() {
+    $('resultsPanel').classList.remove('visible');
+    $('irInputError').textContent = '';
+  }
+  ['inpFarm','selCrop','selRegion','selStage','selMonth','selMethod'].forEach(function (id) {
+    $(id).addEventListener('input', invalidateIrrigationResult);
+    $(id).addEventListener('change', invalidateIrrigationResult);
+  });
   window.calculate = function () {
+    invalidateIrrigationResult();
+    var farmArea = Number($('inpFarm').value);
+    if (!$('inpFarm').value.trim() || !Number.isFinite(farmArea) || farmArea <= 0 || !$('inpFarm').validity.valid) {
+      $('irInputError').textContent = 'Enter a valid farm area of at least 0.1 hectares.';
+      $('inpFarm').focus();
+      return;
+    }
     var inputs = {
       cropId:           $('selCrop').value,
       regionId:         $('selRegion').value,
-      farmSizeHa:       parseFloat($('inpFarm').value) || 1,
+      farmSizeHa:       farmArea,
       growthStage:      $('selStage').value,
       month:            parseInt($('selMonth').value, 10),
       irrigationMethod: $('selMethod').value
     };
 
     var r = ENG.calculate(inputs, CD, CDB);
-    if (r.error) { alert(r.message); return; }
+    if (r.error) { $('irInputError').textContent = r.message; return; }
 
     var panel = $('resultsPanel');
     panel.classList.add('visible');
@@ -758,6 +780,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
     $('rPerEvent').textContent = fmtN(r.perEvent_m3) + ' m\u00B3';
     $('rMonthM3').textContent = fmtInt(r.monthVolume_m3) + ' m\u00B3';
     $('rMonthCost').textContent = fmtCost(r.costEstimate);
+    showCostBasis(r.costEstimate);
   }
 
   /* ── Render Full Season ── */
@@ -771,6 +794,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
     $('rSeasonRain').textContent = fmtInt(r.totalRainfallContrib_m3) + ' m\u00B3';
     $('rSeasonIrrig').textContent = fmtInt(r.totalNIR_m3) + ' m\u00B3';
     $('rSeasonCost').textContent = fmtCost(r.costEstimate);
+    showCostBasis(r.costEstimate);
 
     // Season table
     var tbody = $('seasonTableBody');
@@ -878,6 +902,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=3369af90" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>
