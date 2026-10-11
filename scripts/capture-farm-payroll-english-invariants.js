@@ -24,13 +24,25 @@ function sha256(value) {
 function loadRuntime() {
   const context = { window: {} };
   vm.createContext(context);
-  for (const file of [DATA_FILE, ENGINE_FILE]) {
+  for (const file of [DATA_FILE, path.join(ROOT, 'assets/js/lib/ng-farm-payroll-contributions.js'), path.join(ROOT, 'assets/js/lib/ng-farm-payroll-labour-assumptions.js'), ENGINE_FILE]) {
     vm.runInContext(fs.readFileSync(file, 'utf8'), context, { filename: path.relative(ROOT, file) });
   }
   return context.window.AfroTools;
 }
 
 function profiles(country) {
+  if (country.contributionPolicy === 'NG-user-confirmed-v1') {
+    // Synthetic agreed pay, not a claimed Nigerian agricultural market rate.
+    const selection = { sector: 'private', pension: 'not-applicable', health: 'not-applicable', housing: 'not-participating' };
+    const common = { contributionSelection: selection, minimumWageSelection: { coverage: 'unknown' }, labourSelection: { leaveBudget: 'exclude', overtimeHourlyPay: '1500' }, inKindHousing: 0, inKindFood: 0 };
+    return [
+      { id: 'permanent-standard', input: { ...common, workerType: 'permanent', numWorkers: 3, grossPay: 100000, overtimeHours: 8 } },
+      { id: 'permanent-below-minimum', input: { ...common, workerType: 'permanent', numWorkers: 1, grossPay: 60000, overtimeHours: 0, minimumWageSelection: { coverage: 'applicable-confirmed', monthlyWage: '60000' } } },
+      { id: 'casual-standard', input: { ...common, workerType: 'casual', numWorkers: 7, grossPay: 5000, daysWorked: 20, overtimeHours: 4 } },
+      { id: 'seasonal-short', input: { ...common, workerType: 'seasonal', numWorkers: 12, grossPay: 5000, daysWorked: 14, overtimeHours: 0 } },
+      { id: 'piece-rate', input: { ...common, workerType: 'piece_rate', numWorkers: 5, ratePerUnit: 1000, unitsCompleted: 80, overtimeHours: 3 } },
+    ];
+  }
   const daily = country.typicalDailyRate.mid;
   const monthly = country.agriMinWage_monthly || country.nationalMinWage_monthly || daily * 26;
   return [
