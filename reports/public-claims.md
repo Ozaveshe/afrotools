@@ -1,6 +1,6 @@
 # Public claims report
 
-Generated: 2026-10-10
+Generated: 2026-10-11
 
 - Canonical claims: 21
 - Feature data flows: 10
@@ -16,8 +16,8 @@ Generated: 2026-10-10
 | count.countries | Country totals count the 54 canonical African jurisdictions; regional sentinels are not countries. | Country registry owner | 2026-10-10 | 2027-01-08 | 204 |
 | count.languages | Public language totals include launched/default/partial route locales only, not planned or component-only locales. | Localization platform owner | 2026-10-10 | 2027-01-08 | 1 |
 | count.scholarships | Scholarship totals count the records in the current public scholarship feed and must retain the feed's limited, stale, or degraded state. | Scholarship feed owner | 2026-09-11 | 2026-10-11 | 0 |
-| free.public-core | Guests can use the core inputs and results of public calculators without a paid subscription; this is not a promise that every current or future feature is permanently free. | Product and Pro boundary owner | 2026-09-10 | 2026-10-10 | 3 |
-| free.account-creation | Creating a basic account can be free, but account creation is distinct from guest use and paid Pro entitlements. | Authentication product owner | 2026-09-10 | 2026-10-10 | 0 |
+| free.public-core | Guests can use the core inputs and results of public calculators without a paid subscription; this is not a promise that every current or future feature is permanently free. | Product and Pro boundary owner | 2026-10-11 | 2026-11-10 | 3 |
+| free.account-creation | Creating a basic account can be free, but account creation is distinct from guest use and paid Pro entitlements. | Authentication product owner | 2026-10-11 | 2026-11-10 | 0 |
 | pro.current-capabilities | Pro provides the capabilities verified by the active readiness matrix; shell and pending features remain labelled previews or pending. | Pro readiness owner | 2026-09-11 | 2026-10-11 | 1 |
 | privacy.browser-local | A named local flow processes its working payload in browser memory or browser storage and does not upload that payload unless the user invokes a separately disclosed network feature. | Privacy and local-processing owner | 2026-09-11 | 2026-10-11 | 4 |
 | ai.optional-provider | Deterministic routing works without model consent; optional model requests go through AfroTools functions to the configured supported provider after consent and can be unavailable. | AI platform and privacy owner | 2026-09-11 | 2026-10-11 | 5 |
