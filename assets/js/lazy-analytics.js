@@ -3,7 +3,7 @@
 
   var MEASUREMENT_ID = 'G-D859CGF391';
   var CONSENT_KEY = 'afrotools_cookie_consent';
-  var OPT_IN_ANALYTICS_PAGE = /^\/(?:(?:fr\/)?crypto\/remittance|sw\/zana\/ulinganisho-nukuu-za-kutuma-fedha|tools\/remittance-(?:compare|v2)|fr\/tools\/transfert-(?:argent|v2)|sw\/zana\/ulinganisho-uhamishaji-pesa(?:-kina)?)(?:\/index\.html)?\/?$/.test(window.location.pathname) || /^\/(?:tools\/currency-converter|fr\/tools\/convertisseur-devises|sw\/zana\/kibadilishaji-sarafu|ha\/kayan-aiki\/canja-kudi)(?:\/index\.html)?\/?$/.test(window.location.pathname);
+  var OPT_IN_ANALYTICS_PAGE = /^\/(?:(?:fr\/)?crypto\/remittance|sw\/zana\/ulinganisho-nukuu-za-kutuma-fedha|tools\/remittance-(?:compare|v2)|fr\/tools\/transfert-(?:argent|v2)|sw\/zana\/ulinganisho-uhamishaji-pesa(?:-kina)?)(?:\/index\.html)?\/?$/.test(window.location.pathname) || /^\/(?:tools\/currency-converter|fr\/tools\/convertisseur-devises|sw\/zana\/kibadilishaji-sarafu|ha\/kayan-aiki\/canja-kudi)(?:\/index\.html)?\/?$/.test(window.location.pathname) || /^\/sw\/zana\/(?:mwongozo-wa-etims-kra|mwongozo-wa-sars-efiling)(?:\/index\.html)?\/?$/.test(window.location.pathname);
   window.__afroAnalyticsRequiresOptIn = OPT_IN_ANALYTICS_PAGE;
   var MANAGER_SRC = '/assets/js/components/analytics-consent-v2.js';
 
@@ -29,7 +29,7 @@
   function keepConsentModeActive() {
     // Consent Mode, rather than the legacy ga-disable switch, controls whether
     // GA can use storage. Ordinary pages permit denied-state cookieless pings.
-    // Checked-quote and currency pages require explicit opt-in and disable collection after withdrawal.
+    // Checked-quote, currency and Swahili tax-guide pages require explicit opt-in and disable collection after withdrawal.
     window['ga-disable-' + MEASUREMENT_ID] = OPT_IN_ANALYTICS_PAGE && readConsent() !== 'accepted';
   }
 
