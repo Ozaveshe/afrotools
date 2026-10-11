@@ -161,10 +161,10 @@
   <div class="agri-export-card" data-tool-verification-panel>
     <span class="agri-export-kicker">Tushen bayanai da iyaka</span>
     <div class="agri-trust-grid">
-      <p class="agri-trust-item"><strong>Source</strong>Bayanan amfanin gona, tazarar shuka da farashin iri daga tsarin noma na AfroTools.</p>
-      <p class="agri-trust-item"><strong>Freshness</strong>An tsara wannan a matsayin kiyasin 2026; farashin kasuwa, yanayi, kwari, kudi da dokokin gida na iya canzawa.</p>
-      <p class="agri-trust-item"><strong>Methodology</strong>Injin lissafi yana hada shigar da mai amfani da bayanan gona da aka ajiye a AfroTools. Sakamako yana taimakawa wajen tsara aiki, ba wai shawarar hukuma ba.</p>
-      <p class="agri-trust-item"><strong>Limitations</strong>Tabbatar da farashi, iri, taki, ruwa, kasar gona, yanayi da shawarar jamiin fadakar da manoma kafin kashe kudi mai yawa.</p>
+      <p class="agri-trust-item"><strong>Tushen bayanai</strong>Bayanan amfanin gona, tazarar shuka da farashin iri daga tsarin noma na AfroTools.</p>
+      <p class="agri-trust-item"><strong>Sabunta bayanai</strong>An tsara wannan a matsayin kiyasin 2026; farashin kasuwa, yanayi, kwari, kudi da dokokin gida na iya canzawa.</p>
+      <p class="agri-trust-item"><strong>Hanyar lissafi</strong>Injin lissafi yana hada shigar da mai amfani da bayanan gona da aka ajiye a AfroTools. Sakamako yana taimakawa wajen tsara aiki, ba wai shawarar hukuma ba.</p>
+      <p class="agri-trust-item"><strong>Iyakoki</strong>Tabbatar da farashi, iri, taki, ruwa, kasar gona, yanayi da shawarar jamiin fadakar da manoma kafin kashe kudi mai yawa.</p>
     </div>
   </div>
 </section>
@@ -172,7 +172,7 @@
 <afro-footer></afro-footer>
 <script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
 <script src="/data/agriculture/seed-data.js?v=defcdc00"></script>
-<script src="/engines/seed-rate-engine.js?v=1e657a79"></script>
+<script src="/engines/seed-rate-engine.js?v=9e67975c"></script>
 <script>
 (function(){
   'use strict';
@@ -244,19 +244,26 @@
       tbody.appendChild(tr);
     });
   }
+  var inputError = document.createElement('p'); inputError.id = 'agriInputError'; inputError.setAttribute('role','alert'); inputError.setAttribute('aria-live','assertive'); $('inpFarm').parentNode.appendChild(inputError);
+  function invalidateResult(){ $('resultsPanel').classList.remove('on'); }
+  ["selCrop", "selMethod", "selQuality", "selConditions", "inpFarm", "selIntercrop", "inpRowSpacing", "inpPlantSpacing", "inpSeedsHole"].forEach(function(id){ $(id).addEventListener('input',invalidateResult); $(id).addEventListener('change',invalidateResult); });
+  function optionalNumber(id){var value=$(id).value;return value===''?null:Number(value);}
   window.calculate = function(){
+    invalidateResult(); inputError.textContent='';
+    var farmSize=Number($('inpFarm').value);
+    if(!Number.isFinite(farmSize)||farmSize<0.1){inputError.textContent='Shigar da girman gona na aƙalla hekta 0.1.'; $('inpFarm').focus();return;}
     var result = ENG.calculate({
       cropId: $('selCrop').value,
       plantingMethod: $('selMethod').value,
       seedQuality: $('selQuality').value,
       fieldConditions: $('selConditions').value,
-      farmSizeHa: parseFloat($('inpFarm').value) || 1,
+      farmSizeHa: farmSize,
       intercrop: $('selIntercrop').value,
-      rowSpacing_cm: parseFloat($('inpRowSpacing').value) || null,
-      plantSpacing_cm: parseFloat($('inpPlantSpacing').value) || null,
-      seedsPerHole: parseInt($('inpSeedsHole').value, 10) || null
+      rowSpacing_cm: optionalNumber('inpRowSpacing'),
+      plantSpacing_cm: optionalNumber('inpPlantSpacing'),
+      seedsPerHole: optionalNumber('inpSeedsHole')
     }, SD, CC, CD);
-    if (result.error) { alert('Ba a iya yin lissafi ba. Duba zabin amfanin gona.'); return; }
+    if (result.error) { inputError.textContent='An kasa yin lissafi. Duba bayanan da ka shigar.'; return; }
     $('resultsPanel').classList.add('on');
     if (result.propagation === 'seed') displaySeedResults(result);
     else displayVegResults(result);
@@ -355,7 +362,7 @@
 <script data-localized-agriculture-batch="export-js">
 (function(){
   'use strict';
-  var labels = {"title":"Yawan iri Najeriya","fallback":"Sakamako bai bayyana ba tukuna. Yi lissafi ko duba shigar da bayanai.","copied":"An kwafi takaitawa.","downloaded":"An sauke takaitawa."};
+  var labels = {"title":"Yawan iri Najeriya","fallback":"Sakamako bai bayyana ba tukuna. Yi lissafi ko duba shigar da bayanai.","copied":"An kwafi takaitawa.","downloaded":"An sauke takaitawa.","generatedLocally":"An samar da wannan a cikin burauzarka.","inputsLabel":"Bayanan da aka shigar:","resultsLabel":"Sakamako:","planningNote":"Wannan kiyasi ne don tsara aiki kawai. Tabbatar da farashin gida, yanayi, ƙasa, ruwa, sharuɗɗan mai saye da shawarar jami'in fadakar da manoma kafin kashe kuɗi."};
   function text(selector){
     var node = document.querySelector(selector);
     return node ? (node.innerText || node.textContent || '').replace(/\s+/g,' ').trim() : '';
@@ -369,7 +376,7 @@
       var value = field.options ? field.options[field.selectedIndex].text : field.value;
       if (value === undefined || value === null || String(value).trim() === '') return '';
       return label.textContent.replace(/\s+/g,' ').trim() + ': ' + String(value).trim();
-    }).filter(Boolean).slice(0, 14);
+    }).filter(Boolean);
   }
   function results(){
     var selectors = ['#resultsPanel', '.results-wrap.on', '.ir-results.visible', '.ha-results.on', '.ha-results', '.ir-results', '.results-wrap'];
@@ -378,15 +385,15 @@
       var value = text(selector);
       if (value && out.indexOf(value) === -1) out.push(value);
     });
-    return out.join('\n').slice(0, 2800);
+    return out.join('\n');
   }
   function summary(){
-    var lines = ['AfroTools - ' + labels.title, 'Generated locally in this browser.', ''];
+    var lines = ['AfroTools - ' + labels.title, labels.generatedLocally, ''];
     var data = inputs();
-    if (data.length) lines.push('Inputs:\n' + data.join('\n'));
+    if (data.length) lines.push(labels.inputsLabel+'\n' + data.join('\n'));
     var result = results();
-    lines.push('', 'Results:', result || labels.fallback);
-    lines.push('', 'Note: planning estimate only. Verify local prices, weather, soil, water, buyer terms and extension advice before spending.');
+    lines.push('', labels.resultsLabel, result || labels.fallback);
+    lines.push('', labels.planningNote);
     return lines.join('\n');
   }
   function setStatus(msg){
@@ -408,6 +415,7 @@
     var copyBtn = event.target.closest('[data-agri-copy]');
     var downloadBtn = event.target.closest('[data-agri-download]');
     if (!copyBtn && !downloadBtn) return;
+    if (!document.querySelector('#resultsPanel.on')) { setStatus(labels.fallback); return; }
     var value = summary();
     if (copyBtn) {
       if (navigator.clipboard && navigator.clipboard.writeText) {

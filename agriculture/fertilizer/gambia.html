@@ -185,19 +185,20 @@
           </select>
         </div>
         <div class="field full">
-          <button class="collapse-toggle" type="button" onclick="toggleSoilTest()">&#128300; Have soil test results? (optional) &#8595;</button>
+          <p id="fertModelNote" style="font-size:.78rem;color:var(--color-text-muted);margin:0 0 12px;">This planning estimate uses organic matter, Olsen P and available K readings. Blank readings apply no measured-soil credit. Soil pH, available N and soil type do not change the calculated dose. Local soil-test calibration is not established; confirm the recommendation with your local agronomist.</p>
+          <button id="soilTestToggle" class="collapse-toggle" type="button" aria-expanded="false" aria-controls="soilTestPanel" onclick="toggleSoilTest()">&#128300; Have soil test results? (optional) &#8595;</button>
           <div class="collapse-body" id="soilTestPanel">
-            <p style="font-size:.78rem;color:var(--color-text-muted);margin:0 0 12px;">Enter values for a more accurate recommendation. Leave blank for regional estimates.</p>
+
             <div class="form-grid">
-              <div class="field"><label class="f-label-text">Soil pH</label><input aria-label="E.g. 6.5" class="f-input" id="inpPH" type="number" step="0.1" placeholder="e.g. 6.5"></div>
-              <div class="field"><label class="f-label-text">Organic Matter (%)</label><input aria-label="E.g. 2.5" class="f-input" id="inpOM" type="number" step="0.1" placeholder="e.g. 2.5"></div>
-              <div class="field"><label class="f-label-text">Available N (ppm)</label><input aria-label="E.g. 20" class="f-input" id="inpN" type="number" step="1" placeholder="e.g. 20"></div>
-              <div class="field"><label class="f-label-text">Olsen P (ppm)</label><input aria-label="E.g. 15" class="f-input" id="inpP" type="number" step="1" placeholder="e.g. 15"></div>
-              <div class="field"><label class="f-label-text">Available K (ppm)</label><input aria-label="E.g. 100" class="f-input" id="inpK" type="number" step="1" placeholder="e.g. 100"></div>
+              <div class="field"><label class="f-label-text" for="inpPH">Soil pH</label><input class="f-input" id="inpPH" aria-describedby="fertModelNote" type="number" step="0.1" placeholder="e.g. 6.5"></div>
+              <div class="field"><label class="f-label-text" for="inpOM">Organic Matter (%)</label><input class="f-input" id="inpOM" type="number" step="0.1" placeholder="e.g. 2.5"></div>
+              <div class="field"><label class="f-label-text" for="inpN">Available N (ppm)</label><input class="f-input" id="inpN" aria-describedby="fertModelNote" type="number" step="1" placeholder="e.g. 20"></div>
+              <div class="field"><label class="f-label-text" for="inpP">Olsen P (ppm)</label><input class="f-input" id="inpP" type="number" step="1" placeholder="e.g. 15"></div>
+              <div class="field"><label class="f-label-text" for="inpK">Available K (ppm)</label><input class="f-input" id="inpK" type="number" step="1" placeholder="e.g. 100"></div>
             </div>
           </div>
         </div>
-        <div class="field full"><button type="button" class="calc-btn" onclick="calculate()">&#129514; Calculate Fertilizer Needs</button></div>
+        <p id="fertInputError" role="alert"></p><div class="field full"><button type="button" class="calc-btn" onclick="calculate()">&#129514; Calculate Fertilizer Needs</button></div>
       </div>
     </div>
   </div>
@@ -292,7 +293,7 @@
 
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/gm-agri-data.js?v=64e7f4c0"></script>
-<script src="/engines/fertilizer-engine.js?v=ba115ded"></script>
+<script src="/engines/fertilizer-engine.js?v=7465f140"></script>
 
 <script>
 (function(){
@@ -314,12 +315,16 @@
   function updateSoils(){var rg=CD.regions.find(function(r){return r.id===$('selRegion').value}),ss=$('selSoil'),lb={loamy:'Loamy',clay:'Clay',sandy:'Sandy',sandy_loam:'Sandy Loam',clay_loam:'Clay Loam',volcanic:'Volcanic',laterite:'Laterite',alluvial:'Alluvial',black_cotton:'Black Cotton',red_soil:'Red Soil'};ss.innerHTML='';if(rg&&rg.soilTypes)rg.soilTypes.forEach(function(st){var o=document.createElement('option');o.value=st;o.textContent=lb[st]||st;ss.appendChild(o)})}
 
   $('inpFarm').value=CD.agriStats.avgFarmSizeHa||1;
-  window.toggleSoilTest=function(){$('soilTestPanel').classList.toggle('open')};
+  window.toggleSoilTest=function(){invalidateFertilizerResult();var open=$('soilTestPanel').classList.toggle('open');$('soilTestToggle').setAttribute('aria-expanded',String(open))};
 
+  function invalidateFertilizerResult() { $('resultsPanel').classList.remove('on'); }
+  function optionalFertilizerNumber(id) { var v=$(id).value.trim(); return v===''?null:Number(v); }
+  ['inpFarm','inpTarget','selCrop','selRegion','selSoil','selPrevCrop','inpPH','inpOM','inpN','inpP','inpK'].forEach(function(id){$(id).addEventListener('input',invalidateFertilizerResult);$(id).addEventListener('change',invalidateFertilizerResult);});
   window.calculate=function(){
-    var st=null;if($('soilTestPanel').classList.contains('open'))st={pH:parseFloat($('inpPH').value)||null,organicMatter:parseFloat($('inpOM').value)||null,N_ppm:parseFloat($('inpN').value)||null,P_ppm:parseFloat($('inpP').value)||null,K_ppm:parseFloat($('inpK').value)||null};
-    var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:parseFloat($('inpFarm').value)||1,targetYieldPerHa:parseFloat($('inpTarget').value)||null,soilType:$('selSoil').value,previousCrop:$('selPrevCrop').value,soilTest:st},CD,CDB);
-    if(r.error){alert(r.message);return}
+    invalidateFertilizerResult();$('fertInputError').textContent='';
+    var st=null;if($('soilTestPanel').classList.contains('open'))st={pH:optionalFertilizerNumber('inpPH'),organicMatter:optionalFertilizerNumber('inpOM'),N_ppm:optionalFertilizerNumber('inpN'),P_ppm:optionalFertilizerNumber('inpP'),K_ppm:optionalFertilizerNumber('inpK')};
+    var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:Number($('inpFarm').value),targetYieldPerHa:optionalFertilizerNumber('inpTarget'),soilType:$('selSoil').value,previousCrop:$('selPrevCrop').value,soilTest:st},CD,CDB);
+    if(r.error){$('fertInputError').textContent=r.message;return}
     var p=$('resultsPanel');p.classList.add('on');p.scrollIntoView({behavior:'smooth',block:'start'});
 
     $('rN').textContent=fmtN(r.perHa.N);$('rP').textContent=fmtN(r.perHa.P);$('rK').textContent=fmtN(r.perHa.K);

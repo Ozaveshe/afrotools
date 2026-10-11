@@ -152,7 +152,7 @@
 <afro-footer></afro-footer>
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
-<script src="/engines/irrigation-engine.js?v=4591ba97"></script>
+<script src="/engines/irrigation-engine.js?v=ba737492"></script>
 <script>
 (function(){
   'use strict';
@@ -236,16 +236,23 @@
     var months = s.rainySeasonMonths || [];
     $('countryInfo').textContent = 'Noma yana bada kusan ' + (s.gdpSharePercent || 0) + '% na tattalin arzikin Najeriya. Kimanin ' + (s.irrigatedPercent || 0) + '% na ' + fmtN((s.arableLandHectares || 0) / 1e6) + 'M hekta na kasar noma ne ke da ban ruwa. Lokacin ruwan sama yana daga ' + monthLabel(months[0] || 1) + ' zuwa ' + monthLabel(months[months.length - 1] || 12) + '. Farashin ruwa ko famfo yana bambanta da yanki, mai, lantarki da zurfin rijiya.';
   }
+  var inputError = document.createElement('p'); inputError.id = 'agriInputError'; inputError.setAttribute('role','alert'); inputError.setAttribute('aria-live','assertive'); $('inpFarm').parentNode.appendChild(inputError);
+  function invalidateResult(){ $('resultsPanel').classList.remove('on'); }
+  ["selCrop", "selRegion", "inpFarm", "selStage", "selMonth", "selMethod"].forEach(function(id){ $(id).addEventListener('input',invalidateResult); $(id).addEventListener('change',invalidateResult); });
+  function optionalNumber(id){var value=$(id).value;return value===''?null:Number(value);}
   window.calculate = function(){
+    invalidateResult(); inputError.textContent='';
+    var farmSize=Number($('inpFarm').value);
+    if(!Number.isFinite(farmSize)||farmSize<0.1){inputError.textContent='Shigar da girman gona na aƙalla hekta 0.1.'; $('inpFarm').focus();return;}
     var r = ENG.calculate({
       cropId: $('selCrop').value,
       regionId: $('selRegion').value,
-      farmSizeHa: parseFloat($('inpFarm').value) || 1,
+      farmSizeHa: farmSize,
       growthStage: $('selStage').value,
       month: parseInt($('selMonth').value, 10),
       irrigationMethod: $('selMethod').value
     }, CD, CDB);
-    if (r.error) { alert('Ba a iya yin lissafin ban ruwa ba. Duba zabin amfanin gona, yanki da wata.'); return; }
+    if (r.error) { inputError.textContent='An kasa yin lissafi. Duba bayanan da ka shigar.'; return; }
     $('resultsPanel').classList.add('on');
     if (r.mode === 'single') renderSingle(r); else renderSeason(r);
     renderMethodComparison(r.methodComparison || []);

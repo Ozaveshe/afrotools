@@ -63,7 +63,7 @@
   function scheduleTiming(index, item) {
     if (index === 0) return 'Wakati wa kupanda au muda mfupi kabla yake';
     var weeks = String(item.timing || '').match(/\d+/);
-    return (weeks ? weeks[0] : 'Wiki chache') + ' baada ya kupanda';
+    return (weeks ? 'Wiki ' + weeks[0] : 'Wiki chache') + ' baada ya kupanda';
   }
 
   function scheduleNote(index) {
@@ -150,6 +150,7 @@
     };
   }
 
+  function modelNote() { return byId('fertModelNote').textContent; }
   function reportObject() {
     return latest ? {
       schemaVersion: 1,
@@ -160,6 +161,7 @@
       inputs: latest.input,
       result: latest.result,
       localizedResult: localizedResult(),
+      modelAssumptions: modelNote(),
       sources: {
         label: cfg.sourceLabel,
         dataReviewed: cfg.dataReviewed,
@@ -179,6 +181,7 @@
     if (!result) return '';
     var lines = [
       'AfroTools — makadirio ya mahitaji ya mbolea',
+      modelNote(),
       cfg.countryName,
       'Zao: ' + result.zao,
       'Kanda: ' + result.kanda,
@@ -269,7 +272,9 @@
     return null;
   }
 
+  function invalidateResult() { latest=null;window.__SW_AGRI_TEST__.latest=null;byId('resultPanel').hidden=true;byId('emptyState').hidden=false; }
   function calculate() {
+    invalidateResult();
     byId('formError').textContent = '';
     var farmSize = Number(byId('farmSize').value);
     var targetYield = optionalNumber('targetYield');
@@ -407,6 +412,8 @@
     status('Fomu imewekwa upya.');
   }
 
+  byId('fertilizerForm').addEventListener('input',invalidateResult);
+  byId('fertilizerForm').addEventListener('change',invalidateResult);
   byId('fertilizerForm').addEventListener('submit', function submit(event) {
     event.preventDefault();
     calculate();
@@ -415,6 +422,7 @@
     setTimeout(reset, 0);
   });
   byId('soilTestToggle').addEventListener('click', function toggleSoilTest() {
+    invalidateResult();
     var panel = byId('soilTestPanel');
     panel.hidden = !panel.hidden;
     byId('soilTestToggle').setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
@@ -472,12 +480,12 @@
       var rows = [[
         'nchi', 'msimbo_wa_nchi', 'zao', 'kanda', 'ukubwa_hekta',
         'n_kg_hekta', 'p2o5_kg_hekta', 'k2o_kg_hekta', 'sarafu',
-        'gharama_elekezi', 'data_ya_moja_kwa_moja'
+        'gharama_elekezi', 'dhana_za_kukokotoa', 'data_ya_moja_kwa_moja'
       ], [
         cfg.countryName, cfg.countryCode, result.zao, result.kanda,
         result.ukubwaWaShambaHekta, result.mahitajiKwaHekta.N,
         result.mahitajiKwaHekta.P, result.mahitajiKwaHekta.K,
-        result.sarafu, result.gharamaSokoni, 'hapana'
+        result.sarafu, result.gharamaSokoni, modelNote(), 'hapana'
       ]];
       download(
         '\ufeff' + rows.map(function renderCsv(row) {
@@ -499,7 +507,10 @@
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/[’‘]/g, "'")
         .replace(/[—–]/g, '-')
-        .replace(/₂/g, '2');
+        .replace(/₂/g, '2')
+        .replace(/₅/g, '5')
+        .replace(/[\u00a0\u202f]/g, ' ')
+        .replace(/&amp;/g, '&');
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       doc.text(doc.splitTextToSize(printable, 500), 48, 58);

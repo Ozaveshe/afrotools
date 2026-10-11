@@ -95,6 +95,16 @@
   }
   window.AfroTools.IrrigationEngine = {
     calculate: function(g, u, h) {
+      if (!g || typeof g.farmSizeHa !== "number" || !Number.isFinite(g.farmSizeHa) || g.farmSizeHa <= 0) {
+        return { error: true, message: "Enter a finite farm area greater than zero." };
+      }
+      if (g.month !== undefined && (!Number.isInteger(g.month) || g.month < 0 || g.month > 12)) {
+        return { error: true, message: "Choose a month from 1 to 12, or the full season." };
+      }
+      if (g.irrigationMethod !== undefined && !Object.prototype.hasOwnProperty.call(e, g.irrigationMethod)) {
+        return { error: true, message: "Choose a supported irrigation method." };
+      }
+
       for (var d = null, p = 0; p < u.regions.length; p++) {
         if (u.regions[p].id === g.regionId) {
           d = u.regions[p];
@@ -119,7 +129,7 @@
           message: "Crop not found."
         };
       }
-      var M = h && h[g.cropId] ? h[g.cropId] : null, v = g.farmSizeHa || 1, _ = g.irrigationMethod || "furrow", E = e[_] || .55, S = o[_] || {
+      var M = h && h[g.cropId] ? h[g.cropId] : null, v = g.farmSizeHa, _ = g.irrigationMethod || "furrow", E = e[_] || .55, S = o[_] || {
         min: 5,
         max: 7,
         typical: 6

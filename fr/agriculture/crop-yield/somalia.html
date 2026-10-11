@@ -162,7 +162,7 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
 
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/so-agri-data.js?v=3257bedc"></script>
-<script src="/engines/crop-yield-engine.js?v=bb30597e"></script>
+<script src="/engines/crop-yield-engine.js?v=dba23ede"></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
 <script>
 (function(){
@@ -219,7 +219,9 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
     data.crops.forEach(function(item){var row=document.createElement('tr');var planting=(item.plantingMonths||[]).map(function(value){return monthNames[value-1];}).join(', ');row.innerHTML='<td>'+escapeHtml(cropName(item.id,item.name))+'</td><td>'+number(item.baseYieldPerHa)+'</td><td>'+number(item.potentialYieldPerHa||0)+'</td><td>'+escapeHtml(planting||'À vérifier localement')+'</td>';byId('cropRows').appendChild(row);});
   }
   function escapeHtml(value){return String(value==null?'':value).replace(/[&<>"']/g,function(character){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character];});}
+  function invalidateYieldResult(){latest=null;window.__FR_AGRI_TEST__.latest=null;byId('resultPanel').hidden=true;byId('emptyState').hidden=false;}
   function calculate(){
+    invalidateYieldResult();
     byId('formError').textContent='';
     var farmSize=Number(byId('farmSize').value);
     if(!Number.isFinite(farmSize)||farmSize<0.1){byId('formError').textContent='Saisissez une superficie valide d’au moins 0,1 hectare.';byId('farmSize').focus();return null;}
@@ -246,6 +248,8 @@ html[data-theme="dark"]{--agri-bg:#0d1624;--agri-card:#152237;--agri-text:#f3f7f
     window.__FR_AGRI_TEST__.latest=latest;
     return result;
   }
+  byId('yieldForm').addEventListener('input',invalidateYieldResult);
+  byId('yieldForm').addEventListener('change',invalidateYieldResult);
   byId('yieldForm').addEventListener('submit',function(event){event.preventDefault();calculate();});
   byId('yieldForm').addEventListener('reset',function(){setTimeout(function(){latest=null;window.__FR_AGRI_TEST__.latest=null;byId('resultPanel').hidden=true;byId('emptyState').hidden=false;byId('formError').textContent='';byId('farmSize').value=data.agriStats.avgFarmSizeHa||0.5;byId('region').selectedIndex=0;updateDependents();status('Formulaire réinitialisé.');},0);});
   document.addEventListener('click',function(event){

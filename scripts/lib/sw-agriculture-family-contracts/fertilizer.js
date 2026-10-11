@@ -251,7 +251,7 @@ function renderCountry(row, context) {
 </style>
 <section class="card" aria-labelledby="calculatorTitle">
   <h2 id="calculatorTitle">Kadiria mahitaji ya mbolea</h2>
-  <p>Chagua zao lenye mbinu iliyohifadhiwa ya kukokotoa virutubisho. Kipimo cha udongo huboresha makadirio, lakini matokeo bado yanahitaji uthibitisho wa mtaalamu wa eneo lako.</p>
+  <p id="fertModelNote">Makadirio haya hutumia vipimo vya maada ya kikaboni, fosforasi na potasiamu. Sehemu zilizo wazi hazipunguzi hitaji kwa mchango uliopimwa wa udongo. pH, nitrojeni inayopatikana na aina ya udongo havibadili kiasi kinachokokotolewa. Ulinganifu na vipimo vya eneo haujathibitishwa; thibitisha pendekezo na mtaalamu wa kilimo wa eneo lako.</p>
   <form id="fertilizerForm" novalidate>
     <div class="grid">
       <div class="field"><label for="crop">Zao</label><select id="crop" required></select><small>Mazao yenye mbinu ya NPK iliyohifadhiwa pekee ndiyo yanaonyeshwa.</small></div>
@@ -264,9 +264,9 @@ function renderCountry(row, context) {
     <button class="action" id="soilTestToggle" type="button" aria-expanded="false" aria-controls="soilTestPanel">Ongeza majibu ya kipimo cha udongo (si lazima)</button>
     <div class="soil-test-panel" id="soilTestPanel" hidden>
       <div class="grid">
-        <div class="field"><label for="soilPh">pH ya udongo</label><input id="soilPh" type="number" min="0" max="14" step="0.1" inputmode="decimal"></div>
+        <div class="field"><label for="soilPh">pH ya udongo</label><input id="soilPh" aria-describedby="fertModelNote" type="number" min="0" max="14" step="0.1" inputmode="decimal"></div>
         <div class="field"><label for="organicMatter">Mabaki hai kwenye udongo (%)</label><input id="organicMatter" type="number" min="0" step="0.1" inputmode="decimal"></div>
-        <div class="field"><label for="availableN">Nitrojeni inayopatikana (ppm)</label><input id="availableN" type="number" min="0" step="1" inputmode="decimal"></div>
+        <div class="field"><label for="availableN">Nitrojeni inayopatikana (ppm)</label><input id="availableN" aria-describedby="fertModelNote" type="number" min="0" step="1" inputmode="decimal"></div>
         <div class="field"><label for="phosphorus">Fosforasi ya Olsen (ppm)</label><input id="phosphorus" type="number" min="0" step="0.1" inputmode="decimal"></div>
         <div class="field"><label for="potassium">Potasiamu inayopatikana (ppm)</label><input id="potassium" type="number" min="0" step="0.1" inputmode="decimal"></div>
       </div>
