@@ -238,11 +238,11 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 <!-- LEGAL-WORKFLOW-COPILOT:START -->
 <section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
-  <script type="application/json" class="leg-workflow-data">{"slug":"leave-days","title":"Statutory Leave Days Calculator","workflowTitle":"Statutory leave entitlement check","coverage":"Labour-law reference","decision":"Which law or collective agreement sets the minimum leave entitlement","evidence":["Check the statutory floor, then compare the employment contract and company policy","Separate annual leave, sick leave, maternity, paternity, family responsibility and public holidays","Keep leave records, approvals and carried-forward balances audit-ready"],"redFlags":["Paying out statutory leave while the law requires time off except on termination","Applying senior staff policy to casual, fixed-term or domestic workers without checking the statute","No written leave ledger when an employee resigns or disputes pay"],"related":[{"label":"Employment Contract Builder","href":"/tools/employment-contract/"},{"label":"Minimum Wage Checker","href":"/tools/minimum-wage/"},{"label":"Working Days Calculator","href":"/tools/working-days/"}],"competitor":{"group":"employment","label":"Deel, Oyster and global HR compliance platforms","patterns":["Employment compliance platforms start with worker classification and country-specific minimums before generating contracts or HR records.","They manage contracts, invoices, leave, payroll inputs and compliance reminders in one dashboard.","The best flows keep misclassification and statutory-minimum risks visible instead of burying them in generic template language."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Check the statutory floor, then compare the employment contract and company policy\".","Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <script type="application/json" class="leg-workflow-data">{"slug":"leave-days","title":"Statutory Leave Days Calculator","workflowTitle":"Statutory leave entitlement check","coverage":"Labour-law reference","decision":"Which law or collective agreement sets the minimum leave entitlement","evidence":["Check the statutory floor, then compare the employment contract and company policy","Separate annual leave, sick leave, maternity, paternity, family responsibility and public holidays","Keep leave records, approvals and carried-forward balances audit-ready"],"redFlags":["Paying out statutory leave while the law requires time off except on termination","Applying senior staff policy to casual, fixed-term or domestic workers without checking the statute","No written leave ledger when an employee resigns or disputes pay"],"related":[{"label":"Employment Contract Builder","href":"/tools/employment-contract/"},{"label":"Minimum Wage Checker","href":"/tools/minimum-wage/"},{"label":"Working Days Calculator","href":"/tools/working-days/"}],"competitor":{"group":"employment","label":"Deel, Oyster and global HR compliance platforms","patterns":["Employment compliance platforms start with worker classification and country-specific minimums before generating contracts or HR records.","They manage contracts, invoices, leave, payroll inputs and compliance reminders in one dashboard.","The best flows keep misclassification and statutory-minimum risks visible instead of burying them in generic template language."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Check the statutory floor, then compare the employment contract and company policy\".","Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.","Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in."]}}</script>
   <div class="leg-workflow-head">
     <span class="leg-action-kicker">Case workspace</span>
     <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
-    <p>This workspace turns the statutory leave entitlement check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+    <p>This workspace turns the statutory leave entitlement check result into a reusable matter note, dashboard item and local PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
     <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
@@ -268,21 +268,21 @@ h1 em{color:var(--afro-blue);font-style:normal}
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Legal workflow handoff note"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
-      <span class="leg-action-kicker">PDF gate</span>
-      <h3>Email the checklist and unlock print/PDF</h3>
-      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+      <span class="leg-action-kicker">Export and optional updates</span>
+      <h3>Print locally or subscribe to updates</h3>
+      <p>Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates.</p>
     </div>
     <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
-    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
-      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>
       <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
       <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
     </div>
-    <div class="leg-gate-status" data-workflow-gate-status></div>
+    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>
   </form>
   <div class="leg-workflow-next">
     <span>Continue workflow</span>
@@ -304,7 +304,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
     </div>
     <div>
       <h3>Implemented on this app</h3>
-      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Check the statutory floor, then compare the employment contract and company policy&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Check the statutory floor, then compare the employment contract and company policy&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.</li><li>Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.</li></ul>
     </div>
     <div>
       <h3>Best next move</h3>
@@ -510,7 +510,7 @@ showLeave();
   });
 }());
 </script>
-<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/legal-workflow-copilot.js?v=adb9f181" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 </body>
 </html>
