@@ -1,10 +1,10 @@
-# Search Snippet Quality: English, French and Swahili
+# Search Snippet Quality: English, French, Swahili, Yoruba, Hausa
 
 ## Evidence boundary
 
-- All current indexable English, French and Swahili route owners were inspected.
+- All current indexable public-locale route owners were inspected (English, French, Swahili, Yoruba, Hausa).
 - The checked-in 28-day baseline covers 54,311 impressions and 446 clicks (0.82% CTR) across seven English routes.
-- The repository contains a seven-route English GSC baseline, but no granular French or Swahili query/page export. Static signals cannot prove what Google displayed or why a particular impression did not click.
+- The repository contains a seven-route English GSC baseline, but no granular query/page export for other public locales. Static signals cannot prove what Google displayed or why a particular impression did not click.
 - Length, duplication, brand order and language-marker findings are review signals. Search engines may rewrite snippets, so these are not ranking or CTR guarantees.
 
 ## Exact denominator
@@ -14,12 +14,14 @@
 | en | 4023 | 4023 | 0 | 0 | 418 |
 | fr | 2165 | 723 | 1442 | 0 | 144 |
 | sw | 1584 | 762 | 822 | 0 | 87 |
+| yo | 23 | 10 | 13 | 0 | 1 |
+| ha | 81 | 23 | 58 | 0 | 1 |
 
 ## Signal counts
 
 | Signal | Pages |
 |---|---:|
-| TITLE_LONG | 528 |
+| TITLE_LONG | 530 |
 | DESCRIPTION_LONG | 152 |
 | TITLE_SHORT | 22 |
 
