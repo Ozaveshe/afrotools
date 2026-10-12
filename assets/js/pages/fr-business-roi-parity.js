@@ -12,6 +12,7 @@
   var metrics = root.querySelector("[data-result-metrics]");
   var rows = root.querySelector("[data-result-rows]");
   var lastReport = null;
+  var lastInputs = null;
   var timerId = null;
 
   function value(name) {
@@ -210,6 +211,7 @@
 
   function render(data) {
     lastReport = data;
+    lastInputs = inputValues();
     title.textContent = data.title;
     summary.textContent = data.summary;
     metrics.replaceChildren();
@@ -238,16 +240,25 @@
     result.focus();
   }
 
-  function payload() {
+  function inputValues() {
     var inputs = {};
     Array.from(form.elements).forEach(function (field) {
       if (!field.name) return;
       inputs[field.name] = field.type === "checkbox" ? field.checked : field.value;
     });
-    return { tool: tool, locale: "fr", inputs: inputs, report: lastReport };
+    return inputs;
+  }
+  function requireReport() {
+    if (lastReport && JSON.stringify(inputValues()) !== JSON.stringify(lastInputs)) invalidateReport();
+    if (!lastReport) throw new Error("Calculez d’abord un résultat.");
+  }
+  function payload() {
+    requireReport();
+    return { tool: tool, locale: "fr", inputs: lastInputs, report: lastReport };
   }
 
   function textReport() {
+    requireReport();
     var lines = [lastReport.title, lastReport.summary, ""];
     lastReport.metrics.forEach(function (item) { lines.push(item[0] + " : " + String(item[1]).replace(/<[^>]+>/g, "")); });
     lastReport.rows.forEach(function (item) { lines.push(item[0] + " : " + item[1]); });
@@ -265,7 +276,7 @@
   }
 
   function exportFile(format) {
-    if (!lastReport) throw new Error("Calculez d’abord un résultat.");
+    requireReport();
     if (format === "json") download(new Blob([JSON.stringify(payload(), null, 2)], { type: "application/json" }), "json");
     else if (format === "txt") download(new Blob([textReport()], { type: "text/plain" }), "txt");
     else if (format === "csv") {
@@ -288,13 +299,34 @@
     }
   }
 
+  function invalidateReport(message) {
+    lastReport = null;
+    lastInputs = null;
+    result.hidden = true;
+    if (timerId) { clearInterval(timerId); timerId = null; }
+    status.removeAttribute("data-state");
+    status.textContent = message || "Les paramètres ont changé. Recalculez pour obtenir un nouveau résultat.";
+  }
+  ["input", "change"].forEach(function (eventName) {
+    form.addEventListener(eventName, function () {
+      if (lastReport && JSON.stringify(inputValues()) !== JSON.stringify(lastInputs)) invalidateReport();
+    });
+  });
+  form.addEventListener("reset", function () {
+    if (lastReport || timerId) invalidateReport();
+  });
+  form.addEventListener("invalid", function () {
+    invalidateReport("Vérifiez les champs avant de recalculer.");
+    status.dataset.state = "error";
+  }, true);
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     status.dataset.state = "working";
     status.textContent = "Calcul en cours…";
     try { render(handlers[tool]()); }
     catch (error) {
-      result.hidden = true;
+      invalidateReport();
       status.dataset.state = "error";
       status.textContent = error.message || "Vérifiez les champs.";
     }
@@ -305,11 +337,19 @@
     try {
       if (exportButton) exportFile(exportButton.dataset.export);
       else if (action && action.dataset.action === "copy") {
-        navigator.clipboard.writeText(textReport()).then(function () { status.textContent = "Résultat copié."; });
+        var copiedReport = lastReport;
+        navigator.clipboard.writeText(textReport()).then(function () {
+          if (lastReport === copiedReport) status.textContent = "Résultat copié.";
+        }).catch(function () {
+          if (lastReport !== copiedReport) return;
+          status.dataset.state = "error";
+          status.textContent = "La copie a échoué. Utilisez le fichier TXT.";
+        });
       } else if (action && action.dataset.action === "save") {
         localStorage.setItem("afrotools-fr-business-" + tool, JSON.stringify(payload()));
         status.textContent = "Résultat enregistré sur cet appareil.";
       } else if (action && action.dataset.action === "print") {
+        requireReport();
         window.print();
         status.textContent = "Dialogue d’impression ouvert.";
       }
