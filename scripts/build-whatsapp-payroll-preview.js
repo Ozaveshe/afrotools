@@ -4,7 +4,7 @@
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict'),crypto=require('crypto');
 const root=path.resolve(__dirname,'..');
 const local=require('module').createRequire(root+'/package.json'),acorn=local('acorn');
-const files=fs.readdirSync(root+'/netlify/functions/_engines').filter(x=>x.endsWith('.js')).map(x=>'netlify/functions/_engines/'+x);
+const files=fs.readdirSync(root+'/netlify/functions/_engines').filter(x=>x.endsWith('.js')).sort().map(x=>'netlify/functions/_engines/'+x);
 const known=new Set(files);
 for(let i=0;i<files.length;i++){
  const file=files[i],source=fs.readFileSync(root+'/'+file,'utf8');
@@ -22,7 +22,7 @@ for(let i=0;i<files.length;i++){
  }
  visit(tree);
 }
-const definitions=files.map(file=>JSON.stringify(file)+':function(module,exports,require){\n'+fs.readFileSync(root+'/'+file,'utf8')+'\n}');
+const definitions=files.map(file=>JSON.stringify(file)+':function(module,exports,require){\n'+fs.readFileSync(root+'/'+file,'utf8').replace(/\r\n/g,'\n')+'\n}');
 const registry=JSON.parse(fs.readFileSync(root+'/data/calculation-quality/formula-registry.json','utf8'));
 registry.formulas=registry.formulas.filter(f=>f.formulaFamily==='paye-server'&&f.jurisdictions.length===1);
 definitions.push(JSON.stringify('data/calculation-quality/formula-registry.json')+':function(module){module.exports='+JSON.stringify(registry)+';}');
@@ -47,7 +47,7 @@ var SITE_URL='https://afrotools.com';
 ${original.slice(name.start,name.end)}
 ${adapter}
 root.AfroTools.whatsappPayrollPreview=handlePaye;
-})(window);\n`;
+})(window);\n`.replace(/\r\n/g,'\n');
 const output=path.join(root,'assets/js/pages/whatsapp-payroll-preview.js');
 if(process.argv.includes('--check')) {
  assert(fs.existsSync(output),'Missing generated payroll preview');

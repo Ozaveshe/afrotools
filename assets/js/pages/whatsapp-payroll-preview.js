@@ -1,5 +1,213 @@
 (function(root){'use strict';
-var definitions={"netlify/functions/_engines/ao-paye.js":function(module,exports,require){
+var definitions={"netlify/functions/_engines/_factory.js":function(module,exports,require){
+// Shared factory for creating PAYE engines with standard progressive band structure
+// Used by countries where we apply a standard progressive tax calculation
+
+function calcProgressiveBands(amount, bands) {
+  let tax = 0, rem = amount, detail = [], cumFrom = 0;
+  for (const [width, rate] of bands) {
+    const t = Math.min(rem, width);
+    const inBand = t * rate;
+    tax += inBand;
+    detail.push({ from: cumFrom, to: cumFrom + (width === Infinity ? rem : width), rate, taxInBand: Math.round(inBand) });
+    cumFrom += width === Infinity ? rem : width;
+    rem -= t;
+    if (rem <= 0) break;
+  }
+  return { tax, bands: detail };
+}
+
+function calcCumulativeBands(amount, brackets) {
+  let tax = 0, prev = 0, detail = [];
+  for (const [threshold, rate] of brackets) {
+    const t = Math.min(amount, threshold) - prev;
+    if (t > 0) {
+      const inBand = t * rate;
+      tax += inBand;
+      detail.push({ from: prev, to: Math.min(amount, threshold), rate, taxInBand: Math.round(inBand) });
+    }
+    prev = threshold;
+    if (amount <= threshold) break;
+  }
+  return { tax, bands: detail };
+}
+
+function createEngine(config) {
+  const {
+    country, countryName, currency, source,
+    lastUpdated = '2026-03-01', sourceCheckedOn = null, nextReviewDate = null,
+    bands, bandType = 'progressive', // 'progressive' (width-based) or 'cumulative' (threshold-based)
+    isMonthly = false, // if bands are monthly, multiply result by 12
+    ssDeductibleFromTaxable = true,
+    taxFreeAllowance = 0, // in the same period as the bands
+    taxableRoundingStep = null, // optional statutory round-down step
+    socialSecurity = [], // [{key, label, rate, cap, default}]
+    employerSS = [], // [{key, label, rate, cap}]
+    personalRelief = 0,
+    regimes = ['STANDARD']
+  } = config;
+
+  return {
+    country,
+    countryName,
+    currency,
+    regimes,
+    lastUpdated,
+    sourceCheckedOn,
+    nextReviewDate,
+    source,
+    formulaParameters: {
+      bandType,
+      isMonthly,
+      ...(ssDeductibleFromTaxable ? {} : { ssDeductibleFromTaxable }),
+      ...(taxFreeAllowance ? { taxFreeAllowance } : {}),
+      ...(taxableRoundingStep ? { taxableRoundingStep } : {}),
+      bands,
+      socialSecurity,
+      employerSS,
+      personalRelief,
+      regimes
+    },
+    roundingPolicy: {
+      method: 'nearest-integer',
+      stages: [
+        'individual statutory deductions',
+        'tax per band in the result breakdown',
+        'annual net tax after relief',
+        'annual and monthly net result',
+        'employer contribution totals'
+      ],
+      calculationNote: 'Unrounded intermediate amounts feed later stages unless the implementation explicitly applies Math.round.'
+    },
+
+    calculate(params) {
+      const { grossAnnual, ...opts } = params;
+      const contributionAssumptions = [];
+      function contributionBase(rule) {
+        let annualBase = grossAnnual;
+        if (rule.baseAnnualKey) {
+          const supplied = params[rule.baseAnnualKey];
+          if (supplied == null || supplied === '') {
+            const assumption = `${rule.baseAnnualKey} not supplied; gross annual salary is used as the contribution base.`;
+            if (!contributionAssumptions.includes(assumption)) contributionAssumptions.push(assumption);
+          } else {
+            annualBase = Number(supplied);
+            if (!Number.isFinite(annualBase) || annualBase < 0 || annualBase > grossAnnual) {
+              throw new RangeError(`${rule.baseAnnualKey} must be between zero and grossAnnual.`);
+            }
+          }
+        }
+        const periodBase = isMonthly ? annualBase / 12 : annualBase;
+        return rule.baseCap ? Math.min(periodBase, rule.baseCap * (isMonthly ? 1 : 12)) : periodBase;
+      }
+
+      // Calculate social security deductions
+      let totalSS = 0;
+      const deductions = {};
+      for (const ss of socialSecurity) {
+        if (opts[ss.key] === false) { deductions[ss.key] = 0; continue; }
+        const base = contributionBase(ss);
+        let amt = base * ss.rate;
+        if (ss.cap) amt = Math.min(amt, ss.cap * (isMonthly ? 1 : 12));
+        if (isMonthly) amt *= 12;
+        deductions[ss.key] = Math.round(amt);
+        totalSS += amt;
+      }
+
+      // Calculate taxable income
+      const taxable = Math.max(0, ssDeductibleFromTaxable ? grossAnnual - totalSS : grossAnnual);
+      const periodTaxable = Math.max(0, (isMonthly ? taxable / 12 : taxable) - taxFreeAllowance);
+      const calcAmount = taxableRoundingStep
+        ? Math.floor(periodTaxable / taxableRoundingStep) * taxableRoundingStep
+        : periodTaxable;
+
+      // Calculate tax
+      const calcFn = bandType === 'cumulative' ? calcCumulativeBands : calcProgressiveBands;
+      const { tax: rawTax, bands: bandDetail } = calcFn(calcAmount, bands);
+      const annualTax = isMonthly ? rawTax * 12 : rawTax;
+      const relief = isMonthly ? personalRelief * 12 : personalRelief;
+      const netTax = Math.max(0, Math.round(annualTax - relief));
+
+      const totalDeductions = totalSS + netTax;
+      deductions.totalDeductions = Math.round(totalDeductions);
+      const netAnnual = grossAnnual - totalDeductions;
+
+      // Employer costs
+      let empTotal = 0;
+      const employer = {};
+      for (const es of employerSS) {
+        const base = contributionBase(es);
+        let amt = base * es.rate;
+        if (es.cap) amt = Math.min(amt, es.cap * (isMonthly ? 1 : 12));
+        if (isMonthly) amt *= 12;
+        employer[es.key] = Math.round(amt);
+        empTotal += amt;
+      }
+      employer.totalCostAnnual = Math.round(grossAnnual + empTotal);
+      employer.totalCostMonthly = Math.round((grossAnnual + empTotal) / 12);
+
+      const lastBand = bandDetail.filter(b => b.taxInBand > 0).pop();
+
+      return {
+        input: { country, grossAnnual, regime: regimes[0] },
+        deductions,
+        tax: {
+          taxableIncome: Math.round(isMonthly ? calcAmount * 12 : calcAmount),
+          bands: bandDetail,
+          grossTax: Math.round(annualTax),
+          reliefs: relief > 0 ? { personalRelief: relief } : {},
+          netTax
+        },
+        result: {
+          netAnnual: Math.round(netAnnual),
+          netMonthly: Math.round(netAnnual / 12),
+          effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
+          marginalRate: lastBand ? (lastBand.rate * 100) + '%' : '0%'
+        },
+        employer,
+        meta: { regime: regimes[0], currency, lastUpdated, sourceCheckedOn, nextReviewDate, source,
+          ...(contributionAssumptions.length ? { assumptions: contributionAssumptions } : {}) }
+      };
+    },
+
+    reverseCalculate(params) {
+      const { netAnnual, ...opts } = params;
+      let lo = netAnnual, hi = netAnnual * 3;
+      for (const rule of [...socialSecurity, ...employerSS]) {
+        if (rule.baseAnnualKey && opts[rule.baseAnnualKey] != null && opts[rule.baseAnnualKey] !== '') {
+          const base = Number(opts[rule.baseAnnualKey]);
+          if (!Number.isFinite(base) || base < 0) throw new RangeError(`${rule.baseAnnualKey} must be non-negative.`);
+          lo = Math.max(lo, base);
+        }
+      }
+      if (lo > netAnnual) {
+        if (this.calculate({ grossAnnual: lo, ...opts }).result.netAnnual > netAnnual) {
+          throw new RangeError('The supplied basic salary is too high for the requested net salary.');
+        }
+        hi = Math.max(hi, lo * 2);
+      }
+      for (let i = 0; i < 60; i++) {
+        const mid = (lo + hi) / 2;
+        const r = this.calculate({ grossAnnual: mid, ...opts });
+        if (Math.abs(r.result.netAnnual - netAnnual) < 1) return r;
+        if (r.result.netAnnual < netAnnual) lo = mid; else hi = mid;
+      }
+      return this.calculate({ grossAnnual: (lo + hi) / 2, ...opts });
+    },
+
+    getOptions() {
+      return {
+        deductions: socialSecurity.map(s => ({ key: s.key, label: s.label, default: s.default !== false })),
+        regimes: regimes.map((r, i) => ({ key: r, label: r.replace(/_/g, ' '), default: i === 0 }))
+      };
+    }
+  };
+}
+
+module.exports = { createEngine, calcProgressiveBands, calcCumulativeBands };
+
+},
+"netlify/functions/_engines/ao-paye.js":function(module,exports,require){
 // Angola PAYE (IRT) — Source: Administração Geral Tributária (AGT)
 const { createEngine } = require('./_factory');
 module.exports = createEngine({
@@ -2365,214 +2573,6 @@ module.exports = createEngine({
   socialSecurity: [{ key: 'nssa', label: 'NSSA (3.5%)', rate: 0.035 }],
   employerSS: [{ key: 'nssa', label: 'NSSA (3.5%)', rate: 0.035 }]
 });
-
-},
-"netlify/functions/_engines/_factory.js":function(module,exports,require){
-// Shared factory for creating PAYE engines with standard progressive band structure
-// Used by countries where we apply a standard progressive tax calculation
-
-function calcProgressiveBands(amount, bands) {
-  let tax = 0, rem = amount, detail = [], cumFrom = 0;
-  for (const [width, rate] of bands) {
-    const t = Math.min(rem, width);
-    const inBand = t * rate;
-    tax += inBand;
-    detail.push({ from: cumFrom, to: cumFrom + (width === Infinity ? rem : width), rate, taxInBand: Math.round(inBand) });
-    cumFrom += width === Infinity ? rem : width;
-    rem -= t;
-    if (rem <= 0) break;
-  }
-  return { tax, bands: detail };
-}
-
-function calcCumulativeBands(amount, brackets) {
-  let tax = 0, prev = 0, detail = [];
-  for (const [threshold, rate] of brackets) {
-    const t = Math.min(amount, threshold) - prev;
-    if (t > 0) {
-      const inBand = t * rate;
-      tax += inBand;
-      detail.push({ from: prev, to: Math.min(amount, threshold), rate, taxInBand: Math.round(inBand) });
-    }
-    prev = threshold;
-    if (amount <= threshold) break;
-  }
-  return { tax, bands: detail };
-}
-
-function createEngine(config) {
-  const {
-    country, countryName, currency, source,
-    lastUpdated = '2026-03-01', sourceCheckedOn = null, nextReviewDate = null,
-    bands, bandType = 'progressive', // 'progressive' (width-based) or 'cumulative' (threshold-based)
-    isMonthly = false, // if bands are monthly, multiply result by 12
-    ssDeductibleFromTaxable = true,
-    taxFreeAllowance = 0, // in the same period as the bands
-    taxableRoundingStep = null, // optional statutory round-down step
-    socialSecurity = [], // [{key, label, rate, cap, default}]
-    employerSS = [], // [{key, label, rate, cap}]
-    personalRelief = 0,
-    regimes = ['STANDARD']
-  } = config;
-
-  return {
-    country,
-    countryName,
-    currency,
-    regimes,
-    lastUpdated,
-    sourceCheckedOn,
-    nextReviewDate,
-    source,
-    formulaParameters: {
-      bandType,
-      isMonthly,
-      ...(ssDeductibleFromTaxable ? {} : { ssDeductibleFromTaxable }),
-      ...(taxFreeAllowance ? { taxFreeAllowance } : {}),
-      ...(taxableRoundingStep ? { taxableRoundingStep } : {}),
-      bands,
-      socialSecurity,
-      employerSS,
-      personalRelief,
-      regimes
-    },
-    roundingPolicy: {
-      method: 'nearest-integer',
-      stages: [
-        'individual statutory deductions',
-        'tax per band in the result breakdown',
-        'annual net tax after relief',
-        'annual and monthly net result',
-        'employer contribution totals'
-      ],
-      calculationNote: 'Unrounded intermediate amounts feed later stages unless the implementation explicitly applies Math.round.'
-    },
-
-    calculate(params) {
-      const { grossAnnual, ...opts } = params;
-      const contributionAssumptions = [];
-      function contributionBase(rule) {
-        let annualBase = grossAnnual;
-        if (rule.baseAnnualKey) {
-          const supplied = params[rule.baseAnnualKey];
-          if (supplied == null || supplied === '') {
-            const assumption = `${rule.baseAnnualKey} not supplied; gross annual salary is used as the contribution base.`;
-            if (!contributionAssumptions.includes(assumption)) contributionAssumptions.push(assumption);
-          } else {
-            annualBase = Number(supplied);
-            if (!Number.isFinite(annualBase) || annualBase < 0 || annualBase > grossAnnual) {
-              throw new RangeError(`${rule.baseAnnualKey} must be between zero and grossAnnual.`);
-            }
-          }
-        }
-        const periodBase = isMonthly ? annualBase / 12 : annualBase;
-        return rule.baseCap ? Math.min(periodBase, rule.baseCap * (isMonthly ? 1 : 12)) : periodBase;
-      }
-
-      // Calculate social security deductions
-      let totalSS = 0;
-      const deductions = {};
-      for (const ss of socialSecurity) {
-        if (opts[ss.key] === false) { deductions[ss.key] = 0; continue; }
-        const base = contributionBase(ss);
-        let amt = base * ss.rate;
-        if (ss.cap) amt = Math.min(amt, ss.cap * (isMonthly ? 1 : 12));
-        if (isMonthly) amt *= 12;
-        deductions[ss.key] = Math.round(amt);
-        totalSS += amt;
-      }
-
-      // Calculate taxable income
-      const taxable = Math.max(0, ssDeductibleFromTaxable ? grossAnnual - totalSS : grossAnnual);
-      const periodTaxable = Math.max(0, (isMonthly ? taxable / 12 : taxable) - taxFreeAllowance);
-      const calcAmount = taxableRoundingStep
-        ? Math.floor(periodTaxable / taxableRoundingStep) * taxableRoundingStep
-        : periodTaxable;
-
-      // Calculate tax
-      const calcFn = bandType === 'cumulative' ? calcCumulativeBands : calcProgressiveBands;
-      const { tax: rawTax, bands: bandDetail } = calcFn(calcAmount, bands);
-      const annualTax = isMonthly ? rawTax * 12 : rawTax;
-      const relief = isMonthly ? personalRelief * 12 : personalRelief;
-      const netTax = Math.max(0, Math.round(annualTax - relief));
-
-      const totalDeductions = totalSS + netTax;
-      deductions.totalDeductions = Math.round(totalDeductions);
-      const netAnnual = grossAnnual - totalDeductions;
-
-      // Employer costs
-      let empTotal = 0;
-      const employer = {};
-      for (const es of employerSS) {
-        const base = contributionBase(es);
-        let amt = base * es.rate;
-        if (es.cap) amt = Math.min(amt, es.cap * (isMonthly ? 1 : 12));
-        if (isMonthly) amt *= 12;
-        employer[es.key] = Math.round(amt);
-        empTotal += amt;
-      }
-      employer.totalCostAnnual = Math.round(grossAnnual + empTotal);
-      employer.totalCostMonthly = Math.round((grossAnnual + empTotal) / 12);
-
-      const lastBand = bandDetail.filter(b => b.taxInBand > 0).pop();
-
-      return {
-        input: { country, grossAnnual, regime: regimes[0] },
-        deductions,
-        tax: {
-          taxableIncome: Math.round(isMonthly ? calcAmount * 12 : calcAmount),
-          bands: bandDetail,
-          grossTax: Math.round(annualTax),
-          reliefs: relief > 0 ? { personalRelief: relief } : {},
-          netTax
-        },
-        result: {
-          netAnnual: Math.round(netAnnual),
-          netMonthly: Math.round(netAnnual / 12),
-          effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
-          marginalRate: lastBand ? (lastBand.rate * 100) + '%' : '0%'
-        },
-        employer,
-        meta: { regime: regimes[0], currency, lastUpdated, sourceCheckedOn, nextReviewDate, source,
-          ...(contributionAssumptions.length ? { assumptions: contributionAssumptions } : {}) }
-      };
-    },
-
-    reverseCalculate(params) {
-      const { netAnnual, ...opts } = params;
-      let lo = netAnnual, hi = netAnnual * 3;
-      for (const rule of [...socialSecurity, ...employerSS]) {
-        if (rule.baseAnnualKey && opts[rule.baseAnnualKey] != null && opts[rule.baseAnnualKey] !== '') {
-          const base = Number(opts[rule.baseAnnualKey]);
-          if (!Number.isFinite(base) || base < 0) throw new RangeError(`${rule.baseAnnualKey} must be non-negative.`);
-          lo = Math.max(lo, base);
-        }
-      }
-      if (lo > netAnnual) {
-        if (this.calculate({ grossAnnual: lo, ...opts }).result.netAnnual > netAnnual) {
-          throw new RangeError('The supplied basic salary is too high for the requested net salary.');
-        }
-        hi = Math.max(hi, lo * 2);
-      }
-      for (let i = 0; i < 60; i++) {
-        const mid = (lo + hi) / 2;
-        const r = this.calculate({ grossAnnual: mid, ...opts });
-        if (Math.abs(r.result.netAnnual - netAnnual) < 1) return r;
-        if (r.result.netAnnual < netAnnual) lo = mid; else hi = mid;
-      }
-      return this.calculate({ grossAnnual: (lo + hi) / 2, ...opts });
-    },
-
-    getOptions() {
-      return {
-        deductions: socialSecurity.map(s => ({ key: s.key, label: s.label, default: s.default !== false })),
-        regimes: regimes.map((r, i) => ({ key: r, label: r.replace(/_/g, ' '), default: i === 0 }))
-      };
-    }
-  };
-}
-
-module.exports = { createEngine, calcProgressiveBands, calcCumulativeBands };
 
 },
 "assets/js/engines/bj-paye.js":function(module,exports,require){
