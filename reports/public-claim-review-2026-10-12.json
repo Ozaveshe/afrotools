@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-12",
+  "baseCommit": "f027175aa1479587189e27d9ee6062d361437bd3",
+  "scope": "Qualified claim-policy and cited implementation review only; not whole-site verification or source-data renewal.",
+  "nextReview": "2026-11-11",
+  "claims": [
+    {
+      "key": "count.scholarships",
+      "conclusion": "Feed counts retain mode, timestamp and limited/degraded fields. Corrected limited cached/curated/fallback labels so they no longer say live; nine regression cases preserve mode/count/time/tone.",
+      "limitations": "No live inventory, eligibility, deadline or source freshness was verified.",
+      "evidence": [
+        {
+          "path": "netlify/functions/_shared/scholarship-platform.js",
+          "sha256": "91a7d10cb9cfc10f6068a784b724883d47169cc363171864d8c8820cf547e6e2"
+        },
+        {
+          "path": "scripts/audit-scholarship-truth.js",
+          "sha256": "99440c56226d945ea2f0d2c689c915807157193d642ca82b5d64da132cea45fb"
+        },
+        {
+          "path": "data/scholarships/official-sources.json",
+          "sha256": "a4a07692bc6975438952d1ca3da6ea0ce4d52a3131921005db6c0d8508e622e8"
+        },
+        {
+          "path": "tests/scholarship-api-metadata.test.js",
+          "sha256": "c2779a167ff8df2924739a100c9b54589a643b1ef1f0d868f60fc2dfce1cbde0"
+        },
+        {
+          "path": "tests/scholarship-limited-feed-truth.test.js",
+          "sha256": "b96c84cc578e92440031d1ad5eabc366a2729890c467d6031e641cc87d602f1e"
+        }
+      ]
+    },
+    {
+      "key": "pro.current-capabilities",
+      "conclusion": "Current readiness and fence name Payroll and SEO Studio active, with distinct account-backed versus device-local storage. Six Pro owner verifiers passed. Other routes remain shell/preview/pending as documented.",
+      "limitations": "Route existence is not working-app proof. No live subscription, account isolation, provider transaction or all-app completion is certified.",
+      "evidence": [
+        {
+          "path": "docs/PRO-APP-READINESS.md",
+          "sha256": "ea372ad96f9c1cac92d3b938b4808c9b4d134c9e8131e6f461ab17287231b72f"
+        },
+        {
+          "path": "docs/PRO-FENCE.md",
+          "sha256": "501d4858de285703e41f32c844835f27f58a8d6e0fbb7adb4b64793b87ad9cbf"
+        },
+        {
+          "path": "assets/js/lib/pro-app-registry.js",
+          "sha256": "11a6fb6488a2b76c2040012356be92f2b9ed3f90d995511a15e471251708ed75"
+        },
+        {
+          "path": "assets/js/lib/pro-plan.js",
+          "sha256": "5c39eb4f73048f467eafa4784c60dc8f03d49001b31cf5f35782320c2df17e3e"
+        }
+      ]
+    },
+    {
+      "key": "privacy.browser-local",
+      "conclusion": "Storage helper uses localStorage and returns failure/defaults when unavailable. Named PDF operations use PDFLib locally and object URL downloads. Shared export privacy contract passed.",
+      "limitations": "Document workspace route/checklist metadata can sync when signed in. This is not a site-wide no-network promise or assurance against arbitrary callers/browser extensions.",
+      "evidence": [
+        {
+          "path": "assets/js/lib/storage.js",
+          "sha256": "514e0c9c82feddbf74646e7b2e4af1fd11c798c775e74cc53db42a6856759a4e"
+        },
+        {
+          "path": "docs/ai-privacy-and-safety.md",
+          "sha256": "aa29d26415c4e832f8aac7bcd56097d50b0bdfe76e0e83a4ff2b379392dfbd44"
+        },
+        {
+          "path": "privacy/index.html",
+          "sha256": "1263d33aa526b40954851d8824ca30916a0cee0086a4546cae2e2e96ada335cc"
+        },
+        {
+          "path": "assets/js/pages/pdf-workflow.js",
+          "sha256": "04a5ff0bd0b9fdfbabcd140326871ab8c21ec55bfd00e5d9f1a3852b976302aa"
+        },
+        {
+          "path": "tests/day10-shared-export-privacy.test.js",
+          "sha256": "c4a4f6e053e47fec6f126944c0c821f6f839567619ba88f4619f85d82e51b86e"
+        }
+      ]
+    },
+    {
+      "key": "ai.optional-provider",
+      "conclusion": "Advisor rejects missing accepted advisor consent before provider processing and separately guards named sensitive content. Provider abstraction exposes disabled/unconfigured outcomes. Server consent and deterministic PDF routing tests passed.",
+      "limitations": "No provider request or availability check was made. Sensitive-key detection does not prove all possible free text is detected; no universal privacy/security audit is claimed.",
+      "evidence": [
+        {
+          "path": "netlify/functions/_shared/ai-provider.js",
+          "sha256": "72c3fb96f9d6f02b1697552ea0985e1e032e256f6424582566b4b53bb6431e72"
+        },
+        {
+          "path": "netlify/functions/ai-advisor.js",
+          "sha256": "c6aac59f92e2acc95a666f55ad09ad20453e9cfc35dd723c4b96d526290dee12"
+        },
+        {
+          "path": "assets/js/components/ai-consent.js",
+          "sha256": "086e62a95c63ba5ee5644244805ccbc8b2b9e28696616edc9a0d599e6f57dec7"
+        },
+        {
+          "path": "docs/ai-privacy-and-safety.md",
+          "sha256": "aa29d26415c4e832f8aac7bcd56097d50b0bdfe76e0e83a4ff2b379392dfbd44"
+        },
+        {
+          "path": "tests/ai-consent-server.test.js",
+          "sha256": "80b1889d0a8c4f27a238754f6460a970e5c05bdaf3a3499a246eb167dcd65871"
+        },
+        {
+          "path": "netlify/functions/_shared/ai-consent-guard.js",
+          "sha256": "1df2199deb5df3bcf7b9bbaf5927643cf6f937f159672cc2b86eed721418a19e"
+        }
+      ]
+    },
+    {
+      "key": "freshness.live-data",
+      "conclusion": "Shared freshness status retains source/time/age requirements and cautious degradation. Insurance/property/salary reference feeds and agriculture explicitly distinguish dated observations from undated references; reference tests passed.",
+      "limitations": "No upstream observation or scheduled execution was obtained. Existing collector and stale-source debt remains; this reviews the approved policy, not all live/current text.",
+      "evidence": [
+        {
+          "path": "assets/js/components/live-data-status.js",
+          "sha256": "802decac4eb76936588ab98f74b0093cdd3c0f09dd6b426cccdd6478dee14e4b"
+        },
+        {
+          "path": "assets/js/lib/data-freshness.js",
+          "sha256": "e010f2b420b13785526e7dcd2a2562928fb11295c18ab7968cb3d7be4160e188"
+        },
+        {
+          "path": "data/source-registry.json",
+          "sha256": "01d226b49353f06e1b4084ab6706d1fe56202ace0e58866052713a3da4789b14"
+        },
+        {
+          "path": "docs/source-confidence-model.md",
+          "sha256": "50d43bc2756dd86e241d689d75f85e847066bf3882cdda2c3d018f3a38e71afd"
+        },
+        {
+          "path": "netlify/functions/api-data-freshness.js",
+          "sha256": "5bbac1f68f746781dde3975d52e672b453d592406a14e067cead93c103b017b2"
+        },
+        {
+          "path": "tests/source-confidence.test.js",
+          "sha256": "377e143b6aaec55ee881f724b813a54f3efa993da73d68f9e8d0658b8fe0e164"
+        }
+      ]
+    },
+    {
+      "key": "authority.evidence-scope",
+      "conclusion": "Source registry/schema and confidence model constrain confidence to named records, routes, countries and periods. Source-confidence tests passed.",
+      "limitations": "No platform endorsement, guaranteed outcome or renewed verification of every underlying source.",
+      "evidence": [
+        {
+          "path": "data/source-registry.json",
+          "sha256": "01d226b49353f06e1b4084ab6706d1fe56202ace0e58866052713a3da4789b14"
+        },
+        {
+          "path": "data/source-registry.schema.json",
+          "sha256": "119b1ee21da7c2487485309c9b2170157efa6a45b5ffb42de5f34a905fc55da8"
+        },
+        {
+          "path": "docs/source-confidence-model.md",
+          "sha256": "50d43bc2756dd86e241d689d75f85e847066bf3882cdda2c3d018f3a38e71afd"
+        }
+      ]
+    },
+    {
+      "key": "statutory.jurisdiction-period",
+      "conclusion": "Registry/confidence metadata retains jurisdiction, effective period, review state and planning boundaries. Source-confidence tests and six-page salary workflow verification passed.",
+      "limitations": "No tax/legal rate was researched or renewed by this review. Workflow verification does not establish statutory accuracy.",
+      "evidence": [
+        {
+          "path": "data/source-registry.json",
+          "sha256": "01d226b49353f06e1b4084ab6706d1fe56202ace0e58866052713a3da4789b14"
+        },
+        {
+          "path": "docs/source-confidence-model.md",
+          "sha256": "50d43bc2756dd86e241d689d75f85e847066bf3882cdda2c3d018f3a38e71afd"
+        },
+        {
+          "path": "scripts/verify-salary-tax-workflow.js",
+          "sha256": "3e6844b21d17b39e24f50fbf5e511f5822f191c2edfa0a11fc1c030b7b17ea1a"
+        },
+        {
+          "path": "tests/source-confidence.test.js",
+          "sha256": "377e143b6aaec55ee881f724b813a54f3efa993da73d68f9e8d0658b8fe0e164"
+        }
+      ]
+    },
+    {
+      "key": "payment.provider-processing",
+      "conclusion": "Payment client delegates checkout to provider. Billing now retains null renewal date and unverified state without provider evidence; manual cancellation remains 202 manualReview. Webhook signature check remains present. Billing truth tests passed.",
+      "limitations": "No charge, refund, cancellation, provider configuration, webhook delivery or penetration test was performed.",
+      "evidence": [
+        {
+          "path": "assets/js/lib/payment.js",
+          "sha256": "f22c2a9c160667cbeac1ea64a27e78ce8ce62f7c5198e05790951c54c94f91c7"
+        },
+        {
+          "path": "netlify/functions/api-pro-billing.js",
+          "sha256": "df3cd19c6e01cdf321d55d374e94f5e1986224f37ea365c57e24a6a95bdcd5c1"
+        },
+        {
+          "path": "netlify/functions/paystack-webhook.js",
+          "sha256": "2e90411c6017f604c6ae74581f8636143eb548cf8339993086fa7a0f648765cb"
+        }
+      ]
+    },
+    {
+      "key": "analytics.consent-metadata",
+      "conclusion": "Analytics helper gates event sends/flushes, uses bounded fields and clears queue/cohort on withdrawal. Loader sanitizes sensitive fields/URLs. Consent tests passed.",
+      "limitations": "Strict pre-consent opt-in applies to specified page families; other pages can use consent-mode cookieless processing. No universal no-request-before-consent statement or processor retention assurance.",
+      "evidence": [
+        {
+          "path": "assets/js/lib/analytics.js",
+          "sha256": "07196129acf1841cad8f2bea8ef01e5bf9d62045577588844782d17f20b00e6a"
+        },
+        {
+          "path": "assets/js/lazy-analytics.js",
+          "sha256": "fac631ef5e91f274a8cfdeb89f4b219bcd2e5c367e8cbc0267807722bfa8b4c1"
+        },
+        {
+          "path": "assets/js/components/cookie-consent.js",
+          "sha256": "261a38f250264cb0ccdeb4ccb113fb7c0483a2e1e4614102afc4ebb271663cda"
+        },
+        {
+          "path": "docs/ai-privacy-and-safety.md",
+          "sha256": "aa29d26415c4e832f8aac7bcd56097d50b0bdfe76e0e83a4ff2b379392dfbd44"
+        },
+        {
+          "path": "tests/analytics-consent.test.js",
+          "sha256": "552f61975af83a00c1c180f196fb99fcd9604c8891f97127755dd7ddb20f66bc"
+        }
+      ]
+    },
+    {
+      "key": "documents.local-processing",
+      "conclusion": "Named PDF workflow loads bytes with PDFLib and downloads object URLs. Document-workspace exported notes explicitly exclude file bytes/content; signed-in route/checklist metadata can sync. TTS and vault remain separate network paths. PDF routing/export privacy tests passed.",
+      "limitations": "No live TTS, AI, email or vault operation was exercised. Does not establish every PDF/image tool complete, never-uploaded behaviour, encryption or deletion.",
+      "evidence": [
+        {
+          "path": "assets/js/lib/document-pdf-workflow.js",
+          "sha256": "c8e309659a378e44911b24fd125529129e39b4f5f3eee0fc8145a3178d497a49"
+        },
+        {
+          "path": "assets/js/pages/pdf-workflow.js",
+          "sha256": "04a5ff0bd0b9fdfbabcd140326871ab8c21ec55bfd00e5d9f1a3852b976302aa"
+        },
+        {
+          "path": "netlify/functions/pdf-tts.js",
+          "sha256": "04a4bd27e281da333e9e7db406b5616773c4d110f7ad409c1dcf8cc66b3c6fa2"
+        },
+        {
+          "path": "assets/js/afro-vault.js",
+          "sha256": "d6016585b30f44f6ac8c4094c1da51e0b143e83cac3d15e46d4cdc1b16ef552c"
+        },
+        {
+          "path": "tests/ai-pdf-workspace-assist.test.js",
+          "sha256": "ae5970cbfd680afc066a6d9f4bef627f5e1c510c735bd443aa0cd5d3fb136f20"
+        },
+        {
+          "path": "tests/day10-shared-export-privacy.test.js",
+          "sha256": "c4a4f6e053e47fec6f126944c0c821f6f839567619ba88f4619f85d82e51b86e"
+        }
+      ]
+    },
+    {
+      "key": "forms.email-handling",
+      "conclusion": "Capture-lead requires explicit true digest opt-in, stores via configured marketing service and separately records lifecycle delivery results. B2B requires consent. Email funnel and delivery safety tests passed.",
+      "limitations": "No customer rows read/written, messages sent, provider availability, unsubscribe completion or deletion timing tested.",
+      "evidence": [
+        {
+          "path": "netlify/functions/capture-lead.js",
+          "sha256": "20ef9bed554a54a1fa2a6682ddc207cc2a99728854ce2e475d4bfa677c9a661d"
+        },
+        {
+          "path": "netlify/functions/capture-b2b-lead.js",
+          "sha256": "3680bc2c3f0b8217e86ba6918fb9f5c4ff647c7125beed9d3b901c22927125f7"
+        },
+        {
+          "path": "privacy/index.html",
+          "sha256": "1263d33aa526b40954851d8824ca30916a0cee0086a4546cae2e2e96ada335cc"
+        },
+        {
+          "path": "tests/email-funnel.test.js",
+          "sha256": "e20e02a4fe8959acf097736bf035554f48e17179a89305bb2618d7639935e8c5"
+        },
+        {
+          "path": "tests/email-delivery-safety.test.js",
+          "sha256": "d0cc3405908a7c4650b6a68974ab80217250382549fc9d073284d3a2ed57fbe8"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "focusedTests": 18,
+    "expandedTests": 82,
+    "proVerify": "all six scripts passed",
+    "salaryWorkflow": "six report-enabled PAYE pages passed",
+    "scholarshipTruth": "passed",
+    "claimGates": {
+      "build": "passed",
+      "check": "passed",
+      "platformTests": "passed",
+      "audit": "passed",
+      "lint": "passed"
+    }
+  },
+  "liveOperations": "None. No live customer/provider data accessed or mutated."
+}
