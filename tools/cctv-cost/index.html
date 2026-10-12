@@ -26,7 +26,7 @@ a{text-decoration:none;color:inherit}
 .vip-export{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}.vip-export .en-btn{flex:1 1 190px}.vip-status{min-height:24px;margin:10px 0 0;color:var(--en-muted);font-size:.86rem;line-height:1.5}.vip-source-note{margin:0 0 24px;padding:14px 16px;border:1px solid var(--en-border);border-radius:8px;background:var(--en-card);color:var(--en-muted);font-size:.86rem;line-height:1.6}.vip-source-note strong{color:var(--en-text)}
 html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#334155;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html[data-theme="dark"] body{background:var(--en-bg);color:var(--en-text)}html[data-theme="dark"] .en-input,html[data-theme="dark"] .en-select,html[data-theme="dark"] .en-results-table,html[data-theme="dark"] .security-focus-rail,html[data-theme="dark"] .security-action-brief__card,html[data-theme="dark"] .security-action-brief__output,html[data-theme="dark"] .security-action-brief__checks li{background:#111c2f!important;color:var(--en-text)!important;border-color:var(--en-border)!important}html[data-theme="dark"] .en-tip-text,html[data-theme="dark"] .security-action-brief__note{color:#fed7aa!important}html[data-theme="dark"] .en-results-table tbody tr:hover td{background:#17243a}
 @media(prefers-color-scheme:dark){html:not([data-theme]){--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#334155;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html:not([data-theme]) body{background:var(--en-bg);color:var(--en-text)}html:not([data-theme]) .en-input,html:not([data-theme]) .en-select,html:not([data-theme]) .en-results-table{background:#111c2f;color:var(--en-text);border-color:var(--en-border)}}
-@media print{afro-navbar,.en-tool-hero,.security-focus-rail,.en-form-actions,.vip-export,.df-upgrade,.df-faq,afro-related-tools,afro-footer{display:none!important}.en-tool-layout{max-width:none;padding:0}.en-results{display:block!important}.en-card,.en-results-hero{break-inside:avoid;box-shadow:none}}
+@media print{afro-navbar,.en-tool-hero,.security-focus-rail,.security-action-brief,.en-form-actions,.vip-export,.df-upgrade,.df-faq,afro-related-tools,afro-footer,#afro-cookie-consent{display:none!important}.en-tool-layout{max-width:none;padding:0}.en-results.on{display:block!important}.en-results:not(.on){display:none!important}.en-results-hero,.en-results-hero *{background:#fff!important;color:#111!important}.en-metrics-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}.en-metric,table,tr{break-inside:avoid}.en-tool-layout{background:#fff!important}.en-card,.en-results-hero{break-inside:avoid;box-shadow:none}}
 </style>
 <meta property="og:url" content="https://afrotools.com/tools/cctv-cost/">
 <meta name="twitter:card" content="summary_large_image">
@@ -66,7 +66,7 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
 </script>
 <!-- tool-structured-data:auto -->
 
-<link rel="canonical" href="https://afrotools.com/tools/cctv-cost/">
+<style>@media screen{html:root:not([data-theme="dark"]) #results .en-results-hero,html:root:not([data-theme="dark"]) #results .en-results-hero *{color:#1e293b!important}}</style><link rel="canonical" href="https://afrotools.com/tools/cctv-cost/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cctv-cost/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-cctv/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-cctv/">
@@ -161,7 +161,7 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
       <div class="en-results-hero-inner">
         <div class="en-results-hero-grid">
           <div>
-            <div class="en-results-hero-label">Total Hardware Cost</div>
+            <div class="en-results-hero-label">Total Setup Cost</div>
             <div class="en-results-hero-value" id="hardwareCost">₦0</div>
             <div class="en-results-hero-sub" id="monthlyRunning"></div>
           </div>
@@ -226,10 +226,15 @@ var PRICES={
 };
 var SYM={NG:'NGN ',KE:'KES ',ZA:'ZAR ',GH:'GHS ',EG:'EGP ',TZ:'TZS '};
 function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function invalidateEstimate(){document.getElementById("results").classList.remove("on");document.getElementById("calcStatus").textContent="Inputs changed. Calculate again before copying or printing.";}
+["country","cameras","cameraType","recorder","storage","installation","monitoring"].forEach(function(id){var field=document.getElementById(id);field.addEventListener("input",invalidateEstimate);field.addEventListener("change",invalidateEstimate);});
 function calculate(){
+  document.getElementById("results").classList.remove("on");
   var country=document.getElementById('country').value;
   var cameraInput=document.getElementById('cameras');
-  var cameras=Math.max(1,Math.min(64,parseInt(cameraInput.value,10)||4));
+  var cameras=Number(cameraInput.value);
+  cameraInput.removeAttribute("aria-invalid");
+  if(cameraInput.value.trim()===""||!Number.isInteger(cameras)||cameras<1||cameras>64){document.getElementById("calcStatus").textContent="Enter a whole number of cameras from 1 to 64.";cameraInput.setAttribute("aria-invalid","true");cameraInput.focus();return;}
   var cameraType=document.getElementById('cameraType').value;
   var recorder=document.getElementById('recorder').value;
   var storage=parseInt(document.getElementById('storage').value)||2;
@@ -268,13 +273,14 @@ function calculate(){
     {name:recorder.toUpperCase()+' recorder',qty:recorderUnits,unit:recorderUnitCost,total:recorderCost},
     {name:'HDD storage ('+hddCount+'TB)',qty:hddCount,unit:p.hdd1tb,total:hddCost},
     {name:'Professional installation',qty:cameras,unit:installCost/cameras||0,total:installCost},
-    {name:'Monthly monitoring (×60)',qty:60,unit:monitoringCost,total:monitoringCost*60}
+    {name:'Monthly monitoring (×60)',qty:60,unit:monitoringCost,total:monitoringCost*60},
+    {name:'Cloud storage (×60)',qty:60,unit:cloudMonthly,total:cloudMonthly*60}
   ];
   document.getElementById('breakdownTable').innerHTML=items.filter(function(i){return i.total>0;}).map(function(i){
     return '<tr><td class="en-td-value">'+i.name+'</td><td>'+sym+fmt(i.unit)+'</td><td>'+i.qty+'</td><td class="en-td-highlight">'+sym+fmt(i.total)+'</td></tr>';
   }).join('');
   var diySetup=hardwareTotal;
-  var proSetup=hardwareTotal+installCost;
+  var proSetup=hardwareTotal+p.installPer*cameras;
   var diy5yr=diySetup+monthlyTotal*60;
   var pro5yr=proSetup+monthlyTotal*60;
   document.getElementById('compareTable').innerHTML=
@@ -288,7 +294,7 @@ function estimateSummary(){return ['CCTV planning estimate',document.getElementB
 function copyEstimate(){var status=document.getElementById('calcStatus');if(!document.getElementById('results').classList.contains('on')){status.textContent='Calculate an estimate before copying it.';return;}var text=estimateSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){status.textContent='Cost summary copied.';}).catch(function(){status.textContent='Copy was blocked. Use Print or save PDF instead.';});}else{status.textContent='Clipboard access is unavailable. Use Print or save PDF instead.';}}
 function printEstimate(){var status=document.getElementById('calcStatus');if(!document.getElementById('results').classList.contains('on')){status.textContent='Calculate an estimate before printing it.';return;}status.textContent='Opening the browser print dialog. Choose Save as PDF to keep a local copy.';window.print();}
 </script>
-<script src="/assets/js/pages/security-focus.js?v=571d331e" defer></script>
+<script src="/assets/js/pages/security-focus.js?v=15704c11" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>

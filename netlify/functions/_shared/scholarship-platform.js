@@ -886,8 +886,9 @@ function buildFeedMeta(rows, options) {
   if (isLimited) {
     const limitedSourceLabel = mode === 'fallback'
       ? 'fallback scholarship dataset'
-      : (mode === 'cached' ? 'cached verified scholarship feed' : 'verified scholarship feed');
-    label = 'Limited live feed';
+      : (mode === 'cached' ? 'cached scholarship feed' :
+        (mode === 'curated' ? 'curated scholarship catalog' : 'live scholarship feed'));
+    label = 'Limited ' + label.charAt(0).toLowerCase() + label.slice(1);
     message = 'Showing ' + formatScholarshipClaimLabel(count) +
       ' from the ' + limitedSourceLabel + '. This is below the public coverage threshold of ' +
       PUBLIC_MIN_SCHOLARSHIP_COUNT +
