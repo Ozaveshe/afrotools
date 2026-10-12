@@ -749,7 +749,7 @@
 <afro-footer></afro-footer>
 
 <!-- Engine must load before page script -->
-<script src="/engines/minimum-wage-engine.js?v=4b152b33"></script>
+<script src="/engines/minimum-wage-engine.js?v=2bac2058"></script>
 <script src="/assets/js/minimum-wage-sw-overlay.js?v=6c8d051c"></script>
 <script>
 /* ── Page controller — uses window.AfroTools.MinWageEngine ── */
@@ -828,10 +828,14 @@ function localizeCountryData(country) {
   if (!country) return country;
   var clone = Object.assign({}, country);
   clone.name = swCountryName(clone.code, clone.name);
+  if (clone.code === 'GH') {
+    clone.notes = 'Kiwango cha siku ni GHS 21.77 kuanzia 2026-01-01. GHS 478.94 kwa mwezi ni makadirio ya kupanga kwa siku 22 za malipo, si kima cha mwezi kilichowekwa kisheria. Chati ya historia hutumia siku 30 za malipo; msingi huu unatofautiana na siku 22 za ulinganisho wa sasa. Kiwango cha 2024 cha GHS 18.15 kwa siku kinathibitishwa katika ripoti ya Utumishi wa Umma ya 2023, ukurasa wa 94; GHS 19.97 ni kiwango kilichoripotiwa Novemba 2025. Viwango vya kabla ya 2024, takwimu za mfumuko wa bei na makadirio ya mshahara wa kukidhi maisha bado havijathibitishwa. Chanzo: https://fairwages.gov.gh/wp-content/uploads/2025/11/2026-National-Daily-Minimum-Wage.pdf';
+  }
   return clone;
 }
 
 function buildSwObservation(c) {
+  if (c.code === 'GH') return c.notes + ' Pendekezo la kutotoza kodi katika chanzo halijatekelezwa hapa kama sheria ya kodi.';
   if (c && c.observation) return c.observation;
   var parts = [];
   if (c.monthly > 0) parts.push(c.name + ' ina kima cha chini cha mshahara cha ' + fmtWage(c.monthly, c.symbol) + ' kwa mwezi.');

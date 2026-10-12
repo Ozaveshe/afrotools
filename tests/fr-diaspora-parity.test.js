@@ -14,9 +14,10 @@ const manifestApi = require('../assets/js/ai/tool-manifest');
 const { normalizeBuildManagedHtml } = require('../scripts/lib/shared-asset-references');
 
 const ROOT = path.resolve(__dirname, '..');
+// Refreshed only for reviewed generated Pro-plan copy; full owner bytes remain pinned.
 const ENGLISH_BASELINE = Object.freeze({
-  immigration: '686add5d36233b6c7226f9503948a60d1dc9ed2c3e0fe962c62fc1ca95d5bc95',
-  visa: '912b6b336d29a39053c33b0b9f35e852e333249574017933923b36ea1b972034',
+  immigration: '8b959e9bad35479dac8d45af68a34796293ed752179690787d5bc91887b723f5',
+  visa: '53101a2d03cbb0df66eea3e0adef74877547145223479d33f85d76e73256233d',
 });
 const FRENCH_VISA_ALTERNATE = '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-de-demande-de-visa/">\n';
 

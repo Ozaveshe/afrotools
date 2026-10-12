@@ -133,9 +133,9 @@
 
 <!-- Tabs -->
 <div class="fc-tabs" role="tablist" aria-label="Flashcard workspace">
-  <button type="button" class="fc-tab active" id="tab-decks" role="tab" aria-selected="true" aria-controls="panel-decks" data-tab="decks" onclick="switchTab('decks')">Decks</button>
-  <button type="button" class="fc-tab" id="tab-study" role="tab" aria-selected="false" aria-controls="panel-study" data-tab="study" onclick="switchTab('study')">Study</button>
-  <button type="button" class="fc-tab" id="tab-progress" role="tab" aria-selected="false" aria-controls="panel-progress" data-tab="progress" onclick="switchTab('progress')">Progress</button>
+  <button type="button" class="fc-tab active" id="tab-decks" role="tab" tabindex="0" aria-selected="true" aria-controls="panel-decks" data-tab="decks" onclick="switchTab('decks')">Decks</button>
+  <button type="button" class="fc-tab" id="tab-study" role="tab" tabindex="-1" aria-selected="false" aria-controls="panel-study" data-tab="study" onclick="switchTab('study')">Study</button>
+  <button type="button" class="fc-tab" id="tab-progress" role="tab" tabindex="-1" aria-selected="false" aria-controls="panel-progress" data-tab="progress" onclick="switchTab('progress')">Progress</button>
 </div>
 
 <!-- ==================== DECKS PANEL ==================== -->
@@ -352,7 +352,7 @@
 <!-- education-tool-journey:end -->
 <afro-footer></afro-footer>
 
-<script src="flashcard-engine.js?v=c1cc51af"></script>
+<script src="flashcard-engine.js?v=5bccd5df"></script>
 <script>
 /* ── Pre-made Deck Data ── */
 var PRESET_DECKS = {
@@ -765,20 +765,56 @@ var state = {
 var matchState = { selected: null, pairs: [], matched: 0, total: 0 };
 
 /* ── Persistence ── */
+state.storageRecoveryRequired = false;
+
+function restoredDecks(value) {
+  if (!value || !Array.isArray(value.decks)) throw new Error('Invalid saved deck list');
+  return value.decks.map(function(deck) {
+    if (!deck || typeof deck.name !== 'string' || !Array.isArray(deck.cards)) throw new Error('Invalid saved deck');
+    var restored = { name: deck.name, cards: deck.cards.map(function(card) {
+      if (!card || typeof card.front !== 'string' || typeof card.back !== 'string' ||
+          (card.mastered !== undefined && typeof card.mastered !== 'boolean') ||
+          (card.reviewCount !== undefined && (!Number.isSafeInteger(card.reviewCount) || card.reviewCount < 0))) {
+        throw new Error('Invalid saved card');
+      }
+      return { front: card.front, back: card.back, mastered: card.mastered === true, reviewCount: card.reviewCount || 0 };
+    }) };
+    if (typeof deck.id === 'string') restored.id = deck.id;
+    return restored;
+  });
+}
+
 function load() {
   try {
-    state.remember = localStorage.getItem(REMEMBER_KEY) === 'yes' || Boolean(localStorage.getItem(STORAGE_KEY));
-    var d = state.remember ? JSON.parse(localStorage.getItem(STORAGE_KEY)) : null;
-    if (d && Array.isArray(d.decks)) state.decks = d.decks;
-    if (d && d.activeDeck !== undefined) state.activeDeck = d.activeDeck;
-    if (d && d.matchPairCount) state.matchPairCount = d.matchPairCount;
-    var streak = state.remember ? JSON.parse(localStorage.getItem(STREAK_KEY) || '{}') : {};
-    state.studyDates = Array.isArray(streak.dates) ? streak.dates : [];
-  } catch(e) {}
+    var raw = localStorage.getItem(STORAGE_KEY);
+    state.remember = localStorage.getItem(REMEMBER_KEY) === 'yes' || Boolean(raw);
+    if (raw) {
+      var d = JSON.parse(raw);
+      var decks = restoredDecks(d);
+      state.decks = decks;
+      state.activeDeck = Number.isInteger(d.activeDeck) && d.activeDeck >= 0 && d.activeDeck < decks.length
+        ? d.activeDeck : decks.length ? 0 : null;
+      state.matchPairCount = [4,6,8,10].indexOf(d.matchPairCount) >= 0 ? d.matchPairCount : 6;
+    }
+    var rawStreak = state.remember ? localStorage.getItem(STREAK_KEY) : null;
+    if (rawStreak) {
+      var streak = JSON.parse(rawStreak);
+      if (!streak || !Array.isArray(streak.dates) || !streak.dates.every(function(date) {
+        return typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date);
+      })) throw new Error('Invalid saved study dates');
+      state.studyDates = streak.dates;
+    }
+  } catch(e) {
+    state.storageRecoveryRequired = true;
+    state.remember = false;
+    setAppStatus('Saved browser data could not be fully restored. The stored copy has been left unchanged. You can use this tab and export decks; clear the saved copy before enabling device saving again.');
+  }
   var remember = document.getElementById('rememberDecks');
   if (remember) {
     remember.checked = state.remember;
+    remember.disabled = state.storageRecoveryRequired;
     remember.addEventListener('change', function() {
+      if (state.storageRecoveryRequired) { remember.checked = false; return; }
       state.remember = remember.checked;
       try {
         if (state.remember) {
@@ -786,10 +822,7 @@ function load() {
           persist();
           setAppStatus('Decks will be remembered in this browser.');
         } else {
-          localStorage.removeItem(REMEMBER_KEY);
-          localStorage.removeItem(STORAGE_KEY);
-          localStorage.removeItem(STREAK_KEY);
-          setAppStatus('Saved browser copy removed. Current-tab decks are still open.');
+          clearSavedDecks();
         }
       } catch(e) {
         remember.checked = false;
@@ -808,10 +841,18 @@ function load() {
 }
 
 function save() {
-  if (state.remember) persist();
+  if (!state.remember || state.storageRecoveryRequired) return;
+  try { persist(); }
+  catch(e) {
+    state.remember = false;
+    var remember = document.getElementById('rememberDecks');
+    if (remember) remember.checked = false;
+    setAppStatus('Could not save the latest changes in this browser. Your current-tab decks are still available; export a CSV backup before closing. The saved browser copy may be older.');
+  }
 }
 
 function persist() {
+  if (state.storageRecoveryRequired) throw new Error('Saved data needs recovery before writing');
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ decks: state.decks, activeDeck: state.activeDeck, matchPairCount: state.matchPairCount }));
   localStorage.setItem(STREAK_KEY, JSON.stringify({ dates: state.studyDates.slice(-60) }));
 }
@@ -822,15 +863,18 @@ function setAppStatus(message) {
 }
 
 function clearSavedDecks() {
-  try {
-    localStorage.removeItem(REMEMBER_KEY);
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(STREAK_KEY);
-  } catch(e) {}
+  var failed = false;
+  [REMEMBER_KEY, STORAGE_KEY, STREAK_KEY].forEach(function(key) {
+    try { localStorage.removeItem(key); }
+    catch(e) { failed = true; }
+  });
   state.remember = false;
   var remember = document.getElementById('rememberDecks');
-  if (remember) remember.checked = false;
-  setAppStatus('Saved browser copy cleared. Current-tab decks are unchanged.');
+  if (!failed) state.storageRecoveryRequired = false;
+  if (remember) { remember.checked = false; remember.disabled = state.storageRecoveryRequired; }
+  setAppStatus(failed
+    ? 'Could not remove all saved browser data. Current-tab decks are unchanged. Check browser storage permissions and try Clear saved decks again.'
+    : 'Saved browser copy cleared. Current-tab decks are unchanged.');
 }
 
 /* ── Tab switching ── */
@@ -839,6 +883,7 @@ function switchTab(tab) {
     var active = t.dataset.tab === tab;
     t.classList.toggle('active', active);
     t.setAttribute('aria-selected', active ? 'true' : 'false');
+    t.tabIndex = active ? 0 : -1;
   });
   document.querySelectorAll('.fc-panel').forEach(function(p) {
     var active = p.id === 'panel-' + tab;
@@ -1036,8 +1081,12 @@ function bulkImport() {
   var text = document.getElementById('bulkInput').value.trim();
   if (!text) return;
   var cards = window.AfroFlashcardEngine.parseCards(text);
+  if (!cards.length) {
+    setAppStatus('No valid cards imported. Check your CSV or front-and-back pairs; your pasted text has been kept.');
+    return;
+  }
   cards.forEach(function(card) {
-    deck.cards.push({ front: card.front, back: card.back, mastered: false, reviewCount: 0 });
+    deck.cards.push({ front: card.front, back: card.back, mastered: card.mastered === true, reviewCount: Number.isSafeInteger(card.reviewCount) && card.reviewCount >= 0 ? card.reviewCount : 0 });
   });
   document.getElementById('bulkInput').value = '';
   document.getElementById('bulkSection').classList.remove('show');
@@ -1229,8 +1278,10 @@ function toggleFlashcard(card) {
 }
 
 function markCard(gotIt) {
-  var deck = getDeck();
+  var deck = getDeck(), panel = document.getElementById('panel-study');
+  if (!panel || panel.hidden || state.mode !== 'flip' || !deck || !state.studyOrder.length) return;
   var idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
+  if (!deck.cards[idx]) return;
   if (gotIt) { deck.cards[idx].mastered = true; state.stats.correct++; }
   else { deck.cards[idx].mastered = false; deck.cards[idx].reviewCount++; state.stats.incorrect++; }
   state.stats.sessionCards++;
@@ -1447,8 +1498,23 @@ function localDateKey(date) {
 
 /* ── Keyboard shortcuts ── */
 document.addEventListener('keydown', function(e) {
-  if (state.mode !== 'flip' || !getDeck() || !getDeck().cards.length) return;
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.defaultPrevented || e.isComposing || e.repeat || e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return;
+  var target = e.target;
+  var tab = target && target.closest ? target.closest('.fc-tab') : null;
+  if (tab && ['ArrowRight','ArrowLeft','Home','End'].indexOf(e.code) >= 0) {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.fc-tab'));
+    var index = tabs.indexOf(tab);
+    if (index < 0) return;
+    var next = e.code === 'Home' ? 0 : e.code === 'End' ? tabs.length - 1
+      : (index + (e.code === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    e.preventDefault();
+    switchTab(tabs[next].dataset.tab);
+    tabs[next].focus();
+    return;
+  }
+  var panel = document.getElementById('panel-study');
+  if (!panel || panel.hidden || state.mode !== 'flip' || !getDeck() || !getDeck().cards.length || !state.studyOrder.length) return;
+  if (target && (target.isContentEditable || (target.closest && target.closest('input,textarea,select,button,a,[role="button"],[role="textbox"],[role="tab"],[contenteditable="true"]')))) return;
   if (e.code === 'Space') { e.preventDefault(); var fc = document.getElementById('flashcard'); if (fc) toggleFlashcard(fc); }
   if (e.code === 'ArrowRight') { e.preventDefault(); markCard(true); }
   if (e.code === 'ArrowLeft') { e.preventDefault(); markCard(false); }
@@ -1583,22 +1649,31 @@ function copyReviewPack() {
   var text = buildReviewPackText();
   function done() { setReviewPackStatus('Review pack copied.'); }
   function fallback() {
+    var previousFocus = document.activeElement;
     var ta = document.createElement('textarea');
+    var copied = false;
     ta.value = text;
     ta.setAttribute('readonly', '');
     ta.style.position = 'fixed';
     ta.style.left = '-9999px';
     document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy'); done(); }
-    catch(e) { setReviewPackStatus('Copy failed. Download the TXT pack instead.'); }
-    document.body.removeChild(ta);
+    try {
+      ta.focus();
+      ta.select();
+      copied = document.execCommand('copy') === true;
+    } catch(e) {
+      copied = false;
+    } finally {
+      document.body.removeChild(ta);
+      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+    }
+    if (copied) done();
+    else setReviewPackStatus('Copy failed. Download the TXT pack instead.');
   }
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(done).catch(fallback);
-  } else {
-    fallback();
+    return Promise.resolve().then(function() { return navigator.clipboard.writeText(text); }).then(done, fallback);
   }
+  return fallback();
 }
 
 function downloadReviewPack() {
