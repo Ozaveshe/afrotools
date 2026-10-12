@@ -2,6 +2,28 @@
 
 This workflow targets only AfroTools: `https://zpclagtgczsygrgztlts.supabase.co` and Netlify site `8aa543db-b4bd-4631-98f8-221440055c41`.
 
+## Deploying inactive code
+
+A code-only release may publish the local preview and fail-closed handler while
+WhatsApp remains launch-pending. This does not activate message delivery.
+
+Before accepting this release mode, the publisher must verify that all five
+`WHATSAPP_TOKEN`, `WHATSAPP_PHONE_ID`, `WHATSAPP_APP_SECRET`,
+`WHATSAPP_VERIFY_TOKEN`, and `WHATSAPP_GRAPH_VERSION` settings are absent from
+both site and shared production function configuration, recording names and
+presence only. All ordinary source, build, artifact, security and exact-commit
+CI checks still apply. Verify the deployed handler returns the documented 503
+configuration response for synthetic GET and POST probes without processing a
+message, contacting a provider or accessing delivery receipts. Keep the public
+launch-pending notice. If configuration changes or this boundary fails, stop
+publication and use the activation requirements below.
+
+Report code publication, receipt migration and provider activation separately.
+An inactive-code release does not certify migration application, provider API
+support, webhook registration or actual message delivery. Never enable provider
+configuration as part of this release mode. The receipt migration must be
+reviewed, applied and verified before any later activation.
+
 ## Activation order
 
 1. The publisher verifies the exact source commit, its build/artifact checks, and the existing database schema through the AfroTools Supabase MCP.
@@ -10,7 +32,10 @@ This workflow targets only AfroTools: `https://zpclagtgczsygrgztlts.supabase.co`
 4. Deploy the verified artifact and perform a controlled provider delivery test using an authorized test recipient. Local mocks do not prove registration, webhook subscription or real delivery.
 5. Keep the page's launch-pending notice until the public number and real delivery have been verified.
 
-The current candidate must not be declared READY while activation/recovery prerequisites or required release checks remain unresolved.
+A candidate for active webhook delivery must not be declared READY while
+activation/recovery prerequisites or required release checks remain unresolved.
+A code-only receipt must explicitly identify the inactive mode above and retain
+every unresolved activation prerequisite.
 
 ## Receipt behavior
 

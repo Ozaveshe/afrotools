@@ -18,6 +18,21 @@ const source=fs.readFileSync(root+'/netlify/functions/afrowork-whatsapp.js','utf
 const configured={WHATSAPP_GRAPH_VERSION:'v23.0',WHATSAPP_TOKEN:'synthetic-token',WHATSAPP_PHONE_ID:'synthetic-phone',WHATSAPP_APP_SECRET:'synthetic-secret',WHATSAPP_VERIFY_TOKEN:'synthetic-verify'};
 const payload=JSON.stringify({entry:[{changes:[{value:{messages:[{id:'wamid.'+crypto.randomUUID(),type:'text',from:'15555550123',text:{body:'PAYE Nigeria 450000'}}]}}]}]});
 const signature=body=>'sha256='+crypto.createHmac('sha256',configured.WHATSAPP_APP_SECRET).update(body).digest('hex');
+test('inactive code rejects requests before parsing or contacting receipts and providers',async()=>{
+ const requests=[],logs=[];
+ const context={exports:{},require:local,process:{env:{}},Buffer,AbortSignal,
+  console:{warn:(...v)=>logs.push(v),error:(...v)=>logs.push(v)},
+  fetch:async(...args)=>{requests.push(args);throw Error('Inactive release attempted network access');}};
+ vm.createContext(context);vm.runInContext(source,context);
+ for(const httpMethod of ['GET','POST']) {
+  const event={httpMethod,headers:{},queryStringParameters:{}};
+  Object.defineProperty(event,'body',{get(){throw Error('Inactive release read message body');}});
+  const response=await context.exports.handler(event);
+  assert.equal(response.statusCode,503);
+  assert.equal(response.body,httpMethod==='GET'?'Webhook verification is not configured':'Webhook delivery is not configured');
+ }
+ assert.equal(requests.length,0);assert.equal(logs.length,0);
+});
 async function run(name,env,event,expectedStatus,expectedCalls){
   const requests=[];
   const context={exports:{},require:unitRequire,process:{env},Buffer,AbortSignal,console:{warn(){},error(){}},fetch:async(url,options)=>{requests.push({url,body:JSON.parse(options.body)});return {ok:true,status:200,json:async()=>({messages:[{id:'synthetic'}]})};}};
