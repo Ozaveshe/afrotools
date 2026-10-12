@@ -326,6 +326,13 @@ jobs:
           PORT: '4192'
         run: npx playwright test tests/e2e/fr-customs-print-copy.spec.js tests/e2e/fr-trade-utility-workflows.spec.js tests/e2e/fr-trade-established-engine.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
+      - name: Verify security input recovery and private export boundaries
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4539'
+        run: npx playwright test tests/e2e/security-runtime-recovery.spec.js tests/e2e/security-frozen-followup.spec.js --project=chromium --workers=2 --retries=0 --trace=off
+
       - name: Verify CV repairs and FX observation exports in the optimized artifact
         env:
           AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
@@ -342,6 +349,13 @@ jobs:
           PORT: '4198'
         run: npx playwright test tests/e2e/fraction-calc-vip.spec.js tests/e2e/fraction-export-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off
 
+      - name: Verify native health reports and result invalidation in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4199'
+        run: npx playwright test tests/e2e/health-export-current-recovery.spec.js tests/e2e/health-export-followon.spec.js tests/e2e/health-quote-reports.spec.js tests/e2e/health-date-range-report-recovery.spec.js --project=chromium --workers=2 --retries=0 --trace=off
+
       - name: Verify French business report snapshots and export recovery
         env:
           AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
@@ -357,6 +371,13 @@ jobs:
             git diff --name-only
             exit 1
           fi
+
+      - name: Verify creator profile HTML boundaries in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4193'
+        run: npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
   e2e:
     name: Playwright smoke

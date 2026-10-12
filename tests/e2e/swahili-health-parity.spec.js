@@ -137,9 +137,11 @@ for (const route of routes) {
       // genuine 200% reflow check instead of silently measuring 16px.
       document.documentElement.style.setProperty("font-size", "200%", "important");
     });
-    // Reduced-motion CSS still leaves a 0.01ms `transition: all` on legacy
-    // owners. Let that frame settle before reading the computed root size.
-    await page.waitForTimeout(25);
+    // CSS transitions can start on the next rendering frame, even after a
+    // timer has fired. Measure reflow only after the requested text size applies.
+    await expect.poll(() => page.evaluate(() => Number.parseFloat(
+      getComputedStyle(document.documentElement).fontSize
+    ))).toBeGreaterThanOrEqual(31);
     const reflow200 = await page.evaluate(() => {
       document.documentElement.style.setProperty("scroll-behavior", "auto", "important");
       window.scrollTo(0, 0);
