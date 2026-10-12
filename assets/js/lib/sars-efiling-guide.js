@@ -33,6 +33,9 @@
 
   var locale = Object.assign({}, fallback, root.AfroToolsSarsGuideLocale || {});
   locale.tasks = Object.assign({}, fallback.tasks, (root.AfroToolsSarsGuideLocale || {}).tasks || {});
+  var recoveryMessages = {"en": {"unsaved": "Changes are available for this session only. Download JSON or TXT. Reset the checklist explicitly before saving over unreadable storage.", "loadError": "Saved checklist could not be read. It has been preserved; new choices remain in this session until you explicitly reset.", "resetError": "The saved checklist could not be reset. Your current choices are unchanged.", "portal": "Official portal"}, "sw": {"unsaved": "Mabadiliko yanapatikana katika kipindi hiki pekee. Pakua JSON au TXT. Futa orodha kwa hiari kabla ya kubadilisha hifadhi isiyosomeka.", "loadError": "Orodha iliyohifadhiwa haikuweza kusomwa. Imehifadhiwa bila kubadilishwa; chaguo mpya zitabaki katika kipindi hiki hadi uifute kwa hiari.", "resetError": "Orodha iliyohifadhiwa haikuweza kufutwa. Chaguo zako za sasa hazijabadilika.", "portal": "Tovuti rasmi"}};
+  var recovery = recoveryMessages[document.documentElement.lang] || recoveryMessages.en;
+  var protectedStorage = false;
   var state = { version: 1, tasks: {} };
   var elements = {};
 
@@ -51,15 +54,27 @@
 
   function loadState() {
     try {
-      state = cleanState(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null"));
+      var raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw){state=cleanState(null);return;}
+      var candidate=JSON.parse(raw);
+      if(!candidate||candidate.version!==1||!candidate.tasks||typeof candidate.tasks!=="object"||Array.isArray(candidate.tasks)||TASK_IDS.some(function(id){return id in candidate.tasks&&typeof candidate.tasks[id]!=="boolean";}))throw new Error("invalid");
+      state=cleanState(candidate);
     } catch (error) {
-      state = cleanState(null);
-      try { localStorage.removeItem(STORAGE_KEY); } catch (ignore) {}
+      protectedStorage=true;
+      state=cleanState(null);
     }
   }
 
-  function saveState() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cleanState(state))); } catch (ignore) {}
+  function saveState(candidate, replace) {
+    if(protectedStorage&&!replace)return false;
+    try {localStorage.setItem(STORAGE_KEY,JSON.stringify(cleanState(candidate)));protectedStorage=false;return true;}
+    catch(ignore){protectedStorage=true;return false;}
+  }
+
+  function resetState() {
+    var next=cleanState(null);
+    if(!saveState(next,true)){setStatus(recovery.resetError);return false;}
+    state=next;render();setStatus(locale.resetDone);return true;
   }
 
   function setStatus(message) {
@@ -106,7 +121,7 @@
       "",
       locale.disclaimer,
       "",
-      "Official portal: " + report.officialPortal
+      recovery.portal + ": " + report.officialPortal
     ].join("\n");
   }
 
@@ -151,8 +166,15 @@
     });
     y -= 8;
     var disclaimer = locale.disclaimer.replace(/[^\x20-\x7E]/g, "-");
-    page.drawText(disclaimer.slice(0, 92), { x: 48, y: y, size: 8, font: font });
-    page.drawText(disclaimer.slice(92, 184), { x: 48, y: y - 13, size: 8, font: font });
+    var disclaimerLine = "";
+    disclaimer.split(/\s+/).forEach(function (word) {
+      var next = disclaimerLine ? disclaimerLine + " " + word : word;
+      if (font.widthOfTextAtSize(next, 8) > 490 && disclaimerLine) {
+        page.drawText(disclaimerLine, { x: 48, y: y, size: 8, font: font });
+        y -= 13; disclaimerLine = word;
+      } else disclaimerLine = next;
+    });
+    if (disclaimerLine) page.drawText(disclaimerLine, { x: 48, y: y, size: 8, font: font });
     var bytes = await documentPdf.save({ useObjectStreams: false });
     download(new Blob([bytes], { type: "application/pdf" }), "sars-efiling-preparation.pdf");
   }
@@ -183,19 +205,16 @@
       if (task) {
         var id = task.getAttribute("data-sars-task");
         state.tasks[id] = !state.tasks[id];
-        saveState();
+        var saved=saveState(state,false);
         render();
-        setStatus(locale.saved);
+        setStatus(saved?locale.saved:recovery.unsaved);
         return;
       }
       var exportButton = event.target.closest("[data-sars-export]");
       if (exportButton) handleExport(exportButton.getAttribute("data-sars-export"));
     });
     document.getElementById("sarsReset").addEventListener("click", function () {
-      state = cleanState(null);
-      saveState();
-      render();
-      setStatus(locale.resetDone);
+      if(resetState()){var first=host.querySelector("[data-sars-task]");if(first)first.focus();}
     });
   }
 
@@ -205,10 +224,11 @@
     loadState();
     buildWorkspace(host);
     render();
+    if(protectedStorage)setStatus(recovery.loadError);
     root.AfroTools = root.AfroTools || {};
     root.AfroTools.sarsEfilingGuide = {
       getState: function () { return cleanState(state); },
-      reset: function () { state = cleanState(null); saveState(); render(); },
+      reset: resetState,
       reportData: reportData
     };
   }
