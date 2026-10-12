@@ -229,14 +229,16 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <button type="button" class="reset-btn" onclick="resetBudget()" title="Clear all entries">Reset</button>
 </div>
 
+<p id="budgetStatus" role="alert" aria-atomic="true"></p>
+<p id="budgetStorageStatus" role="status" aria-live="polite"></p>
 <div class="card" id="summaryCard" style="display:none;margin-top:18px">
 <div class="card-head"><span class="card-title">Budget Summary</span></div>
 <div class="card-body">
 <div class="summary-grid">
 <div class="summary-box"><div class="s-label">Total Income</div><div class="s-value blue" id="sIncome">--</div></div>
-<div class="summary-box"><div class="s-label">Total Expenses</div><div class="s-value red" id="sExpenses">--</div></div>
-<div class="summary-box"><div class="s-label">Remaining (Savings)</div><div class="s-value green" id="sSavings">--</div></div>
-<div class="summary-box"><div class="s-label">Savings Rate</div><div class="s-value" id="sRate">--</div></div>
+<div class="summary-box"><div class="s-label">Total Allocated</div><div class="s-value red" id="sExpenses">--</div></div>
+<div class="summary-box"><div class="s-label">Unallocated Balance</div><div class="s-value green" id="sSavings">--</div></div>
+<div class="summary-box"><div class="s-label">Savings Allocation</div><div class="s-value" id="sRate">--</div></div>
 </div>
 <div class="bar-chart" id="barChart"></div>
 <div id="ruleIndicator"></div>
@@ -424,7 +426,7 @@ function loadPreset(key){
     p.expenses[ci].forEach(function(exp){
       var row=document.createElement('div');
       row.className='expense-row';
-      row.innerHTML='<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="'+ci+'" placeholder="Item name" value="'+exp.name+'"><input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="'+ci+'" placeholder="0" inputmode="numeric" value="'+exp.amount+'"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
+      row.innerHTML='<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="'+ci+'" placeholder="Item name" value="'+exp.name+'"><input aria-label="Expense amount" type="text" class="f-input exp-amt" data-cat="'+ci+'" placeholder="0" inputmode="numeric" value="'+exp.amount+'"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
       container.appendChild(row);
     });
   });
@@ -433,11 +435,14 @@ function loadPreset(key){
 
 function resetBudget(){
   if(!confirm('Clear all budget entries?'))return;
-  localStorage.removeItem('afro_budget');
+  var removed=true;
+  try{localStorage.removeItem('afro_budget');}catch(error){removed=false;}
+  document.getElementById('budgetStorageStatus').textContent=removed?'':'This page was cleared, but the saved draft could not be removed. It may return when you reload.';
   buildExpenseCategories();
   var incContainer=document.getElementById('incomeRows');
   incContainer.innerHTML='<div class="expense-row"><input aria-label="Salary" type="text" class="f-input inc-name" placeholder="Salary" value="Salary"><input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button></div>';
   document.getElementById('summaryCard').style.display='none';
+  document.getElementById('budgetStatus').textContent='';
 }
 
 function init(){
@@ -461,7 +466,7 @@ function buildExpenseCategories(){
         ${cat.items.map(item=>`
           <div class="expense-row">
             <input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name" value="${item}">
-            <input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric">
+            <input aria-label="Expense amount" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric">
             <button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>
           </div>
         `).join('')}
@@ -482,7 +487,7 @@ function addIncome(){
 function addExpenseToCategory(ci){
   const row=document.createElement('div');
   row.className='expense-row';
-  row.innerHTML=`<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name"><input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
+  row.innerHTML=`<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name"><input aria-label="Expense amount" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
   document.getElementById('catRows'+ci).appendChild(row);
 }
 
@@ -495,11 +500,33 @@ function removeRow(btn){
   btn.parentElement.remove();
 }
 
-function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
+function parseNum(value){
+  var text=String(value).trim().replace(/[\u00a0\u202f]/g,' ');
+  if(!text)return 0;
+  var plain=/^(?:\d+(?:\.\d*)?|\.\d+)$/;
+  var grouped=/^\d{1,3}(?:,\d{3})+(?:\.\d*)?$|^\d{1,3}(?: \d{3})+(?:\.\d*)?$/;
+  if(!plain.test(text)&&!grouped.test(text))throw new Error('invalid-budget-amount');
+  var amount=Number(text.replace(/[, ]/g,''));
+  if(!Number.isFinite(amount)||amount>Number.MAX_SAFE_INTEGER)throw new Error('invalid-budget-amount');
+  return amount;
+}
+function validateBudgetAmounts(focusInvalid){
+  var firstInvalid=null;
+  document.querySelectorAll('.inc-amt, .exp-amt').forEach(function(field){
+    field.removeAttribute('aria-invalid');
+    try{parseNum(field.value);}catch(error){field.setAttribute('aria-invalid','true');if(!firstInvalid)firstInvalid=field;}
+  });
+  var status=document.getElementById('budgetStatus');
+  status.textContent=firstInvalid?'Enter a non-negative amount using digits and a decimal point, such as 1000.50. Thousands may use commas or spaces.':'';
+  if(firstInvalid){document.getElementById('summaryCard').style.display='none';if(focusInvalid!==false)firstInvalid.focus();return false;}
+  return true;
+}
+
 var CUR_SYMBOLS={NGN:'\u20A6',KES:'KSh ',ZAR:'R ',GHS:'GH\u20B5',XOF:'CFA ',XAF:'FCFA ',UGX:'USh ',TZS:'TSh ',RWF:'RWF ',ETB:'Br ',EGP:'E\u00A3',MAD:'MAD ',ZMW:'K',MWK:'MK',AOA:'Kz',GMD:'D',USD:'$',GBP:'\u00A3',EUR:'\u20AC'};
 function fmt(n,cur){return(CUR_SYMBOLS[cur]||'')+Math.round(n).toLocaleString('en')}
 
-function calculate(){
+function calculate(focusInvalid){
+  if(!validateBudgetAmounts(focusInvalid))return false;
   const cur=document.getElementById('currency').value;
 
   // Sum income
@@ -517,6 +544,11 @@ function calculate(){
     document.getElementById('catTotal'+ci).textContent=fmt(catSum,cur);
   });
 
+  if(!Number.isFinite(totalIncome)||!Number.isFinite(totalExpenses)||totalIncome>Number.MAX_SAFE_INTEGER||totalExpenses>Number.MAX_SAFE_INTEGER){
+    document.getElementById('budgetStatus').textContent='The combined amounts are too large to calculate reliably. Reduce the amounts and try again.';
+    document.getElementById('summaryCard').style.display='none';
+    return false;
+  }
   const ownerBudget=window.BusinessRoiEngine.budget({
     income:[totalIncome],
     categories:catTotals.map(function(category){
@@ -526,14 +558,14 @@ function calculate(){
     })
   });
   const savings=ownerBudget.balance;
-  const savingsRate=ownerBudget.savingsRate;
+  const savingsRate=ownerBudget.savingsAllocationRate;
 
   document.getElementById('sIncome').textContent=fmt(totalIncome,cur);
   document.getElementById('sExpenses').textContent=fmt(totalExpenses,cur);
   document.getElementById('sSavings').textContent=fmt(savings,cur);
   document.getElementById('sSavings').className='s-value '+(savings>=0?'green':'red');
   document.getElementById('sRate').textContent=savingsRate.toFixed(1)+'%';
-  document.getElementById('sRate').className='s-value '+(savingsRate>=20?'green':savingsRate>=10?'blue':'red');
+  document.getElementById('sRate').className='s-value '+(savings<0?'red':savingsRate>=20?'green':savingsRate>=10?'blue':'red');
 
   // Bar chart — bars proportional to income share
   let barHtml='<div style="font-size:.7rem;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Spending by Category (% of income)</div>';
@@ -544,38 +576,25 @@ function calculate(){
   });
   document.getElementById('barChart').innerHTML=barHtml;
 
-  // 50/30/20 rule analysis
-  const needsCats=['Housing','Food & Groceries','Transport','Education'];
-  const savingsCats=['Savings & Investment'];
-  let needsTotal=0,savingsTotal=0,wantsTotal=0;
-  catTotals.forEach(c=>{
-    if(needsCats.includes(c.name))needsTotal+=c.total;
-    else if(savingsCats.includes(c.name))savingsTotal+=c.total;
-    else wantsTotal+=c.total;
-  });
-  // Add unallocated savings (income minus all expenses minus categorized savings)
-  var unallocatedSavings = savings - savingsTotal;
-  if (unallocatedSavings > 0) savingsTotal += unallocatedSavings;
-
-  const needsPct=totalIncome>0?((needsTotal/totalIncome)*100):0;
-  const wantsPct=totalIncome>0?((wantsTotal/totalIncome)*100):0;
-
-  // The target is an editable example, not a country or investment recommendation.
+  // Planning allocations include explicit savings plus positive unallocated balance.
+  const needsPct=ownerBudget.needsRate;
+  const wantsPct=ownerBudget.wantsRate;
   var savingsTarget = 20;
-  var savingsNote = ' This is an editable example, not financial advice.';
+  var savingsNote = ' This is an illustrative benchmark, not financial advice.';
 
   var ruleClass,ruleMsg;
-  if(savingsRate>=savingsTarget){
+  if(savings<0){
+    ruleClass='rule-bad';
+    ruleMsg='Total planned allocations, including savings, exceed income by '+fmt(Math.abs(savings),cur)+'. The savings allocation is not fully funded; review the inputs before relying on this plan.';
+  }else if(savingsRate>=savingsTarget){
     ruleClass='rule-good';
-    ruleMsg='The entered plan leaves '+savingsRate.toFixed(0)+'% of income unspent or assigned to savings. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%. This is at or above the editable example target.'+savingsNote;
+    ruleMsg='The entered plan leaves '+savingsRate.toFixed(0)+'% of income unspent or assigned to savings. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%. This is at or above the illustrative target.'+savingsNote;
   }else if(savingsRate>=10){
     ruleClass='rule-warn';
     ruleMsg='The entered plan leaves '+savingsRate.toFixed(0)+'% of income unspent or assigned to savings, below the '+savingsTarget+'% example. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%.'+savingsNote;
   }else{
     ruleClass='rule-bad';
-    ruleMsg=savings<0
-      ? 'The entered expenses exceed income by '+fmt(Math.abs(savings),cur)+'. Review the inputs and decide which assumptions can realistically change.'
-      : 'The entered plan leaves '+savingsRate.toFixed(0)+'% of income unspent or assigned to savings. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%. Compare this with your own target.'+savingsNote;
+    ruleMsg='The entered plan leaves '+savingsRate.toFixed(0)+'% of income unspent or assigned to savings. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%. Compare this with your own target.'+savingsNote;
   }
   document.getElementById('ruleIndicator').innerHTML='<div class="rule-indicator '+ruleClass+'">'+ruleMsg+'</div>';
 
@@ -600,39 +619,51 @@ function saveBudget(){
       });
     });
     localStorage.setItem('afro_budget',JSON.stringify(data));
-  }catch(e){}
+    document.getElementById('budgetStorageStatus').textContent='';
+    return true;
+  }catch(e){
+    document.getElementById('budgetStorageStatus').textContent='Your budget could not be saved on this device. Keep this page open to retain your entries.';
+    return false;
+  }
 }
 
+function createSavedBudgetRow(kind,item,ci){
+  var row=document.createElement('div');
+  row.className='expense-row';
+  var name=document.createElement('input');
+  name.type='text';name.className='f-input '+kind+'-name';
+  name.setAttribute('aria-label',kind==='inc'?'Income source':'Item name');
+  name.placeholder=kind==='inc'?'Income source':'Item name';name.value=item.name||'';
+  var amount=document.createElement('input');
+  amount.type='text';amount.className='f-input '+kind+'-amt';
+  amount.setAttribute('aria-label',kind==='inc'?'Amount':'Expense amount');
+  amount.inputMode='decimal';amount.placeholder='0';amount.value=item.amount==null?'':String(item.amount);
+  if(kind==='exp'){name.dataset.cat=String(ci);amount.dataset.cat=String(ci);}
+  var remove=document.createElement('button');remove.type='button';remove.className='remove-btn';
+  remove.title='Remove';remove.setAttribute('aria-label','Remove '+(kind==='inc'?'income source':'expense'));
+  remove.textContent='×';remove.addEventListener('click',function(){removeRow(remove);});
+  row.appendChild(name);row.appendChild(amount);row.appendChild(remove);return row;
+}
 function loadBudget(){
+  var status=document.getElementById('budgetStorageStatus');
   try{
-    const raw=localStorage.getItem('afro_budget');
+    var raw=localStorage.getItem('afro_budget');
     if(!raw)return;
-    const data=JSON.parse(raw);
-    if(data.currency)document.getElementById('currency').value=data.currency;
-    if(data.income&&data.income.length){
-      const container=document.getElementById('incomeRows');
-      container.innerHTML='';
-      data.income.forEach(inc=>{
-        const row=document.createElement('div');
-        row.className='expense-row';
-        row.innerHTML=`<input aria-label="Income source" type="text" class="f-input inc-name" placeholder="Income source" value="${inc.name||''}"><input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric" value="${inc.amount||''}"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
-        container.appendChild(row);
-      });
-    }
-    if(data.expenses){
-      Object.keys(data.expenses).forEach(ci=>{
-        const container=document.getElementById('catRows'+ci);
-        if(!container)return;
-        container.innerHTML='';
-        data.expenses[ci].forEach(exp=>{
-          const row=document.createElement('div');
-          row.className='expense-row';
-          row.innerHTML=`<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name" value="${exp.name||''}"><input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric" value="${exp.amount||''}"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
-          container.appendChild(row);
-        });
-      });
-    }
-  }catch(e){}
+    var data=JSON.parse(raw);
+    if(!data||typeof data!=='object'||Array.isArray(data))throw new Error('invalid-draft');
+    function validRows(rows){return Array.isArray(rows)&&rows.every(function(item){return item&&typeof item==='object'&&!Array.isArray(item)&&(item.name==null||typeof item.name==='string')&&(item.amount==null||typeof item.amount==='string'||(typeof item.amount==='number'&&Number.isFinite(item.amount)));});}
+    if(data.income!==undefined&&!validRows(data.income))throw new Error('invalid-income');
+    if(data.expenses!==undefined&&(!data.expenses||typeof data.expenses!=='object'||Array.isArray(data.expenses)))throw new Error('invalid-expenses');
+    var keys=Object.keys(data.expenses||{});
+    if(keys.some(function(ci){return !/^(0|[1-9]\d*)$/.test(ci)||Number(ci)>=CATEGORIES.length||!validRows(data.expenses[ci]);}))throw new Error('invalid-expense-row');
+    var currency=document.getElementById('currency');
+    if(data.currency!==undefined&&!Array.from(currency.options).some(function(option){return option.value===data.currency;}))throw new Error('invalid-currency');
+    // Validate the complete saved shape before replacing any existing rows.
+    if(data.currency!==undefined)currency.value=data.currency;
+    if(data.income!==undefined){var container=document.getElementById('incomeRows');container.innerHTML='';data.income.forEach(function(item){container.appendChild(createSavedBudgetRow('inc',item));});}
+    keys.forEach(function(ci){var container=document.getElementById('catRows'+ci);container.innerHTML='';data.expenses[ci].forEach(function(item){container.appendChild(createSavedBudgetRow('exp',item,ci));});});
+    status.textContent='';
+  }catch(error){status.textContent='The saved budget could not be restored. Your saved draft has not been changed; you can enter a new budget or use Reset.';}
 }
 
 window.addEventListener('DOMContentLoaded',function(){
@@ -640,7 +671,7 @@ window.addEventListener('DOMContentLoaded',function(){
   // Auto-calculate on any input change
   document.addEventListener('input',function(e){
     if(e.target.classList.contains('inc-amt')||e.target.classList.contains('exp-amt')){
-      calculate();
+      calculate(false);
     }
   });
   document.getElementById('currency').addEventListener('change',function(){

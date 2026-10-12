@@ -359,6 +359,7 @@
             <input type="number" id="ac-requested" placeholder="e.g. 10" min="0" max="60" oninput="acCalc()">
           </div>
         </div>
+        <p id="ac-validation" role="status" aria-live="polite"></p>
         <div id="ac-result" style="display:none"></div>
       </div>
     </div>
@@ -775,11 +776,19 @@ function acCalc() {
   var startVal = document.getElementById('ac-start').value;
   var todayVal = document.getElementById('ac-today').value;
   var entitlement = parseFloat(document.getElementById('ac-entitlement').value);
-  var requested = parseFloat(document.getElementById('ac-requested').value) || 0;
+  var requestedValue = document.getElementById('ac-requested').value.trim();
+  var requested = requestedValue === '' ? 0 : Number(requestedValue);
   var el = document.getElementById('ac-result');
-  if (!startVal || !todayVal || !entitlement) { el.style.display = 'none'; return; }
-  var start = new Date(startVal), today = new Date(todayVal);
-  if (today < start) { el.style.display = 'none'; return; }
+  var validation = document.getElementById('ac-validation');
+  el.replaceChildren();
+  el.style.display = 'none';
+  validation.textContent = '';
+  if (!startVal || !todayVal || document.getElementById('ac-entitlement').value === '') return;
+  var start = new Date(startVal + 'T00:00:00Z'), today = new Date(todayVal + 'T00:00:00Z');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(startVal) || !/^\d{4}-\d{2}-\d{2}$/.test(todayVal) || !Number.isFinite(start.getTime()) || !Number.isFinite(today.getTime()) || start.toISOString().slice(0,10) !== startVal || today.toISOString().slice(0,10) !== todayVal) { validation.textContent = 'Enter valid employment and calculation dates.'; return; }
+  if (today < start) { validation.textContent = 'Calculation date must be on or after employment start.'; return; }
+  if (!Number.isFinite(entitlement) || entitlement < 1 || entitlement > 60) { validation.textContent = 'Annual entitlement must be between 1 and 60 days.'; return; }
+  if (!Number.isFinite(requested) || requested < 0 || requested > 60) { validation.textContent = 'Requested leave must be between 0 and 60 days, or left blank.'; return; }
   // Find leave year start (anniversary before today)
   var lys = new Date(start);
   while (new Date(Date.UTC(lys.getUTCFullYear()+1, lys.getUTCMonth(), lys.getUTCDate())) <= today) {

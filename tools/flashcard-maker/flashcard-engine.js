@@ -6,43 +6,60 @@
   'use strict';
 
   function parseDelimitedLine(line, delimiter) {
-    var fields = [];
-    var value = '';
-    var quoted = false;
-
+    var fields = [], value = '', quoted = false;
     for (var index = 0; index < line.length; index += 1) {
       var character = line[index];
       if (character === '"') {
-        if (quoted && line[index + 1] === '"') {
-          value += '"';
-          index += 1;
-        } else {
-          quoted = !quoted;
-        }
-      } else if (character === delimiter && !quoted) {
-        fields.push(value.trim());
-        value = '';
-      } else {
-        value += character;
-      }
+        if (quoted && line[index + 1] === '"') { value += '"'; index += 1; }
+        else quoted = !quoted;
+      } else if (character === delimiter && !quoted) { fields.push(value); value = ''; }
+      else value += character;
     }
-
-    fields.push(value.trim());
+    fields.push(value);
     return quoted ? [] : fields;
   }
 
   function parseCards(text) {
     if (typeof text !== 'string') return [];
-    return text.split(/\r?\n/).map(function (line) {
-      var trimmed = line.trim();
-      if (!trimmed) return null;
-      var delimiter = trimmed.indexOf('\t') >= 0 ? '\t' : ',';
-      var fields = parseDelimitedLine(trimmed, delimiter);
-      if (fields.length < 2) return null;
-      var front = fields.shift().trim();
-      var back = fields.join(delimiter === '\t' ? '\t' : ',').trim();
-      return front && back ? { front: front, back: back } : null;
-    }).filter(Boolean);
+    text = text.replace(/^\uFEFF/, '');
+    var records = [], record = '', quoted = false, hasTab = false;
+    for (var index = 0; index < text.length; index += 1) {
+      var character = text[index];
+      if (character === '"') {
+        record += character;
+        if (quoted && text[index + 1] === '"') { record += text[++index]; }
+        else quoted = !quoted;
+      } else if ((character === '\n' || character === '\r') && !quoted) {
+        if (record.trim()) records.push({ text: record, delimiter: hasTab ? '\t' : ',' });
+        record = ''; hasTab = false;
+        if (character === '\r' && text[index + 1] === '\n') index += 1;
+      } else {
+        if (character === '\t' && !quoted) hasTab = true;
+        record += character;
+      }
+    }
+    // Reject incomplete quoted input without silently importing a partial backup.
+    if (quoted) return [];
+    if (record.trim()) records.push({ text: record, delimiter: hasTab ? '\t' : ',' });
+    var backup = records.length && records[0].delimiter === ',' &&
+      JSON.stringify(parseDelimitedLine(records[0].text, ',')) === JSON.stringify(['Front','Back','Status','Review marks']);
+    if (backup) records.shift();
+    var cards = [], invalidBackup = false;
+    records.forEach(function (row) {
+      var fields = parseDelimitedLine(row.text, row.delimiter);
+      if (backup) {
+        var count = Number(fields[3]);
+        if (row.delimiter !== ',' || fields.length !== 4 || !fields[0].trim() || !fields[1].trim() ||
+            ['Got it','Review','New'].indexOf(fields[2]) < 0 || !fields[3].trim() ||
+            !Number.isSafeInteger(count) || count < 0) { invalidBackup = true; return; }
+        cards.push({ front: fields[0], back: fields[1], mastered: fields[2] === 'Got it', reviewCount: count });
+      } else {
+        if (fields.length < 2) return;
+        var front = fields.shift().trim(), back = fields.join(row.delimiter).trim();
+        if (front && back) cards.push({ front: front, back: back });
+      }
+    });
+    return invalidBackup ? [] : cards;
   }
 
   function normaliseAnswer(value) {
