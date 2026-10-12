@@ -1,0 +1,9 @@
+const assert=require('assert'),fs=require('fs'),path=require('path'),vm=require('vm');
+const html=fs.readFileSync(path.join(__dirname,'../tools/leave-calculator/index.html'),'utf8');
+const start=html.indexOf('function acCalc() {'),end=html.indexOf('function poCalc()',start);assert(start>=0&&end>start);const code=html.slice(start,end);
+function run(values){const defaults={'ac-start':'2026-01-01','ac-today':'2026-07-01','ac-entitlement':'21','ac-requested':''};const nodes={};for(const id of [...Object.keys(defaults),'ac-result','ac-validation'])nodes[id]={value:values[id]===undefined?defaults[id]:values[id],innerHTML:'previous result',textContent:'',style:{display:''},replaceChildren(){this.innerHTML='';}};const ctx={document:{getElementById:id=>nodes[id]},Date,Number,Math};vm.runInNewContext(code+';acCalc();',ctx);return nodes;}
+const invalid=[{'ac-entitlement':'-1'},{'ac-entitlement':'0'},{'ac-entitlement':'61'},{'ac-entitlement':'Infinity'},{'ac-requested':'-1'},{'ac-requested':'61'},{'ac-requested':'Infinity'},{'ac-start':'2026-02-30'},{'ac-today':'invalid'},{'ac-today':'2025-12-31'}];
+for(const input of invalid){const nodes=run(input);assert.strictEqual(nodes['ac-result'].style.display,'none',JSON.stringify(input));assert.strictEqual(nodes['ac-result'].innerHTML,'');assert(nodes['ac-validation'].textContent);}
+for(const entitlement of ['1','21','60']){const nodes=run({'ac-entitlement':entitlement});assert.strictEqual(nodes['ac-result'].style.display,'');assert(nodes['ac-result'].innerHTML.includes('days accrued'));assert.strictEqual(nodes['ac-validation'].textContent,'');}
+{const nodes=run({'ac-start':''});assert.strictEqual(nodes['ac-result'].style.display,'none');assert.strictEqual(nodes['ac-result'].innerHTML,'');}
+console.log('PASS: 14 leave accrual validation cases');
