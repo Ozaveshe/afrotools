@@ -48,6 +48,8 @@ for (const route of manifest.routes) {
     test(`${route.id} ${width}: edited inputs cannot reuse a previous report`, async ({ page }) => {
       const errors = []; page.on('pageerror', error => errors.push(error.message));
       await page.setViewportSize({ width, height: 844 });
+      // Compare exports at one instant; live ticking is covered separately.
+      if (route.id === "countdown-timer") await page.clock.setFixedTime(new Date("2026-07-29T12:00:00Z"));
       await page.goto(route.french);
       const scenario = cases[route.id];
       await fill(page, scenario.values);

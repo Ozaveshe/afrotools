@@ -14,6 +14,7 @@
   var lastReport = null;
   var lastInputs = null;
   var timerId = null;
+  var countdownRuntime = null;
 
   function value(name) {
     var field = form.elements.namedItem(name);
@@ -42,21 +43,14 @@
   }
 
   function pomodoro() {
-    var plan = engine.pomodoro({
-      focusMinutes: number("focusMinutes"), shortBreakMinutes: number("shortBreakMinutes"),
-      longBreakMinutes: number("longBreakMinutes"), sessions: number("sessions")
-    });
-    if (timerId) clearInterval(timerId);
-    var remaining = plan.focusSeconds;
-    timerId = setInterval(function () {
-      remaining -= 1;
-      var live = root.querySelector('[data-live-timer]');
-      if (live) live.textContent = Math.floor(remaining / 60) + ":" + String(remaining % 60).padStart(2, "0");
-      if (remaining <= 0) { clearInterval(timerId); timerId = null; status.textContent = "Session terminée."; }
-    }, 1000);
-    return report("Cycle Pomodoro", "La première session a démarré localement.", [
-      ["Minuteur", '<span data-live-timer>' + Math.floor(remaining / 60) + ":" + String(remaining % 60).padStart(2, "0") + "</span>"],
-      ["Sessions", String(plan.sessions)], ["Cycle total", decimal(plan.cycleSeconds / 60, 0) + " min"],
+    var plan = engine.pomodoro({ focusMinutes: number("focusMinutes"), shortBreakMinutes: number("shortBreakMinutes"), longBreakMinutes: number("longBreakMinutes"), sessions: number("sessions") });
+    var runtime = window.AfroTools && window.AfroTools.localizedPomodoro;
+    if (!runtime) throw new Error("Le minuteur local n’est pas disponible. Rechargez la page.");
+    runtime.mount(root, "fr").configure(plan);
+    return report("Cycle Pomodoro", "Cycle prêt. Utilisez les commandes du minuteur pour commencer.", [
+      ["Concentration", Math.floor(plan.focusSeconds / 60) + ":" + String(plan.focusSeconds % 60).padStart(2, "0")],
+      ["Sessions", String(plan.sessions)],
+      ["Cycle total", decimal(plan.cycleSeconds / 60, 0) + " min"],
       ["Pause longue", decimal(plan.longBreakSeconds / 60, 0) + " min"]
     ], [["Concentration", decimal(plan.focusSeconds / 60, 0) + " min"], ["Pause courte", decimal(plan.shortBreakSeconds / 60, 0) + " min"]]);
   }
@@ -95,23 +89,49 @@
     ]));
   }
 
-  function countdown() {
-    if (!value("eventDate")) throw new Error("Choisissez une date d’événement.");
-    var output = engine.countdown({
-      from: new Date().toISOString(),
-      to: value("eventDate") + "T" + (value("eventTime") || "00:00") + ":00"
-    });
-    return report("Compte à rebours — " + (value("eventName") || "Événement"), output.complete ? "Cette échéance est passée ou atteinte." : "Décompte calculé depuis l’horloge de cet appareil.", [
+  function countdownReport(state) {
+    var output = state.remaining, event = state.event;
+    var data = report("Compte à rebours — " + (event.name || "Événement"), output.complete ? "Cette échéance est atteinte." : "Compte à rebours actualisé avec l’horloge de cet appareil.", [
       ["Jours", String(output.days)], ["Heures", String(output.hours)],
       ["Minutes", String(output.minutes)], ["Secondes", String(output.seconds)]
-    ], [["Échéance locale", value("eventDate") + " " + value("eventTime")]]);
+    ], [["Échéance locale", event.date + " " + event.time], ["Fuseau de cet appareil", Intl.DateTimeFormat().resolvedOptions().timeZone], ["Instant du calcul (UTC)", state.generatedAt]]);
+    data.generatedAt = state.generatedAt;
+    return data;
+  }
+
+  function refreshCountdownReport(state) {
+    if (tool !== "countdown-timer" || !countdownRuntime || !lastReport) return;
+    state = state || countdownRuntime.snapshot();
+    if (!state) return;
+    var data = countdownReport(state);
+    lastReport = data;
+    title.textContent = data.title; summary.textContent = data.summary;
+    var outputs = metrics.querySelectorAll("strong");
+    data.metrics.forEach(function (item, index) { if (outputs[index]) outputs[index].textContent = item[1]; });
+    var details = rows.querySelectorAll("tr");
+    data.rows.forEach(function (item, index) { if (details[index]) { var cells = details[index].querySelectorAll("td"); if (cells[0]) cells[0].textContent = item[0]; if (cells[1]) cells[1].textContent = item[1]; } });
+  }
+
+  function countdown() {
+    var runtime = window.AfroTools && window.AfroTools.localizedCountdown;
+    if (!runtime) throw new Error("Le compte à rebours local est indisponible. Rechargez la page.");
+    countdownRuntime = runtime.mount(root, "fr", { onSnapshot: refreshCountdownReport });
+    var state = countdownRuntime.configure({ name: value("eventName") || "Événement", date: value("eventDate"), time: value("eventTime") || "00:00" });
+    return countdownReport(state);
   }
 
   function timeZone() {
-    var output = engine.timeZone({ localDateTime: value("localDateTime"), fromZone: value("fromZone"), toZone: value("toZone") });
-    return report("Conversion de fuseau", "La même heure instantanée est affichée dans les deux fuseaux IANA.", [
+    var output, occurrence = value("occurrence") || "reject";
+    try {
+      output = engine.timeZone({ localDateTime: value("localDateTime"), fromZone: value("fromZone"), toZone: value("toZone"), locale: "fr", occurrence: occurrence });
+    } catch (error) {
+      var messages = {"invalid-date":"Saisissez une date et une heure valides.","nonexistent-local-time":"Cette heure locale n’existe pas lors du changement d’heure. Choisissez une autre heure.","ambiguous-local-time":"Cette heure locale se produit deux fois. Choisissez la première ou la deuxième occurrence.","invalid-time-occurrence":"Choisissez une option valide pour les heures répétées."};
+      throw new Error(messages[error.message] || "La conversion est indisponible. Vérifiez la date et les fuseaux.");
+    }
+    var occurrenceLabels = {"reject":"Demander de choisir","earlier":"Première occurrence","later":"Deuxième occurrence"};
+    return report("Conversion de fuseau", "Le même instant est affiché dans les deux fuseaux IANA.", [
       ["Source", output.from], ["Destination", output.to]
-    ], [["Instant UTC", output.iso], ["Fuseau source", value("fromZone")], ["Fuseau cible", value("toZone")]]);
+    ], [["Date et heure saisies", value("localDateTime").replace("T", " ")], ["Instant UTC", output.iso], ["Fuseau source", value("fromZone")], ["Fuseau cible", value("toZone")], ["En cas d’heure répétée", occurrenceLabels[occurrence]]]);
   }
 
   function publicHoliday() {
@@ -131,10 +151,12 @@
   }
 
   function age() {
-    var output = engine.age({ birthDate: value("birthDate"), atDate: value("atDate") });
-    return report("Âge exact", "Différence calendaire entre les deux dates saisies.", [
+    var output;
+    try { output = engine.age({ birthDate: value("birthDate"), atDate: value("atDate") }); }
+    catch (error) { throw new Error(error.message === "invalid-age-range" ? "La date de naissance doit être valide et ne pas dépasser la date de calcul." : "Le calcul de l’âge est indisponible."); }
+    return report("Âge exact", "Années et mois complets comptés depuis la date de naissance ; les dates inexistantes sont reportées au mois suivant.", [
       ["Années", String(output.years)], ["Mois", String(output.months)], ["Jours", String(output.days)],
-      ["Prochain anniversaire", output.daysUntilBirthday + " jours"]
+      ["Prochain anniversaire", output.daysUntilBirthday === 0 ? "Aujourd’hui" : output.daysUntilBirthday + " jours"]
     ], [["Mois complets", decimal(output.totalMonths, 0)], ["Semaines complètes", decimal(output.totalWeeks, 0)], ["Jours totaux", decimal(output.totalDays, 0)]]);
   }
 
@@ -158,21 +180,51 @@
     }).concat(output.requiredFutureGpa === null ? [] : [["GPA futur requis", decimal(output.requiredFutureGpa, 2)]]));
   }
 
+  function pickerInteger(name, min, max) {
+    var raw = value(name), n = Number(raw);
+    if (!raw || !Number.isSafeInteger(n) || n < min || n > max) throw new Error("Saisissez un entier valide.");
+    return n;
+  }
+  function pickerIndex(size) {
+    var limit = 4294967296 - (4294967296 % size), bytes = new Uint32Array(1);
+    do { window.crypto.getRandomValues(bytes); } while (bytes[0] >= limit);
+    return bytes[0] % size;
+  }
+  function syncPickerMode() {
+    if (tool !== "random-picker") return;
+    var mode = value("mode"), active = {items: mode === "pick" || mode === "teams", pickCount: mode === "pick", teamCount: mode === "teams", numMin: mode === "numbers", numMax: mode === "numbers", numCount: mode === "numbers"};
+    Object.keys(active).forEach(function (name) {
+      var field = form.elements.namedItem(name); if (!field) return;
+      field.disabled = !active[name]; field.required = active[name]; field.hidden = !active[name];
+      var label = form.querySelector('label[for="' + field.id + '"]'); if (label) label.hidden = !active[name];
+      var wrapper = field.closest('.sw-business-field'); if (wrapper) wrapper.hidden = !active[name];
+    });
+  }
   function randomPicker() {
-    var items = value("items").split(/\r?\n/).filter(Boolean);
-    var randomValues = new Uint32Array(Math.max(items.length, 1));
-    crypto.getRandomValues(randomValues);
-    var normalized = Array.from(randomValues, function (item) { return item / 4294967296; });
-    if (value("mode") === "teams") {
-      var grouped = engine.teams({ items: items, teamCount: number("teamCount", 2), randomValues: normalized });
-      return report("Équipes aléatoires", "Répartition effectuée localement avec l’aléa cryptographique du navigateur.", [
-        ["Éléments", String(items.length)], ["Équipes", String(grouped.length)]
-      ], grouped.map(function (team, index) { return ["Équipe " + (index + 1), team.join(", ")]; }));
+    var mode = value("mode"), selected = [];
+    if (mode === "coin") return report("Sélection aléatoire", "Tirage produit localement.", [["Résultats", pickerIndex(2) ? "Pile" : "Face"]]);
+    if (mode === "numbers") {
+      var min = pickerInteger("numMin", Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), max = pickerInteger("numMax", min, Number.MAX_SAFE_INTEGER);
+      var size = max - min + 1, count = pickerInteger("numCount", 1, 100);
+      if (!Number.isSafeInteger(size) || size > 4294967296) throw new Error("La plage doit contenir au plus 4 294 967 296 entiers.");
+      for (var n = 0; n < count; n += 1) selected.push(String(min + pickerIndex(size)));
+      return report("Sélection aléatoire", "Tirage produit localement.", [["Résultats", selected.join(", ")]]);
     }
-    var picked = engine.pick({ items: items, random: normalized[0] });
-    return report("Tirage aléatoire", "Un élément a été sélectionné localement.", [
-      ["Résultat", picked.value], ["Position interne", String(picked.index + 1)], ["Choix possibles", String(items.length)]
-    ]);
+    var items = value("items").split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!items.length) throw new Error("Ajoutez au moins un élément.");
+    var pool = items.slice();
+    if (mode === "teams") {
+      if (items.length < 2) throw new Error("Deux éléments sont nécessaires pour les équipes.");
+      var teamCount = pickerInteger("teamCount", 2, Math.min(20, items.length));
+      for (var i = pool.length - 1; i > 0; i -= 1) { var j = pickerIndex(i + 1), temp = pool[i]; pool[i] = pool[j]; pool[j] = temp; }
+      var groups = Array.from({length:teamCount}, function () { return []; });
+      pool.forEach(function (item, index) { groups[index % teamCount].push(item); });
+      return report("Sélection aléatoire", "Tirage produit localement.", [["Éléments disponibles", String(items.length)]], groups.map(function (group, index) { return ["Équipe" + " " + (index + 1), group.join(", ")]; }));
+    }
+    if (mode !== "pick") throw new Error("Saisissez un entier valide.");
+    var amount = Math.min(pickerInteger("pickCount", 1, 100), pool.length);
+    for (var k = 0; k < amount; k += 1) selected.push(pool.splice(pickerIndex(pool.length), 1)[0]);
+    return report("Sélection aléatoire", "Tirage produit localement.", [["Résultats", selected.join(", ")], ["Éléments disponibles", String(items.length)]]);
   }
 
   function meeting() {
@@ -238,6 +290,7 @@
     status.dataset.state = "success";
     status.textContent = "Résultat produit localement.";
     result.focus();
+    if (tool === "pomodoro") { var timerPanel = root.querySelector('[data-pomodoro-role="panel"]'); if (timerPanel) timerPanel.focus(); }
   }
 
   function inputValues() {
@@ -250,6 +303,7 @@
   }
   function requireReport() {
     if (lastReport && JSON.stringify(inputValues()) !== JSON.stringify(lastInputs)) invalidateReport();
+    refreshCountdownReport();
     if (!lastReport) throw new Error("Calculez d’abord un résultat.");
   }
   function payload() {
@@ -291,7 +345,7 @@
       var Pdf = window.jspdf && window.jspdf.jsPDF;
       if (!Pdf) throw new Error("Le module PDF local n’est pas disponible.");
       var pdf = new Pdf();
-      var lines = pdf.splitTextToSize(textReport(), 180);
+      var lines = pdf.splitTextToSize(textReport().replace(/[\u00a0\u202f]/g, " "), 180);
       var y = 18;
       lines.forEach(function (line) { if (y > 280) { pdf.addPage(); y = 15; } pdf.text(line, 15, y); y += 5; });
       pdf.save("afrotools-" + tool + ".pdf");
@@ -319,6 +373,9 @@
     invalidateReport("Vérifiez les champs avant de recalculer.");
     status.dataset.state = "error";
   }, true);
+
+  form.addEventListener("change", syncPickerMode);
+  syncPickerMode();
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -361,7 +418,7 @@
 
   if (tool === "countdown-timer") {
     var tomorrow = new Date(Date.now() + 86400000);
-    form.elements.eventDate.value = tomorrow.toISOString().slice(0, 10);
+    form.elements.eventDate.value = String(tomorrow.getFullYear()).padStart(4, "0") + "-" + String(tomorrow.getMonth() + 1).padStart(2, "0") + "-" + String(tomorrow.getDate()).padStart(2, "0");
   }
   if (tool === "time-zone") {
     var now = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);

@@ -108,28 +108,51 @@
     };
   }
 
-  function zonedInputToDate(input, timeZone) {
+  function zonedInputToDate(input, timeZone, occurrence) {
     var match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(input || ""));
     if (!match) throw new Error("invalid-date");
-    var desired = Date.UTC(+match[1], +match[2] - 1, +match[3], +match[4], +match[5]);
+    var desiredDate = new Date(0);
+    desiredDate.setUTCFullYear(+match[1], +match[2] - 1, +match[3]);
+    desiredDate.setUTCHours(+match[4], +match[5], 0, 0);
+    if (+match[1] < 1 || desiredDate.getUTCFullYear() !== +match[1] ||
+        desiredDate.getUTCMonth() !== +match[2] - 1 || desiredDate.getUTCDate() !== +match[3] ||
+        desiredDate.getUTCHours() !== +match[4] || desiredDate.getUTCMinutes() !== +match[5]) throw new Error("invalid-date");
+    occurrence = occurrence || "reject";
+    if (["reject", "earlier", "later"].indexOf(occurrence) < 0) throw new Error("invalid-time-occurrence");
+    var desired = desiredDate.getTime();
     var formatter = new Intl.DateTimeFormat("en-CA", {
       timeZone: timeZone, year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
     });
     function displayedUtc(timestamp) {
       var parts = {};
       formatter.formatToParts(new Date(timestamp)).forEach(function (part) {
         if (part.type !== "literal") parts[part.type] = part.value;
       });
-      return Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute);
+      var date = new Date(0);
+      date.setUTCFullYear(+parts.year, +parts.month - 1, +parts.day);
+      date.setUTCHours(+parts.hour, +parts.minute, +parts.second, 0);
+      return date.getTime();
     }
-    var instant = desired - (displayedUtc(desired) - desired);
-    instant -= displayedUtc(instant) - desired;
-    return new Date(instant);
+    // Observe offsets on both sides of transitions in the supported IANA zones.
+    // Round-trip every candidate; a skipped wall time must never be shifted.
+    var offsets = {}, candidates = [];
+    for (var hour = -48; hour <= 48; hour += 1) {
+      var sample = desired + hour * 3600000;
+      offsets[displayedUtc(sample) - sample] = true;
+    }
+    Object.keys(offsets).forEach(function (offset) {
+      var instant = desired - Number(offset);
+      if (displayedUtc(instant) === desired && candidates.indexOf(instant) < 0) candidates.push(instant);
+    });
+    candidates.sort(function (a,b) { return a-b; });
+    if (!candidates.length) throw new Error("nonexistent-local-time");
+    if (candidates.length > 1 && occurrence === "reject") throw new Error("ambiguous-local-time");
+    return new Date(occurrence === "later" ? candidates[candidates.length - 1] : candidates[0]);
   }
 
   function timeZone(input) {
-    var instant = zonedInputToDate(input.localDateTime, input.fromZone);
+    var instant = zonedInputToDate(input.localDateTime, input.fromZone, input.occurrence);
     var locale = input.locale === "sw" ? "sw-KE" : input.locale === "en" ? "en-GB" : "fr-FR";
     var options = { timeZone: input.toZone, hour: "2-digit", minute: "2-digit", hour12: false };
     return {
@@ -168,8 +191,35 @@
   };
 
   function escapeIcs(value) {
-    return String(value).replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n")
+    return String(value).replace(/\\/g, "\\\\").replace(/\r\n|\r|\n/g, "\\n")
       .replace(/,/g, "\\,").replace(/;/g, "\\;");
+  }
+
+  var holidaySequence = 0;
+  function holidayUid() {
+    var cryptoApi = typeof globalThis !== "undefined" && globalThis.crypto;
+    if (cryptoApi && typeof cryptoApi.randomUUID === "function") return cryptoApi.randomUUID() + "@afrotools.com";
+    if (cryptoApi && typeof cryptoApi.getRandomValues === "function") {
+      var bytes = new Uint8Array(16);
+      cryptoApi.getRandomValues(bytes);
+      return Array.from(bytes, function (byte) { return byte.toString(16).padStart(2, "0"); }).join("") + "@afrotools.com";
+    }
+    // Compatibility path for older offline browsers; these are identifiers, not credentials.
+    holidaySequence += 1;
+    return Date.now().toString(36) + "-" + holidaySequence.toString(36) + "-" +
+      Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2) + "@afrotools.com";
+  }
+
+  function foldIcs(line) {
+    var lines = [], part = "", length = 0;
+    Array.from(line).forEach(function (character) {
+      var code = character.codePointAt(0);
+      var bytes = code < 128 ? 1 : code < 2048 ? 2 : code < 65536 ? 3 : 4;
+      if (length + bytes > 75) { lines.push(part); part = " "; length = 1; }
+      part += character; length += bytes;
+    });
+    lines.push(part);
+    return lines.join("\r\n");
   }
 
   function holidayEntry(input) {
@@ -201,18 +251,23 @@
     };
     var description = descriptions[language] + authority + ". " +
       (String(input.note || "").trim() || reminders[language]);
+    var uid = input.uid === undefined ? holidayUid() : String(input.uid);
+    if (!/^[A-Za-z0-9@._-]{1,200}$/.test(uid)) throw new Error("invalid-calendar-uid");
+    var timestamp = new Date(input.timestamp === undefined ? Date.now() : input.timestamp);
+    if (!Number.isFinite(timestamp.getTime()) || timestamp.getUTCFullYear() < 1 || timestamp.getUTCFullYear() > 9999) throw new Error("invalid-calendar-timestamp");
+    var stamp = timestamp.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
     var ics = [
       "BEGIN:VCALENDAR", "VERSION:2.0",
       "PRODID:-//AfroTools//User Confirmed Holiday Entry//" + language.toUpperCase(),
       "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
-      "UID:" + compact + "-" + input.country.toLowerCase() + "@afrotools.local",
+      "UID:" + uid, "DTSTAMP:" + stamp,
       "DTSTART;VALUE=DATE:" + compact, "DTEND;VALUE=DATE:" + nextCompact,
       "SUMMARY:" + escapeIcs(String(input.name).trim()),
       "DESCRIPTION:" + escapeIcs(description),
       "X-AFROTOOLS-SOURCE-URL:" + source.url,
       "X-AFROTOOLS-BOUNDARY:" + boundaries[language],
       "END:VEVENT", "END:VCALENDAR", ""
-    ].join("\r\n");
+    ].map(foldIcs).join("\r\n");
     return {
       country: source.country[language], authority: authority,
       sourceUrl: source.url, description: description, ics: ics
@@ -246,19 +301,19 @@
     var dob = dateOnly(input.birthDate);
     var at = dateOnly(input.atDate);
     if (!dob || !at || dob > at) throw new Error("invalid-age-range");
-    var years = at.getUTCFullYear() - dob.getUTCFullYear();
-    var months = at.getUTCMonth() - dob.getUTCMonth();
-    var days = at.getUTCDate() - dob.getUTCDate();
-    if (days < 0) {
-      months -= 1;
-      var previousMonthDays = new Date(Date.UTC(at.getUTCFullYear(), at.getUTCMonth(), 0)).getUTCDate();
-      if (dob.getUTCDate() > previousMonthDays) previousMonthDays = dob.getUTCDate();
-      days += previousMonthDays;
+    // Count completed calendar anniversaries, rolling unavailable dates forward.
+    // Rebuild each monthly date from the original birth day, avoiding drift.
+    function anniversary(years, months) {
+      return new Date(Date.UTC(dob.getUTCFullYear() + years, dob.getUTCMonth() + months, dob.getUTCDate()));
     }
-    if (months < 0) { years -= 1; months += 12; }
+    var years = at.getUTCFullYear() - dob.getUTCFullYear();
+    if (anniversary(years, 0) > at) years -= 1;
+    var months = 0;
+    while (months < 11 && anniversary(years, months + 1) <= at) months += 1;
+    var days = Math.floor((at - anniversary(years, months)) / 86400000);
     var totalDays = Math.floor((at - dob) / 86400000);
     var nextBirthday = new Date(Date.UTC(at.getUTCFullYear(), dob.getUTCMonth(), dob.getUTCDate()));
-    if (nextBirthday <= at) nextBirthday.setUTCFullYear(nextBirthday.getUTCFullYear() + 1);
+    if (nextBirthday < at) nextBirthday = new Date(Date.UTC(at.getUTCFullYear() + 1, dob.getUTCMonth(), dob.getUTCDate()));
     return {
       years: years, months: months, days: days,
       totalMonths: years * 12 + months,
