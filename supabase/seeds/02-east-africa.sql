@@ -1158,7 +1158,7 @@ BEGIN
     'Somali spiced rice with tender goat, raisins, and a fragrant blend of cumin, cardamom, and cinnamon.',
     'SO', 'Somalia', 'East Africa', 'main',
     ARRAY['rice','spiced','goat','celebration'],
-    ARRAY['gluten-free','dairy-free','halal'],
+    ARRAY['gluten-free','halal'],
     25, 60, 'medium', 6,
     'Bariis Iskukaris is the centerpiece of Somali feasts, prepared for Eid celebrations, weddings, and Friday lunches. The name means "mixed rice" and reflects the Somali genius for spice blending, influenced by centuries of trade across the Indian Ocean. Each family guards their xawaash spice blend recipe as a treasured secret.',
     490, 26, 58, 17, 2, true, false
@@ -1460,7 +1460,7 @@ BEGIN
     'Djibouti''s spongy fermented crepe made with sorghum and wheat flour — served with honey, ghee, or savory stews.',
     'DJ', 'Djibouti', 'East Africa', 'breakfast',
     ARRAY['fermented','crepe','breakfast','versatile'],
-    ARRAY['dairy-free','nut-free','halal','vegetarian'],
+    ARRAY['nut-free','halal','vegetarian'],
     15, 25, 'easy', 8,
     'Laxoox is the daily bread of Djibouti, a spongy fermented crepe that bridges the gap between Ethiopian injera and Yemeni lahoh. Every morning, Djiboutian homes fill with the aroma of laxoox cooking on flat griddles. It is incredibly versatile — drizzled with honey and ghee for a sweet breakfast or used to scoop up spicy stews.',
     160, 4, 30, 3, 1, true, false
@@ -1498,7 +1498,7 @@ BEGIN
     'Eritrea''s fiery beef stew in berbere sauce served on tangy injera — the country''s most iconic dish.',
     'ER', 'Eritrea', 'East Africa', 'stew',
     ARRAY['beef','spicy','berbere','national'],
-    ARRAY['dairy-free','nut-free','halal'],
+    ARRAY['nut-free','halal'],
     25, 75, 'medium', 4,
     'Zigini is Eritrea''s national dish and a source of deep pride. While similar to Ethiopian dishes, Eritrean zigini has its own character — the berbere is often spicier and the niter kibbeh richer. It is the dish served to honored guests and at every celebration. Eritreans abroad say the smell of zigini cooking is the smell of home.',
     420, 32, 12, 26, 3, true, false
@@ -1535,7 +1535,7 @@ BEGIN
     'Silky Eritrean chickpea flour stew spiced with berbere, garlic, and niter kibbeh — creamy comfort in every bite.',
     'ER', 'Eritrea', 'East Africa', 'stew',
     ARRAY['chickpea','vegan-option','fasting','everyday'],
-    ARRAY['vegan','gluten-free','dairy-free','nut-free','halal'],
+    ARRAY['gluten-free','nut-free','halal'],
     10, 25, 'easy', 4,
     'Shiro is the everyday hero of Eritrean cuisine and the essential fasting food during Orthodox Christian Lent. Made from roasted chickpea flour, it comes together in under 30 minutes but tastes like it simmered for hours. It is the most affordable and beloved dish in the country, eaten by rich and poor alike.',
     280, 14, 32, 12, 6, true, false
@@ -1570,7 +1570,7 @@ BEGIN
     'Slow-cooked fava beans mashed with olive oil, lemon, cumin, and chili — Eritrea''s beloved breakfast dish.',
     'ER', 'Eritrea', 'East Africa', 'breakfast',
     ARRAY['fava-beans','breakfast','protein','traditional'],
-    ARRAY['vegan','gluten-free','dairy-free','nut-free','halal'],
+    ARRAY['gluten-free','dairy-free','nut-free','halal'],
     10, 30, 'easy', 4,
     'Ful is the quintessential Eritrean breakfast, served at small restaurants called ful houses across Asmara. Each ful house has its own style — some add yogurt, others add berbere, some top with egg. The dish connects Eritrea to a broader Horn of Africa and Middle Eastern breakfast tradition while maintaining its distinctly Eritrean character.',
     310, 16, 38, 12, 10, true, false

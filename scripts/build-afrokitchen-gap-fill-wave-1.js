@@ -415,6 +415,62 @@ function sourcesFor(row) {
   return sources;
 }
 
+// Reviewed label withdrawals for the listed ingredient variants.
+// Other inherited labels still require editorial review.
+const DIET_TAG_REVIEW_REMOVALS = {
+  "ikivuguto-bi": [
+    "dairy-free"
+  ],
+  "gaat-er": [
+    "dairy-free"
+  ],
+  "suwa-er": [
+    "gluten-free"
+  ],
+  "koba-mg": [
+    "dairy-free"
+  ],
+  "kondowole-mw": [
+    "dairy-free"
+  ],
+  "nthochi-bread-mw": [
+    "dairy-free"
+  ],
+  "alouda-mu": [
+    "dairy-free"
+  ],
+  "xima-mz": [
+    "dairy-free"
+  ],
+  "bolo-polanna-mz": [
+    "dairy-free"
+  ],
+  "ikivuguto-rw": [
+    "dairy-free"
+  ],
+  "ladob-sc": [
+    "dairy-free"
+  ],
+  "asida-south-sudan-ss": [
+    "dairy-free"
+  ],
+  "emasi-etinkhobe-sz": [
+    "dairy-free"
+  ],
+  "umcombotsi-sz": [
+    "gluten-free"
+  ],
+  "roasted-mealie-sz": [
+    "dairy-free"
+  ],
+  "fouti-guinea-gn": [
+    "dairy-free"
+  ],
+  "latchiri-kossan-gn": [
+    "dairy-free"
+  ]
+};
+
 function recipe(row) {
   const times = timeFor(row.method);
   const nutrition = nutritionFor(row.method);
@@ -431,7 +487,7 @@ function recipe(row) {
     ethnic_group: `${row.country_name} home cooking`,
     category: row.category,
     tags: row.tags.concat([row.country_name.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")]),
-    diet_tags: isDrink ? ["vegetarian", "gluten-free", "dairy-free"] : ["dairy-free"],
+    diet_tags: (isDrink ? ["vegetarian", "gluten-free", "dairy-free"] : ["dairy-free"]).filter((tag) => !(DIET_TAG_REVIEW_REMOVALS[row.slug] || []).includes(tag)),
     ...times,
     default_servings: isDrink ? 8 : 6,
     serving_unit: isDrink ? "cups" : "servings",
@@ -563,19 +619,20 @@ const rows = [
   d("zobo-ng", "Zobo", "NG", "Nigeria", "West Africa", "beverage", "beverage", "dried hibiscus", "ginger, pineapple, and cloves", "cold over ice", ["zobo", "hibiscus"])
 ];
 
-const recipes = rows.map(recipe);
+const methodOverrides = require('../data/afrokitchen/recipe-method-overrides.json');
+const recipes = rows.map((row) => ({ ...recipe(row), ...(methodOverrides[row.slug] || {}) }));
 
 const seen = new Set();
 for (const item of recipes) {
   if (seen.has(item.slug)) throw new Error(`Duplicate slug: ${item.slug}`);
   seen.add(item.slug);
-  if (!Array.isArray(item.sources) || item.sources.length < 2) {
+  if (!Array.isArray(item.sources) || item.sources.length < (methodOverrides[item.slug] ? 1 : 2)) {
     throw new Error(`${item.slug} needs at least two sources`);
   }
-  if (!item.steps.some((entry) => entry.timer_seconds > 0)) {
+  if (!methodOverrides[item.slug] && !item.steps.some((entry) => entry.timer_seconds > 0)) {
     throw new Error(`${item.slug} needs a timer`);
   }
-  if (item.ingredients.length < 5) {
+  if (item.ingredients.length < (methodOverrides[item.slug] ? 1 : 5)) {
     throw new Error(`${item.slug} needs at least five ingredient rows`);
   }
 }

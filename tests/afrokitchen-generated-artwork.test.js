@@ -14,6 +14,14 @@ const recipeImages = loadRecipeImages();
 const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
 const importedArtwork = require('../data/image-generation/kitchen-imported-2026-10-09.json').images;
 
+function ownRecipeArtwork(html) {
+  // Related cards can have different, independently recorded provenance.
+  const cover = html.match(/<aside class="ak-static-hero-card ak-cookbook-cover">[\s\S]*?<\/aside>/)?.[0] || '';
+  const gallery = html.match(/<section class="ak-photo-gallery"[\s\S]*?<\/section>/)?.[0] || '';
+  assert.ok(cover && gallery, 'own recipe cover and gallery must exist');
+  return cover + gallery;
+}
+
 for (const artwork of importedArtwork) {
   test(`${artwork.slug}: imported artwork stays responsive and keeps unknown generation history explicit`, () => {
     assert.equal(artwork.original_prompt, null);
@@ -29,7 +37,7 @@ for (const artwork of importedArtwork) {
     assert.equal(resolveRecipeMedia(recipe, recipeImages).pageImage, artwork.path);
     assert.ok(html.includes(artwork.alt));
     assert.ok(html.includes('Recipe illustration'));
-    assert.ok(!html.includes('AI-generated illustration'));
+    assert.ok(!ownRecipeArtwork(html).includes('AI-generated illustration'));
     for (const variant of artwork.variants) assert.ok(html.includes(`${variant.path} ${variant.width}w`));
     const card = renderStaticRecipeCard(recipe, recipeImages);
     assert.ok(card.includes('srcset='));
@@ -76,7 +84,7 @@ for (const artwork of aliasLedger.hero_reviews || []) {
     assert.ok(html.includes(`content="https://afrotools.com${artwork.path}"`));
     assert.ok(html.includes(artwork.alt));
     assert.ok(html.includes('Recipe illustration'));
-    assert.ok(!html.includes('AI-generated illustration'));
+    assert.ok(!ownRecipeArtwork(html).includes('AI-generated illustration'));
     const gallery = html.match(/<section class="ak-photo-gallery"[\s\S]*?<\/section>/)?.[0] || '';
     assert.equal((gallery.match(new RegExp(`src="${artwork.path}"`, 'g')) || []).length, 1, 'Gallery must not duplicate the promoted secondary image');
     const cover = html.match(/<img class="ak-cookbook-cover-photo"[^>]*>/)?.[0] || '';

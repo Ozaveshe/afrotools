@@ -54,6 +54,19 @@ test('actual recipe changes update recipe and collection dates without a blanket
 test('reviewed override applies to manifest routes in normal and refresh modes',()=>{
   for(const refresh of [false,true])assert.equal(harness({refresh,override:'2026-09-05'}).page().lastmod,'2026-09-05');
 });
+test('maintained method review advances only its recipe and containing hubs, independently of database timestamps and rebuild clock',()=>{
+  const manifest=fixture('2026-08-01');
+  manifest.recipes[0].source_reviewed_at='2026-10-09';
+  manifest.recipes[0].social_image=BASE_URL+'/assets/img/kitchen/synthetic-stew.webp';
+  for(const today of ['2026-10-10','2026-11-10'])for(const refresh of [false,true]){
+    const {context,page}=harness({today,refresh,manifest});
+    assert.equal(page().lastmod,'2026-10-09');
+    for(const suffix of ['recipes/synthetic-stew/','countries/synthetic/','collections/synthetic/'])assert.equal(context.AFROKITCHEN_SITEMAP_METADATA.get(BASE_URL+'/tools/afrokitchen/'+suffix).lastmod,'2026-10-09');
+    assert.equal(context.AFROKITCHEN_SITEMAP_METADATA.get(url).images[0].loc,manifest.recipes[0].social_image);
+    assert.equal(context.AFROKITCHEN_SITEMAP_METADATA.get(BASE_URL+'/tools/afrokitchen/').lastmod,'2026-08-02');
+  }
+  assert.equal(manifest.recipes[0].updated_at,'2026-08-01');
+});
 test('ordinary historical stamps stay stable; explicit refresh uses supplied date, never today',()=>{
   const normal=harness().context;
   assert.equal(normal.stableSitemapLastmod(url,'2026-07-15'),'2026-09-10');

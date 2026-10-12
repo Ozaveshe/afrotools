@@ -1808,7 +1808,7 @@ var AfroKitchenEngine = function() {
         return h(e);
       }
       try {
-        var s = a.from("recipes").select("*").eq("is_verified", !0);
+        var s = a.from("recipes").select("*").eq("is_published", !0);
         e && (e.country && (s = s.eq("country_code", e.country)), e.region && (s = s.eq("region", e.region)),
         e.category && (s = s.eq("category", e.category)), e.difficulty && (s = s.eq("difficulty", e.difficulty)),
         e.diet && (s = s.contains("diet_tags", [ e.diet ])), e.search && (s = s.or("name.ilike.%" + e.search + "%,description.ilike.%" + e.search + "%,country_name.ilike.%" + e.search + "%")),
@@ -1837,7 +1837,7 @@ var AfroKitchenEngine = function() {
         return f(e);
       }
       try {
-        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_verified", !0).single();
+        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_published", !0).single();
         if (s.error) {
           throw s.error;
         }
@@ -2094,15 +2094,15 @@ var AfroKitchenEngine = function() {
           name: "AfroKitchen by AfroTools"
         },
         datePublished: e.created_at ? e.created_at.slice(0, 10) : "2026-03-17",
-        prepTime: "PT" + e.prep_time_minutes + "M",
-        cookTime: "PT" + e.cook_time_minutes + "M",
-        totalTime: "PT" + (e.prep_time_minutes + e.cook_time_minutes) + "M",
+        prepTime: e.prep_time_minutes == null ? undefined : "PT" + e.prep_time_minutes + "M",
+        cookTime: e.cook_time_minutes == null ? undefined : "PT" + e.cook_time_minutes + "M",
+        totalTime: e.prep_time_minutes == null || e.cook_time_minutes == null ? undefined : "PT" + (e.prep_time_minutes + e.cook_time_minutes) + "M",
         recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings"),
         recipeCategory: "main" === e.category ? "Main Course" : e.category,
         recipeCuisine: e.country_name + ", " + e.region,
         nutrition: nutrition,
         recipeIngredient: r.map(function(e) {
-          return u(e.scaled_amount) + " " + e.unit + " " + e.name + (e.prep_note ? ", " + e.prep_note : "");
+          return (Number(e.scaled_amount) > 0 ? u(e.scaled_amount) + " " : "") + (e.unit ? e.unit + " " : "") + e.name + (e.prep_note ? ", " + e.prep_note : "");
         }),
         recipeInstructions: (e.steps || []).map(function(e) {
           return {
@@ -2131,10 +2131,10 @@ var AfroKitchenEngine = function() {
       return navigator.clipboard && navigator.clipboard.writeText(t), t;
     },
     printRecipe: function(e, t) {
-      var r = s(e.ingredients || [], e.default_servings, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + " | Serves " + t + " | " + e.prep_time_minutes + " min prep + " + e.cook_time_minutes + " min cook</div><h2>Ingredients</h2><ul>", n = "";
+      var r = s(e.ingredients || [], e.default_servings, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + " | Serves " + t + " | " + (e.prep_time_minutes == null ? "Unspecified prep" : e.prep_time_minutes + " min prep") + " + " + (e.cook_time_minutes == null ? "unspecified cook" : e.cook_time_minutes + " min cook") + "</div><h2>Ingredients</h2><ul>", n = "";
       r.forEach(function(e) {
         e.group_name && e.group_name !== n && (o += "</ul><strong>" + e.group_name + "</strong><ul>",
-        n = e.group_name), o += "<li>" + u(e.scaled_amount) + " " + e.unit + " " + e.name,
+        n = e.group_name), o += "<li>" + (Number(e.scaled_amount) > 0 ? u(e.scaled_amount) + " " : "") + (e.unit ? e.unit + " " : "") + e.name,
         e.prep_note && (o += ", " + e.prep_note), e.is_optional && (o += " (optional)"),
         o += "</li>";
       }), o += "</ul><h2>Instructions</h2><ol>", (e.steps || []).forEach(function(e) {
