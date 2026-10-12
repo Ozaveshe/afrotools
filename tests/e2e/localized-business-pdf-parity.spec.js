@@ -11,9 +11,8 @@ for(const item of [{locale:'fr',route:'/fr/tools/planificateur-budget/'},{locale
    await currency.selectOption(value);await page.locator('[name="incomeMain"]').fill('1234567');
    await page.locator('[data-business-form]').evaluate(form=>form.requestSubmit());await expect(page.locator('[data-business-result]')).toBeVisible();
    const metrics=await page.locator('[data-result-metrics] strong').allTextContents();
-   const pending=page.waitForEvent('download');await page.locator('[data-export="pdf"]').click();const download=await pending;const bytes=fs.readFileSync(await download.path());const parsed=await pdfParse(bytes);
+   const pending=page.waitForEvent('download');await page.locator('[data-export="pdf"]').click();const download=await pending;const bytes=fs.readFileSync(await download.path());fs.mkdirSync(testInfo.outputDir,{recursive:true});fs.writeFileSync(testInfo.outputPath(item.locale+'-'+value+'.pdf'),bytes);const parsed=await pdfParse(bytes);
    expect(parsed.numpages).toBe(1);for(const metric of metrics)expect(normalize(parsed.text)).toContain(normalize(metric));
-   fs.mkdirSync(testInfo.outputDir,{recursive:true});fs.writeFileSync(testInfo.outputPath(item.locale+'-'+value+'.pdf'),bytes);
   }
  });
 }

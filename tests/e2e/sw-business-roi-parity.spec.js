@@ -54,7 +54,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const route of manifest.routes) {
-  test(`${route.id}: Sw owner workflow and all advertised actions`, async ({ page }) => {
+  test(`${route.id}: Sw owner workflow and all advertised actions`, async ({ page }, testInfo) => {
     const errors = [];
     const unexpectedNetwork = captureUnexpectedNetwork(page);
     page.on("pageerror", (error) => errors.push(error.message));
@@ -90,6 +90,8 @@ for (const route of manifest.routes) {
         expect(bytes.toString("utf8")).toContain("//SW");
       } else {
         expect(bytes.subarray(0, 5).toString("ascii")).toBe("%PDF-");
+        fs.mkdirSync(testInfo.outputDir, { recursive: true });
+        fs.writeFileSync(testInfo.outputPath(route.id + '.pdf'), bytes);
         const parsed = await pdfParse(bytes);
         expect(parsed.text).toContain("AfroTools");
         expect(parsed.text.length).toBeGreaterThan(80);
