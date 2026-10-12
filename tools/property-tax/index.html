@@ -724,11 +724,11 @@ h1 em{color:var(--pt-accent);font-style:normal}
 </div>
 <!-- LEGAL-WORKFLOW-COPILOT:START -->
 <section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
-  <script type="application/json" class="leg-workflow-data">{"slug":"property-tax","title":"African Property Tax Calculator","workflowTitle":"Property tax exposure map","coverage":"Property tax model","decision":"Which taxes apply on acquisition, ownership, rental and sale","evidence":["Separate buyer costs, annual owner costs, rental taxes and sale taxes","Check municipality, state and national taxes because more than one layer may apply","Keep valuation, receipts and rental records for future dispute or sale"],"redFlags":["Only budgeting for purchase price and legal fees","No allowance for municipal arrears or service charges","Selling property without checking CGT, withholding or clearance requirements"],"related":[{"label":"Stamp Duty Calculator","href":"/tools/stamp-duty/"},{"label":"Property CGT Calculator","href":"/tools/property-cgt/"},{"label":"Rental Yield Calculator","href":"/tools/rental-yield/"}],"competitor":{"group":"property","label":"Rentometer, AirDNA, Zillow Rental Manager and BuildZoom","patterns":["Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.","Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.","Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Separate buyer costs, annual owner costs, rental taxes and sale taxes\".","Saved workflows can be resumed from the dashboard and handed off to Stamp Duty Calculator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <script type="application/json" class="leg-workflow-data">{"slug":"property-tax","title":"African Property Tax Calculator","workflowTitle":"Property tax exposure map","coverage":"Property tax model","decision":"Which taxes apply on acquisition, ownership, rental and sale","evidence":["Separate buyer costs, annual owner costs, rental taxes and sale taxes","Check municipality, state and national taxes because more than one layer may apply","Keep valuation, receipts and rental records for future dispute or sale"],"redFlags":["Only budgeting for purchase price and legal fees","No allowance for municipal arrears or service charges","Selling property without checking CGT, withholding or clearance requirements"],"related":[{"label":"Stamp Duty Calculator","href":"/tools/stamp-duty/"},{"label":"Property CGT Calculator","href":"/tools/property-cgt/"},{"label":"Rental Yield Calculator","href":"/tools/rental-yield/"}],"competitor":{"group":"property","label":"Rentometer, AirDNA, Zillow Rental Manager and BuildZoom","patterns":["Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.","Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.","Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Separate buyer costs, annual owner costs, rental taxes and sale taxes\".","Saved workflows can be resumed from the dashboard and handed off to Stamp Duty Calculator when the matter naturally continues.","Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in."]}}</script>
   <div class="leg-workflow-head">
     <span class="leg-action-kicker">Case workspace</span>
     <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
-    <p>This workspace turns the property tax exposure map result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+    <p>This workspace turns the property tax exposure map result into a reusable matter note, dashboard item and local PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
     <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
@@ -754,21 +754,21 @@ h1 em{color:var(--pt-accent);font-style:normal}
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Legal workflow handoff note"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
-      <span class="leg-action-kicker">PDF gate</span>
-      <h3>Email the checklist and unlock print/PDF</h3>
-      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+      <span class="leg-action-kicker">Export and optional updates</span>
+      <h3>Print locally or subscribe to updates</h3>
+      <p>Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates.</p>
     </div>
     <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
-    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
-      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>
       <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
       <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
     </div>
-    <div class="leg-gate-status" data-workflow-gate-status></div>
+    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>
   </form>
   <div class="leg-workflow-next">
     <span>Continue workflow</span>
@@ -790,7 +790,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
     </div>
     <div>
       <h3>Implemented on this app</h3>
-      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Separate buyer costs, annual owner costs, rental taxes and sale taxes&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Stamp Duty Calculator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Separate buyer costs, annual owner costs, rental taxes and sale taxes&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Stamp Duty Calculator when the matter naturally continues.</li><li>Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.</li></ul>
     </div>
     <div>
       <h3>Best next move</h3>
@@ -1661,6 +1661,6 @@ async function sendAI(){
   });
 }());
 </script>
-<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/legal-workflow-copilot.js?v=adb9f181" defer></script>
 </body>
 </html>

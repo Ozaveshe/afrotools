@@ -156,4 +156,15 @@ assert(!thinWorkflowData.length, `Legal workflow data gaps: ${thinWorkflowData.s
   assert(dashboard.includes(needle), `Dashboard missing legal workflow continuation marker ${needle}`);
 });
 
+for (const entry of fs.readdirSync(path.join(root, 'tools'), { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue;
+  const page = path.join(root, 'tools', entry.name, 'index.html');
+  if (!fs.existsSync(page)) continue;
+  const html = fs.readFileSync(page, 'utf8');
+  for (const tag of html.match(/<textarea\b[^>]*data-workflow-output\b[^>]*>/gi) || []) {
+    assert((tag.match(/\baria-label\s*=/gi) || []).length === 1, `Legal output must have one accessible name: ${entry.name}`);
+    assert(tag.includes('aria-label="Legal workflow handoff note"'), `Legal output name must describe its content: ${entry.name}`);
+  }
+}
+
 console.log('Legal workflow verified (69 tool routes, 48 copilot routes and 21 source-owned replacements, public hub boundary, local printing, opt-in updates, and dashboard continuation).');
