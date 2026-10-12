@@ -58,7 +58,22 @@
     return age.weeks + ' weeks, ' + age.days + (age.days === 1 ? ' day' : ' days') + ' by calendar estimate';
   }
 
+  function isFrench() { return document.documentElement.lang.toLowerCase().split('-')[0] === 'fr'; }
+  function frenchDate(iso) { var p=iso.split('-').map(Number);return new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'long',year:'numeric'}).format(new Date(p[0],p[1]-1,p[2])); }
+  function frenchPlanText(plan) {
+    var purposes=['Confirmez le plan local de prise de rendez-vous.','Revoyez la date à la clinique et les évaluations prévues.','Confirmez ce que prévoit votre service local.','Revoyez le plan des visites de fin de grossesse.','Vérifiez le plan de préparation à la naissance et aux urgences.','Confirmez le plan propre à l’établissement.','Suivez le plan de surveillance de l’équipe de maternité.','Demandez quoi faire si la grossesse se poursuit.'];
+    var age=plan.gestationalAge,gestation=age ? age.weeks+' semaines, '+age.days+(age.days===1?' jour':' jours')+' selon une estimation calendaire' : 'Hors de la période de planification de 0 à 42 semaines';
+    var basis=plan.basis==='lmp' ? 'Estimation provisoire à partir des dernières règles : 280 jours plus la différence entre la durée du cycle et 28 jours.' : 'Les dates des contacts sont calculées à rebours à partir de la date prévue d’accouchement estimée par l’équipe de maternité.';
+    var lines=['AFROTOOLS — PLAN DES DATES DE CONTACTS PRÉNATALS','','Date prévue d’accouchement utilisée : '+frenchDate(plan.dueDate),'Période de 37 à 42 semaines : '+frenchDate(plan.week37Date)+' au '+frenchDate(plan.week42Date),'Situation au '+frenchDate(plan.calculatedOn)+' : '+gestation,'Base du calcul : '+basis,'','CALENDRIER DES CONTACTS DE ROUTINE DE L’OMS — À REVOIR AVEC VOTRE CLINIQUE'];
+    plan.contacts.forEach(function(contact){lines.push('Contact '+contact.number+' | '+(contact.number===1?'Au plus tard à 12 semaines':contact.week+' semaines')+' | '+frenchDate(contact.date)+' | '+purposes[contact.number-1]);});
+    return lines.concat(['','Ces dates sont des rappels de calendrier, pas des rendez-vous réservés ni des conseils médicaux.','Les symptômes urgents ou les inquiétudes doivent être évalués par un service local de maternité.','Sources : modèle de soins prénatals de l’OMS ; recommandations du NHS sur la date prévue d’accouchement ; méthodes de l’ACOG.','Sources vérifiées le 26 juillet 2026.','Créé localement dans votre navigateur. Aucun compte ni adresse e-mail requis.']).join('\n');
+  }
+  function foldFrenchCalendar(lines) {
+    var encoder=new TextEncoder();return lines.map(function(line){var rows=[],current='',bytes=0;Array.from(line).forEach(function(character){var size=encoder.encode(character).length;if(bytes+size>75){rows.push(current);current=' ';bytes=1;}current+=character;bytes+=size;});rows.push(current);return rows.join('\r\n');}).join('\r\n');
+  }
+
   function planText(plan) {
+    if (isFrench()) return frenchPlanText(plan);
     var lines = [
       'AFROTOOLS ANTENATAL APPOINTMENT DATE PLAN',
       '',
@@ -162,14 +177,14 @@
   function currentExportText() {
     if (exportSnapshot && exportSnapshot.fields) {
       return [
-        'AFROTOOLS ANTENATAL APPOINTMENT DATE PLAN',
+        isFrench() ? 'AFROTOOLS — PLAN DES DATES DE CONTACTS PRÉNATALS' : 'AFROTOOLS ANTENATAL APPOINTMENT DATE PLAN',
         '',
-        exportSnapshot.headline || 'Visit-preparation result'
+        exportSnapshot.headline || (isFrench() ? 'Résultat de préparation à la visite' : 'Visit-preparation result')
       ].concat(exportSnapshot.fields.map(function (field) {
-        return String(field.label || 'Field') + ': ' + String(field.value || '');
+        return String(field.label || (isFrench() ? 'Champ' : 'Field')) + ': ' + String(field.value || '');
       })).concat([
         '',
-        'Created locally in your browser. No account or email required.'
+        isFrench() ? 'Créé localement dans votre navigateur. Aucun compte ni adresse e-mail requis.' : 'Created locally in your browser. No account or email required.'
       ]).join('\n');
     }
     return lastPlan ? planText(lastPlan) : '';
@@ -206,10 +221,10 @@
     setStatus('Preparing local PDF...');
     ensurePdfLibrary().then(function (JsPdf) {
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
-      pdf.setProperties({ title: 'AfroTools antenatal appointment date plan' });
+      pdf.setProperties({ title: isFrench() ? 'AfroTools - plan des dates de contacts prénatals' : 'AfroTools antenatal appointment date plan' });
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
-      var lines = pdf.splitTextToSize(text, 500);
+      var lines = pdf.splitTextToSize(isFrench() ? text.replace(/\u202f/g, ' ') : text, 500);
       var y = 54;
       lines.forEach(function (line) {
         if (y > 790) {
@@ -233,7 +248,7 @@
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
       'CALSCALE:GREGORIAN',
-      'PRODID:-//AfroTools//AntenatalPlan//EN'
+      isFrench() ? 'PRODID:-//AfroTools//AntenatalPlan//FR' : 'PRODID:-//AfroTools//AntenatalPlan//EN'
     ];
     plan.contacts.forEach(function (contact) {
       var endDate = engine.toIsoDate(engine.addDays(engine.parseIsoDate(contact.date), 1));
@@ -243,13 +258,13 @@
         'DTSTAMP:' + stamp,
         'DTSTART;VALUE=DATE:' + compact(contact.date),
         'DTEND;VALUE=DATE:' + compact(endDate),
-        'SUMMARY:Review antenatal contact ' + contact.number + ' with clinic',
-        'DESCRIPTION:Planning date only - confirm timing with your maternity team.',
+        isFrench() ? 'SUMMARY:Revoir le contact prénatal '+contact.number+' avec la clinique' : 'SUMMARY:Review antenatal contact ' + contact.number + ' with clinic',
+        isFrench() ? 'DESCRIPTION:Date de planification seulement - confirmez le calendrier avec votre équipe de maternité.' : 'DESCRIPTION:Planning date only - confirm timing with your maternity team.',
         'END:VEVENT'
       );
     });
     lines.push('END:VCALENDAR');
-    return lines.join('\r\n');
+    return isFrench() ? foldFrenchCalendar(lines) : lines.join('\r\n');
   }
 
   function restore() {

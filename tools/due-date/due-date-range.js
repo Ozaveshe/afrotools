@@ -12,6 +12,33 @@
   var errorBox = document.getElementById('form-error');
   var results = document.getElementById('date-range-results');
   var lastResult = null;
+  function isFrenchReport(){return /^fr(?:-|$)/i.test(document.documentElement.lang||'')||/^\/fr\//.test(location.pathname);}
+  function invalidateResult(){lastResult=null;results.hidden=true;errorBox.textContent='';setStatus('');}
+  form.addEventListener('input',invalidateResult);
+  form.addEventListener('change',invalidateResult);
+  function frenchDateRangeReport(result) {
+  function date(iso) {
+    var parts=iso.split('-').map(Number);
+    return new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'long',year:'numeric'}).format(new Date(parts[0],parts[1]-1,parts[2]));
+  }
+  var method=result.method==='lmp'
+    ? 'Calcul à partir du premier jour des dernières règles sur une base de 280 jours, ajustée de '+(result.cycleLength-28)+' jour(s) pour le cycle de '+result.cycleLength+' jours saisi.'
+    : 'Calcul à partir d’un transfert documenté d’embryon à J'+result.embryoAge+', avec le décalage ACOG de '+(result.embryoAge===3?263:261)+' jours.';
+  return [
+    'AFROTOOLS — ESTIMATION D’UNE PLAGE DE DATES DE GROSSESSE','',
+    'Date saisie : '+date(result.inputDate),
+    'Date prévue d’accouchement selon la convention : '+date(result.dueDate),
+    'Date à 37 semaines : '+date(result.week37Date),
+    'Date à 42 semaines : '+date(result.week42Date),'',
+    'Méthode : '+method,'',
+    'Il s’agit d’une estimation de dates, pas d’une confirmation de grossesse, d’une datation clinique ni d’une indication qu’il est sans danger d’attendre.',
+    'Discutez de cette estimation et de tout symptôme avec un professionnel de la maternité ou de la fertilité.',
+    'Sources : calculateur de date prévue d’accouchement du NHS ; ACOG, Methods for Estimating the Due Date.',
+    'Sources vérifiées le 26 juillet 2026.',
+    'Créé sur cet appareil. Aucun compte, aucune adresse e-mail ni aucun téléversement ne sont nécessaires pour créer ce rapport.'
+  ].join('\n');
+}
+
 
   function todayIso() {
     var now = new Date();
@@ -89,10 +116,12 @@
       return;
     }
     errorBox.textContent = '';
+    setStatus('');
     render(result);
   }
 
   function resultText(result) {
+    if(isFrenchReport())return frenchDateRangeReport(result);
     return [
       'AFROTOOLS PREGNANCY DATE RANGE ESTIMATE',
       '',
@@ -107,7 +136,7 @@
       'Review the estimate and any symptoms with a maternity or fertility professional.',
       'Sources: NHS due-date calculator; ACOG Methods for Estimating the Due Date.',
       'Sources checked: 26 July 2026.',
-      'Created locally. No account, email, upload, analytics or saved browser record.'
+      'Created on this device. No account, email address or upload is required to create this report.'
     ].join('\n');
   }
 
@@ -139,14 +168,16 @@
   }
 
   function downloadPdf() {
-    if (!lastResult) return setStatus('Calculate a range before exporting.');
-    setStatus('Preparing local PDF...');
+    if (!lastResult) return setStatus(isFrenchReport()?"Calculez une plage de dates avant d’exporter.":"Calculate a range before exporting.");
+    var exportResult=lastResult;
+    setStatus(isFrenchReport()?"Préparation du PDF sur cet appareil…":"Preparing local PDF...");
     ensurePdfLibrary().then(function (JsPdf) {
+      if(lastResult!==exportResult)return;
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
-      pdf.setProperties({ title: 'AfroTools pregnancy date range estimate' });
+      pdf.setProperties({ title: isFrenchReport()?'AfroTools — Estimation des dates de grossesse':'AfroTools pregnancy date range estimate' });
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
-      var lines = pdf.splitTextToSize(resultText(lastResult), 500);
+      var lines = pdf.splitTextToSize(resultText(exportResult).replace(/\u202f/g,' '), 500);
       var y = 54;
       lines.forEach(function (line) {
         if (y > 790) {
@@ -157,9 +188,10 @@
         y += 14;
       });
       pdf.save('afrotools-pregnancy-date-range.pdf');
-      setStatus('PDF downloaded locally.');
+      setStatus(isFrenchReport()?"PDF téléchargé sur cet appareil.":"PDF downloaded locally.");
     }).catch(function () {
-      setStatus('PDF could not be created. Use the TXT export instead.');
+      if(lastResult!==exportResult)return;
+      setStatus(isFrenchReport()?"Impossible de créer le PDF. Utilisez l’export TXT.":"PDF could not be created. Use the TXT export instead.");
     });
   }
 
@@ -170,13 +202,13 @@
   dateInput.max = todayIso();
 
   document.getElementById('download-txt').addEventListener('click', function () {
-    if (!lastResult) return setStatus('Calculate a range before exporting.');
+    if (!lastResult) return setStatus(isFrenchReport()?"Calculez une plage de dates avant d’exporter.":"Calculate a range before exporting.");
     downloadBlob(
       'afrotools-pregnancy-date-range.txt',
       'text/plain;charset=utf-8',
       resultText(lastResult)
     );
-    setStatus('TXT downloaded locally.');
+    setStatus(isFrenchReport()?"TXT téléchargé sur cet appareil.":"TXT downloaded locally.");
   });
 
   document.getElementById('download-pdf').addEventListener('click', downloadPdf);
@@ -187,7 +219,7 @@
     dateInput.value = '';
     results.hidden = true;
     lastResult = null;
-    setStatus('Entered date and current result cleared.');
+    setStatus(isFrenchReport()?"Date saisie et résultat actuel effacés.":"Entered date and current result cleared.");
     dateInput.focus();
   });
 
