@@ -47,7 +47,7 @@ assert(!missingRoutes.length, `Legal hub links missing route files: ${missingRou
 // These source-owned workflows intentionally replaced the generic legal copilot.
 // Run their input, privacy and route contracts before accepting their exact routes.
 const nativePropertyRoutes = new Set(['rental-agreement','land-title-check','building-permit','survey-cost','property-valuation','plot-converter','diaspora-property','stamp-duty','property-cgt','rental-yield','rent-affordability','tenant-screening','property-mgmt-fees','building-materials','construction-budget','dev-feasibility','service-charge','short-let-calc','agent-commission','offplan-vs-ready']);
-for (const testFile of ['day7-property-tool-contract.test.js','property-assumption-engine.test.js','day7-kenya-dpa.test.js']) {
+for (const testFile of ['day7-property-tool-contract.test.js','property-assumption-engine.test.js','day7-kenya-dpa.test.js','legal-workflow-local-print-privacy.test.js']) {
   require('node:child_process').execFileSync(process.execPath, [path.join(root, 'tests', testFile)], { cwd: root, stdio: 'inherit' });
 }
 const missingCopilot = [];
@@ -74,6 +74,11 @@ for (const href of uniqueLinks) {
   ['data-workflow-save', 'data-workflow-load', 'data-workflow-copy', 'data-workflow-pdf-gate', 'data-workflow-print'].forEach((needle) => {
     if (!html.includes(needle)) missingCopilot.push(`${href} missing ${needle}`);
   });
+  assert(/<textarea\b[^>]*data-workflow-output\b[^>]*aria-label="Legal workflow handoff note"/.test(html), 'Legal handoff output needs an accessible name: ' + href);
+  assert(/<div\b[^>]*data-workflow-gate-status\b[^>]*role="status"[^>]*aria-live="polite"/.test(html), 'Legal subscription feedback needs a live region: ' + href);
+  const optInInputs = html.match(/<input\b[^>]*data-workflow-optin\b[^>]*>/gi) || [];
+  assert(optInInputs.length === 1, 'Legal updates opt-in missing: ' + href);
+  assert(!optInInputs.some(tag => /\schecked(?:\s|=|>)/i.test(tag)), 'Legal updates must not be preselected: ' + href);
   const match = html.match(/<script type="application\/json" class="leg-workflow-data">([\s\S]*?)<\/script>/);
   if (!match) {
     thinWorkflowData.push(`${href}: missing workflow data`);
@@ -96,7 +101,7 @@ assert(!thinWorkflowData.length, `Legal workflow data gaps: ${thinWorkflowData.s
   'legal-workflow',
   'AfroWorkspace.upsert',
   '/api/capture-lead',
-  'legal-pdf-gate',
+  'legal-workflow-updates',
   'window.print'
 ].forEach((needle) => {
   assert(copilot.includes(needle), `Legal copilot missing ${needle}`);
@@ -151,4 +156,4 @@ assert(!thinWorkflowData.length, `Legal workflow data gaps: ${thinWorkflowData.s
   assert(dashboard.includes(needle), `Dashboard missing legal workflow continuation marker ${needle}`);
 });
 
-console.log('Legal workflow verified (69 tool routes, 48 copilot routes and 21 source-owned replacements, public hub boundary, gates, and dashboard continuation).');
+console.log('Legal workflow verified (69 tool routes, 48 copilot routes and 21 source-owned replacements, public hub boundary, local printing, opt-in updates, and dashboard continuation).');
