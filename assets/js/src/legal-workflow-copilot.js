@@ -255,6 +255,29 @@
             if (r) { r.disabled = false; r.textContent = 'Subscribe to updates'; }
         });
     }
+    function prepareLocalPrint(root) {
+        var output = o('[data-workflow-output]', root);
+        if (!output) return;
+        var mirror = o('[data-workflow-print-mirror]', root);
+        if (!mirror) {
+            mirror = document.createElement('pre');
+            mirror.className = 'leg-workflow-print-mirror';
+            mirror.setAttribute('data-workflow-print-mirror', '');
+            mirror.setAttribute('aria-label', 'Legal workflow handoff note');
+            mirror.setAttribute('data-clarity-mask', 'True');
+            output.insertAdjacentElement('afterend', mirror);
+        }
+        // Form controls are printed as a viewport; normal text can paginate.
+        mirror.textContent = output.value;
+        root.setAttribute('data-workflow-print-ready', '');
+    }
+    function clearLocalPrint(root) {
+        var mirror = o('[data-workflow-print-mirror]', root);
+        if (mirror) {
+            mirror.remove();
+            root.removeAttribute('data-workflow-print-ready');
+        }
+    }
     function T(e) {
         var t = a((o(".leg-workflow-data", e) || {}).textContent, {});
         var optin = o('[data-workflow-optin]', e);
@@ -319,10 +342,26 @@
             }(e);
         }), v && v.addEventListener("click", function() {
             y(e, t);
-            window.print();
+            prepareLocalPrint(e);
+            var printStatus = o('[data-workflow-gate-status]', e);
+            if (printStatus && printStatus.textContent.indexOf('Could not open local printing.') === 0) {
+                k(e, 'Printing stays local. Close the print window to return to your handoff note.', 'info');
+            }
+            try { window.print(); }
+            catch (error) {
+                k(e, 'Could not open local printing. Your handoff note remains available to copy or try printing again.', 'error');
+            }
+            finally { clearLocalPrint(e); }
         }), h && h.addEventListener("submit", function(n) {
             n.preventDefault(), E(e, t, o("[data-workflow-pdf-gate]", e));
         }), y(e, t);
+        if (typeof window.addEventListener === 'function') {
+            window.addEventListener('beforeprint', function () {
+                y(e, t);
+                prepareLocalPrint(e);
+            });
+            window.addEventListener('afterprint', function () { clearLocalPrint(e); });
+        }
     }
     e = function() {
         r(document, ".leg-workflow-copilot").forEach(T);
