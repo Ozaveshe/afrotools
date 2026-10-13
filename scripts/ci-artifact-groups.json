@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "groups": 2,
-  "originalCommit": "a225e13f202da2f1e578e221bf14d4848c5a6099",
-  "originalWorkflowSha256": "860e0c0ab785445e5c91a699c98f726a92117065d9da328fbc398188905afee4",
+  "originalCommit": "0ce5a2cc23be67397865d254939162f709ab93dd",
+  "originalWorkflowSha256": "d9b4553fbff54fe795e6cd6c89f416f57e70e6ffd64d3a689f6542495e7ca038",
   "originalBuildTimeoutMinutes": 75,
   "originalVerifyYaml": "  verify:\n    name: Verify\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n\n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v5\n        with:\n          # Preservation tests compare current records with pinned release baselines.\n          fetch-depth: 0\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Install Chromium for browser-backed tests\n        run: npx playwright install chromium --with-deps\n\n      - name: Lint\n        run: npm run lint\n\n      - name: Type-check\n        run: npm run type-check\n\n      - name: Verify calculation formulas and jurisdictional data\n        run: npm run calculation-quality:check\n\n      - name: Verify static data fallback freshness\n        run: npm run data:fallbacks:check\n\n      - name: AI contract tests\n        run: npm run test:ai\n\n      - name: Unit and integration tests\n        run: npm test\n\n      - name: Verify multipart parser boundaries\n        run: node --test tests/multipart-parser-boundary.test.js\n\n      - name: Verify forex context expiry at runtime\n        run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js\n\n      - name: Verify private command-centre contracts\n        run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs\n\n      - name: Verify Pro architecture\n        run: npm run pro:verify\n\n      - name: Validate i18n dictionaries\n        run: npm run build:i18n:validate\n\n      - name: Validate hreflang graph\n        run: npm run validate:hreflang\n\n",
   "originalSmokeYaml": "  e2e:\n    name: Playwright smoke\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n\n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v5\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Install Chromium\n        run: npx playwright install chromium --with-deps\n\n      - name: Run smoke specs\n        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js tests/e2e/amount-words-readiness.spec.js tests/e2e/mobile-money-readiness.spec.js tests/e2e/education-hub-card-reflow.spec.js tests/e2e/jamb-review-reflow.spec.js tests/e2e/shared-contrast-and-pro-gate.spec.js tests/e2e/blog-reading-layout.spec.js --project=chromium --workers=1\n\n      - name: Verify AfroJAMB reviewed-content journeys\n        env:\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n        run: npx playwright test tests/e2e/jamb-browser-trust.spec.js tests/e2e/jamb-planning-trust.spec.js tests/e2e/jamb-tutor-consent.spec.js tests/e2e/jamb-reviewed-pages.spec.js tests/e2e/jamb-public-review.spec.js --project=chromium --workers=2\n\n      - name: Verify Solar startup and French country continuations\n        env:\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4177'\n        run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2\n",
@@ -96,7 +96,7 @@
   "browser": [
     {
       "id": "browser-01",
-      "originalIndex": 8,
+      "originalIndex": 9,
       "group": 1,
       "step": {
         "name": "Verify agriculture input recovery in the artifact",
@@ -111,7 +111,7 @@
     },
     {
       "id": "browser-02",
-      "originalIndex": 9,
+      "originalIndex": 10,
       "group": 1,
       "step": {
         "name": "Verify navbar resilience and guest account boundaries",
@@ -127,7 +127,7 @@
     },
     {
       "id": "browser-03",
-      "originalIndex": 10,
+      "originalIndex": 11,
       "group": 1,
       "step": {
         "name": "Verify education journeys and shared accessibility in the optimized artifact",
@@ -142,7 +142,7 @@
     },
     {
       "id": "browser-04",
-      "originalIndex": 11,
+      "originalIndex": 12,
       "group": 1,
       "step": {
         "name": "Verify localized education recovery in the optimized artifact",
@@ -158,7 +158,7 @@
     },
     {
       "id": "browser-05",
-      "originalIndex": 12,
+      "originalIndex": 13,
       "group": 2,
       "step": {
         "name": "Verify Solar startup and French country continuations in the optimized artifact",
@@ -173,7 +173,7 @@
     },
     {
       "id": "browser-06",
-      "originalIndex": 13,
+      "originalIndex": 14,
       "group": 1,
       "step": {
         "name": "Verify Profit Margin validation and exports in the optimized artifact",
@@ -188,7 +188,7 @@
     },
     {
       "id": "browser-07",
-      "originalIndex": 14,
+      "originalIndex": 15,
       "group": 1,
       "step": {
         "name": "Verify finance recovery and original workflows in the optimized artifact",
@@ -203,7 +203,7 @@
     },
     {
       "id": "browser-08",
-      "originalIndex": 16,
+      "originalIndex": 17,
       "group": 1,
       "step": {
         "name": "Verify Nigeria farm payroll recovery in the optimized artifact",
@@ -219,7 +219,7 @@
     },
     {
       "id": "browser-09",
-      "originalIndex": 17,
+      "originalIndex": 18,
       "group": 2,
       "step": {
         "name": "Verify finance native export owners and unavailable payroll guard",
@@ -234,7 +234,7 @@
     },
     {
       "id": "browser-10",
-      "originalIndex": 18,
+      "originalIndex": 19,
       "group": 2,
       "step": {
         "name": "Verify reconciled completion workflows in the optimized artifact",
@@ -249,7 +249,7 @@
     },
     {
       "id": "browser-11",
-      "originalIndex": 19,
+      "originalIndex": 20,
       "group": 2,
       "step": {
         "name": "Verify telecom recovery and original locale workflows in the optimized artifact",
@@ -264,7 +264,7 @@
     },
     {
       "id": "browser-12",
-      "originalIndex": 20,
+      "originalIndex": 21,
       "group": 2,
       "step": {
         "name": "Verify guest copy recovery and Business Planner PDF exports",
@@ -279,7 +279,7 @@
     },
     {
       "id": "browser-13",
-      "originalIndex": 21,
+      "originalIndex": 22,
       "group": 1,
       "step": {
         "name": "Verify localized enquiry and business actions in the optimized artifact",
@@ -294,7 +294,7 @@
     },
     {
       "id": "browser-14",
-      "originalIndex": 22,
+      "originalIndex": 23,
       "group": 1,
       "step": {
         "name": "Verify Swahili community-credit AI lifecycle in the optimized artifact",
@@ -309,7 +309,7 @@
     },
     {
       "id": "browser-15",
-      "originalIndex": 23,
+      "originalIndex": 24,
       "group": 2,
       "step": {
         "name": "Verify Swahili fuel theme and workflow in the optimized artifact",
@@ -326,7 +326,7 @@
     },
     {
       "id": "browser-16",
-      "originalIndex": 24,
+      "originalIndex": 25,
       "group": 2,
       "step": {
         "name": "Verify undecided consent controls at increased zoom",
@@ -340,7 +340,7 @@
     },
     {
       "id": "browser-17",
-      "originalIndex": 25,
+      "originalIndex": 26,
       "group": 1,
       "step": {
         "name": "Verify currency consent and original export guards with analytics enabled",
@@ -356,7 +356,7 @@
     },
     {
       "id": "browser-18",
-      "originalIndex": 26,
+      "originalIndex": 27,
       "group": 1,
       "step": {
         "name": "Verify shared saved-work recovery with optimized scripts",
@@ -371,7 +371,7 @@
     },
     {
       "id": "browser-19",
-      "originalIndex": 27,
+      "originalIndex": 28,
       "group": 1,
       "step": {
         "name": "Verify CV document imports, privacy and keyboard behavior in the artifact",
@@ -386,7 +386,7 @@
     },
     {
       "id": "browser-20",
-      "originalIndex": 28,
+      "originalIndex": 29,
       "group": 2,
       "step": {
         "name": "Verify native CV DOCX roundtrips and consent controls in the artifact",
@@ -400,7 +400,7 @@
     },
     {
       "id": "browser-21",
-      "originalIndex": 29,
+      "originalIndex": 30,
       "group": 2,
       "step": {
         "name": "Verify French canonical calculator routes in the artifact",
@@ -415,7 +415,7 @@
     },
     {
       "id": "browser-22",
-      "originalIndex": 30,
+      "originalIndex": 31,
       "group": 2,
       "step": {
         "name": "Verify CV workspace rewriting and modal accessibility in the artifact",
@@ -430,7 +430,7 @@
     },
     {
       "id": "browser-23",
-      "originalIndex": 31,
+      "originalIndex": 32,
       "group": 2,
       "step": {
         "name": "Verify French Base64 output integrity in the artifact",
@@ -445,7 +445,7 @@
     },
     {
       "id": "browser-24",
-      "originalIndex": 32,
+      "originalIndex": 33,
       "group": 1,
       "step": {
         "name": "Verify PDF Workspace startup and original guest exports",
@@ -461,7 +461,7 @@
     },
     {
       "id": "browser-25",
-      "originalIndex": 33,
+      "originalIndex": 34,
       "group": 2,
       "step": {
         "name": "Verify document WASM exports under page and worker CSP",
@@ -478,7 +478,7 @@
     },
     {
       "id": "browser-26",
-      "originalIndex": 34,
+      "originalIndex": 35,
       "group": 2,
       "step": {
         "name": "Verify French customs print and copy in the artifact",
@@ -493,7 +493,7 @@
     },
     {
       "id": "browser-27",
-      "originalIndex": 35,
+      "originalIndex": 36,
       "group": 1,
       "step": {
         "name": "Verify security input recovery and private export boundaries",
@@ -508,7 +508,7 @@
     },
     {
       "id": "browser-28",
-      "originalIndex": 36,
+      "originalIndex": 37,
       "group": 2,
       "step": {
         "name": "Verify CV repairs and FX observation exports in the optimized artifact",
@@ -524,7 +524,7 @@
     },
     {
       "id": "browser-29",
-      "originalIndex": 37,
+      "originalIndex": 38,
       "group": 1,
       "step": {
         "name": "Verify fraction export recovery in the optimized artifact",
@@ -540,7 +540,7 @@
     },
     {
       "id": "browser-30",
-      "originalIndex": 38,
+      "originalIndex": 39,
       "group": 2,
       "step": {
         "name": "Verify native health reports and result invalidation in the artifact",
@@ -555,7 +555,7 @@
     },
     {
       "id": "browser-31",
-      "originalIndex": 39,
+      "originalIndex": 40,
       "group": 1,
       "step": {
         "name": "Verify legal local print bypasses trade email capture",
@@ -570,7 +570,7 @@
     },
     {
       "id": "browser-32",
-      "originalIndex": 41,
+      "originalIndex": 42,
       "group": 2,
       "step": {
         "name": "Verify creator profile HTML boundaries in the artifact",
@@ -582,6 +582,22 @@
         "run": "npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
       },
       "stepSha256": "cae59c7fc8348b03a35c10e65ca80a795fdc35143000617393baebc1bef952f7"
+    },
+    {
+      "id": "browser-33",
+      "originalIndex": 8,
+      "group": 1,
+      "step": {
+        "name": "Verify canonical tool result names and private router recovery in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4219"
+        },
+        "run": "npx playwright test tests/e2e/ai-catalog-result-names.spec.js tests/e2e/ai-frontdoor-guardrail-scope.spec.js tests/e2e/ai-command-page.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "d311f3b294b657fd6fb484964e65e7421c3dac48b1c07ac252f4c3f6247bb6f7",
+      "originalYaml": "      - name: Verify canonical tool result names and private router recovery in the artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4219'\n        run: npx playwright test tests/e2e/ai-catalog-result-names.spec.js tests/e2e/ai-frontdoor-guardrail-scope.spec.js tests/e2e/ai-command-page.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n\n"
     }
   ],
   "consumerSetup": [
@@ -599,5 +615,8 @@
     "run": "git diff --stat\nif [ -n \"$(git diff --name-only)\" ]; then\n  echo \"::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs.\"\n  git diff --name-only\n  exit 1\nfi\n"
   },
   "nativeShell": "bash -e {0}",
-  "mutationBoundary": "Entire original French finance step before seal; original generated parity in producer plus post-browser parity in each isolated consumer"
+  "mutationBoundary": "Entire original French finance step before seal; original generated parity in producer plus post-browser parity in each isolated consumer",
+  "originalWorkflowFile": "tests/fixtures/ci-original/frontdoor-guarded-runtime-0ce5a2cc.yml",
+  "predecessorCommit": "a225e13f202da2f1e578e221bf14d4848c5a6099",
+  "predecessorWorkflowSha256": "860e0c0ab785445e5c91a699c98f726a92117065d9da328fbc398188905afee4"
 }

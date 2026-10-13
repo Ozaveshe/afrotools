@@ -11,6 +11,41 @@ const inventory = require('../scripts/ci-artifact-groups.json');
 const ROOT = path.resolve(__dirname, '..');
 const clone = value => structuredClone(value);
 
+function readOriginalWorkflow(pin, root = ROOT) {
+  let original;
+  if (!pin.originalWorkflowFile) {
+    original = cp.execFileSync('git', ['show', pin.originalCommit + ':.github/workflows/ci.yml'], {cwd: root, encoding:'utf8'});
+  } else {
+    assert.match(pin.originalWorkflowFile, /^tests\/fixtures\/ci-original\/[a-z0-9-]+\.yml$/, 'Original workflow fixture path must stay in the reviewed fixture directory');
+    let resolved = root;
+    for (const component of pin.originalWorkflowFile.split('/')) {
+      resolved = path.join(resolved, component);
+      assert.equal(fs.lstatSync(resolved).isSymbolicLink(), false, 'Original workflow fixture may not use symlinks');
+    }
+    assert.equal(fs.statSync(resolved).isFile(), true, 'Original workflow fixture must be a file');
+    original = fs.readFileSync(resolved, 'utf8');
+  }
+  // Tracked .gitattributes already forces LF. Preserve genuine bytes; do not
+  // normalize away tampering or substitute another workflow when missing.
+  assert.match(pin.originalWorkflowSha256, /^[a-f0-9]{64}$/);
+  assert.equal(c.sha(original), pin.originalWorkflowSha256, 'Original workflow hash differs from genuine pinned source');
+  if (pin.originalWorkflowFile) {
+    assert.match(pin.predecessorCommit, /^[a-f0-9]{40}$/);
+    assert.match(pin.predecessorWorkflowSha256, /^[a-f0-9]{64}$/);
+    const predecessor = cp.execFileSync('git', ['show', pin.predecessorCommit + ':.github/workflows/ci.yml'], {cwd:ROOT,encoding:'utf8'});
+    assert.equal(c.sha(predecessor), pin.predecessorWorkflowSha256, 'Immutable main predecessor hash changed');
+    let retained = original;
+    for (const gate of pin.browser.filter(gate => gate.originalYaml)) {
+      assert.equal(typeof gate.originalYaml, 'string');
+      assert.ok(gate.originalYaml.trim(), 'Added original YAML must not be empty');
+      assert.equal(retained.split(gate.originalYaml).length, 2, 'Each declared addition must occur exactly once');
+      retained = retained.replace(gate.originalYaml, '');
+    }
+    assert.equal(retained, predecessor, 'The complete immutable predecessor must remain byte-identical');
+  }
+  return original;
+}
+
 function originalBrowserStep(block) {
   const lines = block.trimEnd().split('\n'), step = {name: lines[0].slice('      - name: '.length)};
   const envAt = lines.indexOf('        env:'), runAt = lines.findIndex(line => line.startsWith('        run:'));
@@ -30,7 +65,7 @@ function originalBrowserStep(block) {
 }
 
 test('mechanically preserves all current commands/env/specs/workers and Verify/smoke blocks', () => {
-  const original = cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  const original = readOriginalWorkflow(inventory);
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
   assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));
@@ -231,4 +266,46 @@ test('an independent consumer restores exactly one archive and retains producer 
   c.restore(consumer, f.bundle, f.expected);
   assert.deepEqual(fs.readFileSync(path.join(consumer, c.MARKER)), fs.readFileSync(path.join(f.root, c.MARKER)));
   assert.deepEqual(c.treeManifest(consumer), f.manifest.dist);
+});
+
+function originalWorkflowFixture() {
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'afrotools-reviewed-workflow-'));
+  const file=path.join(root,inventory.originalWorkflowFile);
+  fs.mkdirSync(path.dirname(file),{recursive:true});
+  fs.copyFileSync(path.join(ROOT,inventory.originalWorkflowFile),file);
+  return {root,file};
+}
+test('tracked genuine workflow fixture does not read producer branch ancestry', () => {
+  const f=originalWorkflowFixture();
+  const original=readOriginalWorkflow(inventory,f.root);
+  assert.equal(c.sha(original),inventory.originalWorkflowSha256);
+  assert.equal(inventory.producer.length,10);assert.equal(inventory.browser.length,33);
+});
+test('genuine workflow fixture rejects byte tampering', () => {
+  const f=originalWorkflowFixture();fs.appendFileSync(f.file,' synthetic changed');
+  assert.throws(()=>readOriginalWorkflow(inventory,f.root),/workflow hash differs/);
+});
+test('genuine workflow fixture fails closed when missing', () => {
+  const f=originalWorkflowFixture();fs.renameSync(f.file,f.file+'.missing');
+  assert.throws(()=>readOriginalWorkflow(inventory,f.root),/ENOENT/);
+});
+test('genuine workflow fixture rejects path escapes and unrelated files', () => {
+  for(const file of ['../workflow.yml','/tmp/workflow.yml','C:/workflow.yml','tests/fixtures/ci-original/../workflow.yml','tests\\fixtures\\ci-original\\workflow.yml','.github/workflows/ci.yml'])
+    assert.throws(()=>readOriginalWorkflow({...inventory,originalWorkflowFile:file}),/fixture path/);
+});
+test('genuine workflow fixture rejects a directory in place of its file', () => {
+  const f=originalWorkflowFixture();fs.renameSync(f.file,f.file+'.original');fs.mkdirSync(f.file);
+  assert.throws(()=>readOriginalWorkflow(inventory,f.root),/must be a file/);
+});
+test('genuine workflow fixture rejects wrong predecessor binding and rehashed unrelated changes', () => {
+  const f=originalWorkflowFixture();
+  assert.throws(()=>readOriginalWorkflow({...inventory,predecessorWorkflowSha256:'0'.repeat(64)},f.root),/predecessor hash/);
+  const source=fs.readFileSync(f.file,'utf8')+'# synthetic unrelated retained header\n';fs.writeFileSync(f.file,source);
+  assert.throws(()=>readOriginalWorkflow({...inventory,originalWorkflowSha256:c.sha(source)},f.root),/predecessor must/);
+});
+test('genuine workflow fixture requires every declared added block exactly once', () => {
+  const f=originalWorkflowFixture(),missing=clone(inventory);delete missing.browser[missing.browser.length-1].originalYaml;
+  assert.throws(()=>readOriginalWorkflow(missing,f.root),/predecessor must/);
+  const changed=clone(inventory);changed.browser[changed.browser.length-1].originalYaml='      - name: Synthetic unrecognized addition\n\n';
+  assert.throws(()=>readOriginalWorkflow(changed,f.root),/exactly once/);
 });
