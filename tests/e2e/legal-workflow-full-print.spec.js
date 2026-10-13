@@ -4,6 +4,40 @@ const markers = Array.from({ length: 120 }, (_, i) => 'SYNTHLEGAL-' + String(i +
 const notes = markers.map(marker => marker + ' Full synthetic planning detail retained for printing; no real personal data or legal authority claim.').join('\n') +
   ' SYNTHLEGAL-FINAL-MARKER <img src=x onerror=window.syntheticInjection=true>';
 test.setTimeout(120000);
+function printedNotes(text) {
+  // Native PDF extraction can wrap the marker after its hyphen and the literal
+  // tag at its attribute separator. Join only these observed token boundaries.
+  // Isolate the printed handoff so a partly visible input cannot supply a marker.
+  const sections = [...text.matchAll(/(?:^|\r?\n)Notes:\r?\n([\s\S]*?)\r?\nNext action:/g)];
+  expect(sections).toHaveLength(1);
+  return sections[0][1]
+    .replace(/SYNTHLEGAL-\r?\n([0-9]{4})\b/g, 'SYNTHLEGAL-$1')
+    .replace(/<img src=x[ \t]*\r?\n[ \t]*onerror=window\.syntheticInjection=true>/g, '<img src=x onerror=window.syntheticInjection=true>');
+}
+function expectCompletePrintedNotes(text) {
+  const printed = printedNotes(text);
+  for (const marker of markers) expect(printed).toContain(marker);
+  expect([...printed.matchAll(/\bSYNTHLEGAL-[0-9]{4}\b/g)].map(match => match[0])).toEqual(markers);
+  expect(printed).toContain('SYNTHLEGAL-FINAL-MARKER');
+  expect(printed).toContain('<img src=x onerror=window.syntheticInjection=true>');
+  expect(text).toContain('Next action:');
+}
+test('PDF reader permits only documented wraps and rejects missing or duplicate content', () => {
+  const fixture = 'Notes:\n' + notes + '\nNext action:\nKeep evidence';
+  expectCompletePrintedNotes(fixture);
+  const wrapped = fixture.replace('SYNTHLEGAL-0016', 'SYNTHLEGAL-\n0016')
+    .replace('<img src=x onerror=', '<img src=x\nonerror=');
+  expectCompletePrintedNotes(wrapped);
+  expectCompletePrintedNotes(wrapped.replace(/\n/g, '\r\n'));
+  for (const invalid of [
+    fixture.replace('SYNTHLEGAL-0016', ''),
+    fixture.replace('SYNTHLEGAL-0016', 'SYNTHLEGAL-0015'),
+    fixture.replace('SYNTHLEGAL-0016', 'SYNTHLEGAL-00\n16'),
+    fixture.replace('SYNTHLEGAL-FINAL-MARKER', ''),
+    fixture.replace('<img src=x onerror=', '<img src=x onerrXr='),
+    fixture.replace('Notes:\n', '')
+  ]) expect(() => expectCompletePrintedNotes(invalid)).toThrow();
+});
 function watch(page) {
   const errors = [], contentRequests = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -29,12 +63,9 @@ for (const width of [390, 1280]) test('Native local print retains every long not
   for (const marker of markers) expect(handoff).toContain(marker);
   // page.pdf enters the browser's native beforeprint/afterprint lifecycle.
   const pdf = await page.pdf({ format: 'A4', printBackground: true });
-  const parsed = await pdfParse(pdf);
-  for (const marker of markers) expect(parsed.text).toContain(marker);
-  expect(parsed.text).toContain('SYNTHLEGAL-FINAL-MARKER');
-  expect(parsed.text).toContain('<img src=x onerror=window.syntheticInjection=true>');
-  expect(parsed.text).toContain('Next action:');
   await testInfo.attach('long-local-print-' + width + '.pdf', { body: pdf, contentType: 'application/pdf' });
+  const parsed = await pdfParse(pdf);
+  expectCompletePrintedNotes(parsed.text);
   await noPersistence(page);
   expect(observed).toEqual({ errors: [], contentRequests: [] });
 });
