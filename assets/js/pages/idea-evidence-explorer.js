@@ -202,6 +202,41 @@
     else setState(t[result.state]||t.error,result.state||"error");
   }
   function findRow(id) { return currentRows.concat(shortlist).find(function(row){return row.id===id}) || null; }
+  var registrationPromise = null;
+  var registrationCopy = {
+    en:{title:"Country registration reference",scope:"If you choose to register a business name, this is one official fee reference. It excludes other charges and licences. It does not verify this idea’s startup cost, revenue or suitability.",loading:"Loading the reference…",missing:"No reviewed registration reference is available for this country.",failed:"The registration reference is unavailable. Check the official service before paying.",unverified:"Current fee applicability is unverified; amount withheld. Check the latest official schedule and charges.",expired:"Review overdue; fee withheld. Check the official source.",observed:"Source observed",reviewed:"Source line inspected",published:"Publication date",signed:"Signature date",unknown:"Not stated",source:"Open official source"},
+    fr:{title:"Repère national d’immatriculation",scope:"Si vous choisissez d’immatriculer un nom commercial, voici un frais officiel de référence. Les autres frais et licences sont exclus. Il ne vérifie ni le coût initial, ni les revenus, ni l’adéquation de cette idée.",loading:"Chargement du repère…",missing:"Aucun repère d’immatriculation vérifié n’est disponible pour ce pays.",failed:"Le repère est indisponible. Consultez le service officiel avant de payer.",unverified:"L’application actuelle du frais n’est pas vérifiée ; montant masqué. Consultez le dernier barème et les frais officiels.",expired:"Révision en retard ; montant masqué. Consultez la source officielle.",observed:"Source consultée",reviewed:"Ligne de la source consultée",published:"Date de publication",signed:"Date de signature",unknown:"Non indiquée",source:"Ouvrir la source officielle"},
+    sw:{title:"Rejea ya usajili nchini",scope:"Ukichagua kusajili jina la biashara, hii ni rejea ya ada moja rasmi. Ada nyingine na leseni hazijajumuishwa. Haithibitishi gharama ya kuanza, mapato au kufaa kwa wazo hili.",loading:"Inapakia rejea…",missing:"Hakuna rejea ya usajili iliyokaguliwa kwa nchi hii.",failed:"Rejea haipatikani. Angalia huduma rasmi kabla ya kulipa.",unverified:"Kutumika kwa ada kwa sasa hakujathibitishwa; kiasi kimefichwa. Angalia ratiba na ada rasmi za karibuni.",expired:"Ukaguzi umechelewa; ada imefichwa. Angalia chanzo rasmi.",observed:"Chanzo kiliangaliwa",reviewed:"Mstari wa chanzo ulikaguliwa",published:"Tarehe ya uchapishaji",signed:"Tarehe ya kusainiwa",unknown:"Haijaelezwa",source:"Fungua chanzo rasmi"}
+  };
+  function showRegistrationReference(content, country) {
+    var labels = registrationCopy[locale];
+    var section = el("section", {class:"iee-source", "data-registration-reference":"", "aria-live":"polite"});
+    section.append(el("h3", {}, labels.title), el("p", {}, labels.scope), el("p", {}, labels.loading));
+    content.append(section);
+    if (!registrationPromise) {
+      var controller = new AbortController();
+      var timer = setTimeout(function () { controller.abort(); }, 4000);
+      registrationPromise = fetch("/data/ideas/registration-evidence.json", {credentials:"same-origin",cache:"no-store",signal:controller.signal})
+        .then(function (response) { if (!response.ok) throw new Error("unavailable"); return response.json(); })
+        .catch(function () { registrationPromise = null; return null; })
+        .finally(function () { clearTimeout(timer); });
+    }
+    registrationPromise.then(function (payload) {
+      if (!section.isConnected) return;
+      section.replaceChildren(el("h3", {}, labels.title), el("p", {}, labels.scope));
+      if (!payload) { section.append(el("p", {}, labels.failed)); return; }
+      var references = engine.registrationReferences(payload, country);
+      if (!references.length) { section.append(el("p", {}, labels.missing)); return; }
+      references.forEach(function (reference) {
+        var amount = reference.amount === null ? (reference.state === "applicability_unverified" ? labels.unverified : labels.expired) : new Intl.NumberFormat(locale, {style:"currency", currency:reference.currency,maximumFractionDigits:0}).format(reference.amount);
+        section.append(el("p", {}, reference.label[locale] + ": " + amount));
+        section.append(el("a", {href:reference.sourceUrl,target:"_blank",rel:"noopener noreferrer"}, labels.source + " — " + reference.sourceName));
+        section.append(el("p", {}, labels.observed + ": " + reference.observedAt + " · " + labels.reviewed + ": " + reference.reviewedAt));
+        section.append(el("p", {}, labels.published + ": " + (reference.sourcePublicationDate || labels.unknown)));
+        if (reference.sourceSignatureDate) section.append(el("p", {}, labels.signed + ": " + reference.sourceSignatureDate));
+      });
+    });
+  }
   function openDialog(row, trigger) {
     var overlay=document.querySelector("[data-dialog-backdrop]"),content=overlay.querySelector("[data-dialog-content]");content.replaceChildren();
     content.append(el("h2",{id:"iee-dialog-title"},row.name),el("p",{class:"iee-scope"},t.scope));
@@ -210,6 +245,7 @@
     content.append(el("h3",{},t.source),el("p",{},evidenceLabel(row)));
     if(row.source.url){var a=el("a",{href:row.source.url,target:"_blank",rel:"noopener noreferrer"},row.source.name||row.source.url);content.append(a)}
     if(row.updatedAt)content.append(el("p",{},t.updated+": "+formatDate(row.updatedAt)));
+    showRegistrationReference(content, row.countryCode);
     dialogReturnFocus=trigger;overlay.hidden=false;document.body.classList.add("iee-dialog-open");overlay.querySelector("[data-action=close-dialog]").focus();
   }
   function closeDialog() { var overlay=document.querySelector("[data-dialog-backdrop]");overlay.hidden=true;document.body.classList.remove("iee-dialog-open");if(dialogReturnFocus&&dialogReturnFocus.isConnected)dialogReturnFocus.focus();dialogReturnFocus=null; }

@@ -13,16 +13,37 @@ const clone = value => structuredClone(value);
 
 
 function readOriginalWorkflow(pin, root = ROOT) {
-  if (!pin.originalWorkflowFile) return cp.execFileSync('git', ['show', pin.originalCommit + ':.github/workflows/ci.yml'], {cwd: root, encoding: 'utf8'});
-  assert.match(pin.originalWorkflowFile, /^tests\/fixtures\/ci-original\/[a-z0-9-]+\.yml$/, 'Original workflow fixture path must stay in the reviewed fixture directory');
-  let resolved = root;
-  for (const component of pin.originalWorkflowFile.split('/')) {
-    resolved = path.join(resolved, component);
-    assert.equal(fs.lstatSync(resolved).isSymbolicLink(), false, 'Original workflow fixture may not use symlinks');
+  let original;
+  if (!pin.originalWorkflowFile) {
+    original = cp.execFileSync('git', ['show', pin.originalCommit + ':.github/workflows/ci.yml'], {cwd: root, encoding:'utf8'});
+  } else {
+    assert.match(pin.originalWorkflowFile, /^tests\/fixtures\/ci-original\/[a-z0-9-]+\.yml$/, 'Original workflow fixture path must stay in the reviewed fixture directory');
+    let resolved = root;
+    for (const component of pin.originalWorkflowFile.split('/')) {
+      resolved = path.join(resolved, component);
+      assert.equal(fs.lstatSync(resolved).isSymbolicLink(), false, 'Original workflow fixture may not use symlinks');
+    }
+    assert.equal(fs.statSync(resolved).isFile(), true, 'Original workflow fixture must be a file');
+    original = fs.readFileSync(resolved, 'utf8');
   }
-  assert.equal(fs.statSync(resolved).isFile(), true, 'Original workflow fixture must be a file');
-  const original = fs.readFileSync(resolved, 'utf8');
-  assert.equal(c.sha(original), pin.originalWorkflowSha256, 'Original workflow fixture hash differs from genuine pinned source');
+  // Tracked .gitattributes already forces LF. Preserve genuine bytes; do not
+  // normalize away tampering or substitute another workflow when missing.
+  assert.match(pin.originalWorkflowSha256, /^[a-f0-9]{64}$/);
+  assert.equal(c.sha(original), pin.originalWorkflowSha256, 'Original workflow hash differs from genuine pinned source');
+  if (pin.originalWorkflowFile) {
+    assert.match(pin.predecessorCommit, /^[a-f0-9]{40}$/);
+    assert.match(pin.predecessorWorkflowSha256, /^[a-f0-9]{64}$/);
+    const predecessor = cp.execFileSync('git', ['show', pin.predecessorCommit + ':.github/workflows/ci.yml'], {cwd:ROOT,encoding:'utf8'});
+    assert.equal(c.sha(predecessor), pin.predecessorWorkflowSha256, 'Immutable main predecessor hash changed');
+    let retained = original;
+    for (const gate of pin.browser.filter(gate => gate.originalYaml)) {
+      assert.equal(typeof gate.originalYaml, 'string');
+      assert.ok(gate.originalYaml.trim(), 'Added original YAML must not be empty');
+      assert.equal(retained.split(gate.originalYaml).length, 2, 'Each declared addition must occur exactly once');
+      retained = retained.replace(gate.originalYaml, '');
+    }
+    assert.equal(retained, predecessor, 'The complete immutable predecessor must remain byte-identical');
+  }
   return original;
 }
 
@@ -255,10 +276,10 @@ function originalFixture() {
   fs.copyFileSync(path.join(ROOT, inventory.originalWorkflowFile), file);
   return {root, file};
 }
-test('durable original fixture retains all genuine 43 ancestor steps without branch reachability', () => {
+test('durable declared fixture preserves 42 original steps and both reviewed additions without branch reachability', () => {
   const f = originalFixture();
   assert.equal(readOriginalWorkflow(inventory, f.root), fs.readFileSync(path.join(ROOT, inventory.originalWorkflowFile), 'utf8'));
-  assert.equal(inventory.browser.length, 33);
+  assert.equal(inventory.browser.length, 34);
 });
 test('durable original fixture rejects byte tampering', () => {
   const f = originalFixture(); fs.appendFileSync(f.file, ' synthetic changed');
@@ -274,14 +295,24 @@ test('durable original fixture rejects path escapes and unrelated source paths',
   }
 });
 
-test('single additive raw step removal recovers the immutable main predecessor byte-for-byte', () => {
+test('both additive raw steps recover the immutable main predecessor and preserve R17 JSON gate', () => {
   const original = readOriginalWorkflow(inventory), addition = inventory.browser.find(gate => gate.id === 'browser-33');
-  assert.equal(original.split(addition.originalYaml).length, 2, 'Additive raw step occurs exactly once');
+  assert.equal(original.split(addition.originalYaml).length, 2, 'JSON raw step occurs exactly once');
   assert.equal(addition.originalIndex, 40);
+  assert.equal(addition.stepSha256, 'd1d5505461e7efd842afab165441ee77e534b945b450f7e43a72f0f113447319');
   assert.deepEqual(originalBrowserStep(addition.originalYaml), addition.step);
-  const recovered = original.replace(addition.originalYaml, '');
+  const cac = inventory.browser.find(gate => gate.id === 'browser-34');
+  assert.equal(cac.originalIndex, 43); assert.equal(cac.stepSha256, '3925270dcfe544e8a5442d86c0c2d9cacd0dfc89fed9597fdde42ba95b4533cf');
+  assert.deepEqual(originalBrowserStep(cac.originalYaml), cac.step);
+  let recovered = original;
+  const additions = inventory.browser.filter(gate => gate.originalYaml); assert.equal(additions.length, 2);
+  for (const gate of additions) {assert.equal(recovered.split(gate.originalYaml).length, 2); recovered = recovered.replace(gate.originalYaml, '');}
   assert.equal(inventory.predecessorCommit, 'a225e13f202da2f1e578e221bf14d4848c5a6099');
   assert.equal(c.sha(recovered), inventory.predecessorWorkflowSha256);
   const predecessor = cp.execFileSync('git', ['show', inventory.predecessorCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
   assert.equal(recovered, predecessor, 'No normalization or assertion waiver for historical source');
 });
+
+test('declared workflow fixture rejects a directory in place of its file',()=>{const f=originalFixture();fs.renameSync(f.file,f.file+'.original');fs.mkdirSync(f.file);assert.throws(()=>readOriginalWorkflow(inventory,f.root),/must be a file/);});
+test('declared fixture rejects wrong predecessor and rehashed unrelated changes',()=>{const f=originalFixture();assert.throws(()=>readOriginalWorkflow({...inventory,predecessorWorkflowSha256:'0'.repeat(64)},f.root),/predecessor hash/);const changed=fs.readFileSync(f.file,'utf8')+'# synthetic unrelated change\n';fs.writeFileSync(f.file,changed);assert.throws(()=>readOriginalWorkflow({...inventory,originalWorkflowSha256:c.sha(changed)},f.root),/predecessor must/);});
+test('both declared additions are mandatory exactly once',()=>{for(const id of ['browser-33','browser-34']){const f=originalFixture(),missing=clone(inventory);delete missing.browser.find(g=>g.id===id).originalYaml;assert.throws(()=>readOriginalWorkflow(missing,f.root),/predecessor must/);const altered=clone(inventory);altered.browser.find(g=>g.id===id).originalYaml='      - name: Synthetic unrecognized addition\n\n';assert.throws(()=>readOriginalWorkflow(altered,f.root),/exactly once/);}});

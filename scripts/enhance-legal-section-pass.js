@@ -6,6 +6,10 @@ const REVIEW_DATE = '28 April 2026';
 const COMPETITOR_REVIEW_DATE = '28 April 2026';
 
 const sourceBank = {
+  cacLookup: ['Official CAC public search', 'https://icrp.cac.gov.ng/public-search/'],
+  cacPortalCurrent: ['Official CAC registration portal', 'https://icrp.cac.gov.ng/'],
+  cacCamaCurrent: ['CAMA 2020 reference', 'https://icrp.cac.gov.ng/assets/docs/CAMA-NOTE%20FINAL-FULL-VERSION.pdf'],
+  nrsAdministration: ['Nigeria Tax Administration Act 2025', 'https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf'],
   cac: ['Corporate Affairs Commission', 'https://www.cac.gov.ng/business-names/'],
   cama: ['Companies and Allied Matters Act 2020', 'https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf'],
   brs: ['Kenya Business Registration Service', 'https://brs.go.ke/companies-registry/'],
@@ -519,12 +523,13 @@ const extraLegalProfiles = {
   },
   'cac-checker': {
     coverage: 'Nigeria',
-    title: 'Business-name availability workflow',
-    intro: 'A business-name checker should do more than tell users to search. It should help them prepare alternatives, avoid prohibited words, and connect name availability to CAC filing and trademark risk.',
-    decisions: ['Whether the name is registrable as a business name, company name or trademark', 'Whether regulated words need prior approval or sector evidence', 'Whether a similar domain, social handle or trademark creates brand conflict'],
-    checklist: ['Prepare at least three name options before the CAC search', 'Check spelling, restricted words, existing company names and trademark conflicts', 'Move quickly from availability to reservation because name status can change'],
+    title: 'Business-name verification preparation',
+    intro: 'Prepare local name drafts and official verification steps. This workflow does not query the registry, reserve names, decide legal eligibility or establish current payable charges.',
+    decisions: ['Which local naming flags need official CAC or trademark verification', 'Whether regulated words need prior approval or sector evidence', 'Whether a similar domain, social handle or trademark creates brand conflict'],
+    checklist: ['Prepare alternative name drafts before the official CAC search', 'Check spelling, restricted words, existing company names and trademark conflicts', 'Move quickly from availability to reservation because name status can change'],
     redFlags: ['Using a name because the domain is free while CAC or trademark search fails', 'Restricted words such as bank, insurance, university or government without approval', 'Letting an agent reserve a name under an account you cannot access'],
-    sources: ['cac', 'cama'],
+    sources: ['cacLookup', 'cacPortalCurrent', 'cacCamaCurrent', 'nrsAdministration'],
+    sourceReviewLabel: 'Specific primary references inspected 13 October 2026; current fees and official availability remain unverified',
     related: [['CAC Registration Cost', '/tools/cac-cost/'], ['Trademark Registration', '/tools/trademark-registration/'], ['Business Registration', '/tools/business-registration/']],
     hubGroup: 'Business, Government And Compliance',
     icon: '&#x1f50d;',
@@ -1078,7 +1083,7 @@ function buildUpgrade(profile) {
   return [
     '<!-- LEGAL-DEEP-IMPROVEMENT:START -->',
     '<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">',
-    `  <div class="leg-upgrade-kicker">Reviewed ${htmlEscape(REVIEW_DATE)} · ${htmlEscape(profile.coverage)}</div>`,
+    `  <div class="leg-upgrade-kicker">${htmlEscape(profile.sourceReviewLabel || ('Reviewed ' + REVIEW_DATE))} · ${htmlEscape(profile.coverage)}</div>`,
     `  <h2 id="legal-upgrade-heading">${htmlEscape(profile.title)}</h2>`,
     `  <p>${htmlEscape(profile.intro)}</p>`,
     '  <div class="leg-upgrade-grid">',
@@ -1229,7 +1234,7 @@ function buildActionCopy(slug, profile) {
     'Primary checks:',
     sourceText(profile.sources),
     '',
-    `Reviewed by AfroTools workflow on ${REVIEW_DATE}. Informational only, not legal advice.`,
+    profile.sourceReviewLabel ? `Source context: ${profile.sourceReviewLabel}. Informational only, not legal advice.` : `Reviewed by AfroTools workflow on ${REVIEW_DATE}. Informational only, not legal advice.`,
   ].join('\n');
 }
 
