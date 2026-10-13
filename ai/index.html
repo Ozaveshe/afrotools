@@ -2175,7 +2175,7 @@
     function fromServerDecision(payload, query) {
       var decision = payload && payload.decision ? payload.decision : null;
       if (!decision) return null;
-      var workflow = byId(decision.selectedToolId) || workflowFromDecision(decision);
+      var workflow = byId(decision.selectedToolId) || workflowFromDecision(decision, payload.toolCall);
       var fallbackCopy = routerFallbackCopy(payload, decision);
       return {
         source: payload.source || "router",
@@ -2196,9 +2196,19 @@
       };
     }
 
-    function workflowFromDecision(decision) {
-      var title = String(decision.selectedToolId || "AfroTools tool").replace(/-/g, " ").replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
-      return card(decision.selectedToolId || "tool-search", title, decision.selectedRoute || "/search/", "Open the matched AfroTools tool.", [], [], decision.safetyDomain || "none", decision.privacyMode || "browser_local");
+    function catalogToolById(toolId) {
+      return getRouterManifest().find(function (entry) { return entry.id === toolId; }) || null;
+    }
+
+    function workflowFromDecision(decision, metadata) {
+      var toolId = decision.selectedToolId || "tool-search";
+      var catalogTool = catalogToolById(toolId);
+      var matchingMetadata = metadata && (metadata.id || metadata.toolId) === toolId ? metadata : null;
+      var metadataTitle = matchingMetadata && typeof matchingMetadata.title === "string" ? matchingMetadata.title.trim() : "";
+      if (metadataTitle.length > 200 || /[<>\u0000-\u001f]/.test(metadataTitle)) metadataTitle = "";
+      var title = catalogTool && catalogTool.title || metadataTitle || String(decision.selectedToolId || "AfroTools tool").replace(/-/g, " ").replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
+      var description = catalogTool && catalogTool.shortDescription || "Open the matched AfroTools tool.";
+      return card(toolId, title, decision.selectedRoute || "/search/", description, [], [], decision.safetyDomain || "none", decision.privacyMode || "browser_local");
     }
 
     function aiSessionId() {
@@ -2279,7 +2289,7 @@
         selectedRoute: selected.route || decision.selectedRoute || plan.toolCall && plan.toolCall.route || "/search/",
         safetyDomain: selected.category || decision.safetyDomain || plan.safety && plan.safety.safetyDomain || "none",
         privacyMode: plan.safety && plan.safety.privacyMode || decision.privacyMode || "browser_local"
-      });
+      }, selected);
       var extracted = Object.assign({}, decision.extractedInputs || {});
       var localExtracted = extractInputs(query, workflow);
       Object.keys(localExtracted || {}).forEach(function (key) {
@@ -2404,7 +2414,8 @@
 
     function getWorkflowTitle(toolId) {
       var workflow = byId(toolId);
-      return workflow ? workflow.title : prettyKey(toolId || "AI tool");
+      var catalogTool = workflow ? null : catalogToolById(toolId);
+      return workflow ? workflow.title : catalogTool ? catalogTool.title : prettyKey(toolId || "AI tool");
     }
 
     function projectContinueUrl(project) {
