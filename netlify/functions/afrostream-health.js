@@ -28,13 +28,14 @@ function readCount(res, fallback) {
   return match ? parseInt(match[1], 10) : fallback;
 }
 
-async function sb(path, count) {
+async function sb(path, count, signal) {
   var res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: 'Bearer ' + SUPABASE_KEY,
       Prefer: count ? 'count=exact' : ''
-    }
+    },
+    signal: signal
   });
   var data = await readJson(res);
   if (!res.ok) {
@@ -75,29 +76,30 @@ exports.handler = async function(event) {
   if (!SUPABASE_KEY) return { statusCode: 500, headers: h, body: '{"error":"SUPABASE service key not configured"}' };
 
   try {
+    var upstreamSignal = AbortSignal.timeout(8000);
     var now = new Date();
     var results = await Promise.all([
-      sb('as_creators?is_published=eq.true&select=id&limit=1', true),
-      sb('as_creator_snapshots?select=snapshot_date,created_at&order=snapshot_date.desc,created_at.desc&limit=1', true),
-      sb('as_streams?is_published=eq.true&select=id&limit=1', true),
-      sb('as_streams?is_published=eq.true&is_live=eq.true&stream_date=gte.' + encodeURIComponent(new Date(now.getTime() - 864e5).toISOString()) + '&select=id&limit=1', true),
-      sb('as_streams?is_published=eq.true&stream_date=gte.' + encodeURIComponent(new Date(now.getTime() - 864e5).toISOString()) + '&select=id&limit=1', true),
-      sb('as_streams?is_published=eq.true&select=stream_date,updated_at&order=updated_at.desc&limit=1', false),
-      sb('as_news?is_published=eq.true&select=id&limit=1', true),
-      sb('as_news?is_published=eq.true&published_at=gte.' + encodeURIComponent(new Date(now.getTime() - 7 * 864e5).toISOString()) + '&select=id&limit=1', true),
-      sb('as_news?is_published=eq.true&select=published_at,updated_at&order=published_at.desc&limit=1', false),
-      sb('as_news_sources?is_active=eq.true&select=name,last_checked_at,last_success_at,last_error,last_status_code,last_item_count&limit=200', false),
-      sb('as_creator_supporters?is_published=eq.true&select=id,is_verified,event_date,updated_at&limit=200', true),
-      sb('scraper_runs?scraper_id=eq.afrostream-sync&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
-      sb('scraper_runs?scraper_id=eq.afrostream-livecheck&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
-      sb('scraper_runs?scraper_id=eq.afrostream-news-monitor&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false)
+      sb('as_creators?is_published=eq.true&select=id&limit=1', true, upstreamSignal),
+      sb('as_creator_snapshots?select=snapshot_date,created_at&order=snapshot_date.desc,created_at.desc&limit=1', true, upstreamSignal),
+      sb('as_streams?is_published=eq.true&select=id&limit=1', true, upstreamSignal),
+      sb('as_streams?is_published=eq.true&is_live=eq.true&stream_date=gte.' + encodeURIComponent(new Date(now.getTime() - 864e5).toISOString()) + '&select=id&limit=1', true, upstreamSignal),
+      sb('as_streams?is_published=eq.true&stream_date=gte.' + encodeURIComponent(new Date(now.getTime() - 864e5).toISOString()) + '&select=id&limit=1', true, upstreamSignal),
+      sb('as_streams?is_published=eq.true&select=stream_date,updated_at&order=updated_at.desc&limit=1', false, upstreamSignal),
+      sb('as_news?is_published=eq.true&select=id&limit=1', true, upstreamSignal),
+      sb('as_news?is_published=eq.true&published_at=gte.' + encodeURIComponent(new Date(now.getTime() - 7 * 864e5).toISOString()) + '&select=id&limit=1', true, upstreamSignal),
+      sb('as_news?is_published=eq.true&select=published_at,updated_at&order=published_at.desc&limit=1', false, upstreamSignal),
+      sb('as_news_sources?is_active=eq.true&select=name,last_checked_at,last_success_at,last_error,last_status_code,last_item_count&limit=200', false, upstreamSignal),
+      sb('as_creator_supporters?is_published=eq.true&select=id,is_verified,event_date,updated_at&limit=200', true, upstreamSignal),
+      sb('scraper_runs?scraper_id=eq.afrostream-sync&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false, upstreamSignal),
+      sb('scraper_runs?scraper_id=eq.afrostream-livecheck&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false, upstreamSignal),
+      sb('scraper_runs?scraper_id=eq.afrostream-news-monitor&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false, upstreamSignal)
     ]);
 
     var creatorCount = results[0].count;
     var latestSnapshot = results[1].data[0] || null;
     var snapshotDate = latestSnapshot && latestSnapshot.snapshot_date || null;
     var snapshotRows = snapshotDate
-      ? await sb('as_creator_snapshots?snapshot_date=eq.' + encodeURIComponent(snapshotDate) + '&select=id&limit=1', true)
+      ? await sb('as_creator_snapshots?snapshot_date=eq.' + encodeURIComponent(snapshotDate) + '&select=id&limit=1', true, upstreamSignal)
       : { count: 0 };
     var sources = results[9].data;
     var supporters = results[10].data;
