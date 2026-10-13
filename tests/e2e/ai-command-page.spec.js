@@ -32,6 +32,13 @@ function routerDecision(overrides) {
   }, overrides || {});
 }
 
+async function openWorkflowDetails(page) {
+  const details = page.locator("#aiDetailsHost");
+  await details.locator("summary").click();
+  await expect(details.locator("details")).toHaveAttribute("open", "");
+  return details;
+}
+
 test("direct query load hydrates the editable input and deterministic workflow", async ({ page }) => {
   await quietExternalNoise(page);
 
@@ -40,21 +47,22 @@ test("direct query load hydrates the editable input and deterministic workflow",
   await expect(page.locator("#aiCommandInput")).toHaveValue("Write a CV for an electrical engineer in Ghana");
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("CV Builder");
-  await expect(card.locator("[data-tool-call-label]")).toContainText("Where you will continue");
-  await expect(card.locator("[data-tool-call-label]")).toContainText("/tools/cv-builder/");
+  const details = await openWorkflowDetails(page);
+  await expect(details.locator("[data-tool-call-label]")).toContainText("Where you will continue");
+  await expect(details.locator("[data-tool-call-label]")).toContainText("/tools/cv-builder/");
   await expect(card.locator(".ai-browse")).toHaveAttribute("href", "/search/?source=ai_private");
   await expect(card.locator(".ai-browse")).not.toHaveAttribute("href", /electrical|engineer|Ghana/i);
-  await expect(card).toContainText("You need");
-  await expect(card).toContainText("What I understood");
-  await expect(card).toContainText("I can prefill");
-  await expect(card).toContainText("I need one detail");
-  await expect(card).toContainText("You'll get");
+  await expect(details).toContainText("You need");
+  await expect(details).toContainText("What I understood");
+  await expect(details).toContainText("I can prefill");
+  await expect(details).toContainText("I need one detail");
+  await expect(details).toContainText("You'll get");
   await expect(card.locator("[data-workflow-intelligence]")).toHaveCount(0);
   await expect(card).not.toContainText("Workflow intelligence");
-  await expect(card).toContainText("Before you act");
-  await expect(card.locator("[data-ai-router-feedback]")).toContainText("Was this helpful?");
-  await card.locator("[data-ai-feedback='negative']").click();
-  await expect(card.locator("[data-ai-feedback-status]")).toContainText("Feedback saved for review.");
+  await expect(details).toContainText("Before you act");
+  await expect(details.locator("[data-ai-router-feedback]")).toContainText("Was this helpful?");
+  await details.locator("[data-ai-feedback='negative']").click();
+  await expect(details.locator("[data-ai-feedback-status]")).toContainText("Feedback saved for review.");
   const feedbackReport = await page.evaluate(function () {
     return window.AfroToolsAIIntentAnalytics.getReport();
   });
@@ -86,9 +94,10 @@ test("salary intake asks for pay period without guessing monthly", async ({ page
 
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("PAYE Calculator");
-  await expect(card).toContainText("Country: Nigeria");
-  await expect(card).toContainText("Gross Pay: 650000");
-  await expect(card).toContainText("Choose pay period.");
+  const details = await openWorkflowDetails(page);
+  await expect(details).toContainText("Country: Nigeria");
+  await expect(details).toContainText("Gross Pay: 650000");
+  await expect(details).toContainText("Choose pay period.");
   await expect(card.locator("[data-clarification-input]")).toHaveCount(1);
   await expect(card.locator("[data-clarification-input='payPeriod']")).toBeVisible();
 
@@ -139,7 +148,8 @@ test("real-life local routing covers common intake prompts", async ({ page }) =>
     await page.goto(`/ai/?q=${encodeURIComponent(query)}&router=off`, { waitUntil: "domcontentloaded" });
     const card = page.locator("[data-workflow-card]").first();
     await expect(card).toContainText(title);
-    await expect(card).toContainText(detail);
+    const details = await openWorkflowDetails(page);
+    await expect(details).toContainText(detail);
   }
 
   await page.goto("/ai/?q=Import%20a%20used%20Toyota%20from%20Japan%20to%20Ghana&router=off", { waitUntil: "domcontentloaded" });
@@ -152,7 +162,9 @@ test("real-life local routing covers common intake prompts", async ({ page }) =>
 
   await page.goto("/ai/?q=Create%20an%20invoice%20with%20VAT%20for%20my%20client&router=off", { waitUntil: "domcontentloaded" });
   const invoiceCard = page.locator("[data-workflow-card]").first();
-  await expect(invoiceCard).toContainText("Choose business country.");
+  const invoiceDetails = await openWorkflowDetails(page);
+  await expect(invoiceDetails).toContainText("Choose business country.");
+  await expect(invoiceDetails).not.toContainText("Target Role: my client");
   await expect(invoiceCard).not.toContainText("Target Role: my client");
 
   await page.goto("/ai/?q=Help%20me%20with%20Canada&router=off", { waitUntil: "domcontentloaded" });
@@ -164,9 +176,8 @@ test("homepage command handoff opens /ai without leaking prompt in the URL", asy
   await quietExternalNoise(page);
 
   await page.goto("/?ai_home_variant=command", { waitUntil: "domcontentloaded" });
-  const hero = page.locator("#afrotoolsAiCommandHero");
-  await hero.locator("#ai-home-command-input").fill("Calculate my take-home pay in Nigeria");
-  await hero.getByRole("button", { name: "Ask AfroTools AI" }).click();
+  await page.locator("#hero-search-input").fill("Calculate my take-home pay in Nigeria");
+  await page.locator("#hero-search-btn").click();
 
   await page.waitForURL(/\/ai\/\?source=homepage_input/);
   expect(new URL(page.url()).searchParams.get("q")).toBe(null);
@@ -190,7 +201,8 @@ test("advanced context controls enrich vague prompts before routing", async ({ p
   await page.getByRole("button", { name: "Find the right AfroTools tool" }).click();
   await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
   await expect(page.locator("[data-workflow-intelligence]")).toHaveCount(0);
-  await expect(page.locator("[data-workflow-card]").first()).toContainText("Before you act");
+  const details = await openWorkflowDetails(page);
+  await expect(details).toContainText("Before you act");
 });
 
 test("saved AI projects stay local by default and can be continued or deleted", async ({ page }) => {
@@ -199,8 +211,9 @@ test("saved AI projects stay local by default and can be continued or deleted", 
   await page.goto("/ai/?q=Write%20a%20CV%20for%20an%20electrical%20engineer%20in%20Ghana&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
-  await card.getByRole("button", { name: "Save on this device" }).click();
-  await expect(card.locator("[data-project-card-status]")).toContainText("Saved on this device");
+  const details = await openWorkflowDetails(page);
+  await details.getByRole("button", { name: "Save on this device" }).click();
+  await expect(details.locator("[data-project-card-status]")).toContainText("Saved on this device");
   await expect(page.locator("#aiSavedProjects")).toBeVisible();
   await expect(page.locator("#aiSavedProjectList")).toContainText("CV Builder");
 
@@ -238,8 +251,9 @@ test("signed-in AI project sync requires an explicit sync action and sends sanit
   });
 
   const card = page.locator("[data-workflow-card]").first();
-  await card.getByRole("button", { name: "Sync clean summary" }).click();
-  await expect(card.locator("[data-project-card-status]")).toContainText("Synced to your AfroTools account");
+  const details = await openWorkflowDetails(page);
+  await details.getByRole("button", { name: "Sync clean summary" }).click();
+  await expect(details.locator("[data-project-card-status]")).toContainText("Synced to your AfroTools account");
 
   const payload = await page.evaluate(function () {
     return window.__aiSyncPayload;
@@ -269,7 +283,8 @@ test("cost-of-living AI projects save structured budget context without raw prom
 
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("Cost of Living Planner");
-  await card.getByRole("button", { name: "Save on this device" }).click();
+  const details = await openWorkflowDetails(page);
+  await details.getByRole("button", { name: "Save on this device" }).click();
 
   const saved = await page.evaluate(function () {
     const items = JSON.parse(localStorage.getItem("afrotools.aiSavedProjects.v1") || "[]");
@@ -290,13 +305,14 @@ test("deterministic routing handles obvious import duty queries", async ({ page 
 
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("Import Duty Calculator");
-  await expect(card).toContainText("Destination Country: Nigeria");
-  await expect(card).toContainText("Item Category: Toyota Axio");
-  await expect(card.locator("[data-import-advisor]")).toContainText("Import advisor estimate");
-  await expect(card.locator("[data-import-advisor]")).toContainText("Planning estimate only");
-  await expect(card.locator("[data-import-advisor]")).toContainText("PDF brief");
-  await expect(card.locator("[data-import-advisor]")).toContainText("WhatsApp summary");
-  await expect(card.locator("[data-import-advisor]")).toContainText("JSON");
+  const details = await openWorkflowDetails(page);
+  await expect(details).toContainText("Destination Country: Nigeria");
+  await expect(details).toContainText("Item Category: Toyota Axio");
+  await expect(details.locator("[data-import-advisor]")).toContainText("Import advisor estimate");
+  await expect(details.locator("[data-import-advisor]")).toContainText("Planning estimate only");
+  await expect(details.locator("[data-import-advisor]")).toContainText("PDF brief");
+  await expect(details.locator("[data-import-advisor]")).toContainText("WhatsApp summary");
+  await expect(details.locator("[data-import-advisor]")).toContainText("JSON");
   await expect(card.locator("[data-open-tool]").first()).toHaveAttribute("href", /\/tools\/import-duty\/.*prefill=1/);
 });
 
@@ -321,15 +337,16 @@ test("import advisor PDF and WhatsApp exports use sanitized workflow report", as
   });
 
   const card = page.locator("[data-workflow-card]").first();
-  await card.locator('[data-workflow-export="pdf"][data-workflow-export-kind="import"]').click();
-  await expect(card.locator("[data-workflow-export-status]")).toContainText("PDF brief downloaded");
+  const details = await openWorkflowDetails(page);
+  await details.locator('[data-workflow-export="pdf"][data-workflow-export-kind="import"]').click();
+  await expect(details.locator("[data-workflow-export-status]")).toContainText("PDF brief downloaded");
   const pdfReport = await page.evaluate(function () { return window.__pdfReport; });
   expect(JSON.stringify(pdfReport)).toContain("Import Advisor Decision Brief");
   expect(JSON.stringify(pdfReport)).not.toContain("provider");
   expect(JSON.stringify(pdfReport)).not.toContain("token");
 
-  await card.locator('[data-workflow-export="whatsapp"][data-workflow-export-kind="import"]').click();
-  await expect(card.locator("[data-workflow-export-status]")).toContainText("Opening WhatsApp-friendly summary");
+  await details.locator('[data-workflow-export="whatsapp"][data-workflow-export-kind="import"]').click();
+  await expect(details.locator("[data-workflow-export-status]")).toContainText("Opening WhatsApp-friendly summary");
   const openedUrl = await page.evaluate(function () { return window.__openedUrl; });
   expect(openedUrl).toMatch(/^https:\/\/wa\.me\/\?text=/);
   expect(decodeURIComponent(openedUrl)).toContain("Import Advisor Decision Brief");
@@ -343,13 +360,14 @@ test("education workflow renders a study plan and scholarship prefill handoff", 
 
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("Study Abroad Planner");
-  await expect(card.locator("[data-education-plan]")).toContainText("Education plan");
-  await expect(card.locator("[data-education-plan]")).toContainText("Study Abroad Cost Planner");
-  await expect(card.locator("[data-education-plan]")).toContainText("Scholarship Finder");
-  await expect(card.locator("[data-education-plan]")).toContainText("Source and freshness");
-  await expect(card.locator("[data-education-plan]")).toContainText("Scholarship-heavy plan needed");
+  const details = await openWorkflowDetails(page);
+  await expect(details.locator("[data-education-plan]")).toContainText("Education plan");
+  await expect(details.locator("[data-education-plan]")).toContainText("Study Abroad Cost Planner");
+  await expect(details.locator("[data-education-plan]")).toContainText("Scholarship Finder");
+  await expect(details.locator("[data-education-plan]")).toContainText("Source and freshness");
+  await expect(details.locator("[data-education-plan]")).toContainText("Scholarship-heavy plan needed");
 
-  await card.getByRole("link", { name: "Open Scholarship Finder with profile" }).click();
+  await details.getByRole("link", { name: "Open Scholarship Finder with profile" }).click();
   await page.waitForURL(/\/tools\/scholarship-finder\/.*prefill=1/);
 
   const prefill = await page.evaluate(function () {
@@ -482,9 +500,10 @@ test("server router success renders a workflow card", async ({ page }) => {
   await expect(card).not.toContainText("server-side AfroTools router");
   await expect(card).toContainText("88% match");
   await expect(card).toContainText("Destination country");
-  await expect(card.locator("[data-tool-candidates]")).toContainText("Other helpful tools");
-  await expect(card.locator("[data-tool-candidates]")).toContainText("Study Abroad Cost Calculator");
-  await expect(card.locator("[data-tool-candidate='study-abroad-cost']")).toHaveAttribute("href", "/tools/study-abroad-cost/");
+  const details = await openWorkflowDetails(page);
+  await expect(details.locator("[data-tool-candidates]")).toContainText("Other helpful tools");
+  await expect(details.locator("[data-tool-candidates]")).toContainText("Study Abroad Cost Calculator");
+  await expect(details.locator("[data-tool-candidate='study-abroad-cost']")).toHaveAttribute("href", "/tools/study-abroad-cost/");
   await expect(card).not.toContainText("Find scholarships for a Cameroonian student");
 });
 
@@ -573,8 +592,9 @@ test("router failure still uses the full local tool catalog", async ({ page }) =
 
   const cvCard = page.locator("[data-workflow-card]").first();
   await expect(cvCard).toContainText(/CV Builder|CV \/ Resume Builder/);
-  await expect(cvCard).toContainText(/electrical engineer/i);
-  await expect(cvCard.locator("[data-tool-call-label]")).toContainText("/tools/cv-builder/");
+  await page.locator("#aiDetailsHost summary").click();
+  await expect(page.locator("#aiDetailsHost")).toContainText(/electrical engineer/i);
+  await expect(page.locator("#aiDetailsHost [data-tool-call-label]")).toContainText("/tools/cv-builder/");
   await expect(cvCard).not.toContainText("Electrical Load Calculator");
 });
 
@@ -659,7 +679,9 @@ test("provider 502 degraded router response stays usable", async ({ page }) => {
   await expect(card).toContainText("CV Builder");
   await expect(card).toContainText("Local match");
   await expect(page.locator("#aiModelStatus")).toContainText("Remote AI help did not finish");
-  await expect(card.locator("[data-tool-call-label]")).toContainText("/tools/cv-builder/");
+  await page.locator("#aiDetailsHost summary").click();
+  await expect(page.locator("#aiDetailsHost")).toContainText(/electrical engineer/i);
+  await expect(page.locator("#aiDetailsHost [data-tool-call-label]")).toContainText("/tools/cv-builder/");
 });
 
 test("low-confidence router result shows no-match browse fallback", async ({ page }) => {
@@ -746,6 +768,7 @@ test("career agent panel creates CV template starter prefill", async ({ page }) 
 
   await page.goto("/ai/?q=Write%20me%20a%20CV%20for%20an%20electrical%20engineer%20in%20Ghana&router=off", { waitUntil: "domcontentloaded" });
 
+  await openWorkflowDetails(page);
   await expect(page.locator("[data-career-plan]")).toContainText("Career agent plan");
   await expect(page.locator("[data-career-plan]")).toContainText("Safe CV rules");
   await expect(page.locator("[data-career-plan]")).toContainText("Do not fabricate degrees");
@@ -778,6 +801,7 @@ test("career agent panel creates CV template starter prefill", async ({ page }) 
 
 test("career agent AI starter profile is consent-gated and included in CV prefill", async ({ page }) => {
   await quietExternalNoise(page);
+  const advisorRequests = [];
   await page.addInitScript(function () {
     window.__careerEvents = [];
     window.AfroTools = window.AfroTools || {};
@@ -789,6 +813,7 @@ test("career agent AI starter profile is consent-gated and included in CV prefil
   });
   await page.route("**/api/ai-advisor", async function (route) {
     const body = JSON.parse(route.request().postData() || "{}");
+    advisorRequests.push({ body, headers: route.request().headers() });
     await route.fulfill({
       status: 200,
       contentType: "application/json; charset=utf-8",
@@ -812,13 +837,30 @@ test("career agent AI starter profile is consent-gated and included in CV prefil
     };
   });
   const panel = page.locator("[data-career-plan]");
+  await openWorkflowDetails(page);
   await panel.getByRole("button", { name: "Generate starter profile with AI" }).click();
   await expect(panel.locator("[data-career-profile-status]")).toContainText("Tick the consent box");
+  expect(advisorRequests).toEqual([]);
 
   await page.locator("#aiModelConsent").check();
+  page.once("dialog", async dialog => {
+    expect(dialog.type()).toBe("confirm");
+    expect(dialog.message()).toContain("Send this content for AI help?");
+    await dialog.dismiss();
+  });
+  await panel.getByRole("button", { name: "Generate starter profile with AI" }).click();
+  await expect(panel.locator("[data-career-profile-status]")).toContainText("Nothing was sent for AI help");
+  expect(advisorRequests).toEqual([]);
+  page.once("dialog", async dialog => {
+    expect(dialog.type()).toBe("confirm");
+    expect(dialog.message()).toContain("Send this content for AI help?");
+    await dialog.accept();
+  });
   await panel.getByRole("button", { name: "Generate starter profile with AI" }).click();
   await expect(panel.locator("[data-career-ai-output]")).toContainText("Electrical engineer focused on power systems");
   await expect(panel.locator("[data-career-profile-status]")).toContainText("AI starter profile generated");
+  expect(advisorRequests).toHaveLength(1);
+  expect(advisorRequests[0].headers["x-afrotools-ai-content-consent"]).toBe("accepted");
 
   const events = await page.evaluate(function () { return window.__careerEvents; });
   expect(events.some((item) => item.event === "cv_agent_ai_consent_declined")).toBe(true);
@@ -895,8 +937,9 @@ test("import advisor opens car workspace with private session prefill", async ({
 
   await page.goto("/ai/?q=Import%20a%202016%20Toyota%20Axio%20into%20Nigeria%20from%20Japan%20price%20%248500%20shipping%20%241200%20insurance%20%24250%20FX%201600%20and%201500cc%20Tin%20Can&router=off", { waitUntil: "domcontentloaded" });
   const card = page.locator("[data-workflow-card]").first();
-  await expect(card.locator("[data-import-advisor]")).toContainText("Car Import Cost Workspace");
-  const carWorkspace = card.getByRole("link", { name: "Open car workspace" });
+  const details = await openWorkflowDetails(page);
+  await expect(details.locator("[data-import-advisor]")).toContainText("Car Import Cost Workspace");
+  const carWorkspace = details.getByRole("link", { name: "Open car workspace" });
   const href = await carWorkspace.getAttribute("href");
   expect(href).toBe("/tools/car-import-cost/nigeria/");
   expect(href).not.toContain("8500");
@@ -913,18 +956,19 @@ test("energy advisor renders a decision brief and Solar ROI receives prefill", a
   await page.goto("/ai/?q=Should%20I%20install%20solar%20for%20my%20shop%20in%20Lagos%20with%20monthly%20bill%20NGN%20120000%205kVA%20generator%206%20hours%20daily&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
+  const details = await openWorkflowDetails(page);
   await expect(card).toContainText("Solar ROI Calculator");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Solar and generator advisor");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Monthly generator cost");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Questions to ask installer");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Planning estimate only");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Open AfroFuel with prefill");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Open generator calculator");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("PDF brief");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("Copy checklist");
-  await expect(card.locator("[data-energy-advisor]")).toContainText("JSON");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Solar and generator advisor");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Monthly generator cost");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Questions to ask installer");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Planning estimate only");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Open AfroFuel with prefill");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Open generator calculator");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("PDF brief");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("Copy checklist");
+  await expect(details.locator("[data-energy-advisor]")).toContainText("JSON");
 
-  await card.getByRole("link", { name: "Open Solar ROI with prefill" }).click();
+  await details.getByRole("link", { name: "Open Solar ROI with prefill" }).click();
   await page.waitForURL(/\/tools\/solar-roi\/nigeria\/.*prefill=1/);
 
   const prefill = await page.evaluate(function () {
@@ -948,15 +992,16 @@ test("SME finance assistant routes Kenya payroll into PAYE prefill", async ({ pa
   await page.goto("/ai/?q=Help%20me%20calculate%20payroll%20for%205%20employees%20in%20Kenya%20with%20KES%20250000%20monthly%20salary&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
+  const details = await openWorkflowDetails(page);
   await expect(card).toContainText("PAYE Calculator");
-  await expect(card.locator("[data-sme-finance]")).toContainText("SME finance assistant");
-  await expect(card.locator("[data-sme-finance]")).toContainText("Gross payroll");
-  await expect(card.locator("[data-sme-finance]")).toContainText("not tax");
-  await expect(card.locator("[data-sme-finance]")).toContainText("Partner/accounting placements");
-  await expect(card.locator("[data-sme-finance]")).toContainText("Open cashflow planner");
-  await expect(card.locator("[data-sme-finance]")).toContainText("TIN guide");
+  await expect(details.locator("[data-sme-finance]")).toContainText("SME finance assistant");
+  await expect(details.locator("[data-sme-finance]")).toContainText("Gross payroll");
+  await expect(details.locator("[data-sme-finance]")).toContainText("not tax");
+  await expect(details.locator("[data-sme-finance]")).toContainText("Partner/accounting placements");
+  await expect(details.locator("[data-sme-finance]")).toContainText("Open cashflow planner");
+  await expect(details.locator("[data-sme-finance]")).toContainText("TIN guide");
 
-  await card.getByRole("link", { name: "Open recommended tool" }).click();
+  await details.getByRole("link", { name: "Open recommended tool" }).click();
   await page.waitForURL(/\/kenya\/ke-paye.*prefill=1/);
 
   const payload = await page.evaluate(function () {
@@ -977,10 +1022,11 @@ test("SME finance assistant routes cashflow action with private prefill", async 
   await page.goto("/ai/?q=Build%20a%20cashflow%20forecast%20for%20a%20retail%20shop%20in%20Kenya%20with%20KES%20750000%20monthly%20revenue%20and%20KES%20250000%20fixed%20costs&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
+  const details = await openWorkflowDetails(page);
   await expect(card).toContainText("Business Tools");
-  await expect(card.locator("[data-sme-finance]")).toContainText("Cash Flow Forecast");
+  await expect(details.locator("[data-sme-finance]")).toContainText("Cash Flow Forecast");
 
-  await card.getByRole("link", { name: "Open cashflow planner" }).click();
+  await details.getByRole("link", { name: "Open cashflow planner" }).click();
   await page.waitForURL(/\/tools\/cash-flow-forecast\/.*prefill=1/);
 
   const payload = await page.evaluate(function () {
@@ -1020,11 +1066,12 @@ test("AI command result controls meet mobile touch and accessibility basics", as
   await page.goto("/ai/?q=Import%20a%202016%20Toyota%20Axio%20into%20Nigeria&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
+  const details = await openWorkflowDetails(page);
   await expect(card).toContainText("Import Duty Calculator");
   await expect(card).toHaveAttribute("role", "listitem");
   await expect(page.locator("#aiResultCards")).toHaveAttribute("role", "list");
-  await expect(card.locator('[data-workflow-export="pdf"]')).toHaveAttribute("aria-label", /PDF brief/i);
-  await expect(card.locator('[data-workflow-export="whatsapp"]')).toHaveAttribute("aria-label", /WhatsApp-friendly/i);
+  await expect(details.locator('[data-workflow-export="pdf"]')).toHaveAttribute("aria-label", /PDF brief/i);
+  await expect(details.locator('[data-workflow-export="whatsapp"]')).toHaveAttribute("aria-label", /WhatsApp-friendly/i);
 
   const metrics = await page.evaluate(function () {
     function minHeight(selector) {

@@ -846,6 +846,7 @@
   <script src="/assets/js/ai/french-transport-route-map.js?v=3a183e5b"></script>
   <script src="/assets/js/ai/swahili-route-map.generated.js?v=bb58ff0a"></script>
   <script src="/assets/js/ai/result-layout.js?v=4e85ace1" defer></script>
+  <script src="/assets/js/ai/guardrails.js?v=f4a52150"></script>
   <script src="/assets/js/ai/intent-router.js?v=d57b3845"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
@@ -2175,7 +2176,7 @@
     function fromServerDecision(payload, query) {
       var decision = payload && payload.decision ? payload.decision : null;
       if (!decision) return null;
-      var workflow = byId(decision.selectedToolId) || workflowFromDecision(decision);
+      var workflow = byId(decision.selectedToolId) || workflowFromDecision(decision, payload.toolCall);
       var fallbackCopy = routerFallbackCopy(payload, decision);
       return {
         source: payload.source || "router",
@@ -2196,9 +2197,19 @@
       };
     }
 
-    function workflowFromDecision(decision) {
-      var title = String(decision.selectedToolId || "AfroTools tool").replace(/-/g, " ").replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
-      return card(decision.selectedToolId || "tool-search", title, decision.selectedRoute || "/search/", "Open the matched AfroTools tool.", [], [], decision.safetyDomain || "none", decision.privacyMode || "browser_local");
+    function catalogToolById(toolId) {
+      return getRouterManifest().find(function (entry) { return entry.id === toolId; }) || null;
+    }
+
+    function workflowFromDecision(decision, metadata) {
+      var toolId = decision.selectedToolId || "tool-search";
+      var catalogTool = catalogToolById(toolId);
+      var matchingMetadata = metadata && (metadata.id || metadata.toolId) === toolId ? metadata : null;
+      var metadataTitle = matchingMetadata && typeof matchingMetadata.title === "string" ? matchingMetadata.title.trim() : "";
+      if (metadataTitle.length > 200 || /[<>\u0000-\u001f]/.test(metadataTitle)) metadataTitle = "";
+      var title = catalogTool && catalogTool.title || metadataTitle || String(decision.selectedToolId || "AfroTools tool").replace(/-/g, " ").replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
+      var description = catalogTool && catalogTool.shortDescription || "Open the matched AfroTools tool.";
+      return card(toolId, title, decision.selectedRoute || "/search/", description, [], [], decision.safetyDomain || "none", decision.privacyMode || "browser_local");
     }
 
     function aiSessionId() {
@@ -2279,7 +2290,7 @@
         selectedRoute: selected.route || decision.selectedRoute || plan.toolCall && plan.toolCall.route || "/search/",
         safetyDomain: selected.category || decision.safetyDomain || plan.safety && plan.safety.safetyDomain || "none",
         privacyMode: plan.safety && plan.safety.privacyMode || decision.privacyMode || "browser_local"
-      });
+      }, selected);
       var extracted = Object.assign({}, decision.extractedInputs || {});
       var localExtracted = extractInputs(query, workflow);
       Object.keys(localExtracted || {}).forEach(function (key) {
@@ -2404,7 +2415,8 @@
 
     function getWorkflowTitle(toolId) {
       var workflow = byId(toolId);
-      return workflow ? workflow.title : prettyKey(toolId || "AI tool");
+      var catalogTool = workflow ? null : catalogToolById(toolId);
+      return workflow ? workflow.title : catalogTool ? catalogTool.title : prettyKey(toolId || "AI tool");
     }
 
     function projectContinueUrl(project) {
@@ -3669,7 +3681,7 @@
       });
       target.querySelectorAll("[data-save-project]").forEach(function (button) {
         button.addEventListener("click", function () {
-          var status = button.closest("[data-workflow-card]") && button.closest("[data-workflow-card]").querySelector("[data-project-card-status]");
+          var status = button.closest(".ai-actions") && button.closest(".ai-actions").querySelector("[data-project-card-status]");
           var saved = saveCurrentProjectLocal();
           if (status) status.textContent = saved ? "Saved on this device." : "Could not save on this device.";
           setProjectStatus(saved ? "Saved project locally. Account sync is optional." : "Project save is unavailable in this browser.");
@@ -3677,7 +3689,7 @@
       });
       target.querySelectorAll("[data-sync-current-project]").forEach(function (button) {
         button.addEventListener("click", function () {
-          var status = button.closest("[data-workflow-card]") && button.closest("[data-workflow-card]").querySelector("[data-project-card-status]");
+          var status = button.closest(".ai-actions") && button.closest(".ai-actions").querySelector("[data-project-card-status]");
           var saved = saveCurrentProjectLocal();
           if (!saved) {
             if (status) status.textContent = "Could not prepare a clean project summary.";
@@ -4226,7 +4238,7 @@
     function handleLowConfidenceNow(query, generation) {
       if (generation !== routeGeneration) return;
       var catalogMatch = localCatalogRoute(query);
-      if (catalogMatch && catalogMatch.workflow && (Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE || catalogMatch.selectedToolId && catalogMatch.selectedToolId !== "tool-search")) {
+      if (catalogMatch && catalogMatch.workflow && Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE) {
         workflowState = createWorkflowState(catalogMatch, query, false);
         renderMatches(resultCards, [catalogMatch], query, true);
         track("ai_command_fallback_used", { reason: "low_confidence_full_catalog", query_length: query.length });
@@ -4244,6 +4256,11 @@
         if (modelStatus) modelStatus.textContent = "Using browser match from the full AfroTools catalog. You can open the tool now.";
         return;
       }
+      renderSafeBrowse(query, generation);
+    }
+
+    function renderSafeBrowse(query, generation) {
+      if (generation !== routeGeneration) return;
       workflowState = createEmptyWorkflowState();
       workflowState.originalQuery = query;
       workflowState.source = "fallback";
@@ -4290,6 +4307,23 @@
       }
       setState("loading");
       clearWorkflowCards();
+      // Check the existing policy before either remote routing or any browser
+      // match. A missing or failed policy must not enable unguarded fallbacks.
+      var promptAllowed = false;
+      try {
+        var guards = window.AfroToolsAIGuardrails;
+        var inspection = guards && typeof guards.inspectPrompt === "function" &&
+          guards.inspectPrompt(clean, { maxChars: guards.ROUTER_PROMPT_LIMIT || 1200 });
+        promptAllowed = Boolean(inspection && inspection.allowed === true);
+      } catch (err) {}
+      if (!promptAllowed) {
+        var directAnswer = document.getElementById("aiDirectAnswer");
+        if (directAnswer) directAnswer.hidden = true;
+        activeMatch = null;
+        renderSafeBrowse(clean, generation);
+        if (modelStatus) modelStatus.textContent = "Browse the tools below or edit your request. This request was not sent for AI help.";
+        return;
+      }
       // Notify the direct-answer panel (assets/js/ai/direct-answer.js);
       // it answers the question itself only with stored advisor consent.
       try {
@@ -4334,7 +4368,7 @@
         if (generation !== routeGeneration) return;
         var routerDisabled = err && err.message === "Router disabled for this session.";
         var catalogMatch = routerDisabled ? null : localCatalogRoute(clean);
-        if (catalogMatch && catalogMatch.workflow && (Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE || catalogMatch.selectedToolId && catalogMatch.selectedToolId !== "tool-search")) {
+        if (catalogMatch && catalogMatch.workflow && Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE) {
           track("ai_command_fallback_used", { reason: "router_failure_full_catalog", query_length: clean.length });
           workflowState = createWorkflowState(catalogMatch, clean, false);
           renderMatches(resultCards, [catalogMatch], clean, true);
