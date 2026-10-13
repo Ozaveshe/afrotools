@@ -30,13 +30,13 @@ function originalBrowserStep(block) {
 }
 
 test('mechanically preserves all current commands/env/specs/workers and Verify/smoke blocks', () => {
-  const original = cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  const original = fs.readFileSync(path.join(ROOT, 'tests/fixtures/ci/original-a225-workflow.yml'), 'utf8');
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
   assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));
   const body = original.split('  build:\n')[1].split('  e2e:\n')[0];
   const blocks = body.match(/      - name: .*?(?=\n      - name:|$)/gs);
-  assert.equal(blocks.length, inventory.producer.length + inventory.browser.length);
+  assert.equal(blocks.length + 1, inventory.producer.length + inventory.browser.length, 'Every original block plus the one separately pinned HA/YO gate');
   const covered = new Set();
   for (const [index, block] of blocks.entries()) {
     const name = block.split('\n')[0].slice('      - name: '.length);
@@ -232,3 +232,30 @@ test('an independent consumer restores exactly one archive and retains producer 
   assert.deepEqual(fs.readFileSync(path.join(consumer, c.MARKER)), fs.readFileSync(path.join(f.root, c.MARKER)));
   assert.deepEqual(c.treeManifest(consumer), f.manifest.dist);
 });
+
+const HA_YO_GATE_ID = 'browser-ha-yo-native';
+const CURRENT_INVENTORY_SHA256 = '2195691d447d35e03f23cc5f2cc5d1ea274a9cddb0e6ebcb5a4b50b98fc1979d';
+test('HA/YO addition preserves the complete current inventory and exact native command', () => {
+  const originalInventory = clone(inventory);
+  const addition = originalInventory.browser.pop();
+  assert.equal(addition.id, HA_YO_GATE_ID);
+  assert.equal(addition.preservationBaseline, '61455f84f0f75c48949f3b0ae9dce4300aa8b564');
+  assert.equal(addition.group, 1);
+  assert.deepEqual(addition.step, {
+    name: 'Verify Hausa margin and Yoruba naira native journeys in the optimized artifact',
+    env: {AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1', AFROTOOLS_TEST_DISABLE_ANALYTICS: '1', PORT: '52963'},
+    run: 'npx playwright test tests/e2e/ha-yo-native-journeys.spec.js tests/e2e/yoruba-naira-export.spec.js --project=chromium --workers=2 --retries=0 --trace=off'
+  });
+  assert.equal(addition.stepSha256, c.jsonHash(addition.step));
+  assert.equal(c.jsonHash(originalInventory), CURRENT_INVENTORY_SHA256, 'Complete 61455 inventory bytes and ordering must remain');
+});
+for (const status of ['failed', 'skipped', 'cancelled', 'missing']) {
+  test('aggregate rejects the supplemental HA/YO gate when ' + status, () => {
+    const f = goodAcceptance(), report = f.reports.find(item => item.group === 1);
+    const gate = report.gates.find(item => item.id === HA_YO_GATE_ID);
+    assert.ok(gate, 'HA/YO gate must be enrolled');
+    if (status === 'missing') report.gates = report.gates.filter(item => item.id !== HA_YO_GATE_ID);
+    else gate.status = status;
+    assert.throws(() => c.aggregate(inventory, f.manifest, f.reports, f.needs), status === 'missing' ? /missing/ : /gate failed/);
+  });
+}
