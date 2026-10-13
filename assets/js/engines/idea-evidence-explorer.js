@@ -169,14 +169,16 @@
     var seen = Object.create(null);
     return payload.claims.filter(function (claim) {
       if (!claim || claim.countryCode !== country || claim.claimType !== "registration_fee" || claim.entityType !== "business_name" ||
-          claim.status !== "source_checked" || !/^[a-z0-9-]{3,100}$/.test(claim.id || "") || seen[claim.id] ||
+          ["source_checked","applicability_unverified"].indexOf(claim.status) < 0 || !/^[a-z0-9-]{3,100}$/.test(claim.id || "") || seen[claim.id] ||
           typeof claim.amount !== "number" || finite(claim.amount) === null || claim.currency !== currencies[country] ||
           !Number.isInteger(claim.reviewCadenceDays) || claim.reviewCadenceDays < 1 || claim.reviewCadenceDays > 30 ||
           !claim.sourceName || !claim.sourceLocator || !Array.isArray(claim.exclusions) || !claim.exclusions.length ||
           !claim.label || ["en","fr","sw"].some(function (lang) { return !text(claim.label[lang], 160); })) return false;
       var observed = day(claim.observedAt), reviewed = day(claim.reviewedAt);
       if (observed === null || reviewed === null || observed > reviewed || reviewed > today ||
-          (claim.sourceDocumentDate !== null && (day(claim.sourceDocumentDate) === null || day(claim.sourceDocumentDate) > observed)) ||
+          (claim.sourcePublicationDate !== null && (day(claim.sourcePublicationDate) === null || day(claim.sourcePublicationDate) > observed)) ||
+          (claim.sourceSignatureDate !== null && (day(claim.sourceSignatureDate) === null || day(claim.sourceSignatureDate) > observed)) ||
+          (claim.sourcePublicationDate && claim.sourceSignatureDate && day(claim.sourceSignatureDate) > day(claim.sourcePublicationDate)) ||
           (claim.effectiveFrom !== null && (day(claim.effectiveFrom) === null || day(claim.effectiveFrom) > today))) return false;
       try {
         var source = new URL(claim.sourceUrl);
@@ -185,11 +187,12 @@
       seen[claim.id] = true;
       return true;
     }).map(function (claim) {
-      var fresh = today - day(claim.reviewedAt) <= claim.reviewCadenceDays * 86400000;
+      var current = claim.status === "source_checked";
+      var fresh = current && today - day(claim.reviewedAt) <= claim.reviewCadenceDays * 86400000;
       return { id:claim.id, countryCode:country, label:{en:text(claim.label.en,160),fr:text(claim.label.fr,160),sw:text(claim.label.sw,160)},
-        state:fresh ? "source_checked" : "expired", amount:fresh ? claim.amount : null, currency:claim.currency,
+        state:!current ? "applicability_unverified" : fresh ? "source_checked" : "expired", amount:fresh ? claim.amount : null, currency:claim.currency,
         sourceName:text(claim.sourceName,200), sourceUrl:claim.sourceUrl, sourceLocator:text(claim.sourceLocator,250),
-        observedAt:claim.observedAt, reviewedAt:claim.reviewedAt, sourceDocumentDate:claim.sourceDocumentDate,
+        observedAt:claim.observedAt, reviewedAt:claim.reviewedAt, sourcePublicationDate:claim.sourcePublicationDate, sourceSignatureDate:claim.sourceSignatureDate,
         effectiveFrom:claim.effectiveFrom };
     });
   }

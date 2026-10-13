@@ -29,6 +29,6 @@ test('uncovered country and failed reference request preserve the idea dialog',a
  await page.keyboard.press('Escape');await page.reload();await page.unroute('**/data/ideas/registration-evidence.json');await page.route('**/data/ideas/registration-evidence.json',route=>route.fulfill({status:503,body:'unavailable'}));
  await page.locator('[data-search-form] button[type=submit]').click();await page.locator('.iee-card button[data-action^="details:"]').click();await expect(page.locator('[data-registration-reference]')).toContainText('reference is unavailable');await expect(page.locator('.iee-dialog')).toContainText('Synthetic shop');
 });
-test('Nigeria reference retains actual document date without treating filename as effective date',async({page})=>{
- await open(page,routes[0][0],ledger,'NG');const panel=page.locator('[data-registration-reference]');await expect(panel).toContainText('20,000');await expect(panel).toContainText('2024-10-31');await expect(panel.locator('a')).toHaveAttribute('href',ledger.claims[1].sourceUrl);
+test('Nigeria reference separates publication and signature dates and withholds an unproven current amount',async({page})=>{
+ await open(page,routes[0][0],ledger,'NG');const panel=page.locator('[data-registration-reference]');await expect(panel).toContainText('Current fee applicability is unverified');await expect(panel).not.toContainText('20,000');await expect(panel).toContainText('Publication date: 2025-05-29');await expect(panel).toContainText('Signature date: 2024-10-31');await expect(panel.locator('a')).toHaveAttribute('href',ledger.claims[1].sourceUrl);
 });
