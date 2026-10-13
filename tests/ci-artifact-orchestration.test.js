@@ -72,6 +72,17 @@ test('inventory rejects duplicate commands, unsupported contexts and changed nat
   assert.throws(() => c.inventoryCheck(expression), /expression/);
 });
 
+test('runner-specific paths are bound at step scope, never pre-run job env', () => {
+  const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
+  for (const job of current.split(/^  [a-z_]+:\n/m).slice(1)) {
+    const header = job.split('    steps:\n')[0];
+    const jobEnv = header.split('    env:\n')[1] || '';
+    assert.doesNotMatch(jobEnv, /\$\{\{\s*(runner|steps|job|env)\./, 'GitHub does not allow these contexts in jobs.<job_id>.env');
+  }
+  assert.match(current, /name: Run assigned unchanged native commands against the sealed artifact\n        env:\n          SEALED_BUNDLE: \$\{\{ runner.temp \}\}/);
+  assert.match(current, /name: Require every original gate, source\/artifact identity and original deadline\n        env:\n          SEALED_BUNDLE: \$\{\{ runner.temp \}\}/);
+});
+
 function goodAcceptance() {
   const manifest = {commit: 'a'.repeat(40), tree: 'b'.repeat(40), runId: '42', attempt: '1', deadline: Date.now() + 60000,
     inventorySha256: c.jsonHash(inventory), distTreeSha256: 'c'.repeat(64), sourceTreeSha256: 'd'.repeat(64), archiveSha256: 'e'.repeat(64)};

@@ -204,8 +204,6 @@ jobs:
       SEALED_TREE: ${{ needs.artifact.outputs.tree }}
       SEALED_DEADLINE: ${{ needs.artifact.outputs.deadline }}
       SEALED_MANIFEST_SHA256: ${{ needs.artifact.outputs.manifest_sha256 }}
-      SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
-      GROUP_EVIDENCE: ${{ runner.temp }}/ci-browser-evidence
       BROWSER_GROUP: ${{ matrix.group }}
     steps:
       - name: Checkout repository
@@ -224,6 +222,9 @@ jobs:
           path: ${{ runner.temp }}/sealed-artifact
 
       - name: Run assigned unchanged native commands against the sealed artifact
+        env:
+          SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
+          GROUP_EVIDENCE: ${{ runner.temp }}/ci-browser-evidence
         run: node scripts/ci-artifact-browser.js group
 
       - name: Preserve each original gate log and native failure evidence
@@ -245,8 +246,6 @@ jobs:
       SEALED_TREE: ${{ needs.artifact.outputs.tree }}
       SEALED_DEADLINE: ${{ needs.artifact.outputs.deadline }}
       SEALED_MANIFEST_SHA256: ${{ needs.artifact.outputs.manifest_sha256 }}
-      SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
-      GROUP_REPORTS: ${{ runner.temp }}/ci-browser-reports
       NEEDS_JSON: ${{ toJSON(needs) }}
     steps:
       - name: Checkout repository
@@ -270,6 +269,9 @@ jobs:
           path: ${{ runner.temp }}/ci-browser-reports
 
       - name: Require every original gate, source/artifact identity and original deadline
+        env:
+          SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
+          GROUP_REPORTS: ${{ runner.temp }}/ci-browser-reports
         run: node scripts/ci-artifact-browser.js aggregate
 
   e2e:
