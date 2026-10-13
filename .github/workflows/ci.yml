@@ -363,6 +363,16 @@ jobs:
           PORT: '4204'
         run: npx playwright test tests/e2e/legal-workflow-local-print.spec.js --project=chromium --workers=1 --retries=0 --trace=off
 
+      - name: Verify JSON and hash utility recovery in the native artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
+          PORT: '4244'
+        run: |
+          node --test tests/developer-json-hash-source-contracts.test.js
+          npx playwright test tests/e2e/developer-json-hash-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
