@@ -29,10 +29,11 @@ function replacePreviousHero(html,row,figure) {
  return html.slice(0,start.index)+figure+html.slice(end);
 }
 
-function applyBindings(check=false) {
- let changed=0;
- for(const row of bindings) {
+function validateBindingPaths(row) {
   if(!/^(?:fr\/)?blog\/[a-z0-9/-]+\.html$/.test(row.file)||row.file.includes('..')||!/^\/assets\/img\/(?:blog|tools)\/[a-z0-9-]+\.webp$/.test(row.path)) throw new Error('Invalid reviewed article binding');
+}
+function applyBinding(before,row) {
+  validateBindingPaths(row);
   const file=path.join(ROOT,row.file),image=path.join(ROOT,row.path),bytes=fs.readFileSync(image),size=imageSize(image);
   if(crypto.createHash('sha256').update(bytes).digest('hex')!==row.sha256||size.w!==row.width||size.h!==row.height) throw new Error('Reviewed artwork changed '+row.path);
   const generated=row.generation_slug&&generatedArtwork.get(row.generation_slug);
@@ -43,7 +44,7 @@ function applyBindings(check=false) {
    if(crypto.createHash('sha256').update(variantBytes).digest('hex')!==variant.sha256||dimensions.w!==variant.width||dimensions.h!==variant.height) throw new Error('Generated variant changed');
   }
   const responsive=generated?` srcset="${escapeHtml(generated.variants.map(v=>`${v.path} ${v.width}w`).join(', '))}" sizes="${row.placement==='listing-card'?'(max-width: 640px) 100vw, 400px':'(max-width: 800px) 100vw, 1200px'}"`:'';
-  const before=fs.readFileSync(file,'utf8');let after=before;
+  let after=before;
   if(row.placement==='article-hero') {
    const custom=Boolean(row.layout);
    const marker=row.layout==='car-import' ? before.match(/<h2\b[^>]*>/)?.[0] : row.layout==='main-layout' ? before.match(/<main\b[^>]*>/)?.[0] : row.layout==='article-layout' ? before.match(/<article\b[^>]*>/)?.[0] : '<article class="article-layout">';
@@ -85,6 +86,18 @@ function applyBindings(check=false) {
     visit(schema);return updated?start+JSON.stringify(schema).replace(/</g,'\\u003c')+end:all;
    });
   }
+  return after;
+}
+function applyBindingsToHtml(relativeFile,html) {
+ for(const row of bindings.filter(row=>row.file===relativeFile)) html=applyBinding(html,row);
+ return html;
+}
+function applyBindings(check=false) {
+ let changed=0;
+ for(const row of bindings) validateBindingPaths(row);
+ for(const relativeFile of new Set(bindings.map(row=>row.file))) {
+  const file=path.join(ROOT,relativeFile),before=fs.readFileSync(file,'utf8');
+  const after=applyBindingsToHtml(relativeFile,before);
   if(after!==before){changed++;if(!check)fs.writeFileSync(file,after);}
  }
  return changed;
@@ -100,4 +113,4 @@ function apply(check=false){let changed=0;for(const row of cohort.images.filter(
  if(after!==before){changed++;if(!check)fs.writeFileSync(file,after);}
  }changed+=applyBindings(check);if(check&&changed)throw new Error(changed+' reviewed article images need refresh');return changed;}
 if(require.main===module)console.log(JSON.stringify({changed:apply(process.argv.includes('--check'))}));
-module.exports={apply};
+module.exports={apply,applyBindingsToHtml};

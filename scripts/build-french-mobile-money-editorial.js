@@ -277,7 +277,7 @@ function transform(source) {
 }
 
 const current = fs.readFileSync(PAGE_PATH, 'utf8');
-const expected = transform(current);
+const expected = require('./apply-reviewed-blog-images').applyBindingsToHtml(PAGE_REL, transform(current));
 
 if (current === expected) {
   console.log(`French mobile-money editorial surface is current: ${PAGE_REL}`);
