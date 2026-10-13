@@ -360,6 +360,21 @@ test('quality report is deterministic for an explicit as-of date', function () {
   assert.strictEqual(first.findings.filter((finding) => finding.severity === 'error').length, 0);
   assert.strictEqual(first.fixtures.failed, 0);
   assert.deepStrictEqual(first.fixtures.changes, [
+    'business-roi-review-age-leap-next',
+    'business-roi-review-age-leap-today',
+    'business-roi-review-age-leap-year-boundary',
+    'business-roi-review-age-march1-anniversary',
+    'business-roi-review-age-ordinary-today',
+    'business-roi-review-age-rolled-month',
+    'business-roi-review-age-short-month',
+    'business-roi-review-ics-en',
+    'business-roi-review-ics-fr',
+    'business-roi-review-ics-sw',
+    'business-roi-review-time-cairo-gap',
+    'business-roi-review-time-casablanca-gap',
+    'business-roi-review-time-fold-earlier',
+    'business-roi-review-time-fold-reject',
+    'business-roi-review-time-invalid-calendar',
     'paye-gh-defaults',
     'paye-gh-large-decimal',
     'paye-ug-large-decimal',
