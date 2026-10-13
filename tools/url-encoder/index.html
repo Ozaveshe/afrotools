@@ -137,6 +137,12 @@
     .query-head{display:none}
     .panel-head{display:block}
   }
+  html[data-theme="dark"] .main .panel-head{background:#122033!important}
+  html[data-theme="dark"] .main .panel-title{color:#eef5ff!important}
+  html[data-theme="dark"] .main .panel-sub{color:#cbd5e1!important}
+  html[data-theme="dark"] .main .panel-body button:not(.primary):not(.danger){background:#24364f!important;color:#eef5ff!important;border-color:#64748b}
+  html[data-theme="dark"] .main .panel-body button:not(.primary):not(.danger):hover{background:#304968!important}
+  html[data-theme="dark"] .main .panel-body .tab.active{background:#123e65!important}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When should I use encodeURIComponent instead of encodeURI?","acceptedAnswer":{"@type":"Answer","text":"Use encodeURIComponent for user-entered values that will become one path segment, one query key or one query value. Use encodeURI only when you already have a complete URL and want to preserve URL delimiters like colon, slash, question mark and ampersand."}},{"@type":"Question","name":"Why does this tool warn about double encoding?","acceptedAnswer":{"@type":"Answer","text":"Double encoding often appears as `%2520`, which means an already encoded `%20` was encoded again. That can break redirects, signed URLs, callback URLs and search filters."}},{"@type":"Question","name":"Does removing tracking parameters change the destination?","acceptedAnswer":{"@type":"Answer","text":"Usually it keeps the destination while removing analytics parameters such as `utm_source`, `fbclid`, `gclid` or `msclkid`. Some sites misuse tracking parameters for routing, so test important campaign URLs before publishing."}}]}
@@ -256,6 +262,10 @@
             <div>
               <strong>decodeURIComponent</strong>
               <div class="light-output" id="decodeOut"></div>
+            </div>
+            <div>
+              <strong>Form/query decode (+ becomes space)</strong>
+              <div class="light-output" id="formDecodeOut"></div>
             </div>
           </div>
           <div class="row">
@@ -698,7 +708,8 @@
     set('encodeComponentOut', function(){ return codecs.url.encodeComponent(value); });
     set('rfcOut', function(){ return fixedEncodeURIComponent(value); });
     set('formOut', function(){ return codecs.url.encodeFormValue(value); });
-    set('decodeOut', function(){ return codecs.url.decodeFormValue(value); });
+    set('decodeOut', function(){ return codecs.url.decodeComponent(value); });
+    set('formDecodeOut', function(){ return codecs.url.decodeFormValue(value); });
   }
   function saveHistory(){
     if (!parsedUrl || parsedUrl.error) return;
