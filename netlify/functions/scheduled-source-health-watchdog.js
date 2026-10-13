@@ -244,7 +244,7 @@ async function checkScraperHealth(summary, nowMs = null) {
     // mistaken for a future timestamp. Tests can supply a fixed observation.
     const observedMs = nowMs == null ? Date.now() : nowMs;
     const scraperSummary = summarizeScrapers(result.rows, { now: observedMs });
-    const rows = scraperSummary.scrapers;
+    const rows = scraperSummary.scrapers.filter(row => row.health_status !== 'retired_history');
     const unhealthy = [];
     const stale = [];
 
@@ -262,7 +262,10 @@ async function checkScraperHealth(summary, nowMs = null) {
       health_scope: scraperSummary.health_scope,
       scheduled_proof_status: scraperSummary.scheduled_proof_status,
       unknown_owner_count: scraperSummary.unknown_owner_count,
-      total: rows.length,
+      total: scraperSummary.total_count,
+      active_total: rows.length,
+      retired_history_count: scraperSummary.retired_history_count,
+      retired_history: scraperSummary.scrapers.filter(row => row.health_status === 'retired_history'),
       unhealthy_count: unhealthy.length,
       stale_count: stale.length,
       unhealthy: unhealthy.slice(0, 20),
@@ -558,6 +561,8 @@ function safeSummary(summary, includeDetails) {
         scheduled_proof_status: summary.sources.scraper_health.scheduled_proof_status || 'not_checked',
         unknown_owner_count: summary.sources.scraper_health.unknown_owner_count == null ? null : summary.sources.scraper_health.unknown_owner_count,
         total: summary.sources.scraper_health.total,
+        active_total: summary.sources.scraper_health.active_total,
+        retired_history_count: summary.sources.scraper_health.retired_history_count,
         unhealthy_count: summary.sources.scraper_health.unhealthy_count,
         stale_count: summary.sources.scraper_health.stale_count,
       } : null,

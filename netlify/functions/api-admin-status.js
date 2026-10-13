@@ -152,7 +152,10 @@ function buildFreshnessSummary(freshness) {
 
 function buildScraperSummary(scraperHealth) {
   var scrapers = scraperHealth && Array.isArray(scraperHealth.scrapers) ? scraperHealth.scrapers : [];
-  var unhealthy = scrapers.filter(function(scraper) {
+  var activeScrapers = scrapers.filter(function(scraper) {
+    return scraper.health_status !== 'retired_history';
+  });
+  var unhealthy = activeScrapers.filter(function(scraper) {
     return !scraper.is_healthy;
   }).map(function(scraper) {
     return scraper.scraper_id || scraper.name || 'unknown-scraper';
@@ -160,8 +163,11 @@ function buildScraperSummary(scraperHealth) {
 
   return {
     total_count: scraperHealth && typeof scraperHealth.total_count === 'number' ? scraperHealth.total_count : scrapers.length,
-    healthy_count: scraperHealth && typeof scraperHealth.healthy_count === 'number' ? scraperHealth.healthy_count : (scrapers.length - unhealthy.length),
+    healthy_count: scraperHealth && typeof scraperHealth.healthy_count === 'number' ? scraperHealth.healthy_count : (activeScrapers.length - unhealthy.length),
     unhealthy_scrapers: unhealthy,
+    active_total_count: scraperHealth && typeof scraperHealth.active_total_count === 'number' ? scraperHealth.active_total_count : activeScrapers.length,
+    retired_history_count: scraperHealth && typeof scraperHealth.retired_history_count === 'number' ? scraperHealth.retired_history_count : (scrapers.length - activeScrapers.length),
+    retired_history_scrapers: scrapers.filter(function(scraper) { return scraper.health_status === 'retired_history'; }).map(function(scraper) { return scraper.scraper_id; }),
     health_scope: scraperHealth && scraperHealth.health_scope ? scraperHealth.health_scope : 'unknown',
     scheduled_proof_status: scraperHealth && scraperHealth.scheduled_proof_status ? scraperHealth.scheduled_proof_status : 'not_checked',
     unknown_owner_count: scraperHealth && typeof scraperHealth.unknown_owner_count === 'number' ? scraperHealth.unknown_owner_count : null,
