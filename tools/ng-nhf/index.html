@@ -105,7 +105,8 @@ h1 em{color:#bbf7d0;font-style:normal}
 
 /* MAIN LAYOUT */
 .tool-main{padding:28px 0 72px;background:#FAFAF8}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;align-items:start}
+.tool-main-inner > *{min-width:0}
 
 /* CARDS */
 .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
@@ -145,7 +146,7 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 .program-banner .admin{font-size:.68rem;font-weight:600;margin-top:6px;opacity:.7}
 
 /* TABS */
-.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px}
+.tab-bar{display:flex;flex-wrap:wrap;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px}
 .tab-btn{padding:10px 18px;font-size:.76rem;font-weight:700;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;font-family:inherit;letter-spacing:.02em}
 .tab-btn:hover{color:var(--afro-dark)}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -212,7 +213,7 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 .ai-msg.bot{background:var(--bg);border:1px solid var(--border)}
 
 /* RESPONSIVE */
-@media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.sidebar{order:-1}}
+@media(max-width:900px){.tool-main-inner{grid-template-columns:minmax(0,1fr)}.sidebar{order:-1}}
 @media(max-width:600px){.row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}.result-box.highlight{grid-column:auto}.cmp-table{font-size:.68rem}.tab-btn{padding:8px 10px;font-size:.7rem}.country-pills{gap:4px}.country-pill{padding:5px 10px;font-size:.66rem}}
 </style>
 <script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
