@@ -224,6 +224,8 @@ async function handleHealth(CORS) {
     };
   });
 
+  categories.shipping = {...require('./_shared/shipping-reference').referenceStatus(await getData('shipping-rates-latest'),meta.shipping || {},now,10080,
+    require('./scheduled-fetch-shipping')._referenceCatalog),last_updated:null};
   const agriculture = require('./_shared/agri-reference').referenceStatus(await getData('agri-inputs-latest'), meta.agriculture || {}, now, 10080);
   categories.agriculture = {...categories.agriculture, ...agriculture, last_updated:null};
   const feeds = require('./_shared/reference-feeds');
@@ -305,8 +307,10 @@ async function handleStocks(params, CORS) {
 async function handleShipping(params, CORS) {
   var { data } = await getOrFetch('shipping-rates-latest', 300000);
   if (!data) return jsonResp(503, { error: 'Shipping data unavailable' }, CORS);
-
-  var result = { timestamp: data.timestamp };
+  data = require('./_shared/shipping-reference').normalizeSnapshot(data,Date.now(),require('./scheduled-fetch-shipping')._referenceCatalog);
+  if (!data) return jsonResp(503, { error: 'Shipping reference data is unavailable or invalid' }, CORS);
+  var result = {timestamp:data.timestamp,collected_at:data.collected_at,source:data.source,source_type:data.source_type,
+    reference_status:data.reference_status,reference_reviewed_at:null,current_prices:false};
 
   if (params.port) {
     var ports = (data.ports || []).filter(function(p) {

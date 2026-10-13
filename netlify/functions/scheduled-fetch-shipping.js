@@ -3,15 +3,15 @@
  * Runs daily at 4am via Netlify Scheduled Functions.
  *
  * Sources:
- *  1. Freightos Baltic Index (FBX) — container shipping benchmark
- *  2. World Bank logistics performance index
- *  3. Reference data with route-based estimates
+ *  1. Maintained, unreviewed route and demurrage planning estimates.
+ *  2. Separately dated World Bank logistics performance context, when available.
+ * No carrier quote or Freightos collection is implemented here.
  *
  * Tracks key African trade routes and port costs.
  * Writes to Netlify Blobs 'live-data' → key 'shipping-rates-latest'.
  */
 
-const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const shippingReference = require('./_shared/shipping-reference');
 
 // Key African ports and trade routes
 var PORTS = {
@@ -72,15 +72,14 @@ var DEMURRAGE = {
 };
 
 /**
- * Source 1: Freightos API (if key available) + World Bank LPI
+ * Optional World Bank LPI context; it does not verify freight or port fees.
  */
 async function fetchShippingData() {
-  var now = new Date().toISOString().slice(0, 10);
-
+  const { fetchWithRetry } = require('./_shared/scraper-base');
   // Try World Bank LPI (Logistics Performance Index)
   var lpiMap = {};
   try {
-    var lpiUrl = 'https://api.worldbank.org/v2/country/ALL/indicator/LP.LPI.OVRL.XQ?date=2020:2025&format=json&per_page=500';
+    var lpiUrl = shippingReference.LPI_URL;
     var res = await fetchWithRetry(lpiUrl, { headers: { 'Accept': 'application/json' } });
     var json = await res.json();
     if (json && json[1]) {
@@ -109,6 +108,7 @@ async function fetchShippingData() {
       demurrage: demurrage,
       logistics_score: lpi ? lpi.score : null,
       logistics_year: lpi ? lpi.year : null,
+      logistics_source: lpi ? {name:'World Bank LPI',url:shippingReference.LPI_URL} : null,
     };
   });
 
@@ -123,7 +123,7 @@ async function fetchShippingData() {
       rate_20ft_usd: route.rate_20ft,
       rate_40ft_usd: route.rate_40ft,
       transit_days: route.transit_days,
-      last_updated: now,
+      last_updated: null,
       source: 'reference',
     };
   });
@@ -132,22 +132,21 @@ async function fetchShippingData() {
 }
 
 function transformShippingData(data) {
-  return {
-    timestamp: new Date().toISOString(),
-    ports: data.ports,
-    routes: data.routes,
-    port_count: data.ports.length,
-    route_count: data.routes.length,
-  };
+  return shippingReference.buildSnapshot(data, new Date().toISOString(), exports._referenceCatalog);
 }
 
+// One maintained numeric owner for both collection and strict legacy recognition.
+exports._referenceCatalog = Object.freeze({routes:ROUTES, ports:PORTS, demurrage:DEMURRAGE});
+
 exports.handler = async function(event) {
+  const { runScraper } = require('./_shared/scraper-base');
   return runScraper({
     id: 'shipping-rates',
     blobKey: 'shipping-rates-latest',
     metaKey: 'shipping',
+    sourceType: 'reference',
     sources: [
-      { name: 'MultiSource', fn: fetchShippingData },
+      { name: shippingReference.SOURCE, fn: fetchShippingData },
     ],
     transform: transformShippingData,
   });

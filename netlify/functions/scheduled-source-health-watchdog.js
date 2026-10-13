@@ -149,6 +149,17 @@ async function checkLiveDataMeta(summary, nowMs) {
 
   for (const watch of LIVE_DATA_WATCHES) {
     const catMeta = meta[watch.metaKey] || meta[watch.id] || {};
+    if (watch.id === 'shipping') {
+      const payload = await getData(watch.blobKey);
+      const reference = require('./_shared/shipping-reference').referenceStatus(payload,catMeta,nowMs,watch.staleAfterMinutes,
+        require('./scheduled-fetch-shipping')._referenceCatalog);
+      categories.push({id:watch.id,blob_key:watch.blobKey,...reference,severity:watch.severity});
+      pushIssue(summary,reference.collection_status === 'offline' ? 'stale' : 'degraded',{
+        id:watch.id,surface:'live_data_meta',severity:watch.severity,age_minutes:reference.age_minutes,updated_at:reference.collected_at,
+        message:reference.collection_status === 'offline' ? 'Shipping reference data is unavailable or invalid' :
+          'Freight and port fees remain unreviewed planning references; collection status: '+reference.collection_status});
+      continue;
+    }
     if (['insurance','property','salaries'].includes(watch.id)) {
       const payload = await getData(watch.blobKey);
       const reference = require('./_shared/reference-feeds').referenceStatus(watch.id,payload,catMeta,nowMs,watch.staleAfterMinutes);
