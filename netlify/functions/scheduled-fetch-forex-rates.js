@@ -14,6 +14,8 @@ const { setData, getData, updateMeta } = require('./_shared/data-store');
 const { storageDiagnostic } = require('./_shared/storage-diagnostics');
 const { fetchWithRetry } = require('./_shared/scraper-request');
 const fxEvidence = require('./_shared/reference-fx');
+const { findContract } = require('./_shared/live-data-contracts');
+const MAX_OBSERVATION_AGE_MS = findContract('forex-latest').maxAgeHours * 60 * 60 * 1000;
 
 // All African + global currencies we track
 const AFRICAN_CURRENCIES = [
@@ -187,16 +189,21 @@ exports.handler = async function (event) {
       console.log(`[forex-fetch] Trying source: ${source.name}`);
       const result = await source.fn();
       const coverage = countTrackedRates(result.rates);
+      const observedAt = fxEvidence.timestamp(result.last_updated);
+      const observationAge = observedAt ? Date.now() - Date.parse(observedAt) : NaN;
+      const observationProblem = !observedAt ? 'invalid-observation-date'
+        : observationAge < 0 ? 'future-observation'
+        : observationAge > MAX_OBSERVATION_AGE_MS ? 'expired-observation' : null;
 
-      if (coverage >= MIN_SOURCE_COVERAGE && result.last_updated && Date.parse(result.last_updated) <= Date.now() + 300000) {
+      if (coverage >= MIN_SOURCE_COVERAGE && !observationProblem) {
         fetchedRates = result.rates;
         usedSource = result.source;
-        sourceLastUpdated = result.last_updated || null;
+        sourceLastUpdated = observedAt;
         sourceNextUpdate = result.next_update || null;
         console.log(`[forex-fetch] Success from ${source.name} - ${coverage} tracked currencies`);
         break;
       } else {
-        console.log(`[forex-fetch] ${source.name} returned too few tracked currencies (${coverage}), trying next...`);
+        console.log(`[forex-fetch] ${source.name}: ${observationProblem || 'insufficient-coverage'}, trying next...`);
       }
     } catch (err) {
       console.error('[forex-fetch] '+source.name+' request or decoding failed');
@@ -205,13 +212,13 @@ exports.handler = async function (event) {
 
   // If all sources fail, retain stale data
   if (!fetchedRates) {
-    console.warn('[forex-fetch] All sources failed. Retaining existing cached data.');
+    console.warn('[forex-fetch] No fresh source observation. Retaining existing cached data.');
     await updateMeta('forex', {
       status: 'stale',
-      error: 'All sources failed',
+      error: 'All sources failed or returned unavailable observations',
       last_attempt: new Date().toISOString(),
     });
-    return { statusCode: 500, body: 'All forex sources failed' };
+    return { statusCode: 500, body: 'No fresh forex observation available; cached data retained.' };
   }
 
   // Merge with existing data (preserve currencies not in new fetch)
