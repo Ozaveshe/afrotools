@@ -243,11 +243,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <!-- LEGAL-WORKFLOW-COPILOT:START -->
 <section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
-  <script type="application/json" class="leg-workflow-data">{"slug":"cac-checker","title":"CAC / Business Name Checker","workflowTitle":"Business-name availability workflow","coverage":"Nigeria","decision":"Whether the name is registrable as a business name, company name or trademark","evidence":["Prepare at least three name options before the CAC search","Check spelling, restricted words, existing company names and trademark conflicts","Move quickly from availability to reservation because name status can change"],"redFlags":["Using a name because the domain is free while CAC or trademark search fails","Restricted words such as bank, insurance, university or government without approval","Letting an agent reserve a name under an account you cannot access"],"related":[{"label":"CAC Registration Cost","href":"/tools/cac-cost/"},{"label":"Trademark Registration","href":"/tools/trademark-registration/"},{"label":"Business Registration","href":"/tools/business-registration/"}],"competitor":{"group":"company","label":"LegalZoom, Firstbase, Stripe Atlas and registry portals","patterns":["Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.","The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.","They make official portal verification visible so users can tell a government fee from an agent or bundled service fee."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Prepare at least three name options before the CAC search\".","Saved workflows can be resumed from the dashboard and handed off to CAC Registration Cost when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <script type="application/json" class="leg-workflow-data">{"slug":"cac-checker","title":"CAC / Business Name Checker","workflowTitle":"Business-name availability workflow","coverage":"Nigeria","decision":"Whether the name is registrable as a business name, company name or trademark","evidence":["Prepare at least three name options before the CAC search","Check spelling, restricted words, existing company names and trademark conflicts","Move quickly from availability to reservation because name status can change"],"redFlags":["Using a name because the domain is free while CAC or trademark search fails","Restricted words such as bank, insurance, university or government without approval","Letting an agent reserve a name under an account you cannot access"],"related":[{"label":"CAC Registration Cost","href":"/tools/cac-cost/"},{"label":"Trademark Registration","href":"/tools/trademark-registration/"},{"label":"Business Registration","href":"/tools/business-registration/"}],"competitor":{"group":"company","label":"LegalZoom, Firstbase, Stripe Atlas and registry portals","patterns":["Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.","The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.","They make official portal verification visible so users can tell a government fee from an agent or bundled service fee."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Prepare at least three name options before the CAC search\".","Saved workflows can be resumed from the dashboard and handed off to CAC Registration Cost when the matter naturally continues.","Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in."]}}</script>
   <div class="leg-workflow-head">
     <span class="leg-action-kicker">Case workspace</span>
     <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
-    <p>This workspace turns the business-name availability workflow result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+    <p>This workspace turns the business-name availability workflow result into a reusable matter note, dashboard item and local PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
     <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
@@ -273,21 +273,21 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Legal workflow handoff note"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
-      <span class="leg-action-kicker">PDF gate</span>
-      <h3>Email the checklist and unlock print/PDF</h3>
-      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+      <span class="leg-action-kicker">Export and optional updates</span>
+      <h3>Print locally or subscribe to updates</h3>
+      <p>Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates.</p>
     </div>
     <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
-    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
-      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>
       <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
       <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
     </div>
-    <div class="leg-gate-status" data-workflow-gate-status></div>
+    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>
   </form>
   <div class="leg-workflow-next">
     <span>Continue workflow</span>
@@ -309,7 +309,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     </div>
     <div>
       <h3>Implemented on this app</h3>
-      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Prepare at least three name options before the CAC search&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to CAC Registration Cost when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Prepare at least three name options before the CAC search&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to CAC Registration Cost when the matter naturally continues.</li><li>Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.</li></ul>
     </div>
     <div>
       <h3>Best next move</h3>
@@ -526,7 +526,7 @@ function checkName(){
   });
 }());
 </script>
-<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/legal-workflow-copilot.js?v=adb9f181" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 </body>
 </html>

@@ -656,7 +656,7 @@ function renderHub() {
           <select id="fr-car-model" name="vehicle">${observedOptions}</select>
           <button class="fr-cars-button" type="submit">Voir le relevé</button>
         </form>
-        <p>Pour un autre modèle, cherchez dans l'<a href="/cars/">annuaire complet</a>. Pour calculer un coût d'import, saisissez le prix réel du vendeur dans le <a href="/tools/car-import-cost/">devis d'import modifiable</a> (en anglais).</p>
+        <p>Pour un autre modèle, cherchez dans l'<a href="/cars/">annuaire complet</a>. Pour calculer un coût d'import, saisissez le prix réel du vendeur dans le <a href="/fr/tools/cout-importation-voiture/">devis d'import modifiable</a>.</p>
       </section>
       <div class="fr-cars-grid">
         <article class="fr-cars-card">
@@ -687,7 +687,7 @@ function renderHub() {
             <li><a href="/fr/tools/droits-douane/">Droits de douane</a></li>
             <li><a href="/fr/tools/impact-fx-import/">Impact du change sur l'import</a></li>
             <li><a href="/fr/tools/pret-automobile/">Prêt automobile</a></li>
-            <li><a href="/tools/car-import-cost/">Calculateur complet d'import voiture en anglais</a></li>
+            <li><a href="/fr/tools/cout-importation-voiture/">Calculateur complet d'import voiture</a></li>
           </ul>
         </article>
       </div>
@@ -751,7 +751,7 @@ function renderCountryPage(country) {
       <p class="fr-cars-note">Un prix demandé dépend de la version, de l'état, du kilométrage et du vendeur. La douane utilise sa propre évaluation ; vérifiez les règles en vigueur avant de payer.</p>
       ${rows ? `<div class="fr-cars-table-wrap"><table class="fr-cars-table"><thead><tr><th>Voiture</th><th>Médiane demandée</th><th>Quartiles observés</th><th>Relevé</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<p>Les modèles de l'annuaire sont disponibles pour préparer un budget source, sans prix local observé pour ${escapeHtml(country.frName)}.</p>`}
       <div class="fr-cars-grid">
-        <article class="fr-cars-card"><h2>Comparer un import</h2><p>Saisissez le prix réel du vendeur, le fret et les frais connus dans le calculateur. Les taux et la valeur douanière doivent être confirmés pour votre véhicule.</p><a href="/tools/car-import-cost/">Ouvrir le devis d'import modifiable (anglais)</a></article>
+        <article class="fr-cars-card"><h2>Comparer un import</h2><p>Saisissez le prix réel du vendeur, le fret et les frais connus dans le calculateur. Les taux et la valeur douanière doivent être confirmés pour votre véhicule.</p><a href="/fr/tools/cout-importation-voiture/">Ouvrir le devis d'import modifiable</a></article>
         <article class="fr-cars-card"><h2>Autres voitures</h2><p>Recherchez un modèle ou une année dans l'annuaire sans supposer qu'un prix local est déjà vérifié.</p><a href="/cars/">Chercher dans l'annuaire complet (anglais)</a></article>
       </div>
     </section>

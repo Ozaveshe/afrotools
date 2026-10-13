@@ -142,11 +142,11 @@
 
   <!-- LEGAL-WORKFLOW-COPILOT:START -->
 <section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
-  <script type="application/json" class="leg-workflow-data">{"slug":"cross-border-data","title":"Cross Border Data","workflowTitle":"Transfer risk map","coverage":"16 core privacy regimes","decision":"Whether the transfer goes to an adequate, comparable, approved or restricted destination","evidence":["Map hosting, support, analytics, email, backup and AI vendors by country","Attach the DPA, transfer clause and security summary to each transfer entry","Review transfers when vendors add sub-processors or move hosting regions"],"redFlags":["Assuming “cloud” means the data stays local","Using consent for employee or essential-service transfers where consent is not freely given","Ignoring regulator approval or notification rules for high-risk transfers"],"related":[{"label":"DPA Generator","href":"/tools/dpa-generator/"},{"label":"DPIA Tool","href":"/tools/dpia-tool/"},{"label":"GDPR vs Africa","href":"/tools/gdpr-vs-africa/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Map hosting, support, analytics, email, backup and AI vendors by country\".","Saved workflows can be resumed from the dashboard and handed off to DPA Generator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <script type="application/json" class="leg-workflow-data">{"slug":"cross-border-data","title":"Cross Border Data","workflowTitle":"Transfer risk map","coverage":"16 core privacy regimes","decision":"Whether the transfer goes to an adequate, comparable, approved or restricted destination","evidence":["Map hosting, support, analytics, email, backup and AI vendors by country","Attach the DPA, transfer clause and security summary to each transfer entry","Review transfers when vendors add sub-processors or move hosting regions"],"redFlags":["Assuming “cloud” means the data stays local","Using consent for employee or essential-service transfers where consent is not freely given","Ignoring regulator approval or notification rules for high-risk transfers"],"related":[{"label":"DPA Generator","href":"/tools/dpa-generator/"},{"label":"DPIA Tool","href":"/tools/dpia-tool/"},{"label":"GDPR vs Africa","href":"/tools/gdpr-vs-africa/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Map hosting, support, analytics, email, backup and AI vendors by country\".","Saved workflows can be resumed from the dashboard and handed off to DPA Generator when the matter naturally continues.","Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in."]}}</script>
   <div class="leg-workflow-head">
     <span class="leg-action-kicker">Case workspace</span>
     <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
-    <p>This workspace turns the transfer risk map result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+    <p>This workspace turns the transfer risk map result into a reusable matter note, dashboard item and local PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
     <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
@@ -172,21 +172,21 @@
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Legal workflow handoff note"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
-      <span class="leg-action-kicker">PDF gate</span>
-      <h3>Email the checklist and unlock print/PDF</h3>
-      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+      <span class="leg-action-kicker">Export and optional updates</span>
+      <h3>Print locally or subscribe to updates</h3>
+      <p>Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates.</p>
     </div>
     <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
-    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
-      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>
       <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
       <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
     </div>
-    <div class="leg-gate-status" data-workflow-gate-status></div>
+    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>
   </form>
   <div class="leg-workflow-next">
     <span>Continue workflow</span>
@@ -208,7 +208,7 @@
     </div>
     <div>
       <h3>Implemented on this app</h3>
-      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Map hosting, support, analytics, email, backup and AI vendors by country&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to DPA Generator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Map hosting, support, analytics, email, backup and AI vendors by country&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to DPA Generator when the matter naturally continues.</li><li>Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.</li></ul>
     </div>
     <div>
       <h3>Best next move</h3>
@@ -576,7 +576,7 @@ function toggleCard(h){var b=h.nextElementSibling;var e=h.getAttribute('aria-exp
 
 renderCountryGrid();
 </script>
-<script src="/assets/js/trade-toolkit.js?v=119fb0d0" defer></script>
+<script src="/assets/js/trade-toolkit.js?v=521ba9d1" defer></script>
 <script id="legal-action-copy-script">
 (function(){
   document.addEventListener('click', function(event) {
@@ -592,7 +592,7 @@ renderCountryGrid();
   });
 }());
 </script>
-<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/legal-workflow-copilot.js?v=adb9f181" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
