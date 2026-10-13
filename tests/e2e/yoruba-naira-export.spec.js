@@ -47,6 +47,7 @@ test('copy denial and missing clipboard have accessible feedback and allow recov
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto(route);
+  await page.locator('#amount').fill('125000.75');
   const status = page.locator('#exportStatus');
   await expect(status).toHaveAttribute('role', 'status');
   await expect(status).toHaveAttribute('aria-live', 'polite');
