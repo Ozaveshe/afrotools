@@ -44,3 +44,21 @@ assert.equal(domestic.minimumWage, 21.77);
 assert.equal(domestic.monthly, 478.94);
 assert.match(domestic.notes, /22 paid days/);
 console.log('Ghana dated daily source, explicit planning conversion and shipped engine parity: PASS');
+
+// Literal before/after review fixtures cover both old and corrected monthly boundaries.
+const ghReview = JSON.parse(fs.readFileSync(path.join(root, 'docs/formula-change-review-2026-10-12-ghana-minimum-wage.json'), 'utf8'));
+for (const file of ['engines/src/minimum-wage-engine.js', 'engines/minimum-wage-engine.js']) {
+  const engine = load(file).window.AfroTools.MinWageEngine;
+  for (const fixture of ghReview.fixtureDeltas) {
+    const actual = fixture.input ? engine.checkCompliance('GH', fixture.input.salary) : engine.getCountry('GH');
+    for (const [key, expected] of Object.entries(fixture.nextExpected)) assert.equal(actual[key], expected, fixture.fixtureId + ': ' + key);
+  }
+  for (const [salary, expected] of [[478.93, false], [478.94, true], [478.95, true], [544.49, true], [544.50, true], [544.51, true]]) {
+    assert.equal(engine.checkCompliance('GH', salary).compliant, expected);
+    assert.equal(engine.checkCompliance('GH', salary).minimum, 478.94);
+  }
+}
+assert.equal(ghReview.fixtureDeltas.length, 7);
+assert.equal(ghReview.fixtureDeltas[0].previousExpected.daily, 18.15);
+assert.equal(ghReview.fixtureDeltas[0].previousExpected.monthly, 544.5);
+console.log('Ghana actual-engine result review and one-cent boundaries: PASS');

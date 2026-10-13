@@ -11,42 +11,31 @@ const formulas = quality.loadQualityArtifacts(ROOT).formulas.formulas;
 
 for (const record of review.records) {
   const source = fs.readFileSync(path.join(ROOT, record.artifactPath), 'utf8');
-  test(record.id + ': reviewed artwork preserves the current protected formula digest', () => {
+  test(record.id + ': reviewed artwork retains the existing protected digest', () => {
     const formula = formulas.find(item => item.id === record.id);
     assert.equal(formula.artifactPath, record.artifactPath);
+    assert.equal(formula.artifactDigest, record.legacyArtifactDigest);
     assert.equal(quality.digestHtmlFormulaSource(source), formula.artifactDigest);
-    // Later reviewed content changes can advance the formula digest. Prove the
-    // original artwork substitution is still neutral without rewriting its
-    // historical review or ignoring any current content and runtime changes.
-    let originalArtwork = source;
-    for (const patch of record.patches.slice().reverse()) {
-      assert.equal(originalArtwork.split(patch.current).length, 2);
-      originalArtwork = originalArtwork.replace(patch.current, patch.baseline);
-    }
-    assert.notEqual(originalArtwork, source);
-    assert.equal(quality.digestHtmlFormulaSource(originalArtwork), formula.artifactDigest);
     assert.notEqual(record.reviewedImageArtifactDigest, formula.artifactDigest);
   });
   test(record.id + ': content and executable wiring remain protected', () => {
-    const currentDigest = formulas.find(item => item.id === record.id).artifactDigest;
     const heading = source.replace(/(<h1\b[^>]*>)/i, '$1Unreviewed instruction ');
     assert.notEqual(heading, source);
-    assert.notEqual(quality.digestHtmlFormulaSource(heading), currentDigest);
+    assert.notEqual(quality.digestHtmlFormulaSource(heading), record.legacyArtifactDigest);
     const runtime = source.replace(/(<script\b[^>]*\bsrc=["'])[^"']+["']/i, '$1/unreviewed-runtime.js"');
     assert.notEqual(runtime, source);
-    assert.notEqual(quality.digestHtmlFormulaSource(runtime), currentDigest);
+    assert.notEqual(quality.digestHtmlFormulaSource(runtime), record.legacyArtifactDigest);
     const formula = source.replace('</body>', '<script>function calculate(value) { return value * 0.37; }</script></body>');
     assert.notEqual(formula, source);
-    assert.notEqual(quality.digestHtmlFormulaSource(formula), currentDigest);
+    assert.notEqual(quality.digestHtmlFormulaSource(formula), record.legacyArtifactDigest);
   });
   test(record.id + ': unknown image and canonical changes remain protected', () => {
-    const currentDigest = formulas.find(item => item.id === record.id).artifactDigest;
     const image = source.replace(/https:\/\/afrotools\.com\/assets\/img\/tools\/[^"']+\.webp/, 'https://afrotools.com/assets/img/tools/unreviewed.webp');
     assert.notEqual(image, source);
-    assert.notEqual(quality.digestHtmlFormulaSource(image), currentDigest);
+    assert.notEqual(quality.digestHtmlFormulaSource(image), record.legacyArtifactDigest);
     const canonical = source.replace(/(<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["'])[^"']+/, '$1https://afrotools.com/unreviewed/');
     assert.notEqual(canonical, source);
-    assert.notEqual(quality.digestHtmlFormulaSource(canonical), currentDigest);
+    assert.notEqual(quality.digestHtmlFormulaSource(canonical), record.legacyArtifactDigest);
   });
 }
 
