@@ -20,6 +20,7 @@ const PRECACHE_START = '  // BUILD-GENERATED PRECACHE START';
 const PRECACHE_END = '  // BUILD-GENERATED PRECACHE END';
 
 const keyFiles = [
+  'offline.html',
   'assets/css/tokens.min.css',
   'assets/css/design-system.min.css',
   'assets/js/components/navbar.min.js',
