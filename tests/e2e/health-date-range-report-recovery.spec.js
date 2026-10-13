@@ -2,6 +2,7 @@
 const { test, expect } = require("@playwright/test");
 const fs = require("node:fs");
 const pdfParse = require("pdf-parse");
+const { readHealthPdf } = require("../support/health-pdf-reader-diagnostics");
 const routes = { en: "/tools/due-date/", fr: "/fr/tools/date-accouchement/", sw: "/sw/zana/kikokotoo-tarehe-ya-kujifungua/" };
 const normalize = text => text.replace(/\s+/g, " ").trim();
 for (const [lang, route] of Object.entries(routes)) {
@@ -22,7 +23,7 @@ for (const [lang, route] of Object.entries(routes)) {
         await page.locator(`#download-${kind}`).click();
         const item = await download, file = info.outputPath(`report.${kind}`);
         await item.saveAs(file);
-        outputs[kind] = kind === "txt" ? fs.readFileSync(file, "utf8") : (await pdfParse(fs.readFileSync(file))).text;
+        outputs[kind] = kind === "txt" ? fs.readFileSync(file, "utf8") : (await readHealthPdf(file, info, pdfParse)).text;
       }
       expect(normalize(outputs.pdf)).toBe(normalize(outputs.txt));
       const offset = input.method === "lmp" ? 280 + input.cycle - 28 : input.age === 3 ? 263 : 261;

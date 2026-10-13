@@ -3,6 +3,7 @@ const { test, expect } = require("@playwright/test");
 const fs = require("node:fs");
 const path = require("node:path");
 const pdfParse = require("pdf-parse");
+const { readHealthPdf } = require("../support/health-pdf-reader-diagnostics");
 const probes = require("../support/health-export-recovery-probes");
 const fixtures = require("../fixtures/health-export-recovery/expected.json");
 
@@ -40,7 +41,7 @@ for (const [name, probe] of Object.entries(probes)) {
       expect(fs.readFileSync(path.join(directory, file), "utf8")).toBe(text);
     }
     for (const [file, text] of Object.entries(expected.pdfTextFiles)) {
-      const parsed = await pdfParse(fs.readFileSync(path.join(directory, file)));
+      const parsed = await readHealthPdf(path.join(directory, file), testInfo, pdfParse);
       expect(normalizedPdf(parsed.text)).toBe(normalizedPdf(text));
     }
     await testInfo.attach("native-proof", { body: JSON.stringify(result, null, 2), contentType: "application/json" });
