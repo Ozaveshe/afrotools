@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Warehouse Receipt Financing Calculator — Borrow Against Stored Grain | AfroTools</title>
-<meta name="description" content="Estimate borrowing against stored grain and compare selling at harvest with warehouse-receipt storage and financing across African markets.">
+<title>Warehouse Receipt Financing Scenario Calculator | AfroTools</title>
+<meta name="description" content="Compare illustrative warehouse-receipt financing scenarios, costs, loan repayment and possible gains or losses using your own verified inputs.">
 <meta property="og:title" content="Warehouse Receipt Financing Calculator | AfroTools">
-<meta property="og:description" content="Calculate your loan against stored grain, cost of financing, and projected profits when grain prices rise. Covers AFEX, EAGC, ECX, GCX and other African warehouse receipt systems.">
+<meta property="og:description" content="Compare illustrative warehouse-receipt financing scenarios, costs, loan repayment and possible gains or losses using your own verified inputs.">
 <meta property="og:url" content="https://afrotools.com/agriculture/warehouse-receipt/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/warehouse-receipt.webp">
@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Warehouse Receipt Financing Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate how much you can borrow against stored grain and project WRS profits for Africa.">
+<meta name="twitter:description" content="Compare illustrative warehouse-receipt financing scenarios, costs, loan repayment and possible gains or losses using your own verified inputs.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/warehouse-receipt.webp">
 
 <script type="application/ld+json">
@@ -25,7 +25,7 @@
   "@type": "WebApplication",
   "name": "Warehouse Receipt Financing Calculator",
   "url": "https://afrotools.com/agriculture/warehouse-receipt/",
-  "description": "Calculate how much you can borrow against stored grain using a warehouse receipt. Project profits when selling in the lean season vs. selling at harvest.",
+  "description": "Compare illustrative warehouse-receipt financing scenarios, costs, loan repayment and possible gains or losses using your own verified inputs.",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Web",
   "author": {
@@ -64,39 +64,39 @@
       "name": "What is a Warehouse Receipt System (WRS)?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A Warehouse Receipt System allows farmers to deposit grain at a certified warehouse and receive a receipt that proves ownership. The farmer may use this receipt as collateral for a bank loan, then compare a harvest-sale scenario with a delayed-sale scenario using their own price, storage, finance, quality and market assumptions."
+        "text": "A warehouse receipt records stored goods and may support financing when a lender accepts it as collateral. Confirm the warehouse, receipt, goods, insurance and lender requirements before committing."
       }
     },
     {
       "@type": "Question",
-      "name": "How much can I borrow against stored grain?",
+      "name": "How much can I borrow against my grain?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most African warehouse receipt systems offer loans of 60-75% of the grain's current market value. Nigeria's AFEX offers up to 70%, Kenya's EAGC WRS typically offers 65-70%, and South Africa's SAFEX offers up to 75%. The remainder is a safety buffer for the lender in case grain prices fall."
+        "text": "Use the loan-to-value percentage in your lender’s written offer. The calculator multiplies that percentage by the entered harvest value. Its undated presets are illustrative, not approved loan offers or promised payment times."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the grain the collateral — what if prices fall?",
+      "name": "Where can I check warehouse receipt arrangements?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — the stored grain IS the collateral. If grain prices fall sharply, the value of your collateral decreases but you still owe the full loan amount. This is the main risk of WRS financing. The system works best for commodities with reliable seasonal price patterns (maize, sorghum, millet, rice) where lean-season prices are consistently higher than harvest prices."
+        "text": "Start with the relevant regulator, warehouse operator and lender. Kenya’s Warehouse Receipt System Council describes receipt-based financing; AFEX describes collateral management using electronic warehouse receipts. These references do not verify this calculator’s numeric presets or your eligibility."
       }
     },
     {
       "@type": "Question",
-      "name": "Which countries have active warehouse receipt systems?",
+      "name": "What happens if grain prices fall during storage?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The most active WRS in Africa include: Nigeria (AFEX — Africa Exchange, electronic WRS), Kenya (EAGC — Eastern Africa Grain Council, Kenya Warehouse Receipt Authority), Ethiopia (ECX — Ethiopian Commodity Exchange, mandatory for coffee and sesame), Ghana (GCX — Ghana Commodity Exchange, since 2018), Tanzania (TWLB — Tanzania Warehouse Licensing Board), Zambia (ZAMACE — Zambia Agricultural Commodity Exchange), South Africa (SAFEX/JSE — most sophisticated, exchange-traded), and Egypt (Egyptian Commodity Exchange)."
+        "text": "Enter a negative price change to explore a fall. The final cash balance deducts costs and loan principal; a negative balance indicates a modeled shortfall. Price gains are uncertain, and unentered losses, taxes and other fees are excluded."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the break-even price increase needed for WRS to be profitable?",
+      "name": "What is the minimum grain quantity I can deposit?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "WRS is profitable only if the expected price increase exceeds the total financing costs (interest + storage + insurance + handling). For a 4-month storage period at typical African rates, you generally need grain prices to rise by at least 8-15% for WRS to generate a net profit compared to selling at harvest."
+        "text": "Ask the selected warehouse for its current minimum quantity, quality requirements and aggregation rules. The calculator accepts positive quantities for planning and does not verify warehouse acceptance."
       }
     }
   ]
@@ -263,6 +263,24 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
 /* ERROR */
 .err-msg { background: var(--red-bg); border: 1.5px solid var(--red-border); color: var(--red); border-radius: 12px; padding: .65rem 1rem; font-size: .85rem; font-weight: 600; margin-top: .75rem; display: none; }
+
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #005fcc;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+main{--muted:#4b5563;--red:#b91c1c;--amber:#92400e;overflow-wrap:anywhere}
+main .stat p,main .stat .sl,main .cr-box .crl{color:#374151!important}
+main .stat:not(.big) .sv,main .cr-box .crv,main #breakeven-output,main #breakeven-output strong,main #breakeven-output em{color:#1e293b!important}
+main .warning-box strong,main .warning-box em{color:#78350f!important}
+main .seo-prose a{text-decoration:underline}
+main .agri-link{color:#0052ad!important}
+@media(prefers-color-scheme:dark){main .hint,main .card-title,main .step-text{color:#cbd5e1!important}main #seasonal-hint{color:#374151!important}main .btn-recalc{color:#93c5fd!important}}
+
+html body main .step .step-text{color:#374151!important}
+html body #warehouse-main .field div strong{color:#1e293b!important}
+#results .stat p{color:#374151!important}
+#results .warning-box strong,#results .warning-box em{color:#78350f!important}
+html body #warehouse-main a.agri-link{color:#0052ad!important}
+@media(prefers-color-scheme:dark){#results .cost-row .cr-label,#results .cost-row .cr-sub,#results .cost-row .cr-val{color:#e2e8f0!important}}
 </style>
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="stylesheet" href="/assets/css/agriculture-page-ui-refresh.css?v=a41b6756">
@@ -283,14 +301,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <p>Estimate how much you could borrow against stored grain, the full cost of financing, and the projected difference between selling at harvest and selling later under your own assumptions.</p>
     <div class="badge-row">
       <span class="badge">&#127881; Pan-African</span>
-      <span class="badge">&#127979; AFEX · EAGC · ECX · GCX</span>
+      <span class="badge">Illustrative financing scenarios</span>
       <span class="badge">&#128181; Loan vs. Profit Analysis</span>
       <span class="badge">&#127760; 100% Free</span>
     </div>
   </div>
 </section>
 
-<main class="main">
+<main class="main" id="warehouse-main">
 
   <!-- HOW IT WORKS -->
   <div class="how-steps">
@@ -307,17 +325,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-icon">&#127981;</div>
-      <div class="step-text">Use receipt as collateral — get a loan (60–75% of grain value)</div>
+      <div class="step-text">Check whether a lender accepts the receipt and obtain written loan terms</div>
     </div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-icon">&#128198;</div>
-      <div class="step-text">Wait for lean season when grain prices rise 20–40%</div>
+      <div class="step-text">Compare possible future prices, including a price fall</div>
     </div>
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-icon">&#128176;</div>
-      <div class="step-text">Sell grain, repay loan + costs, keep the extra profit</div>
+      <div class="step-text">Model the sale, loan repayment, costs and possible gain or loss</div>
     </div>
   </div>
 
@@ -327,21 +345,21 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <div class="form-grid">
 
       <div class="field">
-        <label for="inp-country">Country / WRS Platform</label>
+        <label for="inp-country">Country / illustrative assumptions</label>
         <select id="inp-country" onchange="onCountryChange()">
           <option value="">— Select Country —</option>
-          <option value="NG">&#127475;&#127468; Nigeria (AFEX)</option>
-          <option value="KE">&#127472;&#127466; Kenya (EAGC WRS)</option>
-          <option value="ET">&#127466;&#127481; Ethiopia (ECX)</option>
-          <option value="GH">&#127468;&#127469; Ghana (GCX)</option>
-          <option value="TZ">&#127481;&#127487; Tanzania (TWLB)</option>
-          <option value="ZM">&#127487;&#127474; Zambia (ZAMACE)</option>
-          <option value="ZA">&#127487;&#127462; South Africa (SAFEX/JSE)</option>
-          <option value="EG">&#127466;&#127468; Egypt (Egyptian Commodity Exchange)</option>
+          <option value="NG">&#127475;&#127468; Nigeria</option>
+          <option value="KE">&#127472;&#127466; Kenya</option>
+          <option value="ET">&#127466;&#127481; Ethiopia</option>
+          <option value="GH">&#127468;&#127469; Ghana</option>
+          <option value="TZ">&#127481;&#127487; Tanzania</option>
+          <option value="ZM">&#127487;&#127474; Zambia</option>
+          <option value="ZA">&#127487;&#127462; South Africa</option>
+          <option value="EG">&#127466;&#127468; Egypt</option>
           <option value="UG">&#127482;&#127468; Uganda</option>
           <option value="RW">&#127479;&#127484; Rwanda</option>
           <option value="MW">&#127474;&#127484; Malawi</option>
-          <option value="ZW">&#127487;&#127484; Zimbabwe (USD)</option>
+          <option value="ZW">&#127487;&#127484; Zimbabwe</option>
         </select>
       </div>
 
@@ -365,7 +383,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="field">
         <label for="inp-quantity">Quantity Deposited (tonnes)</label>
         <input type="number" id="inp-quantity" min="0.1" step="0.1" placeholder="e.g. 20" inputmode="decimal">
-        <span class="hint">Minimum deposit is typically 5–10 tonnes at most certified warehouses.</span>
+        <span class="hint">Confirm the minimum deposit and quality requirements with your warehouse.</span>
       </div>
 
       <div class="field">
@@ -386,13 +404,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="field">
         <label for="inp-ltv">Loan-to-Value Ratio (%)</label>
         <input type="number" id="inp-ltv" min="40" max="85" step="1" value="70" inputmode="decimal">
-        <span class="hint">Bank lends this % of grain value. AFEX: 70%, SAFEX: 75%, most others: 60–70%.</span>
+        <span class="hint">Illustrative preset. Replace with the percentage in your lender’s written offer.</span>
       </div>
 
       <div class="field">
         <label for="inp-rate">Annual Interest Rate (%)</label>
         <input type="number" id="inp-rate" min="0" max="60" step="0.1" value="22" inputmode="decimal">
-        <span class="hint">Varies: Nigeria ~22–28%, Kenya ~16%, Ethiopia ~15%, South Africa ~11–13%.</span>
+        <span class="hint">Undated illustrative annual rate. Confirm interest basis and fees with your lender.</span>
       </div>
 
       <div class="field">
@@ -410,7 +428,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="field">
         <label for="inp-insurance">Insurance Cost (% of grain value per year)</label>
         <input type="number" id="inp-insurance" min="0" max="10" step="0.1" value="1.5" inputmode="decimal">
-        <span class="hint">Mandatory at most certified warehouses. Typically 1–2% per annum.</span>
+        <span class="hint">Enter the annual insurance cost for your actual agreement; enter zero only if applicable.</span>
       </div>
 
       <div class="field">
@@ -429,7 +447,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="field">
         <label for="inp-price-increase">Expected Price Increase (%)</label>
         <input type="number" id="inp-price-increase" min="0" max="200" step="1" value="30" inputmode="decimal">
-        <span class="hint">Historical seasonal increase for this commodity. Maize/sorghum: 25–40%. Coffee/cocoa: 10–20%.</span>
+        <span class="hint">Illustrative price change, not a forecast. Enter a negative value to model falling prices.</span>
       </div>
 
       <div class="field" style="display:flex;flex-direction:column;justify-content:center;">
@@ -442,12 +460,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     </div>
   </div>
 
-  <div id="calc-error" class="err-msg"></div>
+  <div id="calc-error" class="err-msg" role="alert" aria-live="assertive" tabindex="-1"></div><p id="warehouse-status" role="status" aria-live="polite"></p>
 
   <button type="button" class="btn-calc" onclick="calculate()">&#128200; Calculate Warehouse Receipt Financing</button>
 
   <!-- RESULTS -->
-  <div id="results">
+  <div id="results" tabindex="-1" role="region" aria-label="Warehouse financing results">
 
     <div class="card" style="margin-top:1.5rem">
       <p class="card-title">&#127981; Financing Summary</p>
@@ -493,8 +511,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         </div>
         <div class="stat green">
           <div class="sv" id="res-net-proceeds"></div>
-          <div class="sl">Your Net Proceeds</div>
+          <div class="sl">Economic proceeds including initial advance</div><p>The final cash balance repays the loan principal. Economic proceeds also include the advance received initially, so principal is not charged twice. This scenario deducts all costs at sale; actual payment dates may differ. Unentered taxes, losses and other fees are excluded.</p>
         </div>
+        <div class="stat"><div class="sv" id="res-principal"></div><div class="sl">Principal to repay</div></div>
+        <div class="stat"><div class="sv" id="res-final-cash"></div><div class="sl">Cash after costs and principal repayment</div></div>
       </div>
     </div>
 
@@ -533,26 +553,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   <div class="card" style="margin-top:1.5rem">
     <p class="card-title">Frequently Asked Questions</p>
     <div class="faq">
-      <details open>
-        <summary>What is a Warehouse Receipt System (WRS)?</summary>
-        <p>A WRS allows farmers to deposit grain at a certified, regulated warehouse and receive an official receipt proving ownership. This receipt acts like a financial instrument — banks accept it as collateral for loans, enabling farmers to access cash without selling their grain. The system decouples the timing of production from the timing of sale, allowing farmers to wait for better prices.</p>
-      </details>
-      <details>
-        <summary>How much can I borrow against my grain?</summary>
-        <p>Most African WRS offer loans of 60–75% of the grain's current market value (the loan-to-value ratio). Nigeria's AFEX offers up to 70%, Kenya's EAGC typically 65–70%, and South Africa's SAFEX/JSE up to 75%. The 25–40% buffer protects the lender if prices fall slightly. You receive cash immediately — typically within 24–48 hours of depositing grain.</p>
-      </details>
-      <details>
-        <summary>Which countries have the most developed WRS?</summary>
-        <p>Nigeria (AFEX — Africa Exchange, fully electronic), Ethiopia (ECX — mandatory for coffee and sesame exports), Kenya (EAGC + Kenya Warehouse Receipt Authority), Ghana (GCX since 2018), Tanzania (TWLB — Tanzania Warehouse Licensing Board), Zambia (ZAMACE), South Africa (SAFEX/JSE — most sophisticated, exchange-traded futures and WRS), and Egypt (Egyptian Commodity Exchange).</p>
-      </details>
-      <details>
-        <summary>What happens if grain prices fall during storage?</summary>
-        <p>This is the primary risk of WRS financing. If prices fall below your harvest price, you still owe the full loan amount, but you may sell the grain for less than expected. In extreme cases, if prices fall below the loan amount divided by your quantity, you could end up with a loss. This calculator shows you the break-even price increase needed — WRS works best when seasonal price patterns are consistent and predictable.</p>
-      </details>
-      <details>
-        <summary>What is the minimum grain quantity I can deposit?</summary>
-        <p>Most certified warehouses require a minimum deposit of 5–10 tonnes. AFEX in Nigeria has a minimum of 5 tonnes, while some Kenyan EAGC facilities accept as little as 3 tonnes. Smaller farmers often form groups to aggregate their grain and jointly access WRS financing, sharing the costs proportionally.</p>
-      </details>
+<details><summary>What is a Warehouse Receipt System (WRS)?</summary><p>A warehouse receipt records stored goods and may support financing when a lender accepts it as collateral. Confirm the warehouse, receipt, goods, insurance and lender requirements before committing.</p></details>
+<details><summary>How much can I borrow against my grain?</summary><p>Use the loan-to-value percentage in your lender’s written offer. The calculator multiplies that percentage by the entered harvest value. Its undated presets are illustrative, not approved loan offers or promised payment times.</p></details>
+<details><summary>Where can I check warehouse receipt arrangements?</summary><p>Start with the relevant regulator, warehouse operator and lender. Kenya’s Warehouse Receipt System Council describes receipt-based financing; AFEX describes collateral management using electronic warehouse receipts. These references do not verify this calculator’s numeric presets or your eligibility.</p></details>
+<details><summary>What happens if grain prices fall during storage?</summary><p>Enter a negative price change to explore a fall. The final cash balance deducts costs and loan principal; a negative balance indicates a modeled shortfall. Price gains are uncertain, and unentered losses, taxes and other fees are excluded.</p></details>
+<details><summary>What is the minimum grain quantity I can deposit?</summary><p>Ask the selected warehouse for its current minimum quantity, quality requirements and aggregation rules. The calculator accepts positive quantities for planning and does not verify warehouse acceptance.</p></details>
     </div>
   </div>
 
@@ -560,14 +565,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <h2>What Is Warehouse Receipt Financing?</h2>
     <p>Warehouse Receipt Financing (WRF) can help African farmers compare immediate sale against stored-grain financing. The system allows you to deposit grain at harvest and receive an official warehouse receipt. You may take that receipt to a bank as collateral and receive a loan based on a share of the grain's value. Later, you can compare the sale proceeds against loan interest, storage, insurance, quality loss, price risk and market access costs. Results are projections, not guaranteed profit.</p>
 
-    <h2>Why Harvest Prices Are Low</h2>
-    <p>In most African countries, harvest coincides with peak supply — everyone brings their produce to market at the same time. This seasonal glut depresses prices. Meanwhile, the lean season (just before the next harvest) sees dwindling supply and rising prices. Traders and large-scale buyers exploit this seasonal price variation, buying cheap at harvest and selling expensive 4–6 months later. Warehouse receipt systems allow smallholder farmers to capture this same seasonal premium instead of surrendering it to middlemen.</p>
-
-    <h2>AFEX, EAGC, ECX and Other African WRS Platforms</h2>
-    <p>Nigeria's AFEX (Africa Exchange) is West Africa's largest electronic warehouse receipt platform, operating over 100 silos and certified warehouses across 19 states. Kenya's Eastern Africa Grain Council (EAGC) runs a WRS serving Kenya, Tanzania, Uganda, and Rwanda. Ethiopia's ECX (Ethiopian Commodity Exchange) makes WRS mandatory for coffee and sesame exports, stabilizing prices for millions of farmers. Ghana's GCX (Ghana Commodity Exchange) launched in 2018 with government support. Each platform has different loan-to-value ratios, interest rates, and storage costs — this calculator pre-fills typical parameters for each country.</p>
-
-    <h2>How to Use This Calculator</h2>
-    <p>Select your country and the local WRS platform's typical parameters will be auto-filled. Enter your commodity, quantity deposited, and current harvest price. Adjust the loan-to-value ratio, interest rate, storage costs, insurance, expected price change and quality loss to match your specific lender's terms and market view. The calculator then shows your estimated cash now, total financing cost, projected sale proceeds, and projected difference compared with selling at harvest.</p>
+    <h2>Verify terms before using a scenario</h2>
+    <p>Country and commodity selections load undated illustrative assumptions. Replace every rate, fee and price with your own evidence. The model excludes losses, taxes and other fees that have not been entered, and assumes costs are deducted at sale. It does not confirm warehouse licensing, financing eligibility, approval or disbursement time.</p>
+    <p>References reviewed on 10 October 2026: <a href="https://wrsc.go.ke/">Kenya Warehouse Receipt System Council</a> describes receipt-based financing; <a href="https://www.afex.africa/solutions/afex-investment-ltd">AFEX collateral management</a> describes electronic receipts supporting credit. These references explain the mechanism; they do not validate the numeric presets.</p>
+    <h2>How to use this calculator</h2>
+    <p>Choose a country and commodity, enter quantity and harvest price, then replace the illustrative financing and storage assumptions with your agreement. Compare both rising and falling prices. Review the initial advance, costs, principal repayment, final cash and economic proceeds before comparing with immediate sale.</p>
   </div>
 
 </main>
@@ -582,7 +584,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/warehouse-receipt-data.js?v=d9db34b6"></script>
-<script src="/engines/warehouse-receipt-engine.js?v=6ef48033"></script>
+<script src="/engines/warehouse-receipt-engine.js?v=19ee589a"></script>
 <script>
 // ── COUNTRY DATA ─────────────────────────────────────────────────────────────
 var COUNTRIES = window.WAREHOUSE_RECEIPT_DATA.countries;
@@ -622,7 +624,7 @@ function onCountryChange() {
     document.getElementById('inp-storage-cost').value = selectedCountry.storage;
     document.getElementById('inp-insurance').value = selectedCountry.insurance;
     document.getElementById('inp-handling').value = selectedCountry.handling;
-    infoBox.innerHTML = '&#127981; <strong>' + selectedCountry.wrs + '</strong> — ' + selectedCountry.info;
+    infoBox.textContent = 'Illustrative, undated country assumptions in ' + selectedCountry.currency + '. Replace all rates and fees with written terms from your selected warehouse, lender and insurer. No provider availability or eligibility is verified.';
     infoBox.classList.add('show');
   } else {
     infoBox.classList.remove('show');
@@ -634,7 +636,7 @@ function onCommodityChange() {
   var c = COMMODITIES[code];
   if (c) {
     document.getElementById('inp-price-increase').value = c.increase;
-    document.getElementById('seasonal-hint').textContent = c.pattern;
+    document.getElementById('seasonal-hint').textContent = 'Illustrative price-change assumption: ' + c.increase + '%. This is not a dated market forecast; test falling prices too.';
   }
 }
 
@@ -656,7 +658,15 @@ function calculate() {
     priceIncreasePct: document.getElementById('inp-price-increase').value
   }, window.WAREHOUSE_RECEIPT_DATA);
   if (!model.ok) {
+    invalidateWarehouse();
     var errors = {
+      'invalid-input': 'Enter a valid scenario.',
+      'missing-commodity': 'Choose a listed commodity.',
+      'invalid-cost-or-rate': 'Enter finite, non-negative costs and rates. Enter zero explicitly when there is no cost.',
+      'invalid-ltv': 'The loan-to-value percentage must be between 0 and 100.',
+      'invalid-period': 'Enter a positive storage period in months.',
+      'invalid-price-change': 'Enter a finite price change of at least -100%.',
+      'numeric-overflow': 'These values are outside the reliable calculation range. Check the units and amounts.',
       'missing-country': 'Please select a country.',
       'missing-quantity': 'Please enter the quantity deposited (tonnes).',
       'missing-price': 'Please enter the current harvest price per tonne.',
@@ -666,6 +676,7 @@ function calculate() {
     showErr(errors[model.status] || 'Review your inputs.');
     return;
   }
+  warehouseInputSnapshot = warehouseInputText();
   window.WAREHOUSE_RECEIPT_LAST_RESULT = model;
   var country = model.country;
   var qty = model.input.quantityTonnes;
@@ -712,6 +723,10 @@ function calculate() {
   document.getElementById('res-sale-revenue').innerHTML   = fmtFull(saleRevenue, sym);
   document.getElementById('res-repayment').innerHTML      = fmtFull(totalCost, sym);
   document.getElementById('res-net-proceeds').innerHTML   = fmtFull(netProceeds, sym);
+  document.getElementById('res-principal').textContent = model.country.currency + ' ' + fmtFull(model.principalRepayment, '');
+  document.getElementById('res-final-cash').textContent = model.country.currency + ' ' + fmtFull(model.cashAfterRepayment, '');
+  document.getElementById('res-net-proceeds').parentElement.classList.toggle('green', netProceeds >= 0);
+  document.getElementById('res-net-proceeds').parentElement.classList.toggle('red', netProceeds < 0);
   if (netProceeds < 0) {
     document.getElementById('res-net-proceeds').parentElement.classList.remove('green');
     document.getElementById('res-net-proceeds').parentElement.classList.add('red');
@@ -747,7 +762,9 @@ function calculate() {
   document.getElementById('breakeven-output').innerHTML = beHtml;
 
   document.getElementById('results').style.display = 'block';
-  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('warehouse-status').textContent = 'Scenario calculated locally. Review the projected results.';
+  document.getElementById('results').focus({preventScroll:true});
+  document.getElementById('results').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
 
 function costRow(label, sub, val) {
@@ -758,14 +775,26 @@ function showErr(msg) {
   var el = document.getElementById('calc-error');
   el.textContent = msg;
   el.style.display = 'block';
+  el.focus();
 }
 
 function resetForm() {
+  window.WAREHOUSE_RECEIPT_LAST_RESULT = null;
   document.getElementById('results').style.display = 'none';
   document.getElementById('calc-error').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('inp-country').focus({preventScroll:true});
+  document.getElementById('warehouse-status').textContent = 'Results cleared. Edit your inputs and calculate again.';
+  window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 
+var warehouseInputSnapshot = null;
+function warehouseInputText(){return JSON.stringify(Array.from(document.querySelectorAll('input, select')).map(function(field){return [field.id,field.value]}))}
+function invalidateWarehouse() {
+  document.getElementById('warehouse-status').textContent = 'Inputs changed. Calculate again for current results.';
+  window.WAREHOUSE_RECEIPT_LAST_RESULT = null;
+  document.getElementById('results').style.display = 'none';
+}
+document.querySelectorAll('input, select').forEach(function(field){field.addEventListener('input',invalidateWarehouse);field.addEventListener('change',function(){if(warehouseInputSnapshot!==warehouseInputText())invalidateWarehouse()});});
 // Init commodity hint on load
 onCommodityChange();
 </script>
