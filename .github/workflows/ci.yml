@@ -75,13 +75,39 @@ jobs:
       - name: Validate hreflang graph
         run: npm run validate:hreflang
 
-  build:
-    name: Build and audit
+  artifact:
+    name: Artifact producer
     runs-on: ubuntu-latest
-    # Preserve cumulative artifact checks and the five-locale navbar failure matrix.
     timeout-minutes: 75
-
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      manifest_sha256: ${{ steps.seal.outputs.manifest_sha256 }}
+      commit: ${{ steps.seal.outputs.commit }}
+      tree: ${{ steps.seal.outputs.tree }}
+      deadline: ${{ steps.seal.outputs.deadline }}
     steps:
+      - name: Bind the original shared 75-minute deadline
+        id: begin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node <<'NODE'
+          (async () => {
+            const url = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/attempts/${process.env.GITHUB_RUN_ATTEMPT}/jobs?per_page=100`;
+            const response = await fetch(url, {headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(10000)});
+            if (!response.ok) throw new Error('Cannot bind native job start');
+            const jobs = (await response.json()).jobs.filter(job => job.name === 'Artifact producer' && job.status === 'in_progress');
+            if (jobs.length !== 1) throw new Error('Ambiguous producer job start');
+            const start = Date.parse(jobs[0].started_at);
+            if (!Number.isFinite(start) || start > Date.now()) throw new Error('Invalid producer start');
+            const deadline = start + 75 * 60 * 1000;
+            if (deadline <= Date.now()) throw new Error('Original shared deadline expired');
+            require('node:fs').appendFileSync(process.env.GITHUB_OUTPUT, `deadline=${deadline}\n`);
+          })().catch(error => {console.error(error.message);process.exitCode=1;});
+          NODE
+
       - name: Checkout repository
         uses: actions/checkout@v5
 
@@ -109,57 +135,6 @@ jobs:
       - name: Install Chromium for optimized artifact checks
         run: npx playwright install chromium --with-deps
 
-      - name: Verify agriculture input recovery in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '52817'
-        run: npx playwright test tests/e2e/agriculture-input-recovery.spec.js --workers=2
-
-      - name: Verify navbar resilience and guest account boundaries
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4271'
-        run: npx playwright test tests/e2e/navbar-stylesheet-resilience.spec.js tests/e2e/navbar-locale-rerender.spec.js tests/e2e/navbar-mobile-layout.spec.js tests/e2e/free-demand-cohort.spec.js tests/e2e/auth-funnel.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify education journeys and shared accessibility in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4175'
-        run: npx playwright test tests/e2e/education-workspace.spec.js tests/e2e/education-hub-card-reflow.spec.js tests/e2e/student-day.spec.js tests/e2e/education-applications.spec.js tests/e2e/ssce-practice.spec.js tests/e2e/ssce-written.spec.js tests/e2e/jamb-recent-written.spec.js tests/e2e/jamb-recent-quiz.spec.js tests/e2e/ssce-practice-fr.spec.js tests/e2e/jamb-review-reflow.spec.js tests/e2e/shared-contrast-and-pro-gate.spec.js --project=chromium --workers=2
-
-      - name: Verify localized education recovery in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          PORT: '4199'
-        run: npx playwright test tests/e2e/localized-education-recovery.spec.js tests/e2e/fr-education-deficit-parity.spec.js tests/e2e/swahili-education-workflow-parity.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify Solar startup and French country continuations in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4178'
-        run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2
-
-      - name: Verify Profit Margin validation and exports in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4179'
-        run: npx playwright test tests/e2e/profit-margin-vip.spec.js tests/e2e/profit-margin-validation.spec.js --grep-invert "durable visual proof" --project=chromium --workers=2 --trace=off
-
-      - name: Verify finance recovery and original workflows in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4205'
-        run: npx playwright test tests/e2e/finance-recovery.spec.js tests/e2e/home-loan-file.spec.js tests/e2e/mortgage-budget-boundary.spec.js tests/e2e/paystack-fee-planner-vip.spec.js tests/e2e/sw-paye-authority-finder.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
       - name: Verify current French finance shared-controller exports
         env:
           AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
@@ -179,190 +154,6 @@ jobs:
           npx playwright test tests/e2e/french-finance-export-contract.spec.js --config=playwright.french-finance.config.js --project=chromium --fully-parallel --workers=2 --retries=0 --trace=off --output="$RUNNER_TEMP/finance-export-browser"
           node scripts/collect-french-finance-export-evidence.js
 
-      - name: Verify Nigeria farm payroll recovery in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          PORT: '4200'
-        run: npx playwright test tests/e2e/nigeria-farm-payroll-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify finance native export owners and unavailable payroll guard
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4211'
-        run: npx playwright test tests/e2e/morocco-paye-parity.spec.js tests/e2e/tunisia-paye-parity.spec.js tests/e2e/day3-finance-backup-power-costs-vip.spec.js tests/e2e/day3-finance-route-fares-locales-vip.spec.js tests/e2e/french-leave-calendar.spec.js tests/e2e/crypto-remittance-export-state.spec.js tests/e2e/crypto-dca-replay.spec.js tests/e2e/microfinance-offer-vip.spec.js tests/e2e/bf-payroll-review.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-
-      - name: Verify reconciled completion workflows in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4182'
-        run: npx playwright test tests/e2e/inventory-vip.spec.js tests/e2e/inventory-pdf-completeness.spec.js tests/e2e/inventory-validation-locales.spec.js tests/e2e/business-name-workshop-vip.spec.js tests/e2e/business-name-saved-exports.spec.js tests/e2e/business-plan-draft-vip.spec.js tests/e2e/business-plan-recovery.spec.js tests/e2e/business-plan-feedback.spec.js tests/e2e/business-plan-export-locales.spec.js tests/e2e/job-offer-evaluator-vip.spec.js tests/e2e/job-offer-csv-safety.spec.js tests/e2e/job-offer-pdf-layout.spec.js tests/e2e/job-offer-feedback.spec.js tests/e2e/market-stall-recovery.spec.js tests/e2e/market-stall-profit-vip.spec.js tests/e2e/market-stall-validation.spec.js tests/e2e/market-stall-restore.spec.js tests/e2e/startup-valuation-recovery.spec.js tests/e2e/startup-valuation-vip.spec.js tests/e2e/startup-valuation-pdf.spec.js tests/e2e/startup-valuation-export-locales.spec.js tests/e2e/startup-valuation-validation.spec.js tests/e2e/idea-evidence-recovery.spec.js tests/e2e/idea-evidence-explorer-vip.spec.js tests/e2e/idea-evidence-locales.spec.js tests/e2e/idea-evidence-origin.spec.js tests/e2e/etims-checklist-recovery.spec.js tests/e2e/sw-etims-guide-final.spec.js tests/e2e/cover-letter-recovery.spec.js tests/e2e/pdf-convert-readiness.spec.js --grep-invert "durable visual proof" --project=chromium --workers=2 --trace=off
-
-      - name: Verify telecom recovery and original locale workflows in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4199'
-        run: npx playwright test tests/e2e/telecom-recovery.spec.js tests/e2e/french-telecom-parity.spec.js tests/e2e/swahili-telecom-parity.spec.js tests/e2e/day11-telecom-energy-workflows.spec.js --grep-invert "loads every Day 11 canonical route|executes every canonical owner" --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify guest copy recovery and Business Planner PDF exports
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4197'
-        run: npx playwright test tests/e2e/guest-copy-recovery.spec.js tests/e2e/business-guest-pdf-recovery.spec.js --project=chromium --workers=2 --trace=off
-
-      - name: Verify localized enquiry and business actions in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4183'
-        run: npx playwright test tests/e2e/localized-enquiry-context.spec.js tests/e2e/business-cta-locales.spec.js tests/e2e/hausa-naira-words-parity.spec.js --project=chromium --workers=2 --trace=off
-
-      - name: Verify Swahili community-credit AI lifecycle in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4251'
-        run: npx playwright test tests/e2e/sw-fintech-community-credit.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify Swahili fuel theme and workflow in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_SW_UNIQUELY_AFRICAN_EVIDENCE_PATH: '${{ runner.temp }}/sw-fuel-browser-evidence.json'
-          PORT: '4253'
-          PLAYWRIGHT_BASE_URL: 'http://127.0.0.1:4253'
-        run: npx playwright test tests/e2e/sw-uniquely-african-parity.spec.js --grep 'fuel-cost:' --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify undecided consent controls at increased zoom
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          PORT: '4184'
-        run: npx playwright test tests/e2e/analytics-consent-zoom.spec.js --project=chromium --workers=2 --trace=off
-
-      - name: Verify currency consent and original export guards with analytics enabled
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '0'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          PORT: '4396'
-        run: npx playwright test tests/e2e/currency-analytics-consent.spec.js tests/e2e/currency-observation-exports.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify shared saved-work recovery with optimized scripts
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4185'
-        run: npx playwright test tests/e2e/east-africa-paye-restore-recovery.spec.js tests/e2e/ghana-paye-private-ai-boundary.spec.js tests/e2e/ghana-paye-private-sharing.spec.js tests/e2e/ghana-paye-restore-recovery.spec.js tests/e2e/kenya-paye-restore-recovery.spec.js tests/e2e/nigeria-paye-restore-recovery.spec.js tests/e2e/nigeria-paye-saved-settings.spec.js tests/e2e/paye-legacy-storage-recovery.spec.js tests/e2e/paye-sync-real-routes.spec.js tests/e2e/paye-sync-storage-contract.spec.js tests/e2e/pdf-workspace-history-recovery.spec.js tests/e2e/pdf-workspace-history-startup.spec.js tests/e2e/shared-save-state-consumers.spec.js tests/e2e/shared-save-state-documents.spec.js tests/e2e/shared-save-state-freelance.spec.js tests/e2e/shared-save-state-invoice.spec.js tests/e2e/shared-save-state-landing-locales.spec.js tests/e2e/south-africa-paye-restore-recovery.spec.js tests/e2e/sw-paye-storage-recovery.spec.js --project=chromium --workers=2 --trace=off
-
-      - name: Verify CV document imports, privacy and keyboard behavior in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4262'
-        run: npx playwright test tests/e2e/cv-import-analytics-privacy.spec.js tests/e2e/cv-import-keyboard-completion.spec.js tests/e2e/cv-pdf-import.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify native CV DOCX roundtrips and consent controls in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          PORT: '4263'
-        run: npx playwright test tests/e2e/cv-docx-import-roundtrip.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify French canonical calculator routes in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4188'
-        run: npx playwright test tests/e2e/french-canonical-routes.spec.js --project=chromium --workers=2 --trace=off
-
-      - name: Verify CV workspace rewriting and modal accessibility in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4264'
-        run: npx playwright test tests/e2e/cv-workspace-improvement.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify French Base64 output integrity in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4198'
-        run: |
-          npx playwright test tests/e2e/french-base64-output-integrity.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-          npx playwright test tests/e2e/french-developer-native-candidates.spec.js --grep base64 --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify PDF Workspace startup and original guest exports
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_FR_CURRENT_VERIFICATION: '1'
-          PORT: '4189'
-        run: |
-          npx playwright test tests/e2e/pdf-workspace-startup.spec.js --project=chromium --workers=2 --trace=off
-          SW_EXPORT_ID=pdf-workspace npx playwright test tests/e2e/swahili-document-pdf-legacy-export-route.spec.js --project=chromium --workers=1 --trace=off
-
-      - name: Verify document WASM exports under page and worker CSP
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          AFROTOOLS_FR_CURRENT_VERIFICATION: '1'
-          PORT: '4186'
-        run: |
-          npx playwright test tests/e2e/document-wasm-policy.spec.js --project=chromium --workers=2 --trace=off
-          for route in pdf-convert pdf-workflow pdf-ocr; do
-            SW_EXPORT_ID="$route" npx playwright test tests/e2e/swahili-document-pdf-legacy-export-route.spec.js --project=chromium --workers=1 --trace=off
-          done
-
-      - name: Verify French customs print and copy in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4192'
-        run: npx playwright test tests/e2e/fr-customs-print-copy.spec.js tests/e2e/fr-trade-utility-workflows.spec.js tests/e2e/fr-trade-established-engine.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify security input recovery and private export boundaries
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4539'
-        run: npx playwright test tests/e2e/security-runtime-recovery.spec.js tests/e2e/security-frozen-followup.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify CV repairs and FX observation exports in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          PORT: '4196'
-        run: npx playwright test tests/e2e/cv-root-repairs.spec.js tests/e2e/currency-observation-exports.spec.js tests/e2e/day3-finance-currency-converter-vip.spec.js tests/e2e/day3-finance-currency-converter-locales-vip.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify fraction export recovery in the optimized artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
-          PORT: '4198'
-        run: npx playwright test tests/e2e/fraction-calc-vip.spec.js tests/e2e/fraction-export-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
-      - name: Verify native health reports and result invalidation in the artifact
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4199'
-        run: npx playwright test tests/e2e/health-export-current-recovery.spec.js tests/e2e/health-export-followon.spec.js tests/e2e/health-quote-reports.spec.js tests/e2e/health-date-range-report-recovery.spec.js --project=chromium --workers=2 --retries=0 --trace=off
-
-      - name: Verify legal local print bypasses trade email capture
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4204'
-        run: npx playwright test tests/e2e/legal-workflow-local-print.spec.js --project=chromium --workers=1 --retries=0 --trace=off
-
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
@@ -372,12 +163,114 @@ jobs:
             exit 1
           fi
 
-      - name: Verify creator profile HTML boundaries in the artifact
+      - name: Seal the single artifact after the original metadata and parity owners
+        id: seal
         env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4193'
-        run: npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off
+          SEALED_DEADLINE: ${{ steps.begin.outputs.deadline }}
+          SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
+        run: node scripts/ci-artifact-browser.js seal
+
+      - name: Upload the immutable sealed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sealed-artifact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sealed-artifact/
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Preserve native producer finance evidence on failure or success
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: producer-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/finance-export-browser/
+            ${{ runner.temp }}/finance-export-parts/
+            ${{ runner.temp }}/finance-export-proof.json
+          if-no-files-found: warn
+
+  browser:
+    name: Artifact browsers (${{ matrix.group }})
+    needs: artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        group: [1, 2]
+    env:
+      SEALED_COMMIT: ${{ needs.artifact.outputs.commit }}
+      SEALED_TREE: ${{ needs.artifact.outputs.tree }}
+      SEALED_DEADLINE: ${{ needs.artifact.outputs.deadline }}
+      SEALED_MANIFEST_SHA256: ${{ needs.artifact.outputs.manifest_sha256 }}
+      SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
+      GROUP_EVIDENCE: ${{ runner.temp }}/ci-browser-evidence
+      BROWSER_GROUP: ${{ matrix.group }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Download the one sealed producer artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: sealed-artifact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sealed-artifact
+
+      - name: Run assigned unchanged native commands against the sealed artifact
+        run: node scripts/ci-artifact-browser.js group
+
+      - name: Preserve each original gate log and native failure evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-evidence-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.group }}
+          path: ${{ runner.temp }}/ci-browser-evidence/
+          if-no-files-found: error
+
+  build:
+    name: Build and audit
+    needs: [artifact, browser]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      SEALED_COMMIT: ${{ needs.artifact.outputs.commit }}
+      SEALED_TREE: ${{ needs.artifact.outputs.tree }}
+      SEALED_DEADLINE: ${{ needs.artifact.outputs.deadline }}
+      SEALED_MANIFEST_SHA256: ${{ needs.artifact.outputs.manifest_sha256 }}
+      SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
+      GROUP_REPORTS: ${{ runner.temp }}/ci-browser-reports
+      NEEDS_JSON: ${{ toJSON(needs) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Download the original sealed artifact for aggregate binding
+        uses: actions/download-artifact@v5
+        with:
+          name: sealed-artifact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sealed-artifact
+
+      - name: Download separate group reports and retained evidence
+        uses: actions/download-artifact@v5
+        with:
+          pattern: browser-evidence-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: ${{ runner.temp }}/ci-browser-reports
+
+      - name: Require every original gate, source/artifact identity and original deadline
+        run: node scripts/ci-artifact-browser.js aggregate
 
   e2e:
     name: Playwright smoke
