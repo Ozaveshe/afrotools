@@ -221,7 +221,7 @@ input[type="file"]{display:none}
       <option value="tab">Tab</option>
     </select>
     <button id="sampleBtn" type="button">Sample</button>
-    <label class="file-label" for="fileInput">Open File</label>
+    <button id="openFileBtn" class="file-label" type="button">Open File</button>
     <input id="fileInput" type="file" accept=".json,.jsonl,.ndjson,.txt,application/json">
     <button id="copyBtn" type="button">Copy Output</button>
     <button id="redactCopyBtn" type="button">Copy Redacted</button>
@@ -230,13 +230,14 @@ input[type="file"]{display:none}
     <span class="spacer"></span>
     <button id="clearBtn" class="danger" type="button">Clear</button>
   </div>
+  <p id="historyNotice" class="helper" role="status" aria-live="polite"></p>
 
   <section class="grid">
     <div class="panel">
       <div class="panel-head">
         <div>
           <div class="panel-title">Input</div>
-          <div class="panel-sub">Ctrl+Enter formats. Tab inserts indentation.</div>
+          <div class="panel-sub">Ctrl+Enter formats. Tab and Shift+Tab move between controls.</div>
         </div>
         <div class="panel-sub" id="privacyNote">Client-side</div>
       </div>
@@ -409,6 +410,7 @@ input[type="file"]{display:none}
   }
   function safeCopy(text){
     function fallbackCopy(){
+      var focused = document.activeElement;
       var area = document.createElement('textarea');
       area.value = text;
       area.setAttribute('readonly', '');
@@ -418,12 +420,13 @@ input[type="file"]{display:none}
       area.focus();
       area.select();
       try {
-        document.execCommand('copy');
+        if(!document.execCommand('copy')) throw new Error('Clipboard copy was not permitted');
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
       } finally {
         document.body.removeChild(area);
+        if(focused && focused.focus) focused.focus();
       }
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -461,6 +464,87 @@ input[type="file"]{display:none}
     var value = $('indentSelect').value;
     return value === 'tab' ? '\t' : Number(value);
   }
+  function serializeValue(value, mode, spacing){
+    return mode === 'ndjson' ? value.map(function(row){ return JSON.stringify(row); }).join('\n') : JSON.stringify(value, null, spacing);
+  }
+  function parseLossless(text){
+    JSON.parse(text);
+    var at = 0;
+    function whitespace(){ while(/\s/.test(text[at] || '') && at < text.length) at++; }
+    function quoted(){
+      var start = at++;
+      while(at < text.length){ var ch = text[at++]; if(ch === '\\') at++; else if(ch === '"') break; }
+      return JSON.parse(text.slice(start, at));
+    }
+    function node(){
+      whitespace(); var ch = text[at];
+      if(ch === '"') return { type:'string', value:quoted() };
+      if(ch === '{'){
+        at++; whitespace(); var members = [];
+        while(text[at] !== '}'){
+          var key = quoted(); whitespace(); at++; members.push({ key:key, value:node() }); whitespace();
+          if(text[at] !== ',') break; at++; whitespace();
+        }
+        at++; return { type:'object', members:members };
+      }
+      if(ch === '['){
+        at++; whitespace(); var items = [];
+        while(text[at] !== ']'){ items.push(node()); whitespace(); if(text[at] !== ',') break; at++; }
+        at++; return { type:'array', items:items };
+      }
+      var token = text.slice(at).match(/^(?:true|false|null|-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+\-]?\d+)?)/)[0];
+      at += token.length; return { type:token === 'null' ? 'null' : /^(true|false)$/.test(token) ? 'boolean' : 'number', raw:token };
+    }
+    return node();
+  }
+  function serializeLossless(root, spacing){
+    var pad = spacing === '\t' ? '\t' : ' '.repeat(Number(spacing) || 0);
+    function write(node, level){
+      if(node.type === 'string') return JSON.stringify(node.value);
+      if(node.type === 'ndjson') return node.items.map(function(item){ return serializeLossless(item, 0); }).join('\n');
+      if(node.type !== 'array' && node.type !== 'object') return node.raw;
+      var object = node.type === 'object', open = object ? '{' : '[', close = object ? '}' : ']';
+      var entries = object ? node.members : node.items;
+      if(!entries.length) return open + close;
+      var values = entries.map(function(item){ return object ? JSON.stringify(item.key) + (pad ? ': ' : ':') + write(item.value, level + 1) : write(item, level + 1); });
+      return pad ? open + '\n' + pad.repeat(level + 1) + values.join(',\n' + pad.repeat(level + 1)) + '\n' + pad.repeat(level) + close : open + values.join(',') + close;
+    }
+    return write(root, 0);
+  }
+  function transformLossless(node, action){
+    if(node.type === 'array' || node.type === 'ndjson') return { type:node.type, items:node.items.map(function(item){ return transformLossless(item, action); }) };
+    if(node.type !== 'object') return node;
+    var members = node.members.map(function(member){ return { key:member.key, value:action === 'redact' && sensitiveKey(member.key) ? { type:'string', value:'[REDACTED]' } : transformLossless(member.value, action) }; });
+    if(action === 'sort') members.sort(function(a, b){ return a.key < b.key ? -1 : a.key > b.key ? 1 : 0; });
+    return { type:'object', members:members };
+  }
+  function resolveLosslessPointer(root, pointer){
+    var ptr = pointer.trim(); if(!ptr || ptr === '$') return root;
+    if(ptr[0] !== '/') ptr = dotToPointer(ptr);
+    return ptr.split('/').slice(1).reduce(function(node, segment){
+      var key = pointerUnescape(segment);
+      if(node.type === 'object'){
+        for(var i = node.members.length - 1; i >= 0; i--) if(node.members[i].key === key) return node.members[i].value;
+      } else if((node.type === 'array' || node.type === 'ndjson') && /^(0|[1-9]\d*)$/.test(key) && Number(key) < node.items.length) return node.items[Number(key)];
+      throw new Error('Path not found at ' + segment);
+    }, root);
+  }
+  function decimalSignature(raw){
+    var parts = raw.match(/^(-?)(\d+)(?:\.(\d+))?(?:[eE]([+\-]?\d+))?$/), fraction = parts[3] || '', digits = (parts[2] + fraction).replace(/^0+/, '');
+    if(!digits) return parts[1] + '0';
+    var trailing = (digits.match(/0+$/) || [''])[0].length;
+    return parts[1] + digits.slice(0, digits.length - trailing) + 'e' + (BigInt(parts[4] || '0') - BigInt(fraction.length) + BigInt(trailing)).toString();
+  }
+  function numericFidelityIssue(text){
+    var tokens = /"(?:\\.|[^"\\])*"|(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+\-]?\d+)?)/g;
+    var match;
+    while((match = tokens.exec(text))){
+      if(!match[1]) continue;
+      var value = Number(match[1]);
+      if(!Number.isFinite(value) || decimalSignature(match[1]) !== decimalSignature(String(value))) return 'Numeric literals are preserved losslessly in formatting, queries, sorting, redacted copy and downloads. Tree, schema, TypeScript and diff require JavaScript-representable numbers and are unavailable for this payload.';
+    }
+    return '';
+  }
   function bytes(text){ return new Blob([text]).size; }
   function fmtBytes(value){
     if(value < 1024) return value + ' B';
@@ -481,19 +565,25 @@ input[type="file"]{display:none}
     var warnings = lintRaw(text);
     if(!text.trim()) return { ok:false, value:null, formatted:'', warnings:warnings, error:'Paste JSON to begin.', mode:mode };
     try{
+      var fidelityIssue = numericFidelityIssue(text);
+      if(fidelityIssue) warnings.push('Numeric literals preserved losslessly; some derived views are restricted.');
       if(mode === 'ndjson'){
-        var rows = text.split(/\r?\n/).filter(function(line){ return line.trim(); }).map(function(line, index){
-          try { return JSON.parse(line); }
+        var rows = [], losslessRows = [];
+        text.split(/\r?\n/).forEach(function(line, index){
+          if(!line.trim()) return;
+          try { rows.push(JSON.parse(line)); losslessRows.push(parseLossless(line)); }
           catch(err){ throw new Error('Line ' + (index + 1) + ': ' + err.message); }
         });
         var rowSecrets = scanSensitive(rows);
         if(rowSecrets.length) warnings.push('Possible sensitive fields: ' + rowSecrets.join(', '));
-        return { ok:true, value:rows, formatted:JSON.stringify(rows, null, indent()), warnings:warnings, mode:mode };
+        var batch = { type:'ndjson', items:losslessRows };
+        return { ok:true, value:rows, ast:batch, formatted:serializeLossless(batch, indent()), precisionIssue:fidelityIssue, warnings:warnings, mode:mode };
       }
       var parsed = JSON.parse(text);
+      var ast = parseLossless(text);
       var secretPaths = scanSensitive(parsed);
       if(secretPaths.length) warnings.push('Possible sensitive fields: ' + secretPaths.join(', '));
-      return { ok:true, value:parsed, formatted:JSON.stringify(parsed, null, indent()), warnings:warnings, mode:mode };
+      return { ok:true, value:parsed, ast:ast, formatted:serializeLossless(ast, indent()), precisionIssue:fidelityIssue, warnings:warnings, mode:mode };
     }catch(err){
       return { ok:false, value:null, formatted:'', warnings:warnings, error:err.message, mode:mode };
     }
@@ -508,16 +598,55 @@ input[type="file"]{display:none}
     return warnings;
   }
   function repairText(text){
-    var next = text.replace(/^\uFEFF/, '');
-    next = next.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'");
-    next = next.replace(/\/\*[\s\S]*?\*\//g, '');
-    next = next.replace(/(^|[^:])\/\/.*$/gm, '$1');
-    next = next.replace(/,\s*([}\]])/g, '$1');
-    next = next.replace(/([{,]\s*)([A-Za-z_$][\w$-]*)(\s*:)/g, '$1"$2"$3');
-    next = next.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, function(_, body){
-      return '"' + body.replace(/"/g, '\\"') + '"';
-    });
-    next = next.replace(/\bNone\b/g, 'null').replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+    var source = text.replace(/^\uFEFF/, ''), next = '', i = 0;
+    function skipTrivia(at){
+      while(at < source.length){
+        if(/\s/.test(source[at])) { at++; continue; }
+        if(source.slice(at, at + 2) === '//'){ while(at < source.length && source[at] !== '\n') at++; continue; }
+        if(source.slice(at, at + 2) === '/*'){ var end = source.indexOf('*/', at + 2); if(end < 0) return source.length; at = end + 2; continue; }
+        break;
+      }
+      return at;
+    }
+    while(i < source.length){
+      var ch = source[i];
+      if(ch === '"' || ch === "'" || ch === '\u201C' || ch === '\u2018'){
+        var start = i++, close = ch === '\u201C' ? '\u201D' : ch === '\u2018' ? '\u2019' : ch, body = '', closed = false;
+        while(i < source.length){
+          var value = source[i++];
+          if(value === '\\' && i < source.length){ body += value + source[i++]; continue; }
+          if(value === close){ closed = true; break; }
+          body += value;
+        }
+        if(!closed) return text;
+        if(ch === '"') next += source.slice(start, i);
+        else if(ch === '\u201C') next += '"' + body + '"';
+        else {
+          var encoded = '';
+          for(var at = 0; at < body.length; at++){
+            if(body[at] === '\\' && at + 1 < body.length){
+              var escape = body[++at];
+              encoded += escape === "'" ? "'" : '\\' + escape;
+            } else encoded += body[at] === '"' ? '\\"' : body[at];
+          }
+          try { next += JSON.stringify(JSON.parse('"' + encoded + '"')); }
+          catch(_) { next += source.slice(start, i); }
+        }
+        continue;
+      }
+      if(source.slice(i, i + 2) === '//'){ while(i < source.length && source[i] !== '\n') i++; continue; }
+      if(source.slice(i, i + 2) === '/*'){ var commentEnd = source.indexOf('*/', i + 2); if(commentEnd < 0) return text; i = commentEnd + 2; continue; }
+      if(ch === ',' && /[}\]]/.test(source[skipTrivia(i + 1)] || '')){ i++; continue; }
+      if(/[A-Za-z_$]/.test(ch)){
+        var wordEnd = i + 1;
+        while(wordEnd < source.length && /[\w$-]/.test(source[wordEnd])) wordEnd++;
+        var word = source.slice(i, wordEnd), previous = next.trim().slice(-1);
+        if((previous === '{' || previous === ',') && source[skipTrivia(wordEnd)] === ':') next += JSON.stringify(word);
+        else next += ({ None:'null', True:'true', False:'false' })[word] || word;
+        i = wordEnd; continue;
+      }
+      next += ch; i++;
+    }
     return next;
   }
   function sortKeys(value){
@@ -564,8 +693,9 @@ input[type="file"]{display:none}
     if(!ptr || ptr === '$') return value;
     if(ptr[0] !== '/') ptr = dotToPointer(ptr);
     return ptr.split('/').slice(1).reduce(function(node, segment){
-      if(node == null) throw new Error('Path not found at ' + segment);
-      return node[pointerUnescape(segment)];
+      var key = pointerUnescape(segment);
+      if(node == null || typeof node !== 'object' || !Object.prototype.hasOwnProperty.call(node, key) || (Array.isArray(node) && !/^(0|[1-9]\d*)$/.test(key))) throw new Error('Path not found at ' + segment);
+      return node[key];
     }, value);
   }
   function renderTree(value){
@@ -652,18 +782,22 @@ input[type="file"]{display:none}
     return ops;
   }
   function saveHistory(){
-    if(!last.ok) return;
+    if(!last.ok) return false;
+    if(input.value.length > 300000){ $('historyNotice').textContent = 'This payload is too large for local history. It remains available in the editor and for download; no partial snapshot was saved.'; return false; }
     var list = readHistory();
-    list.unshift({ at:new Date().toISOString(), mode:last.mode, size:bytes(input.value), text:input.value.slice(0, 300000) });
-    localStorage.setItem(storageKey, JSON.stringify(list.slice(0, 10)));
+    list.unshift({ at:new Date().toISOString(), mode:last.mode, size:bytes(input.value), text:input.value });
+    list = list.slice(0, 10);
+    while(JSON.stringify(list).length > 1200000 && list.length > 1) list.pop();
+    try { localStorage.setItem(storageKey, JSON.stringify(list)); $('historyNotice').textContent = 'Complete snapshot saved in local history on this device.'; return true; }
+    catch(_) { $('historyNotice').textContent = 'Local history could not be saved on this device. Your editor, result and download remain available.'; return false; }
   }
   function readHistory(){
-    try { return JSON.parse(localStorage.getItem(storageKey) || '[]'); }
+    try { var list = JSON.parse(localStorage.getItem(storageKey) || '[]'); return Array.isArray(list) ? list : []; }
     catch(_) { return []; }
   }
   function renderHistory(){
     var list = readHistory();
-    if(!list.length) return '<p class="helper">No local history yet. Valid payloads are saved automatically after formatting.</p>';
+    if(!list.length) return '<p class="helper">No local history yet. Complete eligible payloads are saved after formatting. Large payloads skip history and remain available in the editor and for download.</p>';
     return '<div class="history-list">'+list.map(function(item, index){
       return '<div class="history-item"><div><strong>Snapshot '+(index+1)+'</strong><br><span>'+esc(item.at)+' | '+fmtBytes(item.size)+' | '+esc(item.mode)+'</span></div><button type="button" data-history="'+index+'">Restore</button></div>';
     }).join('')+'</div>';
@@ -684,6 +818,10 @@ input[type="file"]{display:none}
       output.innerHTML = '<p class="helper">'+esc(last.error || 'Invalid JSON')+'</p>';
       return;
     }
+    if(last.precisionIssue && ['tree','schema','types','diff'].includes(currentTab)){
+      output.textContent = last.precisionIssue;
+      return;
+    }
     if(currentTab === 'formatted') output.innerHTML = highlight(last.formatted);
     if(currentTab === 'tree') output.innerHTML = renderTree(last.value);
     if(currentTab === 'query') runPointer(false);
@@ -695,15 +833,17 @@ input[type="file"]{display:none}
   function runPointer(showToast){
     if(!last.ok) return;
     try{
-      var result = resolvePointer(last.value, $('pointerInput').value);
-      output.textContent = JSON.stringify(result, null, indent());
+      var result = resolveLosslessPointer(last.ast, $('pointerInput').value);
+      output.textContent = serializeLossless(result, indent());
       if(showToast) toast('Query resolved');
     }catch(err){
       output.innerHTML = '<p class="helper">'+esc(err.message)+'</p>';
+      if(showToast) toast('Query path not found');
     }
   }
   function runDiff(){
     if(!last.ok) return;
+    if(last.precisionIssue || numericFidelityIssue($('diffInput').value)){ output.textContent = 'Diff is unavailable for numeric values outside JavaScript fidelity. Original inputs and lossless formatting/download remain available.'; return; }
     try{
       var other = JSON.parse($('diffInput').value);
       var ops = diff(last.value, other, '');
@@ -718,46 +858,42 @@ input[type="file"]{display:none}
     }
   }
   function bind(){
-    input.addEventListener('input', render);
+    input.addEventListener('input', function(){ $('historyNotice').textContent = ''; render(); });
     input.addEventListener('keydown', function(event){
-      if(event.key === 'Tab'){
-        event.preventDefault();
-        var pad = $('indentSelect').value === 'tab' ? '\t' : ' '.repeat(Number($('indentSelect').value));
-        var start = input.selectionStart;
-        input.value = input.value.slice(0,start) + pad + input.value.slice(input.selectionEnd);
-        input.selectionStart = input.selectionEnd = start + pad.length;
-        render();
-      }
       if((event.ctrlKey || event.metaKey) && event.key === 'Enter'){
         event.preventDefault();
         $('formatBtn').click();
       }
     });
     $('formatBtn').onclick = function(){ if(last.ok){ input.value = last.formatted; saveHistory(); render(); toast('Formatted'); } else toast('Fix validation errors first'); };
-    $('minifyBtn').onclick = function(){ if(last.ok){ input.value = JSON.stringify(last.value); saveHistory(); render(); toast('Minified'); } };
+    $('minifyBtn').onclick = function(){ if(last.ok){ input.value = serializeLossless(last.ast, 0); saveHistory(); render(); toast('Minified'); } else toast('Fix validation errors first'); };
     $('repairBtn').onclick = function(){ input.value = repairText(input.value); render(); toast('Repair attempted'); };
-    $('sortBtn').onclick = function(){ if(last.ok){ input.value = JSON.stringify(sortKeys(last.value), null, indent()); saveHistory(); render(); toast('Keys sorted'); } };
+    $('sortBtn').onclick = function(){ if(last.ok){ input.value = serializeLossless(transformLossless(last.ast, 'sort'), indent()); saveHistory(); render(); toast('Keys sorted'); } else toast('Fix validation errors first'); };
     $('sampleBtn').onclick = function(){
+      $('historyNotice').textContent = '';
       input.value = JSON.stringify({ customer:{ name:'Amina Okafor', country:'NG', city:'Lagos' }, orders:[{ id:'AF-1001', total:12500, currency:'NGN', paid:true }, { id:'AF-1002', total:6400, currency:'NGN', paid:false }], meta:{ source:'AfroTools sample', generatedAt:'2026-04-28' } }, null, 2);
       render();
     };
-    $('clearBtn').onclick = function(){ input.value = ''; render(); };
+    $('clearBtn').onclick = function(){ input.value = ''; $('historyNotice').textContent = ''; render(); };
     $('copyBtn').onclick = function(){
       var text = output.textContent || '';
       safeCopy(text).then(function(){ toast('Copied'); }).catch(function(){ toast('Copy failed'); });
     };
     $('redactCopyBtn').onclick = function(){
       if(!last.ok) { toast('Format valid JSON first'); return; }
-      var text = JSON.stringify(redactValue(last.value), null, indent());
+      var text = serializeLossless(transformLossless(last.ast, 'redact'), indent());
       safeCopy(text).then(function(){ toast('Redacted copy ready'); }).catch(function(){ toast('Copy failed'); });
     };
     $('downloadBtn').onclick = function(){
+      if(!last.ok){ toast('Valid JSON required'); return; }
+      if(last.precisionIssue && ['tree','schema','types','diff'].includes(currentTab)){ toast('This derived view cannot represent these numbers; use lossless Formatted or Query output'); return; }
       var content = currentTab === 'formatted' && last.ok ? last.formatted : output.textContent;
-      var blob = new Blob([content || input.value], { type:'application/json' });
+      var ndjson = currentTab === 'formatted' && last.mode === 'ndjson';
+      var blob = new Blob([content || input.value], { type:currentTab === 'types' ? 'text/plain' : ndjson ? 'application/x-ndjson' : 'application/json' });
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = currentTab === 'schema' ? 'schema.json' : currentTab === 'types' ? 'types.ts' : 'data.json';
+      a.download = currentTab === 'schema' ? 'schema.json' : currentTab === 'types' ? 'types.ts' : ndjson ? 'data.ndjson' : 'data.json';
       a.click();
       URL.revokeObjectURL(url);
     };
@@ -765,15 +901,18 @@ input[type="file"]{display:none}
       if(!last.ok){ toast('Valid JSON required'); return; }
       var saved = [];
       try { saved = JSON.parse(localStorage.getItem(apiTesterKey) || '[]'); } catch(_) {}
-      saved.unshift({ name:'JSON Formatter Payload', method:'POST', url:'https://api.example.com/endpoint', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(last.value, null, 2), createdAt:new Date().toISOString(), source:'json-formatter' });
-      localStorage.setItem(apiTesterKey, JSON.stringify(saved.slice(0, 25)));
-      toast('Saved to API Tester');
+      if(!Array.isArray(saved)) saved = [];
+      var payload = last.mode === 'ndjson' ? { type:'array', items:last.ast.items } : last.ast;
+      saved.unshift({ name:'JSON Formatter Payload', method:'POST', url:'https://api.example.com/endpoint', headers:{ 'Content-Type':'application/json' }, body:serializeLossless(payload, 2), createdAt:new Date().toISOString(), source:'json-formatter' });
+      try { localStorage.setItem(apiTesterKey, JSON.stringify(saved.slice(0, 25))); toast('Saved to API Tester'); }
+      catch(_) { toast('API Tester save failed; your editor and download remain available'); }
     };
+    $('openFileBtn').onclick = function(){ $('fileInput').click(); };
     $('fileInput').onchange = function(event){
       var file = event.target.files[0];
       if(!file) return;
       var reader = new FileReader();
-      reader.onload = function(ev){ input.value = ev.target.result; render(); toast('File loaded'); };
+      reader.onload = function(ev){ input.value = ev.target.result; $('historyNotice').textContent = ''; render(); toast('File loaded'); };
       reader.readAsText(file);
     };
     $('modeSelect').onchange = render;
@@ -797,7 +936,11 @@ input[type="file"]{display:none}
       }
       if(historyButton){
         var item = readHistory()[Number(historyButton.getAttribute('data-history'))];
-        if(item){ input.value = item.text; $('modeSelect').value = item.mode || 'json'; setTab('formatted'); toast('Snapshot restored'); }
+        if(item && typeof item.text === 'string'){
+          try { if(item.mode === 'ndjson') item.text.split(/\r?\n/).filter(function(line){ return line.trim(); }).forEach(function(line){ JSON.parse(line); }); else JSON.parse(item.text); }
+          catch(_) { $('historyNotice').textContent = 'This saved snapshot is incomplete or invalid. Your current editor has been kept unchanged.'; return; }
+          input.value = item.text; $('modeSelect').value = item.mode || 'json'; $('historyNotice').textContent = ''; setTab('formatted'); toast('Snapshot restored');
+        }
       }
     });
   }

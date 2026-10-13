@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "groups": 2,
-  "originalCommit": "a225e13f202da2f1e578e221bf14d4848c5a6099",
-  "originalWorkflowSha256": "860e0c0ab785445e5c91a699c98f726a92117065d9da328fbc398188905afee4",
+  "originalCommit": "ab5b861da09de046eb6bb0e72dc01fce1b8713b8",
+  "originalWorkflowSha256": "7d8e4bd0fa3231aa37eafbfa4bc048d0b5c65133ad0571f29556de473ce96b34",
   "originalBuildTimeoutMinutes": 75,
   "originalVerifyYaml": "  verify:\n    name: Verify\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n\n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v5\n        with:\n          # Preservation tests compare current records with pinned release baselines.\n          fetch-depth: 0\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Install Chromium for browser-backed tests\n        run: npx playwright install chromium --with-deps\n\n      - name: Lint\n        run: npm run lint\n\n      - name: Type-check\n        run: npm run type-check\n\n      - name: Verify calculation formulas and jurisdictional data\n        run: npm run calculation-quality:check\n\n      - name: Verify static data fallback freshness\n        run: npm run data:fallbacks:check\n\n      - name: AI contract tests\n        run: npm run test:ai\n\n      - name: Unit and integration tests\n        run: npm test\n\n      - name: Verify multipart parser boundaries\n        run: node --test tests/multipart-parser-boundary.test.js\n\n      - name: Verify forex context expiry at runtime\n        run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js\n\n      - name: Verify private command-centre contracts\n        run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs\n\n      - name: Verify Pro architecture\n        run: npm run pro:verify\n\n      - name: Validate i18n dictionaries\n        run: npm run build:i18n:validate\n\n      - name: Validate hreflang graph\n        run: npm run validate:hreflang\n\n",
   "originalSmokeYaml": "  e2e:\n    name: Playwright smoke\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n\n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v5\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Install Chromium\n        run: npx playwright install chromium --with-deps\n\n      - name: Run smoke specs\n        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js tests/e2e/amount-words-readiness.spec.js tests/e2e/mobile-money-readiness.spec.js tests/e2e/education-hub-card-reflow.spec.js tests/e2e/jamb-review-reflow.spec.js tests/e2e/shared-contrast-and-pro-gate.spec.js tests/e2e/blog-reading-layout.spec.js --project=chromium --workers=1\n\n      - name: Verify AfroJAMB reviewed-content journeys\n        env:\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n        run: npx playwright test tests/e2e/jamb-browser-trust.spec.js tests/e2e/jamb-planning-trust.spec.js tests/e2e/jamb-tutor-consent.spec.js tests/e2e/jamb-reviewed-pages.spec.js tests/e2e/jamb-public-review.spec.js --project=chromium --workers=2\n\n      - name: Verify Solar startup and French country continuations\n        env:\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4177'\n        run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2\n",
@@ -570,7 +570,7 @@
     },
     {
       "id": "browser-32",
-      "originalIndex": 41,
+      "originalIndex": 42,
       "group": 2,
       "step": {
         "name": "Verify creator profile HTML boundaries in the artifact",
@@ -582,6 +582,23 @@
         "run": "npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
       },
       "stepSha256": "cae59c7fc8348b03a35c10e65ca80a795fdc35143000617393baebc1bef952f7"
+    },
+    {
+      "id": "browser-33",
+      "originalIndex": 40,
+      "group": 1,
+      "step": {
+        "name": "Verify JSON and hash utility recovery in the native artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4244"
+        },
+        "run": "node --test tests/developer-json-hash-source-contracts.test.js\nnpx playwright test tests/e2e/developer-json-hash-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n"
+      },
+      "stepSha256": "d1d5505461e7efd842afab165441ee77e534b945b450f7e43a72f0f113447319",
+      "originalYaml": "      - name: Verify JSON and hash utility recovery in the native artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          AFROTOOLS_TEST_SECURITY_HEADERS: '1'\n          PORT: '4244'\n        run: |\n          node --test tests/developer-json-hash-source-contracts.test.js\n          npx playwright test tests/e2e/developer-json-hash-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n\n"
     }
   ],
   "consumerSetup": [
@@ -599,5 +616,8 @@
     "run": "git diff --stat\nif [ -n \"$(git diff --name-only)\" ]; then\n  echo \"::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs.\"\n  git diff --name-only\n  exit 1\nfi\n"
   },
   "nativeShell": "bash -e {0}",
-  "mutationBoundary": "Entire original French finance step before seal; original generated parity in producer plus post-browser parity in each isolated consumer"
+  "mutationBoundary": "Entire original French finance step before seal; original generated parity in producer plus post-browser parity in each isolated consumer",
+  "originalWorkflowFile": "tests/fixtures/ci-original/developer-json-hash-ab5b861d.yml",
+  "predecessorCommit": "a225e13f202da2f1e578e221bf14d4848c5a6099",
+  "predecessorWorkflowSha256": "860e0c0ab785445e5c91a699c98f726a92117065d9da328fbc398188905afee4"
 }
