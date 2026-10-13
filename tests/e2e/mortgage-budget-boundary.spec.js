@@ -43,7 +43,7 @@ async function openTool(page, route, width, colorScheme, manualTheme) {
   } catch (error) {
     if (await accept.isVisible().catch(() => false)) throw error;
   }
-  if (manualTheme) await page.evaluate((theme) => { document.documentElement.dataset.theme = theme; }, manualTheme);
+  if (manualTheme) await page.evaluate((theme) => { window.AfroTools.darkMode.set(theme); }, manualTheme);
   await page.evaluate(() => { window.__mbStorageMutations = []; });
   const nonGet = [];
   page.on('request', (request) => { if (request.method() !== 'GET') nonGet.push(request.method() + ' ' + request.url()); });
@@ -100,11 +100,11 @@ async function expectHeroCtaContrast(page, restore) {
   ];
   for (const mode of modes) {
     await page.emulateMedia({ colorScheme: mode.colorScheme });
-    await page.evaluate((theme) => {
-      if (theme) document.documentElement.dataset.theme = theme;
-      else delete document.documentElement.dataset.theme;
-    }, mode.theme);
-    const results = await page.locator('.mb-hero .mb-pill').evaluateAll((elements) => {
+    const results = await page.locator('.mb-hero .mb-pill').evaluateAll((elements, theme) => {
+      // Manual modes use the site's preference API, so queued system changes cannot undo the choice.
+      window.AfroTools.darkMode.set(theme || 'auto');
+      // Keep the original no-attribute system CSS coverage in the same task as the contrast read.
+      if (!theme) delete document.documentElement.dataset.theme;
       function rgb(value) {
         const match = value.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
         return match ? match.slice(1, 4).map(Number) : null;
@@ -128,7 +128,7 @@ async function expectHeroCtaContrast(page, restore) {
           ratio: (lighter + 0.05) / (darker + 0.05)
         };
       });
-    });
+    }, mode.theme);
     expect(results).toHaveLength(2);
     for (const result of results) {
       expect(result.ratio, `${mode.label}: ${result.label} ${result.color} on ${result.background}`).toBeGreaterThanOrEqual(4.5);
@@ -136,8 +136,8 @@ async function expectHeroCtaContrast(page, restore) {
   }
   await page.emulateMedia({ colorScheme: restore.colorScheme });
   await page.evaluate((theme) => {
-    if (theme) document.documentElement.dataset.theme = theme;
-    else delete document.documentElement.dataset.theme;
+    window.AfroTools.darkMode.set(theme || 'auto');
+    if (!theme) delete document.documentElement.dataset.theme;
   }, restore.theme);
   await page.evaluate(() => { window.__mbStorageMutations = []; });
 }
@@ -210,5 +210,25 @@ test('SW 768 manual dark: localized boundary stays non-advisory', async ({ page 
   expect(links).toEqual(['/sw/zana/kikokotoo-mkopo-wa-nyumba/','/sw/zana/mnunuzi-wa-kwanza-wa-nyumba/','/sw/zana/ustahiki-wa-mkopo-wa-nyumba/','/sw/zana/kilinganisha-mikopo/','/sw/zana/gharama-za-uhamisho-wa-mali/']);
   await expectPageQuality(page);
   await captureFullPage(page, testInfo.outputPath('mortgage-budget-sw-768-dark.png'));
+  await expectPrivate(page, proof);
+});
+
+test('SW 768 manual dark: preference survives native media changes', async ({ page }) => {
+  const proof = await openTool(page, '/sw/zana/uwezo-wa-mkopo-wa-nyumba/', 768, 'light', 'dark');
+  for (const colorScheme of ['dark', 'light']) {
+    await page.evaluate(() => {
+      window.__mbMediaChange = new Promise((resolve) => {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+          resolve({ trusted: event.isTrusted, matches: event.matches });
+        }, { once: true });
+      });
+    });
+    await page.emulateMedia({ colorScheme });
+    const event = await page.evaluate(() => window.__mbMediaChange);
+    expect(event).toEqual({ trusted: true, matches: colorScheme === 'dark' });
+    expect(await page.evaluate(() => window.AfroTools.darkMode.get())).toBe('dark');
+    expect(await page.evaluate(() => document.documentElement.dataset.theme)).toBe('dark');
+    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe('rgb(9, 17, 31)');
+  }
   await expectPrivate(page, proof);
 });

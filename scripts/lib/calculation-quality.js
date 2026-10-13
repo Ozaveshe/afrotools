@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { normalizeReviewedArtworkPresentation } = require("./reviewed-artwork-formula-presentation");
+const { normalizeReviewedRelatedProPresentation } = require("./reviewed-related-pro-presentation");
 
 function loadBrowserGlobal(root, artifactPath, globalName) {
   const context = { globalThis: {} };
@@ -251,7 +252,7 @@ function normalizeHtmlFormulaPresentation(source) {
         return prefix + "53e2e483" + suffix;
       },
     );
-  return normalizeReviewedArtworkPresentation(normalizeMaternityLeaveSeoPresentation(normalized));
+  return normalizeReviewedRelatedProPresentation(normalizeReviewedArtworkPresentation(normalizeMaternityLeaveSeoPresentation(normalized)));
 }
 
 function normalizeHtmlFormulaRouteShell(source) {

@@ -14,6 +14,8 @@ const { setData, getData, updateMeta } = require('./_shared/data-store');
 const { storageDiagnostic } = require('./_shared/storage-diagnostics');
 const { fetchWithRetry } = require('./_shared/scraper-request');
 const fxEvidence = require('./_shared/reference-fx');
+const { findContract } = require('./_shared/live-data-contracts');
+const MAX_OBSERVATION_AGE_MS = findContract('forex-latest').maxAgeHours * 60 * 60 * 1000;
 
 // All African + global currencies we track
 const AFRICAN_CURRENCIES = [
@@ -33,6 +35,14 @@ const UNVERIFIED_JUMP_THRESHOLD = 0.5;
 
 function countTrackedRates(rates) {
   return ALL_CURRENCIES.filter(code => rates && rates[code] !== undefined).length;
+}
+
+function observationProblem(value) {
+  const observedAt = fxEvidence.timestamp(value);
+  if (!observedAt) return 'invalid-observation-date';
+  const age = Date.now() - Date.parse(observedAt);
+  return age < 0 ? 'future-observation'
+    : age > MAX_OBSERVATION_AGE_MS ? 'expired-observation' : null;
 }
 
 function normalizeTimestamp(value) {
@@ -76,30 +86,35 @@ function stabilizeRates(fetchedRates, existingRates, comparisonRates) {
  */
 async function fetchFromExchangeRateAPI() {
   const apiKey = process.env.EXCHANGERATE_API_KEY || 'free';
-  const url = apiKey === 'free'
-    ? 'https://open.er-api.com/v6/latest/USD'
-    : `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+  // An exhausted keyed plan does not imply the same provider's existing free
+  // reference endpoint is unavailable. Each endpoint gets one bounded attempt.
+  const urls = apiKey === 'free'
+    ? ['https://open.er-api.com/v6/latest/USD']
+    : [`https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`, 'https://open.er-api.com/v6/latest/USD'];
 
-  const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
-  if (!res.ok) throw new Error(`ExchangeRate-API: HTTP ${res.status}`);
-
-  const json = await res.json();
-  if (json.result === 'error') throw new Error(`ExchangeRate-API: ${json['error-type']}`);
-
-  const rawRates = json.rates || json.conversion_rates || {};
-  const rates = {};
-  for (const code of ALL_CURRENCIES) {
-    if (rawRates[code] !== undefined) {
-      rates[code] = rawRates[code];
+  for (const url of urls) {
+    try {
+      const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
+      if (!res.ok) continue;
+      const json = await res.json();
+      if (json.result === 'error') continue;
+      const rawRates = json.rates || json.conversion_rates || {};
+      const rates = {};
+      for (const code of ALL_CURRENCIES) {
+        if (rawRates[code] !== undefined) rates[code] = rawRates[code];
+      }
+      const result = {
+        rates,
+        source: 'exchangerate-api',
+        last_updated: normalizeTimestamp(json.time_last_update_utc),
+        next_update: normalizeTimestamp(json.time_next_update_utc),
+      };
+      if (countTrackedRates(rates) >= MIN_SOURCE_COVERAGE && !observationProblem(result.last_updated)) return result;
+    } catch (_error) {
+      // Neither keyed URLs nor upstream exception/response text may escape.
     }
   }
-
-  return {
-    rates,
-    source: 'exchangerate-api',
-    last_updated: normalizeTimestamp(json.time_last_update_utc),
-    next_update: normalizeTimestamp(json.time_next_update_utc),
-  };
+  throw new Error('ExchangeRate-API: no current valid snapshot');
 }
 
 /**
@@ -187,16 +202,18 @@ exports.handler = async function (event) {
       console.log(`[forex-fetch] Trying source: ${source.name}`);
       const result = await source.fn();
       const coverage = countTrackedRates(result.rates);
+      const observedAt = fxEvidence.timestamp(result.last_updated);
+      const problem = observationProblem(result.last_updated);
 
-      if (coverage >= MIN_SOURCE_COVERAGE && result.last_updated && Date.parse(result.last_updated) <= Date.now() + 300000) {
+      if (coverage >= MIN_SOURCE_COVERAGE && !problem) {
         fetchedRates = result.rates;
         usedSource = result.source;
-        sourceLastUpdated = result.last_updated || null;
+        sourceLastUpdated = observedAt;
         sourceNextUpdate = result.next_update || null;
         console.log(`[forex-fetch] Success from ${source.name} - ${coverage} tracked currencies`);
         break;
       } else {
-        console.log(`[forex-fetch] ${source.name} returned too few tracked currencies (${coverage}), trying next...`);
+        console.log(`[forex-fetch] ${source.name}: ${problem || 'insufficient-coverage'}, trying next...`);
       }
     } catch (err) {
       console.error('[forex-fetch] '+source.name+' request or decoding failed');
@@ -205,13 +222,13 @@ exports.handler = async function (event) {
 
   // If all sources fail, retain stale data
   if (!fetchedRates) {
-    console.warn('[forex-fetch] All sources failed. Retaining existing cached data.');
+    console.warn('[forex-fetch] No fresh source observation. Retaining existing cached data.');
     await updateMeta('forex', {
       status: 'stale',
-      error: 'All sources failed',
+      error: 'All sources failed or returned unavailable observations',
       last_attempt: new Date().toISOString(),
     });
-    return { statusCode: 500, body: 'All forex sources failed' };
+    return { statusCode: 500, body: 'No fresh forex observation available; cached data retained.' };
   }
 
   // Merge with existing data (preserve currencies not in new fetch)
