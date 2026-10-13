@@ -8,6 +8,7 @@ const cp = require('node:child_process');
 const c = require('../scripts/ci-artifact-contract');
 const {selectNativeStart, bindNativeDeadline, readNativeJobs} = require('../scripts/ci-artifact-deadline');
 const inventory = require('../scripts/ci-artifact-groups.json');
+const educationBaseline = require('./fixtures/education-social-wrap-recovery/ci-current-61455-inventory.json');
 const ROOT = path.resolve(__dirname, '..');
 const clone = value => structuredClone(value);
 
@@ -32,11 +33,14 @@ function originalBrowserStep(block) {
 test('mechanically preserves all current commands/env/specs/workers and Verify/smoke blocks', () => {
   const original = cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
+  assert.equal(original, fs.readFileSync(path.join(ROOT, 'tests/fixtures/education-social-wrap-recovery/ci-original-a225.yml'), 'utf8').replaceAll('\r\n', '\n'));
+  assert.equal((original.match(/^\s+- name:/gm) || []).length, 65, 'Every original named workflow step remains pinned');
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
   assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));
   const body = original.split('  build:\n')[1].split('  e2e:\n')[0];
   const blocks = body.match(/      - name: .*?(?=\n      - name:|$)/gs);
-  assert.equal(blocks.length, inventory.producer.length + inventory.browser.length);
+  assert.equal(blocks.length, 42);
+  assert.equal(blocks.length, inventory.producer.length + educationBaseline.inventory.browser.length);
   const covered = new Set();
   for (const [index, block] of blocks.entries()) {
     const name = block.split('\n')[0].slice('      - name: '.length);
@@ -62,6 +66,23 @@ test('mechanically preserves all current commands/env/specs/workers and Verify/s
   assert.match(current, /max-parallel: 2/); assert.match(current, /fail-fast: false/);
   assert.equal((current.match(/run: npm run build:deploy/g) || []).length, 1);
   assert.equal((current.match(/writeReleaseMetadata\(\)/g) || []).length, 1);
+});
+
+test('one Education gate extends the complete current inventory without changing workflow or original gates', () => {
+  assert.equal(educationBaseline.inventory.browser.length, 32);
+  assert.equal(inventory.browser.length, 33);
+  const inverse = clone(inventory);
+  const addition = inverse.browser.pop();
+  assert.equal(addition.id, 'browser-education-discovery-social-wrap');
+  assert.equal(addition.group, 2);
+  assert.equal(addition.step.run, 'npx playwright test tests/e2e/education-discovery-social-wrap-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off');
+  assert.deepEqual(addition.step.env, {AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1', AFROTOOLS_TEST_DISABLE_ANALYTICS:'1', PORT:'4527'});
+  assert.equal(addition.stepSha256, c.jsonHash(addition.step));
+  assert.deepEqual(inverse, educationBaseline.inventory, 'Removing only the addition must restore the entire prior inventory');
+  const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
+  assert.equal(workflow, educationBaseline.workflow);
+  const originalCurrent = cp.execFileSync('git', ['show', educationBaseline.base + ':scripts/ci-artifact-groups.json'], {cwd:ROOT, encoding:'utf8'});
+  assert.deepEqual(educationBaseline.inventory, JSON.parse(originalCurrent));
 });
 
 test('inventory rejects duplicate commands, unsupported contexts and changed native flags', () => {
@@ -94,6 +115,19 @@ function goodAcceptance() {
 
 test('aggregate succeeds only with both runners and every original gate', () => {
   const f = goodAcceptance(); assert.equal(c.aggregate(inventory, f.manifest, f.reports, f.needs), true);
+});
+
+test('aggregate requires the additional Education gate under the same binding and deadline', () => {
+  for (const mutation of ['missing', 'failed', 'changed']) {
+    const f = goodAcceptance();
+    const report = f.reports.find(value => value.group === 2);
+    const gate = report.gates.find(value => value.id === 'browser-education-discovery-social-wrap');
+    assert.ok(gate);
+    if (mutation === 'missing') report.gates = report.gates.filter(value => value !== gate);
+    if (mutation === 'failed') gate.status = 'failed';
+    if (mutation === 'changed') gate.stepSha256 = '0'.repeat(64);
+    assert.throws(() => c.aggregate(inventory, f.manifest, f.reports, f.needs));
+  }
 });
 for (const status of ['failed', 'skipped', 'cancelled', 'not_run']) {
   test('aggregate rejects an ordinary gate ' + status, () => {

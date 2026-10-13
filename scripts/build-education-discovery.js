@@ -61,6 +61,9 @@ ${route === '/education/' ? '<link rel="alternate" hreflang="fr" href="https://a
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)} | AfroTools">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">${json}</script>
 <script type="application/ld+json">${breadcrumbJson}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
