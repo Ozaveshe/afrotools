@@ -19,7 +19,7 @@ const stamp = age => new Date(nowMs - age).toISOString();
 const snapshot = (source, last_updated, coverage = rates) => ({ source, last_updated, rates: coverage });
 const clone = value => JSON.parse(JSON.stringify(value));
 
-function load() {
+function load(options = {}) {
   const file = path.resolve(__dirname, '../netlify/functions/scheduled-fetch-forex-rates.js');
   const nativeRequire = createRequire(file);
   const module = { exports: {} };
@@ -29,13 +29,13 @@ function load() {
   const before = clone(previous);
   const meta = { last_fetch: previous.timestamp, source: previous.source, status: 'ok' };
   const context = vm.createContext({
-    module, exports: module.exports, Date: Clock, process: { env: {} },
+    module, exports: module.exports, Date: Clock, process: { env: options.env || {} },
     require: id => id === './_shared/data-store' ? {
       getData: async () => previous,
       setData: async (key, value) => { writes.push({ key, value: clone(value) }); return true; },
       updateMeta: async (_key, value) => { metaPatches.push(clone(value)); Object.assign(meta, value); }
     } : id === './_shared/scraper-request' ? {
-      fetchWithRetry: async () => { throw new Error('Unexpected network access'); }
+      fetchWithRetry: options.fetchWithRetry || (async () => { throw new Error('Unexpected network access'); })
     } : nativeRequire(id),
     console: Object.fromEntries(['log', 'warn', 'error'].map(level => [level, (...args) => logs.push(args.join(' '))]))
   });
@@ -122,3 +122,106 @@ test('provider exception details remain absent from metadata and logs on all-sou
   assert.equal(JSON.stringify({ logs: owner.logs, meta: owner.meta }).includes(privateMessage), false);
 });
 
+function providerResponse(observedAt = NOW, providerRates = rates) {
+  return new Response(JSON.stringify({ result: 'success', conversion_rates: providerRates,
+    time_last_update_utc: observedAt, time_next_update_utc: stamp(-3600000) }));
+}
+const FREE_URL = 'https://open.er-api.com/v6/latest/USD';
+const syntheticKey = 'synthetic-key-not-a-real-credential';
+
+test('keyed quota failure recovers through the same provider free endpoint and stores its original observation', async () => {
+  const requests = [];
+  const owner = load({
+    env: { EXCHANGERATE_API_KEY: syntheticKey },
+    fetchWithRetry: async (url, options) => {
+      requests.push(url);
+      assert.deepEqual(clone(options), { retries: 1, timeoutMs: 5000 });
+      if (url.includes('/' + syntheticKey + '/')) return new Response(
+        JSON.stringify({ result: 'error', 'error-type': 'quota-reached' }), { status: 429 });
+      if (url === FREE_URL) return providerResponse(stamp(3600000));
+      return new Response(JSON.stringify({ date: '2026-10-13',
+        usd: Object.fromEntries(Object.entries(rates).map(([code, value]) => [code.toLowerCase(), value])) }));
+    }
+  });
+  assert.equal((await owner.api.handler()).statusCode, 200);
+  assert.ok(requests[0].includes('/' + syntheticKey + '/'));
+  assert.equal(requests[1], FREE_URL);
+  assert.equal(requests.some(url => url.includes('frankfurter')), false);
+  const saved = owner.writes[0].value;
+  assert.equal(saved.source, 'exchangerate-api');
+  assert.equal(saved.timestamp, stamp(3600000));
+  assert.equal(saved.rate_observations.NGN.source, 'exchangerate-api');
+  assert.equal(saved.rate_observations.NGN.observed_at, stamp(3600000));
+  assert.equal(saved.rates.NGN, rates.NGN);
+  assert.equal(owner.meta.status, 'ok');
+  assert.equal(JSON.stringify({ logs: owner.logs, meta: owner.meta }).includes(syntheticKey), false);
+});
+
+test('valid keyed provider keeps priority and performs no free-endpoint request', async () => {
+  const requests = [];
+  const owner = load({ env: { EXCHANGERATE_API_KEY: syntheticKey }, fetchWithRetry: async url => {
+    requests.push(url); return providerResponse();
+  } });
+  assert.equal((await owner.context.fetchFromExchangeRateAPI()).last_updated, NOW);
+  assert.equal(requests.length, 1);
+  assert.ok(requests[0].includes('/' + syntheticKey + '/'));
+});
+
+for (const key of [undefined, 'free']) {
+  test('unconfigured or explicit free mode has exactly one provider endpoint path: ' + String(key), async () => {
+    const requests = [];
+    const owner = load({ env: key === undefined ? {} : { EXCHANGERATE_API_KEY: key },
+      fetchWithRetry: async (url, options) => {
+        requests.push(url); assert.deepEqual(clone(options), { retries: 1, timeoutMs: 5000 });
+        return providerResponse();
+      } });
+    assert.equal((await owner.context.fetchFromExchangeRateAPI()).source, 'exchangerate-api');
+    assert.deepEqual(requests, [FREE_URL]);
+  });
+}
+
+for (const [label, freeResponse] of [
+  ['expired', () => providerResponse(stamp(maximumAge + 1))],
+  ['malformed', () => providerResponse('not-a-date')],
+  ['future', () => providerResponse(stamp(-1))],
+  ['insufficient coverage', () => providerResponse(NOW, { NGN: 100 })]
+]) {
+  test('keyed failure and ' + label + ' free response allow the next provider', async () => {
+    const requests = [];
+    const owner = load({ env: { EXCHANGERATE_API_KEY: syntheticKey }, fetchWithRetry: async url => {
+      requests.push(url);
+      if (url.includes('/' + syntheticKey + '/')) return new Response('{}', { status: 429 });
+      if (url === FREE_URL) return freeResponse();
+      if (url.includes('frankfurter')) return new Response(JSON.stringify({ date: '2026-10-13', rates }));
+      return new Response(JSON.stringify({ date: '2026-10-13',
+        usd: Object.fromEntries(Object.entries(rates).map(([code, value]) => [code.toLowerCase(), value])) }));
+    } });
+    assert.equal((await owner.api.handler()).statusCode, 200);
+    assert.equal(requests[1], FREE_URL);
+    assert.ok(requests[2].includes('frankfurter'));
+    assert.equal(owner.writes[0].value.source, 'frankfurter');
+    assert.equal(owner.writes[0].value.timestamp, '2026-10-13T00:00:00.000Z');
+    assert.equal(owner.meta.status, 'ok');
+  });
+}
+
+test('keyed network failure recovers through free without leaking keyed URLs or exception text', async () => {
+  const requests = [];
+  const owner = load({ env: { EXCHANGERATE_API_KEY: syntheticKey }, fetchWithRetry: async url => {
+    requests.push(url);
+    if (url !== FREE_URL) throw new Error('private request URL ' + url);
+    return providerResponse();
+  } });
+  assert.equal((await owner.context.fetchFromExchangeRateAPI()).last_updated, NOW);
+  assert.equal(requests.length, 2);
+  assert.equal(owner.logs.join(' ').includes(syntheticKey), false);
+});
+test('all ExchangeRate endpoints fail with a fixed error and no raw provider response detail', async () => {
+  const owner = load({ env: { EXCHANGERATE_API_KEY: syntheticKey }, fetchWithRetry: async () =>
+    new Response(JSON.stringify({ result: 'error', 'error-type': syntheticKey })) });
+  await assert.rejects(owner.context.fetchFromExchangeRateAPI(), error => {
+    assert.equal(error.message, 'ExchangeRate-API: no current valid snapshot');
+    assert.equal(error.message.includes(syntheticKey), false); return true;
+  });
+  assert.equal(owner.logs.join(' ').includes(syntheticKey), false);
+});

@@ -37,6 +37,14 @@ function countTrackedRates(rates) {
   return ALL_CURRENCIES.filter(code => rates && rates[code] !== undefined).length;
 }
 
+function observationProblem(value) {
+  const observedAt = fxEvidence.timestamp(value);
+  if (!observedAt) return 'invalid-observation-date';
+  const age = Date.now() - Date.parse(observedAt);
+  return age < 0 ? 'future-observation'
+    : age > MAX_OBSERVATION_AGE_MS ? 'expired-observation' : null;
+}
+
 function normalizeTimestamp(value) {
   if (!value) return null;
   const date = new Date(value);
@@ -78,30 +86,35 @@ function stabilizeRates(fetchedRates, existingRates, comparisonRates) {
  */
 async function fetchFromExchangeRateAPI() {
   const apiKey = process.env.EXCHANGERATE_API_KEY || 'free';
-  const url = apiKey === 'free'
-    ? 'https://open.er-api.com/v6/latest/USD'
-    : `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+  // An exhausted keyed plan does not imply the same provider's existing free
+  // reference endpoint is unavailable. Each endpoint gets one bounded attempt.
+  const urls = apiKey === 'free'
+    ? ['https://open.er-api.com/v6/latest/USD']
+    : [`https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`, 'https://open.er-api.com/v6/latest/USD'];
 
-  const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
-  if (!res.ok) throw new Error(`ExchangeRate-API: HTTP ${res.status}`);
-
-  const json = await res.json();
-  if (json.result === 'error') throw new Error(`ExchangeRate-API: ${json['error-type']}`);
-
-  const rawRates = json.rates || json.conversion_rates || {};
-  const rates = {};
-  for (const code of ALL_CURRENCIES) {
-    if (rawRates[code] !== undefined) {
-      rates[code] = rawRates[code];
+  for (const url of urls) {
+    try {
+      const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
+      if (!res.ok) continue;
+      const json = await res.json();
+      if (json.result === 'error') continue;
+      const rawRates = json.rates || json.conversion_rates || {};
+      const rates = {};
+      for (const code of ALL_CURRENCIES) {
+        if (rawRates[code] !== undefined) rates[code] = rawRates[code];
+      }
+      const result = {
+        rates,
+        source: 'exchangerate-api',
+        last_updated: normalizeTimestamp(json.time_last_update_utc),
+        next_update: normalizeTimestamp(json.time_next_update_utc),
+      };
+      if (countTrackedRates(rates) >= MIN_SOURCE_COVERAGE && !observationProblem(result.last_updated)) return result;
+    } catch (_error) {
+      // Neither keyed URLs nor upstream exception/response text may escape.
     }
   }
-
-  return {
-    rates,
-    source: 'exchangerate-api',
-    last_updated: normalizeTimestamp(json.time_last_update_utc),
-    next_update: normalizeTimestamp(json.time_next_update_utc),
-  };
+  throw new Error('ExchangeRate-API: no current valid snapshot');
 }
 
 /**
@@ -190,12 +203,9 @@ exports.handler = async function (event) {
       const result = await source.fn();
       const coverage = countTrackedRates(result.rates);
       const observedAt = fxEvidence.timestamp(result.last_updated);
-      const observationAge = observedAt ? Date.now() - Date.parse(observedAt) : NaN;
-      const observationProblem = !observedAt ? 'invalid-observation-date'
-        : observationAge < 0 ? 'future-observation'
-        : observationAge > MAX_OBSERVATION_AGE_MS ? 'expired-observation' : null;
+      const problem = observationProblem(result.last_updated);
 
-      if (coverage >= MIN_SOURCE_COVERAGE && !observationProblem) {
+      if (coverage >= MIN_SOURCE_COVERAGE && !problem) {
         fetchedRates = result.rates;
         usedSource = result.source;
         sourceLastUpdated = observedAt;
@@ -203,7 +213,7 @@ exports.handler = async function (event) {
         console.log(`[forex-fetch] Success from ${source.name} - ${coverage} tracked currencies`);
         break;
       } else {
-        console.log(`[forex-fetch] ${source.name}: ${observationProblem || 'insufficient-coverage'}, trying next...`);
+        console.log(`[forex-fetch] ${source.name}: ${problem || 'insufficient-coverage'}, trying next...`);
       }
     } catch (err) {
       console.error('[forex-fetch] '+source.name+' request or decoding failed');
