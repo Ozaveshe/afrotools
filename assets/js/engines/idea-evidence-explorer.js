@@ -153,6 +153,49 @@
       clearTimeout(timer);
     }
   }
+  // Country reference evidence never changes the source or estimates of an idea record.
+  function registrationReferences(payload, country, asOf) {
+    var hosts = { KE:["brs.go.ke"], NG:["news.cac.gov.ng"] };
+    var currencies = { KE:"KES", NG:"NGN" };
+    function day(value) {
+      if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+      var parsed = new Date(value + "T00:00:00Z");
+      return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value ? parsed.getTime() : null;
+    }
+    var today = day(asOf || new Date().toISOString().slice(0, 10));
+    if (!payload || payload.schemaVersion !== 1 || payload.scope !== "country_registration_reference_only" ||
+        !Array.isArray(payload.estimateFieldsVerified) || payload.estimateFieldsVerified.length ||
+        !Array.isArray(payload.claims) || payload.claims.length > 100 || today === null || !hosts[country]) return [];
+    var seen = Object.create(null);
+    return payload.claims.filter(function (claim) {
+      if (!claim || claim.countryCode !== country || claim.claimType !== "registration_fee" || claim.entityType !== "business_name" ||
+          ["source_checked","applicability_unverified"].indexOf(claim.status) < 0 || !/^[a-z0-9-]{3,100}$/.test(claim.id || "") || seen[claim.id] ||
+          typeof claim.amount !== "number" || finite(claim.amount) === null || claim.currency !== currencies[country] ||
+          !Number.isInteger(claim.reviewCadenceDays) || claim.reviewCadenceDays < 1 || claim.reviewCadenceDays > 30 ||
+          !claim.sourceName || !claim.sourceLocator || !Array.isArray(claim.exclusions) || !claim.exclusions.length ||
+          !claim.label || ["en","fr","sw"].some(function (lang) { return !text(claim.label[lang], 160); })) return false;
+      var observed = day(claim.observedAt), reviewed = day(claim.reviewedAt);
+      if (observed === null || reviewed === null || observed > reviewed || reviewed > today ||
+          (claim.sourcePublicationDate !== null && (day(claim.sourcePublicationDate) === null || day(claim.sourcePublicationDate) > observed)) ||
+          (claim.sourceSignatureDate !== null && (day(claim.sourceSignatureDate) === null || day(claim.sourceSignatureDate) > observed)) ||
+          (claim.sourcePublicationDate && claim.sourceSignatureDate && day(claim.sourceSignatureDate) > day(claim.sourcePublicationDate)) ||
+          (claim.effectiveFrom !== null && (day(claim.effectiveFrom) === null || day(claim.effectiveFrom) > today))) return false;
+      try {
+        var source = new URL(claim.sourceUrl);
+        if (source.protocol !== "https:" || source.username || source.password || source.port || hosts[country].indexOf(source.hostname) < 0) return false;
+      } catch (_) { return false; }
+      seen[claim.id] = true;
+      return true;
+    }).map(function (claim) {
+      var current = claim.status === "source_checked";
+      var fresh = current && today - day(claim.reviewedAt) <= claim.reviewCadenceDays * 86400000;
+      return { id:claim.id, countryCode:country, label:{en:text(claim.label.en,160),fr:text(claim.label.fr,160),sw:text(claim.label.sw,160)},
+        state:!current ? "applicability_unverified" : fresh ? "source_checked" : "expired", amount:fresh ? claim.amount : null, currency:claim.currency,
+        sourceName:text(claim.sourceName,200), sourceUrl:claim.sourceUrl, sourceLocator:text(claim.sourceLocator,250),
+        observedAt:claim.observedAt, reviewedAt:claim.reviewedAt, sourcePublicationDate:claim.sourcePublicationDate, sourceSignatureDate:claim.sourceSignatureDate,
+        effectiveFrom:claim.effectiveFrom };
+    });
+  }
   function normalizedToRaw(row) {
     if (!row || !row.countryCode) return row;
     return {
@@ -192,6 +235,7 @@
     buildUrl:buildUrl,
     search:search,
     shortlistEnvelope:shortlistEnvelope,
+    registrationReferences:registrationReferences,
     validateEnvelope:validateEnvelope
   };
 });
