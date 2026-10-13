@@ -199,7 +199,8 @@ exports.handler = async function(event) {
 
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/as_creators?' + parts.join('&'), {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' }
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' },
+      signal: AbortSignal.timeout(7000)
     });
     var data;
     try {
@@ -223,7 +224,8 @@ exports.handler = async function(event) {
     if (rows.length) {
       var streamCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
       var streamRes = await fetch(SUPABASE_URL + '/rest/v1/as_streams?is_published=eq.true&stream_date=gte.' + encodeURIComponent(streamCutoff) + '&select=creator_id,creator_name,viewer_count,is_live,stream_date,updated_at,created_at&limit=1000', {
-        headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+        headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY },
+        signal: AbortSignal.timeout(2000)
       });
       if (streamRes.ok) {
         var streamRows = await readJson(streamRes);
