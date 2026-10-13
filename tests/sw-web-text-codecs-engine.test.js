@@ -16,6 +16,26 @@ assert.equal(codecs.url.encodeFormValue('Dar es Salaam + café'), 'Dar+es+Salaam
 assert.equal(codecs.url.decodeFormValue('Dar+es+Salaam+%2B+caf%C3%A9'), 'Dar es Salaam + café');
 assert.throws(() => codecs.url.decodeFormValue('%E0%A4%A'), /URI malformed/);
 
+// Independent WHATWG serializer oracle, including every ASCII character.
+for (const value of ['', "!'()*~", 'Dar es Salaam + café/東京?x=1', 'Mọ́lá 😀', '% + /?&=#',
+  Array.from({ length: 128 }, (_, index) => String.fromCharCode(index)).join('')]) {
+  const expected = new URLSearchParams({ value }).toString().slice('value='.length);
+  assert.equal(codecs.url.encodeFormValue(value), expected);
+  assert.equal(codecs.url.decodeFormValue(expected), value);
+  assert.equal(codecs.url.encodeUri(value), encodeURI(value));
+  assert.equal(codecs.url.encodeComponent(value), encodeURIComponent(value));
+}
+assert.equal(codecs.url.decodeComponent('a+b%20c%2B'), 'a+b c+');
+assert.equal(codecs.url.decodeFormValue('a+b%20c%2B'), 'a b c+');
+for (const malformed of ['%', '%GG', '%E0%A4%A', '%FF']) {
+  assert.throws(() => codecs.url.decodeComponent(malformed), /URI malformed/);
+  assert.throws(() => codecs.url.decodeFormValue(malformed), /URI malformed/);
+}
+for (const malformedUtf16 of ['\ud800', '\udfff']) {
+  assert.throws(() => codecs.url.encodeFormValue(malformedUtf16), /URI malformed/);
+  assert.throws(() => codecs.url.encodeComponent(malformedUtf16), /URI malformed/);
+}
+
 const htmlFixture = '<p title="A&B">© — café</p>';
 assert.equal(codecs.html.encode(htmlFixture, 'named'), '&lt;p title=&quot;A&amp;B&quot;&gt;&copy; &mdash; café&lt;/p&gt;');
 assert.equal(codecs.html.encode('© é &', 'decimal'), '&#169; &#233; &#38;');

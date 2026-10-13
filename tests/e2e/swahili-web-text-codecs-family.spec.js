@@ -207,7 +207,8 @@ async function urlOutputs(page, route) {
     component: document.getElementById('encodeComponentOut').textContent,
     rfc: document.getElementById('rfcOut').textContent,
     form: document.getElementById('formOut').textContent,
-    decode: document.getElementById('decodeOut').textContent
+    decode: document.getElementById('decodeOut').textContent,
+    formDecode: document.getElementById('formDecodeOut').textContent
   }));
 }
 
@@ -221,7 +222,8 @@ test('URL owner matches English engine, clears invalid state and reopens local o
     component: 'Dar%20es%20Salaam%20%2B%20caf%C3%A9%2F%E6%9D%B1%E4%BA%AC',
     rfc: 'Dar%20es%20Salaam%20%2B%20caf%C3%A9%2F%E6%9D%B1%E4%BA%AC',
     form: 'Dar+es+Salaam+%2B+caf%C3%A9%2F%E6%9D%B1%E4%BA%AC',
-    decode: 'Dar es Salaam   café/東京'
+    decode: 'Dar es Salaam + café/東京',
+    formDecode: 'Dar es Salaam   café/東京'
   });
   const telemetry = await openPrivate(page, context, '/sw/zana/kusimba-url/');
   await page.locator('#urlInput').fill('https://example.co.ke/a%20b?q=Dar+es+Salaam&q=caf%C3%A9&utm_source=mail&token=sekret#frag');
@@ -234,7 +236,8 @@ test('URL owner matches English engine, clears invalid state and reopens local o
     component: document.getElementById('encodeComponentOut').textContent,
     rfc: document.getElementById('rfcOut').textContent,
     form: document.getElementById('formOut').textContent,
-    decode: document.getElementById('decodeOut').textContent
+    decode: document.getElementById('decodeOut').textContent,
+    formDecode: document.getElementById('formDecodeOut').textContent
   }));
   expect(swahili).toEqual(english);
   expect(swahili.clean).not.toContain('utm_source');
