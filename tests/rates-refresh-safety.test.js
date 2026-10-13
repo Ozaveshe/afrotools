@@ -97,8 +97,9 @@ test('forex write failure returns 503 and preserves success metadata', async () 
   });
   const snapshot = require('../data/forex/latest.json');
   owner.context.fetchFromFawazAhmed = async () => ({ rates: snapshot.rates });
-  // Use an observation in the past regardless of the test runner's date.
-  owner.context.fetchFromExchangeRateAPI = async () => ({ rates: snapshot.rates, source: 'exchangerate-api', last_updated: '2026-01-01T00:00:00Z' });
+  // Exercise persistence failure using an eligible provider observation.
+  const recentObservation = new Date(Date.now() - 60 * 1000).toISOString();
+  owner.context.fetchFromExchangeRateAPI = async () => ({ rates: snapshot.rates, source: 'exchangerate-api', last_updated: recentObservation });
   assert.equal((await owner.api.handler()).statusCode, 503);
   assert.equal(meta.last_fetch, '2026-08-24T00:00:00Z');
   assert.equal(meta.source, 'previous');

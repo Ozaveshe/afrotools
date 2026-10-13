@@ -351,10 +351,14 @@ function localizeCountryData(country) {
   if (!country) return country;
   var clone = Object.assign({}, country);
   clone.name = swCountryName(clone.code, clone.name);
+  if (clone.code === 'GH') {
+    clone.notes = 'Kiwango cha siku ni GHS 21.77 kuanzia 2026-01-01. GHS 478.94 kwa mwezi ni makadirio ya kupanga kwa siku 22 za malipo, si kima cha mwezi kilichowekwa kisheria. Chati ya historia hutumia siku 30 za malipo; msingi huu unatofautiana na siku 22 za ulinganisho wa sasa. Kiwango cha 2024 cha GHS 18.15 kwa siku kinathibitishwa katika ripoti ya Utumishi wa Umma ya 2023, ukurasa wa 94; GHS 19.97 ni kiwango kilichoripotiwa Novemba 2025. Viwango vya kabla ya 2024, takwimu za mfumuko wa bei na makadirio ya mshahara wa kukidhi maisha bado havijathibitishwa. Chanzo: https://fairwages.gov.gh/wp-content/uploads/2025/11/2026-National-Daily-Minimum-Wage.pdf';
+  }
   return clone;
 }
 
 function buildSwObservation(c) {
+  if (c.code === 'GH') return c.notes + ' Pendekezo la kutotoza kodi katika chanzo halijatekelezwa hapa kama sheria ya kodi.';
   var parts = [];
   if (c.monthly > 0) parts.push(c.name + ' ina kima cha chini cha mshahara cha ' + fmtWage(c.monthly, c.symbol) + ' kwa mwezi.');
   if (c.law) parts.push('Msingi wa kisheria ni ' + c.law + '.');
@@ -501,6 +505,19 @@ if (process.argv.includes('--sync-minimum-wage-runtime')) {
   // Update this owned script reference only; preserve release metadata and all app markup.
   const route = 'sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/index.html';
   let html = read(route);
+  // Source disclosure changes are explicitly separate from runtime-reference syncing.
+  if (process.argv.includes('--sync-ghana-disclosure')) {
+  const localizer = "function localizeCountryData(country) {\n  if (!country) return country;\n  var clone = Object.assign({}, country);\n  clone.name = swCountryName(clone.code, clone.name);\n  if (clone.code === 'GH') {\n    clone.notes = 'Kiwango cha siku ni GHS 21.77 kuanzia 2026-01-01. GHS 478.94 kwa mwezi ni makadirio ya kupanga kwa siku 22 za malipo, si kima cha mwezi kilichowekwa kisheria. Chati ya historia hutumia siku 30 za malipo; msingi huu unatofautiana na siku 22 za ulinganisho wa sasa. Kiwango cha 2024 cha GHS 18.15 kwa siku kinathibitishwa katika ripoti ya Utumishi wa Umma ya 2023, ukurasa wa 94; GHS 19.97 ni kiwango kilichoripotiwa Novemba 2025. Viwango vya kabla ya 2024, takwimu za mfumuko wa bei na makadirio ya mshahara wa kukidhi maisha bado havijathibitishwa. Chanzo: https://fairwages.gov.gh/wp-content/uploads/2025/11/2026-National-Daily-Minimum-Wage.pdf';\n  }\n  return clone;\n}";
+  const localizerPattern = /function localizeCountryData\(country\) \{[\s\S]*?\n\}(?=\n\nfunction buildSwObservation)/;
+  if (!localizerPattern.test(html)) throw new Error('Missing minimum-wage localizer boundary');
+  html = html.replace(localizerPattern, () => localizer);
+  const ghObservation = "  if (c.code === 'GH') return c.notes + ' Pendekezo la kutotoza kodi katika chanzo halijatekelezwa hapa kama sheria ya kodi.';";
+  if (!html.includes(ghObservation)) {
+    const observationBoundary = 'function buildSwObservation(c) {';
+    if (!html.includes(observationBoundary)) throw new Error('Missing minimum-wage observation boundary');
+    html = html.replace(observationBoundary, observationBoundary + '\n' + ghObservation);
+  }
+  }
   const tag = '<script src="/assets/js/pages/minimum-wage-reference-comparison.js"></script>';
   const matches = html.match(/<script src="\/assets\/js\/pages\/minimum-wage-reference-comparison\.js(?:\?[^"]*)?"><\/script>/g) || [];
   if (matches.length > 1 || (html.match(/<\/body>/g) || []).length !== 1) throw new Error('Ambiguous minimum-wage runtime boundary');

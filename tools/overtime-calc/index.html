@@ -405,7 +405,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — Local Fuel Price Finder" data-category="financial" data-icon="AL" data-desc="Use browser-local nearest-market matching or manual selection to inspect a dated petrol, gasoline or diesel reference, c">AfroFuel — Local Fuel Price Finder</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro Plans" data-category="financial" data-icon="AP" data-desc="Compare subscription plans, active Pro apps and limited previews. Review app storage and capability limits before subscr">AfroTools Pro Plans</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — Local Fuel Price Finder" data-category="financial" data-icon="AL" data-desc="Use browser-local nearest-market matching or manual selection to inspect a dated petrol, gasoline or diesel reference, c">AfroFuel — Local Fuel Price Finder</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -421,6 +421,7 @@ var payType = 'pay'; /* 'pay' or 'toil' */
 var lastResult = null;
 var lastRule = null;
 var lastInputs = null;
+var calculationVersion = 0;
 
 /* ── Populate country dropdown ── */
 (function init() {
@@ -439,7 +440,30 @@ var lastInputs = null;
   onCountryChange();
 })();
 
+function invalidateOvertimeResult() {
+  calculationVersion += 1;
+  lastResult = null;
+  lastRule = null;
+  lastInputs = null;
+  resultsEl.style.display = 'none';
+  resultsEl.classList.remove('is-visible');
+  document.getElementById('wa-share-btn').removeAttribute('href');
+  document.getElementById('wa-share-btn').style.display = 'none';
+  document.getElementById('dispute-letter').textContent = '';
+  document.getElementById('dispute-section').style.display = 'none';
+  document.getElementById('ot-status').textContent = 'Inputs changed. Calculate again for a current summary.';
+  var button = document.querySelector('.tl-btn');
+  button.classList.remove('ot-loading');
+  button.textContent = 'Calculate Overtime Pay';
+}
+['monthly-salary', 'ot-hours', 'day-type'].forEach(function (id) {
+  var field = document.getElementById(id);
+  field.addEventListener('input', invalidateOvertimeResult);
+  field.addEventListener('change', invalidateOvertimeResult);
+});
+
 function onCountryChange() {
+  invalidateOvertimeResult();
   if (typeof OVERTIME_RULES === 'undefined') return;
   var code = countrySelect.value;
   var rule = OVERTIME_RULES[code];
@@ -470,6 +494,8 @@ function fmt(n, d) {
 }
 
 function calculate() {
+  invalidateOvertimeResult();
+  var version = calculationVersion;
   if (typeof OVERTIME_RULES === 'undefined' || typeof AfroTools === 'undefined' || typeof AfroTools.HREngine === 'undefined') {
     alert('Data is still loading. Please wait a moment and try again.');
     return;
@@ -479,8 +505,8 @@ function calculate() {
   var overtimeHours = parseFloat(document.getElementById('ot-hours').value);
   var dayType = document.getElementById('day-type').value;
 
-  if (!monthlySalary || monthlySalary <= 0) { alert('Please enter a valid monthly salary.'); return; }
-  if (!overtimeHours || overtimeHours <= 0) { alert('Please enter valid overtime hours.'); return; }
+  if (!Number.isFinite(monthlySalary) || monthlySalary <= 0) { alert('Please enter a valid monthly salary.'); return; }
+  if (!Number.isFinite(overtimeHours) || overtimeHours <= 0) { alert('Please enter valid overtime hours.'); return; }
 
   var calcBtn = document.querySelector('.tl-btn');
   var origText = calcBtn.textContent;
@@ -488,6 +514,7 @@ function calculate() {
   calcBtn.textContent = 'Calculating\u2026';
 
   setTimeout(function() {
+    if (version !== calculationVersion) return;
     var result = AfroTools.HREngine.calculateOvertime({ country: country, monthlySalary: monthlySalary, overtimeHours: overtimeHours, dayType: dayType });
     calcBtn.classList.remove('ot-loading');
     calcBtn.textContent = origText;
@@ -600,20 +627,34 @@ function buildOvertimeSummary() {
   return lines.join('\n');
 }
 
+function copyOvertimeText(text) {
+  return Promise.resolve().then(function () {
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') throw new Error('Clipboard unavailable');
+    return navigator.clipboard.writeText(text);
+  }).then(function () { return true; }).catch(function () {
+    var ta = document.createElement('textarea');
+    var focused = document.activeElement;
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    try {
+      ta.select();
+      return document.execCommand('copy') === true;
+    } catch (error) {
+      return false;
+    } finally {
+      document.body.removeChild(ta);
+      if (focused && typeof focused.focus === 'function') focused.focus();
+    }
+  });
+}
 function copyOvertimeSummary() {
   var text = buildOvertimeSummary();
   var status = document.getElementById('ot-status');
   if (!text) { status.textContent = 'Run a calculation first.'; return; }
-  navigator.clipboard.writeText(text).then(function() {
-    status.textContent = 'Summary copied.';
-  }).catch(function() {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    status.textContent = 'Summary copied.';
+  copyOvertimeText(text).then(function (copied) {
+    status.textContent = copied ? 'Summary copied.' : 'Copy failed. Download TXT or select and copy the result manually.';
   });
 }
 
@@ -635,28 +676,15 @@ function downloadOvertimeSummary() {
 }
 
 function copyLetter() {
+  if (!lastResult || !lastInputs) return;
   var text = document.getElementById('dispute-letter').textContent;
   var btn = document.querySelector('.ot-dispute-copy');
-  navigator.clipboard.writeText(text).then(function() {
+  copyOvertimeText(text).then(function (copied) {
+    document.getElementById('ot-status').textContent = copied ? 'Letter copied.' : 'Copy failed. Select and copy the letter manually.';
+    if (!copied) return;
     btn.textContent = '\u2713 Copied!';
     btn.classList.add('copied');
-    setTimeout(function() {
-      btn.textContent = '\uD83D\uDCCB Copy Letter';
-      btn.classList.remove('copied');
-    }, 2000);
-  }).catch(function() {
-    /* Fallback for browsers that block clipboard */
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = '\u2713 Copied!';
-    btn.classList.add('copied');
-    setTimeout(function() {
+    setTimeout(function () {
       btn.textContent = '\uD83D\uDCCB Copy Letter';
       btn.classList.remove('copied');
     }, 2000);
