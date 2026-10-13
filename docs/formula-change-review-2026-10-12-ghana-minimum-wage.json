@@ -6,7 +6,136 @@
   "formulaIds": [
     "formula-engines-minimum-wage-engine"
   ],
-  "fixtureDeltas": [],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "ghana-actual-engine-country-reference",
+      "previousExpected": {
+        "daily": 18.15,
+        "monthly": 544.5,
+        "effectiveDate": "January 2025"
+      },
+      "nextExpected": {
+        "daily": 21.77,
+        "monthly": 478.94,
+        "effectiveDate": "2026-01-01"
+      },
+      "reason": "Correct dated daily source and explicitly change current planning conversion from the old 30-day value to 22 paid days; the monthly decrease is a changed assumption, not a fall in the official daily wage."
+    },
+    {
+      "fixtureId": "ghana-actual-engine-boundary-478.93",
+      "input": {
+        "salary": 478.93
+      },
+      "previousExpected": {
+        "minimum": 544.5,
+        "compliant": false,
+        "diff": 66,
+        "diffPct": 12
+      },
+      "nextExpected": {
+        "minimum": 478.94,
+        "compliant": false,
+        "diff": 0,
+        "diffPct": 0
+      },
+      "reason": "One-cent boundaries around both old and corrected planning references. compliant is the legacy engine field name for this planning comparison, not proof of legal compliance."
+    },
+    {
+      "fixtureId": "ghana-actual-engine-boundary-478.94",
+      "input": {
+        "salary": 478.94
+      },
+      "previousExpected": {
+        "minimum": 544.5,
+        "compliant": false,
+        "diff": 66,
+        "diffPct": 12
+      },
+      "nextExpected": {
+        "minimum": 478.94,
+        "compliant": true,
+        "diff": 0,
+        "diffPct": 0
+      },
+      "reason": "One-cent boundaries around both old and corrected planning references. compliant is the legacy engine field name for this planning comparison, not proof of legal compliance."
+    },
+    {
+      "fixtureId": "ghana-actual-engine-boundary-478.95",
+      "input": {
+        "salary": 478.95
+      },
+      "previousExpected": {
+        "minimum": 544.5,
+        "compliant": false,
+        "diff": 66,
+        "diffPct": 12
+      },
+      "nextExpected": {
+        "minimum": 478.94,
+        "compliant": true,
+        "diff": 0,
+        "diffPct": 0
+      },
+      "reason": "One-cent boundaries around both old and corrected planning references. compliant is the legacy engine field name for this planning comparison, not proof of legal compliance."
+    },
+    {
+      "fixtureId": "ghana-actual-engine-boundary-544.49",
+      "input": {
+        "salary": 544.49
+      },
+      "previousExpected": {
+        "minimum": 544.5,
+        "compliant": false,
+        "diff": 0,
+        "diffPct": 0
+      },
+      "nextExpected": {
+        "minimum": 478.94,
+        "compliant": true,
+        "diff": 66,
+        "diffPct": 14
+      },
+      "reason": "One-cent boundaries around both old and corrected planning references. compliant is the legacy engine field name for this planning comparison, not proof of legal compliance."
+    },
+    {
+      "fixtureId": "ghana-actual-engine-boundary-544.50",
+      "input": {
+        "salary": 544.5
+      },
+      "previousExpected": {
+        "minimum": 544.5,
+        "compliant": true,
+        "diff": 0,
+        "diffPct": 0
+      },
+      "nextExpected": {
+        "minimum": 478.94,
+        "compliant": true,
+        "diff": 66,
+        "diffPct": 14
+      },
+      "reason": "One-cent boundaries around both old and corrected planning references. compliant is the legacy engine field name for this planning comparison, not proof of legal compliance."
+    },
+    {
+      "fixtureId": "ghana-actual-engine-boundary-544.51",
+      "input": {
+        "salary": 544.51
+      },
+      "previousExpected": {
+        "minimum": 544.5,
+        "compliant": true,
+        "diff": 0,
+        "diffPct": 0
+      },
+      "nextExpected": {
+        "minimum": 478.94,
+        "compliant": true,
+        "diff": 66,
+        "diffPct": 14
+      },
+      "reason": "One-cent boundaries around both old and corrected planning references. compliant is the legacy engine field name for this planning comparison, not proof of legal compliance."
+    }
+  ],
   "supportingSources": [
     {
       "url": "https://ohcs.gov.gh/wp-content/uploads/2024/10/2023-Civil-Service-APR-1.pdf",
@@ -22,5 +151,8 @@
       "url": "https://fairwages.gov.gh/wp-content/uploads/2025/11/2026-National-Daily-Minimum-Wage.pdf",
       "claim": "2026 daily21.77"
     }
-  ]
+  ],
+  "reviewScope": "Technical source and result-delta review; this record does not represent a human CODEOWNERS approval.",
+  "baselineCommit": "27f77badda85c2fc36d0d4a2dfc5163f44ffd8fb",
+  "fixtureCoverage": "The existing 417 golden fixtures contain no formula-engines-minimum-wage-engine fixtures. The 13 controller fixtures use synthetic selected rates and remain unchanged. The following independently named actual-engine fixtures are executed by tests/minimum-wage-gh-source.test.js; they record changed country values and boundaries rather than claiming no result changes."
 }
