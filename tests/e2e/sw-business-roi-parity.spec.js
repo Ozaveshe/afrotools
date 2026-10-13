@@ -92,7 +92,7 @@ for (const route of manifest.routes) {
         expect(bytes.subarray(0, 5).toString("ascii")).toBe("%PDF-");
         fs.mkdirSync(testInfo.outputDir, { recursive: true });
         fs.writeFileSync(testInfo.outputPath(route.id + '.pdf'), bytes);
-        const parsed = await pdfParse(bytes);
+        const parsed = await pdfParse(Uint8Array.from(bytes));
         expect(parsed.text).toContain("AfroTools");
         expect(parsed.text.length).toBeGreaterThan(80);
       }

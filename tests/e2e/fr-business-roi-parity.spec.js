@@ -78,7 +78,7 @@ for (const route of manifest.routes) {
         expect(bytes.toString("utf8")).toContain("DTSTART;VALUE=DATE:20260804");
       } else {
         expect(bytes.subarray(0, 5).toString("ascii")).toBe("%PDF-");
-        const parsed = await pdfParse(bytes);
+        const parsed = await pdfParse(Uint8Array.from(bytes));
         expect(parsed.text).toContain("AfroTools");
         expect(parsed.text.length).toBeGreaterThan(80);
       }
