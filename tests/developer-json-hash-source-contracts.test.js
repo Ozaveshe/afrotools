@@ -1,0 +1,29 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+function controller(file,marker){const html=fs.readFileSync(path.join(root,file),'utf8'),at=html.indexOf(marker),start=html.lastIndexOf('<script>',at)+8,end=html.indexOf('</script>',at);assert(at>=0&&start>=8&&end>at);return html.slice(start,end);}
+function json(){const nodes={input:{value:''},output:{},status:{},modeSelect:{value:'json'},indentSelect:{value:'2'},historyNotice:{textContent:''}},data=new Map();let denied=false;
+const context={window:{},document:{getElementById:id=>nodes[id]||(nodes[id]={})},Blob,console,localStorage:{getItem:key=>data.get(key)||null,setItem(key,value){if(denied)throw Error('synthetic denied storage');data.set(key,value);}}};
+const src=controller('tools/json-formatter/index.html','var storageKey =');
+assert(src.includes("  bind();\n  $('sampleBtn').click();"));
+vm.runInNewContext(src.replace("  bind();\n  $('sampleBtn').click();","  window.api={parseLossless,serializeLossless,transformLossless,resolveLosslessPointer,repairText,numericFidelityIssue,readHistory,saveHistory,parse:function(text,mode){input.value=text;$('modeSelect').value=mode||'json';last=parseText(text);return last;}};"),context);
+return{api:context.window.api,nodes,data,deny:()=>{denied=true;}};}
+function crc(){const src=controller('tools/hash-generator/index.html','// Utility: CRC32'),at=src.indexOf('  // Tab switching');assert(at>0);const context={window:{},TextEncoder};vm.runInNewContext(src.slice(0,at)+'window.crc32=crc32;})();',context);return context.window.crc32;}
+const payload='{"z":2,"a":{"text":"é 😀","a/b":{"~x":true}},"items":[1,null,false]}';
+test('Lossless normal JSON retains original formatting/semantics',()=>{const{api}=json();const parsed=api.parse(payload);assert(parsed.ok);assert.equal(parsed.formatted,JSON.stringify(JSON.parse(payload),null,2));assert.equal(api.serializeLossless(parsed.ast,0),payload);assert.equal(api.serializeLossless(api.resolveLosslessPointer(parsed.ast,'/a/a~1b/~0x'),0),'true');assert.throws(()=>api.resolveLosslessPointer(parsed.ast,'/missing'),/not found/);assert.throws(()=>api.resolveLosslessPointer(parsed.ast,'/toString'),/not found/);});
+for(const raw of ['9007199254740993','1e400','1e-400','0.12345678901234567890123456789','-0','123456789012345678901234567890'])test('Lossless numeric literal '+raw,()=>{const{api}=json(),text='{"n":'+raw+',"token":"synthetic"}',parsed=api.parse(text);assert(parsed.ok);assert.equal(api.serializeLossless(parsed.ast,0),text);assert.equal(api.serializeLossless(api.resolveLosslessPointer(parsed.ast,'/n'),0),raw);assert(api.numericFidelityIssue(text));assert.equal(api.serializeLossless(api.transformLossless(parsed.ast,'redact'),0),'{"n":'+raw+',"token":"[REDACTED]"}');assert.equal(api.serializeLossless(api.transformLossless(parsed.ast,'sort'),0),text);});
+test('Valid strings with numeric-looking content are never precision-restricted',()=>{const{api}=json();assert.equal(api.numericFidelityIssue('{"id":"9007199254740993","quoted":"1e400"}'),'');});
+test('Lossless serializer preserves duplicate keys and numeric lexemes',()=>{const{api}=json(),text='{"n":1.00,"n":1e+02}';assert.equal(api.serializeLossless(api.parseLossless(text),0),text);assert.equal(api.serializeLossless(api.resolveLosslessPointer(api.parseLossless(text),'/n'),0),'1e+02');});
+test('NDJSON rows remain independently valid after serialize and sort',()=>{const{api}=json(),text='{"z":1,"a":9007199254740993}\n\n{"n":1e400}';const parsed=api.parse(text,'ndjson');assert(parsed.ok);assert.equal(parsed.formatted,'{"z":1,"a":9007199254740993}\n{"n":1e400}');assert.equal(api.serializeLossless(api.transformLossless(parsed.ast,'sort'),4),'{"a":9007199254740993,"z":1}\n{"n":1e400}');assert.match(api.parse('{"n":1}\n\n{broken','ndjson').error,/Line 3:/);});
+const repairs=[
+ ['{"url":"https://example.test/a//b","literal":"/* keep */",}',{url:'https://example.test/a//b',literal:'/* keep */'}],
+ ['{/* outside */bare: True, list:[None,False,],}',{bare:true,list:[null,false]}],
+ ["{'s':'it\\'s é','quoted':'a \"b\"','path':'c:\\\\tmp'}",{s:"it's é",quoted:'a "b"',path:'c:\\tmp'}],
+ ['{“message”:“hello”,}',{message:'hello'}],
+ ['{"literal":"True None False // /* */","escaped":"\\\"x\\\""}',{literal:'True None False // /* */',escaped:'"x"'}]
+];
+for(const[raw,expected]of repairs)test('Token-safe repair fixture '+repairs.findIndex(x=>x[0]===raw),()=>{const{api}=json();assert.deepEqual(JSON.parse(api.repairText(raw)),expected);});
+test('Unterminated string/comment repair preserves original recoverable input',()=>{const{api}=json();for(const input of ['{"a":"unterminated','{ /* unterminated'])assert.equal(api.repairText(input),input);});
+test('History stores full eligible JSON and discloses oversized skip',()=>{const{api,nodes,data}=json();api.parse(payload);assert(api.saveHistory());const stored=JSON.parse(data.get('afrotools.jsonWorkbench.history.v1'));assert.equal(stored[0].text,payload);const big='{"note":"'+'x'.repeat(300001)+'"}';api.parse(big);assert.equal(api.saveHistory(),false);assert.match(nodes.historyNotice.textContent,/no partial snapshot/);assert.equal(JSON.parse(data.get('afrotools.jsonWorkbench.history.v1'))[0].text,payload);});
+test('History storage failure is local, truthful and keeps working data',()=>{const{api,nodes,deny}=json();const parsed=api.parse(payload);deny();assert.equal(api.saveHistory(),false);assert.match(nodes.historyNotice.textContent,/could not be saved/);assert.equal(nodes.input.value,payload);assert.equal(parsed.formatted,JSON.stringify(JSON.parse(payload),null,2));});
+for(const[text,expected]of [['','00000000'],['abc','352441c2'],['123456789','cbf43926'],['AFROAUDIT-é-😀','0c5cd6a5']])test('Standard UTF-8 CRC32 '+JSON.stringify(text),()=>assert.equal(crc()(text),expected));

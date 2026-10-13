@@ -11,6 +11,21 @@ const inventory = require('../scripts/ci-artifact-groups.json');
 const ROOT = path.resolve(__dirname, '..');
 const clone = value => structuredClone(value);
 
+
+function readOriginalWorkflow(pin, root = ROOT) {
+  if (!pin.originalWorkflowFile) return cp.execFileSync('git', ['show', pin.originalCommit + ':.github/workflows/ci.yml'], {cwd: root, encoding: 'utf8'});
+  assert.match(pin.originalWorkflowFile, /^tests\/fixtures\/ci-original\/[a-z0-9-]+\.yml$/, 'Original workflow fixture path must stay in the reviewed fixture directory');
+  let resolved = root;
+  for (const component of pin.originalWorkflowFile.split('/')) {
+    resolved = path.join(resolved, component);
+    assert.equal(fs.lstatSync(resolved).isSymbolicLink(), false, 'Original workflow fixture may not use symlinks');
+  }
+  assert.equal(fs.statSync(resolved).isFile(), true, 'Original workflow fixture must be a file');
+  const original = fs.readFileSync(resolved, 'utf8');
+  assert.equal(c.sha(original), pin.originalWorkflowSha256, 'Original workflow fixture hash differs from genuine pinned source');
+  return original;
+}
+
 function originalBrowserStep(block) {
   const lines = block.trimEnd().split('\n'), step = {name: lines[0].slice('      - name: '.length)};
   const envAt = lines.indexOf('        env:'), runAt = lines.findIndex(line => line.startsWith('        run:'));
@@ -30,7 +45,7 @@ function originalBrowserStep(block) {
 }
 
 test('mechanically preserves all current commands/env/specs/workers and Verify/smoke blocks', () => {
-  const original = cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  const original = readOriginalWorkflow(inventory);
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
   assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));
@@ -231,4 +246,42 @@ test('an independent consumer restores exactly one archive and retains producer 
   c.restore(consumer, f.bundle, f.expected);
   assert.deepEqual(fs.readFileSync(path.join(consumer, c.MARKER)), fs.readFileSync(path.join(f.root, c.MARKER)));
   assert.deepEqual(c.treeManifest(consumer), f.manifest.dist);
+});
+
+function originalFixture() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'afrotools-original-workflow-'));
+  const file = path.join(root, inventory.originalWorkflowFile);
+  fs.mkdirSync(path.dirname(file), {recursive: true});
+  fs.copyFileSync(path.join(ROOT, inventory.originalWorkflowFile), file);
+  return {root, file};
+}
+test('durable original fixture retains all genuine 43 ancestor steps without branch reachability', () => {
+  const f = originalFixture();
+  assert.equal(readOriginalWorkflow(inventory, f.root), fs.readFileSync(path.join(ROOT, inventory.originalWorkflowFile), 'utf8'));
+  assert.equal(inventory.browser.length, 33);
+});
+test('durable original fixture rejects byte tampering', () => {
+  const f = originalFixture(); fs.appendFileSync(f.file, ' synthetic changed');
+  assert.throws(() => readOriginalWorkflow(inventory, f.root), /hash differs/);
+});
+test('durable original fixture fails closed when missing', () => {
+  const f = originalFixture(); fs.renameSync(f.file, f.file + '.missing');
+  assert.throws(() => readOriginalWorkflow(inventory, f.root), /ENOENT/);
+});
+test('durable original fixture rejects path escapes and unrelated source paths', () => {
+  for (const file of ['../workflow.yml', '/tmp/workflow.yml', 'C:/workflow.yml', 'tests/fixtures/ci-original/../workflow.yml', 'tests\\fixtures\\ci-original\\workflow.yml', '.github/workflows/ci.yml']) {
+    assert.throws(() => readOriginalWorkflow({...inventory, originalWorkflowFile: file}), /fixture path/);
+  }
+});
+
+test('single additive raw step removal recovers the immutable main predecessor byte-for-byte', () => {
+  const original = readOriginalWorkflow(inventory), addition = inventory.browser.find(gate => gate.id === 'browser-33');
+  assert.equal(original.split(addition.originalYaml).length, 2, 'Additive raw step occurs exactly once');
+  assert.equal(addition.originalIndex, 40);
+  assert.deepEqual(originalBrowserStep(addition.originalYaml), addition.step);
+  const recovered = original.replace(addition.originalYaml, '');
+  assert.equal(inventory.predecessorCommit, 'a225e13f202da2f1e578e221bf14d4848c5a6099');
+  assert.equal(c.sha(recovered), inventory.predecessorWorkflowSha256);
+  const predecessor = cp.execFileSync('git', ['show', inventory.predecessorCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  assert.equal(recovered, predecessor, 'No normalization or assertion waiver for historical source');
 });

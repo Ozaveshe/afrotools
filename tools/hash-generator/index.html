@@ -267,7 +267,7 @@
     cursor: pointer;
     font-size: 0.78rem;
     font-weight: 700;
-    color: #6B8CAE;
+    color: #475569;
     border-bottom: 2px solid transparent;
     margin-bottom: -2px;
     transition: all 0.18s;
@@ -431,6 +431,8 @@
 
   /* Drop zone */
   .drop-zone {
+    display: block;
+    width: 100%;
     border: 2px dashed #BFDBFE;
     border-radius: 10px;
     padding: 40px 20px;
@@ -451,17 +453,20 @@
   }
 
   .drop-zone-icon {
+    display: block;
     font-size: 2rem;
     margin-bottom: 8px;
   }
 
   .drop-zone-text {
+    display: block;
     font-size: 0.82rem;
     font-weight: 600;
     color: #0d2813;
   }
 
   .drop-zone-sub {
+    display: block;
     font-size: 0.7rem;
     color: #6B8CAE;
     margin-top: 4px;
@@ -961,11 +966,11 @@
             <span class="card-title">File Hash Generator</span>
           </div>
           <div class="card-body">
-            <div class="drop-zone" id="dropZone">
-              <div class="drop-zone-icon" aria-hidden="true">#</div>
-              <div class="drop-zone-text">Drop a file here or click to upload</div>
-              <div class="drop-zone-sub">Any file type supported</div>
-            </div>
+            <button type="button" class="drop-zone" id="dropZone">
+              <span class="drop-zone-icon" aria-hidden="true">#</span>
+              <span class="drop-zone-text">Drop a file here or click to upload</span>
+              <span class="drop-zone-sub">Any file type supported</span>
+            </button>
             <input aria-label="FileInput" type="file" id="fileInput" style="display:none">
             <div class="file-info" id="fileInfo"></div>
             <div class="progress-bar" id="progressBar">
@@ -1204,14 +1209,15 @@
 
   // Utility: CRC32
   function crc32(str) {
-    let c = 0 ^ (-1);
-    for (let i = 0; i < str.length; i++) {
-      c = (c >>> 8) ^ ((c ^ str.charCodeAt(i)) & 0xFF);
+    let c = 0xffffffff;
+    var inputBytes = new TextEncoder().encode(str);
+    for (let i = 0; i < inputBytes.length; i++) {
+      c ^= inputBytes[i];
       for (let j = 0; j < 8; j++) {
         c = (c >>> 1) ^ (((c & 1) ? 0xEDB88320 : 0));
       }
     }
-    return ((c ^ (-1)) >>> 0).toString(16).padStart(8, '0');
+    return ((c ^ 0xffffffff) >>> 0).toString(16).padStart(8, '0');
   }
 
   // Toast
@@ -1307,7 +1313,7 @@
         'SHA-512': CryptoJS.SHA512(input).toString(),
         'SHA3-256': sha3Text(input, 'SHA3-256'),
         'SHA3-512': sha3Text(input, 'SHA3-512'),
-        'HMAC-SHA256': hmacKey ? CryptoJS.HmacSHA256(input, hmacKey).toString() : null,
+        'HMAC-SHA256': document.getElementById('hmacToggle').checked && hmacKey ? CryptoJS.HmacSHA256(input, hmacKey).toString() : null,
         'CRC32': crc32(input),
         'PBKDF2': (function() {
           if (!document.getElementById('pbkdf2Toggle').checked) return null;
@@ -1515,7 +1521,11 @@
     var sizeStr = file.size < 1048576
       ? (file.size / 1024).toFixed(2) + ' KB'
       : (file.size / 1048576).toFixed(2) + ' MB';
-    info.innerHTML = '<strong>' + file.name + '</strong> (' + sizeStr + ')';
+    var filename = document.createElement('strong');
+    filename.textContent = file.name;
+    info.textContent = '';
+    info.appendChild(filename);
+    info.appendChild(document.createTextNode(' (' + sizeStr + ')'));
     info.classList.add('visible');
 
     var progressBar = document.getElementById('progressBar');
@@ -1571,8 +1581,8 @@
     var text = document.getElementById('verifyText').value;
     var result = document.getElementById('verifyResult');
 
-    if (!knownHash || !text) {
-      showToast('Enter both a hash and text to verify');
+    if (!knownHash) {
+      showToast('Enter a hash to verify; text may be empty');
       return;
     }
 
