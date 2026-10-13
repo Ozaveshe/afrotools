@@ -15,7 +15,7 @@
   function text(v) {
     return String(v == null ? "" : v);
   }
-  function normalizeFallback(item) {
+  function normalizeFallback(item, meta) {
     return {
       name: text(item.name),
       country: text(item.country) || "Afrika",
@@ -24,7 +24,12 @@
       score: Number(item.afro_score) || 0,
       slug: text(item.slug),
       avatar: text(item.avatar_url),
-      _raw: item,
+      _raw: Object.assign({}, item, {
+        source_state: "fallback",
+        source_snapshot_label: text(meta.snapshot_label),
+        source_reviewed_at: text(meta.reviewed_at),
+        source_metrics_freshness: text(meta.metrics_freshness),
+      }),
     };
   }
   function normalizeCreator(item) {
@@ -56,6 +61,34 @@
         })
         .join("\r\n")
     );
+  }
+  function sourceProvenance(item) {
+    var raw = item._raw || item;
+    return {
+      source_state: text(raw.source_state) || "api",
+      source_snapshot_label: text(raw.source_snapshot_label) || "unknown",
+      source_reviewed_at: text(raw.source_reviewed_at) || "unknown",
+      source_metrics_freshness: text(raw.source_metrics_freshness) || "unknown",
+      recordUpdatedAt: text(raw.updated_at) || "unknown",
+    };
+  }
+  function isArchived(item) {
+    return /^(fallback|archived)$/.test(sourceProvenance(item).source_state);
+  }
+  function datasetSourceState(list) {
+    var count = list.filter(isArchived).length;
+    return count ? (count === list.length ? "snapshot ya kumbukumbu" : "data ya API na kumbukumbu") : "data ya API ya umma";
+  }
+  function archiveNotice(list) {
+    var archived = list.filter(isArchived);
+    if (!archived.length) return "";
+    var notes = archived.map(function (item) {
+      var source = sourceProvenance(item);
+      return "Kumbukumbu: " + (source.source_snapshot_label === "unknown" ? "tarehe haikutolewa" : source.source_snapshot_label) +
+        "; tarehe ya mapitio: " + (source.source_reviewed_at === "unknown" ? "haikutolewa" : source.source_reviewed_at) +
+        "; freshness ya vipimo: " + source.source_metrics_freshness + ".";
+    });
+    return Array.from(new Set(notes)).join(" ") + " Takwimu za hadhira hazijathibitishwa kuwa za sasa.";
   }
   function download(name, type, body) {
     var url = URL.createObjectURL(new Blob([body], { type: type })),
@@ -110,6 +143,11 @@
         ) +
         " wafuasi";
       copy.append(name, detail);
+      if (isArchived(item)) {
+        var provenance = document.createElement("span");
+        provenance.textContent = archiveNotice([item]);
+        copy.appendChild(provenance);
+      }
       card.append(avatar, copy);
       grid.appendChild(card);
     });
@@ -160,7 +198,7 @@
           throw new Error("fallback");
         var meta = data.source || {};
         ready(
-          data.creators.map(normalizeFallback),
+          data.creators.map(function (item) { return normalizeFallback(item, meta); }),
           "snapshot ya kumbukumbu",
           "Hali: fallback iliyohifadhiwa. " +
             text(meta.snapshot_label) +
@@ -188,7 +226,8 @@
           : "haikutolewa";
       ready(
         data.creators,
-        "data ya API ya umma",
+        datasetSourceState(data.creators),
+        (archiveNotice(data.creators) ? archiveNotice(data.creators) + " Tarehe hii ni ya rekodi, si kipimo cha sasa cha hadhira. " : "") +
         "Tarehe mpya zaidi iliyorudishwa na rekodi: " +
           latest +
           ". Hii haithibitishi kuwa kila wasifu ni wa sasa.",
@@ -212,15 +251,15 @@
     var button = event.target.closest("button[data-export]");
     if (!button) return;
     var rows = visible.map(function (item) {
-      return {
+      return Object.assign({
         name: item.name,
         country: item.country,
         categories: item.type,
         followers: item.followers,
         afroScore: item.score,
         sourceSlug: item.slug,
-        sourceState: sourceState,
-      };
+        sourceState: isArchived(item) ? "snapshot ya kumbukumbu" : "data ya API ya umma",
+      }, sourceProvenance(item));
     });
     if (button.dataset.export === "json")
       download(
@@ -228,7 +267,7 @@
         "application/json;charset=utf-8",
         JSON.stringify(
           {
-            sourceState: sourceState,
+            sourceState: datasetSourceState(visible),
             exportedAt: new Date().toISOString(),
             creators: rows,
           },
@@ -250,6 +289,11 @@
               "afroScore",
               "sourceSlug",
               "sourceState",
+              "source_state",
+              "source_snapshot_label",
+              "source_reviewed_at",
+              "source_metrics_freshness",
+              "recordUpdatedAt",
             ],
           ].concat(
             rows.map(function (row) {
@@ -261,6 +305,11 @@
                 row.afroScore,
                 row.sourceSlug,
                 row.sourceState,
+                row.source_state,
+                row.source_snapshot_label,
+                row.source_reviewed_at,
+                row.source_metrics_freshness,
+                row.recordUpdatedAt,
               ];
             }),
           ),
