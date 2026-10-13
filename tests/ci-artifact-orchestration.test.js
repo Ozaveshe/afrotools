@@ -255,10 +255,10 @@ function originalFixture() {
   fs.copyFileSync(path.join(ROOT, inventory.originalWorkflowFile), file);
   return {root, file};
 }
-test('durable original fixture retains all genuine 43 ancestor steps without branch reachability', () => {
+test('durable composed fixture retains all 45 steps without branch reachability', () => {
   const f = originalFixture();
   assert.equal(readOriginalWorkflow(inventory, f.root), fs.readFileSync(path.join(ROOT, inventory.originalWorkflowFile), 'utf8'));
-  assert.equal(inventory.browser.length, 33);
+  assert.equal(inventory.browser.length, 35);
 });
 test('durable original fixture rejects byte tampering', () => {
   const f = originalFixture(); fs.appendFileSync(f.file, ' synthetic changed');
@@ -274,12 +274,17 @@ test('durable original fixture rejects path escapes and unrelated source paths',
   }
 });
 
-test('single additive raw step removal recovers the immutable main predecessor byte-for-byte', () => {
-  const original = readOriginalWorkflow(inventory), addition = inventory.browser.find(gate => gate.id === 'browser-33');
-  assert.equal(original.split(addition.originalYaml).length, 2, 'Additive raw step occurs exactly once');
-  assert.equal(addition.originalIndex, 40);
-  assert.deepEqual(originalBrowserStep(addition.originalYaml), addition.step);
-  const recovered = original.replace(addition.originalYaml, '');
+test('all three additive raw step removals recover immutable main predecessor byte-for-byte', () => {
+  let recovered = readOriginalWorkflow(inventory);
+  assert.deepEqual(inventory.additiveGateIds, ['browser-33', 'browser-34', 'browser-35']);
+  assert.equal(inventory.browser.length, 35);
+  for (const [id, expectedIndex] of [['browser-33', 40], ['browser-34', 43], ['browser-35', 44]]) {
+    const addition = inventory.browser.find(gate => gate.id === id);
+    assert.equal(recovered.split(addition.originalYaml).length, 2, 'Each additive raw step occurs exactly once');
+    assert.equal(addition.originalIndex, expectedIndex);
+    assert.deepEqual(originalBrowserStep(addition.originalYaml), addition.step);
+    recovered = recovered.replace(addition.originalYaml, '');
+  }
   assert.equal(inventory.predecessorCommit, 'a225e13f202da2f1e578e221bf14d4848c5a6099');
   assert.equal(c.sha(recovered), inventory.predecessorWorkflowSha256);
   const predecessor = cp.execFileSync('git', ['show', inventory.predecessorCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
