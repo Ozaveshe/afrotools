@@ -53,21 +53,26 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Naira sí ọ̀rọ̀ ni Yorùbá | AfroTools">
 <meta name="twitter:description" content="Yi iye Naira pada sí ọ̀rọ̀ Yorùbá fun risiti, ìwé owó, akọsilẹ isanwo ati iṣẹ́ ọfiisi ni Naijiria.">
-<style data-yo-p1-planner-style>
-.yo-p1-planner{margin:22px auto;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px;max-width:1040px}.yo-p1-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.yo-p1-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.yo-p1-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.yo-p1-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.yo-p1-grid input,.yo-p1-grid select,.yo-p1-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.yo-p1-grid textarea{min-height:84px;resize:vertical}.yo-p1-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.yo-p1-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.yo-p1-buttons a,.yo-p1-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.yo-p1-buttons a{background:#0057b8;color:#fff}.yo-p1-buttons button{background:#0f172a;color:#fff}.yo-p1-status{font-size:.84rem;color:#64748b;align-self:center}.yo-p1-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.yo-p1-buttons a,.yo-p1-buttons button{width:100%}}
-</style>
 <style>
+  .top-level-page-ui-refresh .hero{background:var(--color-bg,#f8fafc);color:var(--color-text,#172033);padding:48px 20px 28px}
+  .top-level-page-ui-refresh .hero p,.top-level-page-ui-refresh .crumb{color:var(--color-text-secondary,#526072)}
+  .skip-link{position:absolute;left:1rem;top:-100px}
+  .skip-link:focus{top:1rem;z-index:10001;background:var(--color-surface,#fff);padding:12px}
   #main-content .btn{min-height:44px}
   #main-content :focus-visible{outline:3px solid var(--color-primary, #0057b8);outline-offset:3px}
   #exportStatus{min-height:1.5em;margin:12px 0 0}
-  #docLine{overflow-wrap:anywhere}
+  #docLine,#words{overflow-wrap:anywhere}
+  #main-content>*{min-width:0}
+  #amountError{color:var(--color-danger,#b91c1c);min-height:1.5em}
+  #main-content .btn:disabled{opacity:.55;cursor:default}
+  @media(prefers-reduced-motion:reduce){#main-content *{animation:none!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="/assets/css/yoruba-fallback.css?v=72ea27b7" data-yoruba-fallback-style>
 <link rel="canonical" href="https://afrotools.com/yo/awon-ise/naira-si-oro/">
 <meta name="afrotools-locale-coverage" content="english-fallback">
 <meta name="afrotools-locale-fallback" content="/tools/naira-to-words/">
 </head>
-<body class="top-level-page-ui-refresh"><afro-navbar active="document-pdf"></afro-navbar>
+<body class="top-level-page-ui-refresh"><a class="skip-link" href="#main-content">Lọ sí irinṣẹ́</a><afro-navbar active="document-pdf"></afro-navbar>
 <!-- yoruba-fallback:start -->
 <aside class="yoruba-fallback" data-yoruba-fallback role="note" aria-labelledby="yoruba-fallback-title">
   <div class="yoruba-fallback__inner">
@@ -85,49 +90,38 @@
     <p>Yi iye Naira ati kobo pada sí ọ̀rọ̀ Yorùbá fun risiti, ìwé owó, akọsilẹ sisanwo ati iṣẹ́ ọfiisi. O wulo nigba ti nọmba nikan ko to.</p>
   </div>
 </section>
-<section class="yo-p1-planner" data-yo-p1-planner data-tool-name="Naira sí ọ̀rọ̀">
-<h2>Seto igbese to kan</h2>
-<p>Kọ àlàyé pàtàkì sílẹ̀ kí o sì lọ sí irinṣẹ́ tó yẹ. Àkópọ̀ náà wà nínú aṣàwákiri rẹ; kò sì rán data rẹ sí server.</p>
-<div class="yo-p1-grid">
-<label>Orile-ede tabi ipo<input name="scope" autocomplete="off" placeholder="Apeere: Naijiria, oja, ile-iwe, onibara"></label>
-<label>Iṣẹ́<select name="task"><option value="iwe">Ṣètò ìwé</option><option value="jade">Gbé fáìlì jáde</option><option value="ikoko">Ṣàyẹ̀wò àṣírí</option></select></label>
-<label>Alaye<textarea name="details" placeholder="Iye, ojo, ibi-afede, owo tabi ibeere"></textarea></label>
-<label>Faili tabi iwe<input type="file" name="file" accept="application/pdf,.pdf,.doc,.docx,.txt,image/*"></label>
-</div>
-<output class="yo-p1-output" data-p1-output>Fi ipò, iṣẹ́ tàbí àlàyé kún láti gba àkópọ̀.</output>
-<div class="yo-p1-buttons"><a href="/yo/awon-ise/naira-si-oro/">Sí irinṣẹ́ kíkún</a><button type="button" data-p1-copy>Dà àkópọ̀ kọ́</button><span class="yo-p1-status" data-p1-status aria-live="polite"></span></div>
-<div class="yo-p1-method"><strong>2026:</strong> Àṣírí: pa fáìlì pàtàkì mọ́ nínú aṣàwákiri rẹ kí o ṣàyẹ̀wò ojú-ìwé kíkún ṣáájú fífi ránṣẹ́ tàbí gbígbà sílẹ̀.</div>
-</section>
-<main class="grid" id="main-content">
-  <section class="card">
+<main class="grid" id="main-content" tabindex="-1">
+  <form class="card" id="amountForm" novalidate>
     <h2>Tẹ iye Naira</h2>
-    <div class="field"><label for="amount">Iye owó</label><input id="amount" inputmode="decimal" value="125000.75" aria-label="Iye owó"></div>
-    <div class="field"><label for="purpose">Ìdí akọsilẹ</label><input id="purpose" value="Isanwo fun ìpèsè ọja"></div>
-    <div class="field"><label for="payee">Orukọ ẹni to gba</label><input id="payee" value="Alabara tuntun"></div>
+    <div class="field"><label for="amount">Iye owó</label><input id="amount" inputmode="decimal" value="" aria-describedby="amountHelp" autocomplete="off"></div>
+    <p id="amountHelp">Tẹ iye láti 0 sí 999999999999.99. Lo àmì . fún kobo, bíi 125000.75; kọ kobo méjì tàbí díẹ̀.</p>
+    <p id="amountError" role="status" aria-live="polite"></p>
+    <div class="field"><label for="purpose">Ìdí àkọsílẹ̀ (kì í ṣe dandan)</label><input id="purpose" value=""></div>
+    <div class="field"><label for="payee">Orúkọ ẹni tó gba (kì í ṣe dandan)</label><input id="payee" value=""></div>
     <div class="btns">
-      <button type="button" class="btn primary" id="convert">Yi pada sí ọ̀rọ̀</button>
-      <button type="button" class="btn" id="clear">Pa rẹ</button>
+      <button type="submit" class="btn primary" id="convert">Yi pada sí ọ̀rọ̀</button>
+      <button type="button" class="btn" id="clear">Tún pàdà</button>
     </div>
-  </section>
+  </form>
   <aside class="card">
-    <h2>Abajade</h2>
-    <div class="result" id="words"><b>Ọ̀rọ̀ Naira</b>Ọgọrun ẹgbẹrun, ogún ẹgbẹrun, ẹgbẹrun marun-un Naira ati kobo marundinlọgọrin pere.</div>
+    <h2>Àbájáde</h2>
+    <div class="result" id="words"><b>Ọ̀rọ̀ Naira</b>Tẹ iye owó láti rí àbájáde.</div>
     <div class="line" id="docLine"></div>
     <div class="btns" style="margin-top:14px">
-      <button type="button" class="btn" id="copyWords">Daakọ ọ̀rọ̀</button>
-      <button type="button" class="btn" id="copyLine">Daakọ laini iwe</button>
-      <button type="button" class="btn" id="downloadLine">Gba TXT</button>
+      <button type="button" class="btn" id="copyWords" disabled>Dàkọ ọ̀rọ̀</button>
+      <button type="button" class="btn" id="copyLine" disabled>Dàkọ ìlà ìwé</button>
+      <button type="button" class="btn" id="downloadLine" disabled>Gba TXT</button>
     </div>
     <p id="exportStatus" role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="mini">
-      <div><b>Nọ́ńbà Naira</b><span id="nairaPart">₦125,000</span></div>
-      <div><b>Kobo</b><span id="koboPart">75</span></div>
+      <div><b>Nọ́ńbà Naira</b><span id="nairaPart">—</span></div>
+      <div><b>Kobo</b><span id="koboPart">—</span></div>
     </div>
   </aside>
 </main>
 <section class="faq">
   <div class="note">Diẹ ninu banki tabi ajo le fẹ ki iye Naira wa ni Gẹẹsi lori iwe osise. Oju yii fi Yorùbá si iwaju fun iṣẹ́ agbegbe, risiti ati akọsilẹ iṣowo.</div>
-  <div class="note" data-tool-verification-panel="naira-to-words-yo"><strong>Ìlànà, orísun àti ìkìlọ̀:</strong> Irinṣẹ́ yìí ń ka iye Naira nínú aṣàwákiri, pin Naira ati kobo, ki o si kọ ọ̀rọ̀ Yorùbá fún risiti, akọsilẹ isanwo ati iṣẹ agbegbe. Àtúnṣe ojú yìí: June 2026. Ko se idaniloju banki, ko se imọran ofin, ko si ran iye tabi orukọ ẹni ti o tẹ si server. Ṣayẹwo ọna kikọ pẹlu banki, ọfiisi tabi ẹni ti yoo gba iwe naa.</div>
+  <div class="note" data-tool-verification-panel="naira-to-words-yo"><strong>Ìlànà, orísun àti ìkìlọ̀:</strong> Irinṣẹ́ yìí ń ka iye Naira nínú aṣàwákiri, pin Naira ati kobo, ki o si kọ ọ̀rọ̀ Yorùbá fún risiti, akọsilẹ isanwo ati iṣẹ agbegbe. Àtúnṣe ojú yìí: June 2026. Ṣàyẹ̀wò ọ̀rọ̀ Yorùbá pẹ̀lú ẹni tó mọ èdè kí o tó lo ìwé náà. Ko se idaniloju banki, ko se imọran ofin, ko si ran iye tabi orukọ ẹni ti o tẹ si server. Ṣayẹwo ọna kikọ pẹlu banki, ọfiisi tabi ẹni ti yoo gba iwe naa.</div>
   <details><summary>Ṣe o ṣe atilẹyin kobo?</summary><p>Bẹẹni. Fi iye pẹlu ami aami kékèké bii 125000.75, oju yii yoo fi Naira ati kobo han lọtọ.</p></details>
   <details><summary>Kí ni mo yẹ kí n ṣàyẹ̀wò?</summary><p>Ṣàyẹ̀wò pe nọmba ti o tẹ tọ, pe orukọ ẹni to gba jẹ deede, ati pe ọna kikọ ba ibeere ile-iṣẹ rẹ mu.</p></details>
 </section>
@@ -142,13 +136,15 @@
   const docLine=document.getElementById('docLine');
   const exportStatus=document.getElementById('exportStatus');
   async function copy(text){
+    if(!validResult)return;
+    const generation=revision;
     exportStatus.textContent='';
     try{
       if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function')throw new Error('clipboard unavailable');
       await navigator.clipboard.writeText(text);
-      exportStatus.textContent='A ti dàkọ.';
+      if(generation===revision)exportStatus.textContent='A ti dàkọ.';
     }catch(error){
-      exportStatus.textContent='Kò ṣeé dàkọ. Yan ọ̀rọ̀ náà kí o sì dàkọ fúnra rẹ.';
+      if(generation===revision)exportStatus.textContent='Kò ṣeé dàkọ. Yan ọ̀rọ̀ náà kí o sì dàkọ fúnra rẹ.';
     }
   }
   function cap(text){return text.charAt(0).toUpperCase()+text.slice(1);}
@@ -177,12 +173,39 @@
     if(n>0)parts.push(underThousand(n));
     return parts.join(', ');
   }
-  function run(){
+  let validResult=false,revision=0;
+  const errorBox=document.getElementById('amountError');
+  const exports=['copyWords','copyLine','downloadLine'];
+  function empty(message){
+    revision++;validResult=false;
+    wordsBox.textContent='Tẹ iye owó láti rí àbájáde.';
+    docLine.textContent='';
+    document.getElementById('nairaPart').textContent='—';
+    document.getElementById('koboPart').textContent='—';
+    errorBox.textContent=message||'';
+    exports.forEach(id=>document.getElementById(id).disabled=true);
+  }
+  function run(focusInvalid){
+    revision++;
     exportStatus.textContent='';
-    const raw=Number(String(amount.value||'0').replace(/,/g,''));
-    const safe=Number.isFinite(raw)&&raw>=0?raw:0;
-    const naira=Math.floor(safe);
-    const kobo=Math.round((safe-naira)*100);
+    const raw=amount.value.trim();
+    // Parse decimal text exactly: no rounding into 100 kobo or unsafe integers.
+    const match=/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.(\d{1,2}))?$/.exec(raw);
+    const parts=raw.replace(/,/g,'').split('.');
+    const naira=Number(parts[0]);
+    if(!match||naira>999999999999){
+      amount.setAttribute('aria-invalid','true');
+      amount.setAttribute('aria-describedby','amountHelp amountError');
+      empty('Ṣàyẹ̀wò iye owó. Lo iye tí kò ní àmì òdì àti kobo méjì tàbí díẹ̀.');
+      if(focusInvalid)amount.focus();
+      return;
+    }
+    amount.removeAttribute('aria-invalid');
+    amount.setAttribute('aria-describedby','amountHelp');
+    errorBox.textContent='';
+    const kobo=Number((parts[1]||'').padEnd(2,'0'));
+    validResult=true;
+    exports.forEach(id=>document.getElementById(id).disabled=false);
     const nairaWords=cap(toWords(naira))+' Naira';
     const koboWords=kobo>0?' ati kobo '+toWords(kobo):'';
     const text=nairaWords+koboWords+' pere.';
@@ -193,11 +216,12 @@
     document.getElementById('nairaPart').textContent='₦'+naira.toLocaleString('en-NG');
     document.getElementById('koboPart').textContent=String(kobo).padStart(2,'0');
   }
-  document.getElementById('convert').addEventListener('click',run);
-  document.getElementById('clear').addEventListener('click',()=>{amount.value='';document.getElementById('purpose').value='';document.getElementById('payee').value='';run();});
+  document.getElementById('amountForm').addEventListener('submit',event=>{event.preventDefault();run(true);});
+  document.getElementById('clear').addEventListener('click',()=>{amount.value='';document.getElementById('purpose').value='';document.getElementById('payee').value='';amount.removeAttribute('aria-invalid');amount.setAttribute('aria-describedby','amountHelp');exportStatus.textContent='';empty('');amount.focus();});
   document.getElementById('copyWords').addEventListener('click',()=>copy(wordsBox.innerText.replace('Ọ̀rọ̀ Naira','').trim()));
   document.getElementById('copyLine').addEventListener('click',()=>copy(docLine.textContent));
   document.getElementById('downloadLine').addEventListener('click',()=>{
+    if(!validResult)return;
     var blob=new Blob([docLine.textContent+'\n'],{type:'text/plain;charset=utf-8'});
     var url=URL.createObjectURL(blob);
     var a=document.createElement('a');
@@ -206,12 +230,9 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
     exportStatus.textContent='A ti gba TXT.';
   });
-  document.querySelectorAll('input').forEach((el)=>el.addEventListener('input',run));
-  run();
+  document.querySelectorAll('#amountForm input').forEach(el=>el.addEventListener('input',()=>run(false)));
+  empty('');
 })();
-</script>
-<script data-yo-p1-planner-script>
-(function(){document.querySelectorAll('[data-yo-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Ipo: '+scope);if(task)parts.push('Ise: '+task);if(details)parts.push('Alaye: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Fi ipò, iṣẹ́ tàbí àlàyé kún láti gba àkópọ̀.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='A ti dà àkópọ̀ kọ́.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
