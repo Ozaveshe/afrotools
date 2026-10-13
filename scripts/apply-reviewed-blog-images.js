@@ -6,8 +6,28 @@ const {imageSize}=require('./lib/image-size');
 const ROOT=path.resolve(__dirname,'..');
 const cohort=require('../data/image-generation/placement-review-cohort.json');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
-const generatedArtwork=new Map(require('../data/image-generation/blog-generated-2026-10-09.json').images.map(row=>[row.slug,row]));
+const generatedArtwork=new Map([
+ ...require('../data/image-generation/blog-generated-2026-10-09.json').images,
+ ...require('../data/image-generation/blog-generated-2026-10-13.json').images
+].map(row=>[row.slug,row]));
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+
+function replacePreviousHero(html,row,figure) {
+ if(!row.previous_path||!/^\/assets\/img\/(?:blog|tools)\/[a-z0-9-]+\.(?:webp|png|jpe?g|svg)$/.test(row.previous_path)) throw new Error('Invalid previous article artwork');
+ const starts=[...html.matchAll(/<(figure|div)\b[^>]*\bclass=(["'])([^"']*)\2[^>]*>/g)].filter(match=>match[3].split(/\s+/).some(token=>['article-featured-img','article-hero'].includes(token)));
+ if(starts.length!==1) throw new Error('Expected one legacy featured image '+row.file);
+ const start=starts[0],tags=new RegExp('<\\/?'+start[1]+'\\b[^>]*>','g');
+ tags.lastIndex=start.index;
+ let depth=0,end=null,tag;
+ while((tag=tags.exec(html))) {
+  depth+=tag[0].startsWith('</')?-1:1;
+  if(depth===0){end=tags.lastIndex;break;}
+ }
+ if(end===null) throw new Error('Unbalanced legacy image container '+row.file);
+ const block=html.slice(start.index,end),images=[...block.matchAll(/<img\b[^>]*>/g)];
+ if(images.length!==1||!images[0][0].includes('src="'+row.previous_path+'"')) throw new Error('Legacy image identity changed '+row.file);
+ return html.slice(0,start.index)+figure+html.slice(end);
+}
 
 function applyBindings(check=false) {
  let changed=0;
@@ -35,6 +55,7 @@ function applyBindings(check=false) {
    const matches=before.match(existing)||[];
    if(matches.length>1) throw new Error('Duplicate reviewed article image '+row.file);
    if(matches.length) after=before.replace(existing,figure);
+   else if(row.replace_previous_hero) after=replacePreviousHero(before,row,figure);
    else {
     if(/<img\b|class="article-featured-img"/.test(before)||/<iframe\b|http-equiv="refresh"|content="noindex/.test(before)) throw new Error('Article already has imagery or is navigation; review placement '+row.file);
     after=before.replace(marker,figure+'\n'+marker);
