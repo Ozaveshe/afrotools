@@ -76,6 +76,10 @@ function setMeta(html, selector, value, content, required) {
     return tag.replace(/\bcontent\s*=\s*([\"'])([\s\S]*?)\1/i, (_, quote) => "content=" + quote + escapeHtml(content) + quote);
   });
   if (required && !found) throw new Error("Missing meta " + selector + "=" + value);
+  if (!found && selector === "name" && /^twitter:(?:title|description)$/.test(value)) {
+    if (!/<\/head>/i.test(output)) throw new Error("Missing head for " + value);
+    return output.replace(/<\/head>/i, () => '<meta name="' + value + '" content="' + escapeHtml(content) + '">\n</head>');
+  }
   return output;
 }
 
