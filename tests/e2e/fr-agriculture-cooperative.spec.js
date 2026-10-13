@@ -1,11 +1,9 @@
 const { test, expect } = require('@playwright/test');
 const ai = require('../../assets/js/ai/french-route-map.generated.js');
 async function sentinel(page) {
-  const response = await page.request.get('/tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt');
-  expect(response.ok()).toBe(true);
-  const text = await response.text();
-  expect(text).toContain('worktree=7e83');
-  expect(text).toContain('root=C:\\Users\\Oza\\.codex\\worktrees\\7e83\\afrotools');
+  await page.goto('/agriculture/cooperative-calculator/');
+  await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href','https://afrotools.com/agriculture/cooperative-calculator/');
+  expect(await page.evaluate(()=>typeof window.AfroTools.CooperativeEngine.calculate)).toBe('function');
 }
 function failures(page) {
   const result = [];
