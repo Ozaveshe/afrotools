@@ -63,6 +63,9 @@ jobs:
       - name: Verify forex context expiry at runtime
         run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js
 
+      - name: Verify withheld AfroKitchen method contracts
+        run: npm run test:afrokitchen:method-holds
+
       - name: Verify private command-centre contracts
         run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
 
@@ -362,6 +365,13 @@ jobs:
           AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
           PORT: '4204'
         run: npx playwright test tests/e2e/legal-workflow-local-print.spec.js --project=chromium --workers=1 --retries=0 --trace=off
+
+      - name: Verify withheld AfroKitchen routes and cached payload containment
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4267'
+        run: npx playwright test tests/e2e/afrokitchen-method-holds.spec.js --project=chromium --workers=1 --retries=0 --trace=off
 
       - name: Verify generated outputs are committed
         run: |

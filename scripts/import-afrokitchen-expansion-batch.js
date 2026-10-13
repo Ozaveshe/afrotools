@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
+const methodPolicy = require('../engines/src/afrokitchen-engine');
 
 const ROOT = path.resolve(__dirname, "..");
 const AUDIT_PATH = path.join(ROOT, "data", "afrokitchen", "recipe-research-audit.json");
@@ -39,6 +40,7 @@ function validateBatch(batch) {
   }
 
   batch.recipes.forEach((recipe) => {
+    if (methodPolicy.isMethodHeld(recipe)) errors.push(`${recipe.slug} is under method review; ordinary imports cannot restore its preparation instructions.`);
     requireText(recipe, "slug", errors);
     requireText(recipe, "name", errors);
     requireText(recipe, "description", errors);

@@ -34,6 +34,7 @@ const FORBIDDEN_PATHS = [
   'fr/eq-guinea/gq-paye.html',
   'fr/eq-guinea/gq-vat.html',
   'data/automation',
+  'data/afrokitchen',
   'data/jamb/review-ledger.json',
   'data/image-generation',
   'assets/img/new',

@@ -115,3 +115,20 @@ For local generated images, use:
 - `/assets/img/kitchen/<recipe-slug>-5.webp`
 
 Do not insert placeholder image URLs. If a recipe has no image yet, leave the image fields empty so the page falls back cleanly and does not ship broken media.
+
+## Temporarily withheld preparation methods
+
+The eight unreplaced fermented preparation records are bounded by
+`METHOD_HOLD_SLUGS` in `engines/src/afrokitchen-engine.js`. They retain canonical
+status routes while cooking instructions, ingredients, timers, Recipe JSON-LD,
+shopping-list and preparation exports remain unavailable. The published cooking
+index, country/collection recommendations and cuisine intelligence exclude them.
+Ordinary expansion imports cannot restore these methods.
+
+Run `npm run afrokitchen:methods:hold` after offline recipe generation and before
+the deploy build. It projects held records into public review status without live
+database access. Original records and research entries are preserved as internal
+review evidence; `data/afrokitchen` is excluded from the public artifact. A new
+complete method review and a scoped policy change are required to release a hold.
+The separately reviewed Kunu Zaki, Rwandan Ikivuguto and Maheu successor methods
+are outside these eight holds. No culinary or food-safety certification is claimed.
