@@ -56,7 +56,7 @@ AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').forEach(t => {
   }
 });
 
-console.log(`\n=== LIVE/NEW TOOLS WITH PAGES ===`);
+console.log(`\n=== LIVE/NEW REGISTRY ROWS WITH LANDING PAGES ===`);
 console.log(`  Found: ${found}`);
 console.log(`  Missing page: ${missing}`);
 
@@ -65,7 +65,7 @@ if (missingList.length > 0) {
   missingList.forEach(m => console.log(`  ${m}`));
 }
 
-// Check which tools have working app.html (functional tools)
+// Check file availability only. A separate app.html neither proves nor is required for functionality.
 const withApp = [];
 AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').forEach(t => {
   let href = t.href.replace(/\/$/, '');
@@ -76,12 +76,12 @@ AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').forEach(t => {
   }
 });
 
-console.log(`\n=== TOOLS WITH app.html (full functional apps) ===`);
+console.log(`\n=== REGISTRY ROWS WITH app.html FILES (FUNCTIONALITY NOT ASSESSED) ===`);
 console.log(`  Count: ${withApp.length}`);
 withApp.forEach(id => console.log(`  ${id}`));
 
-// Summary recommendation
-console.log(`\n=== RECOMMENDATION ===`);
+// Filesystem inventory summary; do not infer a completion percentage from these counts.
+console.log(`\n=== PAGE AVAILABILITY SUMMARY ===`);
 const canonicalRegistry = canonicalApi.buildCanonicalRegistry();
 const canonicalValidation = canonicalApi.validateCanonicalRegistry(canonicalRegistry);
 if (!canonicalValidation.ok) throw new Error(canonicalValidation.errors.map(canonicalApi.formatIssue).join('\n'));
@@ -91,5 +91,7 @@ console.log(`  Canonical published tool records: ${canonicalApi.getSelector(cano
 console.log(`  Canonical published English records: ${canonicalApi.getSelector(canonicalRegistry, 'tools.english_canonical_published').value}`);
 console.log(`  Expanded live tool experiences: ${totalToolInstances}`);
 console.log(`  ${found} live/new registry rows have landing pages`);
-console.log(`  ${withApp.length} have full working apps (app.html)`);
+console.log(`  ${withApp.length} live/new registry rows point to app.html files (not deduplicated)`);
 console.log(`  Public headline selector: tools.live_experiences = ${liveToolInstances.toLocaleString('en-US')}`);
+console.log('  Functional readiness: not assessed by this filesystem audit.');
+console.log('  A missing app.html does not mean a tool is broken; workflows can run on other routes.');

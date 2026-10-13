@@ -62,7 +62,7 @@
 .info-text{font-size:.8rem;color:#475569;line-height:1.6}
 .saved-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
 .saved-item:last-child{border-bottom:none}
-.saved-name{font-weight:700;color:var(--afro-dark);cursor:pointer}
+.saved-name{background:none;border:0;padding:8px 0;text-align:left;font:inherit;overflow-wrap:anywhere;min-width:0;font-weight:700;color:var(--afro-dark);cursor:pointer}
 .saved-name:hover{color:var(--afro-blue)}
 .del-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.75rem;font-weight:700}
 @media(max-width:768px){
@@ -208,14 +208,17 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       <div class="card-head"><span class="card-title">Set Your Countdown</span></div>
       <div class="card-body">
         <div class="field">
-          <label class="f-label">Event Name</label>
-          <input aria-label="EventName" type="text" class="f-input" id="eventName" value="My Event" maxlength="60">
+          <label class="f-label" for="eventName">Event Name</label>
+          <input type="text" class="f-input" id="eventName" value="My Event" maxlength="60">
         </div>
         <div class="field-row">
-          <div class="field"><label class="f-label">Event Date</label><input aria-label="EventDate" type="date" class="f-input" id="eventDate"></div>
-          <div class="field"><label class="f-label">Time (optional)</label><input aria-label="EventTime" type="time" class="f-input" id="eventTime" value="00:00"></div>
+          <div class="field"><label class="f-label" for="eventDate">Event Date</label><input type="date" class="f-input" id="eventDate"></div>
+          <div class="field"><label class="f-label" for="eventTime">Time (optional)</label><input type="time" class="f-input" id="eventTime" value="00:00"></div>
         </div>
         <button type="button" class="calc-btn" onclick="startCountdown()">Start Countdown</button>
+        <label style="display:block;margin-top:12px"><input type="checkbox" id="countdownSound" checked> Play a sound when the event arrives</label>
+        <button type="button" id="countdownNotifications" class="preset-btn" style="margin-top:8px" onclick="toggleCountdownNotifications()">Enable event notifications</button>
+        <p id="countdownNotificationStatus" role="status" aria-live="polite"></p>
         <div id="countdownStatus" role="status" aria-live="polite" style="min-height:1.25rem;margin-top:8px;font-size:.78rem;color:#b91c1c"></div>
 
         <div class="countdown-display" id="cdDisplay" style="display:none">
@@ -233,10 +236,11 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
           <div class="presets">
             <button type="button" class="preset-btn" onclick="setPreset('New Year','NEXTYEAR-01-01')">New Year</button>
             <button type="button" class="preset-btn" onclick="setPreset('Christmas','THISYEAR-12-25')">Christmas</button>
-            <button type="button" class="preset-btn" onclick="setPreset('Eid al-Fitr 2027','2027-03-21')">Eid al-Fitr</button>
+            <button type="button" class="preset-btn" onclick="setPreset('Eid al-Fitr','')">Eid al-Fitr (choose date)</button>
             <button type="button" class="preset-btn" onclick="setPreset('Africa Day','THISYEAR-05-25')">Africa Day (May 25)</button>
           </div>
         </div>
+        <p class="info-text">For Eid, enter the date confirmed by the relevant authority in your country. <a href="https://nscia.com.ng/eid-fitr-2024-no-positive-moonsighting-in-nigeria-nscia/" target="_blank" rel="noopener">Example: official Nigerian Eid announcement</a>.</p>
         <button type="button" class="calc-btn" style="margin-top:12px;background:#22c55e" onclick="saveCountdown()">Save This Countdown</button>
       </div>
     </div>
@@ -257,7 +261,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         </ol>
         <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Common Uses in Africa</h3>
         <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-          Students use countdown timers for <strong>WAEC, JAMB, and NECO</strong> exam dates. Businesses track product launches, funding deadlines, and fiscal year-end. Families count down to <strong>weddings, birthdays, and holiday celebrations</strong> like Eid, Christmas, and Africa Day. According to <a href="https://en.wikipedia.org/wiki/Africa_Day" target="_blank" rel="noopener" style="color:var(--afro-blue)">Africa Day</a> celebrations, May 25th is observed across the continent.
+          Students use countdown timers for <strong>WAEC, JAMB, and NECO</strong> exam dates. Businesses track product launches, funding deadlines, and fiscal year-end. Families count down to <strong>weddings, birthdays, and holiday celebrations</strong> like Eid, Christmas, and Africa Day. According to <a href="https://au.int/sites/default/files/newsevents/conceptnotes/44806-CN-2025_Africa_Day_CN_16052025.pdf" target="_blank" rel="noopener" style="color:var(--afro-blue)">Africa Day</a> celebrations, May 25th is observed across the continent.
         </p>
         <p style="font-size:.85rem;color:#475569;line-height:1.7">
           For exam prep, also check our <a href="/tools/exam-countdown/" style="color:var(--afro-blue)">Exam Countdown</a> and <a href="/tools/pomodoro/" style="color:var(--afro-blue)">Pomodoro Timer</a>.
@@ -281,17 +285,19 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="info-card">
       <div class="info-title">Saved Countdowns</div>
       <div id="savedList"><div style="font-size:.78rem;color:#94a3b8;text-align:center;padding:12px">No saved countdowns yet</div></div>
+      <p id="savedStatus" role="status" aria-live="polite"></p>
+      <button type="button" class="preset-btn" onclick="clearSavedCountdowns()">Clear saved countdowns</button>
     </div>
     <div class="info-card">
-      <div class="info-title">Upcoming African Holidays</div>
+      <div class="info-title">Annual dates and events</div>
       <div class="info-text" style="font-size:.78rem">
-        <strong>Africa Day:</strong> May 25<br>
-        <strong>Nelson Mandela Day:</strong> July 18<br>
-        <strong>AU Summit:</strong> February (annually)<br>
-        <strong>Nigeria Independence:</strong> October 1<br>
-        <strong>Kenya Mashujaa Day:</strong> October 20<br>
-        <strong>SA Heritage Day:</strong> September 24<br>
-        <strong>Ghana Independence:</strong> March 6<br>
+        <a href="https://au.int/sites/default/files/newsevents/conceptnotes/44806-CN-2025_Africa_Day_CN_16052025.pdf" target="_blank" rel="noopener">Africa Day</a>: May 25<br>
+        <a href="https://press.un.org/en/2009/ga10885.doc.htm" target="_blank" rel="noopener">Nelson Mandela International Day</a>: July 18<br>
+        <a href="https://www.au.int/en/summit/39" target="_blank" rel="noopener">AU summit schedule</a>: check the announced meeting dates<br>
+        <a href="https://fmino.gov.ng/fg-declares-thursday-october-1st-2026-public-holiday-to-mark-nigerias-66th-independence-anniversary/" target="_blank" rel="noopener">Nigeria Independence Day</a>: October 1<br>
+        <a href="https://www.mod.go.ke/the-constitution-of-kenya-2010-online/" target="_blank" rel="noopener">Kenya Mashujaa Day</a>: October 20<br>
+        <a href="https://www.gov.za/HeritageDay2025" target="_blank" rel="noopener">South Africa Heritage Day</a>: September 24<br>
+        <a href="https://pretoria.mfa.gov.gh/celebration-of-the-69th-independence-anniversary-of-the-republic-of-ghana-in-south-africa/" target="_blank" rel="noopener">Ghana Independence Day</a>: March 6<br><br>Observance dates and meeting schedules are shown here. Confirm public holidays and any substitute days with the relevant national authority.<br>
       </div>
     </div>
   </div>
@@ -299,140 +305,126 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 
 <afro-footer></afro-footer>
 
+<script src="/assets/js/lib/countdown-storage.js?v=6e83e866"></script>
 <script>
 let intervalId=null;
 let targetDate=null;
+let activeEventName='';
+let countdownNotificationsEnabled=false;
 
+function stopCountdown(){
+  if(intervalId!==null){clearInterval(intervalId);intervalId=null;}
+}
+function invalidateCountdown(message){
+  stopCountdown();targetDate=null;
+  ['cdDisplay','displayName','displayDate','pastBanner'].forEach(id=>{document.getElementById(id).style.display='none';});
+  document.getElementById('countdownStatus').textContent=message||'The event changed. Start the countdown again to use these details.';
+}
+function localDateString(date){
+  return String(date.getFullYear()).padStart(4,'0')+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');
+}
 function setPreset(name,dateStr){
-  const now=new Date();
-  const y=now.getFullYear();
-  dateStr=dateStr.replace('THISYEAR',y).replace('NEXTYEAR',y+1);
-  // If date already passed this year, use next year
-  const d=new Date(dateStr);
-  if(d<now&&dateStr.includes(String(y))){
-    dateStr=dateStr.replace(String(y),String(y+1));
-  }
+  const now=new Date(),year=now.getFullYear(),annual=dateStr.includes('THISYEAR');
+  dateStr=dateStr.replace('THISYEAR',year).replace('NEXTYEAR',year+1);
+  if(annual&&new Date(dateStr+'T00:00:00')<now)dateStr=String(year+1)+dateStr.slice(4);
   document.getElementById('eventName').value=name;
   document.getElementById('eventDate').value=dateStr;
+  document.getElementById('eventTime').value='00:00';
   startCountdown();
 }
-
 function startCountdown(){
   const name=document.getElementById('eventName').value||'Event';
   const dateStr=document.getElementById('eventDate').value;
   const timeStr=document.getElementById('eventTime').value||'00:00';
-  if(!dateStr){
-    targetDate=null;
-    if(intervalId){clearInterval(intervalId);intervalId=null;}
-    document.getElementById('cdDisplay').style.display='none';
-    document.getElementById('displayName').style.display='none';
-    document.getElementById('displayDate').style.display='none';
-    document.getElementById('pastBanner').style.display='none';
-    document.getElementById('countdownStatus').textContent='Choose an event date before starting the countdown.';
-    document.getElementById('eventDate').focus();
-    return;
-  }
-
-  targetDate=new Date(dateStr+'T'+timeStr+':00');
-  document.getElementById('countdownStatus').textContent='';
+  try{window.AfroTools.countdownStorage.validate({name,date:dateStr,time:timeStr});}
+  catch(error){invalidateCountdown('Choose a valid event date and time before starting the countdown.');document.getElementById('eventDate').focus();return;}
+  stopCountdown();targetDate=new Date(dateStr+'T'+timeStr+':00');activeEventName=name;
+  document.getElementById('countdownStatus').textContent='Countdown started using this device’s local timezone.';
   document.getElementById('cdDisplay').style.display='grid';
   document.getElementById('displayName').style.display='block';
-  document.getElementById('displayName').textContent=name;
+  document.getElementById('displayName').textContent=activeEventName;
   document.getElementById('displayDate').style.display='block';
-  document.getElementById('displayDate').textContent=targetDate.toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-
-  if(intervalId) clearInterval(intervalId);
-  tick();
-  intervalId=setInterval(tick,1000);
+  document.getElementById('displayDate').textContent=targetDate.toLocaleString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+  if(tick())intervalId=setInterval(tick,1000);
 }
-
-function tick(){
-  if(!targetDate) return;
-  const now=new Date();
-  const ownerCountdown=window.BusinessRoiEngine.countdown({from:now.toISOString(),to:targetDate.toISOString()});
-  const diff=ownerCountdown.milliseconds;
-  const banner=document.getElementById('pastBanner');
-
-  if(diff<=0){
-    document.getElementById('cdDays').textContent='0';
-    document.getElementById('cdHours').textContent='0';
-    document.getElementById('cdMins').textContent='0';
-    document.getElementById('cdSecs').textContent='0';
-    banner.style.display='block';
-    banner.textContent='This event has arrived!';
-    if(intervalId){
-      clearInterval(intervalId);intervalId=null;
-      // Play celebration sound
-      try{
-        var ctx=new(window.AudioContext||window.webkitAudioContext)();
-        [523,659,784,1047].forEach(function(freq,i){
-          var osc=ctx.createOscillator();var gain=ctx.createGain();
-          osc.connect(gain);gain.connect(ctx.destination);
-          osc.frequency.value=freq;osc.type='sine';
-          gain.gain.setValueAtTime(0.2,ctx.currentTime+i*0.2);
-          gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+i*0.2+0.4);
-          osc.start(ctx.currentTime+i*0.2);osc.stop(ctx.currentTime+i*0.2+0.4);
-        });
-      }catch(e){}
-      // Browser notification
-      if('Notification' in window&&Notification.permission==='granted'){
-        new Notification('Countdown Complete!',{body:document.getElementById('eventName').value+' has arrived!',icon:'/assets/img/logo-mark.svg'});
-      }
-    }
-    return;
+async function toggleCountdownNotifications(){
+  const button=document.getElementById('countdownNotifications'),status=document.getElementById('countdownNotificationStatus');
+  if(button.disabled)return;
+  if(countdownNotificationsEnabled){countdownNotificationsEnabled=false;button.textContent='Enable event notifications';status.textContent='Event notifications are off.';return;}
+  if(!window.Notification||typeof window.Notification.requestPermission!=='function'){status.textContent='Notifications are unavailable in this browser.';return;}
+  button.disabled=true;
+  try{
+    const permission=window.Notification.permission==='default'?await window.Notification.requestPermission():window.Notification.permission;
+    countdownNotificationsEnabled=permission==='granted';
+    button.textContent=countdownNotificationsEnabled?'Disable event notifications':'Enable event notifications';
+    status.textContent=countdownNotificationsEnabled?'Event notifications are enabled for this tab.':permission==='denied'?'Notifications are blocked by your browser settings.':'Event notifications were not enabled.';
+  }catch(error){status.textContent='Notifications could not be enabled. The countdown still works.';}
+  finally{button.disabled=false;}
+}
+function announceCountdownComplete(){
+  if(document.getElementById('countdownSound').checked){
+    try{
+      const audio=new(window.AudioContext||window.webkitAudioContext)();
+      [523,659,784,1047].forEach((freq,i)=>{
+        const oscillator=audio.createOscillator(),gain=audio.createGain();oscillator.connect(gain);gain.connect(audio.destination);
+        oscillator.frequency.value=freq;oscillator.type='sine';gain.gain.setValueAtTime(0.2,audio.currentTime+i*0.2);gain.gain.exponentialRampToValueAtTime(0.01,audio.currentTime+i*0.2+0.4);
+        if(i===3)oscillator.onended=()=>{audio.close().catch(()=>{});};
+        oscillator.start(audio.currentTime+i*0.2);oscillator.stop(audio.currentTime+i*0.2+0.4);
+      });
+    }catch(error){/* Optional audio does not stop the countdown. */}
   }
-  banner.style.display='none';
-
-  const days=ownerCountdown.days;
-  const hours=ownerCountdown.hours;
-  const mins=ownerCountdown.minutes;
-  const secs=ownerCountdown.seconds;
-
-  document.getElementById('cdDays').textContent=days;
-  document.getElementById('cdHours').textContent=String(hours).padStart(2,'0');
-  document.getElementById('cdMins').textContent=String(mins).padStart(2,'0');
-  document.getElementById('cdSecs').textContent=String(secs).padStart(2,'0');
+  if(countdownNotificationsEnabled){
+    try{if(!window.Notification||window.Notification.permission!=='granted')throw Error('Permission changed');new window.Notification('Countdown Complete!',{body:activeEventName+' has arrived!',icon:'/assets/img/logo-mark.svg'});}
+    catch(error){countdownNotificationsEnabled=false;document.getElementById('countdownNotifications').textContent='Enable event notifications';document.getElementById('countdownNotificationStatus').textContent='The notification could not be shown. The event has arrived.';}
+  }
 }
+function tick(){
+  if(!targetDate)return false;
+  const result=window.BusinessRoiEngine.countdown({from:new Date().toISOString(),to:targetDate.toISOString()}),banner=document.getElementById('pastBanner');
+  document.getElementById('cdDays').textContent=String(result.days);
+  document.getElementById('cdHours').textContent=String(result.hours).padStart(2,'0');
+  document.getElementById('cdMins').textContent=String(result.minutes).padStart(2,'0');
+  document.getElementById('cdSecs').textContent=String(result.seconds).padStart(2,'0');
+  if(result.complete){
+    const wasRunning=intervalId!==null;stopCountdown();banner.style.display='block';banner.textContent='This event has arrived!';document.getElementById('countdownStatus').textContent='This event has arrived!';
+    if(wasRunning)announceCountdownComplete();return false;
+  }
+  banner.style.display='none';return true;
+}
+['eventName','eventDate','eventTime'].forEach(id=>{
+  ['input','change'].forEach(event=>document.getElementById(id).addEventListener(event,()=>invalidateCountdown()));
+});
+window.addEventListener('focus',()=>{if(intervalId!==null)tick();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&intervalId!==null)tick();});
+window.addEventListener('pagehide',()=>stopCountdown());
+window.addEventListener('pageshow',event=>{if(event.persisted&&targetDate&&tick())intervalId=setInterval(tick,1000);});
 
+const savedMessages={changed:'Saved events changed in another tab. Refresh the list and select the event again.',loadError:'Saved events could not be read. The original data has been kept. You can still use the timer, or explicitly clear saved events to recover.',saveError:'The event changes could not be saved. Existing saved events are unchanged. The timer still works.',clearError:'Saved events could not be cleared. Existing data has been kept.',cleared:'Saved events cleared. The active timer was not changed.',saved:'Saved events updated on this device.',invalid:'Choose a valid event date and time before saving.'};
+const savedStore=window.AfroTools.countdownStorage.create({storage:()=>window.localStorage,onStatus:code=>{document.getElementById('savedStatus').textContent=savedMessages[code]||'';}});
 function saveCountdown(){
-  const name=document.getElementById('eventName').value;
-  const dateStr=document.getElementById('eventDate').value;
-  const timeStr=document.getElementById('eventTime').value||'00:00';
-  if(!dateStr){alert('Set a date first');return;}
-  const saved=JSON.parse(localStorage.getItem('afro_countdowns')||'[]');
-  saved.push({name,date:dateStr,time:timeStr});
-  if(saved.length>10) saved.shift();
-  localStorage.setItem('afro_countdowns',JSON.stringify(saved));
-  renderSaved();
+  const item={name:document.getElementById('eventName').value||'Event',date:document.getElementById('eventDate').value,time:document.getElementById('eventTime').value||'00:00'};
+  if(savedStore.add(item))renderSaved();
 }
-
-function loadSaved(i){
-  const saved=JSON.parse(localStorage.getItem('afro_countdowns')||'[]');
-  if(!saved[i]) return;
+function loadSaved(i,expected){
+  const saved=savedStore.read();if(!saved||!saved[i]){renderSaved();return;}if(expected&&JSON.stringify(saved[i])!==JSON.stringify(expected)){renderSaved();document.getElementById('savedStatus').textContent=savedMessages.changed;return;}
   document.getElementById('eventName').value=saved[i].name;
   document.getElementById('eventDate').value=saved[i].date;
-  document.getElementById('eventTime').value=saved[i].time||'00:00';
-  startCountdown();
+  document.getElementById('eventTime').value=saved[i].time;
+  startCountdown();document.getElementById('countdownStatus').textContent='Saved countdown loaded.';
 }
-
-function deleteSaved(i){
-  const saved=JSON.parse(localStorage.getItem('afro_countdowns')||'[]');
-  saved.splice(i,1);
-  localStorage.setItem('afro_countdowns',JSON.stringify(saved));
-  renderSaved();
+function deleteSaved(i,expected){savedStore.remove(i,expected);renderSaved();}
+function clearSavedCountdowns(){
+  if(confirm('Clear all saved countdowns from this browser? This cannot be undone. The active timer will continue.')&&savedStore.clear())renderSaved();
 }
-
 function renderSaved(){
-  const saved=JSON.parse(localStorage.getItem('afro_countdowns')||'[]');
-  const el=document.getElementById('savedList');
-  if(!saved.length){el.innerHTML='<div style="font-size:.78rem;color:#94a3b8;text-align:center;padding:12px">No saved countdowns yet</div>';return;}
-  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  el.innerHTML=saved.map((s,i)=>`<div class="saved-item"><span class="saved-name" onclick="loadSaved(${i})">${esc(s.name)}</span><button type="button" class="del-btn" onclick="deleteSaved(${i})">Delete</button></div>`).join('');
+  const saved=savedStore.read(),el=document.getElementById('savedList');el.replaceChildren();
+  if(!saved||!saved.length){const empty=document.createElement('p');empty.textContent=saved?'No saved countdowns yet':'Saved events unavailable. Use the recovery control below.';el.append(empty);return;}
+  saved.forEach((item,index)=>{const row=document.createElement('div');row.className='saved-item';const load=document.createElement('button');load.type='button';load.className='saved-name';load.textContent=item.name||'Event';load.setAttribute('aria-label','Load countdown: '+(item.name||'Event'));load.addEventListener('click',()=>loadSaved(index,item));const remove=document.createElement('button');remove.type='button';remove.className='del-btn';remove.textContent='Delete';remove.setAttribute('aria-label','Delete countdown: '+(item.name||'Event'));remove.addEventListener('click',()=>deleteSaved(index,item));row.append(load,remove);el.append(row);});
 }
 
 // Set default date to 30 days from now
 const d=new Date();d.setDate(d.getDate()+30);
-document.getElementById('eventDate').value=d.toISOString().split('T')[0];
+document.getElementById('eventDate').value=localDateString(d);
 renderSaved();
 startCountdown();
 </script>
