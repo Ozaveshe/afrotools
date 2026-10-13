@@ -17,11 +17,11 @@ const pages = [
     id: "pomodoro", slug: "minuteur-pomodoro", en: "/tools/pomodoro/", sw: "/sw/zana/pomodoro/", name: "Minuteur Pomodoro",
     title: "Minuteur Pomodoro en français | AfroTools",
     description: "Planifiez et lancez localement des sessions Pomodoro, pauses et cycles de concentration avec statistiques enregistrées sur cet appareil.",
-    intro: "Choisissez vos durées et le nombre de sessions. Le minuteur reste dans votre navigateur; aucune activité n’est envoyée.",
+    intro: "Choisissez vos durées et le nombre de sessions. Le minuteur et les statistiques fonctionnent dans ce navigateur.",
     fields: [
-      field("Concentration (minutes)", "focusMinutes", { min: 1, step: 1, value: 25 }),
-      field("Pause courte (minutes)", "shortBreakMinutes", { min: 1, step: 1, value: 5 }),
-      field("Pause longue (minutes)", "longBreakMinutes", { min: 1, step: 1, value: 15 }),
+      field("Concentration (minutes)", "focusMinutes", { min: 1, max: 1440, step: 1, value: 25 }),
+      field("Pause courte (minutes)", "shortBreakMinutes", { min: 1, max: 1440, step: 1, value: 5 }),
+      field("Pause longue (minutes)", "longBreakMinutes", { min: 1, max: 1440, step: 1, value: 15 }),
       field("Sessions par cycle", "sessions", { min: 1, max: 12, step: 1, value: 4 })
     ]
   },
@@ -72,6 +72,7 @@ const pages = [
     intro: "Le moteur utilise les fuseaux IANA du navigateur, y compris leurs règles saisonnières. Vérifiez séparément les rendez-vous critiques.",
     fields: [
       field("Date et heure source", "localDateTime", { type: "datetime-local", required: true }),
+      field("En cas d’heure répétée", "occurrence", { type: "select", choices: [["reject", "Demander de choisir"], ["earlier", "Première occurrence"], ["later", "Deuxième occurrence"]] }),
       field("Fuseau source", "fromZone", { type: "select", choices: [["Africa/Abidjan", "Abidjan / Accra (GMT)"], ["Africa/Lagos", "Lagos (WAT)"], ["Africa/Johannesburg", "Johannesburg (SAST)"], ["Africa/Cairo", "Le Caire"], ["Africa/Nairobi", "Nairobi (EAT)"], ["Africa/Casablanca", "Casablanca"], ["Indian/Mauritius", "Maurice"], ["Africa/Windhoek", "Windhoek"]] }),
       field("Fuseau cible", "toZone", { type: "select", choices: [["Africa/Nairobi", "Nairobi (EAT)"], ["Africa/Abidjan", "Abidjan / Accra (GMT)"], ["Africa/Lagos", "Lagos (WAT)"], ["Africa/Johannesburg", "Johannesburg (SAST)"], ["Africa/Cairo", "Le Caire"], ["Africa/Casablanca", "Casablanca"], ["Indian/Mauritius", "Maurice"], ["Africa/Windhoek", "Windhoek"]] })
     ]
@@ -136,10 +137,78 @@ const pages = [
     description: "Tirez un élément ou répartissez une liste en équipes avec l’aléa cryptographique local du navigateur.",
     intro: "Le tirage se fait localement avec crypto.getRandomValues. Ce n’est pas un système certifié pour jeux d’argent, concours réglementés ou élections.",
     fields: [
-      field("Éléments (un par ligne)", "items", { type: "textarea", required: true, value: "Amina\nKofi\nFatou\nThabo" }),
-      field("Mode", "mode", { type: "select", choices: [["pick", "Choisir un élément"], ["teams", "Créer des équipes"]] }),
-      field("Nombre d’équipes", "teamCount", { min: 2, max: 20, step: 1, value: 2 })
+  {
+    "name": "mode",
+    "label": "Mode",
+    "type": "select",
+    "choices": [
+      [
+        "pick",
+        "Choisir des éléments"
+      ],
+      [
+        "teams",
+        "Créer des équipes"
+      ],
+      [
+        "numbers",
+        "Tirer des nombres"
+      ],
+      [
+        "coin",
+        "Pile ou face"
+      ]
     ]
+  },
+  {
+    "name": "items",
+    "label": "Éléments (un par ligne)",
+    "type": "textarea",
+    "required": true,
+    "value": "Amina\nKofi\nFatou\nThabo"
+  },
+  {
+    "name": "pickCount",
+    "label": "Nombre à choisir",
+    "type": "number",
+    "step": 1,
+    "value": 1,
+    "min": 1,
+    "max": 100
+  },
+  {
+    "name": "teamCount",
+    "label": "Nombre d’équipes",
+    "type": "number",
+    "step": 1,
+    "value": 2,
+    "min": 2,
+    "max": 20
+  },
+  {
+    "name": "numMin",
+    "label": "Nombre minimum",
+    "type": "number",
+    "step": 1,
+    "value": 1
+  },
+  {
+    "name": "numMax",
+    "label": "Nombre maximum",
+    "type": "number",
+    "step": 1,
+    "value": 100
+  },
+  {
+    "name": "numCount",
+    "label": "Quantité de nombres",
+    "type": "number",
+    "step": 1,
+    "value": 1,
+    "min": 1,
+    "max": 100
+  }
+]
   },
   {
     id: "meeting-cost", slug: "cout-reunion", en: "/tools/meeting-cost/", sw: "/sw/zana/gharama-ya-mkutano/", name: "Coût réel d’une réunion",
@@ -215,10 +284,10 @@ body{margin:0;background:#f4f7fb;color:#102033;font-family:Inter,system-ui,sans-
 <afro-navbar></afro-navbar>
 <header class="hero"><div class="wrap"><nav aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/business-roi/">Business et productivité</a></nav><h1>${page.name}</h1><p>${page.intro}</p></div></header>
 <main class="wrap layout" data-business-app data-tool="${page.id}">
-<section class="panel"><h2>Vos paramètres</h2><form data-business-form><div class="fields">${page.fields.map(inputMarkup).join("")}</div><button class="primary" type="submit">Calculer et préparer le résultat</button><p class="status" data-business-status role="status" aria-live="polite"></p></form></section>
+<section class="panel"><h2>Vos paramètres</h2><form data-business-form><div class="fields">${page.fields.map(inputMarkup).join("")}</div><button class="primary" type="submit">${page.id === "countdown-timer" ? "Démarrer le compte à rebours" : "Calculer et préparer le résultat"}</button><p class="status" data-business-status role="status" aria-live="polite"></p></form></section>
 <section class="panel result" data-business-result hidden tabindex="-1"><h2 data-result-title>Résultat</h2><p data-result-summary></p><div class="metrics" data-result-metrics></div><table class="details"><tbody data-result-rows></tbody></table><div class="actions">${formats.map(format => `<button type="button" data-export="${format}">${format.toUpperCase()}</button>`).join("")}<button type="button" data-action="copy">Copier</button><button type="button" data-action="save">Enregistrer localement</button><button type="button" data-action="print">Imprimer</button></div><div class="boundary">Résultat de planification produit localement. Aucun compte, téléversement ni envoi à une IA. Vérifiez les données officielles, contrats ou politiques applicables avant une décision importante.</div><p class="source">Sources et hypothèses : <a href="${page.en}">fonctionnement anglais de référence</a> · moteur partagé déterministe · données saisies par l’utilisateur.</p></section>
 </main><afro-related-tools category="data-productivity" current="${page.id}"></afro-related-tools><afro-footer></afro-footer>
-<script src="/engines/business-roi-engine.js"></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script src="/assets/js/pages/fr-business-roi-parity.js"></script>
+<script src="/engines/business-roi-engine.js"></script>${page.id === "countdown-timer" ? '<script src="/assets/js/lib/countdown-storage.js"></script><script src="/assets/js/lib/localized-countdown.js"></script>' : ""}${page.id === "pomodoro" ? '<script src="/assets/js/lib/localized-pomodoro.js"></script>' : ""}<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script src="/assets/js/pages/fr-business-roi-parity.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/components/related-tools.min.js" defer></script>
 </body></html>`;
 }

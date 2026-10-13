@@ -4401,6 +4401,7 @@ function generateGoldenFixtures(formulas, root) {
   fixtures.push(...require("./calculation-quality-minimum-wage-inflation").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-ghana-leave").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-sw-fuel").fixtures(formulas.formulas));
+  fixtures.push(...require("./calculation-quality-business-roi-recovery").fixtures(formulas.formulas, root));
 
   return {
     $schema: "./calculation-quality.schema.json#/$defs/GoldenFixtureRegistry",
@@ -5098,6 +5099,8 @@ function runGoldenFixtures(artifacts, root) {
         actual = require("./calculation-quality-senegal-leave").run(root, fixture.input);
       } else if (fixture.operation === "minimum-wage-inflation") {
         actual = require("./calculation-quality-minimum-wage-inflation").run(root, fixture.input);
+      } else if (fixture.operation === "business-roi-recovery") {
+        actual = require("./calculation-quality-business-roi-recovery").run(root, fixture.input);
       } else if (fixture.operation === "minimum-wage-controller") {
         actual = require("./calculation-quality-minimum-wage-reference").run(root, fixture.input);
       } else if (fixture.operation === "remittance-corridor") {

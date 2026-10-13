@@ -13,7 +13,7 @@ const cases = {
   "working-days": { values: { start: "2026-07-27", end: "2026-08-02", holidays: "2026-07-29" }, expected: ["4", "7", "2", "1"], invalid: { start: "2026-08-02", end: "2026-07-27" } },
   "age-calculator": { values: { birthDate: "2000-02-29", atDate: "2026-07-29" }, expected: ["26", "5", "9,647"], invalid: { birthDate: "2030-01-01", atDate: "2026-07-29" } },
   "grade-tracker": { values: { scale: "5", course1: "Hisabati", credits1: "3", points1: "4", course2: "Uchumi", credits2: "2", points2: "3", previousGpa: "3", previousCredits: "10", targetGpa: "3.5", futureCredits: "5" }, expected: ["3.6", "3.2", "4.4"], invalid: { scale: "4", points1: "5" } },
-  "random-picker": { values: { items: "Amina\nKofi\nFatou\nThabo", mode: "pick", teamCount: "2" }, expected: ["Amina", "4"], invalid: { items: "" } },
+  "random-picker": { values: { items: "Amina\nKofi\nFatou\nThabo", mode: "pick" }, expected: ["Amina", "4"], invalid: { items: "" } },
   "meeting-cost": { values: { currency: "USD", attendees: "5", annualSalary: "52000", durationMinutes: "60", overhead: "1.5", annualFrequency: "52", workHoursPerYear: "2080" }, expected: ["187.50", "9,750", "260"], invalid: { attendees: "0" } },
   "tip-calculator": { values: { currency: "USD", bill: "100", tipRate: "10", taxRate: "5", people: "3", roundTo: "10" }, expected: ["105.00", "10.00", "120.00", "40.00"], invalid: { bill: "0" } }
 };
@@ -54,7 +54,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const route of manifest.routes) {
-  test(`${route.id}: Sw owner workflow and all advertised actions`, async ({ page }) => {
+  test(`${route.id}: Sw owner workflow and all advertised actions`, async ({ page }, testInfo) => {
     const errors = [];
     const unexpectedNetwork = captureUnexpectedNetwork(page);
     page.on("pageerror", (error) => errors.push(error.message));
@@ -90,7 +90,9 @@ for (const route of manifest.routes) {
         expect(bytes.toString("utf8")).toContain("//SW");
       } else {
         expect(bytes.subarray(0, 5).toString("ascii")).toBe("%PDF-");
-        const parsed = await pdfParse(bytes);
+        fs.mkdirSync(testInfo.outputDir, { recursive: true });
+        fs.writeFileSync(testInfo.outputPath(route.id + '.pdf'), bytes);
+        const parsed = await pdfParse(Uint8Array.from(bytes));
         expect(parsed.text).toContain("AfroTools");
         expect(parsed.text.length).toBeGreaterThan(80);
       }

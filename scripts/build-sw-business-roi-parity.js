@@ -121,7 +121,7 @@ ${alternateTags(route)}
 <link rel="stylesheet" href="/assets/css/design-system.css">
 <link rel="stylesheet" href="/assets/css/sw-business-roi-parity.css">
 <script>window.AfroLocalOnly=true;</script>
-<script src="/engines/business-roi-engine.js"></script>
+<script src="/engines/business-roi-engine.js"></script>${route.id === "countdown-timer" ? '<script src="/assets/js/lib/countdown-storage.js" defer></script><script src="/assets/js/lib/localized-countdown.js" defer></script>' : ""}${route.id === "pomodoro" ? '<script src="/assets/js/lib/localized-pomodoro.js" defer></script>' : ""}
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script>
 <script src="/assets/js/pages/sw-business-roi-parity.js" defer></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -144,7 +144,7 @@ ${alternateTags(route)}
     <h2 id="vigezo-title">Weka vigezo vyako</h2>
     <form data-business-form novalidate>
       <div class="sw-business-fields">${route.fields.map(fieldMarkup).join("")}</div>
-      <button class="sw-business-primary" type="submit">Kokotoa na kuandaa matokeo</button>
+      <button class="sw-business-primary" type="submit">${route.id === "countdown-timer" ? "Anzisha hesabu ya muda" : "Kokotoa na kuandaa matokeo"}</button>
       <p class="sw-business-status" data-business-status role="status" aria-live="polite"></p>
     </form>
   </section>

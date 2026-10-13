@@ -5,6 +5,7 @@ const aiProvider = require('./_shared/ai-provider');
 const crypto = require('crypto');
 const intentRouter = require('../../assets/js/ai/intent-router.js');
 const manifestApi = require('../../assets/js/ai/tool-manifest.js');
+const canonicalToolDirectory = require('../../data/tool-directory.json');
 const guardrails = require('../../assets/js/ai/guardrails.js');
 const promptRegistry = require('../../assets/js/ai/prompt-registry.js');
 
@@ -55,6 +56,12 @@ const telemetry = {
   modelLatencyMs: 0,
   estimatedCostUsd: 0,
 };
+
+// Static import keeps the full public catalog in the deployed function bundle.
+// The shared browser/Node default loader relies on its original source directory.
+function serverToolManifest() {
+  return manifestApi.getToolManifestForRouter(manifestApi.buildToolManifest(canonicalToolDirectory));
+}
 
 function json(statusCode, headers, body) {
   return {
@@ -693,7 +700,7 @@ function emergencyRouterFallback(event, err) {
   const fallbackReason = 'router_runtime_fallback';
   let decision;
   try {
-    const manifest = manifestApi.getToolManifestForRouter();
+    const manifest = serverToolManifest();
     decision = sanitizeDecision(intentRouter.routeDeterministically(query, { manifest, locale: 'en' }));
   } catch (fallbackErr) {
     decision = sanitizeDecision(intentRouter.fallbackDecision(query, { locale: 'en' }));
@@ -718,7 +725,7 @@ function emergencyRouterFallback(event, err) {
     cacheHit: false,
     totalLatencyMs: elapsed,
     runtimeErrorName: err && err.name || 'Error',
-  }, manifestApi.getToolManifestForRouter()));
+  }, serverToolManifest()));
 }
 
 async function routeIntent(event) {
@@ -778,7 +785,7 @@ async function routeIntent(event) {
     });
   }
 
-  const manifest = manifestApi.getToolManifestForRouter();
+  const manifest = serverToolManifest();
   const deterministic = sanitizeDecision(intentRouter.routeDeterministically(query, { manifest, locale }));
   const fingerprint = cacheFingerprint(query, deterministic);
   const promptMeta = routerPromptMeta();

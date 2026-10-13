@@ -398,7 +398,7 @@
   /* Copy button inline */
   .copy-btn {
     padding: 5px 10px;
-    background: rgba(0, 113, 227, 0.1);
+    background: #e8f1fc;
     border: 1px solid rgba(0, 113, 227, 0.35);
     color: #1a5c3a;
     border-radius: 4px;
@@ -406,12 +406,22 @@
     font-size: 0.65rem;
     font-weight: 700;
     white-space: nowrap;
-    transition: all 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s;
     font-family: 'DM Sans', sans-serif;
   }
 
   .copy-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
+    background: #d7e8fc;
+  }
+
+  html[data-theme="dark"] .tool-main-inner .copy-btn {
+    color: #eef5ff !important;
+    background: #24364f !important;
+    border-color: #64748b;
+  }
+
+  html[data-theme="dark"] .tool-main-inner .copy-btn:hover {
+    background: #304968 !important;
   }
 
   .btn-row {
@@ -423,6 +433,9 @@
 
   /* Drop zone */
   .drop-zone {
+    display: block;
+    width: 100%;
+    font: inherit;
     border: 2px dashed #BFDBFE;
     border-radius: 8px;
     padding: 36px 20px;
@@ -442,12 +455,14 @@
   }
 
   .drop-zone-text {
+    display: block;
     font-size: 0.82rem;
     font-weight: 600;
     color: #6B8CAE;
   }
 
   .drop-zone-sub {
+    display: block;
     font-size: 0.7rem;
     color: #9ca3af;
     margin-top: 4px;
@@ -870,10 +885,10 @@
           <div id="file-tab" class="tab-pane">
             <div class="field">
               <label class="f-label"><span class="f-label-text">Select a file to encode (max 10 MB)</span></label>
-              <div class="drop-zone" id="file-drop-zone">
-                <div class="drop-zone-text">Drop a file here or click to upload</div>
-                <div class="drop-zone-sub">Supports any file type up to 10 MB</div>
-              </div>
+              <button type="button" class="drop-zone" id="file-drop-zone" aria-controls="file-input">
+                <span class="drop-zone-text">Drop a file here or click to upload</span>
+                <span class="drop-zone-sub">Supports any file type up to 10 MB</span>
+              </button>
               <input aria-label="File input" type="file" id="file-input" style="display:none">
               <div id="file-info" class="file-info-bar" style="display:none"></div>
               <div id="file-image-preview" class="image-preview" style="display:none"></div>
@@ -903,10 +918,10 @@
           <div id="image-tab" class="tab-pane">
             <div class="field">
               <label class="f-label"><span class="f-label-text">Upload an image</span></label>
-              <div class="drop-zone" id="img-drop-zone">
-                <div class="drop-zone-text">Drop an image here or click to upload</div>
-                <div class="drop-zone-sub">PNG, JPG, GIF, SVG, WebP (max 10 MB)</div>
-              </div>
+              <button type="button" class="drop-zone" id="img-drop-zone" aria-controls="img-input">
+                <span class="drop-zone-text">Drop an image here or click to upload</span>
+                <span class="drop-zone-sub">PNG, JPG, GIF, SVG, WebP (max 10 MB)</span>
+              </button>
               <input aria-label="Img input" type="file" id="img-input" accept="image/*" style="display:none">
               <div id="img-info" class="file-info-bar" style="display:none"></div>
               <div id="img-preview" class="image-preview" style="display:none"></div>

@@ -1,0 +1,703 @@
+{
+  "schema": 1,
+  "groups": 2,
+  "originalCommit": "ab5b861da09de046eb6bb0e72dc01fce1b8713b8",
+  "originalWorkflowSha256": "4a8630b773e666c048d48625b194ba79fa90f053d631ada4ddf3c39cc7f575e8",
+  "originalBuildTimeoutMinutes": 75,
+  "originalVerifyYaml": "  verify:\n    name: Verify\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n\n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v5\n        with:\n          # Preservation tests compare current records with pinned release baselines.\n          fetch-depth: 0\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Install Chromium for browser-backed tests\n        run: npx playwright install chromium --with-deps\n\n      - name: Lint\n        run: npm run lint\n\n      - name: Type-check\n        run: npm run type-check\n\n      - name: Verify calculation formulas and jurisdictional data\n        run: npm run calculation-quality:check\n\n      - name: Verify static data fallback freshness\n        run: npm run data:fallbacks:check\n\n      - name: AI contract tests\n        run: npm run test:ai\n\n      - name: Unit and integration tests\n        run: npm test\n\n      - name: Verify multipart parser boundaries\n        run: node --test tests/multipart-parser-boundary.test.js\n\n      - name: Verify forex context expiry at runtime\n        run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js\n\n      - name: Verify private command-centre contracts\n        run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs\n\n      - name: Verify Pro architecture\n        run: npm run pro:verify\n\n      - name: Validate i18n dictionaries\n        run: npm run build:i18n:validate\n\n      - name: Validate hreflang graph\n        run: npm run validate:hreflang\n\n",
+  "originalSmokeYaml": "  e2e:\n    name: Playwright smoke\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n\n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v5\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Install Chromium\n        run: npx playwright install chromium --with-deps\n\n      - name: Run smoke specs\n        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js tests/e2e/amount-words-readiness.spec.js tests/e2e/mobile-money-readiness.spec.js tests/e2e/education-hub-card-reflow.spec.js tests/e2e/jamb-review-reflow.spec.js tests/e2e/shared-contrast-and-pro-gate.spec.js tests/e2e/blog-reading-layout.spec.js --project=chromium --workers=1\n\n      - name: Verify AfroJAMB reviewed-content journeys\n        env:\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n        run: npx playwright test tests/e2e/jamb-browser-trust.spec.js tests/e2e/jamb-planning-trust.spec.js tests/e2e/jamb-tutor-consent.spec.js tests/e2e/jamb-reviewed-pages.spec.js tests/e2e/jamb-public-review.spec.js --project=chromium --workers=2\n\n      - name: Verify Solar startup and French country continuations\n        env:\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4177'\n        run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2\n",
+  "producer": [
+    {
+      "step": {
+        "name": "Checkout repository",
+        "uses": "actions/checkout@v5"
+      },
+      "originalYaml": "      - name: Checkout repository\n        uses: actions/checkout@v5\n\n"
+    },
+    {
+      "step": {
+        "name": "Set up Node.js",
+        "uses": "actions/setup-node@v5",
+        "with": {
+          "node-version": "22",
+          "cache": "npm"
+        }
+      },
+      "originalYaml": "      - name: Set up Node.js\n        uses: actions/setup-node@v5\n        with:\n          node-version: '22'\n          cache: npm\n\n"
+    },
+    {
+      "step": {
+        "name": "Install dependencies",
+        "run": "npm ci"
+      },
+      "originalYaml": "      - name: Install dependencies\n        run: npm ci\n\n"
+    },
+    {
+      "step": {
+        "name": "Build deploy artifact",
+        "run": "npm run build:deploy"
+      },
+      "originalYaml": "      - name: Build deploy artifact\n        run: npm run build:deploy\n\n"
+    },
+    {
+      "step": {
+        "name": "Audit deploy artifact",
+        "run": "npm run audit:dist"
+      },
+      "originalYaml": "      - name: Audit deploy artifact\n        run: npm run audit:dist\n\n"
+    },
+    {
+      "step": {
+        "name": "Verify French document artwork and breadcrumbs in the artifact",
+        "run": "node scripts/check-french-document-seo.js --dist"
+      },
+      "originalYaml": "      - name: Verify French document artwork and breadcrumbs in the artifact\n        run: node scripts/check-french-document-seo.js --dist\n\n"
+    },
+    {
+      "step": {
+        "name": "Security scan publish surfaces",
+        "run": "npm run security:scan"
+      },
+      "originalYaml": "      - name: Security scan publish surfaces\n        run: npm run security:scan\n\n"
+    },
+    {
+      "step": {
+        "name": "Install Chromium for optimized artifact checks",
+        "run": "npx playwright install chromium --with-deps"
+      },
+      "originalYaml": "      - name: Install Chromium for optimized artifact checks\n        run: npx playwright install chromium --with-deps\n\n"
+    },
+    {
+      "step": {
+        "name": "Verify current French finance shared-controller exports",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "FRENCH_FINANCE_EXPORT_RUN_ID": "finance-${{ github.run_id }}-${{ github.run_attempt }}",
+          "FRENCH_FINANCE_EXPORT_PART_DIR": "${{ runner.temp }}/finance-export-parts",
+          "FRENCH_FINANCE_EXPORT_OUTPUT_FILE": "${{ runner.temp }}/finance-export-proof.json",
+          "FRENCH_FINANCE_EXPORT_STANDALONE": "1",
+          "FRENCH_FINANCE_PLAYWRIGHT_PORT": "42973",
+          "CONTEXT": "local",
+          "NETLIFY": "false"
+        },
+        "run": "export FRENCH_FINANCE_EXPECTED_COMMIT=\"$(git rev-parse HEAD)\"\nexport FRENCH_FINANCE_EXPECTED_TREE=\"$(git rev-parse HEAD^{tree})\"\nexport COMMIT_REF=\"$FRENCH_FINANCE_EXPECTED_COMMIT\"\nnode -e \"require('./scripts/build-dist').writeReleaseMetadata()\"\nnpx playwright test tests/e2e/french-finance-export-contract.spec.js --config=playwright.french-finance.config.js --project=chromium --fully-parallel --workers=2 --retries=0 --trace=off --output=\"$RUNNER_TEMP/finance-export-browser\"\nnode scripts/collect-french-finance-export-evidence.js\n"
+      },
+      "originalYaml": "      - name: Verify current French finance shared-controller exports\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          FRENCH_FINANCE_EXPORT_RUN_ID: finance-${{ github.run_id }}-${{ github.run_attempt }}\n          FRENCH_FINANCE_EXPORT_PART_DIR: ${{ runner.temp }}/finance-export-parts\n          FRENCH_FINANCE_EXPORT_OUTPUT_FILE: ${{ runner.temp }}/finance-export-proof.json\n          FRENCH_FINANCE_EXPORT_STANDALONE: '1'\n          FRENCH_FINANCE_PLAYWRIGHT_PORT: '42973'\n          CONTEXT: local\n          NETLIFY: 'false'\n        run: |\n          export FRENCH_FINANCE_EXPECTED_COMMIT=\"$(git rev-parse HEAD)\"\n          export FRENCH_FINANCE_EXPECTED_TREE=\"$(git rev-parse HEAD^{tree})\"\n          export COMMIT_REF=\"$FRENCH_FINANCE_EXPECTED_COMMIT\"\n          node -e \"require('./scripts/build-dist').writeReleaseMetadata()\"\n          npx playwright test tests/e2e/french-finance-export-contract.spec.js --config=playwright.french-finance.config.js --project=chromium --fully-parallel --workers=2 --retries=0 --trace=off --output=\"$RUNNER_TEMP/finance-export-browser\"\n          node scripts/collect-french-finance-export-evidence.js\n\n"
+    },
+    {
+      "step": {
+        "name": "Verify generated outputs are committed",
+        "run": "git diff --stat\nif [ -n \"$(git diff --name-only)\" ]; then\n  echo \"::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs.\"\n  git diff --name-only\n  exit 1\nfi\n"
+      },
+      "originalYaml": "      - name: Verify generated outputs are committed\n        run: |\n          git diff --stat\n          if [ -n \"$(git diff --name-only)\" ]; then\n            echo \"::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs.\"\n            git diff --name-only\n            exit 1\n          fi\n\n"
+    }
+  ],
+  "browser": [
+    {
+      "id": "browser-01",
+      "originalIndex": 8,
+      "group": 1,
+      "step": {
+        "name": "Verify agriculture input recovery in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "52817"
+        },
+        "run": "npx playwright test tests/e2e/agriculture-input-recovery.spec.js --workers=2"
+      },
+      "stepSha256": "4a50b2d40cd2afdbc47420fea5aba725b061142fba09bf2d439fee4b0e403588"
+    },
+    {
+      "id": "browser-02",
+      "originalIndex": 9,
+      "group": 1,
+      "step": {
+        "name": "Verify navbar resilience and guest account boundaries",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4271"
+        },
+        "run": "npx playwright test tests/e2e/navbar-stylesheet-resilience.spec.js tests/e2e/navbar-locale-rerender.spec.js tests/e2e/navbar-mobile-layout.spec.js tests/e2e/free-demand-cohort.spec.js tests/e2e/auth-funnel.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "343c51eb2c3202f6eadc4e9f74a5b2fe00c9d7c0e16e55e9b59e7db981ba990d"
+    },
+    {
+      "id": "browser-03",
+      "originalIndex": 10,
+      "group": 1,
+      "step": {
+        "name": "Verify education journeys and shared accessibility in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4175"
+        },
+        "run": "npx playwright test tests/e2e/education-workspace.spec.js tests/e2e/education-hub-card-reflow.spec.js tests/e2e/student-day.spec.js tests/e2e/education-applications.spec.js tests/e2e/ssce-practice.spec.js tests/e2e/ssce-written.spec.js tests/e2e/jamb-recent-written.spec.js tests/e2e/jamb-recent-quiz.spec.js tests/e2e/ssce-practice-fr.spec.js tests/e2e/jamb-review-reflow.spec.js tests/e2e/shared-contrast-and-pro-gate.spec.js --project=chromium --workers=2"
+      },
+      "stepSha256": "a0c39bdb2f065ae8f2f33ea04e326b5664de5378de0b2567c90261dfd6b6b9be"
+    },
+    {
+      "id": "browser-04",
+      "originalIndex": 11,
+      "group": 1,
+      "step": {
+        "name": "Verify localized education recovery in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4199"
+        },
+        "run": "npx playwright test tests/e2e/localized-education-recovery.spec.js tests/e2e/fr-education-deficit-parity.spec.js tests/e2e/swahili-education-workflow-parity.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "d4444f0b45f5b9f60489c2aa41aa4f20195b696421a9d719b028a83ad94cb5f5"
+    },
+    {
+      "id": "browser-05",
+      "originalIndex": 12,
+      "group": 2,
+      "step": {
+        "name": "Verify Solar startup and French country continuations in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4178"
+        },
+        "run": "npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2"
+      },
+      "stepSha256": "5776fd36238c22c871e0e2a42491303b490fc03aded1e0ab08e94c3fc15d5d23"
+    },
+    {
+      "id": "browser-06",
+      "originalIndex": 13,
+      "group": 1,
+      "step": {
+        "name": "Verify Profit Margin validation and exports in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4179"
+        },
+        "run": "npx playwright test tests/e2e/profit-margin-vip.spec.js tests/e2e/profit-margin-validation.spec.js --grep-invert \"durable visual proof\" --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "a8d1418ac57291f46e3597f2a9195bf99c7261364e39b7d2f4e2677c9594a19f"
+    },
+    {
+      "id": "browser-07",
+      "originalIndex": 14,
+      "group": 1,
+      "step": {
+        "name": "Verify finance recovery and original workflows in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4205"
+        },
+        "run": "npx playwright test tests/e2e/finance-recovery.spec.js tests/e2e/home-loan-file.spec.js tests/e2e/mortgage-budget-boundary.spec.js tests/e2e/paystack-fee-planner-vip.spec.js tests/e2e/sw-paye-authority-finder.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "b525700b675449712845486a126cf46f802b5cb0a2fc3a03c430d1de96894fc3"
+    },
+    {
+      "id": "browser-08",
+      "originalIndex": 16,
+      "group": 1,
+      "step": {
+        "name": "Verify Nigeria farm payroll recovery in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4200"
+        },
+        "run": "npx playwright test tests/e2e/nigeria-farm-payroll-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "b55c58cbe63de39af0d5fb67a20b0b4f2b6d24c22a8406838b6e5c093e1adb68"
+    },
+    {
+      "id": "browser-09",
+      "originalIndex": 17,
+      "group": 2,
+      "step": {
+        "name": "Verify finance native export owners and unavailable payroll guard",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4211"
+        },
+        "run": "npx playwright test tests/e2e/morocco-paye-parity.spec.js tests/e2e/tunisia-paye-parity.spec.js tests/e2e/day3-finance-backup-power-costs-vip.spec.js tests/e2e/day3-finance-route-fares-locales-vip.spec.js tests/e2e/french-leave-calendar.spec.js tests/e2e/crypto-remittance-export-state.spec.js tests/e2e/crypto-dca-replay.spec.js tests/e2e/microfinance-offer-vip.spec.js tests/e2e/bf-payroll-review.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "ce9d5b58cafb71467633f47cc45db50dd0138a1f71a741df73b71df796c81fd4"
+    },
+    {
+      "id": "browser-10",
+      "originalIndex": 18,
+      "group": 2,
+      "step": {
+        "name": "Verify reconciled completion workflows in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4182"
+        },
+        "run": "npx playwright test tests/e2e/inventory-vip.spec.js tests/e2e/inventory-pdf-completeness.spec.js tests/e2e/inventory-validation-locales.spec.js tests/e2e/business-name-workshop-vip.spec.js tests/e2e/business-name-saved-exports.spec.js tests/e2e/business-plan-draft-vip.spec.js tests/e2e/business-plan-recovery.spec.js tests/e2e/business-plan-feedback.spec.js tests/e2e/business-plan-export-locales.spec.js tests/e2e/job-offer-evaluator-vip.spec.js tests/e2e/job-offer-csv-safety.spec.js tests/e2e/job-offer-pdf-layout.spec.js tests/e2e/job-offer-feedback.spec.js tests/e2e/market-stall-recovery.spec.js tests/e2e/market-stall-profit-vip.spec.js tests/e2e/market-stall-validation.spec.js tests/e2e/market-stall-restore.spec.js tests/e2e/startup-valuation-recovery.spec.js tests/e2e/startup-valuation-vip.spec.js tests/e2e/startup-valuation-pdf.spec.js tests/e2e/startup-valuation-export-locales.spec.js tests/e2e/startup-valuation-validation.spec.js tests/e2e/idea-evidence-recovery.spec.js tests/e2e/idea-evidence-explorer-vip.spec.js tests/e2e/idea-evidence-locales.spec.js tests/e2e/idea-evidence-origin.spec.js tests/e2e/etims-checklist-recovery.spec.js tests/e2e/sw-etims-guide-final.spec.js tests/e2e/cover-letter-recovery.spec.js tests/e2e/pdf-convert-readiness.spec.js --grep-invert \"durable visual proof\" --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "cc5d6009f61e852b5d7c42c02ba666579449ac3da4841d812e62f0af97cf015a"
+    },
+    {
+      "id": "browser-11",
+      "originalIndex": 19,
+      "group": 2,
+      "step": {
+        "name": "Verify telecom recovery and original locale workflows in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4199"
+        },
+        "run": "npx playwright test tests/e2e/telecom-recovery.spec.js tests/e2e/french-telecom-parity.spec.js tests/e2e/swahili-telecom-parity.spec.js tests/e2e/day11-telecom-energy-workflows.spec.js --grep-invert \"loads every Day 11 canonical route|executes every canonical owner\" --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "2698dce71d23fa54cd701906008b0859f3ccfc38938dfc0a7c13b15f1a2bf6a5"
+    },
+    {
+      "id": "browser-12",
+      "originalIndex": 20,
+      "group": 2,
+      "step": {
+        "name": "Verify guest copy recovery and Business Planner PDF exports",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4197"
+        },
+        "run": "npx playwright test tests/e2e/guest-copy-recovery.spec.js tests/e2e/business-guest-pdf-recovery.spec.js --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "9b436c31a419352673fa4ef0d5d98a84dca8dc37dc4b7809ca498fb27eaafda8"
+    },
+    {
+      "id": "browser-13",
+      "originalIndex": 21,
+      "group": 1,
+      "step": {
+        "name": "Verify localized enquiry and business actions in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4183"
+        },
+        "run": "npx playwright test tests/e2e/localized-enquiry-context.spec.js tests/e2e/business-cta-locales.spec.js tests/e2e/hausa-naira-words-parity.spec.js --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "c1830b31e275797106a09b256cc259fe0615f3a6b0dfe9c15ff61c0b963bed34"
+    },
+    {
+      "id": "browser-14",
+      "originalIndex": 22,
+      "group": 1,
+      "step": {
+        "name": "Verify Swahili community-credit AI lifecycle in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4251"
+        },
+        "run": "npx playwright test tests/e2e/sw-fintech-community-credit.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "ebfa45b4e4bd947be30dde3b5ca1e8ab10dc10e642798398314b1ef438ca642a"
+    },
+    {
+      "id": "browser-15",
+      "originalIndex": 23,
+      "group": 2,
+      "step": {
+        "name": "Verify Swahili fuel theme and workflow in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_SW_UNIQUELY_AFRICAN_EVIDENCE_PATH": "${{ runner.temp }}/sw-fuel-browser-evidence.json",
+          "PORT": "4253",
+          "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:4253"
+        },
+        "run": "npx playwright test tests/e2e/sw-uniquely-african-parity.spec.js --grep 'fuel-cost:' --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "e2094f25af913954e2f44d6c7c1687a822df11e7c046128d497b410a00e78544"
+    },
+    {
+      "id": "browser-16",
+      "originalIndex": 24,
+      "group": 2,
+      "step": {
+        "name": "Verify undecided consent controls at increased zoom",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "PORT": "4184"
+        },
+        "run": "npx playwright test tests/e2e/analytics-consent-zoom.spec.js --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "8e6d74b2bf1d582d29d0a7e95a0c101ed01033b60cc0d0508f50a3404a333689"
+    },
+    {
+      "id": "browser-17",
+      "originalIndex": 25,
+      "group": 1,
+      "step": {
+        "name": "Verify currency consent and original export guards with analytics enabled",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "0",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4396"
+        },
+        "run": "npx playwright test tests/e2e/currency-analytics-consent.spec.js tests/e2e/currency-observation-exports.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "056a558fa215f091b4f0dc903bddd254975afdc7c3a763091952f52e197fdbb2"
+    },
+    {
+      "id": "browser-18",
+      "originalIndex": 26,
+      "group": 1,
+      "step": {
+        "name": "Verify shared saved-work recovery with optimized scripts",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4185"
+        },
+        "run": "npx playwright test tests/e2e/east-africa-paye-restore-recovery.spec.js tests/e2e/ghana-paye-private-ai-boundary.spec.js tests/e2e/ghana-paye-private-sharing.spec.js tests/e2e/ghana-paye-restore-recovery.spec.js tests/e2e/kenya-paye-restore-recovery.spec.js tests/e2e/nigeria-paye-restore-recovery.spec.js tests/e2e/nigeria-paye-saved-settings.spec.js tests/e2e/paye-legacy-storage-recovery.spec.js tests/e2e/paye-sync-real-routes.spec.js tests/e2e/paye-sync-storage-contract.spec.js tests/e2e/pdf-workspace-history-recovery.spec.js tests/e2e/pdf-workspace-history-startup.spec.js tests/e2e/shared-save-state-consumers.spec.js tests/e2e/shared-save-state-documents.spec.js tests/e2e/shared-save-state-freelance.spec.js tests/e2e/shared-save-state-invoice.spec.js tests/e2e/shared-save-state-landing-locales.spec.js tests/e2e/south-africa-paye-restore-recovery.spec.js tests/e2e/sw-paye-storage-recovery.spec.js --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "55c521f96b926916f5eb5efa03e1673aadb616b5c631a507e961a360db10d75a"
+    },
+    {
+      "id": "browser-19",
+      "originalIndex": 27,
+      "group": 1,
+      "step": {
+        "name": "Verify CV document imports, privacy and keyboard behavior in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4262"
+        },
+        "run": "npx playwright test tests/e2e/cv-import-analytics-privacy.spec.js tests/e2e/cv-import-keyboard-completion.spec.js tests/e2e/cv-pdf-import.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "f8f27984d3d6d82a69b9e2c2d347fa6056b4e7274bb17c6c56f0dcef0a32555c"
+    },
+    {
+      "id": "browser-20",
+      "originalIndex": 28,
+      "group": 2,
+      "step": {
+        "name": "Verify native CV DOCX roundtrips and consent controls in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "PORT": "4263"
+        },
+        "run": "npx playwright test tests/e2e/cv-docx-import-roundtrip.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "4f6f1777c115f8e541230e38efa397501606a141dfe9639314b4f281c78372f5"
+    },
+    {
+      "id": "browser-21",
+      "originalIndex": 29,
+      "group": 2,
+      "step": {
+        "name": "Verify French canonical calculator routes in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4188"
+        },
+        "run": "npx playwright test tests/e2e/french-canonical-routes.spec.js --project=chromium --workers=2 --trace=off"
+      },
+      "stepSha256": "7083da127a27847ec067f086b7e832065cdf3e8309fd19f0927ed67643cc95cf"
+    },
+    {
+      "id": "browser-22",
+      "originalIndex": 30,
+      "group": 2,
+      "step": {
+        "name": "Verify CV workspace rewriting and modal accessibility in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4264"
+        },
+        "run": "npx playwright test tests/e2e/cv-workspace-improvement.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "7ae443d6040bd8bc3a4a82f2f8840eed361a1eeabde6c63aaf82473a2fce2451"
+    },
+    {
+      "id": "browser-23",
+      "originalIndex": 31,
+      "group": 2,
+      "step": {
+        "name": "Verify French Base64 output integrity in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4198"
+        },
+        "run": "npx playwright test tests/e2e/french-base64-output-integrity.spec.js --project=chromium --workers=2 --retries=0 --trace=off\nnpx playwright test tests/e2e/french-developer-native-candidates.spec.js --grep base64 --project=chromium --workers=2 --retries=0 --trace=off\n"
+      },
+      "stepSha256": "2be96c1e05c9a4ecee50e73f65b1f03fea3a4c22af3bb71c7cd160bd372d211b"
+    },
+    {
+      "id": "browser-24",
+      "originalIndex": 32,
+      "group": 1,
+      "step": {
+        "name": "Verify PDF Workspace startup and original guest exports",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_FR_CURRENT_VERIFICATION": "1",
+          "PORT": "4189"
+        },
+        "run": "npx playwright test tests/e2e/pdf-workspace-startup.spec.js --project=chromium --workers=2 --trace=off\nSW_EXPORT_ID=pdf-workspace npx playwright test tests/e2e/swahili-document-pdf-legacy-export-route.spec.js --project=chromium --workers=1 --trace=off\n"
+      },
+      "stepSha256": "709281c5c99298c65c84821eccceb32e0044b51744d92c494fea7b0fef50832d"
+    },
+    {
+      "id": "browser-25",
+      "originalIndex": 33,
+      "group": 2,
+      "step": {
+        "name": "Verify document WASM exports under page and worker CSP",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "AFROTOOLS_FR_CURRENT_VERIFICATION": "1",
+          "PORT": "4186"
+        },
+        "run": "npx playwright test tests/e2e/document-wasm-policy.spec.js --project=chromium --workers=2 --trace=off\nfor route in pdf-convert pdf-workflow pdf-ocr; do\n  SW_EXPORT_ID=\"$route\" npx playwright test tests/e2e/swahili-document-pdf-legacy-export-route.spec.js --project=chromium --workers=1 --trace=off\ndone\n"
+      },
+      "stepSha256": "97321583f7fcc3127beabcf815b88e6388108ca54506994e18d35e5c2f8718b0"
+    },
+    {
+      "id": "browser-26",
+      "originalIndex": 34,
+      "group": 2,
+      "step": {
+        "name": "Verify French customs print and copy in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4192"
+        },
+        "run": "npx playwright test tests/e2e/fr-customs-print-copy.spec.js tests/e2e/fr-trade-utility-workflows.spec.js tests/e2e/fr-trade-established-engine.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "75f1d8cc6ba95e9deedbe02b225f8639f481279b1783c6883eb1d848a667a652"
+    },
+    {
+      "id": "browser-27",
+      "originalIndex": 35,
+      "group": 1,
+      "step": {
+        "name": "Verify security input recovery and private export boundaries",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4539"
+        },
+        "run": "npx playwright test tests/e2e/security-runtime-recovery.spec.js tests/e2e/security-frozen-followup.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "e855f52e6d81d5f03a145d0c744db47924ba0ffa8a769dd1204b4f9594d320d9"
+    },
+    {
+      "id": "browser-28",
+      "originalIndex": 36,
+      "group": 2,
+      "step": {
+        "name": "Verify CV repairs and FX observation exports in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4196"
+        },
+        "run": "npx playwright test tests/e2e/cv-root-repairs.spec.js tests/e2e/currency-observation-exports.spec.js tests/e2e/day3-finance-currency-converter-vip.spec.js tests/e2e/day3-finance-currency-converter-locales-vip.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "22da79647a292913dd43c3645e292bcbfcc280d41562fa25dbb4ce8ef348ab07"
+    },
+    {
+      "id": "browser-29",
+      "originalIndex": 37,
+      "group": 1,
+      "step": {
+        "name": "Verify fraction export recovery in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4198"
+        },
+        "run": "npx playwright test tests/e2e/fraction-calc-vip.spec.js tests/e2e/fraction-export-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "f2970700a771dbe5a373c1754ef2da7ebd96eafc5a62926f116485a2086725a6"
+    },
+    {
+      "id": "browser-30",
+      "originalIndex": 38,
+      "group": 2,
+      "step": {
+        "name": "Verify native health reports and result invalidation in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4199"
+        },
+        "run": "npx playwright test tests/e2e/health-export-current-recovery.spec.js tests/e2e/health-export-followon.spec.js tests/e2e/health-quote-reports.spec.js tests/e2e/health-date-range-report-recovery.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "6bbed54f0cdb6bd549aad70553731b2067e80f165d1d655831a0ef2b5c0918ff"
+    },
+    {
+      "id": "browser-31",
+      "originalIndex": 39,
+      "group": 1,
+      "step": {
+        "name": "Verify legal local print bypasses trade email capture",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4204"
+        },
+        "run": "npx playwright test tests/e2e/legal-workflow-local-print.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "7976755359866a318a5fc03e7b334b845fa9451872626b6766ada5d631d2a744"
+    },
+    {
+      "id": "browser-32",
+      "originalIndex": 42,
+      "group": 2,
+      "step": {
+        "name": "Verify creator profile HTML boundaries in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4193"
+        },
+        "run": "npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "cae59c7fc8348b03a35c10e65ca80a795fdc35143000617393baebc1bef952f7"
+    },
+    {
+      "id": "browser-33",
+      "originalIndex": 40,
+      "group": 1,
+      "step": {
+        "name": "Verify JSON and hash utility recovery in the native artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4244"
+        },
+        "run": "node --test tests/developer-json-hash-source-contracts.test.js\nnpx playwright test tests/e2e/developer-json-hash-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n"
+      },
+      "stepSha256": "d1d5505461e7efd842afab165441ee77e534b945b450f7e43a72f0f113447319",
+      "originalYaml": "      - name: Verify JSON and hash utility recovery in the native artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          AFROTOOLS_TEST_SECURITY_HEADERS: '1'\n          PORT: '4244'\n        run: |\n          node --test tests/developer-json-hash-source-contracts.test.js\n          npx playwright test tests/e2e/developer-json-hash-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n\n"
+    },
+    {
+      "id": "browser-34",
+      "originalIndex": 43,
+      "group": 1,
+      "step": {
+        "name": "Verify French business report snapshots and export recovery",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4199"
+        },
+        "run": "npx playwright test tests/e2e/fr-business-roi-parity.spec.js tests/e2e/fr-business-report-recovery.spec.js tests/e2e/localized-productivity-recovery.spec.js tests/e2e/localized-business-pdf-parity.spec.js tests/e2e/sw-business-roi-parity.spec.js tests/e2e/business-roi-english-owner-regression.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "1a2535a55982846c32e2441531f19f3b0ecb6ffdb93daf3541c2ff32ba70c378",
+      "originalYaml": "      - name: Verify French business report snapshots and export recovery\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4199'\n        run: npx playwright test tests/e2e/fr-business-roi-parity.spec.js tests/e2e/fr-business-report-recovery.spec.js tests/e2e/localized-productivity-recovery.spec.js tests/e2e/localized-business-pdf-parity.spec.js tests/e2e/sw-business-roi-parity.spec.js tests/e2e/business-roi-english-owner-regression.spec.js --project=chromium --workers=2 --retries=0 --trace=off\n\n"
+    },
+    {
+      "id": "browser-35",
+      "originalIndex": 44,
+      "group": 1,
+      "step": {
+        "name": "Verify Hausa margin and Yoruba naira native journeys in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "52963"
+        },
+        "run": "npx playwright test tests/e2e/ha-yo-native-journeys.spec.js tests/e2e/yoruba-naira-export.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
+      },
+      "stepSha256": "fe608a1303f1d2358cbeb6839fd6350cd12a58cb26719a94dd111342e2601145",
+      "originalYaml": "      - name: Verify Hausa margin and Yoruba naira native journeys in the optimized artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '52963'\n        run: npx playwright test tests/e2e/ha-yo-native-journeys.spec.js tests/e2e/yoruba-naira-export.spec.js --project=chromium --workers=2 --retries=0 --trace=off\n\n"
+    },
+    {
+      "id": "browser-36",
+      "originalIndex": 45,
+      "group": 1,
+      "step": {
+        "name": "Verify canonical tool result names and private router recovery in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4219"
+        },
+        "run": "npx playwright test tests/e2e/ai-catalog-result-names.spec.js tests/e2e/ai-frontdoor-guardrail-scope.spec.js tests/e2e/ai-command-page.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "d311f3b294b657fd6fb484964e65e7421c3dac48b1c07ac252f4c3f6247bb6f7",
+      "originalYaml": "      - name: Verify canonical tool result names and private router recovery in the artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4219'\n        run: npx playwright test tests/e2e/ai-catalog-result-names.spec.js tests/e2e/ai-frontdoor-guardrail-scope.spec.js tests/e2e/ai-command-page.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n\n"
+    },
+    {
+      "id": "browser-37",
+      "originalIndex": 46,
+      "group": 2,
+      "step": {
+        "name": "Verify localized AfroStream archive provenance in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4296"
+        },
+        "run": "npx playwright test tests/e2e/afrostream-localized-provenance.spec.js --project=chromium --workers=1 --retries=0 --trace=off --output=\"$RUNNER_TEMP/afrostream-provenance-browser\""
+      },
+      "stepSha256": "ea86674ebe908a210c697f2a260c3bcfa094b2baf7402553cfc4fdbabb24bf46",
+      "originalYaml": "      - name: Verify localized AfroStream archive provenance in the artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4296'\n        run: npx playwright test tests/e2e/afrostream-localized-provenance.spec.js --project=chromium --workers=1 --retries=0 --trace=off --output=\"$RUNNER_TEMP/afrostream-provenance-browser\"\n\n"
+    },
+    {
+      "id": "browser-38",
+      "originalIndex": 47,
+      "group": 2,
+      "step": {
+        "name": "Verify Education discovery social metadata and mobile actions in the optimized artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4527"
+        },
+        "run": "npx playwright test tests/e2e/education-discovery-social-wrap-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off"
+      },
+      "stepSha256": "8bc6b303fec744d1eeb535970ba78fcc8a46d598a53f592f69cdbf08b65fe27c",
+      "originalYaml": "      - name: Verify Education discovery social metadata and mobile actions in the optimized artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4527'\n        run: npx playwright test tests/e2e/education-discovery-social-wrap-recovery.spec.js --project=chromium --workers=1 --retries=0 --trace=off\n\n"
+    }
+  ],
+  "consumerSetup": [
+    {
+      "name": "Install dependencies",
+      "run": "npm ci"
+    },
+    {
+      "name": "Install Chromium for optimized artifact checks",
+      "run": "npx playwright install chromium --with-deps"
+    }
+  ],
+  "generatedCheck": {
+    "name": "Verify generated outputs are committed",
+    "run": "git diff --stat\nif [ -n \"$(git diff --name-only)\" ]; then\n  echo \"::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs.\"\n  git diff --name-only\n  exit 1\nfi\n"
+  },
+  "nativeShell": "bash -e {0}",
+  "mutationBoundary": "Entire original French finance step before seal; original generated parity in producer plus post-browser parity in each isolated consumer",
+  "originalWorkflowFile": "tests/fixtures/ci-original/seven-candidate-union-0444626e.yml",
+  "predecessorCommit": "a225e13f202da2f1e578e221bf14d4848c5a6099",
+  "predecessorWorkflowSha256": "860e0c0ab785445e5c91a699c98f726a92117065d9da328fbc398188905afee4"
+}
