@@ -6,13 +6,13 @@ for(const [locale,route] of locales) test(locale+' keeps recorded and derived mo
  await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
  await page.setViewportSize({width:390,height:844});await page.goto(route);
  await page.locator('#country').selectOption('GH');
- await expect(page.locator('#r-monthly')).toHaveText('399.30 GHS');
- await expect(page.locator('#monthly-basis-note')).toContainText('544.50 GHS');
+ await expect(page.locator('#r-monthly')).toHaveText('478.94 GHS');
+ await expect(page.locator('#monthly-basis-note')).toContainText('478.94 GHS');
  await page.locator('#compliance-toggle-btn').click();
- for(const [salary,pass] of [['399.29',false],['399.30',true],['400',true]]){
+ for(const [salary,pass] of [['478.93',false],['478.94',true],['479',true]]){
   await page.locator('#compliance-salary').fill(salary);await page.locator('[onclick="checkCompliance()"]').click();
   await expect(page.locator('#compliance-result')).toHaveClass('mw-compliance-result '+(pass?'pass':'fail'));
-  await expect(page.locator('#cr-detail')).toContainText('399.3');
+  await expect(page.locator('#cr-detail')).toContainText('478.94');
  }
  await page.locator('#country').selectOption('ZA');
  await expect(page.locator('#r-monthly')).toHaveText('5,320.48 ZAR');
@@ -29,7 +29,7 @@ for(const [locale,route] of locales) test(locale+' keeps recorded and derived mo
  const csv=fs.readFileSync(await download.path(),'utf8');
  const rows=csv.split('\r\n').map(row=>row.match(/"(?:[^"]|"")*"/g).map(cell=>cell.slice(1,-1).replace(/""/g,'"')));
  const gh=rows.find(row=>row[1]==='GH'),za=rows.find(row=>row[1]==='ZA');
- expect(gh.slice(2,5)).toEqual(['GHS','544.50','399.30']);expect(za.slice(2,5)).toEqual(['ZAR','5320.00','5320.48']);
+ expect(gh.slice(2,5)).toEqual(['GHS','478.94','478.94']);expect(za.slice(2,5)).toEqual(['ZAR','5320.00','5320.48']);
  expect(za[0]).toBe(locale==='sw'?'Afrika Kusini':'South Africa');
  expect(za[11]).toContain(locale==='sw'?'hayajathibitishwa':'not established');
  expect(za[12]).toContain(locale==='sw'?'usio na tarehe':'undated');

@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Advanced Pomodoro timer with session tracking, daily goals, statistics, and focus time management. Save your progress with AfroData.">
+    <meta name="description" content="Use a Pomodoro timer with work and break sessions, daily goals and local statistics. Progress stays in this browser; no account is required.">
     <meta name="theme-color" content="#ef4444">
     <title>Pomodoro Timer — Focus Sessions, Tracking & Statistics</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="AfroTools">
     <meta property="og:title" content="Pomodoro Timer — Focus Sessions, Tracking & Statistics | AfroTools">
-    <meta property="og:description" content="Advanced Pomodoro timer with session tracking, daily goals, statistics, and focus time management. Save your progress with AfroData.">
+    <meta property="og:description" content="Use a Pomodoro timer with work and break sessions, daily goals and local statistics. Progress stays in this browser; no account is required.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pomodoro.webp">
     <meta property="og:url" content="https://afrotools.com/tools/pomodoro/">
 
@@ -475,7 +475,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pomodoro Timer — Focus Sessions, Tracking & Statistics | AfroTools">
-<meta name="twitter:description" content="Advanced Pomodoro timer with session tracking, daily goals, statistics, and focus time management. Save your progress with AfroData.">
+<meta name="twitter:description" content="Use a Pomodoro timer with work and break sessions, daily goals and local statistics. Progress stays in this browser; no account is required.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pomodoro.webp">
 <script type="application/ld+json">
 {
@@ -553,39 +553,44 @@
             <label for="autoBreak">Auto-start breaks</label>
         </div>
 
+        <div class="pom-controls"><button type="button" class="pom-btn pom-btn-secondary" id="notificationBtn" onclick="toggleNotifications()">Enable notifications</button></div>
+        <p id="notificationStatus" role="status" aria-live="polite"></p>
+        <p id="timerSettingsStatus" role="status" aria-live="polite"></p>
         <div class="pom-settings">
             <div class="pom-setting">
-                <label class="pom-setting-label">Work (minutes)</label>
-                <input aria-label="WorkDuration" type="number" class="pom-setting-input" id="workDuration" value="25" min="15" max="60" onchange="updateSettings()">
+                <label class="pom-setting-label" for="workDuration">Work (minutes)</label>
+                <input type="number" class="pom-setting-input" id="workDuration" value="25" min="15" max="60" onchange="updateSettings()">
             </div>
             <div class="pom-setting">
-                <label class="pom-setting-label">Break (minutes)</label>
-                <input aria-label="BreakDuration" type="number" class="pom-setting-input" id="breakDuration" value="5" min="3" max="15" onchange="updateSettings()">
+                <label class="pom-setting-label" for="breakDuration">Break (minutes)</label>
+                <input type="number" class="pom-setting-input" id="breakDuration" value="5" min="3" max="15" onchange="updateSettings()">
             </div>
             <div class="pom-setting">
-                <label class="pom-setting-label">Long Break (min)</label>
-                <input aria-label="LongDuration" type="number" class="pom-setting-input" id="longDuration" value="15" min="10" max="30" onchange="updateSettings()">
+                <label class="pom-setting-label" for="longDuration">Long break (minutes)</label>
+                <input type="number" class="pom-setting-input" id="longDuration" value="15" min="10" max="30" onchange="updateSettings()">
             </div>
             <div class="pom-setting">
-                <label class="pom-setting-label">Sessions/Long</label>
-                <input aria-label="SessionsUntilLong" type="number" class="pom-setting-input" id="sessionsUntilLong" value="4" min="2" max="6" onchange="updateSettings()">
+                <label class="pom-setting-label" for="sessionsUntilLong">Sessions before long break</label>
+                <input type="number" class="pom-setting-input" id="sessionsUntilLong" value="4" min="2" max="6" onchange="updateSettings()">
             </div>
         </div>
 
         <div class="pom-daily-goal">
-            <div class="pom-goal-label">Daily Goal</div>
+            <label class="pom-goal-label" for="dailyGoal">Daily goal</label>
             <div class="pom-goal-controls">
-                <input aria-label="DailyGoal" type="number" id="dailyGoal" value="8" min="1" max="20" onchange="updateGoal()">
+                <input type="number" id="dailyGoal" value="8" min="1" max="20" onchange="updateGoal()">
                 <span style="color: var(--color-text-muted);">pomodoros/day</span>
             </div>
             <div class="pom-goal-progress">
-                <span id="goalProgress">0 / 8</span>
+                <span id="goalProgress" role="status" aria-live="polite">0 / 8</span>
                 <div class="pom-goal-bar">
                     <div class="pom-goal-fill" id="goalFill"></div>
                 </div>
             </div>
         </div>
 
+        <p id="pomodoroStorageStatus" role="status" aria-live="polite" hidden></p>
+        <div class="pom-controls"><button type="button" class="pom-btn pom-btn-secondary" id="clearStatsBtn" onclick="clearSavedStats()">Reset statistics</button></div>
         <div class="pom-stats-grid">
             <div class="pom-stat-card">
                 <div class="pom-stat-label">Today</div>
@@ -615,10 +620,15 @@
     <script>
         let timeRemaining = 1500;
         let timerInterval = null;
+        let timerDeadline = null;
+        let remainingMilliseconds = 1500000;
+        let autoStartTimer = null;
+        let timerGeneration = 0;
         let isRunning = false;
         let currentSession = 'work';
         let sessionsCompleted = 0;
         let totalFocusTime = 0;
+        let statsStorageBlocked = false;
 
         const config = {
             work: 25 * 60,
@@ -635,46 +645,94 @@
             streak: 0
         };
 
+        function setStatsStatus(message) {
+            const status = document.getElementById('pomodoroStorageStatus');
+            status.textContent = message;
+            status.hidden = !message;
+        }
+
+        function normalizeStats(value) {
+            if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Invalid statistics');
+            function count(value) { if (!Number.isSafeInteger(value) || value < 0) throw new Error('Invalid count'); return value; }
+            function minutes(value) { if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) throw new Error('Invalid minutes'); return value; }
+            function date(value) { if (typeof value !== 'string' || !Number.isFinite(new Date(value).getTime()) || new Date(value).toDateString() !== value) throw new Error('Invalid date'); return value; }
+            function record(value) {
+                if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Invalid day');
+                return { count: count(value.count), minutes: minutes(value.minutes) };
+            }
+            const today = value.today === undefined ? { count: 0, minutes: 0, date: new Date().toDateString() }
+                : Object.assign(record(value.today), { date: date(value.today.date) });
+            const week = Object.create(null);
+            if (value.week !== undefined) {
+                if (!value.week || typeof value.week !== 'object' || Array.isArray(value.week)) throw new Error('Invalid history');
+                Object.keys(value.week).forEach(key => { week[date(key)] = record(value.week[key]); });
+            }
+            return { today, week, allTime: minutes(value.allTime === undefined ? 0 : value.allTime), bestDay: count(value.bestDay === undefined ? 0 : value.bestDay), streak: count(value.streak === undefined ? 0 : value.streak) };
+        }
+
+        function rollStatsDay() {
+            const today = new Date().toDateString();
+            if (stats.today.date !== today) {
+                stats.week[stats.today.date] = { count: stats.today.count, minutes: stats.today.minutes };
+                stats.today = { count: 0, minutes: 0, date: today };
+            }
+        }
+
+        function refreshStatsStreak() {
+            let streak = 0;
+            const d = new Date();
+            for (let i = 0; i < 365; i++) {
+                const key = d.toDateString();
+                const count = i === 0 ? stats.today.count : stats.week[key] && stats.week[key].count;
+                if (count > 0) streak++;
+                else if (i !== 0) break;
+                d.setDate(d.getDate() - 1);
+            }
+            stats.streak = streak;
+        }
+
         function loadStats() {
-            const saved = localStorage.getItem('pomodoroStats');
-            if (saved) {
-                const data = JSON.parse(saved);
-                Object.assign(stats, data);
-                const today = new Date().toDateString();
-                if (stats.today.date !== today) {
-                    stats.today = { count: 0, minutes: 0, date: today };
-                }
+            try {
+                const saved = localStorage.getItem('pomodoroStats');
+                if (saved !== null) Object.assign(stats, normalizeStats(JSON.parse(saved)));
+            } catch (e) {
+                statsStorageBlocked = true;
+                setStatsStatus('Saved statistics could not be loaded. The stored copy has been left unchanged. The timer still works; new statistics stay in this tab until you reset statistics.');
             }
             updateStatsDisplay();
         }
 
         function saveStats() {
-            // Store today's data in weekly history for streak/week calculations
-            const todayKey = new Date().toDateString();
-            stats.week[todayKey] = { count: stats.today.count, minutes: stats.today.minutes };
-
-            // Calculate streak: count consecutive days with at least 1 pomodoro
-            let streak = 0;
-            const d = new Date();
-            // Start from today and go backwards
-            for (let i = 0; i < 365; i++) {
-                const key = d.toDateString();
-                if (stats.week[key] && stats.week[key].count > 0) {
-                    streak++;
-                } else if (i === 0) {
-                    // Allow today to have 0 (hasn't finished yet), skip without breaking
-                } else {
-                    // Past day with 0: streak is broken
-                    break;
-                }
-                d.setDate(d.getDate() - 1);
+            rollStatsDay();
+            stats.week[stats.today.date] = { count: stats.today.count, minutes: stats.today.minutes };
+            refreshStatsStreak();
+            if (statsStorageBlocked) return false;
+            try {
+                localStorage.setItem('pomodoroStats', JSON.stringify(stats));
+                setStatsStatus('');
+                return true;
+            } catch (e) {
+                statsStorageBlocked = true;
+                setStatsStatus('Could not save the latest statistics. The timer still works and your progress remains in this tab. Saved statistics may be older.');
+                return false;
             }
-            stats.streak = streak;
+        }
 
-            localStorage.setItem('pomodoroStats', JSON.stringify(stats));
+        function clearSavedStats() {
+            if (!confirm('Reset all statistics in this browser? This cannot be undone. The current timer will keep running.')) return;
+            try { localStorage.removeItem('pomodoroStats'); }
+            catch (e) { setStatsStatus('Statistics were not reset because browser storage could not be cleared. Your current statistics are unchanged.'); return; }
+            Object.assign(stats, { today: { count: 0, minutes: 0, date: new Date().toDateString() }, week: {}, allTime: 0, bestDay: 0, streak: 0 });
+            statsStorageBlocked = false;
+            totalFocusTime = 0;
+            updateStatsDisplay();
+            setStatsStatus('Statistics reset. The current timer is unchanged. Future completed sessions will be saved in this browser when storage is available.');
         }
 
         function setSessionType(type) {
+            if (!['work', 'break', 'long'].includes(type)) return;
+            cancelAutoStart();
+            timerDeadline = null;
             currentSession = type;
             isRunning = false;
             clearInterval(timerInterval);
@@ -688,6 +746,7 @@
             document.getElementById('sessionTypeLabel').textContent = labels[type];
 
             timeRemaining = config[type];
+            remainingMilliseconds = timeRemaining * 1000;
             updateDisplay();
 
             document.querySelectorAll('.pom-session-btn').forEach(btn => {
@@ -696,40 +755,78 @@
             });
         }
 
+        function cancelAutoStart() {
+            timerGeneration++;
+            if (autoStartTimer !== null) clearTimeout(autoStartTimer);
+            autoStartTimer = null;
+        }
+
+        function scheduleAutoStart() {
+            const generation = timerGeneration;
+            autoStartTimer = setTimeout(() => {
+                autoStartTimer = null;
+                if (generation !== timerGeneration || isRunning || !document.getElementById('autoBreak').checked) return;
+                toggleTimer();
+            }, 1000);
+        }
+
+        function tickTimer() {
+            if (!isRunning || timerDeadline === null) return;
+            remainingMilliseconds = Math.max(0, timerDeadline - Date.now());
+            timeRemaining = Math.ceil(remainingMilliseconds / 1000);
+            updateDisplay();
+            if (remainingMilliseconds === 0) completeSession();
+        }
+
         function toggleTimer() {
+            cancelAutoStart();
             if (isRunning) {
+                tickTimer();
+                cancelAutoStart();
+                if (!isRunning) return;
                 clearInterval(timerInterval);
+                timerDeadline = null;
                 isRunning = false;
                 document.getElementById('startBtn').textContent = 'Resume';
             } else {
-                isRunning = true;
-                document.getElementById('startBtn').textContent = 'Pause';
-                timerInterval = setInterval(() => {
-                    timeRemaining--;
+                if (remainingMilliseconds <= 0) {
+                    timeRemaining = config[currentSession];
+                    remainingMilliseconds = timeRemaining * 1000;
                     updateDisplay();
-                    if (timeRemaining <= 0) {
-                        completeSession();
-                    }
-                }, 1000);
+                }
+                isRunning = true;
+                timerDeadline = Date.now() + remainingMilliseconds;
+                document.getElementById('startBtn').textContent = 'Pause';
+                timerInterval = setInterval(tickTimer, 250);
             }
         }
 
         function resetTimer() {
+            cancelAutoStart();
+            timerDeadline = null;
             clearInterval(timerInterval);
             isRunning = false;
             timeRemaining = config[currentSession === 'long' ? 'long' : (currentSession === 'break' ? 'break' : 'work')];
+            remainingMilliseconds = timeRemaining * 1000;
             updateDisplay();
             document.getElementById('startBtn').textContent = 'Start';
         }
 
         function completeSession() {
+            if (!isRunning) return;
             clearInterval(timerInterval);
             isRunning = false;
+            timerDeadline = null;
+            remainingMilliseconds = 0;
+            timeRemaining = 0;
+            updateDisplay();
+            document.getElementById('startBtn').textContent = 'Start';
             playSound();
             document.title = 'Time for ' + (currentSession === 'work' ? 'a break' : 'work') + '!';
 
             if (currentSession === 'work') {
-                sendNotification('Pomodoro Complete!', 'Time for a break. You\'ve completed ' + (sessionsCompleted + 1) + ' sessions today.');
+                rollStatsDay();
+                sendNotification('Pomodoro Complete!', 'Time for a break. You\'ve completed ' + (stats.today.count + 1) + ' sessions today.');
                 sessionsCompleted++;
                 stats.today.count++;
                 stats.today.minutes += config.work / 60;
@@ -745,13 +842,13 @@
                     } else {
                         setSessionType('break');
                     }
-                    setTimeout(() => toggleTimer(), 1000);
+                    scheduleAutoStart();
                 }
             } else {
                 sendNotification('Break Over!', 'Time to get back to work. Focus session starting.');
                 if (document.getElementById('autoBreak').checked) {
                     setSessionType('work');
-                    setTimeout(() => toggleTimer(), 1000);
+                    scheduleAutoStart();
                 }
             }
         }
@@ -768,28 +865,56 @@
             document.getElementById('progressRing').style.strokeDashoffset = circumference * (1 - percent);
         }
 
+        function validSetting(id) {
+            const input = document.getElementById(id), value = Number(input.value);
+            const valid = input.value.trim() !== '' && Number.isInteger(value) && value >= Number(input.min) && value <= Number(input.max);
+            if (valid) input.removeAttribute('aria-invalid');
+            else input.setAttribute('aria-invalid', 'true');
+            return valid;
+        }
+
         function updateSettings() {
-            const ownerPlan = window.BusinessRoiEngine.pomodoro({
-                focusMinutes: document.getElementById('workDuration').value,
-                shortBreakMinutes: document.getElementById('breakDuration').value,
-                longBreakMinutes: document.getElementById('longDuration').value,
-                sessions: document.getElementById('sessionsUntilLong').value
-            });
+            const valid = ['workDuration','breakDuration','longDuration','sessionsUntilLong'].map(validSetting).every(Boolean);
+            const status = document.getElementById('timerSettingsStatus');
+            if (!valid) {
+                status.textContent = 'Use whole numbers: work 15–60 minutes, break 3–15 minutes, long break 10–30 minutes, and 2–6 sessions. Previous timer settings are unchanged.';
+                return;
+            }
+            let ownerPlan;
+            try {
+                ownerPlan = window.BusinessRoiEngine.pomodoro({
+                    focusMinutes: document.getElementById('workDuration').value,
+                    shortBreakMinutes: document.getElementById('breakDuration').value,
+                    longBreakMinutes: document.getElementById('longDuration').value,
+                    sessions: document.getElementById('sessionsUntilLong').value
+                });
+            } catch (e) { status.textContent = 'Timer settings could not be applied. Previous settings are unchanged.'; return; }
             config.work = ownerPlan.focusSeconds;
             config.break = ownerPlan.shortBreakSeconds;
             config.long = ownerPlan.longBreakSeconds;
             config.sessionsUntilLong = ownerPlan.sessions;
+            document.querySelector('.pom-session-btn.work').textContent = 'Work (' + config.work / 60 + 'm)';
+            document.querySelector('.pom-session-btn.break').textContent = 'Break (' + config.break / 60 + 'm)';
+            document.querySelector('.pom-session-btn.long').textContent = 'Long (' + config.long / 60 + 'm)';
             resetTimer();
+            status.textContent = 'Timer settings applied. The current session has been reset.';
         }
 
         function updateGoal() {
-            const goal = parseInt(document.getElementById('dailyGoal').value);
+            if (!validSetting('dailyGoal')) {
+                document.getElementById('goalFill').style.width = '0%';
+                document.getElementById('goalProgress').textContent = 'Enter a whole-number daily goal from 1 to 20.';
+                return;
+            }
+            const goal = Number(document.getElementById('dailyGoal').value);
             const percent = Math.min(100, (stats.today.count / goal) * 100);
             document.getElementById('goalFill').style.width = percent + '%';
             document.getElementById('goalProgress').textContent = stats.today.count + ' / ' + goal;
         }
 
         function updateStatsDisplay() {
+            rollStatsDay();
+            refreshStatsStreak();
             document.getElementById('todayCount').textContent = stats.today.count;
             document.getElementById('todayTime').textContent = Math.round(stats.today.minutes) + ' min focused';
 
@@ -832,24 +957,53 @@
             } catch (e) {}
         }
 
-        // Browser notifications
+        // Notifications are enabled only through the dedicated control.
+        let notificationsEnabled = false;
+        function notificationStatus(message) { document.getElementById('notificationStatus').textContent = message; }
+        async function toggleNotifications() {
+            const button = document.getElementById('notificationBtn');
+            if (button.disabled) return;
+            if (notificationsEnabled) {
+                notificationsEnabled = false;
+                button.textContent = 'Enable notifications';
+                notificationStatus('Notifications are off for this tab.');
+                return;
+            }
+            if (!window.Notification || typeof window.Notification.requestPermission !== 'function') {
+                notificationStatus('Browser notifications are unavailable. The timer remains available.');
+                return;
+            }
+            button.disabled = true;
+            try {
+                const permission = window.Notification.permission === 'default'
+                    ? await window.Notification.requestPermission() : window.Notification.permission;
+                notificationsEnabled = permission === 'granted';
+                button.textContent = notificationsEnabled ? 'Disable notifications' : 'Enable notifications';
+                notificationStatus(notificationsEnabled ? 'Notifications enabled for this tab.'
+                    : permission === 'denied' ? 'Notifications are blocked in browser settings. The timer remains available.' : 'Notifications were not enabled. The timer remains available.');
+            } catch (e) {
+                notificationsEnabled = false;
+                notificationStatus('Notifications could not be enabled. The timer remains available.');
+            } finally { button.disabled = false; }
+        }
+
         function sendNotification(title, body) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification(title, { body: body, icon: '/assets/img/logo-mark.svg' });
+            if (!notificationsEnabled) return;
+            try {
+                if (!window.Notification || window.Notification.permission !== 'granted') throw new Error('Notifications unavailable');
+                new window.Notification(title, { body: body, icon: '/assets/img/logo-mark.svg' });
+            } catch (e) {
+                notificationsEnabled = false;
+                document.getElementById('notificationBtn').textContent = 'Enable notifications';
+                notificationStatus('A notification could not be shown. The timer continues.');
             }
         }
 
-        // Request notification permission on first interaction
-        document.addEventListener('click', function requestNotifPerm() {
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-            document.removeEventListener('click', requestNotifPerm);
-        }, { once: true });
-
-        // Keyboard shortcuts
+        // Leave native input, button, link and browser shortcuts unchanged.
         document.addEventListener('keydown', function(e) {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.defaultPrevented || e.repeat || e.isComposing || e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return;
+            const target = e.target;
+            if (target && (target.isContentEditable || (target.closest && target.closest('input,textarea,select,button,a,[role="button"],[role="textbox"],[contenteditable="true"]')))) return;
             if (e.code === 'Space') { e.preventDefault(); toggleTimer(); }
             if (e.code === 'KeyR') { resetTimer(); }
             if (e.code === 'Digit1') { setSessionType('work'); }
@@ -857,6 +1011,10 @@
             if (e.code === 'Digit3') { setSessionType('long'); }
         });
 
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) tickTimer();
+        });
+        window.addEventListener('focus', tickTimer);
         loadStats();
         updateDisplay();
     </script>

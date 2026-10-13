@@ -359,6 +359,7 @@
             <input type="number" id="ac-requested" placeholder="e.g. 10" min="0" max="60" oninput="acCalc()">
           </div>
         </div>
+        <p id="ac-validation" role="status" aria-live="polite"></p>
         <div id="ac-result" style="display:none"></div>
       </div>
     </div>
@@ -561,7 +562,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — Local Fuel Price Finder" data-category="financial" data-icon="AL" data-desc="Use browser-local nearest-market matching or manual selection to inspect a dated petrol, gasoline or diesel reference, c">AfroFuel — Local Fuel Price Finder</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro Plans" data-category="financial" data-icon="AP" data-desc="Compare subscription plans, active Pro apps and limited previews. Review app storage and capability limits before subscr">AfroTools Pro Plans</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — Local Fuel Price Finder" data-category="financial" data-icon="AL" data-desc="Use browser-local nearest-market matching or manual selection to inspect a dated petrol, gasoline or diesel reference, c">AfroFuel — Local Fuel Price Finder</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -775,11 +776,19 @@ function acCalc() {
   var startVal = document.getElementById('ac-start').value;
   var todayVal = document.getElementById('ac-today').value;
   var entitlement = parseFloat(document.getElementById('ac-entitlement').value);
-  var requested = parseFloat(document.getElementById('ac-requested').value) || 0;
+  var requestedValue = document.getElementById('ac-requested').value.trim();
+  var requested = requestedValue === '' ? 0 : Number(requestedValue);
   var el = document.getElementById('ac-result');
-  if (!startVal || !todayVal || !entitlement) { el.style.display = 'none'; return; }
-  var start = new Date(startVal), today = new Date(todayVal);
-  if (today < start) { el.style.display = 'none'; return; }
+  var validation = document.getElementById('ac-validation');
+  el.replaceChildren();
+  el.style.display = 'none';
+  validation.textContent = '';
+  if (!startVal || !todayVal || document.getElementById('ac-entitlement').value === '') return;
+  var start = new Date(startVal + 'T00:00:00Z'), today = new Date(todayVal + 'T00:00:00Z');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(startVal) || !/^\d{4}-\d{2}-\d{2}$/.test(todayVal) || !Number.isFinite(start.getTime()) || !Number.isFinite(today.getTime()) || start.toISOString().slice(0,10) !== startVal || today.toISOString().slice(0,10) !== todayVal) { validation.textContent = 'Enter valid employment and calculation dates.'; return; }
+  if (today < start) { validation.textContent = 'Calculation date must be on or after employment start.'; return; }
+  if (!Number.isFinite(entitlement) || entitlement < 1 || entitlement > 60) { validation.textContent = 'Annual entitlement must be between 1 and 60 days.'; return; }
+  if (!Number.isFinite(requested) || requested < 0 || requested > 60) { validation.textContent = 'Requested leave must be between 0 and 60 days, or left blank.'; return; }
   // Find leave year start (anniversary before today)
   var lys = new Date(start);
   while (new Date(Date.UTC(lys.getUTCFullYear()+1, lys.getUTCMonth(), lys.getUTCDate())) <= today) {
