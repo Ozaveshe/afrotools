@@ -1,5 +1,6 @@
 'use strict';
 const test = require('node:test');
+const methodPolicy = require('../engines/src/afrokitchen-engine');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -52,6 +53,16 @@ for (const artwork of ledger.images) {
   test(`${artwork.slug}: recipe and card use responsive artwork with honest labels`, () => {
     const recipe = manifest.recipes.find(row => row.slug === artwork.slug);
     const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
+    if (methodPolicy.isMethodHeld(recipe)) {
+      assert.equal(recipe.is_verified, false);
+      assert.ok(html.includes(methodPolicy.METHOD_HOLD_NOTICE));
+      assert.ok(!html.includes(artwork.target));
+      assert.ok(!html.includes('__AK_STATIC_RECIPE'));
+      const heldCard = renderStaticRecipeCard(recipe, recipeImages);
+      assert.ok(heldCard.includes('Method under review'));
+      assert.ok(!/<img|timer_seconds|srcset=/.test(heldCard));
+      return;
+    }
     assert.ok(html.includes(artwork.alt));
     assert.ok(html.includes('AI-generated illustration'));
     assert.ok(html.includes(`content="https://afrotools.com${artwork.target}"`));

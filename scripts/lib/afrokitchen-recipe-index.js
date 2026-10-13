@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const methodPolicy = require('../../engines/src/afrokitchen-engine');
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const MANIFEST_PATH = path.join(ROOT, "tools", "afrokitchen", "seo-manifest.json");
@@ -15,6 +16,7 @@ const RECIPE_FIELDS = [
 
 function buildRecipeIndex(manifest) {
   const recipes = (manifest.recipes || [])
+    .filter((recipe) => !methodPolicy.isMethodHeld(recipe))
     .filter((recipe) => recipe.generated_in_wave && recipe.is_verified)
     .map((recipe) => ({
       ...Object.fromEntries(RECIPE_FIELDS.map((field) => [field, recipe[field] == null ? null : recipe[field]])),

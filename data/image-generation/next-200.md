@@ -1718,18 +1718,7 @@ Create a second editorial food photograph of Ibiharage from Burundi, using the e
 
 Create a second editorial food photograph of Igisafuliya from Rwanda, using the existing hero /assets/img/kitchen/igisafuria.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Rwandan igisafuliya, a one-pot stew of chicken or beef, green plantains, potatoes, tomatoes, carrots, and green beans.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 157. Ikivuguto — serving detail
-
-- Destination: `/assets/img/kitchen/ikivuguto-bi-2.webp`
-- Route: /tools/afrokitchen/recipes/ikivuguto-bi/
-- Dimensions: 1200x800
-- Priority: 50
-- Alt text (English): Serving detail of Ikivuguto
-- Reason: Local hero exists, but the serving-detail slot -2 is absent in every extension.
-
-Create a second editorial food photograph of Ikivuguto from Burundi, using the existing hero /assets/img/kitchen/ikivuguto-bi.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Ikivuguto is a drink with milk, live yogurt starter. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
-
-## 158. Incwancwa — serving detail
+## 157. Incwancwa — serving detail
 
 - Destination: `/assets/img/kitchen/incwancwa-sz-2.webp`
 - Route: /tools/afrokitchen/recipes/incwancwa-sz/
@@ -1740,7 +1729,7 @@ Create a second editorial food photograph of Ikivuguto from Burundi, using the e
 
 Create a second editorial food photograph of Incwancwa from Eswatini, using the existing hero /assets/img/kitchen/incwancwa-sz.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: A tangy Swazi fermented maize porridge, served softly spoonable or thinned into a refreshing sour drink.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 159. Injera — serving detail
+## 158. Injera — serving detail
 
 - Destination: `/assets/img/kitchen/injera-2.webp`
 - Route: /tools/afrokitchen/recipes/injera/
@@ -1751,7 +1740,7 @@ Create a second editorial food photograph of Incwancwa from Eswatini, using the 
 
 Create a second editorial food photograph of Injera from Ethiopia, using the existing hero /assets/img/kitchen/injera.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: A tangy Ethiopian teff flatbread fermented for two to three days, finished with absit, and cooked on one side until full of eyes.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 160. Isombe — serving detail
+## 159. Isombe — serving detail
 
 - Destination: `/assets/img/kitchen/isombe-2.webp`
 - Route: /tools/afrokitchen/recipes/isombe/
@@ -1762,7 +1751,7 @@ Create a second editorial food photograph of Injera from Ethiopia, using the exi
 
 Create a second editorial food photograph of Isombe from Rwanda, using the existing hero /assets/img/kitchen/isombe.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Rwandan isombe, pounded cassava leaves simmered with peanut butter, palm oil, eggplant, spinach, onion, garlic, and pepper.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 161. Isombe with Peanut — serving detail
+## 160. Isombe with Peanut — serving detail
 
 - Destination: `/assets/img/kitchen/isombe-peanut-bi-2.webp`
 - Route: /tools/afrokitchen/recipes/isombe-peanut-bi/
@@ -1773,7 +1762,7 @@ Create a second editorial food photograph of Isombe from Rwanda, using the exist
 
 Create a second editorial food photograph of Isombe with Peanut from Burundi, using the existing hero /assets/img/kitchen/isombe-peanut-bi.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Isombe with Peanut is a stew with Peanut is a stew. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 162. Jagacida — serving detail
+## 161. Jagacida — serving detail
 
 - Destination: `/assets/img/kitchen/jagacida-cv-2.webp`
 - Route: /tools/afrokitchen/recipes/jagacida-cv/
@@ -1784,7 +1773,7 @@ Create a second editorial food photograph of Isombe with Peanut from Burundi, us
 
 Create a second editorial food photograph of Jagacida from Cape Verde, using the existing hero /assets/img/kitchen/jagacida-cv.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Cape Verdean beans and rice cooked with onion, garlic, bay, and linguiça-style sausage or kept vegetarian.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 163. Jarret de Boeuf — serving detail
+## 162. Jarret de Boeuf — serving detail
 
 - Destination: `/assets/img/kitchen/jarret-boeuf-td-2.webp`
 - Route: /tools/afrokitchen/recipes/jarret-boeuf-td/
@@ -1795,7 +1784,7 @@ Create a second editorial food photograph of Jagacida from Cape Verde, using the
 
 Create a second editorial food photograph of Jarret de Boeuf from Chad, using the existing hero /assets/img/kitchen/jarret-boeuf-td.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Jarret de Boeuf is a main dish with beef shank, tomato and garlic. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 164. Jollof Rice Equatoguineano — serving detail
+## 163. Jollof Rice Equatoguineano — serving detail
 
 - Destination: `/assets/img/kitchen/jollof-rice-gq-2.webp`
 - Route: /tools/afrokitchen/recipes/jollof-rice-gq/
@@ -1806,7 +1795,7 @@ Create a second editorial food photograph of Jarret de Boeuf from Chad, using th
 
 Create a second editorial food photograph of Jollof Rice Equatoguineano from Equatorial Guinea, using the existing hero /assets/img/kitchen/jollof-rice-gq.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: A smoky Equatoguinean-style tomato rice cooked with peppers, palm oil, bay leaf, and a gentle Spanish paprika accent.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 165. Liberian Jollof Rice — serving detail
+## 164. Liberian Jollof Rice — serving detail
 
 - Destination: `/assets/img/kitchen/jollof-rice-lr-2.webp`
 - Route: /tools/afrokitchen/recipes/jollof-rice-lr/
@@ -1817,7 +1806,7 @@ Create a second editorial food photograph of Jollof Rice Equatoguineano from Equ
 
 Create a second editorial food photograph of Liberian Jollof Rice from Liberia, using the existing hero /assets/img/kitchen/jollof-rice-lr.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Liberian jollof rice with chicken, smoked turkey, tomato stew, bell pepper, stock, thyme, bay, and mixed vegetables.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 166. Jus de Tamarin — serving detail
+## 165. Jus de Tamarin — serving detail
 
 - Destination: `/assets/img/kitchen/jus-tamarin-km-2.webp`
 - Route: /tools/afrokitchen/recipes/jus-tamarin-km/
@@ -1828,7 +1817,7 @@ Create a second editorial food photograph of Liberian Jollof Rice from Liberia, 
 
 Create a second editorial food photograph of Jus de Tamarin from Comoros, using the existing hero /assets/img/kitchen/jus-tamarin-km.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Jus de Tamarin is a drink with tamarind pulp, ginger and sugar. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 167. Chadian Tamarind Juice — serving detail
+## 166. Chadian Tamarind Juice — serving detail
 
 - Destination: `/assets/img/kitchen/jus-tamarin-td-2.webp`
 - Route: /tools/afrokitchen/recipes/jus-tamarin-td/
@@ -1839,7 +1828,7 @@ Create a second editorial food photograph of Jus de Tamarin from Comoros, using 
 
 Create a second editorial food photograph of Chadian Tamarind Juice from Chad, using the existing hero /assets/img/kitchen/jus-tamarin-td.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Chadian Tamarind Juice is a drink with tamarind pulp, ginger and sugar. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 168. Kanda ti Nyma — serving detail
+## 167. Kanda ti Nyma — serving detail
 
 - Destination: `/assets/img/kitchen/kanda-ti-nyma-cf-2.webp`
 - Route: /tools/afrokitchen/recipes/kanda-ti-nyma-cf/
@@ -1850,7 +1839,7 @@ Create a second editorial food photograph of Chadian Tamarind Juice from Chad, u
 
 Create a second editorial food photograph of Kanda ti Nyma from Central African Republic, using the existing hero /assets/img/kitchen/kanda-ti-nyma-cf.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Savoury beef meatballs simmered in a thick peanut and tomato sauce. A hearty dish from the Central African Republic that is packed with protein and flavour.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 169. Kapana — serving detail
+## 168. Kapana — serving detail
 
 - Destination: `/assets/img/kitchen/kapana-na-2.webp`
 - Route: /tools/afrokitchen/recipes/kapana-na/
@@ -1861,7 +1850,7 @@ Create a second editorial food photograph of Kanda ti Nyma from Central African 
 
 Create a second editorial food photograph of Kapana from Namibia, using the existing hero /assets/img/kitchen/kapana-na.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Namibian kapana, fast-grilled beef strips tossed with kapana spice and served with tomato, onion, chile, vinegar, and oil salsa.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 170. Kapenta — serving detail
+## 169. Kapenta — serving detail
 
 - Destination: `/assets/img/kitchen/kapenta-2.webp`
 - Route: /tools/afrokitchen/recipes/kapenta/
@@ -1872,7 +1861,7 @@ Create a second editorial food photograph of Kapana from Namibia, using the exis
 
 Create a second editorial food photograph of Kapenta from Zambia, using the existing hero /assets/img/kitchen/kapenta.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Zambian kapenta, tiny dried fish rinsed, fried crisp, then cooked with onion, tomato, garlic, green pepper, and chile.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 171. Karkade — serving detail
+## 170. Karkade — serving detail
 
 - Destination: `/assets/img/kitchen/karkade-south-sudan-ss-2.webp`
 - Route: /tools/afrokitchen/recipes/karkade-south-sudan-ss/
@@ -1883,7 +1872,7 @@ Create a second editorial food photograph of Kapenta from Zambia, using the exis
 
 Create a second editorial food photograph of Karkade from South Sudan, using the existing hero /assets/img/kitchen/karkade-south-sudan-ss.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Karkade is a drink with dried hibiscus, ginger and sugar. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 172. Karkanji — serving detail
+## 171. Karkanji — serving detail
 
 - Destination: `/assets/img/kitchen/karkanji-td-2.webp`
 - Route: /tools/afrokitchen/recipes/karkanji-td/
@@ -1894,7 +1883,7 @@ Create a second editorial food photograph of Karkade from South Sudan, using the
 
 Create a second editorial food photograph of Karkanji from Chad, using the existing hero /assets/img/kitchen/karkanji-td.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Chadian hibiscus drink infused with ginger, cloves, mint, lemon, and sugar, served cold.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 173. Kefta Tagine — serving detail
+## 172. Kefta Tagine — serving detail
 
 - Destination: `/assets/img/kitchen/kefta-tagine-ma-2.webp`
 - Route: /tools/afrokitchen/recipes/kefta-tagine-ma/
@@ -1905,7 +1894,7 @@ Create a second editorial food photograph of Karkanji from Chad, using the exist
 
 Create a second editorial food photograph of Kefta Tagine from Morocco, using the existing hero /assets/img/kitchen/kefta-tagine-ma.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Moroccan meatball tagine simmered in spiced tomato sauce and finished with eggs.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 174. Kelewele — serving detail
+## 173. Kelewele — serving detail
 
 - Destination: `/assets/img/kitchen/kelewele-gh-2.webp`
 - Route: /tools/afrokitchen/recipes/kelewele-gh/
@@ -1916,7 +1905,7 @@ Create a second editorial food photograph of Kefta Tagine from Morocco, using th
 
 Create a second editorial food photograph of Kelewele from Ghana, using the existing hero /assets/img/kitchen/kelewele-gh.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Ghanaian ripe plantain cubes marinated with ginger, garlic, chile, cloves, nutmeg, and salt, then fried until caramelized.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 175. Kenyan Pilau — serving detail
+## 174. Kenyan Pilau — serving detail
 
 - Destination: `/assets/img/kitchen/kenyan-pilau-2.webp`
 - Route: /tools/afrokitchen/recipes/kenyan-pilau/
@@ -1927,7 +1916,7 @@ Create a second editorial food photograph of Kelewele from Ghana, using the exis
 
 Create a second editorial food photograph of Kenyan Pilau from Kenya, using the existing hero /assets/img/kitchen/kenyan-pilau.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Kenyan beef pilau with browned onions, garlic, ginger, whole spices, pilau masala, and rice steamed in rich stock.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 176. Kik Alicha — serving detail
+## 175. Kik Alicha — serving detail
 
 - Destination: `/assets/img/kitchen/kik-alicha-et-2.webp`
 - Route: /tools/afrokitchen/recipes/kik-alicha-et/
@@ -1938,7 +1927,7 @@ Create a second editorial food photograph of Kenyan Pilau from Kenya, using the 
 
 Create a second editorial food photograph of Kik Alicha from Ethiopia, using the existing hero /assets/img/kitchen/kik-alicha-et.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Mild Ethiopian yellow split pea stew with turmeric, onion, garlic, ginger, and a soft buttery texture.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 177. Kilishi — serving detail
+## 176. Kilishi — serving detail
 
 - Destination: `/assets/img/kitchen/kilishi-ne-2.webp`
 - Route: /tools/afrokitchen/recipes/kilishi-ne/
@@ -1949,7 +1938,7 @@ Create a second editorial food photograph of Kik Alicha from Ethiopia, using the
 
 Create a second editorial food photograph of Kilishi from Niger, using the existing hero /assets/img/kitchen/kilishi-ne.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Nigerien-Hausa kilishi, paper-thin lean beef dried, coated in spicy groundnut labu paste, dried again, and roasted crisp.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 178. Kisra with Mulah — serving detail
+## 177. Kisra with Mulah — serving detail
 
 - Destination: `/assets/img/kitchen/kisra-mulah-2.webp`
 - Route: /tools/afrokitchen/recipes/kisra-mulah/
@@ -1960,7 +1949,7 @@ Create a second editorial food photograph of Kilishi from Niger, using the exist
 
 Create a second editorial food photograph of Kisra with Mulah from South Sudan, using the existing hero /assets/img/kitchen/kisra-mulah.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: South Sudanese kisra with mulah, fermented sorghum flatbread served with a rich okra and meat stew.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 179. Kisra with Mullah Tagalia — serving detail
+## 178. Kisra with Mullah Tagalia — serving detail
 
 - Destination: `/assets/img/kitchen/kisra-mullah-sd-2.webp`
 - Route: /tools/afrokitchen/recipes/kisra-mullah-sd/
@@ -1971,7 +1960,7 @@ Create a second editorial food photograph of Kisra with Mulah from South Sudan, 
 
 Create a second editorial food photograph of Kisra with Mullah Tagalia from Sudan, using the existing hero /assets/img/kitchen/kisra-mullah-sd.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Sudanese kisra with mullah tagalia, fermented sorghum crepes served with thick onion, tomato, meat, coriander, and red pepper sauce.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 180. Kisser — serving detail
+## 179. Kisser — serving detail
 
 - Destination: `/assets/img/kitchen/kisser-td-2.webp`
 - Route: /tools/afrokitchen/recipes/kisser-td/
@@ -1982,7 +1971,7 @@ Create a second editorial food photograph of Kisra with Mullah Tagalia from Suda
 
 Create a second editorial food photograph of Kisser from Chad, using the existing hero /assets/img/kitchen/kisser-td.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Kisser is a bread with sorghum flour, fermented batter. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 181. Kitfo — serving detail
+## 180. Kitfo — serving detail
 
 - Destination: `/assets/img/kitchen/kitfo-2.webp`
 - Route: /tools/afrokitchen/recipes/kitfo/
@@ -1993,7 +1982,7 @@ Create a second editorial food photograph of Kisser from Chad, using the existin
 
 Create a second editorial food photograph of Kitfo from Ethiopia, using the existing hero /assets/img/kitchen/kitfo.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Finely minced Ethiopian beef seasoned with warm niter kibbeh and mitmita, served tere, leb leb, or fully cooked with ayib and gomen.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 182. Kizaka — serving detail
+## 181. Kizaka — serving detail
 
 - Destination: `/assets/img/kitchen/kizaka-ao-2.webp`
 - Route: /tools/afrokitchen/recipes/kizaka-ao/
@@ -2004,7 +1993,7 @@ Create a second editorial food photograph of Kitfo from Ethiopia, using the exis
 
 Create a second editorial food photograph of Kizaka from Angola, using the existing hero /assets/img/kitchen/kizaka-ao.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Angolan cassava leaf stew cooked with peanut, onion, garlic, tomato, and palm oil until silky.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 183. Koeksisters — serving detail
+## 182. Koeksisters — serving detail
 
 - Destination: `/assets/img/kitchen/koeksisters-za-2.webp`
 - Route: /tools/afrokitchen/recipes/koeksisters-za/
@@ -2015,7 +2004,7 @@ Create a second editorial food photograph of Kizaka from Angola, using the exist
 
 Create a second editorial food photograph of Koeksisters from South Africa, using the existing hero /assets/img/kitchen/koeksisters-za.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: South African braided doughnuts fried until crisp and dipped hot into ice-cold spiced syrup.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 184. Koko Cassava Leaves — serving detail
+## 183. Koko Cassava Leaves — serving detail
 
 - Destination: `/assets/img/kitchen/koko-cassava-leaves-cf-2.webp`
 - Route: /tools/afrokitchen/recipes/koko-cassava-leaves-cf/
@@ -2026,7 +2015,7 @@ Create a second editorial food photograph of Koeksisters from South Africa, usin
 
 Create a second editorial food photograph of Koko Cassava Leaves from Central African Republic, using the existing hero /assets/img/kitchen/koko-cassava-leaves-cf.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Koko Cassava Leaves is a stew with cassava leaves, smoked fish and peanut. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 185. Kondowole — serving detail
+## 184. Kondowole — serving detail
 
 - Destination: `/assets/img/kitchen/kondowole-2.webp`
 - Route: /tools/afrokitchen/recipes/kondowole/
@@ -2037,7 +2026,7 @@ Create a second editorial food photograph of Koko Cassava Leaves from Central Af
 
 Create a second editorial food photograph of Kondowole from Malawi, using the existing hero /assets/img/kitchen/kondowole.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Northern Malawian cassava-flour staple cooked into a sticky, elastic mound and served with fish or vegetable relish.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 186. Konkoe — serving detail
+## 185. Konkoe — serving detail
 
 - Destination: `/assets/img/kitchen/konkoe-gn-2.webp`
 - Route: /tools/afrokitchen/recipes/konkoe-gn/
@@ -2048,7 +2037,7 @@ Create a second editorial food photograph of Kondowole from Malawi, using the ex
 
 Create a second editorial food photograph of Konkoe from Guinea, using the existing hero /assets/img/kitchen/konkoe-gn.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Konkoe is a seafood with smoked fish, tomato and chili. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 187. Kontomire Stew — serving detail
+## 186. Kontomire Stew — serving detail
 
 - Destination: `/assets/img/kitchen/kontomire-stew-gh-2.webp`
 - Route: /tools/afrokitchen/recipes/kontomire-stew-gh/
@@ -2059,7 +2048,7 @@ Create a second editorial food photograph of Konkoe from Guinea, using the exist
 
 Create a second editorial food photograph of Kontomire Stew from Ghana, using the existing hero /assets/img/kitchen/kontomire-stew-gh.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Ghanaian cocoyam leaf stew with palm oil, egusi, smoked fish, tomatoes, onion, chile, and tender greens.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 188. Kopto — serving detail
+## 187. Kopto — serving detail
 
 - Destination: `/assets/img/kitchen/kopto-ne-2.webp`
 - Route: /tools/afrokitchen/recipes/kopto-ne/
@@ -2070,7 +2059,7 @@ Create a second editorial food photograph of Kontomire Stew from Ghana, using th
 
 Create a second editorial food photograph of Kopto from Niger, using the existing hero /assets/img/kitchen/kopto-ne.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Nigerien moringa leaf salad-sauce mixed with peanut paste, soumbala, onion, chile, and sometimes gari.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 189. Kwacoco Bible — serving detail
+## 188. Kwacoco Bible — serving detail
 
 - Destination: `/assets/img/kitchen/kwacoco-bible-cm-2.webp`
 - Route: /tools/afrokitchen/recipes/kwacoco-bible-cm/
@@ -2081,7 +2070,7 @@ Create a second editorial food photograph of Kopto from Niger, using the existin
 
 Create a second editorial food photograph of Kwacoco Bible from Cameroon, using the existing hero /assets/img/kitchen/kwacoco-bible-cm.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Cameroonian grated cocoyam steamed with greens, smoked fish, palm oil, and spices in leaf packets.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 190. La Bouillie — serving detail
+## 189. La Bouillie — serving detail
 
 - Destination: `/assets/img/kitchen/la-bouillie-td-2.webp`
 - Route: /tools/afrokitchen/recipes/la-bouillie-td/
@@ -2092,7 +2081,7 @@ Create a second editorial food photograph of Kwacoco Bible from Cameroon, using 
 
 Create a second editorial food photograph of La Bouillie from Chad, using the existing hero /assets/img/kitchen/la-bouillie-td.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: A warm Chadian millet porridge sweetened with sugar and finished with milk, vanilla, and lemon zest.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 191. Ladob — serving detail
+## 190. Ladob — serving detail
 
 - Destination: `/assets/img/kitchen/ladob-2.webp`
 - Route: /tools/afrokitchen/recipes/ladob/
@@ -2103,7 +2092,7 @@ Create a second editorial food photograph of La Bouillie from Chad, using the ex
 
 Create a second editorial food photograph of Ladob from Seychelles, using the existing hero /assets/img/kitchen/ladob.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Seychellois sweet ladob, ripe plantains and sweet potatoes simmered in coconut milk with vanilla, nutmeg, sugar, and salt.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 192. Lahoh — serving detail
+## 191. Lahoh — serving detail
 
 - Destination: `/assets/img/kitchen/lahoh-dj-2.webp`
 - Route: /tools/afrokitchen/recipes/lahoh-dj/
@@ -2114,7 +2103,7 @@ Create a second editorial food photograph of Ladob from Seychelles, using the ex
 
 Create a second editorial food photograph of Lahoh from Djibouti, using the existing hero /assets/img/kitchen/lahoh-dj.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Lahoh is a bread with sorghum and wheat flour, yeast and warm water. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 193. Lakh — serving detail
+## 192. Lakh — serving detail
 
 - Destination: `/assets/img/kitchen/lakh-mr-2.webp`
 - Route: /tools/afrokitchen/recipes/lakh-mr/
@@ -2125,7 +2114,7 @@ Create a second editorial food photograph of Lahoh from Djibouti, using the exis
 
 Create a second editorial food photograph of Lakh from Mauritania, using the existing hero /assets/img/kitchen/lakh-mr.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Mauritanian-style lakh, soft millet couscous served with sweet fermented milk, yogurt, coconut, and warm spice.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 194. Lamb Tagine with Prunes and Almonds — serving detail
+## 193. Lamb Tagine with Prunes and Almonds — serving detail
 
 - Destination: `/assets/img/kitchen/lamb-tagine-prunes-almonds-ma-2.webp`
 - Route: /tools/afrokitchen/recipes/lamb-tagine-prunes-almonds-ma/
@@ -2136,7 +2125,7 @@ Create a second editorial food photograph of Lakh from Mauritania, using the exi
 
 Create a second editorial food photograph of Lamb Tagine with Prunes and Almonds from Morocco, using the existing hero /assets/img/kitchen/lamb-tagine-prunes-almonds-ma.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Moroccan lamb tagine with ginger, saffron, cinnamon, honeyed prunes, toasted almonds, and sesame.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 195. Langouste a la Vanille — serving detail
+## 194. Langouste a la Vanille — serving detail
 
 - Destination: `/assets/img/kitchen/langouste-vanille-2.webp`
 - Route: /tools/afrokitchen/recipes/langouste-vanille/
@@ -2147,7 +2136,7 @@ Create a second editorial food photograph of Lamb Tagine with Prunes and Almonds
 
 Create a second editorial food photograph of Langouste a la Vanille from Comoros, using the existing hero /assets/img/kitchen/langouste-vanille.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Comorian lobster finished in a delicate vanilla cream sauce, elegant without hiding the sweetness of the seafood.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 196. Langouste a la Vanille — serving detail
+## 195. Langouste a la Vanille — serving detail
 
 - Destination: `/assets/img/kitchen/langouste-vanille-km-2.webp`
 - Route: /tools/afrokitchen/recipes/langouste-vanille-km/
@@ -2158,7 +2147,7 @@ Create a second editorial food photograph of Langouste a la Vanille from Comoros
 
 Create a second editorial food photograph of Langouste a la Vanille from Comoros, using the existing hero /assets/img/kitchen/langouste-vanille-km.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Langouste a la Vanille is a seafood with lobster or prawns, vanilla and coconut milk. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 197. Lasary Voatabia — serving detail
+## 196. Lasary Voatabia — serving detail
 
 - Destination: `/assets/img/kitchen/lasary-voatabia-mg-2.webp`
 - Route: /tools/afrokitchen/recipes/lasary-voatabia-mg/
@@ -2169,7 +2158,7 @@ Create a second editorial food photograph of Langouste a la Vanille from Comoros
 
 Create a second editorial food photograph of Lasary Voatabia from Madagascar, using the existing hero /assets/img/kitchen/lasary-voatabia-mg.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Lasary Voatabia is a salad with tomatoes, green onion and lime. Serve. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 198. Liboke de Poisson — serving detail
+## 197. Liboke de Poisson — serving detail
 
 - Destination: `/assets/img/kitchen/liboke-poisson-cg-2.webp`
 - Route: /tools/afrokitchen/recipes/liboke-poisson-cg/
@@ -2180,7 +2169,7 @@ Create a second editorial food photograph of Lasary Voatabia from Madagascar, us
 
 Create a second editorial food photograph of Liboke de Poisson from Republic of Congo, using the existing hero /assets/img/kitchen/liboke-poisson-cg.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Congolese fish marinated with onion, lemon, chili, and oil, wrapped in banana leaves, and steamed.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 199. Liboke ya Mbika — serving detail
+## 198. Liboke ya Mbika — serving detail
 
 - Destination: `/assets/img/kitchen/liboke-ya-mbika-cd-2.webp`
 - Route: /tools/afrokitchen/recipes/liboke-ya-mbika-cd/
@@ -2191,7 +2180,7 @@ Create a second editorial food photograph of Liboke de Poisson from Republic of 
 
 Create a second editorial food photograph of Liboke ya Mbika from Democratic Republic of Congo, using the existing hero /assets/img/kitchen/liboke-ya-mbika-cd.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Ground pumpkin seeds steamed in banana leaves with tomatoes, onions, and spices, creating a rich and fragrant vegetarian parcel. A classic Congolese preparation.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
 
-## 200. Likhobe — serving detail
+## 199. Likhobe — serving detail
 
 - Destination: `/assets/img/kitchen/likhobe-ls-2.webp`
 - Route: /tools/afrokitchen/recipes/likhobe-ls/
@@ -2201,3 +2190,14 @@ Create a second editorial food photograph of Liboke ya Mbika from Democratic Rep
 - Reason: Local hero exists, but the serving-detail slot -2 is absent in every extension.
 
 Create a second editorial food photograph of Likhobe from Lesotho, using the existing hero /assets/img/kitchen/likhobe-ls.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Lesotho bean, sorghum, and grain stew cooked slowly into a nourishing mountain staple.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
+
+## 200. Luwombo — serving detail
+
+- Destination: `/assets/img/kitchen/luwombo-2.webp`
+- Route: /tools/afrokitchen/recipes/luwombo/
+- Dimensions: 1200x800
+- Priority: 50
+- Alt text (English): Serving detail of Luwombo
+- Reason: Local hero exists, but the serving-detail slot -2 is absent in every extension.
+
+Create a second editorial food photograph of Luwombo from Uganda, using the existing hero /assets/img/kitchen/luwombo.webp as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: Ugandan luwombo, chicken, beef, fish, mushrooms, or groundnut sauce wrapped in banana leaves and steamed until tender.. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.
