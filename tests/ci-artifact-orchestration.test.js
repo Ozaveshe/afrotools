@@ -52,7 +52,8 @@ test('mechanically preserves all current commands/env/specs/workers and Verify/s
   assert.equal(addition.length, 1);
   assert.equal(addition[0].id, 'afrostream-localized-provenance');
   assert.equal(addition[0].group, 2);
-  assert.deepEqual(addition[0].step.env, {AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1', AFROTOOLS_TEST_DISABLE_ANALYTICS:'1', PORT:'4199'});
+  assert.deepEqual(addition[0].step.env, {AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1', AFROTOOLS_TEST_DISABLE_ANALYTICS:'1', PORT:'4296'});
+  assert.ok(!originals.some(gate => gate.step.env?.PORT === addition[0].step.env.PORT), 'Additive provenance gate port must be unused by all original gates');
   assert.equal(addition[0].step.run, 'npx playwright test tests/e2e/afrostream-localized-provenance.spec.js --project=chromium --workers=1 --retries=0 --trace=off --output="$RUNNER_TEMP/afrostream-provenance-browser"');
   const restored = clone(inventory);
   restored.browser = originals;
