@@ -137,6 +137,8 @@ for (const route of [ha, yo]) test(`${route} accessible mobile journey and priva
     fs.mkdirSync(process.env.HA_YO_EVIDENCE_DIR, { recursive: true });
     await page.setViewportSize({ width: 320, height: 844 });
     // Only synthetic numeric inputs are shown; personal text fields stay blank.
+    await page.evaluate(()=>window.scrollTo(0,0));
     await page.screenshot({ path: path.join(process.env.HA_YO_EVIDENCE_DIR, route === ha ? 'ha-320.png' : 'yo-320.png'), fullPage: true });
+    await page.locator('#main-content').screenshot({path:path.join(process.env.HA_YO_EVIDENCE_DIR,route===ha?'ha-main-320.png':'yo-main-320.png')});
   }
 });
