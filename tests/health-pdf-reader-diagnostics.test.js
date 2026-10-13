@@ -136,3 +136,20 @@ test('failure-output persistence errors never replace the original parser error'
   assert.deepEqual(h.messages, ['Health PDF diagnostic persistence failed; original parser error retained.']);
   assert.ok(!JSON.stringify(h.messages).includes(privateText));
 });
+
+test('non-Error rejection identity survives name access and diagnostic persistence failure', async t => {
+  const throwingName = { get name() { throw new Error(privateText); } };
+  for (const rejection of [null, privateText, 42, throwingName]) {
+    for (const failFailureWrite of [false, true]) {
+      const h = harness(t, { failFailureWrite });
+      await assert.rejects(h.read(h.file, h.info, async () => { throw rejection; }), actual => actual === rejection);
+      const raw = fs.readFileSync(path.join(h.output, 'call-0001.json'), 'utf8');
+      assert.ok(!raw.includes(privateText));
+      if (!failFailureWrite) {
+        assert.equal(h.metadata().errorName, 'OtherError');
+        assert.deepEqual(fs.readFileSync(path.join(h.output, 'failed-0001.pdf')), h.bytes);
+      }
+      assert.ok(!JSON.stringify(h.messages).includes(privateText));
+    }
+  }
+});

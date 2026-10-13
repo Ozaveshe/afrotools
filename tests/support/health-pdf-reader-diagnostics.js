@@ -31,9 +31,12 @@ async function readHealthPdf(file, testInfo, pdfParse) {
     metadata.phase = "success"; metadata.afterInputSha256 = sha(data); write();
     return result;
   } catch (error) {
-    metadata.phase = "parser-failed"; metadata.afterInputSha256 = sha(data);
-    metadata.errorName = ["Error", "TypeError", "RangeError", "UnknownErrorException", "InvalidPDFException", "MissingPDFException", "PasswordException", "UnexpectedResponseException", "AbortException"].includes(error.name) ? error.name : "OtherError";
-    try { fs.writeFileSync(path.join(directory, "failed-" + String(call).padStart(4, "0") + ".pdf"), preservedBeforeParse); write(); }
+    metadata.phase = "parser-failed"; metadata.errorName = "OtherError";
+    try {
+      const name = error !== null && (typeof error === "object" || typeof error === "function") ? error.name : null;
+      if (["Error", "TypeError", "RangeError", "UnknownErrorException", "InvalidPDFException", "MissingPDFException", "PasswordException", "UnexpectedResponseException", "AbortException"].includes(name)) metadata.errorName = name;
+    } catch (_) { /* A hostile name getter must not replace the original rejection. */ }
+    try { metadata.afterInputSha256 = sha(data); fs.writeFileSync(path.join(directory, "failed-" + String(call).padStart(4, "0") + ".pdf"), preservedBeforeParse); write(); }
     catch (_) { console.error("Health PDF diagnostic persistence failed; original parser error retained."); }
     throw error; // Same original exception; no alternate reader or assertion path.
   }
