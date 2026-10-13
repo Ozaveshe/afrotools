@@ -191,3 +191,133 @@ test('hub labels fallback creator rows as an archived stale snapshot', function(
   assert.match(page, /Audience metrics are not freshness-verified/);
   assert.match(page, /laneHealth\('stale'/);
 });
+
+async function deadlineProbe(t, run) {
+  const deadlines = [];
+  const timers = [];
+  t.mock.method(AbortSignal, 'timeout', function(milliseconds) {
+    deadlines.push(milliseconds);
+    const controller = new AbortController();
+    timers.push(setTimeout(function() {
+      controller.abort(new DOMException('Synthetic upstream timeout', 'TimeoutError'));
+    }, 5));
+    return controller.signal;
+  });
+  let guard;
+  try {
+    const result = await Promise.race([
+      run(deadlines),
+      new Promise(function(resolve, reject) {
+        guard = setTimeout(function() { reject(new Error('Handler did not reach its fallback')); }, 300);
+      })
+    ]);
+    return { result, deadlines };
+  } finally {
+    clearTimeout(guard);
+    timers.forEach(clearTimeout);
+  }
+}
+
+function pendingUntilAbort(signal) {
+  return new Promise(function(resolve, reject) {
+    if (!signal) return;
+    if (signal.aborted) return reject(signal.reason);
+    signal.addEventListener('abort', function() { reject(signal.reason); }, { once: true });
+  });
+}
+
+test('a stalled creator request reaches the dated fallback within the browser request budget', async function(t) {
+  const api = loadFunction('test-service-key');
+  const probe = await deadlineProbe(t, function() {
+    global.fetch = function(url, options) { return pendingUntilAbort(options.signal); };
+    return api.handler(event({ sort: 'name', limit: '1' }));
+  });
+  assert.deepEqual(probe.deadlines, [7000]);
+  const body = JSON.parse(probe.result.body);
+  assert.equal(probe.result.statusCode, 200);
+  assert.equal(body.degraded, true);
+  assert.equal(body.source.reason, 'upstream_unavailable');
+  assert.equal(body.source.state, 'fallback');
+  assert.equal(body.source.snapshot_label, 'April 2026 seed snapshot');
+  assert.equal(body.source.metrics_freshness, 'unverified');
+  assert.equal(body.returned_count, 1);
+});
+
+test('a stalled creator response body is covered by the same request deadline', async function(t) {
+  const api = loadFunction('test-service-key');
+  const probe = await deadlineProbe(t, function() {
+    global.fetch = async function(url, options) {
+      const result = response(200, []);
+      result.text = function() { return pendingUntilAbort(options.signal); };
+      return result;
+    };
+    return api.handler(event({ limit: '1' }));
+  });
+  assert.deepEqual(probe.deadlines, [7000]);
+  const body = JSON.parse(probe.result.body);
+  assert.equal(probe.result.statusCode, 200);
+  assert.equal(body.degraded, true);
+  assert.equal(body.source.reason, 'upstream_unavailable');
+  assert.equal(body.source.metrics_freshness, 'unverified');
+});
+
+test('a stalled stream enrichment cannot prevent the existing marked fallback', async function(t) {
+  const api = loadFunction('test-service-key');
+  let calls = 0;
+  const probe = await deadlineProbe(t, function() {
+    global.fetch = async function(url, options) {
+      calls += 1;
+      if (calls === 1) return response(200, [{ id: 'synthetic-creator', name: 'Synthetic creator', is_published: true }]);
+      assert.match(url, /as_streams\?is_published=eq.true/);
+      return pendingUntilAbort(options.signal);
+    };
+    return api.handler(event({ limit: '1' }));
+  });
+  assert.equal(calls, 2);
+  assert.deepEqual(probe.deadlines, [7000, 2000]);
+  assert.ok(probe.deadlines.reduce(function(sum, value) { return sum + value; }, 0) < 12000);
+  const body = JSON.parse(probe.result.body);
+  assert.equal(probe.result.statusCode, 200);
+  assert.equal(body.degraded, true);
+  assert.equal(body.source.state, 'fallback');
+  assert.equal(body.source.metrics_freshness, 'unverified');
+  assert.equal(body.data[0].source_state, 'fallback');
+});
+
+test('bounded healthy requests retain published creators and real stream statistics', async function(t) {
+  const api = loadFunction('test-service-key');
+  const optionsSeen = [];
+  global.fetch = async function(url, options) {
+    assert.ok(options.signal instanceof AbortSignal);
+    optionsSeen.push(options.signal);
+    assert.match(url, /is_published=eq.true/);
+    if (optionsSeen.length === 1) return response(200, [{ id: 'synthetic-creator', name: 'Synthetic creator', subscribers: 100, is_published: true }], { 'content-range': '0-0/1' });
+    return response(200, [{ creator_id: 'synthetic-creator', creator_name: 'Synthetic creator', viewer_count: 12, is_live: true, stream_date: '2026-10-13T00:00:00Z' }]);
+  };
+  const result = await api.handler(event({ limit: '1' }));
+  const body = JSON.parse(result.body);
+  assert.equal(result.statusCode, 200);
+  assert.equal(body.degraded, undefined);
+  assert.equal(body.source, undefined);
+  assert.equal(body.count, 1);
+  assert.equal(body.returned_count, 1);
+  assert.equal(body.data[0].name, 'Synthetic creator');
+  assert.equal(body.data[0].stream_count_30d, 1);
+  assert.equal(body.data[0].peak_viewers, 12);
+  assert.equal(body.data[0].current_viewers, 12);
+  assert.equal(body.data[0].is_live, true);
+  assert.equal(optionsSeen.length, 2);
+});
+
+test('upstream permission rejection remains a rejection rather than archived success', async function() {
+  const api = loadFunction('test-service-key');
+  let calls = 0;
+  global.fetch = async function() { calls += 1; return response(401, { message: 'Synthetic permission rejection' }); };
+  const result = await api.handler(event({ limit: '1' }));
+  const body = JSON.parse(result.body);
+  assert.equal(result.statusCode, 401);
+  assert.equal(body.degraded, undefined);
+  assert.equal(body.success, undefined);
+  assert.equal(body.error, 'Supabase request failed');
+  assert.equal(calls, 1);
+});
