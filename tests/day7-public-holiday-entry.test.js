@@ -18,6 +18,10 @@ const commonInput = {
 const englishEntry = sandbox.BusinessRoiEngine.holidayEntry({ ...commonInput, locale: 'en' });
 const frenchEntry = sandbox.BusinessRoiEngine.holidayEntry({ ...commonInput, locale: 'fr' });
 
+// RFC 5545 content lines are unfolded before comparing their property values.
+englishEntry.ics = englishEntry.ics.replace(/\r\n[ \t]/g, '');
+frenchEntry.ics = frenchEntry.ics.replace(/\r\n[ \t]/g, '');
+
 assert.match(html, /does not publish a complete national calendar/i);
 assert.match(html, /User-confirmed entry only - not an official calendar/i);
 assert.match(html, /user-confirmed-public-holiday\.ics/);

@@ -15,6 +15,7 @@
   var rows = root.querySelector("[data-result-rows]");
   var lastReport = null;
   var timerId = null;
+  var countdownRuntime = null;
 
   function value(name) {
     var field = form.elements.namedItem(name);
@@ -61,33 +62,16 @@
   }
 
   function pomodoro() {
-    var plan = engine.pomodoro({
-      focusMinutes: number("focusMinutes"),
-      shortBreakMinutes: number("shortBreakMinutes"),
-      longBreakMinutes: number("longBreakMinutes"),
-      sessions: number("sessions")
-    });
-    if (timerId) clearInterval(timerId);
-    var remaining = plan.focusSeconds;
-    timerId = setInterval(function () {
-      remaining -= 1;
-      var live = root.querySelector("[data-live-timer]");
-      if (live) live.textContent = Math.floor(remaining / 60) + ":" + String(remaining % 60).padStart(2, "0");
-      if (remaining <= 0) {
-        clearInterval(timerId);
-        timerId = null;
-        status.textContent = "Kipindi kimekamilika.";
-      }
-    }, 1000);
-    return report("Mzunguko wa Pomodoro", "Kipindi cha kwanza kimeanza kwenye kifaa hiki.", [
-      ["Kipima muda", Math.floor(remaining / 60) + ":" + String(remaining % 60).padStart(2, "0"), "timer"],
+    var plan = engine.pomodoro({ focusMinutes: number("focusMinutes"), shortBreakMinutes: number("shortBreakMinutes"), longBreakMinutes: number("longBreakMinutes"), sessions: number("sessions") });
+    var runtime = window.AfroTools && window.AfroTools.localizedPomodoro;
+    if (!runtime) throw new Error("Kipima muda hakipatikani. Pakia ukurasa tena.");
+    runtime.mount(root, "sw").configure(plan);
+    return report("Mzunguko wa Pomodoro", "Mzunguko uko tayari. Tumia vidhibiti vya kipima muda kuanza.", [
+      ["Kuzingatia", Math.floor(plan.focusSeconds / 60) + ":" + String(plan.focusSeconds % 60).padStart(2, "0")],
       ["Vipindi", String(plan.sessions)],
       ["Mzunguko mzima", decimal(plan.cycleSeconds / 60, 0) + " dakika"],
       ["Mapumziko marefu", decimal(plan.longBreakSeconds / 60, 0) + " dakika"]
-    ], [
-      ["Muda wa kuzingatia", decimal(plan.focusSeconds / 60, 0) + " dakika"],
-      ["Mapumziko mafupi", decimal(plan.shortBreakSeconds / 60, 0) + " dakika"]
-    ]);
+    ], [["Kuzingatia", decimal(plan.focusSeconds / 60, 0) + " dakika"], ["Mapumziko mafupi", decimal(plan.shortBreakSeconds / 60, 0) + " dakika"]]);
   }
 
   function unitConverter() {
@@ -137,37 +121,49 @@
     ]));
   }
 
+  function countdownReport(state) {
+    var output = state.remaining, event = state.event;
+    var data = report("Muda hadi tukio — " + (event.name || "Tukio"), output.complete ? "Muda wa tukio umefika." : "Hesabu ya muda inasasishwa kwa kutumia saa ya kifaa hiki.", [
+      ["Siku", String(output.days)], ["Saa", String(output.hours)],
+      ["Dakika", String(output.minutes)], ["Sekunde", String(output.seconds)]
+    ], [["Tarehe na saa ya eneo", event.date + " " + event.time], ["Eneo la saa la kifaa hiki", Intl.DateTimeFormat().resolvedOptions().timeZone], ["Wakati wa hesabu (UTC)", state.generatedAt]]);
+    data.generatedAt = state.generatedAt;
+    return data;
+  }
+
+  function refreshCountdownReport(state) {
+    if (tool !== "countdown-timer" || !countdownRuntime || !lastReport) return;
+    state = state || countdownRuntime.snapshot();
+    if (!state) return;
+    var data = countdownReport(state);
+    lastReport = data;
+    title.textContent = data.title; summary.textContent = data.summary;
+    var outputs = metrics.querySelectorAll("strong");
+    data.metrics.forEach(function (item, index) { if (outputs[index]) outputs[index].textContent = item[1]; });
+    var details = rows.querySelectorAll("tr");
+    data.rows.forEach(function (item, index) { if (details[index]) { var cells = details[index].querySelectorAll("td"); if (cells[0]) cells[0].textContent = item[0]; if (cells[1]) cells[1].textContent = item[1]; } });
+  }
+
   function countdown() {
-    if (!value("eventDate")) throw new Error("Chagua tarehe ya tukio.");
-    var output = engine.countdown({
-      from: new Date().toISOString(),
-      to: value("eventDate") + "T" + (value("eventTime") || "00:00") + ":00"
-    });
-    return report("Muda hadi " + (value("eventName") || "tukio"), output.complete
-      ? "Tarehe hii imefika au imepita."
-      : "Muda umehesabiwa kutoka kwenye saa ya kifaa hiki.", [
-      ["Siku", String(output.days)],
-      ["Saa", String(output.hours)],
-      ["Dakika", String(output.minutes)],
-      ["Sekunde", String(output.seconds)]
-    ], [["Tarehe na saa ya eneo", value("eventDate") + " " + value("eventTime")]]);
+    var runtime = window.AfroTools && window.AfroTools.localizedCountdown;
+    if (!runtime) throw new Error("Hesabu ya muda haipatikani. Pakia ukurasa tena.");
+    countdownRuntime = runtime.mount(root, "sw", { onSnapshot: refreshCountdownReport });
+    var state = countdownRuntime.configure({ name: value("eventName") || "Tukio", date: value("eventDate"), time: value("eventTime") || "00:00" });
+    return countdownReport(state);
   }
 
   function timeZone() {
-    var output = engine.timeZone({
-      localDateTime: value("localDateTime"),
-      fromZone: value("fromZone"),
-      toZone: value("toZone"),
-      locale: "sw"
-    });
+    var output, occurrence = value("occurrence") || "reject";
+    try {
+      output = engine.timeZone({ localDateTime: value("localDateTime"), fromZone: value("fromZone"), toZone: value("toZone"), locale: "sw", occurrence: occurrence });
+    } catch (error) {
+      var messages = {"invalid-date":"Weka tarehe na saa halali.","nonexistent-local-time":"Saa hii ya eneo haipo wakati saa zinabadilishwa. Chagua saa nyingine.","ambiguous-local-time":"Saa hii ya eneo hutokea mara mbili. Chagua tukio la kwanza au la pili.","invalid-time-occurrence":"Chagua chaguo halali la saa inayojirudia."};
+      throw new Error(messages[error.message] || "Ubadilishaji haupatikani. Kagua tarehe na maeneo ya saa.");
+    }
+    var occurrenceLabels = {"reject":"Omba nichague","earlier":"Tukio la kwanza","later":"Tukio la pili"};
     return report("Ubadilishaji wa saa za maeneo", "Wakati uleule umeonyeshwa katika maeneo mawili ya IANA.", [
-      ["Mwanzo", output.from],
-      ["Mwisho", output.to]
-    ], [
-      ["Wakati wa UTC", output.iso],
-      ["Eneo la mwanzo", value("fromZone")],
-      ["Eneo la mwisho", value("toZone")]
-    ]);
+      ["Mwanzo", output.from], ["Mwisho", output.to]
+    ], [["Tarehe na saa ulizoingiza", value("localDateTime").replace("T", " ")], ["Wakati wa UTC", output.iso], ["Eneo la mwanzo", value("fromZone")], ["Eneo la mwisho", value("toZone")], ["Saa ikitokea mara mbili", occurrenceLabels[occurrence]]]);
   }
 
   function publicHoliday() {
@@ -202,12 +198,14 @@
   }
 
   function age() {
-    var output = engine.age({ birthDate: value("birthDate"), atDate: value("atDate") });
-    return report("Umri kamili", "Tofauti ya kalenda kati ya tarehe mbili ulizoingiza.", [
+    var output;
+    try { output = engine.age({ birthDate: value("birthDate"), atDate: value("atDate") }); }
+    catch (error) { throw new Error(error.message === "invalid-age-range" ? "Tarehe ya kuzaliwa lazima iwe halali na isiwe baada ya tarehe ya kukokotoa." : "Hesabu ya umri haipatikani."); }
+    return report("Umri kamili", "Miaka na miezi kamili huhesabiwa kwa tarehe zinazolingana za kuzaliwa; tarehe isiyopo husogezwa hadi mwezi unaofuata.", [
       ["Miaka", String(output.years)],
       ["Miezi", String(output.months)],
       ["Siku", String(output.days)],
-      ["Siku hadi siku ya kuzaliwa", String(output.daysUntilBirthday)]
+      ["Siku hadi siku ya kuzaliwa", output.daysUntilBirthday === 0 ? "Leo" : String(output.daysUntilBirthday)]
     ], [
       ["Jumla ya miezi kamili", decimal(output.totalMonths, 0)],
       ["Jumla ya wiki kamili", decimal(output.totalWeeks, 0)],
@@ -243,24 +241,51 @@
     ]));
   }
 
+  function pickerInteger(name, min, max) {
+    var raw = value(name), n = Number(raw);
+    if (!raw || !Number.isSafeInteger(n) || n < min || n > max) throw new Error("Weka namba kamili inayokubalika.");
+    return n;
+  }
+  function pickerIndex(size) {
+    var limit = 4294967296 - (4294967296 % size), bytes = new Uint32Array(1);
+    do { window.crypto.getRandomValues(bytes); } while (bytes[0] >= limit);
+    return bytes[0] % size;
+  }
+  function syncPickerMode() {
+    if (tool !== "random-picker") return;
+    var mode = value("mode"), active = {items: mode === "pick" || mode === "teams", pickCount: mode === "pick", teamCount: mode === "teams", numMin: mode === "numbers", numMax: mode === "numbers", numCount: mode === "numbers"};
+    Object.keys(active).forEach(function (name) {
+      var field = form.elements.namedItem(name); if (!field) return;
+      field.disabled = !active[name]; field.required = active[name]; field.hidden = !active[name];
+      var label = form.querySelector('label[for="' + field.id + '"]'); if (label) label.hidden = !active[name];
+      var wrapper = field.closest('.sw-business-field'); if (wrapper) wrapper.hidden = !active[name];
+    });
+  }
   function randomPicker() {
-    var items = value("items").split(/\r?\n/).map(function (item) { return item.trim(); }).filter(Boolean);
-    var randomValues = new Uint32Array(Math.max(items.length, 1));
-    window.crypto.getRandomValues(randomValues);
-    var normalized = Array.from(randomValues, function (item) { return item / 4294967296; });
-    if (value("mode") === "teams") {
-      var grouped = engine.teams({ items: items, teamCount: number("teamCount", 2), randomValues: normalized });
-      return report("Timu za nasibu", "Orodha imegawanywa ndani ya kivinjari kwa namba za nasibu za kifaa.", [
-        ["Vipengele", String(items.length)],
-        ["Timu", String(grouped.length)]
-      ], grouped.map(function (team, index) { return ["Timu " + (index + 1), team.join(", ")]; }));
+    var mode = value("mode"), selected = [];
+    if (mode === "coin") return report("Uchaguzi wa nasibu", "Uchaguzi umetengenezwa kwenye kifaa.", [["Matokeo", pickerIndex(2) ? "Kichwa" : "Mkia"]]);
+    if (mode === "numbers") {
+      var min = pickerInteger("numMin", Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), max = pickerInteger("numMax", min, Number.MAX_SAFE_INTEGER);
+      var size = max - min + 1, count = pickerInteger("numCount", 1, 100);
+      if (!Number.isSafeInteger(size) || size > 4294967296) throw new Error("Masafa yawe na namba kamili zisizozidi 4 294 967 296.");
+      for (var n = 0; n < count; n += 1) selected.push(String(min + pickerIndex(size)));
+      return report("Uchaguzi wa nasibu", "Uchaguzi umetengenezwa kwenye kifaa.", [["Matokeo", selected.join(", ")]]);
     }
-    var picked = engine.pick({ items: items, random: normalized[0] });
-    return report("Chaguo la nasibu", "Kipengele kimoja kimechaguliwa ndani ya kivinjari.", [
-      ["Matokeo", picked.value],
-      ["Nafasi ya ndani", String(picked.index + 1)],
-      ["Idadi ya chaguo", String(items.length)]
-    ]);
+    var items = value("items").split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!items.length) throw new Error("Ongeza angalau kipengele kimoja.");
+    var pool = items.slice();
+    if (mode === "teams") {
+      if (items.length < 2) throw new Error("Timu zinahitaji angalau vipengele viwili.");
+      var teamCount = pickerInteger("teamCount", 2, Math.min(20, items.length));
+      for (var i = pool.length - 1; i > 0; i -= 1) { var j = pickerIndex(i + 1), temp = pool[i]; pool[i] = pool[j]; pool[j] = temp; }
+      var groups = Array.from({length:teamCount}, function () { return []; });
+      pool.forEach(function (item, index) { groups[index % teamCount].push(item); });
+      return report("Uchaguzi wa nasibu", "Uchaguzi umetengenezwa kwenye kifaa.", [["Vipengele vilivyopo", String(items.length)]], groups.map(function (group, index) { return ["Timu" + " " + (index + 1), group.join(", ")]; }));
+    }
+    if (mode !== "pick") throw new Error("Weka namba kamili inayokubalika.");
+    var amount = Math.min(pickerInteger("pickCount", 1, 100), pool.length);
+    for (var k = 0; k < amount; k += 1) selected.push(pool.splice(pickerIndex(pool.length), 1)[0]);
+    return report("Uchaguzi wa nasibu", "Uchaguzi umetengenezwa kwenye kifaa.", [["Matokeo", selected.join(", ")], ["Vipengele vilivyopo", String(items.length)]]);
   }
 
   function meeting() {
@@ -389,9 +414,11 @@
     status.dataset.state = "success";
     status.textContent = "Matokeo yametengenezwa kwenye kifaa hiki.";
     result.focus();
+    if (tool === "pomodoro") { var timerPanel = root.querySelector('[data-pomodoro-role="panel"]'); if (timerPanel) timerPanel.focus(); }
   }
 
   function payload() {
+    refreshCountdownReport();
     var inputs = {};
     Array.from(form.elements).forEach(function (field) {
       if (!field.name) return;
@@ -401,6 +428,7 @@
   }
 
   function textReport() {
+    refreshCountdownReport();
     var lines = ["AfroTools", lastReport.title, lastReport.summary, ""];
     lastReport.metrics.forEach(function (item) { lines.push(item[0] + ": " + item[1]); });
     lastReport.rows.forEach(function (item) { lines.push(item[0] + ": " + item[1]); });
@@ -421,6 +449,7 @@
   }
 
   function exportFile(format) {
+    refreshCountdownReport();
     if (!lastReport) throw new Error("Kokotoa matokeo kwanza.");
     if (format === "json") {
       download(new Blob([JSON.stringify(payload(), null, 2)], { type: "application/json" }), "json");
@@ -441,7 +470,7 @@
       var Pdf = window.jspdf && window.jspdf.jsPDF;
       if (!Pdf) throw new Error("Moduli ya PDF ya ndani haipatikani.");
       var pdf = new Pdf();
-      var lines = pdf.splitTextToSize(textReport(), 180);
+      var lines = pdf.splitTextToSize(textReport().replace(/[\u00a0\u202f]/g, " "), 180);
       var y = 18;
       lines.forEach(function (line) {
         if (y > 280) {
@@ -478,6 +507,9 @@
       }
     });
   }
+
+  form.addEventListener("change", syncPickerMode);
+  syncPickerMode();
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -525,6 +557,7 @@
         status.textContent = "Matokeo yamehifadhiwa kwenye kifaa hiki.";
       } else if (action && action.dataset.action === "print") {
         if (!lastReport) throw new Error("Kokotoa matokeo kwanza.");
+        refreshCountdownReport();
         window.print();
         status.textContent = "Dirisha la kuchapisha limefunguliwa.";
       }
@@ -536,7 +569,7 @@
 
   if (tool === "countdown-timer") {
     var tomorrow = new Date(Date.now() + 86400000);
-    form.elements.eventDate.value = tomorrow.toISOString().slice(0, 10);
+    form.elements.eventDate.value = String(tomorrow.getFullYear()).padStart(4, "0") + "-" + String(tomorrow.getMonth() + 1).padStart(2, "0") + "-" + String(tomorrow.getDate()).padStart(2, "0");
   }
   if (tool === "time-zone") {
     var now = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);

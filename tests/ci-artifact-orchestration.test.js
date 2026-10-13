@@ -29,8 +29,98 @@ function originalBrowserStep(block) {
   return step;
 }
 
+
+function readOriginalWorkflowFixture(root, relative, expectedSha256) {
+  if (typeof relative !== 'string' || !/^tests\/fixtures\/ci-original\/[A-Za-z0-9._/-]+$/.test(relative)
+      || relative.split('/').some(part => !part || part === '.' || part === '..')) {
+    throw new Error('Original workflow fixture path is outside the reviewed namespace');
+  }
+  if (!/^[a-f0-9]{64}$/.test(expectedSha256 || '')) throw new Error('Original workflow fixture hash is invalid');
+  let absolute = root;
+  const parts = relative.split('/');
+  for (const [index, part] of parts.entries()) {
+    absolute = path.join(absolute, part);
+    const stat = fs.lstatSync(absolute);
+    if (stat.isSymbolicLink()) throw new Error('Original workflow fixture symlink component is unsupported');
+    if (index < parts.length - 1 && !stat.isDirectory()) throw new Error('Original workflow fixture ancestor is not a directory');
+    if (index === parts.length - 1 && !stat.isFile()) throw new Error('Original workflow fixture is not a regular file');
+  }
+  const bytes = fs.readFileSync(absolute);
+  if (c.sha(bytes) !== expectedSha256) throw new Error('Original workflow fixture hash mismatch');
+  return bytes.toString('utf8');
+}
+
+function fixtureSandbox(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'afrotools-ci-original-fixture-'));
+  t.after(() => {
+    assert.equal(path.dirname(path.resolve(root)), path.resolve(os.tmpdir()));
+    assert.ok(path.basename(root).startsWith('afrotools-ci-original-fixture-'));
+    fs.rmSync(root, {recursive: true, force: true});
+  });
+  fs.mkdirSync(path.join(root, 'tests/fixtures/ci-original'), {recursive: true});
+  return root;
+}
+
+const fixtureRelative = 'tests/fixtures/ci-original/baseline.yml';
+const fixtureBytes = Buffer.from('name: Original baseline\nvalue: exact LF bytes\n');
+
+test('original workflow fixture reads exact bytes without producer Git history', t => {
+  const root = fixtureSandbox(t);
+  fs.writeFileSync(path.join(root, fixtureRelative), fixtureBytes);
+  assert.equal(readOriginalWorkflowFixture(root, fixtureRelative, c.sha(fixtureBytes)), fixtureBytes.toString('utf8'));
+  assert.equal(fs.existsSync(path.join(root, '.git')), false);
+});
+
+test('original workflow fixture rejects tampering and line-ending changes', t => {
+  const root = fixtureSandbox(t), file = path.join(root, fixtureRelative), expected = c.sha(fixtureBytes);
+  fs.writeFileSync(file, Buffer.from('name: Tampered baseline\n'));
+  assert.throws(() => readOriginalWorkflowFixture(root, fixtureRelative, expected), /hash mismatch/);
+  fs.writeFileSync(file, fixtureBytes.toString('utf8').replaceAll('\n', '\r\n'));
+  assert.throws(() => readOriginalWorkflowFixture(root, fixtureRelative, expected), /hash mismatch/);
+});
+
+test('original workflow fixture rejects a missing file and a directory target', t => {
+  const root = fixtureSandbox(t);
+  assert.throws(() => readOriginalWorkflowFixture(root, fixtureRelative, c.sha(fixtureBytes)), /ENOENT/);
+  fs.mkdirSync(path.join(root, fixtureRelative));
+  assert.throws(() => readOriginalWorkflowFixture(root, fixtureRelative, c.sha(fixtureBytes)), /regular file/);
+});
+
+test('original workflow fixture rejects namespace escapes and malformed paths', t => {
+  const root = fixtureSandbox(t);
+  for (const relative of ['../baseline.yml', '/tests/fixtures/ci-original/baseline.yml',
+    'tests/fixtures/ci-original/../baseline.yml', 'tests/fixtures/ci-original/./baseline.yml',
+    'tests/fixtures/ci-original//baseline.yml', 'tests\\fixtures\\ci-original\\baseline.yml']) {
+    assert.throws(() => readOriginalWorkflowFixture(root, relative, c.sha(fixtureBytes)), /namespace/);
+  }
+});
+
+test('original workflow fixture rejects a real symbolic-link ancestor', t => {
+  const root = fixtureSandbox(t), target = path.join(root, 'target');
+  fs.mkdirSync(target); fs.writeFileSync(path.join(target, 'baseline.yml'), fixtureBytes);
+  const link = path.join(root, 'tests/fixtures/ci-original/link');
+  fs.symlinkSync(target, link, process.platform === 'win32' ? 'junction' : 'dir');
+  assert.ok(fs.lstatSync(link).isSymbolicLink());
+  assert.throws(() => readOriginalWorkflowFixture(root, 'tests/fixtures/ci-original/link/baseline.yml', c.sha(fixtureBytes)), /symlink/);
+});
+
 test('mechanically preserves all current commands/env/specs/workers and Verify/smoke blocks', () => {
-  const original = cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  // Flat publisher intake need not retain a producer checkpoint as Git ancestry.
+  // The tracked exact workflow retains every step; removing only declared additions
+  // must recover the immutable predecessor workflow on main byte for byte.
+  const original = inventory.originalWorkflowFile
+    ? readOriginalWorkflowFixture(ROOT, inventory.originalWorkflowFile, inventory.originalWorkflowSha256)
+    : cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  if (inventory.originalWorkflowFile) {
+    const predecessor = cp.execFileSync('git', ['show', inventory.predecessorCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+    assert.equal(c.sha(predecessor), inventory.predecessorWorkflowSha256);
+    let retained = original;
+    for (const gate of inventory.browser.filter(gate => gate.originalYaml)) {
+      assert.equal(retained.split(gate.originalYaml).length, 2, 'Each added original YAML block must occur exactly once');
+      retained = retained.replace(gate.originalYaml, '');
+    }
+    assert.equal(retained, predecessor, 'The complete immutable predecessor workflow must remain byte-identical');
+  }
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
   assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));

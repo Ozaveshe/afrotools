@@ -1,0 +1,1090 @@
+{
+  "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+  "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+  "reviewedAt": "2026-10-13",
+  "formulaIds": [
+    "formula-engines-business-roi-engine"
+  ],
+  "reason": "Scoped date/time and calendar export recovery. Actual executable before/after changes are recorded below; existing golden expectations are not changed. This technical evidence is not human approval.",
+  "baseCommit": "a1638598d9c567d0476a48ad2f4de62eb14d3424",
+  "sourceReferences": [
+    "https://www.rfc-editor.org/rfc/rfc5545#section-3.1",
+    "https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-objects"
+  ],
+  "runtime": {
+    "node": "v24.12.0",
+    "icu": "77.1",
+    "tz": "2025b"
+  },
+  "hashes": {
+    "engines/src/business-roi-engine.js": "8d026d2a6beadee28a32e1a960d2a590e27b85f9e4a11656777212b2e599e03b",
+    "engines/business-roi-engine.js": "9ce2f867003d3b9caab38f3a8f7b2ea2d7b64b7f33364c643785b59d6877151c"
+  },
+  "fixtureDeltas": [
+    {
+      "fixtureId": "business-roi-review-age-leap-next",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2027-03-02"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 2,
+        "daysUntilBirthday": 365
+      },
+      "nextExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 1,
+        "daysUntilBirthday": 364
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "years": 27,
+        "months": 0,
+        "days": 2,
+        "daysUntilBirthday": 365
+      },
+      "after": {
+        "years": 27,
+        "months": 0,
+        "days": 1,
+        "daysUntilBirthday": 364
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-age-leap-year-boundary",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2027-12-31"
+      },
+      "fields": [
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "daysUntilBirthday": 61
+      },
+      "nextExpected": {
+        "daysUntilBirthday": 60
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "daysUntilBirthday": 61
+      },
+      "after": {
+        "daysUntilBirthday": 60
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-age-leap-today",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2028-02-29"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 28,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 366
+      },
+      "nextExpected": {
+        "years": 28,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "years": 28,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 366
+      },
+      "after": {
+        "years": 28,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-age-ordinary-today",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-07-29",
+        "atDate": "2026-07-29"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 26,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 365
+      },
+      "nextExpected": {
+        "years": 26,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "years": 26,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 365
+      },
+      "after": {
+        "years": 26,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-age-march1-anniversary",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2027-03-01"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 1,
+        "daysUntilBirthday": 366
+      },
+      "nextExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "years": 27,
+        "months": 0,
+        "days": 1,
+        "daysUntilBirthday": 366
+      },
+      "after": {
+        "years": 27,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-age-short-month",
+      "method": "age",
+      "input": {
+        "birthDate": "2026-01-31",
+        "atDate": "2026-03-01"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "previousExpected": {
+        "years": 0,
+        "months": 1,
+        "days": 1
+      },
+      "nextExpected": {
+        "years": 0,
+        "months": 0,
+        "days": 29
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "years": 0,
+        "months": 1,
+        "days": 1
+      },
+      "after": {
+        "years": 0,
+        "months": 0,
+        "days": 29
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-age-rolled-month",
+      "method": "age",
+      "input": {
+        "birthDate": "2026-01-31",
+        "atDate": "2026-03-03"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "previousExpected": {
+        "years": 0,
+        "months": 1,
+        "days": 3
+      },
+      "nextExpected": {
+        "years": 0,
+        "months": 1,
+        "days": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "years": 0,
+        "months": 1,
+        "days": 3
+      },
+      "after": {
+        "years": 0,
+        "months": 1,
+        "days": 0
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-time-cairo-gap",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-04-24T00:30",
+        "fromZone": "Africa/Cairo",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-04-23T22:30:00.000Z"
+      },
+      "nextExpected": {
+        "error": "nonexistent-local-time"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "iso": "2026-04-23T22:30:00.000Z"
+      },
+      "after": {
+        "error": "nonexistent-local-time"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-time-casablanca-gap",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-03-22T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-03-22T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "error": "nonexistent-local-time"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "iso": "2026-03-22T02:30:00.000Z"
+      },
+      "after": {
+        "error": "nonexistent-local-time"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-time-fold-reject",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-15T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "error": "ambiguous-local-time"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "after": {
+        "error": "ambiguous-local-time"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-time-fold-earlier",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-15T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en",
+        "occurrence": "earlier"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "iso": "2026-02-15T01:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "after": {
+        "iso": "2026-02-15T01:30:00.000Z"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-time-invalid-calendar",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-30T10:00",
+        "fromZone": "Africa/Lagos",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-03-02T09:00:00.000Z"
+      },
+      "nextExpected": {
+        "error": "invalid-date"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "iso": "2026-03-02T09:00:00.000Z"
+      },
+      "after": {
+        "error": "invalid-date"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-ics-en",
+      "method": "holidayEntry",
+      "input": {
+        "country": "NG",
+        "date": "2026-12-31",
+        "name": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d",
+        "note": "one\rtwo\nthree",
+        "confirmed": true,
+        "locale": "en",
+        "uid": "review-fixture@afrotools.com",
+        "timestamp": "2026-10-13T00:00:00Z"
+      },
+      "projection": "calendar-properties",
+      "previousExpected": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "nextExpected": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "after": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-ics-fr",
+      "method": "holidayEntry",
+      "input": {
+        "country": "NG",
+        "date": "2026-12-31",
+        "name": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d",
+        "note": "one\rtwo\nthree",
+        "confirmed": true,
+        "locale": "fr",
+        "uid": "review-fixture@afrotools.com",
+        "timestamp": "2026-10-13T00:00:00Z"
+      },
+      "projection": "calendar-properties",
+      "previousExpected": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "nextExpected": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "after": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      }
+    },
+    {
+      "fixtureId": "business-roi-review-ics-sw",
+      "method": "holidayEntry",
+      "input": {
+        "country": "NG",
+        "date": "2026-12-31",
+        "name": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d",
+        "note": "one\rtwo\nthree",
+        "confirmed": true,
+        "locale": "sw",
+        "uid": "review-fixture@afrotools.com",
+        "timestamp": "2026-10-13T00:00:00Z"
+      },
+      "projection": "calendar-properties",
+      "previousExpected": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "nextExpected": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory.",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "reviewedAt": "2026-10-13",
+      "before": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "after": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      }
+    }
+  ],
+  "boundaryFixtures": [
+    {
+      "fixtureId": "business-roi-review-age-leap-next",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2027-03-02"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 2,
+        "daysUntilBirthday": 365
+      },
+      "nextExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 1,
+        "daysUntilBirthday": 364
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-leap-year-boundary",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2027-12-31"
+      },
+      "fields": [
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "daysUntilBirthday": 61
+      },
+      "nextExpected": {
+        "daysUntilBirthday": 60
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-leap-today",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2028-02-29"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 28,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 366
+      },
+      "nextExpected": {
+        "years": 28,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-ordinary-today",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-07-29",
+        "atDate": "2026-07-29"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 26,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 365
+      },
+      "nextExpected": {
+        "years": 26,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-march1-anniversary",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2027-03-01"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 1,
+        "daysUntilBirthday": 366
+      },
+      "nextExpected": {
+        "years": 27,
+        "months": 0,
+        "days": 0,
+        "daysUntilBirthday": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-short-month",
+      "method": "age",
+      "input": {
+        "birthDate": "2026-01-31",
+        "atDate": "2026-03-01"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "previousExpected": {
+        "years": 0,
+        "months": 1,
+        "days": 1
+      },
+      "nextExpected": {
+        "years": 0,
+        "months": 0,
+        "days": 29
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-rolled-month",
+      "method": "age",
+      "input": {
+        "birthDate": "2026-01-31",
+        "atDate": "2026-03-03"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "previousExpected": {
+        "years": 0,
+        "months": 1,
+        "days": 3
+      },
+      "nextExpected": {
+        "years": 0,
+        "months": 1,
+        "days": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-next-original-month",
+      "method": "age",
+      "input": {
+        "birthDate": "2026-01-31",
+        "atDate": "2026-03-31"
+      },
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "previousExpected": {
+        "years": 0,
+        "months": 2,
+        "days": 0
+      },
+      "nextExpected": {
+        "years": 0,
+        "months": 2,
+        "days": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-century",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-02-29",
+        "atDate": "2099-12-31"
+      },
+      "fields": [
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "daysUntilBirthday": 60
+      },
+      "nextExpected": {
+        "daysUntilBirthday": 60
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-age-tomorrow",
+      "method": "age",
+      "input": {
+        "birthDate": "2000-01-01",
+        "atDate": "2026-12-31"
+      },
+      "fields": [
+        "daysUntilBirthday"
+      ],
+      "previousExpected": {
+        "daysUntilBirthday": 1
+      },
+      "nextExpected": {
+        "daysUntilBirthday": 1
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule."
+    },
+    {
+      "fixtureId": "business-roi-review-time-ordinary",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-07-29T10:00",
+        "fromZone": "Africa/Lagos",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-07-29T09:00:00.000Z"
+      },
+      "nextExpected": {
+        "iso": "2026-07-29T09:00:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-time-cairo-gap",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-04-24T00:30",
+        "fromZone": "Africa/Cairo",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-04-23T22:30:00.000Z"
+      },
+      "nextExpected": {
+        "error": "nonexistent-local-time"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-time-casablanca-gap",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-03-22T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-03-22T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "error": "nonexistent-local-time"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-time-fold-reject",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-15T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "error": "ambiguous-local-time"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-time-fold-earlier",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-15T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en",
+        "occurrence": "earlier"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "iso": "2026-02-15T01:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-time-fold-later",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-15T02:30",
+        "fromZone": "Africa/Casablanca",
+        "toZone": "Africa/Nairobi",
+        "locale": "en",
+        "occurrence": "later"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "nextExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-time-invalid-calendar",
+      "method": "timeZone",
+      "input": {
+        "localDateTime": "2026-02-30T10:00",
+        "fromZone": "Africa/Lagos",
+        "toZone": "Africa/Nairobi",
+        "locale": "en"
+      },
+      "fields": [
+        "iso"
+      ],
+      "previousExpected": {
+        "iso": "2026-03-02T09:00:00.000Z"
+      },
+      "nextExpected": {
+        "error": "invalid-date"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee."
+    },
+    {
+      "fixtureId": "business-roi-review-ics-en",
+      "method": "holidayEntry",
+      "input": {
+        "country": "NG",
+        "date": "2026-12-31",
+        "name": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d",
+        "note": "one\rtwo\nthree",
+        "confirmed": true,
+        "locale": "en",
+        "uid": "review-fixture@afrotools.com",
+        "timestamp": "2026-10-13T00:00:00Z"
+      },
+      "projection": "calendar-properties",
+      "previousExpected": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "nextExpected": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory."
+    },
+    {
+      "fixtureId": "business-roi-review-ics-fr",
+      "method": "holidayEntry",
+      "input": {
+        "country": "NG",
+        "date": "2026-12-31",
+        "name": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d",
+        "note": "one\rtwo\nthree",
+        "confirmed": true,
+        "locale": "fr",
+        "uid": "review-fixture@afrotools.com",
+        "timestamp": "2026-10-13T00:00:00Z"
+      },
+      "projection": "calendar-properties",
+      "previousExpected": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "nextExpected": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory."
+    },
+    {
+      "fixtureId": "business-roi-review-ics-sw",
+      "method": "holidayEntry",
+      "input": {
+        "country": "NG",
+        "date": "2026-12-31",
+        "name": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d",
+        "note": "one\rtwo\nthree",
+        "confirmed": true,
+        "locale": "sw",
+        "uid": "review-fixture@afrotools.com",
+        "timestamp": "2026-10-13T00:00:00Z"
+      },
+      "projection": "calendar-properties",
+      "previousExpected": {
+        "uid": "20261231-ng@afrotools.local",
+        "stamp": null,
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "nextExpected": {
+        "uid": "review-fixture@afrotools.com",
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "summary": "Synthetic \u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d\u00e9\ud83c\udf0d"
+      },
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory."
+    }
+  ],
+  "humanApproval": {
+    "status": "pending",
+    "requiredBy": "docs/CALCULATION-QUALITY-SYSTEM.md step 9 and .github/CODEOWNERS"
+  },
+  "qualification": "Expected calendar values were specified independently in the review harness and asserted against readable and shipped engines. Timezone transition expectations depend on the recorded runtime tzdata. Broader public holiday/source availability is not verified."
+}
