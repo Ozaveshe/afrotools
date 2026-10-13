@@ -164,6 +164,8 @@ function validateRecipePage(recipe) {
   if (!recipeSchema.recipeCategory || !String(recipeSchema.recipeCategory).trim()) errors.push("recipeCategory missing");
   if (!recipeSchema.keywords || !String(recipeSchema.keywords).trim()) errors.push("keywords missing");
   ["prepTime", "cookTime", "totalTime"].forEach((field) => {
+    const sourceField = { prepTime: "prep_time_minutes", cookTime: "cook_time_minutes", totalTime: "total_time_minutes" }[field];
+    if (recipe.source_reviewed_at && recipe[sourceField] == null && recipeSchema[field] === undefined) return;
     if (!isIsoDuration(recipeSchema[field])) errors.push(`${field} missing or not ISO 8601 duration`);
   });
   if (!recipeSchema.recipeYield || !String(recipeSchema.recipeYield).includes(String(recipe.default_servings))) {

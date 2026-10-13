@@ -104,7 +104,9 @@ function verifyManifest(manifest, intelligence, publicJsData, rules) {
   assert(recipeRouteCount === generatedRecipes.length, "Generated recipe route count does not match generated recipe pages");
   assert(recipeRouteCount === recipes.length, "Generated recipe route count does not match manifest recipe count");
   assert((manifest.source || {}).recipe_count === recipes.length, "Manifest source recipe_count does not match recipe array length");
-  assert((manifest.source || {}).verified_recipe_count === recipes.length, "Manifest verified_recipe_count does not match recipe array length");
+  const source = manifest.source || {};
+  assert((source.published_recipe_count ?? source.verified_recipe_count) === recipes.length, "Manifest published recipe count does not match recipe array length");
+  assert(source.verified_recipe_count === recipes.filter(recipe => recipe.is_verified === true).length, "Manifest verification count does not match verified rows");
   assert(baseCollectionCount >= 5, `Expected at least 5 base collections before curated additions, found ${baseCollectionCount}`);
   assert(collectionCount === baseCollectionCount + expectedCuratedCount, "Collection count does not include every curated collection");
   assert(collectionRoutes === collectionCount, `Generated collection routes ${collectionRoutes} do not match collection count ${collectionCount}`);

@@ -4,7 +4,11 @@
 const fs = require("fs");
 const path = require("path");
 const { imageSizeFromUrl } = require('./lib/image-size');
-const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
+const reviewedMethods = require('../data/afrokitchen/recipe-method-overrides.json');
+const generatedArtwork = [
+  ...require('../data/image-generation/kitchen-generated-2026-10-09.json').images,
+  ...require('../data/image-generation/kitchen-method-corrections-2026-10-09.json').images
+];
 const artworkBySlug = new Map(generatedArtwork.map(image => [image.slug, image]));
 const artworkByPath = new Map(generatedArtwork.map(image => [image.target, image]));
 const reusedArtwork = [
@@ -45,6 +49,9 @@ const {
 } = require("./lib/afrokitchen-static");
 const {
   buildCuisineIntelligence,
+  refreshDietaryCollectionData,
+  loadCuisineIntelligence,
+  writePublicCuisineData,
   writeCuisineIntelligenceFiles,
   mergeIntelligenceCollections
 } = require("./lib/afrokitchen-cuisine-intelligence");
@@ -297,7 +304,7 @@ function renderIngredientsHtml(engine, recipe, servings) {
     const hasAmount = Number(ingredient.scaled_amount || 0) > 0;
     const amountHtml = hasAmount
       ? `<span class="ak-ing-amount">${escapeHtml(engine.formatAmount(ingredient.scaled_amount))} ${escapeHtml(ingredient.unit || "")}</span> `
-      : "";
+      : ingredient.unit ? `<span class="ak-ing-amount">${escapeHtml(ingredient.unit)}</span> ` : "";
 
     html += `<label class="ak-ing-item">
       <input type="checkbox" class="ak-ing-check">
@@ -586,7 +593,7 @@ function recipeImageAlt(recipe, role) {
   if (role === "prep") return `${recipe.name} ingredients/prep step`;
   if (role === "process") return `${recipe.name} cooking/process step`;
   if (role === "serving") return `${recipe.name} serving/detail image`;
-  return artworkBySlug.get(recipe.slug)?.alt || reusedArtworkBySlug.get(recipe.slug)?.alt || `${recipe.name} recipe from ${recipe.country_name || "AfroKitchen"}`;
+  return artworkBySlug.get(recipe.slug)?.alt || reusedArtworkBySlug.get(recipe.slug)?.alt || reviewedMethods[recipe.slug]?.image_alt || `${recipe.name} recipe from ${recipe.country_name || "AfroKitchen"}`;
 }
 
 function renderRecipeFallbackMarkup(recipe, compact) {
@@ -965,7 +972,7 @@ function addGalleryImage(images, seen, src, alt, caption, credit) {
   images.push({
     src: input,
     alt: artworkByPath.get(input)?.alt || reusedArtworkByPath.get(input)?.alt || alt || "AfroKitchen recipe photo",
-    caption: artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · Recipe illustration` : caption || "",
+    caption: artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} Â· AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} Â· Recipe illustration` : caption || "",
     credit: credit || null
   });
 }
@@ -1188,6 +1195,7 @@ function isoDate(value) {
 }
 
 function isoDurationFromMinutes(value) {
+  if (value == null || value === "") return "";
   const minutes = Number(value);
   if (!Number.isFinite(minutes) || minutes < 0) return "";
   return `PT${Math.round(minutes)}M`;
@@ -1206,9 +1214,9 @@ function collectRecipeSchemaBlockers(recipe, schemaImages, schemaIngredients) {
   if (!Array.isArray(schemaImages) || !schemaImages.length) blockers.push("missing_image");
   if (!isUsableSchemaText(recipe.country_name)) blockers.push("missing_cuisine");
   if (!isUsableSchemaText(recipe.category)) blockers.push("missing_category");
-  if (!isoDurationFromMinutes(recipe.prep_time_minutes)) blockers.push("missing_prep_time");
-  if (!isoDurationFromMinutes(recipe.cook_time_minutes)) blockers.push("missing_cook_time");
-  if (!isoDurationFromMinutes(recipe.total_time_minutes)) blockers.push("missing_total_time");
+  if ((recipe.prep_time_minutes != null || !recipe.source_reviewed_at) && !isoDurationFromMinutes(recipe.prep_time_minutes)) blockers.push("missing_prep_time");
+  if ((recipe.cook_time_minutes != null || !recipe.source_reviewed_at) && !isoDurationFromMinutes(recipe.cook_time_minutes)) blockers.push("missing_cook_time");
+  if ((recipe.total_time_minutes != null || !recipe.source_reviewed_at) && !isoDurationFromMinutes(recipe.total_time_minutes)) blockers.push("missing_total_time");
   if (!recipe.default_servings) blockers.push("missing_yield");
   if (!Array.isArray(schemaIngredients) || !schemaIngredients.length) blockers.push("missing_ingredients");
   if (!steps.length || steps.some((step) => !isUsableSchemaText(step.title) || !isUsableSchemaText(step.instruction))) {
@@ -1285,10 +1293,10 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
       url: SITE_ORIGIN + '/'
     };
     recipeSchema.datePublished = isoDate(recipe.created_at) || undefined;
-    recipeSchema.dateModified = isoDate(recipe.updated_at) || undefined;
-    recipeSchema.prepTime = isoDurationFromMinutes(recipe.prep_time_minutes);
-    recipeSchema.cookTime = isoDurationFromMinutes(recipe.cook_time_minutes);
-    recipeSchema.totalTime = isoDurationFromMinutes(recipe.total_time_minutes);
+    recipeSchema.dateModified = [isoDate(recipe.updated_at), isoDate(recipe.source_reviewed_at)].filter(Boolean).sort().at(-1) || undefined;
+    recipeSchema.prepTime = isoDurationFromMinutes(recipe.prep_time_minutes) || undefined;
+    recipeSchema.cookTime = isoDurationFromMinutes(recipe.cook_time_minutes) || undefined;
+    recipeSchema.totalTime = isoDurationFromMinutes(recipe.total_time_minutes) || undefined;
     recipeSchema.recipeCuisine = [recipe.country_name, recipe.region].filter(Boolean).join(", ");
     recipeSchema.recipeCategory = categoryLabel(recipe);
     recipeSchema.recipeYield = `${recipe.default_servings} ${recipe.serving_unit || "servings"}`;
@@ -1386,11 +1394,17 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const relatedSection = renderRelatedHtml(recipe, recipeInternalLinkGroups, recipeImages);
   const storyLead = recipe.story ? excerpt(recipe.story, 420) : description;
   const heroStyle = '';
+  const methodReview = reviewedMethods[recipe.slug];
+  const methodReviewNotice = methodReview ? 'Adapted from the cited recipe sources. AfroTools has not kitchen-tested this version. Follow the method and doneness checks; timers are reminders.' : '';
+  const methodReviewHtml = methodReview ? `<aside class="ak-panel-helper ak-method-review" aria-label="Recipe source and testing status"><p>${escapeHtml(methodReviewNotice)}</p><p>Sources: ${methodReview.sources.map(source => `<a href="${escapeHtml(source.url)}" style="text-decoration:underline;text-underline-offset:0.15em">${escapeHtml(source.title)}</a>`).join('; ')}. Reviewed ${escapeHtml(methodReview.reviewed_at)}.</p></aside>` : '';
   const equipment = visualAssets.equipmentFor(recipe.steps);
   const equipmentHtml = equipment.length ? '<section class="ak-equipment" aria-label="Suggested equipment"><div><h3>A few kitchen essentials</h3><p>Suggested from the recipe method. Use equivalent equipment you have.</p></div><div class="ak-equipment-list">' + equipment.map(item => '<div class="ak-equipment-item">' + item.svg + '<span>' + escapeHtml(item.name) + '</span></div>').join('') + '</div></section>' : '';
 
   const recipeData = {
     slug: recipe.slug,
+    is_published: typeof recipe.is_published === 'boolean' ? recipe.is_published : recipe.is_verified === true,
+    is_verified: recipe.is_verified === true,
+    ...(methodReview ? { method_review: { notice: methodReviewNotice, reviewed_at: methodReview.reviewed_at, sources: methodReview.sources } } : {}),
     name: recipe.name,
     description: recipe.description,
     story: recipe.story || "",
@@ -1605,10 +1619,11 @@ ${renderCookbookNav()}
         <div class="ak-eyebrow">${escapeHtml(recipe.country_name)} | ${escapeHtml(categoryLabel(recipe))}</div>
         <h1>${escapeHtml(recipe.name)}</h1>
         <p class="ak-hero-sub">${escapeHtml(recipe.description)}</p>
+        ${methodReviewHtml}
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Region</div><div class="ak-stat-val">${escapeHtml(recipe.region)}</div></div>
-          <div class="ak-stat"><div class="ak-stat-lbl">Time</div><div class="ak-stat-val accent">${escapeHtml(String(recipe.total_time_minutes || 0))} min</div></div>
+          <div class="ak-stat"><div class="ak-stat-lbl">Time</div><div class="ak-stat-val accent">${recipe.total_time_minutes == null ? "Time varies" : escapeHtml(String(recipe.total_time_minutes)) + " min"}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Serves</div><div class="ak-stat-val">${escapeHtml(String(recipe.default_servings || 1))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
@@ -1630,7 +1645,7 @@ ${renderCookbookNav()}
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
           ${recipe.primary_collection_slug ? `<div><span>Collection</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
         </div>
-        ${media.credit ? `<div class="ak-static-credit">${akIcon("source", "ak-icon-sm ak-icon-muted")}<span>Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</span></div>` : ""}
+        ${media.credit ? `<div class="ak-static-credit">${akIcon("source", "ak-icon-sm ak-icon-muted")}<span>Image sourced from ${escapeHtml(media.credit.source)} by ${media.credit.photographerUrl ? `<a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>` : escapeHtml(media.credit.photographer)}.</span></div>` : ""}
         </div>
       </aside>
     </div>
@@ -1669,7 +1684,7 @@ ${renderCookbookNav()}
           <section class="ak-method-panel" id="recipe-method">
             <div class="ak-method-head">
               <div>
-                <div class="ak-panel-kicker">02 / Let’s cook</div>
+                <div class="ak-panel-kicker">02 / Letâ€™s cook</div>
                 <h2 class="ak-panel-title">One step at a time</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
@@ -1677,9 +1692,9 @@ ${renderCookbookNav()}
             </div>
             <div class="ak-method-stat-row">
               <span>${akIcon("check", "ak-icon-sm")}${escapeHtml(String((recipe.steps || []).length))} steps</span>
-              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(String(recipe.prep_time_minutes || 0))} min prep</span>
-              <span>${akIcon("timer", "ak-icon-sm")}${escapeHtml(String(recipe.cook_time_minutes || 0))} min cook</span>
-              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(String(recipe.total_time_minutes || 0))} min total</span>
+              <span>${akIcon("time", "ak-icon-sm")}${recipe.prep_time_minutes == null ? "Time varies" : escapeHtml(String(recipe.prep_time_minutes)) + " min"} prep</span>
+              <span>${akIcon("timer", "ak-icon-sm")}${recipe.cook_time_minutes == null ? "Time varies" : escapeHtml(String(recipe.cook_time_minutes)) + " min"} cook</span>
+              <span>${akIcon("time", "ak-icon-sm")}${recipe.total_time_minutes == null ? "Time varies" : escapeHtml(String(recipe.total_time_minutes)) + " min"} total</span>
               <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>
             </div>
             <div class="ak-steps">${renderedSteps}</div>
@@ -1698,7 +1713,7 @@ ${renderCookbookNav()}
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
+            <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${recipe.total_time_minutes == null ? "Time varies" : escapeHtml(String(recipe.total_time_minutes)) + " min"}utes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -3068,6 +3083,35 @@ function refreshRecipeDescriptions() {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-diet-labels')) {
+    let manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    const engine = loadAfroKitchenEngine();
+    const recipeImages = loadRecipeImages();
+    const researchAudit = loadRecipeResearchAudit();
+    const intelligence = buildCuisineIntelligence(manifest, { recipeImages, researchAudit });
+    const derived = refreshDietaryCollectionData(manifest, loadCuisineIntelligence(), intelligence);
+    manifest = derived.manifest;
+    const pending = [];
+    // Related-recipe ranking can change after a method review. Keep each saved
+    // card and refresh only its diet label from the current recipe inventory.
+    const currentCards = manifest.recipes.map(recipe => renderStaticRecipeCard(recipe, recipeImages)).join('');
+    function prepare(directory, generated, collection = false) {
+      const file = path.join(directory, 'index.html');
+      const existing = fs.readFileSync(file, 'utf8');
+      const normalized = collection ? require('./lib/content-integrity').dedupeRepeatedParagraphs(generated).html.normalize('NFC') : generated;
+      const next = trimTrailingWhitespace(collection ? refreshCollectionDietLabels(existing, normalized) : refreshRecipeDietLabels(existing, normalized + currentCards));
+      if (next !== existing) pending.push({ file, next });
+    }
+    manifest.recipes.filter(recipe => recipe.generated_in_wave).forEach(recipe =>
+      prepare(path.join(RECIPES_DIR, recipe.slug), buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, intelligence)));
+    manifest.countries.forEach(country => prepare(path.join(COUNTRIES_DIR, country.country_slug), buildCountryPageHtml(country, manifest, intelligence, recipeImages)));
+    manifest.collections.forEach(collection => prepare(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages), true));
+    writeManifest(manifest, MANIFEST_PATH);
+    writePublicCuisineData(derived.publicData);
+    pending.forEach(({ file, next }) => writeTextFileSync(file, trimTrailingWhitespace(next), 'utf8'));
+    console.log('Refreshed dietary metadata, card labels and derived collection links on ' + pending.length + ' saved pages. Recipe content and retained card imagery preserved. No live data reads.');
+    return;
+  }
   if (process.argv.includes('--refresh-recipe-schema')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const engine = loadAfroKitchenEngine();
@@ -3229,7 +3273,7 @@ async function main() {
   console.log("Generated AfroKitchen manifest-driven static pages.");
   console.log(`Manifest path: ${MANIFEST_PATH}`);
   console.log(`Wave strategy: ${manifest.wave.strategy}`);
-  console.log(`Recipe inventory available: ${manifest.source.verified_recipe_count}`);
+  console.log(`Recipe inventory available: ${manifest.source.published_recipe_count ?? manifest.source.verified_recipe_count}`);
   console.log(`Recipe pages generated in this pass: ${manifest.wave.recipe_count}`);
   console.log(`Country hubs generated in this pass: ${manifest.wave.country_hub_count}`);
   console.log(`Collection pages generated in this pass: ${manifest.wave.collection_page_count}`);
@@ -3301,6 +3345,7 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
       throw new Error('Schema-only refresh cannot change recipe steps');
     }
     value.image = recipeSchema.image;
+    if (recipeSchema.dateModified) value.dateModified = recipeSchema.dateModified;
     value.recipeInstructions.forEach((step, index) => {
       const source = recipeSchema.recipeInstructions[index];
       if (step.name !== source.name || step.text !== source.text || step.url !== source.url) {
@@ -3327,4 +3372,75 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
+function refreshRecipeDietLabels(existing, generated) {
+  const { isDeepStrictEqual } = require('node:util');
+  const schemas = html => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map(match => JSON.parse(match[1])).filter(value => value['@type'] === 'Recipe');
+  const oldSchemas = schemas(existing), newSchemas = schemas(generated);
+  if (oldSchemas.length > 1 || newSchemas.length > 1) throw new Error('Duplicate Recipe schema in diet refresh');
+  let next = existing;
+  if (oldSchemas.length) {
+    if (!newSchemas.length) throw new Error('Diet refresh cannot remove Recipe schema');
+    const oldSchema = { ...oldSchemas[0] }, newSchema = { ...newSchemas[0] };
+    const oldKeywords = String(oldSchema.keywords || '').split(',').map(value => value.trim()).filter(Boolean);
+    const newKeywords = String(newSchema.keywords || '').split(',').map(value => value.trim()).filter(Boolean);
+    delete oldSchema.keywords;
+    delete newSchema.keywords;
+    if (!isDeepStrictEqual(oldSchema, newSchema)) throw new Error('Diet refresh cannot change recipe content or images');
+    if (!isDeepStrictEqual(newKeywords, oldKeywords.filter(value => newKeywords.includes(value)))) {
+      throw new Error('Diet refresh only permits ordered keyword removals');
+    }
+    next = next.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
+      const value = JSON.parse(body);
+      if (value['@type'] !== 'Recipe' || value.keywords === newSchemas[0].keywords) return all;
+      if (newSchemas[0].keywords) value.keywords = newSchemas[0].keywords;
+      else delete value.keywords;
+      return start + safeJson(value) + end;
+    });
+  }
+  const cards = new Map([...generated.matchAll(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g)].map(match => [match[1], match[0]]));
+  const diet = /<span><svg\b[^>]*>(?:(?!<\/svg>)[\s\S])*<\/svg><span><small>Diet<\/small><strong>[^<]*<\/strong><\/span><\/span>/;
+  next = next.replace(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g, (card, href) => {
+    if (!cards.has(href)) throw new Error('Diet refresh cannot remove a recipe card: ' + href);
+    const replacement = cards.get(href).match(diet)?.[0] || '';
+    if (!diet.test(card) && replacement) throw new Error('Diet refresh cannot add a previously absent card label: ' + href);
+    return card.replace(diet, replacement);
+  });
+  const collections = /<div class="ak-intel-mini">\s*<strong>Collections to keep cooking<\/strong>\s*<div class="ak-intel-links">[\s\S]*?<\/div>\s*<\/div>/;
+  const updatedCollections = generated.match(collections)?.[0];
+  if (collections.test(next)) {
+    if (!updatedCollections) throw new Error('Diet refresh cannot remove the collection continuation');
+    next = next.replace(collections, updatedCollections);
+  }
+  return next;
+}
+
+function refreshCollectionDietLabels(existing, generated) {
+  const canonical = html => html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
+  if (!canonical(existing) || canonical(existing) !== canonical(generated)) throw new Error('Collection identity changed in diet refresh');
+  const region = /<div class="ak-page ak-collection-static-page"[\s\S]*?(?=<afro-footer>)/;
+  const oldRegion = existing.match(region)?.[0], newRegion = generated.match(region)?.[0];
+  if (!oldRegion || !newRegion) throw new Error('Missing collection content in diet refresh');
+  // Reuse existing cards for retained members so accepted image markup is stable.
+  const cardPattern = /<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g;
+  const oldCards = new Map([...oldRegion.matchAll(cardPattern)].map(match => [match[1], match[0]]));
+  const updatedRegion = newRegion.replace(cardPattern, (card, href) =>
+    oldCards.has(href) ? refreshRecipeDietLabels(oldCards.get(href), card) : card);
+  let next = existing.replace(region, updatedRegion);
+  const generatedSchemas = new Map([...generated.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map(match => { const value = JSON.parse(match[1]); return [value['@type'], value]; }));
+  next = next.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
+    const value = JSON.parse(body);
+    return ['CollectionPage', 'ItemList'].includes(value['@type'])
+      ? start + safeJson(generatedSchemas.get(value['@type'])) + end : all;
+  });
+  for (const attribute of ['name="description"', 'property="og:description"', 'name="twitter:description"']) {
+    const pattern = new RegExp('<meta ' + attribute + ' content="[^"]*">');
+    const replacement = generated.match(pattern)?.[0];
+    if (!replacement || !pattern.test(next)) throw new Error('Missing collection description in diet refresh');
+    next = next.replace(pattern, replacement);
+  }
+  return next;
+}
+
+module.exports = { buildRecipePageHtml, buildCountryPageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES, buildCollectionPageHtml, refreshRecipeDietLabels, refreshCollectionDietLabels };

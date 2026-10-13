@@ -3,6 +3,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadBindings, resolveReviewedToolArtwork } = require('./lib/reviewed-tool-image-bindings');
+const { imageSizeFromUrl } = require('./lib/image-size');
+const reviewedArtwork = loadBindings();
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -21,14 +24,26 @@ const apps = [
   { id: 'credit-score', route: '/sw/zana/alama-ya-mkopo/', file: 'sw/zana/alama-ya-mkopo/index.html', en: '/tools/credit-score/', fr: '/fr/tools/score-credit/', title: 'Kujikagua wasifu wa mkopo', description: 'Kagua ishara tano za wasifu wa mkopo kwa fahirisi ya kielimu iliyo wazi bila kufikia ripoti au kutabiri uamuzi wa mkopeshaji.', image: '/assets/img/tools/credit-score.webp', width: 800, height: 450, calculate: 'calcCreditScore', controller: 'credit-score.js', badges: ['Si alama ya bureau', 'Hakuna data binafsi', 'Vipengele vitano'], body: creditBody(), method: 'Thamani tano ulizochagua hujumlishwa na kugawanywa kwa tano. Kila kipengele kina uzito wa 20%. Makundi haya ni vidokezo vya kielimu, si fomula ya credit bureau.' }
 ];
 
+const appsArgument = process.argv.find(argument => argument.startsWith('--apps='));
+const selectedApps = appsArgument === undefined ? null : new Set(appsArgument.slice(7).split(',').filter(Boolean));
+if (selectedApps && (!selectedApps.size || [...selectedApps].some(id => !apps.some(app => app.id === id)))) {
+  throw new Error('--apps requires known community credit app owners');
+}
+
 function render(app) {
+  const image = resolveReviewedToolArtwork(app.route, app.image, reviewedArtwork);
+  if (image !== app.image) {
+    const size = imageSizeFromUrl(image, ROOT);
+    if (!size) throw new Error(`Cannot measure reviewed artwork for ${app.id}`);
+    app = { ...app, image, width: size.w, height: size.h };
+  }
   const badges = app.badges.map((badge) => `<span class="badge">${badge}</span>`).join('');
   const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: app.title, url: `https://afrotools.com${app.route}`, description: app.description, inLanguage: 'sw', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, image: `https://afrotools.com${app.image}` });
   return `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${app.title} | AfroTools</title><meta name="description" content="${app.description}"><meta name="robots" content="index,follow"><meta name="x-source-owner" content="scripts/build-sw-fintech-community-credit.js"><link rel="canonical" href="https://afrotools.com${app.route}"><link rel="alternate" hreflang="en" href="https://afrotools.com${app.en}"><link rel="alternate" hreflang="fr" href="https://afrotools.com${app.fr}"><link rel="alternate" hreflang="sw" href="https://afrotools.com${app.route}"><link rel="alternate" hreflang="x-default" href="https://afrotools.com${app.en}"><meta property="og:type" content="website"><meta property="og:title" content="${app.title}"><meta property="og:description" content="${app.description}"><meta property="og:url" content="https://afrotools.com${app.route}"><meta property="og:image" content="https://afrotools.com${app.image}"><meta property="og:image:width" content="${app.width}"><meta property="og:image:height" content="${app.height}"><meta property="og:locale" content="sw_TZ"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://afrotools.com${app.image}"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5"><link rel="stylesheet" href="/assets/css/sw-fintech-community-credit.css"><script>(function(){try{var t=localStorage.getItem('aft_theme'),d=matchMedia('(prefers-color-scheme:dark)').matches,a=t==='dark'||t==='light'?t:(d?'dark':'light');document.documentElement.dataset.theme=a;document.documentElement.dataset.themeChoice=t==='dark'||t==='light'?t:'auto';document.documentElement.style.colorScheme=a}catch(_){}})();</script><script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script><script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script><script type="application/ld+json">${schema}</script></head><body data-sw-community-credit-app="${app.id}"><a class="skip-link" href="#main-content">Ruka hadi maudhui</a><afro-navbar theme="dark" active="tools"></afro-navbar><header class="tool-hero"><div class="container hero-grid"><div><nav class="breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a> / <a href="/sw/fintech/">Fintech</a> / ${app.title}</nav><h1>${app.title}</h1><p>${app.description}</p><div class="badges">${badges}</div></div><img class="hero-art" src="${app.image}" width="${app.width}" height="${app.height}" alt="Mchoro wa ${app.title}"></div></header><main class="container" id="main-content"><form class="card" data-sw-community-credit-form data-calculate="${app.calculate}" novalidate>${app.body}<a class="ai-handoff" data-shared-ai-handoff data-ai-candidate-tool-id="${app.id}" href="/sw/ai/?tool=${app.id}">Fungua usaidizi wa AI wa hiari</a></form><section class="card method-box"><h2>Jinsi hesabu inavyofanya kazi</h2><p>${app.method}</p><p>Hili ni kadirio la kupanga na kujikagua; si idhini ya mkopo, alama rasmi, bei au ushauri wa kifedha.</p></section><section class="card"><h2>Zana zinazohusiana</h2><ul class="related-links"><li><a href="/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/">SACCO na vyama vya akiba</a></li><li><a href="/sw/zana/alama-ya-mkopo/">Kujikagua wasifu wa mkopo</a></li><li><a href="/sw/zana/mikopo-ya-kidijitali/">Mikopo ya kidijitali</a></li></ul></section></main><afro-footer></afro-footer><script src="/assets/js/pages/fintech-shared-controller-i18n.js"></script><script src="/assets/js/pages/fintech-shared-controllers/${app.controller}"></script><script src="/assets/js/pages/sw-fintech-community-credit.js"></script><script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script><script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script></body></html>\n`;
 }
 
 let stale = 0;
-for (const app of apps) {
+for (const app of apps.filter(app => !selectedApps || selectedApps.has(app.id))) {
   const target = path.join(ROOT, app.file);
   const next = render(app);
   const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';

@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { createClient } = require("@supabase/supabase-js");
+const { applyReviewedMethod } = require('./afrokitchen-method-corrections');
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const TOOL_DIR = path.join(ROOT, "tools", "afrokitchen");
@@ -582,6 +583,7 @@ function buildCollectionDescription(collection) {
 }
 
 function normalizeRecipe(recipe) {
+  recipe = applyReviewedMethod(recipe);
   const description = cleanGeneratedDescription(recipe);
   const story = cleanGeneratedStory(recipe, description);
   const cleanedRecipe = {
@@ -907,7 +909,7 @@ async function buildManifest(options) {
     supabase
       .from("recipes")
       .select("*")
-      .eq("is_verified", true)
+      .eq("is_published", true)
       .order("country_name", { ascending: true })
       .order("name", { ascending: true })
   );
@@ -1030,7 +1032,8 @@ async function buildManifest(options) {
       dataset: "supabase.public.recipes",
       collection_dataset: "supabase.public.collections",
       recipe_count: recipesWithCollections.length,
-      verified_recipe_count: recipesWithCollections.length,
+      published_recipe_count: recipesWithCollections.length,
+      verified_recipe_count: recipesWithCollections.filter(recipe => recipe.is_verified === true).length,
       static_eligible_recipe_count: eligibleRecipes.length,
       excluded_recipe_count: exclusions.length,
       featured_recipe_count: recipesWithCollections.filter((recipe) => recipe.is_featured).length,
@@ -1046,10 +1049,10 @@ async function buildManifest(options) {
       strategy: settings.waveStrategy || DEFAULT_WAVE_STRATEGY,
       description:
         (settings.waveStrategy || DEFAULT_WAVE_STRATEGY) === "featured_verified"
-          ? "All verified featured recipes."
+          ? "All published featured recipes."
           : (settings.waveStrategy || DEFAULT_WAVE_STRATEGY) === "all_verified"
-            ? "All verified recipes."
-            : "All verified featured recipes plus the highest-view verified recipe for any country that would otherwise have no clean recipe route in this wave.",
+            ? "All published recipes."
+            : "All published featured recipes plus the highest-view published recipe for any country that would otherwise have no clean recipe route in this wave.",
       recipe_count: waveSet.size,
       exclusion_count: exclusions.length,
       country_hub_count: countriesWithCollections.length,

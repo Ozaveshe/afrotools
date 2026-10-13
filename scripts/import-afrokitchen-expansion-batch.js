@@ -39,6 +39,12 @@ function validateBatch(batch) {
   }
 
   batch.recipes.forEach((recipe) => {
+    const sourceReviewed = recipe.is_verified === false && recipe.is_published === true && /^\d{4}-\d{2}-\d{2}$/.test(recipe.reviewed_at || "");
+    for (const field of ['is_verified', 'is_published']) {
+      if (Object.prototype.hasOwnProperty.call(recipe, field) && typeof recipe[field] !== 'boolean') {
+        errors.push(`${recipe.slug || 'recipe'} ${field} must be a boolean when supplied.`);
+      }
+    }
     requireText(recipe, "slug", errors);
     requireText(recipe, "name", errors);
     requireText(recipe, "description", errors);
@@ -53,17 +59,17 @@ function validateBatch(batch) {
       slugs.add(recipe.slug);
     }
 
-    if (!Number.isInteger(recipe.prep_time_minutes) || recipe.prep_time_minutes < 0) {
+    if (!(sourceReviewed && recipe.prep_time_minutes == null) && (!Number.isInteger(recipe.prep_time_minutes) || recipe.prep_time_minutes < 0)) {
       errors.push(`${recipe.slug} has invalid prep_time_minutes`);
     }
-    if (!Number.isInteger(recipe.cook_time_minutes) || recipe.cook_time_minutes < 0) {
+    if (!(sourceReviewed && recipe.cook_time_minutes == null) && (!Number.isInteger(recipe.cook_time_minutes) || recipe.cook_time_minutes < 0)) {
       errors.push(`${recipe.slug} has invalid cook_time_minutes`);
     }
     if (!Number.isInteger(recipe.default_servings) || recipe.default_servings < 1) {
       errors.push(`${recipe.slug} has invalid default_servings`);
     }
 
-    if (!Array.isArray(recipe.sources) || recipe.sources.length < 2) {
+    if (!Array.isArray(recipe.sources) || recipe.sources.length < (sourceReviewed ? 1 : 2)) {
       errors.push(`${recipe.slug} needs at least two source references.`);
     } else {
       recipe.sources.forEach((source, index) => {
@@ -93,8 +99,13 @@ function validateBatch(batch) {
       errors.push(`${recipe.slug} needs at least three method steps.`);
     } else {
       const hasTimer = recipe.steps.some((step) => Number(step.timer_seconds || 0) > 0);
-      if (!hasTimer) errors.push(`${recipe.slug} needs at least one step timer.`);
+      if (!hasTimer && !sourceReviewed) errors.push(`${recipe.slug} needs at least one step timer.`);
       recipe.steps.forEach((step, index) => {
+        const instruction = String(step.instruction || '').replace(/\s+/g, ' ').trim();
+        if (/ferment loosely covered until lightly sour/i.test(instruction) ||
+            (/ferment/i.test(String(step.timer_label || '')) && Number(step.timer_seconds) === 720)) {
+          errors.push(`${recipe.slug} step ${index + 1} uses an unsupported placeholder fermentation method; provide a source-reviewed process before import.`);
+        }
         if (!String(step.title || "").trim()) {
           errors.push(`${recipe.slug} step ${index + 1} needs a title.`);
         }
@@ -109,6 +120,11 @@ function validateBatch(batch) {
 }
 
 function recipePayload(recipe) {
+  for (const field of ['is_verified', 'is_published']) {
+    if (Object.prototype.hasOwnProperty.call(recipe, field) && typeof recipe[field] !== 'boolean') {
+      throw new TypeError(`${field} must be a boolean when supplied.`);
+    }
+  }
   return {
     slug: recipe.slug,
     name: recipe.name,
@@ -140,7 +156,8 @@ function recipePayload(recipe) {
     fiber_g: recipe.fiber_g || null,
     author: recipe.author || "AfroKitchen research desk",
     source: recipe.sources && recipe.sources[0] ? recipe.sources[0].url : null,
-    is_verified: true,
+    is_verified: recipe.is_verified === true,
+    ...(Object.prototype.hasOwnProperty.call(recipe, 'is_published') ? { is_published: recipe.is_published } : {}),
     is_featured: Boolean(recipe.is_featured),
     updated_at: new Date().toISOString()
   };
@@ -190,11 +207,17 @@ function mediaPayload(recipeId, media, index) {
 }
 
 async function upsertRecipe(supabase, recipe) {
-  const { data, error } = await supabase
-    .from("recipes")
-    .upsert(recipePayload(recipe), { onConflict: "slug" })
-    .select("id, slug")
-    .single();
+  const payload = recipePayload(recipe);
+  const { data: existing, error: readError } = await supabase
+    .from('recipes').select('id, slug').eq('slug', recipe.slug).maybeSingle();
+  if (readError) throw new Error(`${recipe.slug}: publication lookup failed: ${readError.message}`);
+  // An omitted publication flag must leave an existing row unchanged. An upsert
+  // can replace omitted fields with defaults, so update and insert are explicit.
+  // A concurrent insert fails on the unique slug before any child-row cleanup.
+  const write = existing
+    ? supabase.from('recipes').update(payload).eq('id', existing.id)
+    : supabase.from('recipes').insert(payload);
+  const { data, error } = await write.select('id, slug').single();
 
   if (error) throw new Error(`${recipe.slug}: recipe upsert failed: ${error.message}`);
   const recipeId = data.id;
