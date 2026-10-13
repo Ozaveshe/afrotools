@@ -85,6 +85,428 @@
       "fixtureId": "paye-gh-large-decimal",
       "formulaId": "paye-server-gh",
       "reason": "The large-decimal case now uses Act 1178 bands and caps annual employee SSNIT at twelve times GHS 69,000."
+    },
+    {
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "fixtureId": "business-roi-review-age-leap-next",
+      "input": {
+        "atDate": "2027-03-02",
+        "birthDate": "2000-02-29"
+      },
+      "method": "age",
+      "nextExpected": {
+        "days": 1,
+        "daysUntilBirthday": 364,
+        "months": 0,
+        "years": 27
+      },
+      "previousExpected": {
+        "days": 2,
+        "daysUntilBirthday": 365,
+        "months": 0,
+        "years": 27
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "daysUntilBirthday"
+      ],
+      "fixtureId": "business-roi-review-age-leap-year-boundary",
+      "input": {
+        "atDate": "2027-12-31",
+        "birthDate": "2000-02-29"
+      },
+      "method": "age",
+      "nextExpected": {
+        "daysUntilBirthday": 60
+      },
+      "previousExpected": {
+        "daysUntilBirthday": 61
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "fixtureId": "business-roi-review-age-leap-today",
+      "input": {
+        "atDate": "2028-02-29",
+        "birthDate": "2000-02-29"
+      },
+      "method": "age",
+      "nextExpected": {
+        "days": 0,
+        "daysUntilBirthday": 0,
+        "months": 0,
+        "years": 28
+      },
+      "previousExpected": {
+        "days": 0,
+        "daysUntilBirthday": 366,
+        "months": 0,
+        "years": 28
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "fixtureId": "business-roi-review-age-ordinary-today",
+      "input": {
+        "atDate": "2026-07-29",
+        "birthDate": "2000-07-29"
+      },
+      "method": "age",
+      "nextExpected": {
+        "days": 0,
+        "daysUntilBirthday": 0,
+        "months": 0,
+        "years": 26
+      },
+      "previousExpected": {
+        "days": 0,
+        "daysUntilBirthday": 365,
+        "months": 0,
+        "years": 26
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "years",
+        "months",
+        "days",
+        "daysUntilBirthday"
+      ],
+      "fixtureId": "business-roi-review-age-march1-anniversary",
+      "input": {
+        "atDate": "2027-03-01",
+        "birthDate": "2000-02-29"
+      },
+      "method": "age",
+      "nextExpected": {
+        "days": 0,
+        "daysUntilBirthday": 0,
+        "months": 0,
+        "years": 27
+      },
+      "previousExpected": {
+        "days": 1,
+        "daysUntilBirthday": 366,
+        "months": 0,
+        "years": 27
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "fixtureId": "business-roi-review-age-short-month",
+      "input": {
+        "atDate": "2026-03-01",
+        "birthDate": "2026-01-31"
+      },
+      "method": "age",
+      "nextExpected": {
+        "days": 29,
+        "months": 0,
+        "years": 0
+      },
+      "previousExpected": {
+        "days": 1,
+        "months": 1,
+        "years": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "years",
+        "months",
+        "days"
+      ],
+      "fixtureId": "business-roi-review-age-rolled-month",
+      "input": {
+        "atDate": "2026-03-03",
+        "birthDate": "2026-01-31"
+      },
+      "method": "age",
+      "nextExpected": {
+        "days": 0,
+        "months": 1,
+        "years": 0
+      },
+      "previousExpected": {
+        "days": 3,
+        "months": 1,
+        "years": 0
+      },
+      "reason": "Calendar anniversary convention: unavailable dates roll forward; birthday today is zero days; monthly anniversaries derive from the original birth date. This is a planning convention, not a legal age rule.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "iso"
+      ],
+      "fixtureId": "business-roi-review-time-cairo-gap",
+      "input": {
+        "fromZone": "Africa/Cairo",
+        "localDateTime": "2026-04-24T00:30",
+        "locale": "en",
+        "toZone": "Africa/Nairobi"
+      },
+      "method": "timeZone",
+      "nextExpected": {
+        "error": "nonexistent-local-time"
+      },
+      "previousExpected": {
+        "iso": "2026-04-23T22:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "iso"
+      ],
+      "fixtureId": "business-roi-review-time-casablanca-gap",
+      "input": {
+        "fromZone": "Africa/Casablanca",
+        "localDateTime": "2026-03-22T02:30",
+        "locale": "en",
+        "toZone": "Africa/Nairobi"
+      },
+      "method": "timeZone",
+      "nextExpected": {
+        "error": "nonexistent-local-time"
+      },
+      "previousExpected": {
+        "iso": "2026-03-22T02:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "iso"
+      ],
+      "fixtureId": "business-roi-review-time-fold-reject",
+      "input": {
+        "fromZone": "Africa/Casablanca",
+        "localDateTime": "2026-02-15T02:30",
+        "locale": "en",
+        "toZone": "Africa/Nairobi"
+      },
+      "method": "timeZone",
+      "nextExpected": {
+        "error": "ambiguous-local-time"
+      },
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "iso"
+      ],
+      "fixtureId": "business-roi-review-time-fold-earlier",
+      "input": {
+        "fromZone": "Africa/Casablanca",
+        "localDateTime": "2026-02-15T02:30",
+        "locale": "en",
+        "occurrence": "earlier",
+        "toZone": "Africa/Nairobi"
+      },
+      "method": "timeZone",
+      "nextExpected": {
+        "iso": "2026-02-15T01:30:00.000Z"
+      },
+      "previousExpected": {
+        "iso": "2026-02-15T02:30:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fields": [
+        "iso"
+      ],
+      "fixtureId": "business-roi-review-time-invalid-calendar",
+      "input": {
+        "fromZone": "Africa/Lagos",
+        "localDateTime": "2026-02-30T10:00",
+        "locale": "en",
+        "toZone": "Africa/Nairobi"
+      },
+      "method": "timeZone",
+      "nextExpected": {
+        "error": "invalid-date"
+      },
+      "previousExpected": {
+        "iso": "2026-03-02T09:00:00.000Z"
+      },
+      "reason": "Runtime IANA/ICU offset round-trip. Gaps reject and repeated wall times require an explicit earlier/later selection; no future statutory timezone guarantee.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fixtureId": "business-roi-review-ics-en",
+      "input": {
+        "confirmed": true,
+        "country": "NG",
+        "date": "2026-12-31",
+        "locale": "en",
+        "name": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "note": "one\rtwo\nthree",
+        "timestamp": "2026-10-13T00:00:00Z",
+        "uid": "review-fixture@afrotools.com"
+      },
+      "method": "holidayEntry",
+      "nextExpected": {
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "summary": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "uid": "review-fixture@afrotools.com"
+      },
+      "previousExpected": {
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "stamp": null,
+        "start": "20261231",
+        "summary": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "uid": "20261231-ng@afrotools.local"
+      },
+      "projection": "calendar-properties",
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fixtureId": "business-roi-review-ics-fr",
+      "input": {
+        "confirmed": true,
+        "country": "NG",
+        "date": "2026-12-31",
+        "locale": "fr",
+        "name": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "note": "one\rtwo\nthree",
+        "timestamp": "2026-10-13T00:00:00Z",
+        "uid": "review-fixture@afrotools.com"
+      },
+      "method": "holidayEntry",
+      "nextExpected": {
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "summary": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "uid": "review-fixture@afrotools.com"
+      },
+      "previousExpected": {
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "stamp": null,
+        "start": "20261231",
+        "summary": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "uid": "20261231-ng@afrotools.local"
+      },
+      "projection": "calendar-properties",
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
+    },
+    {
+      "fixtureId": "business-roi-review-ics-sw",
+      "input": {
+        "confirmed": true,
+        "country": "NG",
+        "date": "2026-12-31",
+        "locale": "sw",
+        "name": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "note": "one\rtwo\nthree",
+        "timestamp": "2026-10-13T00:00:00Z",
+        "uid": "review-fixture@afrotools.com"
+      },
+      "method": "holidayEntry",
+      "nextExpected": {
+        "end": "20270101",
+        "foldedWithin75": true,
+        "noBareNewlines": true,
+        "stamp": "20261013T000000Z",
+        "start": "20261231",
+        "summary": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "uid": "review-fixture@afrotools.com"
+      },
+      "previousExpected": {
+        "end": "20270101",
+        "foldedWithin75": false,
+        "noBareNewlines": false,
+        "stamp": null,
+        "start": "20261231",
+        "summary": "Synthetic é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍é🌍",
+        "uid": "20261231-ng@afrotools.local"
+      },
+      "projection": "calendar-properties",
+      "reason": "RFC5545 content-line folding, TEXT newline escaping, UID and DTSTAMP; all-day end remains exclusive. User confirmation remains mandatory.",
+      "reviewedAt": "2026-10-13",
+      "reviewedBy": "Codex Delivery technical review; human CODEOWNERS approval pending",
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc5545"
     }
   ],
   "schemaVersion": 1
