@@ -88,26 +88,6 @@ jobs:
       tree: ${{ steps.seal.outputs.tree }}
       deadline: ${{ steps.seal.outputs.deadline }}
     steps:
-      - name: Bind the original shared 75-minute deadline
-        id: begin
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          node <<'NODE'
-          (async () => {
-            const url = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/attempts/${process.env.GITHUB_RUN_ATTEMPT}/jobs?per_page=100`;
-            const response = await fetch(url, {headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(10000)});
-            if (!response.ok) throw new Error('Cannot bind native job start');
-            const jobs = (await response.json()).jobs.filter(job => job.name === 'Artifact producer' && job.status === 'in_progress');
-            if (jobs.length !== 1) throw new Error('Ambiguous producer job start');
-            const start = Date.parse(jobs[0].started_at);
-            if (!Number.isFinite(start) || start > Date.now()) throw new Error('Invalid producer start');
-            const deadline = start + 75 * 60 * 1000;
-            if (deadline <= Date.now()) throw new Error('Original shared deadline expired');
-            require('node:fs').appendFileSync(process.env.GITHUB_OUTPUT, `deadline=${deadline}\n`);
-          })().catch(error => {console.error(error.message);process.exitCode=1;});
-          NODE
-
       - name: Checkout repository
         uses: actions/checkout@v5
 
@@ -116,6 +96,12 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+
+      - name: Bind the original shared 75-minute deadline
+        id: begin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/ci-artifact-deadline.js
 
       - name: Install dependencies
         run: npm ci

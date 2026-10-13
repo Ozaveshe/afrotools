@@ -6,6 +6,7 @@ const path = require('node:path');
 const os = require('node:os');
 const cp = require('node:child_process');
 const c = require('../scripts/ci-artifact-contract');
+const {selectNativeStart, bindNativeDeadline} = require('../scripts/ci-artifact-deadline');
 const inventory = require('../scripts/ci-artifact-groups.json');
 const ROOT = path.resolve(__dirname, '..');
 const clone = value => structuredClone(value);
@@ -131,6 +132,32 @@ test('shared deadline cannot restart in consumers or aggregate', () => {
   assert.throws(() => c.aggregate(inventory, f.manifest, f.reports, f.needs, f.manifest.deadline), /deadline/);
   assert.throws(() => c.deadlineCheck(NaN), /invalid/);
   assert.throws(() => c.deadlineCheck(Date.now() - 1), /deadline/);
+});
+
+test('native deadline uses the actual job start even if status propagation is delayed', () => {
+  const start = Date.parse('2026-10-13T07:00:00Z'), now = start + 120000;
+  for (const status of ['queued', 'in_progress']) {
+    assert.equal(selectNativeStart([{name:'Artifact producer',status,started_at:new Date(start).toISOString()}], now), start + 75*60000);
+  }
+  assert.throws(() => selectNativeStart([], now), /uniquely/);
+  assert.throws(() => selectNativeStart([{name:'Artifact producer',status:'queued',started_at:null}], now), /valid/);
+  assert.throws(() => selectNativeStart([{name:'Artifact producer',status:'in_progress',started_at:new Date(now+1).toISOString()}], now), /valid/);
+});
+
+test('native start lookup retries bounded visibility without restarting the deadline', async () => {
+  const start = Date.parse('2026-10-13T07:00:00Z'), now = start + 120000;
+  let reads=0; const waits=[];
+  const deadline=await bindNativeDeadline(async()=>++reads===1?[]:[{name:'Artifact producer',status:'in_progress',started_at:new Date(start).toISOString()}],async ms=>waits.push(ms),()=>now);
+  assert.equal(reads,2);assert.deepEqual(waits,[1000]);assert.equal(deadline,start+75*60000);
+});
+
+test('native start lookup fails after three reads and cannot substitute the current clock', async () => {
+  let reads=0,waits=0;
+  await assert.rejects(bindNativeDeadline(async()=>{reads++;return[];},async()=>{waits++;}),/three bounded reads/);
+  assert.equal(reads,3);assert.equal(waits,2);
+  const start=Date.parse('2026-10-13T07:00:00Z'),job={name:'Artifact producer',status:'in_progress',started_at:new Date(start).toISOString()};
+  assert.throws(()=>selectNativeStart([job,job],start+1000),/uniquely/);
+  assert.throws(()=>selectNativeStart([job],start+75*60000),/expired/);
 });
 
 function fixture() {
