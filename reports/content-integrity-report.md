@@ -1,6 +1,6 @@
 # Content Integrity Report
 
-Generated: 2026-10-11T12:05:43.318Z
+Generated: 2026-10-13T06:35:38.851Z
 
 - HTML pages scanned: 11940
 - Generated pages with provenance: 1873
