@@ -30,13 +30,34 @@ function originalBrowserStep(block) {
 }
 
 test('mechanically preserves all current commands/env/specs/workers and Verify/smoke blocks', () => {
-  const original = cp.execFileSync('git', ['show', inventory.originalCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
+  const original = fs.readFileSync(path.join(ROOT, 'tests/fixtures/ci-artifact-original-a225.yml'), 'utf8');
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
   assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));
   const body = original.split('  build:\n')[1].split('  e2e:\n')[0];
   const blocks = body.match(/      - name: .*?(?=\n      - name:|$)/gs);
-  assert.equal(blocks.length, inventory.producer.length + inventory.browser.length);
+  const inverse = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/automation/workflow-inverses/afrostream-fr-sw-provenance-614.json'), 'utf8'));
+  const originalInventoryBytes = Buffer.from(inverse.baselineBase64, 'base64');
+  assert.equal(c.sha(originalInventoryBytes), inverse.baselineRawSha256);
+  const originalInventory = JSON.parse(originalInventoryBytes);
+  const addition = inventory.browser.filter(gate => !originalInventory.browser.some(old => old.id === gate.id));
+  const originals = inventory.browser.filter(gate => originalInventory.browser.some(old => old.id === gate.id));
+  assert.equal(blocks.length, 42);
+  assert.equal(inventory.producer.length, 10);
+  assert.equal(originals.length, 32);
+  assert.equal(inventory.browser.length, 33);
+  assert.equal(inventory.producer.length + inventory.browser.length, 43);
+  assert.deepEqual(originals, originalInventory.browser);
+  assert.deepEqual(inventory.producer, originalInventory.producer);
+  assert.equal(addition.length, 1);
+  assert.equal(addition[0].id, 'afrostream-localized-provenance');
+  assert.equal(addition[0].group, 2);
+  assert.deepEqual(addition[0].step.env, {AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1', AFROTOOLS_TEST_DISABLE_ANALYTICS:'1', PORT:'4199'});
+  assert.equal(addition[0].step.run, 'npx playwright test tests/e2e/afrostream-localized-provenance.spec.js --project=chromium --workers=1 --retries=0 --trace=off --output="$RUNNER_TEMP/afrostream-provenance-browser"');
+  const restored = clone(inventory);
+  restored.browser = originals;
+  assert.deepEqual(restored, originalInventory);
+  assert.equal(blocks.length, inventory.producer.length + originals.length);
   const covered = new Set();
   for (const [index, block] of blocks.entries()) {
     const name = block.split('\n')[0].slice('      - name: '.length);
@@ -62,6 +83,17 @@ test('mechanically preserves all current commands/env/specs/workers and Verify/s
   assert.match(current, /max-parallel: 2/); assert.match(current, /fail-fast: false/);
   assert.equal((current.match(/run: npm run build:deploy/g) || []).length, 1);
   assert.equal((current.match(/writeReleaseMetadata\(\)/g) || []).length, 1);
+});
+
+test('additive provenance gate is mandatory under the unchanged sealed inventory and deadline', () => {
+  const f = goodAcceptance();
+  const report = f.reports.find(item => item.group === 2);
+  const gate = report.gates.find(item => item.id === 'afrostream-localized-provenance');
+  assert.ok(gate, 'The eight-scenario gate must be enrolled in the sealed artifact group');
+  gate.status = 'skipped';
+  assert.throws(() => c.aggregate(inventory, f.manifest, f.reports, f.needs), /gate failed/);
+  report.gates = report.gates.filter(item => item.id !== gate.id);
+  assert.throws(() => c.aggregate(inventory, f.manifest, f.reports, f.needs), /missing/);
 });
 
 test('inventory rejects duplicate commands, unsupported contexts and changed native flags', () => {
