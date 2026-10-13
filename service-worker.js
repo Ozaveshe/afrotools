@@ -4,7 +4,7 @@
  *
  * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = 'dee9df45';
+const CACHE_VERSION = '28ca2288';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
@@ -27,6 +27,21 @@ const PRECACHE = [
   '/assets/js/bundles/chat.9ca610bf.min.js',
   // BUILD-GENERATED PRECACHE END
 ];
+
+async function cachedNavigationResponse(request) {
+  const response = await caches.match(request) || await caches.match(OFFLINE_URL);
+  // Pretty-URL redirects can be retained in a cached page's response. A
+  // navigation uses manual redirects, so the browser rejects that response.
+  // Retain the cached body and headers without its completed redirect chain.
+  if (response && response.redirected) {
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers
+    });
+  }
+  return response;
+}
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -90,7 +105,7 @@ self.addEventListener('fetch', e => {
           }
           return response;
         })
-        .catch(() => caches.match(request).then(cached => cached || caches.match(OFFLINE_URL)))
+        .catch(() => cachedNavigationResponse(request))
     );
     return;
   }
