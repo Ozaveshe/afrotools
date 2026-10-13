@@ -20,7 +20,11 @@ function isSearchReady(observation) {
 test('French car directory links dated market samples and the editable import quote', () => {
   const html = read('/fr/cars/');
   assert.match(html, /name="robots" content="index, follow"/);
-  assert.match(html, /href="\/tools\/car-import-cost\/"/);
+  assert.match(html, /href="\/fr\/tools\/cout-importation-voiture\/"/);
+  assert.doesNotMatch(html, /href="\/tools\/car-import-cost\/"/);
+  const calculator = read('/fr/tools/cout-importation-voiture/');
+  assert.match(calculator, /<html[^>]+lang="fr"/);
+  assert.ok(calculator.includes('https://afrotools.com/fr/tools/cout-importation-voiture/'));
   assert.doesNotMatch(html, /id="frCarsLanded"|id="fr-car-market"|data-fr-transport-download-text/);
   assert.equal((html.match(/<option value="\/fr\/cars\//g) || []).length, observations.length);
   for (const observation of observations) {

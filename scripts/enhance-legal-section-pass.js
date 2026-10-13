@@ -1050,7 +1050,7 @@ function competitorImplementation(slug, profile) {
     `This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.`,
     `The app-specific checklist is not generic: it starts with "${profile.checklist[0]}".`,
     `Saved workflows can be resumed from the dashboard and handed off to ${nextTool} when the matter naturally continues.`,
-    `The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.`,
+    `Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.`,
   ];
 }
 
@@ -1158,7 +1158,7 @@ function buildWorkflowCopilot(slug, profile) {
     '  <div class="leg-workflow-head">',
     '    <span class="leg-action-kicker">Case workspace</span>',
     '    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>',
-    `    <p>This workspace turns the ${htmlEscape(profile.title.toLowerCase())} result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>`,
+    `    <p>This workspace turns the ${htmlEscape(profile.title.toLowerCase())} result into a reusable matter note, dashboard item and local PDF checklist. Use the app first, then save the evidence trail.</p>`,
     '  </div>',
     '  <div class="leg-workflow-grid">',
     '    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>',
@@ -1184,21 +1184,21 @@ function buildWorkflowCopilot(slug, profile) {
     '    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>',
     '    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>',
     '  </div>',
-    '  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>',
+    '  <textarea class="leg-output leg-workflow-output" data-workflow-output aria-label="Legal workflow handoff note" readonly></textarea>',
     '  <form class="leg-pdf-gate" data-workflow-gate novalidate>',
     '    <div>',
-    '      <span class="leg-action-kicker">PDF gate</span>',
-    '      <h3>Email the checklist and unlock print/PDF</h3>',
-    '      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>',
+    '      <span class="leg-action-kicker">Export and optional updates</span>',
+    '      <h3>Print locally or subscribe to updates</h3>',
+    '      <p>Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates.</p>',
     '    </div>',
     '    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>',
-    '    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>',
+    '    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>',
     '    <div class="leg-workflow-actions compact">',
-    '      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>',
+    '      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>',
     '      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>',
     '      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>',
     '    </div>',
-    '    <div class="leg-gate-status" data-workflow-gate-status></div>',
+    '    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>',
     '  </form>',
     '  <div class="leg-workflow-next">',
     '    <span>Continue workflow</span>',
@@ -1420,10 +1420,34 @@ function replaceCoverageClaims(html, profile) {
     .replace(/any African country/g, 'the supported African markets');
 }
 
+
+// Update existing export controls without rebuilding retired generic workflows.
+function updatePrivacyCopy(html) {
+  let next = html;
+  for (const [before, after] of [["data-workflow-optin checked","data-workflow-optin"],["Email the checklist and unlock print/PDF","Print locally or subscribe to updates"],["The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.","Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates."],["Email checklist + unlock PDF","Subscribe to updates"],["The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.","Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in."],["<span class=\"leg-action-kicker\">PDF gate</span>","<span class=\"leg-action-kicker\">Export and optional updates</span>"],["email-gated PDF","local PDF"],["gated PDF checklist","local PDF checklist"]]) next = next.split(before).join(after);
+  for (const [before, after] of [["data-workflow-output readonly","data-workflow-output aria-label=\"Legal workflow handoff note\" readonly"],["data-workflow-gate-status></div>","data-workflow-gate-status role=\"status\" aria-live=\"polite\" aria-atomic=\"true\"></div>"]]) next = next.split(before).join(after);
+  next = next.replace(/<textarea\b[^>]*data-workflow-output\b[^>]*>/gi, tag => tag.replace(/\saria-label\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/>$/, ' aria-label="Legal workflow handoff note">'));
+  return next.replace(/<input\b[^>]*data-workflow-optin\b[^>]*>/gi, tag => tag.replace(/\schecked(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, ''));
+}
+function updatePrivacyOnly() {
+  const files = ['legal/index.html', ...Object.keys(allProfiles).map(slug => 'tools/' + slug + '/index.html'), 'sw/zana/kalenda-ya-uzingatiaji/index.html'];
+  let changed = 0;
+  for (const rel of files) {
+    const file = path.join(ROOT, rel);
+    if (!fs.existsSync(file)) throw new Error('Missing privacy review page: ' + rel);
+    const current = fs.readFileSync(file, 'utf8');
+    const next = updatePrivacyCopy(current);
+    if (next !== current) { fs.writeFileSync(file, next); changed += 1; }
+  }
+  return changed;
+}
+
 function updateTool(slug, profile) {
   const file = path.join(ROOT, 'tools', slug, 'index.html');
   if (!fs.existsSync(file)) throw new Error(`Missing tool page: ${file}`);
   const current = fs.readFileSync(file, 'utf8');
+  // These routes now have dedicated engines and must not regain the generic copilot.
+  if (current.includes('data-property-workflow') || current.includes('id="gv-config"')) return false;
   let next = ensureEnhancementCss(replaceCoverageClaims(current, profile));
   next = repairCopyScriptInsidePrintWindow(next);
   next = repairGeneratedPrintHtmlLeaks(next);
@@ -1443,7 +1467,7 @@ const hubIntake = [
   '  <div class="leg-intake-copy">',
   '    <span class="leg-intake-kicker">Legal workspace homepage</span>',
   '    <h2 id="legal-intake-heading">Start with the job, then save the trail</h2>',
-  '    <p>Each legal app now has a case workspace: app-specific evidence checks, risk flags, a dashboard save, a copyable handoff note and an email-gated PDF export. Start with the closest workflow below, then continue through the linked next apps.</p>',
+  '    <p>Each legal app now has a case workspace: app-specific evidence checks, risk flags, a dashboard save, a copyable handoff note and an local PDF export. Start with the closest workflow below, then continue through the linked next apps.</p>',
   '    <div class="leg-intake-actions">',
   '      <a href="/dashboard/">Resume saved legal workflows</a>',
   '      <a href="#registry-legal-tools">Browse all 69 apps</a>',
@@ -1619,7 +1643,7 @@ function updateLanding() {
   let next = current
     .replace(/Legal & Compliance Apps for Africa - \d+ Tools \| AfroTools/, `Legal & Compliance Apps for Africa - ${TOTAL_LEGAL_APPS} Apps | AfroTools`)
     .replace(/Legal & Compliance Apps for Africa - \d+ Apps \| AfroTools/, `Legal & Compliance Apps for Africa - ${TOTAL_LEGAL_APPS} Apps | AfroTools`)
-    .replace(/<meta property="og:description" content="\d+ legal apps for Africa\.[^"]*">/, `<meta property="og:description" content="${TOTAL_LEGAL_APPS} legal apps for Africa with dashboard-saved workflows, official-source checks, app-specific evidence packs and email-gated PDF checklists.">`)
+    .replace(/<meta property="og:description" content="\d+ legal apps for Africa\.[^"]*">/, `<meta property="og:description" content="${TOTAL_LEGAL_APPS} legal apps for Africa with dashboard-saved workflows, official-source checks, app-specific evidence packs and local PDF checklists.">`)
     .replace(/"description":"\d+ legal and compliance apps for Africa[^"]*"/, `"description":"${TOTAL_LEGAL_APPS} legal and compliance apps for Africa with dashboard-saved workflows, official-source checks, evidence packs and PDF checklists."`)
     .replace(/"numberOfItems":\d+/, `"numberOfItems":${TOTAL_LEGAL_APPS}`)
     .replace(/<div class="leg-stat-val">\d+<\/div><div class="leg-stat-label">Legal Tools<\/div>/, `<div class="leg-stat-val">${TOTAL_LEGAL_APPS}</div><div class="leg-stat-label">Legal Apps</div>`)
@@ -1705,6 +1729,9 @@ function updateLanding() {
   return next !== current;
 }
 
+if (process.argv.includes('--privacy-only')) {
+  console.log(`Updated legal privacy controls. Files changed: ${updatePrivacyOnly()}`);
+} else {
 let changed = 0;
 if (updateLanding()) changed += 1;
 
@@ -1713,3 +1740,5 @@ for (const [slug, profile] of Object.entries(allProfiles)) {
 }
 
 console.log(`Enhanced legal hub and tools. Files changed: ${changed}`);
+
+}

@@ -705,11 +705,11 @@
 
   <!-- LEGAL-WORKFLOW-COPILOT:START -->
 <section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
-  <script type="application/json" class="leg-workflow-data">{"slug":"minimum-wage","title":"Minimum Wage Reference","workflowTitle":"Minimum-wage and sector-floor check","coverage":"54-country wage reference","decision":"Whether the worker falls under a national, sector, regional or collective-agreement rate","evidence":["Verify the country and sector source before using a rate in payroll","Document work hours, overtime basis and pay period alongside the wage","Review wage floors whenever the government gazettes a change or the worker changes role"],"redFlags":["Using one national wage for sectors with separate orders","Treating allowances as wage without checking the law","Forgetting overtime, leave pay and social security when the base wage changes"],"related":[{"label":"Employment Contract Builder","href":"/tools/employment-contract/"},{"label":"Overtime Calculator","href":"/tools/overtime-calc/"},{"label":"Staff Cost Calculator","href":"/tools/staff-cost/"}],"competitor":{"group":"employment","label":"Deel, Oyster and global HR compliance platforms","patterns":["Employment compliance platforms start with worker classification and country-specific minimums before generating contracts or HR records.","They manage contracts, invoices, leave, payroll inputs and compliance reminders in one dashboard.","The best flows keep misclassification and statutory-minimum risks visible instead of burying them in generic template language."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Verify the country and sector source before using a rate in payroll\".","Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <script type="application/json" class="leg-workflow-data">{"slug":"minimum-wage","title":"Minimum Wage Reference","workflowTitle":"Minimum-wage and sector-floor check","coverage":"54-country wage reference","decision":"Whether the worker falls under a national, sector, regional or collective-agreement rate","evidence":["Verify the country and sector source before using a rate in payroll","Document work hours, overtime basis and pay period alongside the wage","Review wage floors whenever the government gazettes a change or the worker changes role"],"redFlags":["Using one national wage for sectors with separate orders","Treating allowances as wage without checking the law","Forgetting overtime, leave pay and social security when the base wage changes"],"related":[{"label":"Employment Contract Builder","href":"/tools/employment-contract/"},{"label":"Overtime Calculator","href":"/tools/overtime-calc/"},{"label":"Staff Cost Calculator","href":"/tools/staff-cost/"}],"competitor":{"group":"employment","label":"Deel, Oyster and global HR compliance platforms","patterns":["Employment compliance platforms start with worker classification and country-specific minimums before generating contracts or HR records.","They manage contracts, invoices, leave, payroll inputs and compliance reminders in one dashboard.","The best flows keep misclassification and statutory-minimum risks visible instead of burying them in generic template language."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Verify the country and sector source before using a rate in payroll\".","Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.","Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in."]}}</script>
   <div class="leg-workflow-head">
     <span class="leg-action-kicker">Case workspace</span>
     <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
-    <p>This workspace turns the minimum-wage and sector-floor check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+    <p>This workspace turns the minimum-wage and sector-floor check result into a reusable matter note, dashboard item and local PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
     <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
@@ -735,21 +735,21 @@
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Legal workflow handoff note"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
-      <span class="leg-action-kicker">PDF gate</span>
-      <h3>Email the checklist and unlock print/PDF</h3>
-      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+      <span class="leg-action-kicker">Export and optional updates</span>
+      <h3>Print locally or subscribe to updates</h3>
+      <p>Print or save this checklist locally without an email address. Subscribe separately if you want occasional updates.</p>
     </div>
     <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
-    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
-      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>
       <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
       <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
     </div>
-    <div class="leg-gate-status" data-workflow-gate-status></div>
+    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>
   </form>
   <div class="leg-workflow-next">
     <span>Continue workflow</span>
@@ -771,7 +771,7 @@
     </div>
     <div>
       <h3>Implemented on this app</h3>
-      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Verify the country and sector source before using a rate in payroll&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Verify the country and sector source before using a rate in payroll&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Employment Contract Builder when the matter naturally continues.</li><li>Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.</li></ul>
     </div>
     <div>
       <h3>Best next move</h3>
@@ -1560,7 +1560,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 }());
 </script>
-<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/legal-workflow-copilot.js?v=adb9f181" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 <script src="/assets/js/lib/minimum-wage-inflation.js?v=fc5a0dd9"></script>
 <script src="/assets/js/pages/minimum-wage-reference-comparison.js?v=08d700a4"></script>
