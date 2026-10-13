@@ -37,9 +37,16 @@ assert.strictEqual(audit.decodeHtml("&amp;eacute; &#38;eacute; &unknown; &EACUTE
 const rows = audit.buildRows();
 const report = audit.buildReport(rows);
 assert.strictEqual(report.scope.pages, rows.length, "the report denominator must equal the row-level inventory");
-assert.deepStrictEqual(report.scope.locales, ["en", "fr", "sw"]);
+const localization = require("../scripts/lib/localization-platform");
+const manifest = localization.loadLocaleManifest();
+const publicLocales = localization.getPublicLocaleIds(manifest);
+assert.deepStrictEqual(report.scope.locales, publicLocales, "snippet scope must follow the public locale contract");
+for (const locale of publicLocales) assert.ok(report.byLocale[locale].pages > 0, `${locale} must not silently disappear from snippet review`);
+for (const locale of manifest.locales.filter(item => item.launchStatus === "planned")) assert.ok(!report.scope.locales.includes(locale.id), "planned locales must stay outside the public denominator");
+assert.ok(rows.some(row => row.locale === "ha"), "Hausa routes must be audited");
+assert.ok(rows.some(row => row.locale === "yo"), "partial public Yoruba routes must be audited");
 assert.ok(report.byLocale.en.pages > 0 && report.byLocale.fr.pages > 0 && report.byLocale.sw.pages > 0);
-assert.ok(rows.every((row) => ["en", "fr", "sw"].includes(row.locale)), "only the requested locales may enter the report");
+assert.ok(rows.every((row) => publicLocales.includes(row.locale)), "only the requested locales may enter the report");
 assert.ok(rows.every((row) => !row.sourceFile.startsWith(".")), "hidden worktrees and evidence directories must stay outside the public denominator");
 assert.strictEqual(new Set(rows.map((row) => row.route)).size, rows.length, "each canonical route must appear once");
 assert.strictEqual(report.pagesWithErrors, 0, "indexable localized pages must not copy an English equivalent's full snippet");
@@ -52,10 +59,10 @@ assert.strictEqual(report.byLocale.fr.signals.H1_ENGLISH_SEARCH_TERMS || 0, 0, "
 assert.strictEqual(report.byLocale.sw.signals.H1_ENGLISH_SEARCH_TERMS || 0, 0, "Swahili H1s must not retain generic English task wording");
 assert.strictEqual(report.byLocale.sw.signals.INDEXABLE_ENGLISH_IFRAME || 0, 0, "Swahili indexable routes must not wrap an English workflow in an iframe");
 assert.strictEqual(report.byLocale.fr.signals.INDEXABLE_ENGLISH_IFRAME || 0, 0, "French indexable routes must not wrap an English workflow in an iframe");
-assert.ok(rows.every((row) => row.h1), "every indexable English, French and Swahili route must expose a static H1");
+assert.ok(rows.every((row) => row.h1), "every indexable public-locale route must expose a static H1");
 assert.strictEqual(report.byLocale.sw.signals.TITLE_DUPLICATE_LOCALE || 0, 0, "distinct Swahili tasks must not compete with the same exact title");
-assert.deepStrictEqual(report.topDuplicateTitles, [], "indexable English, French and Swahili routes must not share exact locale titles");
-assert.deepStrictEqual(report.topDuplicateDescriptions, [], "indexable English, French and Swahili routes must not share exact locale descriptions");
+assert.deepStrictEqual(report.topDuplicateTitles, [], "indexable public-locale routes must not share exact locale titles");
+assert.deepStrictEqual(report.topDuplicateDescriptions, [], "indexable public-locale routes must not share exact locale descriptions");
 
 const byRoute = new Map(rows.map((row) => [row.route, row]));
 const senegalTransfer = byRoute.get("/blog/frais-transfert-argent-senegal/");

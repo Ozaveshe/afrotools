@@ -209,28 +209,32 @@
       flag: "🇬🇭",
       currency: "GHS",
       symbol: "GHS ",
-      monthly: 544.5,
+      monthly: 478.94,
       basis: "daily",
-      dailyRate: 18.15,
-      effectiveDate: "January 2025",
+      dailyRate: 21.77,
+      effectiveDate: "2026-01-01",
       law: "National Daily Minimum Wage Declaration",
       sectors: [ {
         name: "National Daily Minimum",
-        rate: "GHS 18.15",
+        rate: "GHS 21.77",
         period: "day"
       }, {
         name: "Formal Sector",
-        rate: "GHS 18.15",
+        rate: "GHS 21.77",
         period: "day"
       } ],
       history: [ {
-        year: "2025",
-        nominal: 544.5,
-        amount: "GHS 18.15/day"
+        year: "2026",
+        nominal: 653.1,
+        amount: "GHS 21.77/day"
+      }, {
+        year: "2025 (November)",
+        nominal: 599.1,
+        amount: "GHS 19.97/day"
       }, {
         year: "2024",
-        nominal: 446.4,
-        amount: "GHS 14.88/day"
+        nominal: 544.5,
+        amount: "GHS 18.15/day"
       }, {
         year: "2023",
         nominal: 446.4,
@@ -243,8 +247,8 @@
       livingWage: 2e3,
       livingWageFamily: 4200,
       livingWageSource: "WageIndicator 2025",
-      notes: "Ghana sets a national daily minimum wage reviewed annually by the National Tripartite Committee. The 2025 increase of 22% reflects high inflation. Most formal sector workers earn above the minimum. Enforcement is weaker in the informal sector (~80% of employment).",
-      observation: "Ghana uses a daily rate system with annual tripartite review. The 22% increase for 2025 was inflation-driven. The informal sector employs ~80% of workers, limiting the law's practical reach. At roughly $36/month, it is one of the lower rates in West Africa despite relatively strong institutions."
+      notes: "Daily reference: GHS 21.77 from 1 January 2026. Monthly value is a planning equivalent for 22 paid days, not a statutory monthly wage. Historical chart monthly equivalents use 30 paid days consistently and differ from the current 22-day comparison. The 2024 rate is confirmed in the 2023 Civil Service Annual Performance Report, page 94; the November 2025 rate in the FWSC announcement of 11 November 2025. Pre-2024 rates, CPI and living-wage series remain unverified. Primary source: https://fairwages.gov.gh/wp-content/uploads/2025/11/2026-National-Daily-Minimum-Wage.pdf",
+      observation: "The National Tripartite Committee sets a daily rate. Confirm paid days and applicable employment conditions. The source recommends tax exemption; this reference does not implement the recommendation as a tax rule."
     },
     EG: {
       name: "Egypt",
