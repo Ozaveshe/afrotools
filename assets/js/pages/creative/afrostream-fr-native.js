@@ -34,6 +34,39 @@
     return Number.isFinite(time) ? time : 0;
   }
 
+  function sourceProvenance(creator) {
+    var raw = creator._raw || {};
+    return {
+      source_state: text(raw.source_state) || "api",
+      source_snapshot_label: text(raw.source_snapshot_label) || "unknown",
+      source_reviewed_at: text(raw.source_reviewed_at) || "unknown",
+      source_metrics_freshness: text(raw.source_metrics_freshness) || "unknown",
+      recordUpdatedAt: text(raw.updated_at) || "unknown",
+    };
+  }
+
+  function isArchived(creator) {
+    return /^(fallback|archived)$/.test(sourceProvenance(creator).source_state);
+  }
+
+  function datasetSourceState(list) {
+    var archivedCount = list.filter(isArchived).length;
+    return archivedCount ? (archivedCount === list.length ? "archived" : "mixed") : "api";
+  }
+
+  function archiveNotice(list) {
+    var archived = list.filter(isArchived);
+    if (!archived.length) return "";
+    var notes = archived.map(function (creator) {
+      var source = sourceProvenance(creator);
+      return "Archive : " + (source.source_snapshot_label === "unknown" ? "date non fournie" : source.source_snapshot_label) +
+        "; revue de l’archive : " + (source.source_reviewed_at === "unknown" ? "non fournie" : source.source_reviewed_at) +
+        "; fraîcheur des métriques : " + source.source_metrics_freshness + ".";
+    });
+    return (datasetSourceState(list) === "mixed" ? "Sources API et archives. " : "Données archivées. ") +
+      Array.from(new Set(notes)).join(" ") + " Les chiffres d’audience ne sont pas confirmés comme actuels.";
+  }
+
   function newestSourceDate(allCreators, allNews) {
     var timestamps = [];
     allCreators.forEach(function (creator) {
@@ -75,6 +108,11 @@
     stats.textContent = formatNumber(creator.followers) + " abonnés · score AfroStream " +
       formatNumber(creator.score);
     body.append(heading, meta, stats);
+    if (isArchived(creator)) {
+      var provenance = document.createElement("p");
+      provenance.textContent = archiveNotice([creator]);
+      body.appendChild(provenance);
+    }
     article.append(image, body);
     return article;
   }
@@ -99,7 +137,8 @@
       grid.appendChild(empty);
     }
     status.textContent = visibleCreators.length + " profil" +
-      (visibleCreators.length === 1 ? " affiché." : "s affichés.");
+      (visibleCreators.length === 1 ? " affiché." : "s affichés.") +
+      (archiveNotice(creators) ? " " + archiveNotice(creators) : "");
   }
 
   function renderCountries() {
@@ -137,14 +176,14 @@
 
   function exportRows() {
     return visibleCreators.map(function (creator) {
-      return {
+      return Object.assign({
         name: text(creator.name),
         country: countryName(creator),
         categories: text(creator.type),
         followers: Number(creator.followers) || 0,
         afroScore: Number(creator.score) || 0,
         sourceSlug: text(creator.slug),
-      };
+      }, sourceProvenance(creator));
     });
   }
 
@@ -164,14 +203,15 @@
     download("afrostream-createurs-fr.json", "application/json;charset=utf-8", JSON.stringify({
       source: "/api/afrostream/creators",
       exportedAt: new Date().toISOString(),
+      sourceState: datasetSourceState(visibleCreators),
       creators: exportRows(),
     }, null, 2));
   });
 
   exportCsv.addEventListener("click", function () {
-    var rows = [["name", "country", "categories", "followers", "afroScore", "sourceSlug"]]
+    var rows = [["name", "country", "categories", "followers", "afroScore", "sourceSlug", "source_state", "source_snapshot_label", "source_reviewed_at", "source_metrics_freshness", "recordUpdatedAt"]]
       .concat(exportRows().map(function (row) {
-        return [row.name, row.country, row.categories, row.followers, row.afroScore, row.sourceSlug];
+        return [row.name, row.country, row.categories, row.followers, row.afroScore, row.sourceSlug, row.source_state, row.source_snapshot_label, row.source_reviewed_at, row.source_metrics_freshness, row.recordUpdatedAt];
       }));
     var csv = rows.map(function (row) {
       return row.map(function (cell) {
@@ -195,11 +235,14 @@
     renderCreators();
     renderNews();
     var latest = newestSourceDate(creators, news);
-    freshness.textContent = latest
+    var recordDate = latest
       ? "Dernière date publiée dans les enregistrements chargés : " +
         new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short", timeZone: "UTC" })
           .format(latest) + " UTC."
       : "Aucune date de mise à jour n’a été fournie par les enregistrements chargés.";
+    freshness.textContent = archiveNotice(creators)
+      ? archiveNotice(creators) + " " + recordDate + " Cette date décrit le dossier chargé, pas une mesure récente de l’audience."
+      : recordDate;
     exportJson.disabled = !creators.length;
     exportCsv.disabled = !creators.length;
   }).catch(function () {

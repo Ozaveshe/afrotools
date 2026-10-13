@@ -582,6 +582,21 @@
         "run": "npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off"
       },
       "stepSha256": "cae59c7fc8348b03a35c10e65ca80a795fdc35143000617393baebc1bef952f7"
+    },
+    {
+      "id": "afrostream-localized-provenance",
+      "addition": "fr-sw-provenance",
+      "group": 2,
+      "step": {
+        "name": "Verify localized AfroStream archive provenance in the artifact",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+          "PORT": "4296"
+        },
+        "run": "npx playwright test tests/e2e/afrostream-localized-provenance.spec.js --project=chromium --workers=1 --retries=0 --trace=off --output=\"$RUNNER_TEMP/afrostream-provenance-browser\""
+      },
+      "stepSha256": "ea86674ebe908a210c697f2a260c3bcfa094b2baf7402553cfc4fdbabb24bf46"
     }
   ],
   "consumerSetup": [
