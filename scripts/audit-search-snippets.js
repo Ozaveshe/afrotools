@@ -12,7 +12,10 @@ const REPORT_JSON = path.join(ROOT, "reports", "search-snippet-quality.json");
 const REPORT_MD = path.join(ROOT, "reports", "search-snippet-quality.md");
 const REPORT_CSV = path.join(ROOT, "reports", "search-snippet-quality.csv");
 const GSC_WAVES = path.join(ROOT, "data", "seo", "gsc-recovery-waves.json");
-const LOCALES = ["en", "fr", "sw"];
+const localizationApi = require("./lib/localization-platform");
+const localeManifest = localizationApi.loadLocaleManifest();
+const LOCALES = localizationApi.getPublicLocaleIds(localeManifest);
+const LOCALE_NAMES = LOCALES.map(id => localizationApi.getLocale(localeManifest, id).displayName).join(", ");
 
 const ENGLISH_MARKERS = {
   fr: /\b(?:calculator|checker|download|find|free online|generator|how to|salary|tax tool)\b/i,
@@ -238,8 +241,8 @@ function buildReport(rows) {
       pages: rows.length
     },
     evidenceBoundary: {
-      staticAudit: "All current indexable English, French and Swahili route owners were inspected.",
-      searchPerformance: "The repository contains a seven-route English GSC baseline, but no granular French or Swahili query/page export. Static signals cannot prove what Google displayed or why a particular impression did not click."
+      staticAudit: `All current indexable public-locale route owners were inspected (${LOCALE_NAMES}).`,
+      searchPerformance: "The repository contains a seven-route English GSC baseline, but no granular query/page export for other public locales. Static signals cannot prove what Google displayed or why a particular impression did not click."
     },
     gscBaseline: readGscBaseline(),
     byLocale,
@@ -264,7 +267,7 @@ function markdown(report) {
     ? `The checked-in ${baseline.measurementWindowDays}-day baseline covers ${baseline.impressions.toLocaleString("en-US")} impressions and ${baseline.clicks.toLocaleString("en-US")} clicks (${(baseline.ctr * 100).toFixed(2)}% CTR) across seven English routes.`
     : "No checked-in GSC baseline was available.";
   const lines = [
-    "# Search Snippet Quality: English, French and Swahili",
+    `# Search Snippet Quality: ${LOCALE_NAMES}`,
     "",
     "## Evidence boundary",
     "",

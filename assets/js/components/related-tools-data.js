@@ -1137,9 +1137,9 @@
       },
       {
         "id": "afrotools-pro",
-        "name": "AfroTools Pro (All Tools)",
+        "name": "AfroTools Pro Plans",
         "icon": "🌍",
-        "desc": "Unlimited PDF exports, no ads, AI advisor, prior...",
+        "desc": "Compare subscription plans, active Pro apps and ...",
         "href": "/pro/",
         "category": "financial",
         "lang": "en",
