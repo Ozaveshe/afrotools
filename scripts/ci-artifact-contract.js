@@ -35,8 +35,13 @@ function treeManifest(root, relative = 'dist') {
   return entries.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
 }
 
+function trackedSourceFiles(root) {
+  // The current repository's NUL-delimited listing exceeds Node's default 1 MiB stdout limit.
+  return cp.execFileSync('git', ['ls-files', '-z'], {cwd: root, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024}).split('\0').filter(Boolean).sort();
+}
+
 function sourceManifest(root) {
-  const files = cp.execFileSync('git', ['ls-files', '-z'], {cwd: root, encoding: 'utf8'}).split('\0').filter(Boolean).sort();
+  const files = trackedSourceFiles(root);
   return files.map(file => {
     const entries = treeManifest(root, file);
     check(entries.length === 1 && entries[0].type === 'file', 'Tracked source must be a regular file');
@@ -146,4 +151,4 @@ function aggregate(inventory, manifest, reports, needs, now = Date.now()) {
   return true;
 }
 
-module.exports = {MARKER, sha, jsonHash, readJson, check, git, deadlineCheck, treeManifest, sourceManifest, sourceClean, inventoryCheck, seal, boundManifest, restore, verify, aggregate};
+module.exports = {MARKER, sha, jsonHash, readJson, check, git, deadlineCheck, treeManifest, trackedSourceFiles, sourceManifest, sourceClean, inventoryCheck, seal, boundManifest, restore, verify, aggregate};

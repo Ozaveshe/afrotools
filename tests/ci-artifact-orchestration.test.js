@@ -6,7 +6,7 @@ const path = require('node:path');
 const os = require('node:os');
 const cp = require('node:child_process');
 const c = require('../scripts/ci-artifact-contract');
-const {selectNativeStart, bindNativeDeadline} = require('../scripts/ci-artifact-deadline');
+const {selectNativeStart, bindNativeDeadline, readNativeJobs} = require('../scripts/ci-artifact-deadline');
 const inventory = require('../scripts/ci-artifact-groups.json');
 const ROOT = path.resolve(__dirname, '..');
 const clone = value => structuredClone(value);
@@ -158,6 +158,36 @@ test('native start lookup fails after three reads and cannot substitute the curr
   const start=Date.parse('2026-10-13T07:00:00Z'),job={name:'Artifact producer',status:'in_progress',started_at:new Date(start).toISOString()};
   assert.throws(()=>selectNativeStart([job,job],start+1000),/uniquely/);
   assert.throws(()=>selectNativeStart([job],start+75*60000),/expired/);
+});
+
+test('complete real repository inventory survives the default-buffer failure', () => {
+  const expected = cp.execFileSync('git', ['ls-files', '-z'], {cwd: ROOT, maxBuffer: 32 * 1024 * 1024});
+  assert.ok(expected.length > 1024 * 1024, 'Current real inventory reproduces the native >1 MiB case');
+  assert.throws(() => cp.execFileSync('git', ['ls-files', '-z'], {cwd: ROOT, maxBuffer: 1024 * 1024}), error => error.code === 'ENOBUFS');
+  assert.deepEqual(c.trackedSourceFiles(ROOT), expected.toString('utf8').split('\0').filter(Boolean).sort());
+});
+
+for (const status of [400, 401, 403, 404]) {
+  test('native HTTP ' + status + ' cannot retry, decode an error body or leak its content', async () => {
+    let reads=0,waits=0,decoded=0;const evidence=[];
+    await assert.rejects(bindNativeDeadline(async()=>{reads++;return readNativeJobs({status,ok:false,json:async()=>{decoded++;return{private:'synthetic-key-marker'};}},{runId:'42',attempt:'1'},value=>evidence.push(value));},async()=>{waits++;}),new RegExp('HTTP '+status));
+    assert.equal(reads,1);assert.equal(waits,0);assert.equal(decoded,0);assert.doesNotMatch(JSON.stringify(evidence),/synthetic-key-marker/);
+    assert.equal(evidence[0].http_status,status);assert.equal(evidence[0].response_body_decoded,false);
+  });
+}
+
+test('sanitized metadata verifies exact run/attempt and rejects malformed response shape', async () => {
+  const evidence=[],request={runId:'42',attempt:'1'},job={name:'Artifact producer',status:'in_progress',run_id:42,run_attempt:1,started_at:'2026-10-13T07:00:00Z'};
+  assert.deepEqual(await readNativeJobs({status:200,ok:true,json:async()=>({jobs:[job]})},request,row=>evidence.push(row)),[job]);
+  assert.equal(evidence[0].matching_name_count,1);assert.equal(evidence[0].matches[0].run_id_matches,true);
+  await assert.rejects(readNativeJobs({status:200,ok:true,json:async()=>({jobs:{private:'synthetic-key-marker'}})},request,()=>{}),/array missing/);
+  await assert.rejects(readNativeJobs({status:200,ok:true,json:async()=>({jobs:[{...job,run_attempt:2}]})},request,()=>{}),/identity mismatch/);
+});
+
+test('temporary HTTP errors have bounded reads with actual start required', async () => {
+  let reads=0,waits=0;const evidence=[];
+  await assert.rejects(bindNativeDeadline(async()=>{reads++;return readNativeJobs({status:429,ok:false},{runId:'42',attempt:'1'},row=>evidence.push(row));},async()=>{waits++;}),/three bounded reads/);
+  assert.equal(reads,3);assert.equal(waits,2);assert.ok(evidence.every(row=>row.http_status===429));
 });
 
 function fixture() {

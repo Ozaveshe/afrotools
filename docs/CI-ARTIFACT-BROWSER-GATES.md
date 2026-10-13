@@ -1,5 +1,7 @@
 # CI artifact browser gate ownership
 
+Native metadata diagnostics record only HTTP status, response shape, expected job name, exact run/attempt matches and public start/status fields. HTTP400/401/403/404 and malformed or mismatched identity responses fail immediately; rejected bodies are never decoded or logged. Only transient request/visibility failures receive the existing bounded three reads. The current repository's tracked-path listing exceeds1MiB, so its source-manifest owner uses a bounded32MiB subprocess stdout budget while retaining every path and hash.
+
 The CI prototype uses two independent hosted browser runners after one artifact producer. `Verify` and `Playwright smoke` retain their original workflow blocks. The required `Build and audit` status aggregates the producer and both browser groups; it fails if a job, original gate, report, identity check or deadline is unsuccessful or missing.
 
 `scripts/ci-artifact-groups.json` records every original build step at pinned source commit a225e13f202da2f1e578e221bf14d4848c5a6099. Ten original steps belong to the producer; 32 complete browser steps belong to the two groups. The native command and environment strings preserve original specs, loops, grep, worker flags, retries, traces and timeout configurations. Groups execute their assigned steps in original relative order. Each Linux runner has its own network/filesystem namespace, so existing ports stay unchanged.
