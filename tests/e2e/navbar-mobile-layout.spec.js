@@ -136,3 +136,92 @@ async function burgerForResize(page) {
   await expect(navbar.locator('.logo')).toBeFocused();
   expect(await page.evaluate(() => document.body.style.position)).not.toBe('fixed');
 }
+
+async function mobileSearch(page, width, theme) {
+  await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  await page.setViewportSize({ width, height: 844 });
+  await page.emulateMedia({ colorScheme: theme });
+  await page.goto('/');
+  await page.evaluate(theme => window.AfroTools.darkMode.set(theme), theme);
+  const navbar = page.locator('afro-navbar');
+  await navbar.locator('.burger').click();
+  const input = navbar.getByRole('textbox', { name: 'Search tools', exact: true });
+  const results = navbar.locator('#mobSearchResults');
+  await input.fill('Nigeria VAT');
+  await expect(results.getByRole('link')).toHaveCount(4);
+  await expect(results).toHaveRole('list');
+  await expect(results.getByRole('listitem')).toHaveCount(4);
+  await expect(input).toHaveAttribute('aria-controls', 'mobSearchResults');
+  await expect(results.getByRole('link').first()).toHaveAttribute('href', '/nigeria/ng-vat');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  return { navbar, input, results, links: results.getByRole('link') };
+}
+
+for (const { width, theme } of [{ width: 320, theme: 'light' }, { width: 375, theme: 'dark' }, { width: 390, theme: 'light' }]) {
+  test(`mobile search arrow shortcuts preserve real links at ${width}px ${theme}`, async ({ page }, testInfo) => {
+    const ui = await mobileSearch(page, width, theme);
+    await ui.input.press('Shift+ArrowDown');
+    await expect(ui.input).toBeFocused();
+    const composingKey = await ui.input.evaluate(input => {
+      const event = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true, composed: true, isComposing: true });
+      input.dispatchEvent(event);
+      return { composing: event.isComposing, prevented: event.defaultPrevented, focused: input.getRootNode().activeElement === input };
+    });
+    expect(composingKey).toEqual({ composing: true, prevented: false, focused: true });
+    await ui.input.press('ArrowDown');
+    await expect(ui.links.nth(0)).toBeFocused();
+    await expect(ui.links.nth(0)).toHaveClass(/active/);
+    await page.keyboard.press('ArrowDown');
+    await expect(ui.links.nth(1)).toBeFocused();
+    await page.keyboard.press('ArrowUp');
+    await expect(ui.links.nth(0)).toBeFocused();
+    await page.keyboard.press('ArrowUp');
+    await expect(ui.input).toBeFocused();
+    await expect(ui.results.locator('.active')).toHaveCount(0);
+    await ui.input.press('ArrowUp');
+    await expect(ui.links.nth(3)).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(ui.links.nth(0)).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(ui.links.nth(3)).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(ui.links.nth(3)).toBeFocused();
+    await page.keyboard.press('Home');
+    await page.screenshot({ path: testInfo.outputPath(`mobile-search-${width}-${theme}.png`) });
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/\/nigeria\/ng-vat(?:[/?#]|$)/);
+  });
+}
+
+test('mobile search retains ordinary Tab and pointer link navigation', async ({ page }) => {
+  let ui = await mobileSearch(page, 375, 'light');
+  await ui.input.press('Tab');
+  await expect(ui.links.first()).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/nigeria\/ng-vat(?:[/?#]|$)/);
+  ui = await mobileSearch(page, 375, 'dark');
+  const href = await ui.links.nth(1).getAttribute('href');
+  await ui.links.nth(1).click();
+  await expect(page).toHaveURL(new RegExp(href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:[/?#]|$)'));
+});
+
+test('mobile search preserves input focus for changed and empty queries and drawer close', async ({ page }) => {
+  const ui = await mobileSearch(page, 375, 'light');
+  await ui.input.fill('zzzz-no-matching-tool-zzzz');
+  await ui.input.press('ArrowDown');
+  await expect(ui.input).toBeFocused();
+  await expect(ui.links).toHaveCount(0);
+  await ui.input.press('ArrowDown');
+  await expect(ui.input).toBeFocused();
+  await ui.input.fill('');
+  await expect(ui.results).toBeEmpty();
+  await page.keyboard.press('Escape');
+  await expect(ui.navbar.locator('.mob')).toBeHidden();
+  await expect(ui.navbar.locator('.burger')).toBeFocused();
+  await ui.navbar.locator('.burger').press('Enter');
+  await expect(ui.input).toHaveValue('');
+  await expect(ui.results).toBeEmpty();
+  await ui.navbar.locator('#mobClose').press('Space');
+  await expect(ui.navbar.locator('.mob')).toBeHidden();
+  await expect(ui.navbar.locator('.burger')).toBeFocused();
+});
