@@ -135,7 +135,7 @@ assert.equal(rav4Context.sourcePrice.median, 12200);
 assert.equal(rav4Context.sourcePrice.sourceUrl, rav4Source.sourceUrl);
 assert.equal(Math.round(rav4Context.localPrice.median * forex.rates.NGN), rav4Observation.median);
 assert.equal(rav4Context.media.hero.sourceType, "generated");
-assert.match(rav4Context.media.hero.imageUrl, /toyota-rav4-2018-hero\.webp$/);
+assert.match(rav4Context.media.hero.imageUrl, /toyota-rav4-2018-reviewed-hero\.webp$/);
 assert.match(rav4Context.calculatorUrl, /source=uae.*price=12200/);
 
 const directoryOnly = Price.buildVehicleContext(data, importData, {

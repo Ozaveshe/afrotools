@@ -23,7 +23,11 @@
   }
 
   function encodeFormValue(value) {
-    return encodeURIComponent(String(value)).replace(/%20/g, '+');
+    // Form serialization has a different percent-encode set from URI components.
+    // Keep encodeURIComponent's rejection of malformed UTF-16 input.
+    return encodeURIComponent(String(value)).replace(/[!'()~]/g, function (character) {
+      return '%' + character.charCodeAt(0).toString(16).toUpperCase();
+    }).replace(/%20/g, '+');
   }
 
   function decodeFormValue(value) {
@@ -55,6 +59,7 @@
     url: Object.freeze({
       encodeUri: function (value) { return encodeURI(String(value)); },
       encodeComponent: function (value) { return encodeURIComponent(String(value)); },
+      decodeComponent: function (value) { return decodeURIComponent(String(value)); },
       encodeRfc3986: encodeRfc3986,
       encodeFormValue: encodeFormValue,
       decodeFormValue: decodeFormValue

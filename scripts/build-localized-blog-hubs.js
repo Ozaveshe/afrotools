@@ -109,7 +109,7 @@ function decorateHub(html, locale) {
 let changed = 0;
 for (const locale of ["fr", "sw"]) {
   const file = locale === "fr" ? "fr/blog/index.html" : "sw/blogu/index.html";
-  const expected = decorateHub(render(locale, articles(locale)), locale);
+  const expected = require('./apply-reviewed-blog-images').applyBindingsToHtml(file, decorateHub(render(locale, articles(locale)), locale));
   const current = read(file);
   const hasAnalyticsContract = current.includes('/assets/js/lazy-analytics.js')
     && (locale !== 'fr' || current.includes('/assets/js/analytics-bootstrap.js'));

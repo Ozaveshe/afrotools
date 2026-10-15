@@ -9,6 +9,10 @@ const c = require('../scripts/ci-artifact-contract');
 const {selectNativeStart, bindNativeDeadline, readNativeJobs} = require('../scripts/ci-artifact-deadline');
 const inventory = require('../scripts/ci-artifact-groups.json');
 const ROOT = path.resolve(__dirname, '..');
+const ancestorInventoryPath = path.join(ROOT, 'tests/fixtures/ci-original/current-inventory-0444626e.json');
+assert.equal(c.sha(fs.readFileSync(ancestorInventoryPath)), 'b86dc19b22915bebe8726c2c2bf5ed941f783c3875067b4cbf8fdcafcc8ddc43', 'Pinned current-main inventory bytes changed');
+const currentAncestorPin = JSON.parse(fs.readFileSync(ancestorInventoryPath, 'utf8'));
+
 const clone = value => structuredClone(value);
 
 
@@ -23,6 +27,12 @@ function readOriginalWorkflow(pin, root = ROOT) {
   assert.equal(fs.statSync(resolved).isFile(), true, 'Original workflow fixture must be a file');
   const original = fs.readFileSync(resolved, 'utf8');
   assert.equal(c.sha(original), pin.originalWorkflowSha256, 'Original workflow fixture hash differs from genuine pinned source');
+  let retained = original;
+  for (const gate of pin.browser.filter(gate => gate.originalYaml)) {
+    assert.equal(retained.split(gate.originalYaml).length, 2, 'Each declared raw addition occurs exactly once');
+    retained = retained.replace(gate.originalYaml, '');
+  }
+  assert.equal(c.sha(retained), pin.predecessorWorkflowSha256, 'Immutable 42-step predecessor must be recovered byte-for-byte');
   return original;
 }
 
@@ -258,7 +268,9 @@ function originalFixture() {
 test('durable original fixture retains all genuine 43 ancestor steps without branch reachability', () => {
   const f = originalFixture();
   assert.equal(readOriginalWorkflow(inventory, f.root), fs.readFileSync(path.join(ROOT, inventory.originalWorkflowFile), 'utf8'));
-  assert.equal(inventory.browser.length, 33);
+  assert.equal(currentAncestorPin.browser.length, 33);
+  assert.deepEqual(inventory.browser.slice(0, 33), currentAncestorPin.browser);
+  assert.equal(inventory.browser.length, 39);
 });
 test('durable original fixture rejects byte tampering', () => {
   const f = originalFixture(); fs.appendFileSync(f.file, ' synthetic changed');
@@ -275,7 +287,7 @@ test('durable original fixture rejects path escapes and unrelated source paths',
 });
 
 test('single additive raw step removal recovers the immutable main predecessor byte-for-byte', () => {
-  const original = readOriginalWorkflow(inventory), addition = inventory.browser.find(gate => gate.id === 'browser-33');
+  const original = readOriginalWorkflow(currentAncestorPin), addition = inventory.browser.find(gate => gate.id === 'browser-33');
   assert.equal(original.split(addition.originalYaml).length, 2, 'Additive raw step occurs exactly once');
   assert.equal(addition.originalIndex, 40);
   assert.deepEqual(originalBrowserStep(addition.originalYaml), addition.step);
@@ -284,4 +296,25 @@ test('single additive raw step removal recovers the immutable main predecessor b
   assert.equal(c.sha(recovered), inventory.predecessorWorkflowSha256);
   const predecessor = cp.execFileSync('git', ['show', inventory.predecessorCommit + ':.github/workflows/ci.yml'], {cwd: ROOT, encoding: 'utf8'});
   assert.equal(recovered, predecessor, 'No normalization or assertion waiver for historical source');
+});
+
+test('all five additive native owners recover exact current 43-step bytes before the immutable 42-step inverse', () => {
+  const all = readOriginalWorkflow(inventory), image = inventory.browser.find(gate => gate.id === 'browser-39');
+  assert.equal(all.split(image.originalYaml).length, 2);
+  const original = all.replace(image.originalYaml, '');
+  assert.equal(c.sha(original), '4a8630b773e666c048d48625b194ba79fa90f053d631ada4ddf3c39cc7f575e8', 'Genuine retained seven-candidate48 declaration remains exact');
+  let retained = original;
+  const additions = inventory.browser.slice(33, 38);
+  assert.equal(additions.length, 5);
+  assert.deepEqual(additions.map(g => g.id), ['browser-34', 'browser-35', 'browser-36', 'browser-37', 'browser-38']);
+  assert.deepEqual(additions.map(g => g.group), [1, 1, 1, 2, 2]);
+  assert.deepEqual(additions.map(g => g.step.env.PORT), ['4199', '52963', '4219', '4296', '4527']);
+  for (const gate of additions) {assert.equal(retained.split(gate.originalYaml).length, 2); retained = retained.replace(gate.originalYaml, '');}
+  assert.equal(c.sha(retained), currentAncestorPin.originalWorkflowSha256);
+  assert.equal(retained, readOriginalWorkflow(currentAncestorPin));
+  assert.deepEqual(inventory.producer, currentAncestorPin.producer);
+});
+
+test('eighth imagery preserves every current38 object and original six-source inverses with exact native commands', () => {
+  const file=path.join(ROOT,'tests/fixtures/ci-original/seven-inventory-before-imagery-0444626e.json'); assert.equal(c.sha(fs.readFileSync(file)),'f1258c95bc32ebbd827ab778f4ad005fa04e1dab20f7bd7e8832ece85a8de147');const prior=JSON.parse(fs.readFileSync(file,'utf8'));assert.equal(prior.browser.length,38);assert.deepEqual(inventory.browser.slice(0,38),prior.browser);assert.deepEqual(inventory.producer,prior.producer);const image=inventory.browser[38];assert.equal(image.id,'browser-39');assert.equal(image.group,1);assert.equal(image.stepSha256,'04f7579590042f3bbcb0330120fbac4aa0b5430c57a828d006017faf6379a921');assert.deepEqual(image.step,{"name":"Verify reviewed article, Resources and public car imagery in the sealed artifact","env":{"AFROTOOLS_TEST_PUBLISH_ARTIFACT":"1","AFROTOOLS_TEST_DISABLE_ANALYTICS":"1","PORT":"4199"},"run":"npx playwright test tests/e2e/reviewed-blog-images.spec.js tests/e2e/reviewed-resource-card-images.spec.js tests/e2e/cars-profile-images.spec.js --project=chromium --workers=2 --retries=0 --trace=off"});const raw=readOriginalWorkflow(inventory);assert.equal(raw.split(image.originalYaml).length,2);assert.equal(raw.replace(image.originalYaml,''),fs.readFileSync(path.join(ROOT,prior.originalWorkflowFile),'utf8'));assert.equal(inventory.originalBuildTimeoutMinutes,75);
 });

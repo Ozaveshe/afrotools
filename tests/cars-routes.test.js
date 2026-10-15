@@ -70,7 +70,7 @@ for (const observation of observations) {
 const corolla = read("cars/nigeria/toyota/corolla/2018/index.html");
 assert.ok(corolla.includes("asking prices in Lagos State"), "observed page explains the dated local sample");
 assert.ok(corolla.includes("Estimate import cost for this car"), "observed page links to the supported calculator");
-assert.ok(corolla.includes("toyota-corolla-2018-hero.webp"), "observed page uses its existing model image");
+assert.ok(corolla.includes("toyota-corolla-2018-reviewed-hero.webp"), "observed page uses its existing model image");
 assert.ok(corolla.includes('content="index, follow"'), "observed detail is indexable");
 assert.ok(sitemap.includes("https://afrotools.com/cars/nigeria/toyota/corolla/2018/"), "observed detail is in car sitemap");
 const ghCorolla = read("cars/ghana/toyota/corolla/2018/index.html");

@@ -29,7 +29,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Official Holiday Calendar Entry Builder","item":"https://afrotools.com/tools/public-holidays/"}]}
 </script>
-<script src="/engines/business-roi-engine.js?v=5ab51b55"></script>
+<script src="/engines/business-roi-engine.js?v=a89f65da"></script>
 <link rel="canonical" href="https://afrotools.com/tools/public-holidays/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/public-holidays/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-feries/">
@@ -73,16 +73,21 @@
     function escapeIcs(value){return String(value).replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');}
     function compactDate(value){return value.replace(/-/g,'');}
     function nextDate(value){var date=new Date(value+'T00:00:00Z');date.setUTCDate(date.getUTCDate()+1);return date.toISOString().slice(0,10).replace(/-/g,'');}
+    function invalidateEntry(){result.classList.remove('gv-on');ics='';status.textContent='Inputs changed. Prepare the entry again before downloading.';}
+    form.addEventListener('input',invalidateEntry);
+    form.addEventListener('change',invalidateEntry);
     form.addEventListener('submit',function(event){
       event.preventDefault();
       var name=document.getElementById('holiday-name').value.trim(),date=document.getElementById('holiday-date').value,note=document.getElementById('holiday-note').value.trim(),confirmed=document.getElementById('holiday-confirmed'),source=selected();
       if(!name){result.classList.remove('gv-on');status.textContent='Enter the holiday name from the official notice.';document.getElementById('holiday-name').focus();return;}
       if(!date){result.classList.remove('gv-on');status.textContent='Enter the confirmed local date.';document.getElementById('holiday-date').focus();return;}
       if(!confirmed.checked){result.classList.remove('gv-on');status.textContent='Confirm that you checked the current official notice.';confirmed.focus();return;}
-      var ownerEntry=window.BusinessRoiEngine.holidayEntry({country:country.value,name:name,date:date,note:note,confirmed:true,locale:'en'});
+      var ownerEntry;
+        try { ownerEntry=window.BusinessRoiEngine.holidayEntry({country:country.value,name:name,date:date,note:note,confirmed:true,locale:'en'}); }
+        catch(error){status.textContent='Enter a valid confirmed calendar date.';document.getElementById('holiday-date').focus();return;}
       var description=ownerEntry.description;
       ics=ownerEntry.ics;
-      document.getElementById('holiday-preview').textContent=name+'\\n'+date+'\\n'+source[1]+'\\n'+description;document.getElementById('holiday-official').textContent='Open '+source[2];document.getElementById('holiday-official').href=source[3];result.classList.add('gv-on');status.textContent='User-confirmed calendar entry prepared locally.';
+      document.getElementById('holiday-preview').textContent=[name,date,source[1],description].join('\n');document.getElementById('holiday-official').textContent='Open '+source[2];document.getElementById('holiday-official').href=source[3];result.classList.add('gv-on');status.textContent='User-confirmed calendar entry prepared locally.';
     });
     form.addEventListener('reset',function(){setTimeout(function(){country.value='ZA';result.classList.remove('gv-on');ics='';status.textContent='Entry reset.';country.focus();},0);});
     document.getElementById('holiday-download').addEventListener('click',function(){if(!ics)return;var blob=new Blob([ics],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='user-confirmed-public-holiday.ics';link.click();setTimeout(function(){URL.revokeObjectURL(url);},0);status.textContent='ICS entry downloaded.';});

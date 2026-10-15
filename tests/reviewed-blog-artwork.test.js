@@ -7,7 +7,10 @@ const crypto=require('crypto');
 const {imageSize}=require('../scripts/lib/image-size');
 const ROOT=path.resolve(__dirname,'..');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
-const generatedArtwork=new Map(require('../data/image-generation/blog-generated-2026-10-09.json').images.map(row=>[row.slug,row]));
+const generatedArtwork=new Map([
+ ...require('../data/image-generation/blog-generated-2026-10-09.json').images,
+ ...require('../data/image-generation/blog-generated-2026-10-13.json').images
+].map(row=>[row.slug,row]));
 
 test('reviewed blog imagery retains exact subjects, hashes and explicit illustration labels',()=>{
  assert.equal(new Set(bindings.map(row=>row.file+'#'+row.route)).size,bindings.length);
@@ -25,7 +28,7 @@ test('reviewed blog imagery retains exact subjects, hashes and explicit illustra
    assert.ok(figures[0].includes('src="'+row.path+'"'));
    assert.ok(figures[0].includes('<figcaption>'+row.caption+'</figcaption>'));
    assert.ok(figures[0].includes('width="'+row.width+'" height="'+row.height+'"'));
-   if(generated){assert.match(row.caption,/AI-generated|générée par IA/);for(const v of generated.variants)assert.ok(figures[0].includes(`${v.path} ${v.width}w`));}
+   if(generated){assert.match(row.caption,/AI-generated|générée par IA|Mchoro wa uhariri uliotengenezwa kwa AI/);for(const v of generated.variants)assert.ok(figures[0].includes(`${v.path} ${v.width}w`));}
    else assert.ok(!figures[0].includes('AI-generated'),'Legacy illustration review is not generation evidence');
    assert.ok(html.includes('href="https://afrotools.com'+row.route+'"'),'Canonical route retained');
   }else{
