@@ -1,4 +1,5 @@
 const fs = require('node:fs/promises');
+const { keyboardFileChooser } = require('../support/file-chooser-subscription-ready');
 const { test, expect } = require('@playwright/test');
 
 for (const width of [320, 1280]) {
@@ -104,9 +105,7 @@ for (const width of [375, 1280]) {
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
     await expect(page.locator('#file-drop-zone')).toBeFocused();
-    const chooserPromise = page.waitForEvent('filechooser');
-    await page.keyboard.press('Enter');
-    const chooser = await chooserPromise;
+    const chooser = await keyboardFileChooser(page, 'Enter');
     const text = 'foobar\nMọ́lá 😀';
     await chooser.setFiles({ name: 'synthetic.txt', mimeType: 'text/plain', buffer: Buffer.from(text) });
     await expect(page.locator('#file-output')).toHaveValue(Buffer.from(text).toString('base64'));
@@ -118,8 +117,7 @@ for (const width of [375, 1280]) {
     await page.getByRole('button', { name: 'Image to Base64', exact: true }).press('Tab');
     await page.keyboard.press('Tab');
     await expect(page.locator('#img-drop-zone')).toBeFocused();
-    const imageChooser = page.waitForEvent('filechooser');
-    await page.keyboard.press('Space');
+    const imageChooser = keyboardFileChooser(page, 'Space');
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><rect width="1" height="1" fill="red"/></svg>';
     await (await imageChooser).setFiles({ name: 'synthetic.svg', mimeType: 'image/svg+xml', buffer: Buffer.from(svg) });
     await expect(page.locator('#img-output')).toHaveValue('data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64'));

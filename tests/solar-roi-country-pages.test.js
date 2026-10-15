@@ -379,3 +379,76 @@ for (const country of countries) {
 }
 
 console.log(`Solar ROI country pages verified: ${countries.length}`);
+
+
+// Run the actual native CJS owner with synthetic HTML only at its country-page
+// IO boundary. Engine/dataset/forex imports remain real, no math/provider stub.
+// Writes are captured in memory, never applied to repository product pages.
+const fragmentOwnerFile = path.join(ROOT, 'scripts/generate-energy-x54.js');
+const fragmentOwnerSource = fs.readFileSync(fragmentOwnerFile, 'utf8');
+const fragmentCountrySlugs = [...fragmentOwnerSource.matchAll(/\{code:"[A-Z]{2}",name:"[^"]+",slug:"([^"]+)"/g)].map(match => match[1]);
+assert.strictEqual(fragmentCountrySlugs.length, 54, 'Native fragment fixtures must cover all original country definitions');
+assert.strictEqual(new Set(fragmentCountrySlugs).size, 54, 'Native fragment country identities must be unique');
+const oldTransitionRule = '.solar-field input,.solar-field select,.solar-country-note{border-color:#cdd7e4;background:#fff;box-shadow:0 1px 0 rgba(15,23,42,.02);transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease}';
+const nextTransitionRule = oldTransitionRule.replace(',background-color .18s ease', '');
+
+function runNativeSolarFragmentCase(changeFixture) {
+  const fixtures = new Map(fragmentCountrySlugs.map(slug => [path.resolve(ROOT, 'tools/solar-roi', slug, 'index.html'), `<!doctype html><html data-chat-bundle="UNCHANGED"><head><link rel="canonical" href="/tools/solar-roi/${slug}/"><style>${oldTransitionRule}</style></head><body><span class="solar-scenario-muted">$6.91 bill / $4.21 gen USD</span><script>const calculationSentinel = 417;</script></body></html>`]));
+  if (changeFixture) changeFixture(fixtures);
+  const originals = new Map(fixtures);
+  const writes = new Map();
+  const originalRead = fs.readFileSync;
+  const originalWrite = fs.writeFileSync;
+  const originalArgv = process.argv;
+  const originalExit = process.exit;
+  const successfulExit = new Error('Synthetic native CLI completed');
+  let failure = null;
+  fs.readFileSync = function (file, options) {
+    const absolute = typeof file === 'string' ? path.resolve(file) : null;
+    if (absolute && /^tools\/solar-roi\/[^/]+\/index\.html$/.test(path.relative(ROOT, absolute).replace(/\\/g, '/'))) {
+      if (!fixtures.has(absolute)) { const error = new Error('Synthetic country input missing'); error.code = 'ENOENT'; throw error; }
+      const value = fixtures.get(absolute);
+      const encoding = typeof options === 'string' ? options : options?.encoding;
+      return encoding ? value : Buffer.from(value);
+    }
+    return originalRead.apply(fs, arguments);
+  };
+  fs.writeFileSync = function (file, value) {
+    const absolute = path.resolve(file);
+    if (!fixtures.has(absolute)) throw new Error('Native owner attempted unknown fixture/product write');
+    writes.set(absolute, String(value));
+  };
+  process.argv = [process.execPath, fragmentOwnerFile, '--tool', 'solar-roi', '--solar-input-transition-only'];
+  process.exit = function (code) { if (code !== 0) throw new Error(`Native CLI unexpected exit ${code}`); throw successfulExit; };
+  delete require.cache[require.resolve(fragmentOwnerFile)];
+  try { require(fragmentOwnerFile); throw new Error('Native fragment CLI did not exit successfully'); }
+  catch (error) { if (error !== successfulExit) failure = error; }
+  finally {
+    fs.readFileSync = originalRead;
+    fs.writeFileSync = originalWrite;
+    process.argv = originalArgv;
+    process.exit = originalExit;
+    delete require.cache[require.resolve(fragmentOwnerFile)];
+  }
+  return { originals, writes, failure };
+}
+
+const firstFragmentPass = runNativeSolarFragmentCase();
+assert.strictEqual(firstFragmentPass.failure, null);
+assert.strictEqual(firstFragmentPass.writes.size, 54);
+for (const [file, original] of firstFragmentPass.originals) {
+  assert.strictEqual(firstFragmentPass.writes.get(file), original.replace(oldTransitionRule, nextTransitionRule), `Only the reviewed CSS fragment may change: ${file}`);
+}
+const secondFragmentPass = runNativeSolarFragmentCase(fixtures => { for (const [file, html] of fixtures) fixtures.set(file, html.replace(oldTransitionRule, nextTransitionRule)); });
+assert.strictEqual(secondFragmentPass.failure, null);
+assert.strictEqual(secondFragmentPass.writes.size, 0, 'Native source fragment owner must be idempotent');
+const unreviewedFragment = runNativeSolarFragmentCase(fixtures => { const file = [...fixtures.keys()].at(-1); fixtures.set(file, fixtures.get(file).replace('background:#fff', 'background:#123456')); });
+assert.ok(unreviewedFragment.failure, 'Unknown source fragment must fail closed');
+assert.strictEqual(unreviewedFragment.writes.size, 0, 'Late unknown fragment must fail before any write');
+const duplicateFragment = runNativeSolarFragmentCase(fixtures => { const file = [...fixtures.keys()].at(-1); fixtures.set(file, fixtures.get(file).replace(oldTransitionRule, oldTransitionRule + oldTransitionRule)); });
+assert.ok(duplicateFragment.failure, 'Duplicate target fragment must fail closed');
+assert.strictEqual(duplicateFragment.writes.size, 0);
+const missingCountry = runNativeSolarFragmentCase(fixtures => fixtures.delete([...fixtures.keys()].at(-1)));
+assert.ok(missingCountry.failure, 'Missing native country input must fail closed');
+assert.strictEqual(missingCountry.writes.size, 0);
+console.log('Solar native input transition fragment: preserve54 exact non-CSS scenarios/metadata, idempotence and three late fail-closed paths PASS');

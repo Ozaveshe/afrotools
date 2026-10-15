@@ -42,3 +42,22 @@
 .ai-ui-refresh .ai-actions a.ai-browse[data-private-search]:focus-visible {
   box-shadow: inset 0 0 0 3px var(--color-primary) !important;
 }
+
+/* Keep the enabled no-AI continuation readable during native theme changes. */
+.ai-ui-refresh #aiContinueWithoutModel {
+  background: var(--color-bg-card);
+  border-color: var(--color-border);
+  color: var(--color-primary) !important;
+  transition-property: border-color, box-shadow, transform, opacity;
+}
+.ai-ui-refresh #aiContinueWithoutModel:hover,
+.ai-ui-refresh #aiContinueWithoutModel:focus-visible {
+  background: var(--color-surface-raised);
+  border-color: var(--color-primary);
+  color: var(--color-primary) !important;
+}
+
+/* Transparent query text shares this row background, including reduced motion. */
+.ai-ui-refresh .ai-input-row {
+  transition-property: border-color, box-shadow;
+}

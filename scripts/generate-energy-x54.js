@@ -912,7 +912,7 @@ function makeSolarRoiCountryPage(tool, country) {
 .solar-country-form{gap:20px 18px}
 .solar-field label{font-size:.94rem;line-height:1.25}
 .solar-field small{color:#536174;font-size:.88rem}
-.solar-field input,.solar-field select,.solar-country-note{border-color:#cdd7e4;background:#fff;box-shadow:0 1px 0 rgba(15,23,42,.02);transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease}
+.solar-field input,.solar-field select,.solar-country-note{border-color:#cdd7e4;background:#fff;box-shadow:0 1px 0 rgba(15,23,42,.02);transition:border-color .18s ease,box-shadow .18s ease}
 .solar-field input:hover,.solar-field select:hover,.solar-country-note:hover,.solar-country-picker input:hover,.solar-country-picker select:hover{border-color:#9aacbf}
 .solar-field input:focus-visible,.solar-field select:focus-visible,.solar-country-note:focus-visible,.solar-country-picker input:focus-visible,.solar-country-picker select:focus-visible{border-color:#1b75d0;box-shadow:0 0 0 4px rgba(27,117,208,.16);outline:0}
 .solar-country-advanced{padding:0;overflow:hidden;border-color:#d8e1eb;background:#fff}
@@ -2266,6 +2266,39 @@ const selectedTools = requestedTool ? TOOLS.filter(tool => tool.slug === request
 const countriesOnly = process.argv.includes("--countries-only");
 if (requestedTool && !selectedTools.length) {
   throw new Error(`Unknown tool slug: ${requestedTool}`);
+}
+
+// Refresh only the source-owned input transition fragment. Keep post-processed
+// metadata, bundles, analytics, numerical scenarios and current route links.
+if (process.argv.includes('--solar-input-transition-only')) {
+  if (requestedTool && requestedTool !== 'solar-roi') throw new Error('Solar input fragment mode requires solar-roi');
+  const solarTool = TOOLS.find(tool => tool.slug === 'solar-roi');
+  const selectorRule = /\.solar-field input,\.solar-field select,\.solar-country-note\{[^}]*\}/g;
+  const transition = 'transition:border-color .18s ease,box-shadow .18s ease';
+  const updates = [];
+  for (const country of COUNTRIES) {
+    const generated = makePage(solarTool, country);
+    const generatedRules = (generated.match(selectorRule) || []).filter(rule => rule.includes(';transition:'));
+    if (generatedRules.length !== 1 || !/;transition:border-color \.18s ease,box-shadow \.18s ease(?:,background-color \.18s ease)?\}$/.test(generatedRules[0])) {
+      throw new Error(`Unexpected native Solar input transition source for ${country.slug}`);
+    }
+    const nextRule = generatedRules[0];
+    const safeRule = nextRule.replace(',background-color .18s ease', '');
+    const previousRule = safeRule.replace(transition, `${transition},background-color .18s ease`);
+    const file = path.join(ROOT, 'tools', 'solar-roi', country.slug, 'index.html');
+    const original = fs.readFileSync(file, 'utf8');
+    const currentRules = (original.match(selectorRule) || []).filter(rule => rule.includes(';transition:'));
+    if (currentRules.length !== 1 || ![previousRule, safeRule].includes(currentRules[0])) {
+      throw new Error(`Unreviewed Solar input transition fragment in ${country.slug}`);
+    }
+    const next = original.replace(currentRules[0], nextRule);
+    if (next !== original) updates.push({ file, next });
+  }
+  // Validate every country before the first write; missing/unknown fragments
+  // cannot leave an earlier country partially changed.
+  for (const update of updates) fs.writeFileSync(update.file, update.next);
+  console.log(`Solar input transition fragments: ${updates.length} of ${COUNTRIES.length} country pages updated`);
+  process.exit(0);
 }
 
 let totalFiles = 0;
