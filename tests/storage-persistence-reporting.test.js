@@ -44,7 +44,7 @@ for (const filename of consumers) {
         './_shared/data-store': {},
       } });
       assert.equal((await owner.api.handler({})).statusCode, 503, 'owner must propagate the shared result');
-      assert.equal(captured.sourceType === 'reference', ['scheduled-fetch-insurance.js','scheduled-fetch-property.js','scheduled-fetch-salaries.js'].includes(filename), 'Review reference confidence scope explicitly');
+      assert.equal(captured.sourceType === 'reference', ['scheduled-fetch-insurance.js','scheduled-fetch-property.js','scheduled-fetch-salaries.js','scheduled-fetch-shipping.js'].includes(filename), 'Review reference confidence scope explicitly');
       const runner = load('netlify/functions/_shared/scraper-base.js', {
         modules: { './data-store': {
           getData: async () => null, setData: async () => written,

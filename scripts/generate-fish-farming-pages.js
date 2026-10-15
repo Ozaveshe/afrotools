@@ -273,7 +273,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       </div>
       <div class="field">
         <label class="f-label-text" for="inpArea">Pond / Tank Size <span class="f-label-hint" id="areaUnit">(m²)</span></label>
-        <input class="f-input" id="inpArea" type="number" min="1" step="1" value="100">
+        <input class="f-input" id="inpArea" type="number" min="1" step="1" value="100" aria-describedby="fishAreaError">
+        <p id="fishAreaError" role="alert" style="color:var(--color-text);background:var(--color-surface);font-size:0.85rem;"></p>
       </div>
       <div class="field">
         <label class="f-label-text" for="selDensity">Stocking Density</label>
@@ -561,8 +562,30 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     else { hint.textContent = '(m²)'; $('inpArea').value = 100; }
   }
 
+  function invalidateFishAreaResult() {
+    $('resultsWrap').classList.remove('on');
+    $('fishAreaError').textContent = '';
+    $('inpArea').removeAttribute('aria-invalid');
+  }
+  ['input', 'change'].forEach(function (event) {
+    $('inpArea').addEventListener(event, invalidateFishAreaResult);
+  });
+  ['selSystem', 'selSpecies'].forEach(function (id) {
+    $(id).addEventListener('change', invalidateFishAreaResult);
+  });
+
   // ── main calculate ─────────────────────────────────────────────────
   function calculate() {
+    invalidateFishAreaResult();
+    var pondArea = Number($('inpArea').value);
+    if (!Number.isFinite(pondArea) || pondArea < 1) {
+      $('fishAreaError').textContent = $('selSystem').value === 'tarpaulin_tank'
+        ? 'Enter a pond or tank size of at least 1 litre.'
+        : 'Enter a pond or tank size of at least 1 square metre.';
+      $('inpArea').setAttribute('aria-invalid', 'true');
+      $('inpArea').focus();
+      return;
+    }
     D = window.AquaData;
     var E = window.AquaROI;
     if (!D || !E) { alert('Data not loaded yet — please wait a moment and try again.'); return; }
@@ -571,7 +594,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       countryCode:     COUNTRY_CODE,
       speciesId:       $('selSpecies').value,
       system:          $('selSystem').value,
-      pondArea:        parseFloat($('inpArea').value) || 100,
+      pondArea:        pondArea,
       densityLevel:    $('selDensity').value,
       managementLevel: $('selManagement').value,
       targetSizeLevel: $('selTargetSize').value,

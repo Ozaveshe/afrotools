@@ -7,20 +7,27 @@ const path = require("node:path");
 const quality = require("../scripts/lib/calculation-quality");
 const { normalizeReviewedRelatedProPresentation: normalize } = require("../scripts/lib/reviewed-related-pro-presentation");
 const review = require("../data/calculation-quality/reviews/2026-10-12-related-pro-copy.json");
+const controllerReview = require("../data/calculation-quality/reviews/2026-10-12-sars-checklist-recovery.json").controllerReview;
 const ROOT = path.resolve(__dirname, "..");
 const formulas = quality.loadQualityArtifacts(ROOT).formulas.formulas;
 
 for (const record of review.records) {
   const html = fs.readFileSync(path.join(ROOT, record.artifactPath), "utf8");
+  const protectedDigest = record.id === "route-sars-efiling" ? controllerReview.successorArtifactDigest : record.legacyArtifactDigest;
   test(record.id + ": exact related Pro copy preserves the original protected digest", () => {
     const formula = formulas.find(item => item.id === record.id);
     assert.equal(formula.artifactPath, record.artifactPath);
-    assert.equal(formula.artifactDigest, record.legacyArtifactDigest);
+    if (record.id === "route-sars-efiling") {
+      assert.equal(controllerReview.legacyArtifactDigest, record.legacyArtifactDigest);
+      assert.equal(html.split(controllerReview.afterReference).length - 1, 1);
+      assert.equal(quality.digestHtmlFormulaSource(html.replace(controllerReview.afterReference, controllerReview.beforeReference)), record.legacyArtifactDigest);
+    }
+    assert.equal(formula.artifactDigest, protectedDigest);
     assert.equal(html.split(record.current).length, 2);
     assert.equal(normalize(html), html.replace(record.current, record.baseline));
     assert.equal(normalize(normalize(html)), normalize(html));
-    assert.equal(quality.digestHtmlFormulaSource(html), record.legacyArtifactDigest);
-    assert.equal(quality.digestHtmlFormulaSource(html.replace(record.current, record.baseline)), record.legacyArtifactDigest);
+    assert.equal(quality.digestHtmlFormulaSource(html), protectedDigest);
+    assert.equal(quality.digestHtmlFormulaSource(html.replace(record.current, record.baseline)), protectedDigest);
   });
 
   test(record.id + ": unrelated content and executable changes stay protected", () => {
@@ -36,7 +43,7 @@ for (const record of review.records) {
     ];
     for (const changed of variants) {
       assert.notEqual(changed, html);
-      assert.notEqual(quality.digestHtmlFormulaSource(changed), record.legacyArtifactDigest);
+      assert.notEqual(quality.digestHtmlFormulaSource(changed), protectedDigest);
     }
   });
 

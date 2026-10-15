@@ -609,13 +609,16 @@ function validateCompositionProof(queue, options, git = runGit) {
     need(value && value.status === 0 && !value.error, 'Composition Git object or remote verification failed');
     return binary ? Buffer.from(value.stdout) : String(value.stdout).trim();
   };
+  let keyCompositions = false;
+  const sourcePath = value => typeof value === 'string' && /^[a-zA-Z0-9._/-]+$/.test(value)
+    && !value.startsWith('/') && value.split('/').every(part => part && part !== '.' && part !== '..');
   const conflictKey = conflict => {
-    need(conflict.type === 'source_file' && typeof conflict.key === 'string'
-      && /^[a-zA-Z0-9._/-]+$/.test(conflict.key) && !conflict.key.startsWith('/')
-      && conflict.key.split('/').every(part => part && part !== '.' && part !== '..')
+    need((conflict.type === 'source_file' && sourcePath(conflict.key)
+      || keyCompositions && conflict.type === 'conflict_key' && typeof conflict.key === 'string'
+        && /^[a-zA-Z0-9._:/-]{1,256}$/.test(conflict.key))
       && Array.isArray(conflict.handoffs) && conflict.handoffs.length === 2
       && new Set(conflict.handoffs).size === 2, 'Invalid exact source conflict identity');
-    return JSON.stringify([conflict.key, conflict.handoffs.slice().sort()]);
+    return JSON.stringify([conflict.type, conflict.key, conflict.handoffs.slice().sort()]);
   };
   try {
     need(options.release && !options.skipRemote && digest(options.compositionProofSha256), 'Composition proof requires verified release mode and its explicit digest');
@@ -624,7 +627,8 @@ function validateCompositionProof(queue, options, git = runGit) {
     need(result.proof_sha256 === options.compositionProofSha256, 'Composition proof digest mismatch');
     const proof = JSON.parse(bytes.toString('utf8'));
     keys(proof, ['schema_version', 'kind', 'reviewed_at', 'current_main_sha', 'release_commit', 'release_tree', 'selected', 'conflicts']);
-    need(proof.schema_version === 1 && proof.kind === 'source_composition', 'Unsupported composition proof kind/version');
+    keyCompositions = proof.schema_version === 2 && proof.kind === 'release_composition';
+    need(keyCompositions || proof.schema_version === 1 && proof.kind === 'source_composition', 'Unsupported composition proof kind/version');
     const reviewed = Date.parse(proof.reviewed_at);
     const ageLimit = options.compositionMaxAgeHours;
     need(Number.isFinite(reviewed) && Number.isFinite(ageLimit) && ageLimit > 0
@@ -652,31 +656,21 @@ function validateCompositionProof(queue, options, git = runGit) {
         && checks[0].remote_commit === item.commit && checks[0].base_ancestor && checks[0].diff_exact
         && checks[0].source_patch_sha256 === selected.source_patch_sha256, 'Composition native source/remote/ancestry/allowlist verification failed');
     }
-    const actual = raw.filter(conflict => conflict.type === 'source_file');
+    const actual = keyCompositions ? raw : raw.filter(conflict => conflict.type === 'source_file');
     const actualKeys = actual.map(conflictKey);
     need(actual.length > 0 && new Set(actualKeys).size === actualKeys.length
       && Array.isArray(proof.conflicts) && proof.conflicts.length <= 10000
-      && proof.conflicts.length === actual.length, 'Composition must cover exactly the actual source conflicts');
+      && proof.conflicts.length === actual.length, 'Composition must cover exactly the actual conflicts for its schema');
     const proofKeys = proof.conflicts.map(conflictKey);
     need(new Set(proofKeys).size === proofKeys.length && sameStringSet(proofKeys, actualKeys), 'Missing, new, duplicate or unrelated composition conflict');
     const evidence = new Map();
     let totalEvidenceBytes = 0;
     const finalBlobs = new Map();
-    for (const entry of proof.conflicts) {
-      keys(entry, ['type', 'key', 'handoffs', 'final_blob_sha256', 'evidence']);
-      need(entry.handoffs.every(id => options.handoffIds.includes(id)
-        && queue.ready.find(item => item.handoff_id === id).source_files.includes(entry.key)), 'Composition pair does not own the exact source path');
-      need(digest(entry.final_blob_sha256) && Array.isArray(entry.evidence)
-        && entry.evidence.length > 0 && entry.evidence.length <= 16, 'Composition requires final blob and manual evidence digests');
-      if (!finalBlobs.has(entry.key)) {
-        const row = native(['--literal-pathspecs', 'ls-tree', '-z', proof.release_tree, '--', entry.key], true).toString();
-        const match = row.match(/^(100644|100755) blob ([a-f0-9]{40})\t([^\0]+)\0$/);
-        need(match && match[3] === entry.key, 'Composition source must be an exact regular Git blob');
-        finalBlobs.set(entry.key, sha(native(['cat-file', 'blob', match[2]], true)));
-      }
-      need(finalBlobs.get(entry.key) === entry.final_blob_sha256, 'Composition final Git blob digest mismatch');
+    const verifyEvidence = references => {
+      need(Array.isArray(references) && references.length > 0 && references.length <= 16,
+        'Composition requires bounded digest-pinned manual evidence');
       const seenEvidence = new Set();
-      for (const reference of entry.evidence) {
+      for (const reference of references) {
         keys(reference, ['path', 'sha256']);
         need(typeof reference.path === 'string' && path.isAbsolute(reference.path)
           && digest(reference.sha256) && !seenEvidence.has(reference.path), 'Composition manual evidence reference invalid or duplicated');
@@ -689,11 +683,62 @@ function validateCompositionProof(queue, options, git = runGit) {
         }
         need(evidence.get(reference.path) === reference.sha256, 'Composition manual evidence digest mismatch');
       }
+    };
+    const verifyBlob = (file, expected) => {
+      need(sourcePath(file) && digest(expected), 'Composition final source binding is invalid');
+      if (!finalBlobs.has(file)) {
+        const row = native(['--literal-pathspecs', 'ls-tree', '-z', proof.release_tree, '--', file], true).toString();
+        const match = row.match(/^(100644|100755) blob ([a-f0-9]{40})\t([^\0]+)\0$/);
+        need(match && match[3] === file, 'Composition source must be an exact regular Git blob');
+        finalBlobs.set(file, sha(native(['cat-file', 'blob', match[2]], true)));
+      }
+      need(finalBlobs.get(file) === expected, 'Composition final Git blob digest mismatch');
+    };
+    for (const entry of proof.conflicts) {
+      if (entry.type === 'source_file') {
+        keys(entry, ['type', 'key', 'handoffs', 'final_blob_sha256', 'evidence']);
+        need(entry.handoffs.every(id => options.handoffIds.includes(id)
+          && queue.ready.find(item => item.handoff_id === id).source_files.includes(entry.key)), 'Composition pair does not own the exact source path');
+        verifyBlob(entry.key, entry.final_blob_sha256);
+        verifyEvidence(entry.evidence);
+        continue;
+      }
+      keys(entry, ['type', 'key', 'handoffs', 'source_bindings', 'contributions', 'evidence']);
+      need(keyCompositions && entry.type === 'conflict_key', 'Unsupported composition conflict type');
+      const pair = entry.handoffs.map(id => queue.ready.find(item => item.handoff_id === id));
+      need(pair.every(item => item && item.conflict_keys.includes(entry.key)), 'Both exact receipts must declare the composed conflict key');
+      const union = [...new Set(pair.flatMap(item => item.source_files))];
+      need(union.length > 0 && Array.isArray(entry.source_bindings) && entry.source_bindings.length <= 10000
+        && entry.source_bindings.length === union.length
+        && new Set(entry.source_bindings.map(binding => binding.file)).size === union.length
+        && sameStringSet(entry.source_bindings.map(binding => binding.file), union), 'Key composition must bind the exact union of both source allowlists');
+      for (const binding of entry.source_bindings) {
+        keys(binding, ['file', 'owners', 'final_blob_sha256']);
+        const owners = pair.filter(item => item.source_files.includes(binding.file)).map(item => item.handoff_id);
+        need(Array.isArray(binding.owners) && binding.owners.length === owners.length
+          && new Set(binding.owners).size === owners.length && sameStringSet(binding.owners, owners), 'Key composition source owner set mismatch');
+        verifyBlob(binding.file, binding.final_blob_sha256);
+      }
+      need(Array.isArray(entry.contributions) && entry.contributions.length === 2
+        && new Set(entry.contributions.map(item => item.handoff_id)).size === 2
+        && sameStringSet(entry.contributions.map(item => item.handoff_id), entry.handoffs), 'Both exact receipt contributions are required');
+      for (const contribution of entry.contributions) {
+        keys(contribution, ['handoff_id', 'commit', 'base_sha', 'source_patch_sha256', 'source_files', 'evidence']);
+        const item = pair.find(candidate => candidate.handoff_id === contribution.handoff_id);
+        const selected = proof.selected.find(candidate => candidate.handoff_id === item.handoff_id);
+        need(contribution.commit === item.commit && contribution.base_sha === item.base_sha
+          && contribution.source_patch_sha256 === selected.source_patch_sha256
+          && Array.isArray(contribution.source_files) && contribution.source_files.length === item.source_files.length
+          && new Set(contribution.source_files).size === item.source_files.length
+          && sameStringSet(contribution.source_files, item.source_files), 'Key composition receipt contribution identity or original patch mismatch');
+        verifyEvidence(contribution.evidence);
+      }
+      verifyEvidence(entry.evidence);
     }
     result.valid = true;
     result.resolved_conflicts = actual;
-    result.unresolved_conflicts = raw.filter(conflict => conflict.type !== 'source_file');
-    result.conflicts = raw.map(conflict => ({ ...conflict, status: conflict.type === 'source_file' ? 'resolved' : 'unresolved' }));
+    result.unresolved_conflicts = keyCompositions ? [] : raw.filter(conflict => conflict.type !== 'source_file');
+    result.conflicts = raw.map(conflict => ({ ...conflict, status: keyCompositions || conflict.type === 'source_file' ? 'resolved' : 'unresolved' }));
     result.release_commit = proof.release_commit;
     result.release_tree = proof.release_tree;
   } catch (error) {

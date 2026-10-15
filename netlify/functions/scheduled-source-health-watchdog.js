@@ -149,6 +149,17 @@ async function checkLiveDataMeta(summary, nowMs) {
 
   for (const watch of LIVE_DATA_WATCHES) {
     const catMeta = meta[watch.metaKey] || meta[watch.id] || {};
+    if (watch.id === 'shipping') {
+      const payload = await getData(watch.blobKey);
+      const reference = require('./_shared/shipping-reference').referenceStatus(payload,catMeta,nowMs,watch.staleAfterMinutes,
+        require('./scheduled-fetch-shipping')._referenceCatalog);
+      categories.push({id:watch.id,blob_key:watch.blobKey,...reference,severity:watch.severity});
+      pushIssue(summary,reference.collection_status === 'offline' ? 'stale' : 'degraded',{
+        id:watch.id,surface:'live_data_meta',severity:watch.severity,age_minutes:reference.age_minutes,updated_at:reference.collected_at,
+        message:reference.collection_status === 'offline' ? 'Shipping reference data is unavailable or invalid' :
+          'Freight and port fees remain unreviewed planning references; collection status: '+reference.collection_status});
+      continue;
+    }
     if (['insurance','property','salaries'].includes(watch.id)) {
       const payload = await getData(watch.blobKey);
       const reference = require('./_shared/reference-feeds').referenceStatus(watch.id,payload,catMeta,nowMs,watch.staleAfterMinutes);
@@ -244,7 +255,7 @@ async function checkScraperHealth(summary, nowMs = null) {
     // mistaken for a future timestamp. Tests can supply a fixed observation.
     const observedMs = nowMs == null ? Date.now() : nowMs;
     const scraperSummary = summarizeScrapers(result.rows, { now: observedMs });
-    const rows = scraperSummary.scrapers;
+    const rows = scraperSummary.scrapers.filter(row => row.health_status !== 'retired_history');
     const unhealthy = [];
     const stale = [];
 
@@ -262,7 +273,10 @@ async function checkScraperHealth(summary, nowMs = null) {
       health_scope: scraperSummary.health_scope,
       scheduled_proof_status: scraperSummary.scheduled_proof_status,
       unknown_owner_count: scraperSummary.unknown_owner_count,
-      total: rows.length,
+      total: scraperSummary.total_count,
+      active_total: rows.length,
+      retired_history_count: scraperSummary.retired_history_count,
+      retired_history: scraperSummary.scrapers.filter(row => row.health_status === 'retired_history'),
       unhealthy_count: unhealthy.length,
       stale_count: stale.length,
       unhealthy: unhealthy.slice(0, 20),
@@ -558,6 +572,8 @@ function safeSummary(summary, includeDetails) {
         scheduled_proof_status: summary.sources.scraper_health.scheduled_proof_status || 'not_checked',
         unknown_owner_count: summary.sources.scraper_health.unknown_owner_count == null ? null : summary.sources.scraper_health.unknown_owner_count,
         total: summary.sources.scraper_health.total,
+        active_total: summary.sources.scraper_health.active_total,
+        retired_history_count: summary.sources.scraper_health.retired_history_count,
         unhealthy_count: summary.sources.scraper_health.unhealthy_count,
         stale_count: summary.sources.scraper_health.stale_count,
       } : null,

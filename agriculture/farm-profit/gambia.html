@@ -9,14 +9,12 @@
 <meta name="afrotools-country-id" content="GM">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Farm Profit/Loss Calculator for Gambia &mdash; AfroTools</title>
-<meta name="description" content="Calculate farm profit and ROI in Gambia for Groundnut, Millet, Rice. Compare seed, fertilizer, labour, and transport costs per hectare.">
+<meta name="description" content="Calculate farming profitability in Gambia. Full cost analysis for Groundnut, Millet, Rice including seeds, fertilizer, labor, transport. See your profit per hectare and ROI.">
 <meta property="og:title" content="Gambia Farm Profit/Loss Calculator &mdash; AfroTools">
 <meta property="og:description" content="Calculate farming profitability in Gambia. Full cost analysis including seeds, fertilizer, labor, transport, post-harvest losses.">
 <meta property="og:url" content="https://afrotools.com/agriculture/farm-profit/gambia">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/fr-agriculture-farm-profit.webp">
-<meta property="og:image:width" content="768">
-<meta property="og:image:height" content="512">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
@@ -52,9 +50,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
 
-<script src="/assets/js/components/navbar.min.js?v=455c93ec" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a4be1be7" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 
 <style>
@@ -204,7 +201,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/farm-profit/gambia">
 </head>
 
-<body class="tool-page top-level-page-ui-refresh">
+<body class="tool-page">
 <afro-navbar theme="dark" active="tools"></afro-navbar>
 
 <section class="tool-hero">
@@ -239,7 +236,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       </div>
       <div class="field">
         <label class="f-label-text" for="inpFarm">Farm Size (hectares)</label>
-        <input class="f-input" id="inpFarm" type="number" min="0.1" step="0.1" value="1">
+        <input class="f-input" id="inpFarm" type="number" min="0.1" step="0.1" value="1" aria-describedby="profitAreaError">
+        <p id="profitAreaError" role="alert" style="color:var(--color-text);background:var(--color-surface);font-size:0.85rem;"></p>
       </div>
       <div class="field">
         <label class="f-label-text" for="inpYield">Expected Yield <span class="f-label-hint">(tonnes/ha)</span></label>
@@ -270,7 +268,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#127807; Section 2: Input Costs</span>
-    <button type="button" class="card-toggle" onclick="toggleSection('sec2Body', this)">Collapse</button>
+    <button class="card-toggle" onclick="toggleSection('sec2Body', this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="sec2Body">
     <div class="form-grid">
@@ -300,7 +298,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#128104;&#8205;&#127806; Section 3: Labor</span>
-    <button type="button" class="card-toggle" onclick="toggleSection('sec3Body', this)">Collapse</button>
+    <button class="card-toggle" onclick="toggleSection('sec3Body', this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="sec3Body">
     <div class="form-grid">
@@ -330,7 +328,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#127968; Section 4: Land &amp; Mechanization</span>
-    <button type="button" class="card-toggle" onclick="toggleSection('sec4Body', this)">Collapse</button>
+    <button class="card-toggle" onclick="toggleSection('sec4Body', this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="sec4Body">
     <div class="form-grid">
@@ -367,7 +365,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#128667; Section 5: Transport &amp; Marketing</span>
-    <button type="button" class="card-toggle" onclick="toggleSection('sec5Body', this)">Collapse</button>
+    <button class="card-toggle" onclick="toggleSection('sec5Body', this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="sec5Body">
     <div class="form-grid">
@@ -395,7 +393,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#128203; Section 6: Other Costs</span>
-    <button type="button" class="card-toggle" onclick="toggleSection('sec6Body', this)">Collapse</button>
+    <button class="card-toggle" onclick="toggleSection('sec6Body', this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="sec6Body">
     <div class="form-grid">
@@ -432,7 +430,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <!-- Calculate Button -->
 <div class="card">
   <div class="card-body">
-    <button type="button" class="calc-btn" onclick="calculate()">&#128202; Calculate Farm Profit / Loss</button>
+    <button class="calc-btn" onclick="calculate()">&#128202; Calculate Farm Profit / Loss</button>
   </div>
 </div>
 
@@ -515,7 +513,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
   <!-- Print button -->
   <div style="text-align:center;margin-bottom:8px;">
-    <button type="button" onclick="window.print()" style="background:none;border:1px solid #CBD5E1;border-radius:100px;padding:8px 20px;font-size:0.78rem;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;" aria-label="Print results">&#128438; Print Results</button>
+    <button onclick="window.print()" style="background:none;border:1px solid #CBD5E1;border-radius:100px;padding:8px 20px;font-size:0.78rem;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;" aria-label="Print results">&#128438; Print Results</button>
   </div>
 
 </div><!-- end results-wrap -->
@@ -545,25 +543,6 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   Estimates are indicative &mdash; actual results vary by season, management, and market conditions. Last updated: 2026.
 </div>
 </main>
-
-<section class="seo-content agri-country-facts" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
-<h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Farming context: Gambia</h2>
-<p>In Gambia, agriculture contributes about 20% of GDP, employs roughly 44% of the labour force, the average farm is around 2 ha — so plan budgets, wages, and repayments around smallholder cash-flow cycles.</p>
-<table style="width:100%;border-collapse:collapse;font-size:.85rem;"><tbody><tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Agriculture share of GDP</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">~20%</td></tr>
-<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Arable land</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">450,000 ha</td></tr>
-<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Irrigated share</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">~2%</td></tr>
-<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main rainy season</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">June to October</td></tr>
-<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main food crops</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">groundnut, millet, rice, sorghum, maize, cowpea</td></tr>
-<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main export crops</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">groundnut</td></tr></tbody></table>
-<h3 style="font-size:.95rem;font-weight:700;margin:1.2rem 0 .4rem;">Growing regions at a glance</h3>
-<table style="width:100%;border-collapse:collapse;font-size:.82rem;">
-<thead><tr><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Region</th><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Annual rainfall</th><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Major crops</th></tr></thead>
-<tbody><tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Western / Coastal (Banjul, Brikama)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1000 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">rice, groundnut, maize, cowpea</td></tr>
-<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Central River (Janjanbureh, Kuntaur)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">800 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">groundnut, millet, rice, sorghum</td></tr>
-<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Upper River (Basse)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">900 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">groundnut, millet, sorghum, cowpea</td></tr></tbody>
-</table>
-<p style="font-size:.78rem;color:#64748b;">Country context from the AfroTools agriculture dataset — planning reference, not agronomic advice. Confirm with local extension services.</p>
-</section>
 <afro-related-tools data-ssr="1" category="agriculture" current="farm-profit-gambia">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -709,14 +688,31 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     }
   }
 
+  function invalidateFarmAreaResult() {
+    $('resultsPanel').classList.remove('on');
+    $('profitAreaError').textContent = '';
+    $('inpFarm').removeAttribute('aria-invalid');
+  }
+  ['input', 'change'].forEach(function (event) {
+    $('inpFarm').addEventListener(event, invalidateFarmAreaResult);
+  });
+
   // ═══ CALCULATE ═══
   window.calculate = function () {
+    invalidateFarmAreaResult();
+    var farmSize = Number($('inpFarm').value);
+    if (!Number.isFinite(farmSize) || farmSize < 0.1) {
+      $('profitAreaError').textContent = 'Enter a farm size of at least 0.1 hectare.';
+      $('inpFarm').setAttribute('aria-invalid', 'true');
+      $('inpFarm').focus();
+      return;
+    }
     if (!ENG || !CD || !FC) { alert('Data not loaded. Please refresh.'); return; }
 
     var inputs = {
       cropId: $('selCrop').value,
       regionId: $('selRegion').value,
-      farmSizeHa: parseFloat($('inpFarm').value) || 1,
+      farmSizeHa: farmSize,
       yieldPerHa: parseFloat($('inpYield').value) || 1,
       marketPricePerTonne: parseFloat($('inpPrice').value) || 0,
       sellingMethod: $('selSelling').value,

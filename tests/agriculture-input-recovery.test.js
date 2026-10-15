@@ -33,3 +33,65 @@ for (const code of fs.readdirSync(path.join(root, 'data/agriculture')).filter(f 
   assert.equal(calls[0]({ ...input, irrigationMethod: 'unknown' }).error, true); checks++;
 }
 console.log(`Agriculture invalid-input regression: ${checks} checks passed.`);
+
+// English farm-profit / fish-farming controllers must reject invalid area before engine invocation.
+// Execute the real generator-owned controller bodies; a sentinel stops valid calls at the engine boundary.
+(function verifyEnglishProfitAreaControllers() {
+  const assert = require('node:assert/strict'), fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
+  const root = path.resolve(__dirname, '..');
+  for (const family of ['farm-profit', 'fish-farming']) {
+    const source = fs.readFileSync(path.join(root, 'scripts', `generate-${family}-pages.js`), 'utf8');
+    const farm = family === 'farm-profit', areaId = farm ? 'inpFarm' : 'inpArea';
+    const errorId = farm ? 'profitAreaError' : 'fishAreaError', resultId = farm ? 'resultsPanel' : 'resultsWrap';
+    const helperStart = source.indexOf(farm ? '  function invalidateFarmAreaResult()' : '  function invalidateFishAreaResult()');
+    const functionStart = source.indexOf(farm ? '  window.calculate = function () {' : '  function calculate() {');
+    const functionEnd = farm ? source.indexOf('\n  };\n\n})();', functionStart) + '\n  };'.length : source.indexOf('\n  // ── render', functionStart);
+    assert.ok(functionStart >= 0 && functionEnd > functionStart, `${family}: controller extraction`);
+    const nodes = new Map(), engineStop = {}, calls = [];
+    function node(id) {
+      if (!nodes.has(id)) {
+        const classes = new Set(['on']), attrs = {}, handlers = {};
+        nodes.set(id, { value: '0', textContent: '', focused: false, checked: false,
+          classList: { add: c => classes.add(c), remove: c => classes.delete(c), contains: c => classes.has(c) },
+          setAttribute: (k,v) => { attrs[k]=v; }, removeAttribute: k => { delete attrs[k]; }, getAttribute: k => attrs[k],
+          focus() { this.focused=true; }, addEventListener: (type,fn) => { handlers[type]=fn; }, handlers });
+      }
+      return nodes.get(id);
+    }
+    node('areaUnit').textContent='(m²)';
+    const engine = { calculate: inputs => { calls.push(inputs); throw engineStop; } };
+    const context = vm.createContext({ window: { AquaData:{}, AquaROI:engine }, $:node, ENG:engine, CD:{}, FC:{}, D:null, COUNTRY_CODE:'NG', alert:message=>assert.fail(`Unexpected alert: ${message}`) });
+    // Baseline lacks helpers: still execute its original controller and detect the engine call.
+    if (helperStart >= 0 && helperStart < functionStart) vm.runInContext(source.slice(helperStart,functionStart),context);
+    vm.runInContext(source.slice(functionStart,functionEnd),context);
+    const calculate = farm ? context.window.calculate : context.calculate;
+    const minimumInvalid = farm ? '0.01' : '0.5';
+    for (const value of ['', ' ', '0', '-1', minimumInvalid, 'Infinity', 'NaN', '1e309', 'abc']) {
+      node(areaId).value=value; node(areaId).focused=false; node(resultId).classList.add('on');
+      let caught; try { calculate(); } catch (error) { caught=error; }
+      assert.equal(calls.length,0,`${family}: invalid area ${JSON.stringify(value)} must not invoke engine`);
+      assert.equal(caught,undefined,`${family}: invalid calculation must recover without throwing`);
+      assert.equal(node(resultId).classList.contains('on'),false,`${family}: stale result hidden`);
+      assert.ok(node(errorId).textContent.length>0,`${family}: visible error text`);
+      assert.equal(node(areaId).getAttribute('aria-invalid'),'true');
+      assert.equal(node(areaId).focused,true);
+    }
+    node(areaId).value=farm?'2':'200';
+    let caught; try { calculate(); } catch(error) { caught=error; }
+    assert.equal(caught,engineStop,`${family}: valid input reaches existing engine`);
+    assert.equal(calls.length,1);
+    assert.equal(calls[0][farm?'farmSizeHa':'pondArea'],farm?2:200);
+    assert.equal(node(errorId).textContent,'');
+    assert.equal(node(areaId).getAttribute('aria-invalid'),undefined);
+    for (const event of ['input','change']) {
+      node(resultId).classList.add('on'); node(errorId).textContent='old error'; node(areaId).setAttribute('aria-invalid','true');
+      assert.equal(typeof node(areaId).handlers[event],'function'); node(areaId).handlers[event]();
+      assert.equal(node(resultId).classList.contains('on'),false);
+      assert.equal(node(errorId).textContent,'');
+      assert.equal(node(areaId).getAttribute('aria-invalid'),undefined);
+    }
+    assert.match(source,new RegExp(`id="${areaId}"[^>]*aria-describedby="${errorId}"`));
+    assert.match(source,new RegExp(`id="${errorId}"[^>]*role="alert"`));
+    console.log(`English ${family} real controller: 9 invalid values, valid engine handoff and input/change recovery passed.`);
+  }
+})();

@@ -1580,9 +1580,9 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
             </svg>
-            <input class="mob-search-input" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" autocomplete="off"/>
+            <input class="mob-search-input" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" aria-controls="mobSearchResults" autocomplete="off"/>
           </div>
-            <div class="mob-search-results" id="mobSearchResults" role="listbox" aria-label="${isSw ? 'Matokeo ya utafutaji' : lang === 'ha' ? 'Sakamakon bincike' : 'Search results'}"></div>
+            <div class="mob-search-results" id="mobSearchResults" role="list" aria-label="${isSw ? 'Matokeo ya utafutaji' : lang === 'ha' ? 'Sakamakon bincike' : 'Search results'}"></div>
           <div class="mob-theme-section">
             <button class="mob-theme-toggle" id="mobThemeToggle" type="button" aria-label="${T.themeToDark}" aria-pressed="false" data-to-dark="${T.themeToDark}" data-to-light="${T.themeToLight}" data-state-dark="${T.themeDark}" data-state-light="${T.themeLight}">
               <span class="mob-theme-copy">
@@ -2419,8 +2419,41 @@
         };
       };
       let _mobDebounce;
+      let _mobResultsQuery = '';
+      const mobileResultLinks = () => Array.from(mobSearchResults?.querySelectorAll('a.search-result[href]') || []);
+      const highlightMobileResult = (target) => {
+        mobileResultLinks().forEach(link => link.classList.toggle('active', link === target));
+      };
+      const plainMobileNavigationKey = (event) => !event.isComposing && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey;
+      mobSearchInput?.addEventListener('focus', () => highlightMobileResult(null));
+      mobSearchInput?.addEventListener('keydown', event => {
+        if (!plainMobileNavigationKey(event) || !['ArrowDown', 'ArrowUp'].includes(event.key)) return;
+        const links = mobileResultLinks();
+        if (!links.length || !_mobResultsQuery || _mobResultsQuery !== mobSearchInput.value.trim()) return;
+        event.preventDefault();
+        links[event.key === 'ArrowDown' ? 0 : links.length - 1].focus();
+      });
+      mobSearchResults?.addEventListener('focusin', event => {
+        highlightMobileResult(event.target.closest('a.search-result'));
+      });
+      mobSearchResults?.addEventListener('focusout', event => {
+        if (!mobSearchResults.contains(event.relatedTarget)) highlightMobileResult(null);
+      });
+      mobSearchResults?.addEventListener('keydown', event => {
+        if (!plainMobileNavigationKey(event) || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+        const links = mobileResultLinks();
+        const index = links.indexOf(event.target.closest('a.search-result'));
+        if (index < 0 || _mobResultsQuery !== mobSearchInput.value.trim()) return;
+        event.preventDefault();
+        if (event.key === 'ArrowUp' && index === 0) return mobSearchInput.focus();
+        const next = event.key === 'Home' ? 0 : event.key === 'End' ? links.length - 1 :
+          event.key === 'ArrowUp' ? index - 1 : Math.min(index + 1, links.length - 1);
+        links[next].focus();
+      });
       mobSearchInput?.addEventListener('input', () => {
         clearTimeout(_mobDebounce);
+        _mobResultsQuery = '';
+        highlightMobileResult(null);
         _mobDebounce = setTimeout(() => {
           const q = mobSearchInput.value.trim();
           if (!q) {
@@ -2463,13 +2496,14 @@
           if (mobCountryBlock) mobCountryBlock.style.display = 'none';
           if (mobBusinessBlock) mobBusinessBlock.style.display = 'none';
           mobSearchResults.innerHTML = results.map(t => `
-            <a href="${escapeHtml(t.href || '#')}" class="search-result" role="option">
+            <div role="listitem"><a href="${escapeHtml(t.href || '#')}" class="search-result">
               <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
               <div>
                 <div class="search-result-name">${highlightMatch(t.name, q)}</div>
                 <div class="search-result-desc">${escapeHtml(t.desc)}</div>
               </div>
-            </a>`).join('');
+            </a></div>`).join('');
+          _mobResultsQuery = q;
           // Analytics: track mobile search
           if (q && q.length >= 2 && window.AfroTools?.analytics) {
             window.AfroTools.analytics.trackSearch(q, results.length, 'navbar');

@@ -117,3 +117,55 @@ for (const route of routes.filter(r => /ha (noma\/yawan-iri|kayan-aiki)/.test(r.
     expect(downloads).toHaveLength(2);
   });
 }
+
+// Retain every original locale/input/export assertion above; add the two English profit families.
+for (const route of [
+  { family:'farm-profit', area:'#inpFarm', error:'#profitAreaError', result:'#resultsPanel', valid:'2', belowMinimum:'0.01', resultValue:'#rNetProfit', expected:'₦748,952' },
+  { family:'fish-farming', area:'#inpArea', error:'#fishAreaError', result:'#resultsWrap', valid:'200', belowMinimum:'0.5', resultValue:'#profitAmount', expected:'₦6.6M' }
+]) for (const width of [390,1280]) {
+  test(`English ${route.family}: area validation and real-result recovery at ${width}px`,async({page})=>{
+    await page.setViewportSize({width,height:900});
+    await page.emulateMedia({colorScheme:width===390?'dark':'light'});
+    const errors=[]; page.on('pageerror',e=>errors.push(e.message));
+    await page.goto(`/agriculture/${route.family}/nigeria.html`);
+    const area=page.locator(route.area), result=page.locator(route.result), error=page.locator(route.error);
+    const calculate=()=>page.locator('[onclick="calculate()"]:visible').click();
+    await expect(area).toBeVisible();
+    await area.fill(route.valid); await calculate();
+    await expect(result).toBeVisible();
+    await expect(page.locator(route.resultValue)).toHaveText(route.expected);
+    for (const value of ['', '0', '-1',route.belowMinimum]) {
+      await area.fill(value);
+      await expect(result).toBeHidden();
+      await calculate();
+      await expect(result).toBeHidden();
+      await expect(error).toBeVisible(); await expect(error).toBeInViewport(); await expect(error).not.toBeEmpty();
+      const colors=await error.evaluate(el=>({foreground:getComputedStyle(el).color,background:getComputedStyle(el).backgroundColor}));
+      const luminance=rgb=>{
+        const values=rgb.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});
+        return .2126*values[0]+.7152*values[1]+.0722*values[2];
+      };
+      const foreground=luminance(colors.foreground),background=luminance(colors.background);
+      expect((Math.max(foreground,background)+.05)/(Math.min(foreground,background)+.05)).toBeGreaterThanOrEqual(4.5);
+      await expect(area).toHaveAttribute('aria-invalid','true');
+      await expect(area).toHaveAttribute('aria-describedby',route.error.slice(1));
+      await expect(area).toBeFocused();
+      await area.fill(route.valid); await calculate();
+      await expect(result).toBeVisible();
+      await expect(page.locator(route.resultValue)).toHaveText(route.expected);
+      await expect(error).toBeEmpty();
+      await expect(area).not.toHaveAttribute('aria-invalid','true');
+    }
+    if (route.family==='fish-farming') {
+      await page.getByRole('combobox',{name:'Production System',exact:true}).selectOption('tarpaulin_tank');
+      await expect(result).toBeHidden();
+      await expect(page.locator('#areaUnit')).toHaveText('(litres)');
+      await area.fill('0'); await calculate();
+      await expect(error).toContainText('litre'); await expect(result).toBeHidden();
+      await area.fill('5000'); await calculate();
+      await expect(result).toBeVisible(); await expect(error).toBeEmpty();
+    }
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+    expect(errors).toEqual([]);
+  });
+}

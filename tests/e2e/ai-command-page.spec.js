@@ -153,6 +153,7 @@ test("real-life local routing covers common intake prompts", async ({ page }) =>
   }
 
   await page.goto("/ai/?q=Import%20a%20used%20Toyota%20from%20Japan%20to%20Ghana&router=off", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("[data-workflow-card]").first()).toContainText("Import Duty Calculator");
   const importState = await page.evaluate(function () {
     return window.AfroToolsAICommandPage.getState();
   });
@@ -825,6 +826,7 @@ test("career agent AI starter profile is consent-gated and included in CV prefil
   });
 
   await page.goto("/ai/?q=Write%20me%20a%20CV%20for%20an%20electrical%20engineer%20in%20Ghana&router=off", { waitUntil: "domcontentloaded" });
+  await page.waitForLoadState("load");
   await page.evaluate(function () {
     window.__careerEvents = [];
     window.AfroTools = window.AfroTools || {};

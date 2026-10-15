@@ -5,7 +5,7 @@ const engine = require('../engines/src/cooperative-engine');
 const base = {
   coopType: 'agri', method: 'patronage', revenue: 10000000, expenses: 6500000,
   members: 120, myProduce: 1200, totalProduce: 85000, myShares: 50000,
-  totalShares: 3500000, marketPrice: 450, saccoRate: 0, hybridPatronagePct: 50,
+  totalShares: 3500000, marketPrice: 450, memberProducePayment: 100000, producePaymentsIncluded: true, saccoRate: 0, hybridPatronagePct: 50,
   allocations: { reserve: 25, education: 5, dividend: 50, social: 5, retained: 15 },
 };
 const patronage = engine.calculate(base);
@@ -28,9 +28,9 @@ assert.equal(hybrid.memberDividend, 1200 / 85000 * 612500 + 50000 / 3500000 * 11
 assert.equal(engine.calculate({ ...base, revenue: 0 }).status, 'missing-revenue');
 assert.equal(engine.calculate({ ...base, members: 0 }).status, 'missing-members');
 assert.equal(engine.calculate({ ...base, allocations: { ...base.allocations, dividend: 49.4 } }).status, 'allocation-not-100');
-assert.equal(engine.calculate({ ...base, allocations: { ...base.allocations, dividend: 49.6 } }).ok, true);
+assert.equal(engine.calculate({ ...base, allocations: { ...base.allocations, dividend: 49.6 } }).status, 'allocation-not-100');
 assert.equal(engine.calculate({ ...base, expenses: 10000001 }).status, 'negative-surplus');
 assert.equal(engine.calculate({ ...base, totalProduce: 0 }).status, 'missing-total-produce');
 assert.equal(engine.calculate({ ...base, method: 'shares', totalShares: 0 }).status, 'missing-total-shares');
 assert.equal(engine.calculate({ ...base, method: 'hybrid', totalProduce: 0, totalShares: 0 }).status, 'missing-hybrid-totals');
-console.log('PASS Cooperative engine branch and rounding invariants');
+console.log('PASS Cooperative engine branches and exact allocation balance');

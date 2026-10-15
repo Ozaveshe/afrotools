@@ -25,6 +25,13 @@ function classifyScraper(row, now = Date.now(), collectors = policy.collectors) 
     schedule: owner ? owner.schedule : null,
     sla_hours: owner ? owner.sla_hours : null,
   });
+  const retired = policy.retired_history && Object.prototype.hasOwnProperty.call(policy.retired_history, original.scraper_id)
+    ? policy.retired_history[original.scraper_id] : null;
+  if (!owner && retired) {
+    result.health_status = 'retired_history';
+    result.replacement_evidence = retired;
+    return result;
+  }
   if (!owner) return result;
   const nowMs = now instanceof Date ? now.getTime() : Number(now);
   const success = timestamp(original.last_success_at);
@@ -66,18 +73,23 @@ function classifyScraper(row, now = Date.now(), collectors = policy.collectors) 
 function summarizeScrapers(rows, { now = Date.now(), id = null, collectors = policy.collectors } = {}) {
   if (!Array.isArray(rows)) throw new Error('Invalid scraper health payload');
   const list = rows.slice();
-  const expected = id ? [id] : Object.keys(collectors);
+  const requestedRetired = id && !Object.prototype.hasOwnProperty.call(collectors, id) &&
+    policy.retired_history && Object.prototype.hasOwnProperty.call(policy.retired_history, id);
+  const expected = id ? (requestedRetired ? [] : [id]) : Object.keys(collectors);
   for (const scraperId of expected) {
     if (!list.some(row => row && row.scraper_id === scraperId)) list.push({ scraper_id: scraperId });
   }
   const scrapers = list.map(row => classifyScraper(row, now, collectors));
-  const healthy = scrapers.filter(row => row.is_healthy).length;
+  const active = scrapers.filter(row => row.health_status !== 'retired_history');
+  const healthy = active.filter(row => row.is_healthy).length;
   return {
     health_scope: SCOPE,
     scheduled_proof_status: 'not_checked',
-    overall_health: !scrapers.length || healthy < scrapers.length * 0.5 ? 'critical' : healthy < scrapers.length ? 'degraded' : 'healthy',
+    overall_health: !active.length ? (scrapers.length || requestedRetired ? 'not_applicable' : 'critical') : healthy < active.length * 0.5 ? 'critical' : healthy < active.length ? 'degraded' : 'healthy',
     healthy_count: healthy,
     total_count: scrapers.length,
+    active_total_count: active.length,
+    retired_history_count: scrapers.length - active.length,
     unknown_owner_count: scrapers.filter(row => row.health_status === 'unknown_owner').length,
     scrapers,
     checked_at: new Date(now).toISOString(),

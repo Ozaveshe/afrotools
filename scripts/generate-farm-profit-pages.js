@@ -294,7 +294,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       </div>
       <div class="field">
         <label class="f-label-text" for="inpFarm">Farm Size (hectares)</label>
-        <input class="f-input" id="inpFarm" type="number" min="0.1" step="0.1" value="1">
+        <input class="f-input" id="inpFarm" type="number" min="0.1" step="0.1" value="1" aria-describedby="profitAreaError">
+        <p id="profitAreaError" role="alert" style="color:var(--color-text);background:var(--color-surface);font-size:0.85rem;"></p>
       </div>
       <div class="field">
         <label class="f-label-text" for="inpYield">Expected Yield <span class="f-label-hint">(tonnes/ha)</span></label>
@@ -738,14 +739,31 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     }
   }
 
+  function invalidateFarmAreaResult() {
+    $('resultsPanel').classList.remove('on');
+    $('profitAreaError').textContent = '';
+    $('inpFarm').removeAttribute('aria-invalid');
+  }
+  ['input', 'change'].forEach(function (event) {
+    $('inpFarm').addEventListener(event, invalidateFarmAreaResult);
+  });
+
   // ═══ CALCULATE ═══
   window.calculate = function () {
+    invalidateFarmAreaResult();
+    var farmSize = Number($('inpFarm').value);
+    if (!Number.isFinite(farmSize) || farmSize < 0.1) {
+      $('profitAreaError').textContent = 'Enter a farm size of at least 0.1 hectare.';
+      $('inpFarm').setAttribute('aria-invalid', 'true');
+      $('inpFarm').focus();
+      return;
+    }
     if (!ENG || !CD || !FC) { alert('Data not loaded. Please refresh.'); return; }
 
     var inputs = {
       cropId: $('selCrop').value,
       regionId: $('selRegion').value,
-      farmSizeHa: parseFloat($('inpFarm').value) || 1,
+      farmSizeHa: farmSize,
       yieldPerHa: parseFloat($('inpYield').value) || 1,
       marketPricePerTonne: parseFloat($('inpPrice').value) || 0,
       sellingMethod: $('selSelling').value,

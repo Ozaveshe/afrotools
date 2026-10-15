@@ -40,7 +40,23 @@ function buildPolicy() {
     };
   }
   if (!Object.keys(collectors).length) throw new Error('No registered scraper owners found');
+  // Explicit run-history retirement; replacement meta evidence is evaluated separately.
+  const retiredHistory = {"bank-rates":{"function_name":"scheduled-fetch-central-bank-rates","evidence_type":"meta","meta_key":"rates","blob_key":"rates-latest"}};
+  for (const [id, replacement] of Object.entries(retiredHistory)) {
+    const owners = records.filter(record => record.runner === 'netlify' && record.production_required &&
+      record.netlify_function === replacement.function_name && String(record.id).startsWith('netlify:'));
+    if (collectors[id] || owners.length !== 1) throw new Error('Invalid retired scraper identity: ' + id);
+    const owner = owners[0];
+    const health = inferHealth(owner.netlify_function);
+    const schedule = schedules.get(owner.netlify_function);
+    if (!health || health.type !== replacement.evidence_type || health.metaKey !== replacement.meta_key ||
+        health.fallbackKey !== replacement.blob_key || !schedule || schedule !== owner.expected_schedule ||
+        !(Number(owner.sla_hours) > 0) || !previousScheduledAt(schedule, new Date('2026-01-01T00:00:00Z'))) {
+      throw new Error('Invalid replacement collector evidence: ' + id);
+    }
+  }
   return {
+    retired_history: retiredHistory,
     schema_version: 1,
     scope: 'collector_run_history',
     generated_from: ['data/automation/automation-registry.json', 'netlify.toml', 'scripts/audit-live-automation-health.js', 'netlify/functions/*.js'],
