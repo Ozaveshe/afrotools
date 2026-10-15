@@ -190,6 +190,11 @@ async function supabaseGet(path) {
 
 async function buildCategoryStatus(cat, config, meta, now) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
+  if (cat === 'shipping') {
+    const payload = await getData(config.blobKey);
+    return {...require('./_shared/shipping-reference').referenceStatus(payload,catMeta,now,config.thresholds.live,
+      require('./scheduled-fetch-shipping')._referenceCatalog),blob_key:config.blobKey};
+  }
   if (['insurance','property','salaries'].includes(cat)) {
     const payload = await getData(config.blobKey);
     return {...require('./_shared/reference-feeds').referenceStatus(cat,payload,catMeta,now,config.thresholds.live),blob_key:config.blobKey};
