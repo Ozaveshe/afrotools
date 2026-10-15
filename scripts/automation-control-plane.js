@@ -25,6 +25,8 @@ function parseArgs(argv) {
     deepWorktrees: false,
     skipWorktrees: false,
     skipRemote: false,
+    compositionProofPath: null,
+    compositionProofSha256: null,
     now: new Date(),
   };
   for (let index = 0; index < argv.length; index += 1) {
@@ -38,6 +40,16 @@ function parseArgs(argv) {
     else if (value === '--deep-worktrees') options.deepWorktrees = true;
     else if (value === '--no-worktrees') options.skipWorktrees = true;
     else if (value === '--no-remote') options.skipRemote = true;
+    else if (value === '--composition-proof') {
+      const file = argv[++index];
+      if (!file || file.startsWith('--') || options.compositionProofPath) throw new Error('--composition-proof requires one explicit file');
+      options.compositionProofPath = path.resolve(file);
+    }
+    else if (value === '--composition-proof-sha256') {
+      const hash = argv[++index];
+      if (!/^[a-f0-9]{64}$/.test(hash || '') || options.compositionProofSha256) throw new Error('--composition-proof-sha256 requires one lowercase SHA256');
+      options.compositionProofSha256 = hash;
+    }
     else if (value === '--automations-root') options.automationsRoot = path.resolve(argv[++index]);
     else if (value === '--policy') options.policyPath = path.resolve(argv[++index]);
     else if (value === '--now') options.now = new Date(argv[++index]);
@@ -49,14 +61,17 @@ function parseArgs(argv) {
   if (options.release && !options.handoffIds.length) throw new Error('--release requires at least one --handoff-id');
   if (!options.release && options.handoffIds.length) throw new Error('--handoff-id requires --release');
   if (options.release && options.skipRemote) throw new Error('--release cannot skip remote verification');
+  if (!!options.compositionProofPath !== !!options.compositionProofSha256 || (options.compositionProofPath && !options.release)) {
+    throw new Error('Composition proof requires --release and both --composition-proof and --composition-proof-sha256');
+  }
   if (typeof options.publisherId !== 'string' || !options.publisherId.trim()) throw new Error('--publisher-id is required');
   return options;
 }
 
-function runGit(args, cwd = ROOT) {
+function runGit(args, cwd = ROOT, encoding = 'utf8') {
   return spawnSync('git', args, {
     cwd,
-    encoding: 'utf8',
+    encoding,
     shell: false,
     timeout: 30000,
     maxBuffer: 64 * 1024 * 1024,
@@ -314,13 +329,28 @@ function sameStringSet(left, right) {
   return leftSet.size === rightSet.size && Array.from(leftSet).every((item) => rightSet.has(item));
 }
 
-function verifyReadyHandoffs(queue, options) {
+function remoteLookupDiagnostic(result) {
+  const clean = value => String(value || '')
+    .replace(/(https?:\/\/)[^\s/@]+@/gi, '$1[redacted]@')
+    .replace(/([?&](?:access_token|token|password|secret|key)=)[^&\s]+/gi, '$1[redacted]')
+    .replace(/\bBearer\s+\S+/gi, 'Bearer [redacted]')
+    .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '')
+    .slice(0, 2048);
+  return { status: Number.isInteger(result.status) ? result.status : null,
+    error_code: result.error && typeof result.error.code === 'string' ? clean(result.error.code) : null,
+    error_message: result.error && typeof result.error.message === 'string' ? clean(result.error.message) : null,
+    signal: result.signal ? clean(result.signal) : null, stderr: clean(result.stderr),
+    outcome: result.status !== 0 ? 'command_unavailable'
+      : String(result.stdout || '').trim() ? 'ref_present' : 'ref_absent' };
+}
+
+function verifyReadyHandoffs(queue, options, git = runGit) {
   if (options.skipRemote) return { available: false, checks: [], issues: [] };
   const checks = [];
   const issues = [];
   for (const item of queue.ready) {
     const remoteRef = 'refs/heads/' + item.branch;
-    const remote = runGit(['ls-remote', 'origin', remoteRef]);
+    const remote = git(['ls-remote', 'origin', remoteRef]);
     const remoteSha = remote.status === 0 ? String(remote.stdout || '').trim().split(/\s+/)[0] : null;
     const check = {
       handoff_id: item.handoff_id,
@@ -330,6 +360,7 @@ function verifyReadyHandoffs(queue, options) {
       remote_ref: remoteRef,
       remote_commit: remoteSha,
       remote_exact: remoteSha === item.commit,
+      remote_lookup: remoteLookupDiagnostic(remote),
       base_ancestor: false,
       diff_exact: false,
       actual_changed_files: [],
@@ -337,20 +368,22 @@ function verifyReadyHandoffs(queue, options) {
     if (!check.remote_exact) {
       issues.push({
         severity: 'error',
-        code: 'ready_handoff_remote_mismatch',
+        code: remote.status !== 0 ? 'ready_handoff_remote_unavailable' : 'ready_handoff_remote_mismatch',
         automation_id: item.automation_id,
         handoff_id: item.handoff_id,
-        detail: 'Remote ' + remoteRef + ' resolves to ' + (remoteSha || 'nothing') + ', expected ' + item.commit + '.',
+        detail: remote.status !== 0
+          ? 'Remote lookup command unavailable for ' + remoteRef + '; see bounded remote_lookup diagnostics. Expected ' + item.commit + '.'
+          : 'Remote ' + remoteRef + ' resolves to ' + (remoteSha || 'nothing') + ', expected ' + item.commit + '.',
       });
       checks.push(check);
       continue;
     }
-    let commitObject = runGit(['cat-file', '-e', item.commit + '^{commit}']);
+    let commitObject = git(['cat-file', '-e', item.commit + '^{commit}']);
     if (commitObject.status !== 0) {
-      runGit(['fetch', '--quiet', 'origin', item.branch]);
-      commitObject = runGit(['cat-file', '-e', item.commit + '^{commit}']);
+      git(['fetch', '--quiet', 'origin', item.branch]);
+      commitObject = git(['cat-file', '-e', item.commit + '^{commit}']);
     }
-    const baseObject = runGit(['cat-file', '-e', item.base_sha + '^{commit}']);
+    const baseObject = git(['cat-file', '-e', item.base_sha + '^{commit}']);
     if (commitObject.status !== 0 || baseObject.status !== 0) {
       issues.push({
         severity: 'error',
@@ -362,14 +395,15 @@ function verifyReadyHandoffs(queue, options) {
       checks.push(check);
       continue;
     }
-    check.base_ancestor = runGit(['merge-base', '--is-ancestor', item.base_sha, item.commit]).status === 0;
-    const diff = runGit(['diff', '--name-only', item.base_sha, item.commit]);
+    check.base_ancestor = git(['merge-base', '--is-ancestor', item.base_sha, item.commit]).status === 0;
+    const diff = git(['diff', '--name-only', item.base_sha, item.commit]);
     check.actual_changed_files = diff.status === 0
       ? String(diff.stdout || '').split(/\r?\n/).map((value) => value.trim()).filter(Boolean).sort()
       : [];
     check.diff_exact = diff.status === 0 && sameStringSet(check.actual_changed_files, item.changed_files);
-    if (options.release && options.handoffIds.includes(item.handoff_id) && item.publisher && item.publisher.revalidation) {
-      const sourcePatch = runGit(sourcePatchArgs(item));
+    if (options.release && options.handoffIds.includes(item.handoff_id)
+        && ((item.publisher && item.publisher.revalidation) || options.compositionProofPath)) {
+      const sourcePatch = git(sourcePatchArgs(item));
       check.source_patch_sha256 = sourcePatch.status === 0 && sourcePatch.stdout
         ? crypto.createHash('sha256').update(sourcePatch.stdout, 'utf8').digest('hex') : null;
     }
@@ -551,7 +585,124 @@ function releaseIssueBlocks(issue, publisherId) {
   return true;
 }
 
-function evaluateRelease(policy, definitionsResult, queue, worktrees, options) {
+// Manual source composition is an explicit, digest-pinned release input. It is
+// never a queue allowlist or receipt lifecycle update. Keep every raw conflict.
+function validateCompositionProof(queue, options, git = runGit) {
+  const raw = queue.conflicts.slice();
+  const result = { requested: !!(options.compositionProofPath || options.compositionProofSha256), valid: false, proof_sha256: null,
+    errors: [], resolved_conflicts: [], unresolved_conflicts: raw,
+    conflicts: raw.map(conflict => ({ ...conflict, status: 'unresolved' })) };
+  if (!result.requested) return result;
+  const need = (condition, message) => { if (!condition) throw new Error(message); };
+  const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+  const digest = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+  const commit = value => typeof value === 'string' && /^[a-f0-9]{40}$/.test(value);
+  const object = value => value && typeof value === 'object' && !Array.isArray(value);
+  const keys = (value, expected) => need(object(value) && sameStringSet(Object.keys(value), expected), 'Unexpected composition proof fields');
+  const boundedFile = (file, limit) => {
+    const info = fs.lstatSync(file);
+    need(info.isFile() && !info.isSymbolicLink() && info.size <= limit, 'Composition evidence must be a bounded regular file');
+    return fs.readFileSync(file);
+  };
+  const native = (args, binary = false) => {
+    const value = git(args, ROOT, binary ? null : 'utf8');
+    need(value && value.status === 0 && !value.error, 'Composition Git object or remote verification failed');
+    return binary ? Buffer.from(value.stdout) : String(value.stdout).trim();
+  };
+  const conflictKey = conflict => {
+    need(conflict.type === 'source_file' && typeof conflict.key === 'string'
+      && /^[a-zA-Z0-9._/-]+$/.test(conflict.key) && !conflict.key.startsWith('/')
+      && conflict.key.split('/').every(part => part && part !== '.' && part !== '..')
+      && Array.isArray(conflict.handoffs) && conflict.handoffs.length === 2
+      && new Set(conflict.handoffs).size === 2, 'Invalid exact source conflict identity');
+    return JSON.stringify([conflict.key, conflict.handoffs.slice().sort()]);
+  };
+  try {
+    need(options.release && !options.skipRemote && digest(options.compositionProofSha256), 'Composition proof requires verified release mode and its explicit digest');
+    const bytes = boundedFile(options.compositionProofPath, 1024 * 1024);
+    result.proof_sha256 = sha(bytes);
+    need(result.proof_sha256 === options.compositionProofSha256, 'Composition proof digest mismatch');
+    const proof = JSON.parse(bytes.toString('utf8'));
+    keys(proof, ['schema_version', 'kind', 'reviewed_at', 'current_main_sha', 'release_commit', 'release_tree', 'selected', 'conflicts']);
+    need(proof.schema_version === 1 && proof.kind === 'source_composition', 'Unsupported composition proof kind/version');
+    const reviewed = Date.parse(proof.reviewed_at);
+    const ageLimit = options.compositionMaxAgeHours;
+    need(Number.isFinite(reviewed) && Number.isFinite(ageLimit) && ageLimit > 0
+      && reviewed <= options.now.getTime() && options.now.getTime() - reviewed <= ageLimit * 3600000, 'Composition review must be fresh and not in the future');
+    need(commit(proof.current_main_sha) && commit(proof.release_commit) && commit(proof.release_tree)
+      && proof.current_main_sha === options.currentMainSha, 'Composition current-main or release identity mismatch');
+    need(native(['rev-parse', 'origin/main']) === proof.current_main_sha, 'Composition tracking origin/main changed');
+    const remote = native(['ls-remote', 'origin', 'refs/heads/main']).split(/\r?\n/);
+    need(remote.length === 1 && remote[0] === proof.current_main_sha + '\trefs/heads/main', 'Composition current remote main changed');
+    need(native(['rev-parse', 'HEAD']) === proof.release_commit
+      && native(['rev-parse', proof.release_commit + '^{tree}']) === proof.release_tree, 'Composition target HEAD/tree mismatch');
+    native(['merge-base', '--is-ancestor', proof.current_main_sha, proof.release_commit]);
+    need(queue.verification && queue.verification.available, 'Composition requires native remote verification');
+    need(Array.isArray(proof.selected) && proof.selected.length > 0 && proof.selected.length <= 1000
+      && sameStringSet(proof.selected.map(item => item.handoff_id), options.handoffIds)
+      && proof.selected.length === options.handoffIds.length
+      && new Set(proof.selected.map(item => item.handoff_id)).size === proof.selected.length
+      && sameStringSet(queue.ready.map(item => item.handoff_id), options.handoffIds), 'Composition selection must exactly match the native selected queue');
+    for (const selected of proof.selected) {
+      keys(selected, ['handoff_id', 'commit', 'base_sha', 'source_patch_sha256']);
+      const item = queue.ready.find(candidate => candidate.handoff_id === selected.handoff_id);
+      const checks = queue.verification.checks.filter(check => check.handoff_id === selected.handoff_id);
+      need(item && selected.commit === item.commit && selected.base_sha === item.base_sha && digest(selected.source_patch_sha256), 'Composition selected receipt identity mismatch');
+      need(checks.length === 1 && checks[0].commit === item.commit && checks[0].remote_exact
+        && checks[0].remote_commit === item.commit && checks[0].base_ancestor && checks[0].diff_exact
+        && checks[0].source_patch_sha256 === selected.source_patch_sha256, 'Composition native source/remote/ancestry/allowlist verification failed');
+    }
+    const actual = raw.filter(conflict => conflict.type === 'source_file');
+    const actualKeys = actual.map(conflictKey);
+    need(actual.length > 0 && new Set(actualKeys).size === actualKeys.length
+      && Array.isArray(proof.conflicts) && proof.conflicts.length <= 10000
+      && proof.conflicts.length === actual.length, 'Composition must cover exactly the actual source conflicts');
+    const proofKeys = proof.conflicts.map(conflictKey);
+    need(new Set(proofKeys).size === proofKeys.length && sameStringSet(proofKeys, actualKeys), 'Missing, new, duplicate or unrelated composition conflict');
+    const evidence = new Map();
+    let totalEvidenceBytes = 0;
+    const finalBlobs = new Map();
+    for (const entry of proof.conflicts) {
+      keys(entry, ['type', 'key', 'handoffs', 'final_blob_sha256', 'evidence']);
+      need(entry.handoffs.every(id => options.handoffIds.includes(id)
+        && queue.ready.find(item => item.handoff_id === id).source_files.includes(entry.key)), 'Composition pair does not own the exact source path');
+      need(digest(entry.final_blob_sha256) && Array.isArray(entry.evidence)
+        && entry.evidence.length > 0 && entry.evidence.length <= 16, 'Composition requires final blob and manual evidence digests');
+      if (!finalBlobs.has(entry.key)) {
+        const row = native(['--literal-pathspecs', 'ls-tree', '-z', proof.release_tree, '--', entry.key], true).toString();
+        const match = row.match(/^(100644|100755) blob ([a-f0-9]{40})\t([^\0]+)\0$/);
+        need(match && match[3] === entry.key, 'Composition source must be an exact regular Git blob');
+        finalBlobs.set(entry.key, sha(native(['cat-file', 'blob', match[2]], true)));
+      }
+      need(finalBlobs.get(entry.key) === entry.final_blob_sha256, 'Composition final Git blob digest mismatch');
+      const seenEvidence = new Set();
+      for (const reference of entry.evidence) {
+        keys(reference, ['path', 'sha256']);
+        need(typeof reference.path === 'string' && path.isAbsolute(reference.path)
+          && digest(reference.sha256) && !seenEvidence.has(reference.path), 'Composition manual evidence reference invalid or duplicated');
+        seenEvidence.add(reference.path);
+        if (!evidence.has(reference.path)) {
+          const data = boundedFile(reference.path, 8 * 1024 * 1024);
+          totalEvidenceBytes += data.length;
+          need(totalEvidenceBytes <= 8 * 1024 * 1024, 'Composition manual evidence budget exceeded');
+          evidence.set(reference.path, sha(data));
+        }
+        need(evidence.get(reference.path) === reference.sha256, 'Composition manual evidence digest mismatch');
+      }
+    }
+    result.valid = true;
+    result.resolved_conflicts = actual;
+    result.unresolved_conflicts = raw.filter(conflict => conflict.type !== 'source_file');
+    result.conflicts = raw.map(conflict => ({ ...conflict, status: conflict.type === 'source_file' ? 'resolved' : 'unresolved' }));
+    result.release_commit = proof.release_commit;
+    result.release_tree = proof.release_tree;
+  } catch (error) {
+    result.errors.push(error.message);
+  }
+  return result;
+}
+
+function evaluateRelease(policy, definitionsResult, queue, worktrees, options, git = runGit) {
   const selectedIds = new Set(options.handoffIds);
   const scopedQueue = selectReleaseQueue(queue.records || [], options.handoffIds);
   scopedQueue.verification = {
@@ -559,8 +710,14 @@ function evaluateRelease(policy, definitionsResult, queue, worktrees, options) {
     checks: (queue.verification ? queue.verification.checks : []).filter((check) => selectedIds.has(check.handoff_id)),
     issues: (queue.verification ? queue.verification.issues : []).filter((issue) => !issue.handoff_id || selectedIds.has(issue.handoff_id)),
   };
-  const issues = evaluatePolicy(policy, definitionsResult, scopedQueue, worktrees, options.now);
+  const composition = validateCompositionProof(scopedQueue, {
+    ...options, compositionMaxAgeHours: policy.handoffs.max_ready_age_hours,
+  }, git);
+  const issues = evaluatePolicy(policy, definitionsResult, {
+    ...scopedQueue, conflicts: composition.unresolved_conflicts,
+  }, worktrees, options.now);
   const add = (code, detail, handoffId) => issues.push({ severity: 'error', code, detail, ...(handoffId ? { handoff_id: handoffId } : {}) });
+  if (composition.requested && !composition.valid) add('release_composition_proof_invalid', composition.errors.join('; '));
   const publisher = policy.active_automations.find((lane) => lane.id === options.publisherId && lane.role === 'publisher');
   if (!publisher || !definitionsResult.available) add('release_publisher_unverified', 'The release publisher must be policy-owned and its saved definition must be available.');
   if (!options.handoffIds.length || selectedIds.size !== options.handoffIds.length) add('release_selection_invalid', 'Select one or more unique exact handoff IDs.');
@@ -604,7 +761,8 @@ function evaluateRelease(policy, definitionsResult, queue, worktrees, options) {
     ready: blockers.length === 0,
     blockers,
     maintenance_issues: effectiveIssues.filter((issue) => !releaseIssueBlocks(issue, options.publisherId)),
-    queue: { invalid: scopedQueue.invalid, conflicts: scopedQueue.conflicts, duplicate_ids: scopedQueue.duplicate_ids, dependency_issues: scopedQueue.dependency_issues },
+    queue: { invalid: scopedQueue.invalid, conflicts: scopedQueue.conflicts, duplicate_ids: scopedQueue.duplicate_ids,
+      dependency_issues: scopedQueue.dependency_issues, composition_proof: composition },
   };
 }
 
@@ -745,6 +903,7 @@ module.exports = {
   selectReleaseQueue,
   validateRevalidation,
   releaseIssueBlocks,
+  validateCompositionProof,
   evaluateRelease,
   buildReport,
 };
