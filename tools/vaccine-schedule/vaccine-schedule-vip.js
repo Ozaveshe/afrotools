@@ -160,6 +160,16 @@
   document.getElementById('print-button').addEventListener('click', function () {
     if (current) window.print();
   });
+  // Keep each brief URL alive for asynchronous browser consumption until pagehide.
+  var ownedBriefDownloadUrls = new Set();
+  function releaseBriefDownloadUrl(url) {
+    if (!ownedBriefDownloadUrls.delete(url)) return;
+    URL.revokeObjectURL(url);
+  }
+  window.addEventListener('pagehide', function () {
+    ownedBriefDownloadUrls.forEach(releaseBriefDownloadUrl);
+  });
+
   document.getElementById('download-button').addEventListener('click', function () {
     if (!current) return;
     var blob = new Blob([briefText()], { type: 'text/plain;charset=utf-8' });
@@ -167,9 +177,15 @@
     var link = document.createElement('a');
     link.href = url;
     link.download = 'vaccination-programme-visit-brief.txt';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
+    ownedBriefDownloadUrls.add(url);
+    try {
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      releaseBriefDownloadUrl(url);
+      throw error;
+    } finally {
+      link.remove();
+    }
   });
 })();
