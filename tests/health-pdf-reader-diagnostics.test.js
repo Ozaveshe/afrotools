@@ -28,7 +28,12 @@ function harness(t, options = {}) {
   let readBuffer;
   const wrappedFs = Object.create(fs);
   wrappedFs.readFileSync = (...args) => {
-    const result = fs.readFileSync(...args);
+    let result = fs.readFileSync(...args);
+    if (args[0] === file && options.readOffset !== undefined) {
+      const backing = Buffer.alloc(options.readOffset + result.length + 17, 0xa7);
+      result.copy(backing, options.readOffset);
+      result = backing.subarray(options.readOffset, options.readOffset + result.length);
+    }
     if (args[0] === file) readBuffer = result;
     return result;
   };
@@ -57,17 +62,25 @@ function harness(t, options = {}) {
     metadata, messages, originalReadBuffer: () => readBuffer };
 }
 
-test('original Buffer and return identity are retained; metadata exists before the parser', async t => {
+test('exact parser bytes use a dedicated zero-offset backing buffer; return identity and preparse metadata are retained', async t => {
   const h = harness(t), result = { text: 'original-return-object' };
   const actual = await h.read(h.file, h.info, async data => {
-    assert.strictEqual(data, h.originalReadBuffer());
-    assert.deepEqual(data, h.bytes);
+    assert.notStrictEqual(data, h.originalReadBuffer());
+    assert.equal(Buffer.isBuffer(data), false);
+    assert.equal(ArrayBuffer.isView(data), true);
+    assert.deepEqual(Buffer.from(data), h.bytes);
+    assert.equal(data.byteOffset, 0);
+    assert.equal(data.buffer.byteLength, data.length);
     const record = h.metadata();
     assert.equal(record.phase, 'before');
     assert.equal(record.input.sha256, sha(h.bytes));
     assert.equal(record.input.bytes, h.bytes.length);
-    assert.equal(record.input.byteOffset, data.byteOffset);
-    assert.equal(record.input.backingBufferBytes, data.buffer.byteLength);
+    assert.equal(record.input.byteOffset, h.originalReadBuffer().byteOffset);
+    assert.equal(record.input.backingBufferBytes, h.originalReadBuffer().buffer.byteLength);
+    assert.equal(record.parserInput.sha256, record.input.sha256);
+    assert.equal(record.parserInput.bytes, record.input.bytes);
+    assert.equal(record.parserInput.byteOffset, 0);
+    assert.equal(record.parserInput.backingBufferBytes, data.length);
     assert.equal(record.testId, h.info.testId);
     assert.ok(record.parser.files.every(row => /^[a-f0-9]{64}$/.test(row.sha256)));
     assert.match(record.parser.nodeEnsureEntrySha256, /^[a-f0-9]{64}$/);
@@ -97,7 +110,9 @@ test('failure after parser mutation preserves before bytes and records distinct 
   }), actual => actual === error);
   assert.deepEqual(fs.readFileSync(path.join(h.output, 'failed-0001.pdf')), h.bytes);
   assert.equal(h.metadata().input.sha256, sha(h.bytes));
-  assert.notEqual(h.metadata().afterInputSha256, h.metadata().input.sha256);
+  assert.equal(h.metadata().afterInputSha256, h.metadata().input.sha256);
+  assert.notEqual(h.metadata().afterParserInputSha256, h.metadata().parserInput.sha256);
+  assert.deepEqual(h.originalReadBuffer(), h.bytes);
 });
 
 test('worker-local sequencing records prior identities without changing downloaded files', async t => {
@@ -153,3 +168,23 @@ test('non-Error rejection identity survives name access and diagnostic persisten
     }
   }
 });
+
+for (const offset of [5, 3520]) {
+  test('legacy backing-buffer substream sees exact report bytes from source offset ' + offset, async t => {
+    const h = harness(t, { readOffset: offset });
+    await h.read(h.file, h.info, async data => {
+      const original = h.originalReadBuffer();
+      assert.equal(original.byteOffset, offset);
+      const legacySubview = value => Buffer.from(new Uint8Array(value.buffer).subarray(0, value.length));
+      assert.notDeepEqual(legacySubview(original), h.bytes);
+      assert.deepEqual(legacySubview(data), h.bytes);
+      assert.deepEqual(Buffer.from(data), h.bytes);
+      assert.equal(data.byteOffset, 0);
+      assert.equal(data.buffer.byteLength, h.bytes.length);
+      return { text: 'same parser boundary' };
+    });
+    assert.deepEqual(fs.readFileSync(h.file), h.bytes);
+    assert.deepEqual(h.originalReadBuffer(), h.bytes);
+    assert.equal(h.metadata().parserInput.sha256, h.metadata().input.sha256);
+  });
+}
