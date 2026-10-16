@@ -9,7 +9,7 @@ const api = require('../yo/awon-ise/alawus-na-nysc/nysc-yoruba.js');
 const engine = require('../tools/nysc-allowance/nysc-budget-engine.js');
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'yo/awon-ise/alawus-na-nysc/index.html'), 'utf8');
-const tags = [...html.matchAll(/<(input|textarea|form|section|div|p|button)\b([^>]*\bid="([^"]+)"[^>]*)>/g)];
+const tags = [...html.matchAll(/<(input|textarea|form|section|div|p|pre|button)\b([^>]*\bid="([^"]+)"[^>]*)>/g)];
 function attr(text, name) { return (text.match(new RegExp('\\b' + name + '="([^"]*)"')) || [])[1]; }
 class Element {
   constructor(tag, id) { this.tagName = tag.toUpperCase(); this.id = id; this.value = ''; this.hidden = false; this.validity = {badInput: false}; this.attributes = {}; this.listeners = {}; this.children = []; this.text = ''; }
@@ -100,6 +100,18 @@ test('negative remainder remains a shortfall, zero buffer and no savings promise
   assert.equal(result.remainder, -690000); assert.equal(result.bufferMonths, 0);
   assert.match(api.makeReport(result, {}), /Àìpé tí ètò fi hàn/);
 });
+test('incomplete negative difference keeps its sign in actual UI and TXT; completed shortfall stays labelled', async () => {
+  const h = host(); const values = complete({federalMonthly: '0', stateMonthly: '0', ppaMonthly: '0', otherMonthly: '0', oneTimeIncome: '0', housingMonthly: '1000', foodMonthly: '', transportMonthly: '0', dataMonthly: '0', otherCostMonthly: '0', oneTimeCosts: '0'});
+  h.set(values); await h.submit();
+  assert.equal(api.calculate(values).remainder, -10000);
+  const metric = h.elements.metricGrid.children[2]; assert.equal(metric.children[0].textContent, 'Ìyàtọ̀ àkọ́kọ́');
+  assert.match(metric.children[1].textContent, /[-−].*10,000/);
+  await h.elements.downloadNysc.fire('click');
+  assert.match(await h.blob.text(), /Ìyàtọ̀ àkọ́kọ́; ìnáwó kò tíì pé: [-−].*10,000/);
+  h.set({foodMonthly: '0'}); await h.edit(); await h.submit();
+  assert.equal(h.elements.metricGrid.children[2].children[0].textContent, 'Àìpé tí ètò fi hàn');
+  assert.doesNotMatch(h.elements.metricGrid.children[2].children[1].textContent, /[-−]/);
+});
 test('submit renders actual engine totals and focuses the result without HTML injection', async () => {
   const h = host(); h.set({...complete(), planName: '<img src=x onerror=bad()>', sourceNotes: 'Àkọsílẹ̀ àpẹẹrẹ'}); await h.submit();
   assert.equal(h.elements.nyscResults.hidden, false); assert.equal(h.elements.nyscResults.focused, true);
@@ -179,6 +191,26 @@ test('failed TXT creation does not claim a saved download', async () => {
 test('print invokes the actual print boundary only after valid calculation', async () => {
   const h = host(); await h.elements.printNysc.fire('click'); assert.equal(h.win.prints, 0); h.set(complete()); await h.submit();
   await h.elements.printNysc.fire('click'); assert.equal(h.win.prints, 1); assert.match(h.elements.exportStatus.textContent, /PDF/);
+});
+test('actual print worksheet equals full TXT including date/source notes and safely written user text', async () => {
+  const h = host(); h.set({...complete(), planName: 'Ètò àpẹẹrẹ', checkedOn: '2026-10-17', sourceNotes: '<img src=x onerror=bad()> Àkọsílẹ̀ àpẹẹrẹ'}); await h.submit();
+  assert.ok(h.elements.nyscPrintWorksheet, 'real HTML must declare the print worksheet');
+  assert.equal(h.elements.nyscPrintWorksheet.children.length, 0);
+  const text = h.elements.nyscPrintWorksheet.textContent;
+  assert.match(text, /2026-10-17/); assert.match(text, /<img src=x onerror=bad\(\)>/);
+  assert.match(text, /yid\.fmyd\.gov\.ng/); assert.match(text, /kì í ṣe ìlérí owó/);
+  await h.elements.downloadNysc.fire('click'); assert.equal(text, await h.blob.text());
+  await h.elements.printNysc.fire('click'); assert.equal(h.win.prints, 1);
+  assert.match(html, /\.nv-print-worksheet\s*\{display:none/);
+  assert.match(html, /\.nv-results\s*>\s*:not\(\.nv-print-worksheet\)/);
+});
+test('edit and invalid submit clear print context and suppress stale printing', async () => {
+  const h = host(); h.set(complete()); await h.submit(); assert.ok(h.elements.nyscPrintWorksheet, 'print context must exist');
+  assert.notEqual(h.elements.nyscPrintWorksheet.textContent, ''); await h.edit();
+  assert.equal(h.elements.nyscPrintWorksheet.textContent, ''); await h.elements.printNysc.fire('click'); assert.equal(h.win.prints, 0);
+  await h.submit(); h.set({stateMonthly: '-1'}); await h.submit();
+  assert.equal(h.elements.nyscPrintWorksheet.textContent, ''); assert.equal(h.elements.nyscResults.hidden, true);
+  await h.elements.printNysc.fire('click'); assert.equal(h.win.prints, 0);
 });
 test('route remains unavailable/noindex and contains no promoted reciprocal alternate', () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'data/registry/yoruba-route-manifest.json'), 'utf8'));

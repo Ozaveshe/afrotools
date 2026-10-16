@@ -29,7 +29,9 @@
     .nysc-vip [aria-invalid="true"]{border:2px solid var(--color-danger,#b42318)}
     .nv-skip{position:absolute;left:1rem;top:-10rem;background:var(--color-surface,#fff);padding:1rem;z-index:1000}.nv-skip:focus{top:1rem}
     .nv-help{color:var(--color-text-secondary,#475569);line-height:1.6}
-    @media print{.yoruba-fallback,.nv-help,#exportStatus,.nv-skip{display:none!important}}
+    .nv-print-worksheet{display:none}
+    .nysc-vip [hidden]{display:none!important}
+    @media print{.yoruba-fallback,.nv-help,#exportStatus,.nv-skip{display:none!important}.nysc-vip .nv-results > :not(.nv-print-worksheet){display:none!important}.nysc-vip .nv-print-worksheet{display:block!important;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.5;margin:0;color:#000;background:#fff}}
   </style>
   <script src="/assets/js/components/navbar.min.js?v=a4be1be7" defer></script>
   <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
@@ -98,6 +100,7 @@
       <div class="nv-result-grid"><section aria-labelledby="incomeBreakdownTitle"><h3 id="incomeBreakdownTitle">Owó wọlé láti ọ̀dọ̀ olùsan</h3><div id="incomeBreakdown" class="nv-breakdown"></div></section><section aria-labelledby="costBreakdownTitle"><h3 id="costBreakdownTitle">Àlàyé ètò ìnáwó</h3><div id="costBreakdown" class="nv-breakdown"></div></section></div>
       <div class="nv-warning"><strong>Èyí kì í ṣe àkókò ìsanwó.</strong> Ìyókù nínú ètò kò túmọ̀ sí pé gbogbo owó yóò dé lákòókò. Kọ owó tí o ti rí gbà sílẹ̀ lọ́tọ̀; bá ọ́fíìsì NYSC, ìpínlẹ̀ tàbí PPA tó yẹ sọ̀rọ̀ nípa ìyàtọ̀.</div>
       <div class="nv-actions"><button class="btn btn-secondary" id="copyNysc" type="button">Ṣe ẹ̀dà ètò náà</button><button class="btn btn-secondary" id="downloadNysc" type="button">Gba TXT</button><button class="btn btn-secondary" id="printNysc" type="button">Tẹ̀ jáde / fi PDF pamọ́</button></div>
+      <pre id="nyscPrintWorksheet" class="nv-print-worksheet" aria-hidden="true"></pre>
     </section>
     <section class="nv-panel"><div class="nv-section-head"><p class="nv-eyebrow">Ṣàyẹ̀wò kí o tó pinnu</p><h2>Yà ẹ̀tọ́, ìlérí àti owó tó ti dé sọ́tọ̀</h2></div><div class="nv-info-grid">
       <article><h3>Àkọsílẹ̀ àpapọ̀</h3><p>Jẹ́rìí iye àpapọ̀ àti àwọn oṣù nínú àkọsílẹ̀ ìsanwó NYSC rẹ. Irinṣẹ́ yìí kò lè ṣàyẹ̀wò àkọsílẹ̀ ìsanwó tàbí báńkì rẹ.</p></article>

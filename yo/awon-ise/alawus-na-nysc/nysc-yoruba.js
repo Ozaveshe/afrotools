@@ -60,7 +60,7 @@
     if (!result || !result.valid) return '';
     const lines = ['Ètò ìṣúná iṣẹ́ NYSC — AfroTools', `Orúkọ ètò: ${context.planName || 'A kò sọ orúkọ'}`, `Àkókò ètò: oṣù ${result.planMonths}`, `Ọjọ́ tí o jẹ́rìí àwọn iye: ${context.checkedOn || 'A kò tẹ ọjọ́'}`, `Àkọsílẹ̀ orísun ìpínlẹ̀ / PPA: ${context.sourceNotes || 'A kò tẹ àkọsílẹ̀'}`, '', 'Àwọn iye tí o tẹ (náírà)'];
     for (const key of Object.keys(fields)) lines.push(`${label(key)}: ${costKeys.includes(key) && result.missingCosts.includes(key) ? 'A kò tíì jẹ́rìí iye yìí' : monthKeys.includes(key) ? result[key] : money(result[key])}`);
-    lines.push('', 'Àpapọ̀ owó tí a ń retí', `Ìjọba àpapọ̀: ${money(result.federalTotal)}`, `Ìpínlẹ̀: ${money(result.stateTotal)}`, `PPA: ${money(result.ppaTotal)}`, `Owó mìíràn àti owó ẹ̀ẹ̀kan: ${money(result.otherTotal)}`, `Àpapọ̀ owó wọlé: ${money(result.totalIncome)}`, '', 'Ètò ìnáwó', `Ìnáwó pàtàkì lóṣù: ${money(result.monthlyEssentials)}`, `Àpapọ̀ ìnáwó tí o tẹ: ${money(result.totalCosts)}`, `${result.budgetComplete ? result.remainder < 0 ? 'Àìpé tí ètò fi hàn' : 'Ìyókù tí ètò fi hàn' : 'Ìyàtọ̀ àkọ́kọ́; ìnáwó kò tíì pé'}: ${money(Math.abs(result.remainder))}`);
+    lines.push('', 'Àpapọ̀ owó tí a ń retí', `Ìjọba àpapọ̀: ${money(result.federalTotal)}`, `Ìpínlẹ̀: ${money(result.stateTotal)}`, `PPA: ${money(result.ppaTotal)}`, `Owó mìíràn àti owó ẹ̀ẹ̀kan: ${money(result.otherTotal)}`, `Àpapọ̀ owó wọlé: ${money(result.totalIncome)}`, '', 'Ètò ìnáwó', `Ìnáwó pàtàkì lóṣù: ${money(result.monthlyEssentials)}`, `Àpapọ̀ ìnáwó tí o tẹ: ${money(result.totalCosts)}`, `${result.budgetComplete ? result.remainder < 0 ? 'Àìpé tí ètò fi hàn' : 'Ìyókù tí ètò fi hàn' : 'Ìyàtọ̀ àkọ́kọ́; ìnáwó kò tíì pé'}: ${money(result.budgetComplete ? Math.abs(result.remainder) : result.remainder)}`);
     lines.push(result.budgetComplete ? 'O ti jẹ́rìí gbogbo ààyè ìnáwó, pẹ̀lú 0 níbi tí kò ti kan ọ.' : `Àwọn ìnáwó tí kò tíì pé: ${result.missingCosts.map(label).join('; ')}. Tẹ 0 bí kò bá sí ìnáwó náà.`);
     lines.push('', 'Orísun àti ààlà', 'Ìkéde àpapọ̀: 25 Oṣù Kẹta 2025; ₦77,000 bẹ̀rẹ̀ láti Oṣù Kẹta 2025. Èyí kì í jẹ́rìí ìsanwó rẹ lónìí.', sourceUrl, limitation, '', 'Àṣírí: a ṣe ètò yìí nínú aṣàwákiri rẹ. A kò fi ohun tí o tẹ sínú àdírẹ́sì ojú-ìwé tàbí rán an sí ẹ̀rọ ìpamọ́ lórí ayélujára.');
     return lines.join('\n');
@@ -75,20 +75,21 @@
       for (const key of Object.keys(fields)) { id(key).removeAttribute('aria-invalid'); id(key).setAttribute('aria-describedby', 'amountHelp'); }
     }
     function invalidate() {
-      revision++; current = null; context = null; id('nyscResults').hidden = true;
+      revision++; current = null; context = null; id('nyscResults').hidden = true; id('nyscPrintWorksheet').textContent = '';
       clearErrors(); id('exportStatus').textContent = 'Àwọn iye ti yí padà. Tún ṣe ìṣirò kí o tó ṣe ẹ̀dà, gba TXT tàbí tẹ̀ jáde.';
     }
     function row(labelText, value, unconfirmed) { const r = doc.createElement('div'), l = doc.createElement('span'), v = doc.createElement('strong'); l.textContent = labelText; v.textContent = unconfirmed ? 'A kò tíì jẹ́rìí iye' : money(value); r.append(l, v); return r; }
     function render(result) {
       id('resultContext').textContent = `${context.planName || 'Ètò tí kò ní orúkọ'} · oṣù ${result.planMonths}. ` + (result.budgetComplete ? 'O ti jẹ́rìí gbogbo ìnáwó tí o tẹ.' : `Ìnáwó kò tíì pé: ${result.missingCosts.map(label).join('; ')}. Ìyàtọ̀ yìí jẹ́ àkọ́kọ́ nìkan.`);
-      const metrics = [['Àpapọ̀ owó tí a ń retí', money(result.totalIncome)], ['Àpapọ̀ ìnáwó tí o tẹ', money(result.totalCosts)], [result.budgetComplete ? result.remainder < 0 ? 'Àìpé tí ètò fi hàn' : 'Ìyókù tí ètò fi hàn' : 'Ìyàtọ̀ àkọ́kọ́', money(Math.abs(result.remainder))], ['Àárín owó wọlé lóṣù', money(result.averageMonthlyIncome)], ['Oṣù tí ìyókù lè gbé', !result.budgetComplete ? 'Kọ́kọ́ jẹ́rìí ìnáwó' : result.bufferMonths === null ? 'A kò tẹ ìnáwó lóṣù' : `Oṣù ${result.bufferMonths.toFixed(1)}`]];
+      const metrics = [['Àpapọ̀ owó tí a ń retí', money(result.totalIncome)], ['Àpapọ̀ ìnáwó tí o tẹ', money(result.totalCosts)], [result.budgetComplete ? result.remainder < 0 ? 'Àìpé tí ètò fi hàn' : 'Ìyókù tí ètò fi hàn' : 'Ìyàtọ̀ àkọ́kọ́', money(result.budgetComplete ? Math.abs(result.remainder) : result.remainder)], ['Àárín owó wọlé lóṣù', money(result.averageMonthlyIncome)], ['Oṣù tí ìyókù lè gbé', !result.budgetComplete ? 'Kọ́kọ́ jẹ́rìí ìnáwó' : result.bufferMonths === null ? 'A kò tẹ ìnáwó lóṣù' : `Oṣù ${result.bufferMonths.toFixed(1)}`]];
       id('metricGrid').replaceChildren(...metrics.map(([l, v]) => { const e = doc.createElement('article'), a = doc.createElement('span'), b = doc.createElement('strong'); a.textContent = l; b.textContent = v; e.append(a, b); return e; }));
       id('incomeBreakdown').replaceChildren(row(`Ìjọba àpapọ̀ · oṣù ${result.federalMonths}`, result.federalTotal), row(`Ìpínlẹ̀ · oṣù ${result.stateMonths}`, result.stateTotal), row(`PPA · oṣù ${result.ppaMonths}`, result.ppaTotal), row('Owó mìíràn àti ẹ̀ẹ̀kan', result.otherTotal));
       id('costBreakdown').replaceChildren(...costKeys.map(key => row(key === 'oneTimeCosts' ? label(key) : `${label(key).replace(/ lóṣù$/, '')} · àpapọ̀ fún ètò oṣù ${result.planMonths}`, key === 'oneTimeCosts' ? result[key] : result[key] * result.planMonths, result.missingCosts.includes(key))));
+      id('nyscPrintWorksheet').textContent = makeReport(result, context);
       id('nyscResults').hidden = false; id('nyscResults').focus();
     }
     form.addEventListener('submit', event => {
-      event.preventDefault(); clearErrors(); revision++; current = null;
+      event.preventDefault(); clearErrors(); revision++; current = null; id('nyscPrintWorksheet').textContent = '';
       const input = {}, bad = {};
       for (const key of Object.keys(fields)) { input[key] = id(key).value; bad[key] = Boolean(id(key).validity && id(key).validity.badInput); }
       const result = calculate(input, bad);
