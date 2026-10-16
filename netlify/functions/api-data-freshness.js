@@ -7,12 +7,39 @@
  */
 
 const { getData } = require('./_shared/data-store');
-const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared/scholarship-platform');
 const { getCollector } = require('./_shared/market-data-refresh');
 const { getAllowedOrigin } = require('./utils/cors');
 const { getEnv } = require('./_shared/env');
 
 const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+const READ_TIMEOUT_MS = 3000;
+const REQUEST_TIMEOUT_MS = 10000;
+
+// One request budget covers headers AND response bodies. The explicit race also
+// bounds read adapters that do not honor AbortSignal; only read operations belong here.
+async function readWithDeadline(operation, deadline) {
+  const timeout = Math.min(READ_TIMEOUT_MS, (deadline || Date.now() + READ_TIMEOUT_MS) - Date.now());
+  const controller = new AbortController();
+  let timer;
+  const error = new Error('Freshness read deadline exceeded');
+  error.name = 'TimeoutError';
+  if (timeout <= 0) throw error;
+  const expired = new Promise(function (_resolve, reject) {
+    timer = setTimeout(function () {
+      reject(error);
+      controller.abort(error);
+    }, timeout);
+  });
+  try {
+    return await Promise.race([Promise.resolve().then(function () {
+      return operation(controller.signal);
+    }), expired]);
+  } finally {
+    clearTimeout(timer);
+    // Release a rejected/non-OK fetch body too; successful JSON is already detached.
+    if (!controller.signal.aborted) controller.abort();
+  }
+}
 
 const CATEGORY_CONFIGS = {
   forex: {
@@ -170,37 +197,38 @@ function claimSafeStatus(timestamp, source, reportedStatus, thresholds, now) {
   return rank[normalizedReported] > rank[observedStatus] ? normalizedReported : observedStatus;
 }
 
-async function supabaseGet(path) {
+async function supabaseGet(path, deadline) {
   const key = getSupabaseKey();
   if (!key) return { skipped: true, reason: 'supabase_service_key_missing' };
 
-  const response = await fetch(getSupabaseUrl() + '/rest/v1/' + path, {
-    headers: {
-      apikey: key,
-      Authorization: 'Bearer ' + key,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('Supabase ' + response.status + ' reading ' + path.split('?')[0]);
-  }
-
-  return { rows: await response.json() };
+  return readWithDeadline(async function (signal) {
+    const response = await fetch(getSupabaseUrl() + '/rest/v1/' + path, {
+      signal,
+      headers: {
+        apikey: key,
+        Authorization: 'Bearer ' + key,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Supabase ' + response.status + ' reading ' + path.split('?')[0]);
+    }
+    return { rows: await response.json() };
+  }, deadline);
 }
 
-async function buildCategoryStatus(cat, config, meta, now) {
+async function buildCategoryStatus(cat, config, meta, now, read = getData) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
   if (cat === 'shipping') {
-    const payload = await getData(config.blobKey);
+    const payload = await read(config.blobKey);
     return {...require('./_shared/shipping-reference').referenceStatus(payload,catMeta,now,config.thresholds.live,
       require('./scheduled-fetch-shipping')._referenceCatalog),blob_key:config.blobKey};
   }
   if (['insurance','property','salaries'].includes(cat)) {
-    const payload = await getData(config.blobKey);
+    const payload = await read(config.blobKey);
     return {...require('./_shared/reference-feeds').referenceStatus(cat,payload,catMeta,now,config.thresholds.live),blob_key:config.blobKey};
   }
   if (cat === 'agri_inputs') {
-    const payload = await getData(config.blobKey);
+    const payload = await read(config.blobKey);
     return { ...require('./_shared/agri-reference').referenceStatus(payload, catMeta, now, config.thresholds.live), blob_key: config.blobKey };
   }
   let updatedAt = findTimestamp(catMeta);
@@ -208,7 +236,7 @@ async function buildCategoryStatus(cat, config, meta, now) {
   let blobPresent = false;
 
   if (!updatedAt || !source) {
-    const blob = await getData(config.blobKey);
+    const blob = await read(config.blobKey);
     blobPresent = !!blob;
     updatedAt = updatedAt || findTimestamp(blob);
     source = source || (blob && blob.source) || null;
@@ -230,12 +258,17 @@ async function buildCategoryStatus(cat, config, meta, now) {
   };
 }
 
-async function buildMarketDataSummary(includeAdmin) {
+async function buildMarketDataSummary(includeAdmin, deadline) {
   try {
-    const [sourcesResult, runsResult] = await Promise.all([
-      supabaseGet('market_data_sources?select=id,dataset,source_key,active,last_success_at,last_error_at,cadence_hours,ttl_hours&active=eq.true&order=dataset.asc,source_key.asc'),
-      supabaseGet('market_data_source_runs?select=id,source_id,dataset,status,started_at,finished_at,records_inserted,records_published,error_summary&order=started_at.desc&limit=50'),
+    const results = await Promise.allSettled([
+      supabaseGet('market_data_sources?select=id,dataset,source_key,active,last_success_at,last_error_at,cadence_hours,ttl_hours&active=eq.true&order=dataset.asc,source_key.asc', deadline),
+      supabaseGet('market_data_source_runs?select=id,source_id,dataset,status,started_at,finished_at,records_inserted,records_published,error_summary&order=started_at.desc&limit=50', deadline),
     ]);
+    // Both reads have the same bounded budget. Settle both before returning so
+    // the first error cannot leave a sibling fetch/body running in this handler.
+    const rejected = results.find(result => result.status === 'rejected');
+    if (rejected) throw rejected.reason;
+    const [sourcesResult, runsResult] = results.map(result => result.value);
 
     if (sourcesResult.skipped || runsResult.skipped) {
       return {
@@ -300,23 +333,30 @@ async function buildMarketDataSummary(includeAdmin) {
   }
 }
 
-async function buildScholarshipSummary() {
+async function buildScholarshipSummary(read) {
   try {
-    const feed = await loadScholarshipFeed();
-    const meta = feed.meta || {};
-    const count = Array.isArray(feed.scholarships) ? feed.scholarships.length : 0;
+    // A status GET must not import the mirror/sync pipeline or trigger its writes.
+    const cached = await read('scholarships-latest');
+    if (!cached) return { available: false, status: 'missing', reason: 'scholarship_cache_missing' };
+    const meta = cached.meta || {};
+    const rows = Array.isArray(cached) ? cached : (Array.isArray(cached.data) ? cached.data : cached.scholarships);
+    const count = Array.isArray(rows) ? rows.length : 0;
+    const configuredMin = parseInt(getEnv('SCHOLARSHIP_PUBLIC_MIN_COUNT') || getEnv('PUBLIC_MIN_SCHOLARSHIP_COUNT'), 10);
+    // Match the producer's default without importing its side-effectful module.
+    const publicMinCount = configuredMin > 0 ? configuredMin : 50;
+    const isLimited = count > 0 && count < publicMinCount;
     return {
-      available: true,
+      available: count > 0,
       count,
-      mode: meta.mode || null,
-      label: meta.label || null,
-      stale: !!meta.stale,
-      isDegraded: !!meta.isDegraded,
-      isLimited: !!meta.isLimited,
-      lastCheckedAt: meta.lastCheckedAt || meta.cachedAt || null,
+      mode: 'cached',
+      label: isLimited ? 'Limited cached feed' : 'Cached feed',
+      stale: true,
+      isDegraded: true,
+      isLimited,
+      lastCheckedAt: toIso(meta.lastCheckedAt || meta.cachedAt || cached.timestamp || cached.cachedAt),
       claimSafeLabel: count + ' Scholarship' + (count === 1 ? '' : 's'),
-      publicMinCount: SCHOLARSHIP_PUBLIC_MIN_COUNT,
-      status: count > 0 && !meta.stale && !meta.isDegraded ? (meta.isLimited ? 'limited' : 'ok') : 'degraded',
+      publicMinCount,
+      status: count > 0 && isLimited ? 'limited' : 'degraded',
     };
   } catch (error) {
     return {
@@ -327,8 +367,8 @@ async function buildScholarshipSummary() {
   }
 }
 
-async function buildWatchdogSummary(includeAdmin) {
-  const latest = await getData('automation-health-latest');
+async function buildWatchdogSummary(includeAdmin, read) {
+  const latest = await read('automation-health-latest');
   if (!latest) {
     return {
       available: false,
@@ -367,7 +407,8 @@ function computeOverallHealth(categories, marketData, scholarship, watchdog) {
   }).length;
 
   if (offline > 0 || watchdog.failure_count > 0 || marketData.status === 'error' || scholarship.status === 'error') return 'stale';
-  if (stale > 0 || degraded > 0 || marketData.status === 'degraded' || scholarship.status === 'degraded' || watchdog.status !== 'ok') {
+  if (stale > 0 || degraded > 0 || marketData.available === false || scholarship.available === false ||
+      marketData.status === 'degraded' || ['degraded', 'limited'].includes(scholarship.status) || watchdog.status !== 'ok') {
     return 'degraded';
   }
   return 'healthy';
@@ -391,27 +432,43 @@ exports.handler = async function(event) {
 
   const params = event.queryStringParameters || {};
   const requestedCat = params.cat || null;
-  const meta = (await getData('meta')) || {};
+  const deadline = Date.now() + REQUEST_TIMEOUT_MS;
+  const read = key => readWithDeadline(() => getData(key), deadline);
+  let meta = {};
+  let metadata;
+  try {
+    const snapshot = await read('meta');
+    meta = snapshot || {};
+    metadata = { available: !!snapshot, status: snapshot ? 'ok' : 'missing' };
+  } catch (error) {
+    metadata = { available: false, status: 'error', error: sanitizeError(error) };
+  }
   const now = Date.now();
   const categories = {};
 
   const cats = requestedCat ? [requestedCat] : Object.keys(CATEGORY_CONFIGS);
-  for (const cat of cats) {
-    const config = CATEGORY_CONFIGS[cat];
-    if (!config) continue;
-    categories[cat] = await buildCategoryStatus(cat, config, meta, now);
-  }
-
-  const marketData = await buildMarketDataSummary(includeAdmin);
-  const scholarship = await buildScholarshipSummary();
-  const automationWatchdog = await buildWatchdogSummary(includeAdmin);
-  const overallHealth = computeOverallHealth(categories, marketData, scholarship, automationWatchdog);
+  const [, marketData, scholarship, automationWatchdog] = await Promise.all([
+    Promise.all(cats.filter(cat => CATEGORY_CONFIGS[cat]).map(async function (cat) {
+      const config = CATEGORY_CONFIGS[cat];
+      try {
+        categories[cat] = await buildCategoryStatus(cat, config, meta, now, read);
+      } catch (error) {
+        categories[cat] = { ...await buildCategoryStatus(cat, config, {}, now, async () => null),
+          available: false, error: sanitizeError(error) };
+      }
+    })),
+    buildMarketDataSummary(includeAdmin, deadline),
+    buildScholarshipSummary(read),
+    buildWatchdogSummary(includeAdmin, read).catch(error => ({ available: false, status: 'error', error: sanitizeError(error) })),
+  ]);
+  const overallHealth = metadata.available ? computeOverallHealth(categories, marketData, scholarship, automationWatchdog) : 'stale';
 
   return {
     statusCode: 200,
     headers: CORS,
     body: JSON.stringify({
       categories,
+      metadata,
       market_data: marketData,
       scholarship,
       automation_watchdog: automationWatchdog,
@@ -428,6 +485,9 @@ exports._test = {
   claimSafeStatus,
   findTimestamp,
   getStatus,
+  readWithDeadline,
+  READ_TIMEOUT_MS,
+  REQUEST_TIMEOUT_MS,
 };
 
 exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-data-freshness' });

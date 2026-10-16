@@ -7,6 +7,7 @@ const path = require("path");
 const { fileToPublicRoute } = require("./canonical-aliases");
 const { writeFileSyncWithRetry } = require("./safe-write");
 const localizationApi = require("./localization-platform");
+const staticOwnerPolicy = require("./static-owner-policy");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const POLICY_PATH = path.join(ROOT, "data", "registry", "route-policy.json");
@@ -304,6 +305,14 @@ function ruleState(rule) {
   return isPatternRoute(rule.route) ? "pattern" : "rewrite";
 }
 
+function publishedPageFiles(pages) {
+  return new Set(pages.flatMap(page => [page.source && page.source.file, ...((page.source && page.source.alternateFiles) || [])]).filter(Boolean));
+}
+
+function validatedStaticOwnerRules(policy, pages) {
+  return staticOwnerPolicy.validatePhysicalOwners(policy, ROOT, publishedPageFiles(pages));
+}
+
 function policyRules(policy) {
   return (policy.canonicalDecisions || []).map((decision, index) => ({
     id: `policy:${decision.id}`,
@@ -416,6 +425,7 @@ function loadRouteSources() {
     localePolicy: LOCALE_MANIFEST.locales.filter((locale) => VALID_LOCALES.has(locale.id)),
     pages,
     rules: [
+      ...validatedStaticOwnerRules(policy, pages),
       ...policyRules(policy),
       ...canonicalAliasRules(pages),
       ...parseRedirectsFile(),
@@ -655,6 +665,7 @@ function buildRouteGraph(sourceOverride) {
     }
     if (rule && rule.statusCode === 200) {
       page.deliveryRewrite = { target: rule.target, owner: rule.owner, line: rule.line };
+      if (rule.id.startsWith("static-owner:")) page.deliveryRewrite.physicalOwnerFile = rule.target.slice(1);
     }
     routes.push(page);
   }
@@ -1069,6 +1080,7 @@ function buildRouteReport(graph) {
 }
 
 function managedRedirectContent(graph, policy) {
+  validatedStaticOwnerRules(policy, graph.routes);
   const candidates = [];
   for (const decision of policy.canonicalDecisions || []) {
     candidates.push({ source: cleanPath(decision.source), target: cleanPath(decision.destination), reason: decision.id });
@@ -1110,7 +1122,8 @@ function managedRedirectContent(graph, policy) {
   const lines = [
     MANAGED_START,
     "# Generated from data/registry/route-policy.json and existing canonical/redirect ownership.",
-    "# Forced direct redirects preserve legacy equity and prevent static-file shadowing."
+    "# Forced direct redirects preserve legacy equity and prevent static-file shadowing.",
+    ...staticOwnerPolicy.staticOwnerLines(policy)
   ];
   [...byKey.values()].sort((a, b) => a.source.localeCompare(b.source)).forEach((item) => {
     lines.push(`${item.source}  ${item.target}  301!`);
@@ -1154,13 +1167,17 @@ function removeRulesOwnedByManagedBlock(content, managedContent) {
   }).join("\n");
 }
 
-function syncRedirectContract(graph, options = {}) {
-  const policy = loadPolicy();
-  const original = fs.readFileSync(REDIRECTS_PATH, "utf8").replace(/\r\n/g, "\n");
+function renderRedirectContract(graph, policy, original) {
   const managed = managedRedirectContent(graph, policy);
   const unowned = removeRulesOwnedByManagedBlock(stripManagedRedirectBlock(original), managed);
   const remainder = removeNormalizedSelfRedirects(unowned).trimStart();
-  const next = `${managed}\n\n${remainder.replace(/\s+$/, "")}\n`;
+  return `${managed}\n\n${remainder.replace(/\s+$/, "")}\n`;
+}
+
+function syncRedirectContract(graph, options = {}) {
+  const policy = loadPolicy();
+  const original = fs.readFileSync(REDIRECTS_PATH, "utf8").replace(/\r\n/g, "\n");
+  const next = renderRedirectContract(graph, policy, original);
   if (options.write && next !== original) writeFileSyncWithRetry(REDIRECTS_PATH, next, "utf8");
   return { changed: next !== original, content: next };
 }
@@ -1265,6 +1282,8 @@ module.exports = {
   getRouteRecord,
   loadInternalLinks,
   loadPolicy,
+  managedRedirectContent,
+  renderRedirectContract,
   loadRouteSources,
   loadSitemapEntries,
   normalizeRoute,
