@@ -113,6 +113,24 @@ test('actual cost breakdown shows an unconfirmed blank rather than a confirmed z
   assert.match(h.elements.resultContext.textContent, /Ìnáwó kò tíì pé/);
   assert.match(h.elements.metricGrid.textContent, /Ìyàtọ̀ àkọ́kọ́/);
 });
+test('actual recurring cost rows label whole-plan totals while monthly assumptions stay monthly', async () => {
+  const h = host(); h.set(complete()); await h.submit();
+  const expected = [200000, 250000, 120000, 50000, 30000];
+  for (let i = 0; i < 5; i++) {
+    const row = h.elements.costBreakdown.children[i];
+    assert.match(row.children[0].textContent, /àpapọ̀ fún ètò oṣù 10/);
+    assert.doesNotMatch(row.children[0].textContent, /lóṣù/);
+    assert.match(row.children[1].textContent, new RegExp(expected[i].toLocaleString('en-NG')));
+  }
+  assert.match(h.elements.costBreakdown.children[0].children[0].textContent, /Owó ilé/);
+  assert.match(h.elements.incomeBreakdown.children[0].children[0].textContent, /^Ìjọba àpapọ̀/);
+  const oneTime = h.elements.costBreakdown.children[5];
+  assert.equal(oneTime.children[0].textContent, 'Ìnáwó ìbẹ̀rẹ̀ lẹ́ẹ̀kan');
+  assert.match(oneTime.children[1].textContent, /40,000/);
+  assert.doesNotMatch(oneTime.children[0].textContent, /oṣù 10/);
+  await h.elements.downloadNysc.fire('click');
+  assert.match(await h.blob.text(), /Owó ilé lóṣù: ₦20,000/);
+});
 test('invalid submit links and focuses one error, preserves values and recovers after correction', async () => {
   const h = host(); h.set(complete({stateMonthly: '-1'})); await h.submit();
   assert.equal(h.elements.nyscResults.hidden, true); assert.equal(h.elements.stateMonthly.attributes['aria-invalid'], 'true');
@@ -186,5 +204,6 @@ test('source and rendered report use NFC and retain no known legacy English expo
   const script = fs.readFileSync(path.join(root, 'yo/awon-ise/alawus-na-nysc/nysc-yoruba.js'), 'utf8');
   for (const text of [html, script, api.makeReport(api.calculate(complete()), {})]) assert.equal(text, text.normalize('NFC'));
   assert.doesNotMatch(html, /Copy brief|Download \.txt|Local-first export|Verification, freshness|Capture NYSC|Ajiye shirin/);
+  assert.doesNotMatch(html, /Kwíkọ́/);
   assert.match(html, /href="#main-content"/); assert.match(html, /role="alert"/); assert.match(html, /role="status"/);
 });
