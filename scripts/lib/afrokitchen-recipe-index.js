@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const attributedRecipes = require("../../engines/src/afrokitchen-engine");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const MANIFEST_PATH = path.join(ROOT, "tools", "afrokitchen", "seo-manifest.json");
@@ -18,6 +19,7 @@ const KAPENTA_REVISION = 'kapenta-zambian-kitchen-20261016';
 const CURATED_CONTENT_FIELDS = ['name','description','story','author','source','best_served_with','occasion','regional_variations','prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','yield_status','calories','protein_g','carbs_g','fat_g','fiber_g','diet_tags','image_url','image_alt','ingredients','steps','media'];
 
 function projectCuratedDetail(recipe) {
+  if (attributedRecipes.isAttributedRecipe(recipe)) return { method_revision: recipe.method_revision, curated_detail: { id: recipe.id, slug: recipe.slug, method_revision: recipe.method_revision, fields: Object.fromEntries(CURATED_CONTENT_FIELDS.map(field => [field, recipe[field] ?? null])) } };
   if (recipe.slug !== 'kapenta-stew-zm' || recipe.method_revision !== KAPENTA_REVISION) return {};
   if (recipe.id !== KAPENTA_ID || recipe.yield_status !== 'not-recorded' || recipe.default_servings !== null) throw new Error('Curated Kapenta identity/yield mismatch');
   return { method_revision: KAPENTA_REVISION, yield_status: 'not-recorded', curated_detail: {
@@ -29,6 +31,7 @@ function projectCuratedDetail(recipe) {
 function buildRecipeIndex(manifest) {
   const recipes = (manifest.recipes || [])
     .filter((recipe) => recipe.generated_in_wave && recipe.is_published === true && recipe.is_verified === true)
+    .map(recipe => { const projected = attributedRecipes.projectAttributedRecipe(recipe); if (!projected) throw new Error("Attributed index identity mismatch"); return projected; })
     .map((recipe) => ({
       ...Object.fromEntries(RECIPE_FIELDS.map((field) => [field, recipe[field] == null ? null : recipe[field]])),
       ...projectCuratedDetail(recipe),

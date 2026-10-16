@@ -153,7 +153,7 @@ test('dynamic detail loads media only for the eligible returned UUID and refuses
 test('API detail media is UUID-scoped and never masks a transport or owner failure', async () => {
   for(const wrongOwner of [false,true]) {
     const target=recipe(), urls=[];
-    const context={exports:{},process:{env:{SUPABASE_AUTH_SERVICE_KEY:'synthetic-local-test-only'}},fetch:async url=>{
+    const context={exports:{},require:specifier=>{assert.equal(specifier,'../../engines/src/afrokitchen-engine');return require('../engines/src/afrokitchen-engine');},process:{env:{SUPABASE_AUTH_SERVICE_KEY:'synthetic-local-test-only'}},fetch:async url=>{
       urls.push(url);
       const table=new URL(url).pathname.split('/').at(-1);
       const body=table==='recipes'?[target]:table==='recipe_media'?target.media.map(row=>({...row,recipe_id:wrongOwner?'wrong':target.id})):table==='recipe_ingredients'?target.ingredients:table==='recipe_steps'?target.steps:[];

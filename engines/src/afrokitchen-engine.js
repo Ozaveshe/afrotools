@@ -557,7 +557,7 @@ var AfroKitchenEngine = function() {
     var o = r / t;
     return e.map(function(e) {
       return Object.assign({}, e, {
-        scaled_amount: c(e.amount * o)
+        scaled_amount: e.source_quantity_unrecorded === true ? "" : c(e.amount * o)
       });
     });
   }
@@ -1736,7 +1736,7 @@ var AfroKitchenEngine = function() {
   }
   function h(e, rows) {
     if (rows && rows.publicationUnavailable) return rows;
-    var t = (rows || []).filter(isPublicRecipe);
+    var t = (rows || []).filter(isPublicRecipe).map(projectAttributedRecipe).filter(Boolean);
     if (!e) {
       return t;
     }
@@ -1768,6 +1768,454 @@ var AfroKitchenEngine = function() {
       return t.slug === e.slug;
     })), e.limit && (t = t.slice(0, e.limit)), t;
   }
+  // Exactly two source-attributed display methods. These do not authorize publication
+  // or write canonical recipe data. Shared by browser, static/index owners and API.
+  var attributedMethods = {
+    "mandazi-tanzania-tz": {
+      "id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+      "revision": "mandazi-malaquias-20171122-v1",
+      "fields": {
+        "description": "Round coconut-cardamom yeast breads, adapted from Miriam Malaquias's Maandazi.",
+        "story": "Miriam's version serves eight and advises starting about 90 minutes ahead. Let the dough double; exact preparation and frying durations are not specified. AfroTools has not kitchen-tested this adaptation.",
+        "author": "AfroKitchen adaptation; source recipe by Miriam Malaquias",
+        "default_servings": 8,
+        "serving_unit": "servings",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/mandazi-tanzania-tz.webp",
+        "image_alt": "AI-generated serving illustration of round golden mandazi, one opened to show its airy interior.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://miriammalaquias.com/2017/11/22/maandazi/",
+        "diet_tags": [],
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": null,
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-1",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "dry yeast",
+            "amount": 2.25,
+            "unit": "tsp",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-2",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "warm water",
+            "amount": 0.5,
+            "unit": "cup",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-3",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 1,
+            "unit": "tsp",
+            "prep_note": "For activating the yeast",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-4",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "ground cardamom",
+            "amount": 1,
+            "unit": "tsp",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 40,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-5",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "all-purpose flour",
+            "amount": 3,
+            "unit": "cups",
+            "prep_note": "Extra flour only to adjust the dough/work surface",
+            "is_optional": false,
+            "sort_order": 50,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-6",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 2,
+            "unit": "tbsp",
+            "prep_note": "Source allows2–4 tablespoons",
+            "is_optional": false,
+            "sort_order": 60,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-7",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "coconut milk",
+            "amount": 0.75,
+            "unit": "cup",
+            "prep_note": "Start with½ cup; reserve the rest",
+            "is_optional": false,
+            "sort_order": 70,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-8",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "oil",
+            "amount": 1,
+            "unit": "tbsp",
+            "prep_note": "For the dough",
+            "is_optional": true,
+            "sort_order": 80,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-9",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "vegetable oil",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "For deep frying",
+            "is_optional": false,
+            "sort_order": 90,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-mandazi-tanzania-tz-step-1",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Activate yeast",
+            "instruction": "Dissolve the starter sugar and yeast in warm water; cover until active.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-2",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Make dough",
+            "instruction": "Stir the remaining sugar, cardamom, optional oil and half a cup of coconut milk into the activated yeast mixture. Mix in the flour; use reserved coconut milk or extra flour to adjust the dough.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-3",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Knead and rise",
+            "instruction": "Knead ten minutes. Cover in an oiled bowl until doubled.",
+            "timer_seconds": 600,
+            "timer_label": "Kneading only; rising has no fixed timer"
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-4",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Cut rounds",
+            "instruction": "Knead two minutes, roll about 5 mm thick and cut rounds.",
+            "timer_seconds": 120,
+            "timer_label": "Second kneading only"
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-5",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Fry",
+            "instruction": "Deep-fry until golden. Serve warm or at room temperature.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-mandazi-tanzania-tz-hero",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/mandazi-tanzania-tz.webp",
+            "alt_text": "AI-generated serving illustration of round golden mandazi, one opened to show its airy interior.",
+            "caption": "AI-generated serving illustration of this attributed adaptation; not a kitchen-tested photograph.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; source recipe by Miriam Malaquias",
+            "credit_url": "https://miriammalaquias.com/2017/11/22/maandazi/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "koba-mg": {
+      "id": "3b4af630-750d-467f-939c-7befadf44d32",
+      "revision": "koba-firstglobal-p13-small-parcels-v1",
+      "fields": {
+        "name": "Koba — small steamed parcels",
+        "description": "Banana, rice-flour and peanut parcels adapted from the FIRST Global cookbook’s Kobandravina.",
+        "story": "This adaptation follows the cookbook’s small leaf-wrapped parcels and ordinary steaming method. Allow about 20–25 minutes for steaming; the15-minute preparation figure comes from the source. AfroTools has not kitchen-tested this adaptation.",
+        "author": "AfroKitchen adaptation; source:2020 FIRST Global Flavors of the World, page 13",
+        "default_servings": 10,
+        "serving_unit": "servings",
+        "prep_time_minutes": 15,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/koba-mg.webp",
+        "image_alt": "AI-generated serving illustration of two leaf-wrapped Koba parcels and an opened parcel showing its pale interior.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://first.global/wp-content/uploads/2020/10/2020-FGC-Flavors-of-the-World-Cookbook_v1.2.pdf",
+        "diet_tags": [],
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": null,
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "id": "source-koba-mg-ingredient-1",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "bananas",
+            "amount": 3,
+            "unit": "whole",
+            "prep_note": "Peeled and mashed",
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-2",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "vanilla pod",
+            "amount": 1,
+            "unit": "pod",
+            "prep_note": "Seeds only; source alternatively lists 0.33 tsp vanilla",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-3",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "peanuts",
+            "amount": 30,
+            "unit": "g",
+            "prep_note": "Crushed",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-4",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 30,
+            "unit": "g",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 40,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-5",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "rice flour",
+            "amount": 150,
+            "unit": "g",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 50,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-6",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "banana leaves",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "For small parcels; the source allows parchment as an alternative",
+            "is_optional": false,
+            "sort_order": 60,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-koba-mg-step-1",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Mix batter",
+            "instruction": "Mash the bananas. Mix in vanilla seeds, crushed peanuts, sugar and rice flour.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-koba-mg-step-2",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Prepare wrappers",
+            "instruction": "Wash leaves, cut squares, soften briefly in hot water and drain.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-koba-mg-step-3",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Wrap parcels",
+            "instruction": "Put about 3 tablespoons of batter in each wrapper; fold and secure with kitchen twine.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-koba-mg-step-4",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Steam",
+            "instruction": "Steam the small parcels for about 20–25 minutes using the ordinary steamer method.",
+            "timer_seconds": 1200,
+            "timer_label": "Start checking; approximate 20–25-minute steaming range"
+          },
+          {
+            "id": "source-koba-mg-step-5",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Unwrap",
+            "instruction": "Let parcels cool enough to handle, remove wrappers and twine, and serve warm.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-koba-mg-hero",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/koba-mg.webp",
+            "alt_text": "AI-generated serving illustration of two leaf-wrapped Koba parcels and an opened parcel showing its pale interior.",
+            "caption": "AI-generated serving illustration of the attributed small-parcel adaptation; not kitchen-tested photography.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; source:2020 FIRST Global Flavors of the World, page 13",
+            "credit_url": "https://first.global/wp-content/uploads/2020/10/2020-FGC-Flavors-of-the-World-Cookbook_v1.2.pdf",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    }
+  };
+  function isAttributedTarget(recipe) {
+    return !!(recipe && Object.prototype.hasOwnProperty.call(attributedMethods, recipe.slug));
+  }
+  function isAttributedRecipe(recipe) {
+    var method = isAttributedTarget(recipe) && attributedMethods[recipe.slug];
+    return !!(method && isPublicRecipe(recipe) && recipe.id === method.id && recipe.method_revision === method.revision);
+  }
+  function projectAttributedRecipe(recipe) {
+    if (!isAttributedTarget(recipe)) return recipe;
+    var method = attributedMethods[recipe.slug];
+    if (recipe.id !== method.id || !isPublicRecipe(recipe)) return null;
+    return Object.assign({}, recipe, JSON.parse(JSON.stringify(method.fields)), {
+      method_revision: method.revision,
+      content_representation: 'attributed-source-adaptation',
+      reviews: [], avg_rating: null, review_count: 0
+    });
+  }
   function hasRecordedRecipeYield(recipe) { return !!recipe && recipe.yield_status !== 'not-recorded'; }
   // One reviewed display method; ordinary publication approval is required first.
   function kapentaSourceDetail(recipe, published) {
@@ -1783,6 +2231,10 @@ var AfroKitchenEngine = function() {
     return Object.assign({}, recipe, JSON.parse(JSON.stringify(fields)), { method_revision: detail.method_revision });
   }
   function f(slug, published) {
+    if (Object.prototype.hasOwnProperty.call(attributedMethods, slug)) {
+      var sourceApproval = (published || []).find(function(row) { return row.slug === slug && isPublicRecipe(row); });
+      return sourceApproval ? projectAttributedRecipe(sourceApproval) : null;
+    }
     if (slug === 'kapenta-stew-zm') {
       var approved = (published || []).find(function(row) { return row.slug === slug && isPublicRecipe(row); });
       return approved ? kapentaSourceDetail(Object.assign({}, approved, { reviews: [], avg_rating: null, review_count: 0 }), published) : null;
@@ -1794,6 +2246,9 @@ var AfroKitchenEngine = function() {
     return Object.assign({}, seed, { is_published: true, is_verified: true, reviews: [], avg_rating: null, review_count: 0 });
   }
   return {
+    projectAttributedRecipe: projectAttributedRecipe,
+    isAttributedRecipe: isAttributedRecipe,
+    isAttributedTarget: isAttributedTarget,
     COUNTRIES: i,
     REGIONS: [ "West Africa", "East Africa", "North Africa", "Southern Africa", "Central Africa" ],
     CATEGORIES: [ {
@@ -1887,7 +2342,7 @@ var AfroKitchenEngine = function() {
     fetchRecipeBySlug: async function(e) {
       var r = "recipe_" + e, i = o(r);
       if (isPublicRecipe(i)) {
-        return i;
+        return projectAttributedRecipe(i);
       }
       var published = await loadPublishedRecipeIndex();
       if (window.navigator && window.navigator.onLine === false) return f(e, published) || { publicationUnavailable: true };
@@ -1913,7 +2368,7 @@ var AfroKitchenEngine = function() {
           }, 0);
           c.avg_rating = Math.round(g / c.reviews.length * 10) / 10, c.review_count = c.reviews.length;
         }
-        c = kapentaSourceDetail(c, published);
+        c = projectAttributedRecipe(kapentaSourceDetail(c, published));
         if (!c) return { publicationUnavailable: true };
         return a.rpc("increment_recipe_views", {
           recipe_id: c.id
@@ -1923,6 +2378,7 @@ var AfroKitchenEngine = function() {
       }
     },
     fetchIngredientPrices: async function(e, r) {
+      if (Object.keys(attributedMethods).some(function(slug) { return attributedMethods[slug].id === e; })) return [];
       var o = t();
       if (!o) {
         return [];
@@ -2186,7 +2642,7 @@ var AfroKitchenEngine = function() {
             text: e.instruction
           };
         }),
-        aggregateRating: e.avg_rating && !(e.id === "76572d95-eb8e-4c78-bbb6-ea754f61c758" && e.method_revision === "kapenta-zambian-kitchen-20261016") ? {
+        aggregateRating: e.avg_rating && !isAttributedRecipe(e) && !(e.id === "76572d95-eb8e-4c78-bbb6-ea754f61c758" && e.method_revision === "kapenta-zambian-kitchen-20261016") ? {
           "@type": "AggregateRating",
           ratingValue: e.avg_rating,
           reviewCount: e.review_count
@@ -2224,3 +2680,6 @@ var AfroKitchenEngine = function() {
     }
   };
 }();
+
+// Node owners import the same pure projection; no client/database is opened here.
+if (typeof module === "object" && module.exports) module.exports = AfroKitchenEngine;
