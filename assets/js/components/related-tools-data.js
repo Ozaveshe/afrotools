@@ -98,7 +98,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-mapato-ya-okada-boda-sw",
+        "imageKey": "zana-mapato-ya-okada-boda-sw"
       },
       {
         "id": "zana-nauli-za-matatu-danfo-trotro-sw",
@@ -2907,7 +2909,7 @@
         "priority": 77,
         "estTraffic": 4000,
         "imageExt": "webp",
-        "sourceId": "sim-registration",
+        "sourceId": "telecom-sim-reg",
         "imageId": "national-id-guide",
         "imageKey": "national-id-guide"
       }
@@ -15505,7 +15507,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-gharama-ya-kukatika-umeme-sw",
+        "imageKey": "zana-gharama-ya-kukatika-umeme-sw"
       },
       {
         "id": "zana-kikokotoo-bili-ya-maji-sw",
@@ -15531,7 +15535,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-gharama-za-mafuta-sw",
+        "imageKey": "zana-gharama-za-mafuta-sw"
       },
       {
         "id": "zana-kikokotoo-luku-ya-umeme-sw",
@@ -15741,7 +15747,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-sacco-na-vyama-vya-akiba-sw",
+        "imageKey": "zana-kikokotoo-sacco-na-vyama-vya-akiba-sw"
       },
       {
         "id": "zana-thamani-halisi-sw",
@@ -16398,7 +16406,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "freelance-rate-card",
+        "sourceId": "freelancer-rate",
         "imageId": "freelancer-rate",
         "imageKey": "freelancer-rate"
       }
@@ -16429,7 +16437,7 @@
         "priority": 62,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "content-repurposer",
+        "sourceId": "creator-repurpose",
         "imageId": "zana-kubadilisha-maudhui-kwa-majukwaa-sw-wave8",
         "imageKey": "zana-kubadilisha-maudhui-kwa-majukwaa-sw-wave8"
       },
@@ -16458,7 +16466,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "audio-recorder-editor",
+        "sourceId": "creator-voice",
         "imageId": "creator-voice",
         "imageKey": "creator-voice"
       },
@@ -16923,7 +16931,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "robots-txt-generator",
+        "sourceId": "robots-txt",
         "imageId": "zana-kizalishaji-robots-txt-sw-wave8",
         "imageKey": "zana-kizalishaji-robots-txt-sw-wave8"
       }
@@ -16954,7 +16962,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-orodha-vifaa-sw",
+        "imageKey": "zana-orodha-vifaa-sw"
       },
       {
         "id": "zana-kikokotoo-mzigo-wa-umeme-sw",
@@ -18190,7 +18200,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ulinganisho-uhamishaji-pesa-sw",
+        "imageKey": "zana-ulinganisho-uhamishaji-pesa-sw"
       },
       {
         "id": "zana-viwango-benki-sw",
@@ -18409,7 +18421,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ada-soko-mtandaoni-sw",
+        "imageKey": "zana-ada-soko-mtandaoni-sw"
       },
       {
         "id": "zana-kikokotoo-burn-rate-sw",
@@ -18421,7 +18435,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-burn-rate-sw",
+        "imageKey": "zana-kikokotoo-burn-rate-sw"
       },
       {
         "id": "zana-kikokotoo-churn-rate-sw",
@@ -18433,7 +18449,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-churn-rate-sw",
+        "imageKey": "zana-kikokotoo-churn-rate-sw"
       },
       {
         "id": "zana-makisio-mtiririko-wa-fedha-sw",
@@ -18460,7 +18478,7 @@
         "priority": 62,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "inventory-tracker",
+        "sourceId": "inventory",
         "imageId": "inventory",
         "imageKey": "inventory"
       },
@@ -21386,7 +21404,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "african-french-translator",
+        "sourceId": "french-african",
         "imageId": "french-african",
         "imageKey": "french-african"
       },
@@ -21471,7 +21489,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "nigerian-pidgin-translator",
+        "sourceId": "pidgin-translator",
         "imageId": "pidgin-translator",
         "imageKey": "pidgin-translator"
       },
@@ -21486,7 +21504,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "arabic-numerals",
+        "sourceId": "arabic-calc",
         "imageId": "zana-nambari-za-kiarabu-sw-finish",
         "imageKey": "zana-nambari-za-kiarabu-sw-finish"
       },
@@ -21501,7 +21519,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "text-transliteration",
+        "sourceId": "transliterate",
         "imageId": "zana-transliteration-ya-maandishi-sw-wave8",
         "imageKey": "zana-transliteration-ya-maandishi-sw-wave8"
       },
@@ -21516,7 +21534,7 @@
         "priority": 60,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "african-name-day-age",
+        "sourceId": "age-calculator-african",
         "imageId": "zana-umri-na-jina-la-siku-afrika-sw-finish",
         "imageKey": "zana-umri-na-jina-la-siku-afrika-sw-finish"
       }

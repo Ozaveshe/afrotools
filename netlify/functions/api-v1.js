@@ -224,6 +224,8 @@ async function handleHealth(CORS) {
     };
   });
 
+  const stocks = require('./_shared/stock-observations').categoryStatus(await getData('stock-indices-latest'), now, undefined, meta.stocks || {});
+  categories.stocks = { ...stocks, last_updated: stocks.updatedAt };
   categories.shipping = {...require('./_shared/shipping-reference').referenceStatus(await getData('shipping-rates-latest'),meta.shipping || {},now,10080,
     require('./scheduled-fetch-shipping')._referenceCatalog),last_updated:null};
   const agriculture = require('./_shared/agri-reference').referenceStatus(await getData('agri-inputs-latest'), meta.agriculture || {}, now, 10080);
@@ -289,19 +291,31 @@ async function handleGeneric(blobKey, arrayField, params, CORS) {
 
 async function handleStocks(params, CORS) {
   var { data } = await getOrFetch('stock-indices-latest', 60000);
-  if (!data) return jsonResp(503, { error: 'Stock data unavailable' }, CORS);
+  if (!data) return jsonResp(503, { ...require('./_shared/stock-observations').normalizeSnapshot(null, Date.now()), error: 'Stock data unavailable' }, CORS);
 
-  var indices = data.indices || [];
+  var indices = Array.isArray(data.indices) ? data.indices : [];
 
   if (params.exchange) {
-    indices = indices.filter(function(i) { return i.exchange === params.exchange.toUpperCase(); });
+    indices = indices.filter(function(i) { return i && i.exchange === params.exchange.toUpperCase(); });
     if (!indices.length) return jsonResp(404, { error: 'Exchange not found' }, CORS);
   }
   if (params.country) {
-    indices = indices.filter(function(i) { return i.country === params.country.toUpperCase(); });
+    indices = indices.filter(function(i) { return i && i.country === params.country.toUpperCase(); });
   }
 
-  return jsonResp(200, { timestamp: data.timestamp, indices: indices, count: indices.length }, CORS);
+  const normalizer = require('./_shared/stock-observations');
+  if (!indices.length && params.country) {
+    const dataset = normalizer.normalizeSnapshot(data, Date.now());
+    if (dataset.count) return jsonResp(200, { ...dataset, indices: [], count: 0 }, CORS);
+  }
+  const dataset = normalizer.normalizeSnapshot(data, Date.now());
+  const qualified = normalizer.normalizeSnapshot({ ...data, indices, collection_coverage: null }, Date.now());
+  qualified.collection_coverage = dataset.collection_coverage;
+  if (qualified.status === 'ok' && dataset.collection_coverage && dataset.collection_coverage.unavailable_count) {
+    qualified.status = 'stale'; qualified.availability = 'partial';
+  }
+  if (!qualified.count) return jsonResp(503, { ...qualified, error: 'Dated stock index observations unavailable' }, CORS);
+  return jsonResp(200, qualified, CORS);
 }
 
 async function handleShipping(params, CORS) {

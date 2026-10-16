@@ -388,10 +388,12 @@ function findLocalRecipeImage(slug) {
 function resolveRecipeMedia(recipe, recipeImages) {
   const localImage = findLocalRecipeImage(recipe.slug);
   if (localImage) {
+    const reviewedMedia = (Array.isArray(recipe.media) ? recipe.media : []).find(entry => entry.recipe_id === recipe.id && entry.image_url === localImage && entry.role === 'hero' && entry.source_type === 'ai_generated_illustration');
     return {
       pageImage: localImage,
       socialImage: `${SITE_ORIGIN}${localImage}`,
-      credit: null
+      credit: null,
+      illustrationCaption: reviewedMedia && typeof reviewedMedia.caption === 'string' ? reviewedMedia.caption : ''
     };
   }
 
@@ -581,6 +583,13 @@ function buildCollectionDescription(collection) {
   );
 }
 
+function classifyRecipeDuration(value) {
+  if (value == null || (typeof value === 'string' && value.trim() === '')) return { kind: 'unknown', minutes: null };
+  if (typeof value !== 'number' && typeof value !== 'string') return { kind: 'invalid', minutes: null };
+  if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)\s*$/.test(value)) return { kind: 'invalid', minutes: null };
+  const number = Number(value);
+  return Number.isFinite(number) && number >= 0 ? { kind: 'known', minutes: number } : { kind: 'invalid', minutes: null };
+}
 function normalizeRecipe(recipe) {
   const description = cleanGeneratedDescription(recipe);
   const story = cleanGeneratedStory(recipe, description);
@@ -605,9 +614,8 @@ function normalizeRecipe(recipe) {
     name_local: normalizeText(recipe.name_local),
     image_alt: cleanImageText(recipe.image_alt, cleanedRecipe),
     media: cleanRecipeMedia(recipe.media, cleanedRecipe),
-    default_servings: recipe.default_servings || 1,
-    total_time_minutes:
-      recipe.total_time_minutes || (recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0),
+    default_servings: recipe.yield_status === 'not-recorded' ? null : recipe.default_servings || 1,
+    total_time_minutes: classifyRecipeDuration(recipe.total_time_minutes).kind === 'known' ? classifyRecipeDuration(recipe.total_time_minutes).minutes : recipe.total_time_minutes == null ? null : recipe.total_time_minutes,
     country_slug: slugify(recipe.country_name),
     route_path: recipeRoutePath(recipe.slug),
     route_url: recipeUrl(recipe.slug),
@@ -625,7 +633,7 @@ function collectStaticRecipeBlockers(recipe) {
   if (!normalizeText(recipe.country_code) || !normalizeText(recipe.country_name)) {
     blockers.push("missing_country");
   }
-  if (!recipe.default_servings) blockers.push("missing_default_servings");
+  if (!recipe.default_servings && recipe.yield_status !== "not-recorded") blockers.push("missing_default_servings");
   if (!Array.isArray(recipe.ingredients) || !recipe.ingredients.length) {
     blockers.push("missing_ingredients");
   }
@@ -714,6 +722,8 @@ function buildCountryManifest(recipes) {
       diet_tags: Array.isArray(recipe.diet_tags) ? recipe.diet_tags : [],
       ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
       generated_in_wave: recipe.generated_in_wave,
+      is_published: recipe.is_published,
+      is_verified: recipe.is_verified,
       is_featured: Boolean(recipe.is_featured),
       route_path: recipe.route_path,
       route_url: recipe.route_url,
@@ -813,6 +823,8 @@ function buildCollectionManifest(recipes, countries, collectionRows) {
           default_servings: recipe.default_servings,
           diet_tags: Array.isArray(recipe.diet_tags) ? recipe.diet_tags : [],
           generated_in_wave: recipe.generated_in_wave,
+          is_published: recipe.is_published,
+          is_verified: recipe.is_verified,
           is_featured: Boolean(recipe.is_featured),
           country_code: recipe.country_code,
           country_name: recipe.country_name,
@@ -907,6 +919,7 @@ async function buildManifest(options) {
     supabase
       .from("recipes")
       .select("*")
+      .eq("is_published", true)
       .eq("is_verified", true)
       .order("country_name", { ascending: true })
       .order("name", { ascending: true })
@@ -957,7 +970,7 @@ async function buildManifest(options) {
   const mediaMap = groupRowsBy(recipeMedia, "recipe_id");
   const reviewMap = groupRowsBy(reviews, "recipe_id");
 
-  const attachedRecipes = recipes.map((recipe) => {
+  const attachedRecipes = recipes.filter((recipe) => recipe.is_published === true && recipe.is_verified === true).map((recipe) => {
     const reviewRows = reviewMap.get(recipe.id) || [];
     const ratingTotal = reviewRows.reduce((sum, review) => sum + (review.rating || 0), 0);
     const reviewCount = reviewRows.length;
@@ -1168,6 +1181,8 @@ function writeStaticRoutes(manifest, targetPath) {
 }
 
 module.exports = {
+  classifyRecipeDuration,
+  normalizeRecipe,
   ROOT,
   TOOL_DIR,
   RECIPES_DIR,

@@ -21,8 +21,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I calculate solar payback?","acceptedAnswer":{"@type":"Answer","text":"Enter your monthly grid bill, generator spend, outage hours, system size, battery choice, and financing assumptions. The calculator compares current energy spend with a solar scenario and estimates how long savings may take to recover the system cost."}},{"@type":"Question","name":"Should I include generator fuel?","acceptedAnswer":{"@type":"Answer","text":"Yes, include generator fuel if you use a petrol or diesel generator for backup power. Generator savings can materially change payback, especially for shops, clinics, schools, churches, cold rooms, and SMEs with frequent outages."}},{"@type":"Question","name":"Do I need a battery?","acceptedAnswer":{"@type":"Answer","text":"Not always. A battery is mainly for backup and night-time essential loads. Solar without a large battery can pay back faster, but it will not keep appliances running during outages."}},{"@type":"Question","name":"What size solar system do I need?","acceptedAnswer":{"@type":"Answer","text":"Start from daily kWh, peak load, outage hours, and essential appliances. A small home may start around 1-2 kW, a family home around 3-5 kW, and businesses should do a load estimate before choosing a size."}},{"@type":"Question","name":"Why is my payback different from installer quotes?","acceptedAnswer":{"@type":"Answer","text":"Quotes change with panel wattage, inverter brand, battery chemistry, usable battery capacity, roof work, protection devices, wiring distance, labour, warranty, maintenance, and finance charges."}},{"@type":"Question","name":"What assumptions can I edit?","acceptedAnswer":{"@type":"Answer","text":"You can edit tariff, generator fuel price, solar yield, performance ratio, system size, install cost, battery cost, maintenance, deposit, interest, finance term, and outage or backup assumptions."}},{"@type":"Question","name":"Is this a replacement for PVWatts or installer design?","acceptedAnswer":{"@type":"Answer","text":"No. Use this for early planning and quote comparison. PVWatts, PVGIS, Global Solar Atlas, and installer design tools can model location, roof, shading, inverter limits, and production more precisely."}},{"@type":"Question","name":"How accurate is this calculator?","acceptedAnswer":{"@type":"Answer","text":"It is a planning estimate, not a quote. Accuracy improves when you use recent bills, real fuel receipts, a load profile, local solar yield, current equipment quotes, and finance terms from the provider."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071"><link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5"><link rel="stylesheet" href="/assets/css/energy.css?v=1e35140d">
-<script src="/assets/js/components/navbar.min.js?v=a4be1be7" defer></script><script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script><script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=34e4a529"><link rel="stylesheet" href="/assets/css/global.min.css?v=6f4c772b"><link rel="stylesheet" href="/assets/css/energy.css?v=bb7b5888">
+<script src="/assets/js/components/navbar.min.js?v=772f666e" defer></script><script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script><script src="/assets/js/bundles/core.b50e3c40.min.js" defer></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .solar-root-filter{display:grid;gap:8px;margin:18px 0 22px;padding:16px;border:1px solid rgba(18,32,51,.1);border-radius:8px;background:#fff;box-shadow:0 12px 30px rgba(11,24,43,.06)}
 .solar-root-filter label,.solar-country-picker label{font-weight:900;color:#122033}
 .solar-root-filter input,.solar-root-filter select{width:100%;min-height:48px;border:1px solid rgba(18,32,51,.18);border-radius:8px;padding:11px 12px;font:inherit;font-size:16px;color:#122033;background:#fff}
@@ -167,6 +167,7 @@ window.addEventListener('load', function() {
 <div class="solar-country-picker-field">
 <label for="solarRootCountrySelect">Sélectionner un pays</label>
 <select id="solarRootCountrySelect" aria-describedby="solarRootCountryHelp solarRootCountryStatus">
+<option value="">Choose a country...</option>
 <optgroup label="Popular countries">
 <option value="nigeria" data-code="NG" data-currency="NGN" selected>🇳🇬 Nigeria - NGN</option>
 <option value="kenya" data-code="KE" data-currency="KES">🇰🇪 Kenya - KES</option>
@@ -566,16 +567,8 @@ window.addEventListener('load', function() {
 </div>
 </section>
 </main>
-<afro-related-tools data-ssr="1" category="energy" current="solar-roi">
-<!-- RELATED_TOOLS_SSR_START -->
-<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
-<h2 class="seo-links-title">Outils associés</h2>
-<ul class="seo-links-list"><li><a href="/fr/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/fr/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Cost &amp; Prepaid Units" data-category="energy" data-icon="EC" data-desc="Convert money to prepaid units or kWh to an estimated bill using current provider and customer-class tariffs, with sourc">Electricity Cost &amp; Prepaid Units</a></li><li><a href="/fr/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/fr/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li><li><a href="/fr/tools/solar-sizing/" data-related-tool data-id="solar-sizing" data-name="Solar Sizing Calculator" data-category="energy" data-icon="SS" data-desc="Size a solar system for your African home or business. Panel wattage, battery capacity, inverter size — load-based recom">Solar Sizing Calculator</a></li><li><a href="/fr/tools/battery-sizing/" data-related-tool data-id="battery-sizing" data-name="Battery &amp; Inverter Sizing" data-category="energy" data-icon="BI" data-desc="Calculate battery bank and inverter requirements for off-grid and backup power in Africa. Lithium vs lead-acid compariso">Battery &amp; Inverter Sizing</a></li></ul>
-</nav>
-<!-- RELATED_TOOLS_SSR_END -->
-</afro-related-tools>
 <afro-footer></afro-footer>
-<script>!function(){function loadAfroEnergyAssistant(){if(window.__afroEnergyAssistantLoaded)return;window.__afroEnergyAssistantLoaded=true;var s=document.createElement("script");s.src="/assets/js/energy-tool-assistant.js?v=b5a3b994";s.defer=true;document.body.appendChild(s);}if("requestIdleCallback"in window){requestIdleCallback(loadAfroEnergyAssistant,{timeout:2500});}else{setTimeout(loadAfroEnergyAssistant,1800);}}();</script>
+<script>!function(){function loadAfroEnergyAssistant(){if(window.__afroEnergyAssistantLoaded)return;window.__afroEnergyAssistantLoaded=true;var s=document.createElement("script");s.src="/assets/js/energy-tool-assistant.js?v=8a8281d8";s.defer=true;document.body.appendChild(s);}if("requestIdleCallback"in window){requestIdleCallback(loadAfroEnergyAssistant,{timeout:2500});}else{setTimeout(loadAfroEnergyAssistant,1800);}}();</script>
 <script src="/data/energy/solar-roi-country-dataset.js?v=c61d25bf"></script>
 
 <script data-locale-shell-controller>
@@ -605,7 +598,8 @@ window.addEventListener('load', function() {
   var assumptionFields={electricityTariff:{value:document.getElementById("solarAssumptionTariff"),confidence:document.getElementById("solarAssumptionTariffConfidence")},fuelPrice:{value:document.getElementById("solarAssumptionFuel"),confidence:document.getElementById("solarAssumptionFuelConfidence")},solarYield:{value:document.getElementById("solarAssumptionYield"),confidence:document.getElementById("solarAssumptionYieldConfidence")},installCostPerKw:{value:document.getElementById("solarAssumptionInstall"),confidence:document.getElementById("solarAssumptionInstallConfidence")}};
   if(!input||!select||!open||!grid||!status)return;
   var cards=Array.prototype.slice.call(grid.querySelectorAll("[data-country]"));
-  function normalize(value){return String(value||"").trim().toLowerCase();}
+  var briefRevision=0;
+  function normalize(value){return String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
   function formatAssumption(assumption){if(!assumption)return"Unavailable";var value=typeof assumption.value==="number"?new Intl.NumberFormat("en",{maximumFractionDigits:2}).format(assumption.value):String(assumption.value||"Unavailable");return value+(assumption.unit?" "+assumption.unit:"");}
   function countryDefaults(country){return solarData&&solarData.countries&&country?solarData.countries[country.code]||null:null;}
   function assumptionSnapshot(country){var defaults=countryDefaults(country);if(!defaults)return null;function field(key){var item=defaults.assumptions&&defaults.assumptions[key];return item?{value:item.value,unit:item.unit,confidence:item.confidence,source:item.sourceName,source_url:item.sourceUrl||null,freshness:item.freshness}:null;}return{dataset_reviewed:solarData.lastReviewed,country_data_confidence:defaults.confidenceLevel,electricity_tariff:field("electricityTariff"),generator_fuel:field("fuelPrice"),solar_yield:field("solarYield"),install_cost_per_kw:field("installCostPerKw")};}
@@ -613,17 +607,37 @@ window.addEventListener('load', function() {
   function solarFrenchCountryName(country){if(!country)return "";var names={"NG":"Nigeria","KE":"Kenya","ZA":"Afrique du Sud","GH":"Ghana","EG":"Égypte","ET":"Éthiopie","TZ":"Tanzanie","UG":"Ouganda","RW":"Rwanda","CI":"Côte d'Ivoire","CM":"Cameroun","SN":"Sénégal","MA":"Maroc","TN":"Tunisie","AO":"Angola","ZM":"Zambie","ZW":"Zimbabwe","MZ":"Mozambique","MW":"Malawi","MG":"Madagascar","BW":"Botswana","NA":"Namibie","LS":"Lesotho","SZ":"Eswatini","MU":"Maurice","SC":"Seychelles","DJ":"Djibouti","ER":"Érythrée","SO":"Somalie","SS":"Soudan du Sud","SD":"Soudan","LY":"Libye","DZ":"Algérie","CD":"RD Congo","CG":"République du Congo","TD":"Tchad","CF":"République centrafricaine","GA":"Gabon","GQ":"Guinée équatoriale","ST":"São Tomé-et-Príncipe","KM":"Comores","BI":"Burundi","BJ":"Bénin","BF":"Burkina Faso","CV":"Cap-Vert","GM":"Gambie","GN":"Guinée","GW":"Guinée-Bissau","LR":"Liberia","ML":"Mali","NE":"Niger","SL":"Sierra Leone","TG":"Togo","MR":"Mauritanie"};return names[country.code]||country.name;}
 function findCountry(value){
     var query=normalize(value);if(!query)return null;
-    return COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||(normalize(country.name)===query||normalize(solarFrenchCountryName(country))===query)||normalize(country.currency)===query;})[0]||COUNTRIES.filter(function(country){return (normalize(country.name).indexOf(query)>=0||normalize(solarFrenchCountryName(country)).indexOf(query)>=0)||normalize(country.slug).indexOf(query)>=0||normalize(country.currency).indexOf(query)>=0||normalize(country.code).indexOf(query)>=0;})[0]||null;
+    var exact=COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||(normalize(country.name)===query||normalize(solarFrenchCountryName(country))===query);});
+    if(exact.length===1)return exact[0];
+    var currency=COUNTRIES.filter(function(country){return normalize(country.currency)===query;});
+    return currency.length===1?currency[0]:null;
   }
   function storedCountry(){try{return localStorage.getItem(STORAGE_KEY)||"";}catch(error){return "";}}
   function storeCountry(country){try{if(country)localStorage.setItem(STORAGE_KEY,country.code);}catch(error){}}
   function updateUrl(country){if(!country||!history.replaceState)return;try{var url=new URL(location.href);url.searchParams.set("country",country.code);history.replaceState(null,"",url.toString());}catch(error){}}
-  function applyCountry(country,updateQuery){
+  function clearCountry(updateQuery){
+    briefRevision++;
+    select.value="";
+    open.removeAttribute("href");
+    open.setAttribute("aria-disabled","true");
+    open.textContent="Choisissez un pays pour ouvrir son calculateur";
+    if(copyBrief)copyBrief.disabled=true;
+    if(downloadBrief)downloadBrief.disabled=true;
+    if(pickerStatus)pickerStatus.textContent="Choisissez un pays correspondant ou utilisez la liste. Les devises partagées exigent un choix de pays explicite.";
+    if(exportStatus)exportStatus.textContent="Choisissez un pays avant de copier ou télécharger une fiche de préparation.";
+    if(assumptionPreview)assumptionPreview.hidden=true;
+    if(updateQuery&&history.replaceState)try{var url=new URL(location.href);url.searchParams.delete("country");history.replaceState(null,"",url.toString());}catch(error){}
+  }
+  function applyCountry(country,updateQuery,preserveQuery){
     if(!country)return;
+    briefRevision++;
     select.value=country.slug;
-    input.value=solarFrenchCountryName(country);
+    if(!preserveQuery)input.value=solarFrenchCountryName(country);
     open.href=country.href;
+    open.removeAttribute("aria-disabled");
     open.textContent="Ouvrir le calculateur ("+solarFrenchCountryName(country)+")";
+    if(copyBrief)copyBrief.disabled=false;
+    if(downloadBrief)downloadBrief.disabled=false;
     if(pickerStatus)pickerStatus.textContent=("Pays sélectionné : " + country.flag)+" "+solarFrenchCountryName(country)+" — "+country.currency;
     if(exportStatus)exportStatus.textContent=solarFrenchCountryName(country)+" — fiche de préparation disponible. Copiez-la pour demander des devis ou téléchargez le JSON.";
     updateAssumptionPreview(country);
@@ -631,40 +645,53 @@ function findCountry(value){
     if(updateQuery)updateUrl(country);
   }
   function updateCards(){
-    var query=input.value.trim().toLowerCase();
+    var query=normalize(input.value);
     var visible=0;
     cards.forEach(function(card){
-      var match=!query||card.getAttribute("data-country").indexOf(query)>=0||normalize(solarFrenchCountryName(findCountry(card.getAttribute("data-country-slug")))).indexOf(query)>=0;
+      var match=!query||normalize(card.getAttribute("data-country")).indexOf(query)>=0||normalize(solarFrenchCountryName(findCountry(card.getAttribute("data-country-slug")))).indexOf(query)>=0;
       card.hidden=!match;
       if(match)visible++;
     });
     status.textContent=query?("Résultats : "+visible+" pays."):("Tous les pays : "+cards.length+".");
     if(empty)empty.hidden=visible!==0;
   }
-  function currentCountry(){return findCountry(select.value)||findCountry(input.value)||findCountry("NG");}
+  function currentCountry(){return findCountry(select.value);}
   function solarBrief(country){country=country||currentCountry();return "Solar ROI planning brief for "+country.name+" ("+country.currency+"). Start at "+country.href+" and replace bundled planning defaults with recent utility bills, generator fuel receipts, a site assessment, and a written installer quote. Verify tariff, fuel price, warranty, usable battery capacity, protection devices, finance fees, and local safety rules before purchase.";}
-  function downloadSolarBrief(country){country=country||currentCountry();var payload={tool:"solar-roi",country:country.name,country_code:country.code,currency:country.currency,route:country.href,brief:solarBrief(country),planning_defaults:assumptionSnapshot(country),freshness_note:"Verify tariffs, fuel prices, installer quotes, warranty terms, finance fees, and safety rules before acting.",privacy:"Created locally in the browser."};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="afrotools-solar-roi-"+country.slug+"-brief.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);if(exportStatus)exportStatus.textContent="JSON downloaded for "+country.name+". Replace planning assumptions with current quotes before acting.";}
-  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true);else if(pickerStatus)pickerStatus.textContent="Aucun pays trouvé. Continuez à saisir ou utilisez la liste.";});
-  select.addEventListener("change",function(){var country=findCountry(select.value);applyCountry(country,true);trackRootSolarEvent("country_selected",country?country.slug:"unknown");updateCards();});
+  function downloadSolarBrief(country){country=country||currentCountry();if(!country)return;briefRevision++;var payload={tool:"solar-roi",country:country.name,country_code:country.code,currency:country.currency,route:country.href,brief:solarBrief(country),planning_defaults:assumptionSnapshot(country),freshness_note:"Verify tariffs, fuel prices, installer quotes, warranty terms, finance fees, and safety rules before acting.",privacy:"Created locally in the browser."};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="afrotools-solar-roi-"+country.slug+"-brief.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);if(exportStatus)exportStatus.textContent="JSON downloaded for "+country.name+". Replace planning assumptions with current quotes before acting.";}
+  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true,true);else clearCountry(true);});
+  select.addEventListener("change",function(){var country=findCountry(select.value);if(country)applyCountry(country,true);else{input.value="";clearCountry(true);}trackRootSolarEvent("country_selected",country?country.slug:"unknown");updateCards();});
   input.addEventListener("keydown",function(event){
     if(event.key==="Enter"){
-      var country=findCountry(input.value)||findCountry(select.value);
-      if(country){event.preventDefault();applyCountry(country,true);trackRootSolarEvent("country_selected",country.slug);window.location.href=country.href;}
+      event.preventDefault();
+      var country=findCountry(input.value);
+      if(country){applyCountry(country,true);trackRootSolarEvent("country_selected",country.slug);window.location.href=country.href;}
+      else clearCountry(true);
     }
   });
-  open.addEventListener("click",function(){var country=findCountry(select.value);storeCountry(country);trackRootSolarEvent("country_selected",country?country.slug:"unknown");});
-  if(copyBrief)copyBrief.addEventListener("click",function(){var country=currentCountry();var text=solarBrief(country);if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(exportStatus)exportStatus.textContent="Planning brief copied for "+country.name+".";});}else if(exportStatus){exportStatus.textContent="Copy is unavailable in this browser. Use Download JSON.";}});
+  open.addEventListener("click",function(event){var country=currentCountry();if(!country){event.preventDefault();return;}storeCountry(country);trackRootSolarEvent("country_selected",country.slug);});
+  if(copyBrief)copyBrief.addEventListener("click",function(){
+    var country=currentCountry();if(!country)return;
+    var revision=++briefRevision;
+    function current(){return revision===briefRevision&&currentCountry()&&currentCountry().code===country.code;}
+    function failed(){if(current()&&exportStatus)exportStatus.textContent="Copy failed. Use Download JSON to save the planning brief.";}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      if(exportStatus)exportStatus.textContent="Copying planning brief for "+country.name+"...";
+      try{Promise.resolve(navigator.clipboard.writeText(solarBrief(country))).then(function(){if(current()&&exportStatus)exportStatus.textContent="Planning brief copied for "+country.name+".";},failed);}catch(error){failed();}
+    }else if(exportStatus)exportStatus.textContent="Copy is unavailable in this browser. Use Download JSON.";
+  });
   if(downloadBrief)downloadBrief.addEventListener("click",function(){downloadSolarBrief(currentCountry());});
   cards.forEach(function(card){card.addEventListener("click",function(){trackRootSolarEvent("country_selected",card.getAttribute("data-country-slug")||"unknown");});});
   document.addEventListener("click",function(event){var link=event.target&&event.target.closest?event.target.closest("a[href]"):null;if(link&&link.getAttribute("href").indexOf("/tools/generator-fuel/")===0)trackRootSolarEvent("generator_tool_clicked");});
   trackRootSolarEventOnReady("calculator_view");
   var params=new URLSearchParams(location.search);
-  applyCountry(findCountry(params.get("country"))||findCountry(storedCountry())||findCountry("NG"),!!params.get("country"));
+  var requested=params.get("country");
+  var initial=findCountry(requested)||(!params.has("country")?(findCountry(storedCountry())||findCountry("NG")):null);
+  if(initial)applyCountry(initial,!!requested);
+  else{input.value=requested||"";clearCountry(false);}
   updateCards();
 }();
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 <script src="/assets/js/pages/french-energy-parity.js?v=e185ed28"></script>
+<script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>

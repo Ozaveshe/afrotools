@@ -26,7 +26,10 @@ const context = {
   },
   console,
   Promise,
-  Date
+  Date,
+  AbortController,
+  setTimeout,
+  clearTimeout
 };
 vm.runInNewContext(source, context);
 

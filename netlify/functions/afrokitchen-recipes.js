@@ -49,7 +49,7 @@ exports.handler = async function (event) {
 
   try {
     if (action === 'list') {
-      let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&is_verified=eq.true&order=is_featured.desc,view_count.desc`;
+      let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&is_published=eq.true&is_verified=eq.true&order=is_featured.desc,view_count.desc`;
       // Validate + encode filter values before interpolating into the PostgREST query
       // to prevent operator/filter injection. Invalid values silently skip the filter.
       if (params.country && /^[A-Za-z]{2}$/.test(params.country)) url += `&country_code=eq.${encodeURIComponent(params.country)}`;
@@ -63,32 +63,36 @@ exports.handler = async function (event) {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
       });
       if (!res.ok) throw new Error('Upstream ' + res.status);
-      const data = await res.json();
+      const data = (await res.json()).filter(recipe => recipe.is_published === true && recipe.is_verified === true);
       return { statusCode: 200, headers, body: JSON.stringify(data) };
     }
 
     if (action === 'get' && params.slug && /^[a-z0-9-]+$/.test(params.slug)) {
       // Get recipe with ingredients, steps, and reviews
       const recipeRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&is_verified=eq.true&select=*&limit=1`,
+        `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&is_published=eq.true&is_verified=eq.true&select=*&limit=1`,
         { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
       );
       if (!recipeRes.ok) throw new Error('Upstream ' + recipeRes.status);
       const recipes = await recipeRes.json();
-      if (!recipes.length) return { statusCode: 404, headers, body: JSON.stringify({ error: 'Recipe not found' }) };
+      if (!recipes.length || recipes[0].is_published !== true || recipes[0].is_verified !== true) return { statusCode: 404, headers, body: JSON.stringify({ error: 'Recipe not found' }) };
 
       const recipe = recipes[0];
 
       // Fetch ingredients, steps, reviews in parallel
-      const [ingRes, stepsRes, reviewsRes] = await Promise.all([
+      const [ingRes, stepsRes, reviewsRes, mediaRes] = await Promise.all([
         fetch(`${SUPABASE_URL}/rest/v1/recipe_ingredients?recipe_id=eq.${recipe.id}&order=sort_order`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }),
         fetch(`${SUPABASE_URL}/rest/v1/recipe_steps?recipe_id=eq.${recipe.id}&order=step_number`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }),
-        fetch(`${SUPABASE_URL}/rest/v1/recipe_reviews?recipe_id=eq.${recipe.id}&order=created_at.desc&limit=20`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } })
+        fetch(`${SUPABASE_URL}/rest/v1/recipe_reviews?recipe_id=eq.${recipe.id}&order=created_at.desc&limit=20`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }),
+        fetch(`${SUPABASE_URL}/rest/v1/recipe_media?recipe_id=eq.${recipe.id}&order=sort_order`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } })
       ]);
 
       recipe.ingredients = await ingRes.json();
       recipe.steps = await stepsRes.json();
       recipe.reviews = await reviewsRes.json();
+      if (!mediaRes.ok) throw new Error('Recipe media unavailable');
+      recipe.media = await mediaRes.json();
+      if (!Array.isArray(recipe.media) || recipe.media.some(row => row.recipe_id !== recipe.id)) throw new Error('Recipe media unavailable');
 
       return { statusCode: 200, headers, body: JSON.stringify(recipe) };
     }

@@ -76,9 +76,9 @@
 <link rel="canonical" href="https://afrotools.com/admin/review">
 <meta property="og:url" content="https://afrotools.com/admin/review">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=5b80bef1">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
-<script src="/assets/js/lib/dark-mode.js?v=457fe54b" defer></script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e3f2feea">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=ff977f3b">
+<script src="/assets/js/lib/dark-mode.js?v=d51196e6" defer></script>
 </head>
 <body class="top-level-page-ui-refresh">
 <div class="dash">
@@ -214,8 +214,9 @@ function renderGazetteTable(changes) {
 
   tbody.innerHTML = changes.map(function(change) {
     var confidence = typeof change.confidence === 'number' ? Math.round(change.confidence * 100) + '%' : '--';
-    var source = change.source_url
-      ? '<a href="' + escapeHtml(change.source_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(change.source_name || 'Source') + '</a>'
+    var sourceURL = safeSourceURL(change.source_url);
+    var source = sourceURL
+      ? '<a href="' + escapeHtml(sourceURL) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(change.source_name || 'Source') + '</a>'
       : escapeHtml(change.source_name || '--');
     return '<tr>' +
       '<td>' + escapeHtml(change.country_name || change.country_code || '--') + '</td>' +
@@ -228,6 +229,13 @@ function renderGazetteTable(changes) {
       '<button class="btn btn-sm btn-danger" type="button" onclick="actionChange(\'' + escapeHtml(change.id) + '\', \'reject\')">Reject</button></td>' +
     '</tr>';
   }).join('');
+}
+
+function safeSourceURL(value) {
+  try {
+    var url = new URL(String(value || ''));
+    return ['https:', 'http:'].indexOf(url.protocol) !== -1 && !url.username && !url.password ? url.href : '';
+  } catch (err) { return ''; }
 }
 
 function renderReviewTable(reviews) {

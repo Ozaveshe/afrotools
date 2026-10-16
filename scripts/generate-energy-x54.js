@@ -21,7 +21,7 @@ const ENERGY_INDEX = (() => {
   }
   return ctx.ENERGY_DATA || { countries: {} };
 })();
-const SOLAR_ROI_ENGINE = require(path.join(ROOT, "assets", "js", "engines", "solar-roi-engine.js"));
+const SOLAR_ROI_ENGINE = require(path.join(ROOT, "engines", "src", "solar-roi-engine.js"));
 const FOREX_LATEST = require(path.join(ROOT, "data", "forex", "latest.json"));
 const SOLAR_ROI_ROOT_TITLE = "Solar ROI Calculator for Africa | AfroTools";
 const SOLAR_ROI_ROOT_DESC = "Choose a country solar ROI page, compare generator savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.";
@@ -193,7 +193,7 @@ ${solarRoiCountryDatalistOptions()}
 <div class="solar-country-picker-field">
 <label for="${idPrefix}Select">Select country</label>
 <select id="${idPrefix}Select" aria-describedby="${idPrefix}Help ${idPrefix}Status"${pendingCountryHandlers}>
-${solarRoiCountryOptions(selectedCountry.code)}
+${idPrefix === "solarRootCountry" ? '<option value="">Choose a country...</option>\n' : ""}${solarRoiCountryOptions(selectedCountry.code)}
 </select>
 </div>
 <a class="solar-country-btn" id="${idPrefix}Open" href="/tools/solar-roi/${escapeHtml(selectedCountry.slug)}/">${escapeHtml(ctaText)}</a>
@@ -1024,7 +1024,7 @@ ${renderSolarSponsorSlot("solar-roi-intro", "Below calculator intro")}
 <div class="solar-field"><label for="monthlyBill">Monthly grid bill</label><input id="monthlyBill" type="number" min="0" inputmode="decimal" value="${monthlyBill}" aria-describedby="monthlyBillHelp monthlyBillError" aria-errormessage="monthlyBillError"><small id="monthlyBillHelp">Use your latest bill or prepaid spend in ${escapeHtml(row.currency)}.</small><div class="solar-error" id="monthlyBillError"></div></div>
 <div class="solar-field"><label for="generatorSpend">Monthly generator spend</label><input id="generatorSpend" type="number" min="0" inputmode="decimal" value="${generatorSpend}" aria-describedby="generatorSpendHelp generatorSpendError" aria-errormessage="generatorSpendError"><small id="generatorSpendHelp">Include petrol or diesel used for backup power.</small><div class="solar-error" id="generatorSpendError"></div></div>
 <div class="solar-field"><label for="outageHours">Outage hours per day</label><input id="outageHours" type="number" min="0" max="24" step="0.5" inputmode="decimal" value="4" aria-describedby="outageHoursHelp outageHoursError" aria-errormessage="outageHoursError"><small id="outageHoursHelp">Average power gap you want solar or battery to cover.</small><div class="solar-error" id="outageHoursError"></div></div>
-<div class="solar-field"><label for="systemKW">Solar system size</label><select id="systemKW" aria-describedby="systemKWHelp systemKWError" aria-errormessage="systemKWError"><option value="1">1 kW essentials</option><option value="2">2 kW small home</option><option value="3" selected>3 kW family home</option><option value="5">5 kW home or shop</option><option value="10">10 kW SME, clinic, school, church</option><option value="20">20 kW larger site</option></select><small id="systemKWHelp">Installer should verify roof, load, inverter and battery sizing.</small><div class="solar-error" id="systemKWError"></div></div>
+<div class="solar-field"><label for="systemKW">Solar system size</label><select id="systemKW" aria-describedby="systemKWHelp systemKWError" aria-errormessage="systemKWError"><option value="1">1 kW essentials</option><option value="1.5">1.5 kW small-home plan</option><option value="2">2 kW small home</option><option value="3" selected>3 kW family home</option><option value="5">5 kW home or shop</option><option value="10">10 kW SME, clinic, school, church</option><option value="20">20 kW larger site</option></select><small id="systemKWHelp">Installer should verify roof, load, inverter and battery sizing.</small><div class="solar-error" id="systemKWError"></div></div>
 <div class="solar-field"><label for="batteryOption">Battery backup level</label><select id="batteryOption" aria-describedby="batteryOptionHelp batteryOptionError" aria-errormessage="batteryOptionError"><option value="none">No battery</option><option value="starter">Starter backup</option><option value="essential" selected>Essential loads</option><option value="extended">Extended backup</option></select><small id="batteryOptionHelp">Backup is for essential loads, not the whole daily energy use.</small><div class="solar-error" id="batteryOptionError"></div></div>
 <div class="solar-field"><label for="financeEnabled">Finance option</label><select id="financeEnabled" aria-describedby="financeEnabledHelp financeEnabledError" aria-errormessage="financeEnabledError"><option value="cash">Cash purchase</option><option value="finance">Include finance payment</option></select><small id="financeEnabledHelp">Use advanced assumptions to edit deposit, interest, and term.</small><div class="solar-error" id="financeEnabledError"></div></div>
 <details class="solar-country-advanced"><summary aria-controls="advancedAssumptionsBody">Advanced assumptions</summary>
@@ -1253,9 +1253,19 @@ function setupCountryPicker(prefix,currentSlug){
 function money(value){var n=Number(value)||0;return DEFAULTS.currencySymbol+n.toLocaleString("en-US",{maximumFractionDigits:0});}
 function moneyAccessible(value){var n=Number(value)||0;return DEFAULTS.currency+" "+n.toLocaleString("en-US",{maximumFractionDigits:0});}
 function years(value){return value&&Number.isFinite(value)?(value>=10?value.toFixed(0):value.toFixed(1))+" years":"No payback under these assumptions";}
-function monthlyBatteryCost(kw,option){var profile=batteryProfiles[option]||batteryProfiles.essential;return option==="none"?0:DEFAULTS.batteryCost*(kw/3)*(profile.costFactor||1);}
+function monthlyBatteryCost(kw,option){var profile=batteryProfiles[option]||batteryProfiles.essential;return option==="none"?0:num("batteryCost",DEFAULTS.batteryCost)*(kw/3)*(profile.costFactor||1);}
 var INSTALLER_CHECKLIST=${safeJson(SOLAR_ROI_INSTALLER_CHECKLIST)};
 var lastReport=null;
+var reportRevision=0;
+var REPORT_ACTION_IDS=["shareEstimateBtn","printEstimateBtn","whatsappSummaryBtn","txtReportBtn","printReportBtn","compareInstallerQuotesBtn","sendEstimateInstallerBtn","saveSolarEstimateBtn"];
+function setReportActions(enabled){REPORT_ACTION_IDS.forEach(function(id){var el=byId(id);if(el)el.disabled=!enabled;});}
+function invalidateReport(){
+  lastReport=null;setReportActions(false);
+  ["rSystem","rCost","rSavings","rPayback","rTenYear","rBackup","rFuel","rRisk","mPayback","mSavings"].forEach(function(id){set(id,"--","Correct highlighted inputs to update this estimate.");});
+  var preview=byId("solarReportPreview");if(preview){preview.innerHTML="";preview.dataset.rendered="false";}
+  var comparison=byId("systemSizeComparisonBody");if(comparison)comparison.innerHTML="";
+  var comparisonStatus=byId("systemSizeComparisonStatus");if(comparisonStatus)comparisonStatus.textContent="Correct highlighted inputs to compare system sizes.";
+}
 function set(id,main,text,accessible){var el=byId(id);if(el){el.textContent=main;el.setAttribute("aria-label",accessible||main);}var tx=byId(id+"Text");if(tx&&text)tx.textContent=text;}
 function confidenceText(payback){if(!payback)return DEFAULTS.confidence+" confidence";if(payback<=5)return DEFAULTS.confidence+" confidence, strong case";if(payback<=8)return DEFAULTS.confidence+" confidence, quote-sensitive";return DEFAULTS.confidence+" confidence, resilience-led";}
 function esc(value){return String(value==null?"":value).replace(/[&<>"']/g,function(ch){return{"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#39;"}[ch];});}
@@ -1282,8 +1292,8 @@ function validateInputs(focusFirst){
   var errors=[];
   Object.keys(FIELD_RULES).forEach(function(id){
     var rule=FIELD_RULES[id];var el=byId(id);if(!el)return;
-    var value=parseFloat(el.value);var message="";
-    if(!Number.isFinite(value)){message="Enter a number for "+rule.label.toLowerCase()+".";}
+    var value=Number(el.value);var message="";
+    if(!el.value.trim()||(el.validity&&el.validity.badInput)||!Number.isFinite(value)){message="Enter a number for "+rule.label.toLowerCase()+".";}
     else if(rule.min!=null&&value<rule.min){message=rule.message;}
     else if(rule.max!=null&&value>rule.max){message=rule.message;}
     setFieldError(id,message);
@@ -1291,6 +1301,7 @@ function validateInputs(focusFirst){
   });
   var summary=byId("calcErrorSummary");
   if(errors.length){
+    invalidateReport();
     if(summary)summary.textContent=errors.length===1?errors[0].message:"Fix "+errors.length+" highlighted fields before using this estimate.";
     var status=byId("resultStatus");if(status)status.textContent="Fix highlighted inputs before results can update.";
     if(focusFirst){var first=byId(errors[0].id);var details=first&&first.closest?first.closest("details"):null;if(details)details.open=true;if(first&&first.focus)first.focus();}
@@ -1474,9 +1485,9 @@ function copyDataUpdate(){
 }
 function checklistText(){return ["Installer quote checklist - "+DEFAULTS.countryName,""].concat(INSTALLER_CHECKLIST.map(function(item,index){return (index+1)+". "+item;})).join("\\n");}
 function downloadTextFile(filename,text,successMessage){var blob=new Blob([text],{type:"text/plain;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},0);if(successMessage)updateReportStatus(successMessage);}
-function copyText(text,successMessage,eventName){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateReportStatus(successMessage);if(eventName)trackSolarEvent(eventName);}).catch(function(){updateReportStatus("Copy was blocked. Use TXT download or print instead.");});}else{updateReportStatus("Copy is not available in this browser. Use TXT download or print instead.");}}
+function copyText(text,successMessage,eventName){var revision=reportRevision;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(revision!==reportRevision)return;updateReportStatus(successMessage);if(eventName)trackSolarEvent(eventName);}).catch(function(){if(revision!==reportRevision)return;updateReportStatus("Copy was blocked. Use TXT download or print instead.");});}else{updateReportStatus("Copy is not available in this browser. Use TXT download or print instead.");}}
 function copyInstallerChecklist(){var text=checklistText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateInstallerChecklistStatus("Installer checklist copied.");}).catch(function(){updateInstallerChecklistStatus("Copy was blocked. Use download instead.");});}else{updateInstallerChecklistStatus("Copy is not available in this browser. Use download instead.");}}
-function downloadTxtReport(){downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-estimate.txt",reportPlainText(),"TXT report downloaded.");trackSolarEvent("txt_downloaded");}
+function downloadTxtReport(){if(!ensureReport())return;downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-estimate.txt",reportPlainText(),"TXT report downloaded.");trackSolarEvent("txt_downloaded");}
 function downloadInstallerChecklist(){downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-installer-checklist.txt",checklistText());updateInstallerChecklistStatus("Installer checklist downloaded.");}
 function systemSizeBand(value){var kw=Number(value);if(!Number.isFinite(kw)||kw<=0)return"unknown";if(kw<=1)return"0_1kw";if(kw<=3)return"1_3kw";if(kw<=5)return"3_5kw";if(kw<=10)return"5_10kw";return"10kw_plus";}
 function paybackBand(value){if(value==null||value==="")return"unknown";var years=Number(value);if(!Number.isFinite(years))return"unknown";if(years<=0)return"no_payback";if(years<=3)return"0_3_years";if(years<=5)return"3_5_years";if(years<=8)return"5_8_years";if(years<=12)return"8_12_years";return"12_years_plus";}
@@ -1486,10 +1497,14 @@ function solarAnalyticsPayload(mode,country){var report=lastReport||{};var syste
 function trackSolarEvent(eventName,mode,country,retry){var analytics=window.AfroTools&&window.AfroTools.analytics;if(analytics&&typeof analytics.track==="function"){analytics.track(eventName,solarAnalyticsPayload(mode,country));}else if(!retry){setTimeout(function(){trackSolarEvent(eventName,mode,country,true);},350);}}
 function trackSolarEventOnReady(eventName,mode,country){var fire=function(){trackSolarEvent(eventName,mode,country);};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",fire,{once:true});else setTimeout(fire,0);}
 function trackSolarQuoteCta(eventName){trackSolarEvent(eventName||"quote_cta_clicked");}
-function ensureReport(){if(!lastReport)run(false,"auto");return lastReport;}
-function copyQuoteComparison(){ensureReport();var text=reportPlainText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateQuoteCtaStatus("Estimate and checklist copied. Use the same packet when comparing installer quotes.");}).catch(function(){updateQuoteCtaStatus("Copy was blocked. Use Download TXT report below instead.");});}else{updateQuoteCtaStatus("Copy is not available in this browser. Use Download TXT report below instead.");}}
-function sendEstimateToInstaller(){ensureReport();var body=[whatsappSummary(),"",checklistText(),"","This is a planning estimate, not a quote. Please verify roof, load profile, inverter, battery, protections, installation scope, and finance terms."].join("\\n");window.location.href="mailto:?subject="+encodeURIComponent("Solar ROI estimate - "+DEFAULTS.countryName)+"&body="+encodeURIComponent(body);updateQuoteCtaStatus("Opening your email app. No details are sent to AfroTools.");}
-function saveSolarEstimate(){var report=ensureReport();try{var key="afrotools-solar-roi-saved-estimates-v1";var saved=JSON.parse(localStorage.getItem(key)||"[]");saved.unshift({id:"solar-roi-"+Date.now(),savedAt:new Date().toISOString(),country:DEFAULTS.countrySlug,countryCode:DEFAULTS.countryCode,systemSizeBand:systemSizeBand(num("systemKW",report.systemKw||0)),paybackBand:paybackBand(report.paybackYearsRaw),inputs:{systemKW:val("systemKW"),batteryOption:val("batteryOption"),financeEnabled:val("financeEnabled")},summary:{systemKw:report.systemKw,payback:report.payback,monthlySavings:report.monthlySavings,systemCost:report.systemCost}});localStorage.setItem(key,JSON.stringify(saved.slice(0,12)));updateQuoteCtaStatus("Estimate saved in this browser. No account required.");}catch(error){updateQuoteCtaStatus("Save was blocked by this browser. Use copy or download instead.");}}
+// Revalidate/recalculate at every numerical action, including edits that did
+// not dispatch an input event. Never use a prior valid report as a fallback.
+function ensureReport(){run(true,"export");if(!lastReport){updateReportStatus("Correct highlighted inputs before sharing or exporting.");return null;}return lastReport;}
+function printSolarEstimate(includeReport){if(!ensureReport())return;trackSolarEvent("print_clicked");if(includeReport)markReportPreviewReady();window.print();}
+function copyWhatsAppSummary(){if(!ensureReport())return;copyText(whatsappSummary(),"WhatsApp summary copied.","whatsapp_copied");}
+function copyQuoteComparison(){if(!ensureReport())return;var revision=reportRevision;var text=reportPlainText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(revision!==reportRevision)return;updateQuoteCtaStatus("Estimate and checklist copied. Use the same packet when comparing installer quotes.");}).catch(function(){if(revision!==reportRevision)return;updateQuoteCtaStatus("Copy was blocked. Use Download TXT report below instead.");});}else{updateQuoteCtaStatus("Copy is not available in this browser. Use Download TXT report below instead.");}}
+function sendEstimateToInstaller(){if(!ensureReport())return;var body=[whatsappSummary(),"",checklistText(),"","This is a planning estimate, not a quote. Please verify roof, load profile, inverter, battery, protections, installation scope, and finance terms."].join("\\n");window.location.href="mailto:?subject="+encodeURIComponent("Solar ROI estimate - "+DEFAULTS.countryName)+"&body="+encodeURIComponent(body);updateQuoteCtaStatus("Opening your email app. No details are sent to AfroTools.");}
+function saveSolarEstimate(){var report=ensureReport();if(!report)return;try{var key="afrotools-solar-roi-saved-estimates-v1";var saved=JSON.parse(localStorage.getItem(key)||"[]");saved.unshift({id:"solar-roi-"+Date.now(),savedAt:new Date().toISOString(),country:DEFAULTS.countrySlug,countryCode:DEFAULTS.countryCode,systemSizeBand:systemSizeBand(num("systemKW",report.systemKw||0)),paybackBand:paybackBand(report.paybackYearsRaw),inputs:{systemKW:val("systemKW"),batteryOption:val("batteryOption"),financeEnabled:val("financeEnabled")},summary:{systemKw:report.systemKw,payback:report.payback,monthlySavings:report.monthlySavings,systemCost:report.systemCost}});localStorage.setItem(key,JSON.stringify(saved.slice(0,12)));updateQuoteCtaStatus("Estimate saved in this browser. No account required.");}catch(error){updateQuoteCtaStatus("Save was blocked by this browser. Use copy or download instead.");}}
 function estimateSummary(){
   return [
     "Solar ROI estimate for "+DEFAULTS.countryName,
@@ -1504,13 +1519,15 @@ function estimateSummary(){
 }
 function updateShareStatus(message){var status=byId("shareStatus");if(status)status.textContent=message;}
 function shareEstimate(){
+  if(!ensureReport())return;
+  var revision=reportRevision;
   var text=estimateSummary();
   if(navigator.share){
-    navigator.share({title:"Solar ROI estimate - "+DEFAULTS.countryName,text:text,url:location.href.split("#")[0]}).then(function(){updateShareStatus("Estimate shared.");}).catch(function(){updateShareStatus("Share cancelled. You can still print this estimate.");});
+    navigator.share({title:"Solar ROI estimate - "+DEFAULTS.countryName,text:text,url:location.href.split("#")[0]}).then(function(){if(revision!==reportRevision)return;updateShareStatus("Estimate shared.");}).catch(function(){if(revision!==reportRevision)return;updateShareStatus("Share cancelled. You can still print this estimate.");});
     return;
   }
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){updateShareStatus("Estimate copied. Paste it into WhatsApp, email, or a quote request.");}).catch(function(){updateShareStatus("Copy was blocked. Use print instead.");});
+    navigator.clipboard.writeText(text).then(function(){if(revision!==reportRevision)return;updateShareStatus("Estimate copied. Paste it into WhatsApp, email, or a quote request.");}).catch(function(){if(revision!==reportRevision)return;updateShareStatus("Copy was blocked. Use print instead.");});
     return;
   }
   updateShareStatus("Copy is not available in this browser. Use print instead.");
@@ -1536,6 +1553,7 @@ function renderSystemSizeComparison(baseInputs,selectedKw,batteryOption,maintena
   var body=byId("systemSizeComparisonBody");if(!body||!engine)return;
   var status=byId("systemSizeComparisonStatus");
   var recommended=SYSTEM_SIZE_OPTIONS.reduce(function(best,size){return Math.abs(size-selectedKw)<Math.abs(best-selectedKw)?size:best;},SYSTEM_SIZE_OPTIONS[0]);
+  var comparisonLabel=recommended===selectedKw?"Selected size":"Nearest listed size";
   body.innerHTML=SYSTEM_SIZE_OPTIONS.map(function(size){
     var inputs=Object.assign({},baseInputs,{systemKw:size,batteryCostTotal:monthlyBatteryCost(size,batteryOption)});
     var result=engine.calculate(inputs);
@@ -1545,12 +1563,13 @@ function renderSystemSizeComparison(baseInputs,selectedKw,batteryOption,maintena
     var panelCount=result.sizing&&result.sizing.selectedSystemPanelCount!=null?result.sizing.selectedSystemPanelCount:result.panelCount;
     var roofArea=result.sizing&&result.sizing.selectedSystemRoofAreaSqm!=null?result.sizing.selectedSystemRoofAreaSqm:result.roofAreaSqm;
     var isRecommended=size===recommended;
-    return "<tr"+(isRecommended?" class=\\"is-recommended\\"":"")+"><th scope=\\"row\\">"+size+" kW"+(isRecommended?" <span class=\\"solar-size-badge\\">Recommended</span>":"")+"</th><td>"+esc(money(result.systemCost))+"</td><td>"+Math.round((result.firstYearGenerationKwh||0)/12).toLocaleString("en-US")+" kWh/mo</td><td>"+esc(money(monthlyNet))+"/mo</td><td>"+esc(years(result.simplePaybackYears))+"</td><td>"+panelCount+"</td><td>"+(roofArea||0).toFixed(1)+" m2</td><td>"+esc(batteryFitText(batteryOption,result))+"</td><td>"+esc(bestForSize(size))+"</td></tr>";
+    return "<tr"+(isRecommended?" class=\\"is-recommended\\"":"")+"><th scope=\\"row\\">"+size+" kW"+(isRecommended?" <span class=\\"solar-size-badge\\">"+esc(comparisonLabel)+"</span>":"")+"</th><td>"+esc(money(result.systemCost))+"</td><td>"+Math.round((result.firstYearGenerationKwh||0)/12).toLocaleString("en-US")+" kWh/mo</td><td>"+esc(money(monthlyNet))+"/mo</td><td>"+esc(years(result.simplePaybackYears))+"</td><td>"+panelCount+"</td><td>"+(roofArea||0).toFixed(1)+" m2</td><td>"+esc(batteryFitText(batteryOption,result))+"</td><td>"+esc(bestForSize(size))+"</td></tr>";
   }).join("");
-  if(status)status.textContent="Compared 1, 2, 3, 5, 10 and 20 kW systems for "+DEFAULTS.countryName+". The "+recommended+" kW row is highlighted from the selected system size.";
+  if(status)status.textContent="Compared 1, 2, 3, 5, 10 and 20 kW systems for "+DEFAULTS.countryName+". Selected system size: "+selectedKw+" kW. "+(recommended===selectedKw?"The selected row is highlighted.":"This size is outside the listed comparison sizes; the nearest listed "+recommended+" kW row is highlighted for comparison only.");
 }
 function run(focusFirstInvalid,source){
-  if(!engine){byId("resultStatus").textContent="Solar ROI engine could not load. Open the full Africa calculator as a fallback.";return;}
+  reportRevision+=1;
+  if(!engine){invalidateReport();byId("resultStatus").textContent="Solar ROI engine could not load. Open the full Africa calculator as a fallback.";return;}
   if(!validateInputs(!!focusFirstInvalid))return;
   var kw=Math.max(.1,num("systemKW",3));
   var batteryOption=val("batteryOption")||"essential";
@@ -1645,6 +1664,7 @@ function run(focusFirstInvalid,source){
     panelWatt:panelWatt+" W",
     roofArea:(result.roofAreaSqm||0).toFixed(1)+" m2"
   };
+  setReportActions(true);
   set("rSystem",kw+" kW",Math.round(result.firstYearGenerationKwh/12).toLocaleString("en-US")+" kWh/month estimated generation.",kw+" kilowatts");
   set("rCost",money(result.systemCost),batteryOption==="none"?"Solar-only estimate.":"Includes "+profile.label.toLowerCase()+" battery planning band.",moneyAccessible(result.systemCost));
   set("rSavings",money(monthlyNet)+"/mo",monthlyNet>0?"Estimated monthly relief after maintenance allowance.":"No monthly cash relief under current assumptions.",moneyAccessible(monthlyNet)+" per month");
@@ -1684,10 +1704,10 @@ Array.prototype.forEach.call(document.querySelectorAll("[data-scenario]"),functi
 var btn=byId("calcBtn");if(btn)btn.addEventListener("click",function(){trackSolarEvent("calculate_clicked");run(true,"calculate");});
 var mobileResultsBtn=byId("mobileResultsBtn");if(mobileResultsBtn)mobileResultsBtn.addEventListener("click",function(){trackSolarEvent("calculate_clicked");run(true,"calculate");var target=byId("results-title")||byId("calcBtn");if(target)target.scrollIntoView({behavior:"smooth",block:"start"});});
 var shareBtn=byId("shareEstimateBtn");if(shareBtn)shareBtn.addEventListener("click",shareEstimate);
-var printBtn=byId("printEstimateBtn");if(printBtn)printBtn.addEventListener("click",function(){trackSolarEvent("print_clicked");window.print();});
-var whatsappBtn=byId("whatsappSummaryBtn");if(whatsappBtn)whatsappBtn.addEventListener("click",function(){copyText(whatsappSummary(),"WhatsApp summary copied.","whatsapp_copied");});
+var printBtn=byId("printEstimateBtn");if(printBtn)printBtn.addEventListener("click",function(){printSolarEstimate(false);});
+var whatsappBtn=byId("whatsappSummaryBtn");if(whatsappBtn)whatsappBtn.addEventListener("click",copyWhatsAppSummary);
 var txtBtn=byId("txtReportBtn");if(txtBtn)txtBtn.addEventListener("click",downloadTxtReport);
-var printReportBtn=byId("printReportBtn");if(printReportBtn)printReportBtn.addEventListener("click",function(){trackSolarEvent("print_clicked");markReportPreviewReady();window.print();});
+var printReportBtn=byId("printReportBtn");if(printReportBtn)printReportBtn.addEventListener("click",function(){printSolarEstimate(true);});
 var checklistBtn=byId("copyChecklistBtn");if(checklistBtn)checklistBtn.addEventListener("click",function(){copyText(checklistText(),"Installer checklist copied.");});
 var copyInstallerBtn=byId("copyInstallerChecklistBtn");if(copyInstallerBtn)copyInstallerBtn.addEventListener("click",copyInstallerChecklist);
 var downloadInstallerBtn=byId("downloadInstallerChecklistBtn");if(downloadInstallerBtn)downloadInstallerBtn.addEventListener("click",downloadInstallerChecklist);
@@ -2137,24 +2157,45 @@ ${solarRoiCountryPickerMarkup("solarRootCountry", "NG", {
   var assumptionFields={electricityTariff:{value:document.getElementById("solarAssumptionTariff"),confidence:document.getElementById("solarAssumptionTariffConfidence")},fuelPrice:{value:document.getElementById("solarAssumptionFuel"),confidence:document.getElementById("solarAssumptionFuelConfidence")},solarYield:{value:document.getElementById("solarAssumptionYield"),confidence:document.getElementById("solarAssumptionYieldConfidence")},installCostPerKw:{value:document.getElementById("solarAssumptionInstall"),confidence:document.getElementById("solarAssumptionInstallConfidence")}};
   if(!input||!select||!open||!grid||!status)return;
   var cards=Array.prototype.slice.call(grid.querySelectorAll("[data-country]"));
-  function normalize(value){return String(value||"").trim().toLowerCase();}
+  var briefRevision=0;
+  function normalize(value){return String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"");}
   function formatAssumption(assumption){if(!assumption)return"Unavailable";var value=typeof assumption.value==="number"?new Intl.NumberFormat("en",{maximumFractionDigits:2}).format(assumption.value):String(assumption.value||"Unavailable");return value+(assumption.unit?" "+assumption.unit:"");}
   function countryDefaults(country){return solarData&&solarData.countries&&country?solarData.countries[country.code]||null:null;}
   function assumptionSnapshot(country){var defaults=countryDefaults(country);if(!defaults)return null;function field(key){var item=defaults.assumptions&&defaults.assumptions[key];return item?{value:item.value,unit:item.unit,confidence:item.confidence,source:item.sourceName,source_url:item.sourceUrl||null,freshness:item.freshness}:null;}return{dataset_reviewed:solarData.lastReviewed,country_data_confidence:defaults.confidenceLevel,electricity_tariff:field("electricityTariff"),generator_fuel:field("fuelPrice"),solar_yield:field("solarYield"),install_cost_per_kw:field("installCostPerKw")};}
   function updateAssumptionPreview(country){var defaults=countryDefaults(country);if(!assumptionPreview)return;if(!defaults){assumptionPreview.hidden=true;return;}assumptionPreview.hidden=false;Object.keys(assumptionFields).forEach(function(key){var item=defaults.assumptions&&defaults.assumptions[key];var field=assumptionFields[key];if(field.value)field.value.textContent=formatAssumption(item);if(field.confidence)field.confidence.textContent=(item&&item.confidence?item.confidence:"Unknown")+" confidence";});if(assumptionStatus)assumptionStatus.textContent=country.name+" country data: "+(defaults.confidenceLevel||"Unrated")+" confidence overall. Reviewed "+(solarData.lastReviewed||"date unavailable")+"; field confidence varies.";if(assumptionNote)assumptionNote.textContent="Planning defaults for the country calculator. Edit them there using a current bill, fuel receipt, site assessment, and written installer quote.";var tariff=defaults.assumptions&&defaults.assumptions.electricityTariff;var yieldData=defaults.assumptions&&defaults.assumptions.solarYield;if(assumptionSourceText)assumptionSourceText.textContent="Tariff context: "+(tariff&&tariff.sourceName?tariff.sourceName:"source unavailable")+". Solar resource: "+(yieldData&&yieldData.sourceName?yieldData.sourceName:"source unavailable")+". ";if(assumptionSourceLink){var sourceUrl=yieldData&&yieldData.sourceUrl;if(typeof sourceUrl==="string"&&sourceUrl.toLowerCase().startsWith("https://")){assumptionSourceLink.href=sourceUrl;assumptionSourceLink.hidden=false;}else{assumptionSourceLink.hidden=true;}}}
   function findCountry(value){
     var query=normalize(value);if(!query)return null;
-    return COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||normalize(country.name)===query||normalize(country.currency)===query;})[0]||COUNTRIES.filter(function(country){return normalize(country.name).indexOf(query)>=0||normalize(country.slug).indexOf(query)>=0||normalize(country.currency).indexOf(query)>=0||normalize(country.code).indexOf(query)>=0;})[0]||null;
+    var exact=COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||normalize(country.name)===query;});
+    if(exact.length===1)return exact[0];
+    var currency=COUNTRIES.filter(function(country){return normalize(country.currency)===query;});
+    return currency.length===1?currency[0]:null;
   }
   function storedCountry(){try{return localStorage.getItem(STORAGE_KEY)||"";}catch(error){return "";}}
   function storeCountry(country){try{if(country)localStorage.setItem(STORAGE_KEY,country.code);}catch(error){}}
   function updateUrl(country){if(!country||!history.replaceState)return;try{var url=new URL(location.href);url.searchParams.set("country",country.code);history.replaceState(null,"",url.toString());}catch(error){}}
-  function applyCountry(country,updateQuery){
+  function clearCountry(updateQuery){
+    briefRevision++;
+    select.value="";
+    open.removeAttribute("href");
+    open.setAttribute("aria-disabled","true");
+    open.textContent="Choose a country to open its calculator";
+    if(copyBrief)copyBrief.disabled=true;
+    if(downloadBrief)downloadBrief.disabled=true;
+    if(pickerStatus)pickerStatus.textContent="Choose a matching country or use the dropdown. Shared currencies need an explicit country choice.";
+    if(exportStatus)exportStatus.textContent="Choose a country before copying or downloading a planning brief.";
+    if(assumptionPreview)assumptionPreview.hidden=true;
+    if(updateQuery&&history.replaceState)try{var url=new URL(location.href);url.searchParams.delete("country");history.replaceState(null,"",url.toString());}catch(error){}
+  }
+  function applyCountry(country,updateQuery,preserveQuery){
     if(!country)return;
+    briefRevision++;
     select.value=country.slug;
-    input.value=country.name;
+    if(!preserveQuery)input.value=country.name;
     open.href=country.href;
+    open.removeAttribute("aria-disabled");
     open.textContent="Open "+country.name+" calculator";
+    if(copyBrief)copyBrief.disabled=false;
+    if(downloadBrief)downloadBrief.disabled=false;
     if(pickerStatus)pickerStatus.textContent=country.flag+" "+country.name+" selected - "+country.currency;
     if(exportStatus)exportStatus.textContent=country.name+" planning brief ready. Copy it for quotes or download JSON for your records.";
     updateAssumptionPreview(country);
@@ -2162,35 +2203,49 @@ ${solarRoiCountryPickerMarkup("solarRootCountry", "NG", {
     if(updateQuery)updateUrl(country);
   }
   function updateCards(){
-    var query=input.value.trim().toLowerCase();
+    var query=normalize(input.value);
     var visible=0;
     cards.forEach(function(card){
-      var match=!query||card.getAttribute("data-country").indexOf(query)>=0;
+      var match=!query||normalize(card.getAttribute("data-country")).indexOf(query)>=0;
       card.hidden=!match;
       if(match)visible++;
     });
     status.textContent=query?("Showing "+visible+" matching "+(visible===1?"country":"countries")+"."):"Showing all "+cards.length+" countries.";
     if(empty)empty.hidden=visible!==0;
   }
-  function currentCountry(){return findCountry(select.value)||findCountry(input.value)||findCountry("NG");}
+  function currentCountry(){return findCountry(select.value);}
   function solarBrief(country){country=country||currentCountry();return "Solar ROI planning brief for "+country.name+" ("+country.currency+"). Start at "+country.href+" and replace bundled planning defaults with recent utility bills, generator fuel receipts, a site assessment, and a written installer quote. Verify tariff, fuel price, warranty, usable battery capacity, protection devices, finance fees, and local safety rules before purchase.";}
-  function downloadSolarBrief(country){country=country||currentCountry();var payload={tool:"solar-roi",country:country.name,country_code:country.code,currency:country.currency,route:country.href,brief:solarBrief(country),planning_defaults:assumptionSnapshot(country),freshness_note:"Verify tariffs, fuel prices, installer quotes, warranty terms, finance fees, and safety rules before acting.",privacy:"Created locally in the browser."};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="afrotools-solar-roi-"+country.slug+"-brief.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);if(exportStatus)exportStatus.textContent="JSON downloaded for "+country.name+". Replace planning assumptions with current quotes before acting.";}
-  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true);else if(pickerStatus)pickerStatus.textContent="No exact country match yet. Keep typing or use the dropdown.";});
-  select.addEventListener("change",function(){var country=findCountry(select.value);applyCountry(country,true);trackRootSolarEvent("country_selected",country?country.slug:"unknown");updateCards();});
+  function downloadSolarBrief(country){country=country||currentCountry();if(!country)return;briefRevision++;var payload={tool:"solar-roi",country:country.name,country_code:country.code,currency:country.currency,route:country.href,brief:solarBrief(country),planning_defaults:assumptionSnapshot(country),freshness_note:"Verify tariffs, fuel prices, installer quotes, warranty terms, finance fees, and safety rules before acting.",privacy:"Created locally in the browser."};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="afrotools-solar-roi-"+country.slug+"-brief.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);if(exportStatus)exportStatus.textContent="JSON downloaded for "+country.name+". Replace planning assumptions with current quotes before acting.";}
+  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true,true);else clearCountry(true);});
+  select.addEventListener("change",function(){var country=findCountry(select.value);if(country)applyCountry(country,true);else{input.value="";clearCountry(true);}trackRootSolarEvent("country_selected",country?country.slug:"unknown");updateCards();});
   input.addEventListener("keydown",function(event){
     if(event.key==="Enter"){
-      var country=findCountry(input.value)||findCountry(select.value);
-      if(country){event.preventDefault();applyCountry(country,true);trackRootSolarEvent("country_selected",country.slug);window.location.href=country.href;}
+      event.preventDefault();
+      var country=findCountry(input.value);
+      if(country){applyCountry(country,true);trackRootSolarEvent("country_selected",country.slug);window.location.href=country.href;}
+      else clearCountry(true);
     }
   });
-  open.addEventListener("click",function(){var country=findCountry(select.value);storeCountry(country);trackRootSolarEvent("country_selected",country?country.slug:"unknown");});
-  if(copyBrief)copyBrief.addEventListener("click",function(){var country=currentCountry();var text=solarBrief(country);if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(exportStatus)exportStatus.textContent="Planning brief copied for "+country.name+".";});}else if(exportStatus){exportStatus.textContent="Copy is unavailable in this browser. Use Download JSON.";}});
+  open.addEventListener("click",function(event){var country=currentCountry();if(!country){event.preventDefault();return;}storeCountry(country);trackRootSolarEvent("country_selected",country.slug);});
+  if(copyBrief)copyBrief.addEventListener("click",function(){
+    var country=currentCountry();if(!country)return;
+    var revision=++briefRevision;
+    function current(){return revision===briefRevision&&currentCountry()&&currentCountry().code===country.code;}
+    function failed(){if(current()&&exportStatus)exportStatus.textContent="Copy failed. Use Download JSON to save the planning brief.";}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      if(exportStatus)exportStatus.textContent="Copying planning brief for "+country.name+"...";
+      try{Promise.resolve(navigator.clipboard.writeText(solarBrief(country))).then(function(){if(current()&&exportStatus)exportStatus.textContent="Planning brief copied for "+country.name+".";},failed);}catch(error){failed();}
+    }else if(exportStatus)exportStatus.textContent="Copy is unavailable in this browser. Use Download JSON.";
+  });
   if(downloadBrief)downloadBrief.addEventListener("click",function(){downloadSolarBrief(currentCountry());});
   cards.forEach(function(card){card.addEventListener("click",function(){trackRootSolarEvent("country_selected",card.getAttribute("data-country-slug")||"unknown");});});
   document.addEventListener("click",function(event){var link=event.target&&event.target.closest?event.target.closest("a[href]"):null;if(link&&link.getAttribute("href").indexOf("/tools/generator-fuel/")===0)trackRootSolarEvent("generator_tool_clicked");});
   trackRootSolarEventOnReady("calculator_view");
   var params=new URLSearchParams(location.search);
-  applyCountry(findCountry(params.get("country"))||findCountry(storedCountry())||findCountry("NG"),!!params.get("country"));
+  var requested=params.get("country");
+  var initial=findCountry(requested)||(!params.has("country")?(findCountry(storedCountry())||findCountry("NG")):null);
+  if(initial)applyCountry(initial,!!requested);
+  else{input.value=requested||"";clearCountry(false);}
   updateCards();
 }();
 </script>` : "";
@@ -2268,6 +2323,31 @@ if (requestedTool && !selectedTools.length) {
   throw new Error(`Unknown tool slug: ${requestedTool}`);
 }
 
+// Narrow country workflow regeneration for the reviewed Kenya candidate.
+// Normal complete generation still uses the same maintained template above.
+if (process.argv.includes('--solar-country-workflow-only')) {
+  const countryAt = process.argv.indexOf('--country');
+  const slug = countryAt >= 0 ? process.argv[countryAt + 1] : '';
+  if (requestedTool !== 'solar-roi' || slug !== 'kenya') throw new Error('Reviewed country workflow mode requires --tool solar-roi --country kenya');
+  const generated = makeSolarRoiCountryPage(TOOLS.find(tool => tool.slug === 'solar-roi'), COUNTRIES.find(country => country.slug === slug));
+  const file = path.join(ROOT, 'tools/solar-roi', slug, 'index.html');
+  const original = fs.readFileSync(file, 'utf8');
+  const fragments = [
+    /<select id="systemKW"[^>]*>[\s\S]*?<\/select>/g,
+    /<script>\s*!function\(\)\{\s*"use strict";\s*var DEFAULTS=[\s\S]*?<\/script>/g
+  ];
+  let updated = original;
+  for (const fragment of fragments) {
+    const before = original.match(fragment) || [], after = generated.match(fragment) || [];
+    if (before.length !== 1 || after.length !== 1) throw new Error('Country workflow fragment missing or duplicated');
+    if (after[0].startsWith('<script')) new vm.Script(after[0].replace(/^<script[^>]*>/, '').replace(/<\/script>$/, ''));
+    updated = updated.replace(fragment, () => after[0]);
+  }
+  if (updated !== original) fs.writeFileSync(file, updated);
+  console.log(`Kenya Solar workflow fragments: ${updated === original ? 'unchanged' : 'updated'}`);
+  process.exit(0);
+}
+
 // Refresh only the source-owned input transition fragment. Keep post-processed
 // metadata, bundles, analytics, numerical scenarios and current route links.
 if (process.argv.includes('--solar-input-transition-only')) {
@@ -2298,6 +2378,30 @@ if (process.argv.includes('--solar-input-transition-only')) {
   // cannot leave an earlier country partially changed.
   for (const update of updates) fs.writeFileSync(update.file, update.next);
   console.log(`Solar input transition fragments: ${updates.length} of ${COUNTRIES.length} country pages updated`);
+  process.exit(0);
+}
+
+// Regenerate only the source-owned root selector/controller, preserving all
+// post-processed metadata, loader hashes, country pages and other energy tools.
+if (process.argv.includes('--solar-root-selection-only')) {
+  const solarTool = TOOLS.find(tool => tool.slug === 'solar-roi');
+  const generated = makeHub(solarTool);
+  const file = path.join(ROOT, 'tools/solar-roi/index.html');
+  const original = fs.readFileSync(file, 'utf8');
+  const fragments = [
+    /<script data-locale-shell-controller>[\s\S]*?<\/script>/g,
+    /<select id="solarRootCountrySelect"[^>]*>[\s\S]*?<\/select>/g
+  ];
+  let updated = original;
+  for (const fragment of fragments) {
+    const before = original.match(fragment) || [];
+    const after = generated.match(fragment) || [];
+    if (before.length !== 1 || after.length !== 1) throw new Error('Solar root fragment missing or duplicated');
+    if (after[0].startsWith('<script')) new vm.Script(after[0].replace(/^<script[^>]*>/, '').replace(/<\/script>$/, ''));
+    updated = updated.replace(fragment, () => after[0]);
+  }
+  if (updated !== original) fs.writeFileSync(file, updated);
+  console.log(`Solar root selector/controller: ${updated === original ? 'unchanged' : 'updated'}`);
   process.exit(0);
 }
 

@@ -3,7 +3,7 @@
 Use this as the working list for generating and saving recipe images.
 
 - Canonical recipe pages needing image coverage: 410
-- Recipes with at least one image detected: 396
+- Recipes with at least one image detected: 398
 - Gallery-ready recipes with three or more images: 8
 - Save finished images under `assets/img/kitchen/`
 - Preferred format: `.webp` at roughly 1600x1200 or 1200x900
@@ -412,7 +412,7 @@ Use this as the working list for generating and saving recipe images.
 | 398 | Chikanda | Zambia | snack | `chikanda-zm.webp` | /tools/afrokitchen/recipes/chikanda-zm/ | Finished Chikanda, snack from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 399 | Delele | Zambia | side | `deleele-zm.webp` | /tools/afrokitchen/recipes/deleele-zm/ | Finished Delele, side from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 400 | Kapenta | Zambia | side | `kapenta.webp` | /tools/afrokitchen/recipes/kapenta/ | Finished Kapenta, side from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 401 | Kapenta Stew | Zambia | seafood | `kapenta-stew-zm.webp` | /tools/afrokitchen/recipes/kapenta-stew-zm/ | Finished Kapenta Stew, seafood from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 401 | Kapenta with tomato and onion | Zambia | seafood | `kapenta-stew-zm.webp` | /tools/afrokitchen/recipes/kapenta-stew-zm/ | Finished Kapenta with tomato and onion, seafood from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 402 | Nshima with Ifisashi | Zambia | main | `nshima-ifisashi.webp` | /tools/afrokitchen/recipes/nshima-ifisashi/ | Finished Nshima with Ifisashi, main from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 403 | Vinkubala | Zambia | main | `vinkubala-zm.webp` | /tools/afrokitchen/recipes/vinkubala-zm/ | Finished Vinkubala, main from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 404 | Zambian Maheu | Zambia | beverage | `maheu-zm.webp` | /tools/afrokitchen/recipes/maheu-zm/ | Finished Zambian Maheu, beverage from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
