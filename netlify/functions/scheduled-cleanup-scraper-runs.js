@@ -41,7 +41,9 @@ exports.handler = withScheduledProof('scheduled-cleanup-scraper-runs', async fun
     console.log('[cleanup] Deleted ' + (Array.isArray(confDeleted) ? confDeleted.length : 0) + ' old data_confidence');
 
     // Clean resolved review queue items older than 90 days
-    var reviewRes = await fetch(SUPABASE_URL + '/rest/v1/review_queue?status=neq.pending&created_at=lt.' + cutoff, {
+    // Receipt-owned reports retain their moderation association. Their non-null
+    // reason distinguishes them from this legacy 90-day scraper cleanup.
+    var reviewRes = await fetch(SUPABASE_URL + '/rest/v1/review_queue?status=neq.pending&reason=neq.community_regulatory_report&created_at=lt.' + cutoff, {
       method: 'DELETE',
       headers: {
         'apikey': SUPABASE_KEY,
