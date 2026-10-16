@@ -10,6 +10,7 @@ const { localizeVisibleLanguage } = require('./lib/french-visible-language');
 const { enhanceCategory } = require('./lib/localized-category-standard');
 const { app: architecturalFeeForm } = require('./lib/architectural-fee-form');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { repairFrenchBoqWorkspaceLinks } = require('./lib/fr-boq-workspace-links');
 const {
   OWNER_COPY,
   OWNER_PAIRS,
@@ -23,6 +24,20 @@ const {
 
 const ROOT = path.resolve(__dirname, '..');
 const write = process.argv.includes('--write');
+// Refresh these four inherited app links without removing later build-managed
+// metadata/asset decorations from the otherwise unchanged French landing page.
+if (process.argv.includes('--boq-workspace-links-only')) {
+  if (process.argv.slice(2).some(arg => !['--boq-workspace-links-only', '--write'].includes(arg))) {
+    throw new Error('BOQ workspace link generation accepts only --boq-workspace-links-only and --write.');
+  }
+  const file = path.join(ROOT, 'fr/tools/devis-quantitatif/index.html');
+  const current = fs.readFileSync(file, 'utf8');
+  const next = repairFrenchBoqWorkspaceLinks({ id: 'boq-generator' }, current);
+  const changed = current !== next;
+  if (write && changed) fs.writeFileSync(file, next);
+  console.log(`${write ? 'Wrote' : 'Would change'} ${Number(changed)} French BOQ workspace-link page(s).`);
+  process.exit(!write && changed ? 1 : 0);
+}
 const manifestFile = path.join(ROOT, 'reports/fr-engineering-construction-parity-manifest.json');
 const rows = JSON.parse(fs.readFileSync(manifestFile, 'utf8')).routes;
 const idArgument = process.argv.find((argument) => argument.startsWith('--ids='));
@@ -582,6 +597,7 @@ function frenchHtml(row, html, frenchRoute, rawPairs) {
     html = html.replace(/(<script\b[^>]*src="\/assets\/js\/pages\/architectural-fee-workspace\.js[^>]*>)/, '<script src="/assets/js/lib/architectural-fee-fr.js"></script>$1');
   }
   html = applyFrenchMetadata(row, html, frenchRoute);
+  html = repairFrenchBoqWorkspaceLinks(row, html);
   if (row.id === 'afrodraft') {
     html = html
       .replace(/href="app\.html/g, 'href="/fr/ingenierie/afrodraft/app')
