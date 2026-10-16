@@ -1,0 +1,19 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'..');
+function load(file){const window={AfroTools:{}};vm.runInNewContext(fs.readFileSync(path.join(root,file),'utf8'),{window,console,Math,Number,Intl,Date},{timeout:1000});return window.AfroTools.engines.zaPAYE;}
+const readable=load('assets/js/engines/src/za-paye.js');
+const html=fs.readFileSync(path.join(root,'south-africa/za-paye.html'),'utf8');
+const context=vm.createContext({Math,Number,isFinite,Infinity});
+vm.runInContext(html.slice(html.indexOf('const SARS_BANDS ='),html.indexOf('function reverseCalc('))+';this.engine={calculate:computePAYE,reverseCashCalc:typeof reverseCashCalc===\"function\"?reverseCashCalc:null};',context,{timeout:1000});
+const engines=[readable,context.engine];
+const near=(a,b)=>assert.ok(Number.isFinite(a)&&Math.abs(a-b)<.011,`${a} != ${b}`);
+
+test('zero remains unchanged and needs no funding choice',()=>{for(const e of engines){const r=e.calculate(600000,{retirement:0});near(r.cashRemainingAnnual,r.netAnnual);assert.equal(r.retirementContributionAnnual,0);assert.equal(r.netBasis,'after_paye_and_uif_before_retirement');}});
+test('explicit employee cash uses full contribution after unchanged PAYE/UIF',()=>{for(const e of engines){const r=e.calculate(600000,{retirement:100000,retirementFunding:'employee_cash'});near(r.paye,98417);near(r.afterPayeAndUifAnnual,499457.56);near(r.netAnnual,499457.56);near(r.cashRemainingAnnual,399457.56);near(r.retirementContributionAnnual,100000);near(r.retirementTaxDeductionAnnual,100000);near(r.cashRemainingAnnual+r.paye+r.uif+r.employeeRetirementCashAnnual,r.gross);}});
+test('tax effect only is explicitly before retirement payments',()=>{for(const e of engines){const r=e.calculate(600000,{retirement:100000,retirementFunding:'tax_effect_only'});assert.equal(r.cashRemainingAnnual,null);near(r.afterPayeAndUifAnnual,499457.56);assert.equal(r.retirementFunding,'tax_effect_only');}});
+test('unknown funding preserves legacy tax values but has no final cash balance',()=>{for(const e of engines){const r=e.calculate(600000,{retirement:100000});assert.equal(r.retirementStatus,'funding_required');assert.equal(r.cashRemainingAnnual,null);near(r.netAnnual,499457.56);}});
+test('above-cap cash payment is not reduced to the tax deduction cap',()=>{for(const e of engines){const r=e.calculate(2000000,{retirement:500000,retirementFunding:'employee_cash'});assert.equal(r.retirementTaxDeductionAnnual,430000);assert.equal(r.retirementUndeductedAnnual,70000);near(r.cashRemainingAnnual,975881.56);near(r.employeeRetirementCashAnnual,500000);}});
+test('invalid funding and negative cash fail without a fake zero result',()=>{for(const e of engines){assert.throws(()=>e.calculate(100000,{retirement:200000,retirementFunding:'employee_cash'}),/cash|contribution/i);assert.throws(()=>e.calculate(600000,{retirement:100000,retirementFunding:'employer'}),/funding/i);for(const retirement of [-1,Infinity,NaN])assert.throws(()=>e.calculate(600000,{retirement,retirementFunding:'employee_cash'}));}});
+test('named cash inverse recomputes the cap and returns feasible gross',()=>{for(const e of engines){for(const [cash,raw,gross]of [[399457.56,100000,600000],[69000,30000,100000]]){const found=e.reverseCashCalc(cash,{retirement:raw,retirementFunding:'employee_cash'});near(found,gross);near(e.calculate(found,{retirement:raw,retirementFunding:'employee_cash'}).cashRemainingAnnual,cash);}assert.throws(()=>e.reverseCashCalc(Infinity,{retirement:1,retirementFunding:'employee_cash'}));}});
+test('retirement comparison distinguishes tax saved from cash cost',()=>{const r=readable.optimizeRetirement(600000);assert.equal(r.comparisonKind,'tax_saving_not_personal_recommendation');assert.equal(r.recommendation,false);near(r.cashChangeAnnual,r.taxSaving-r.additionalContributionAnnual);});

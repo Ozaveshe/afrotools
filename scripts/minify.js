@@ -50,6 +50,7 @@ const JS_PAIRS = [
   ['assets/js/engines/src/ng-paye.js', 'assets/js/engines/ng-paye.js'],
   ['assets/js/engines/src/gh-paye.js', 'assets/js/engines/gh-paye.js'],
   ['assets/js/engines/src/za-paye.js', 'assets/js/engines/za-paye.js'],
+  ['assets/js/lib/src/pdf-template.js', 'assets/js/lib/pdf-template.js'],
   ['assets/js/components/navbar.js',         'assets/js/components/navbar.min.js'],
   ['assets/js/components/footer.js',         'assets/js/components/footer.min.js'],
   ['assets/js/components/tool-registry.js',  'assets/js/components/tool-registry.min.js'],

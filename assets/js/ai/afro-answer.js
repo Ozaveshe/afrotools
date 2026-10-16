@@ -145,6 +145,7 @@
     }
     if (!result) return { answered: false, reason: "engine_returned_nothing" };
 
+    if(countryCode==='ZA'&&result.retirementStatus==='funding_required')return {answered:false,reason:'retirement_funding_required'};
     // Normalise across engines that disagree on field names and basis.
     var tax = result.paye != null ? result.paye : result.tax;
     var net = result.net != null ? result.net
@@ -152,6 +153,9 @@
     var netMonthly = spec.basis === "annual"
       ? (result.netMonthly != null ? result.netMonthly : (net != null ? net / 12 : null))
       : net;
+    var zaCash=countryCode==='ZA'&&result.displayBasis==='cash_after_employee_retirement';
+    if(zaCash)netMonthly=result.cashRemainingMonthly;
+    var balanceLabel=countryCode==='ZA'?(zaCash?'cash remaining after employee retirement':'balance before retirement payments'):'take-home';
     var taxMonthly = spec.basis === "annual" ? (tax != null ? tax / 12 : null) : tax;
 
     if (taxMonthly == null || netMonthly == null) {
@@ -166,16 +170,17 @@
       grossMonthly: spec.basis === "annual" ? input / 12 : input,
       taxMonthly: taxMonthly,
       netMonthly: netMonthly,
+      ...(countryCode==='ZA'?{netBasis:result.netBasis,displayBasis:result.displayBasis,retirementContributionAnnual:result.retirementContributionAnnual,retirementTaxDeductionAnnual:result.retirementTaxDeductionAnnual}:{}),
       effectiveRate: result.effectiveRate != null ? Number(result.effectiveRate.toFixed(2)) : null,
       lines: buildLines(result, spec),
       summary: "On " + money(spec.currency, spec.basis === "annual" ? input / 12 : input) +
         " a month in " + spec.label + ", PAYE is about " + money(spec.currency, taxMonthly) +
-        " and take-home is about " + money(spec.currency, netMonthly) + ".",
+        " and "+balanceLabel+" is about " + money(spec.currency, netMonthly) + ".",
       /* Provenance is the whole point: this is why the figure can be trusted
        * where a general model's cannot. */
       computedBy: spec.key,
       grounded: true,
-      caveat: "Computed from the bundled statutory schedule for " + spec.label +
+      caveat: (countryCode==='ZA'?'Annual marginal-formula estimate for a full year, divided by 12; not SARS banded payroll-table equivalence. Employer retirement/CTC not modelled. ':'')+"Computed from the bundled statutory schedule for " + spec.label +
         ". Confirm against the revenue authority before filing or paying."
     };
   }
@@ -193,6 +198,7 @@
       ["Taxable income", result.taxable != null ? result.taxable : result.taxableIncome],
       ["PAYE", result.paye != null ? result.paye : result.tax]
     ];
+    if(spec.key==='zaPAYE')candidates.push(['Full annual retirement contribution',result.retirementContributionAnnual],['Retirement tax deduction used',result.retirementTaxDeductionAnnual],['Contribution not deducted by this model',result.retirementUndeductedAnnual],[result.displayBasis==='cash_after_employee_retirement'?'Cash after employee retirement':'Balance before retirement payments',result.displayBasis==='cash_after_employee_retirement'?result.cashRemainingAnnual:result.afterPayeAndUifAnnual]);
     return candidates
       .filter(function (pair) { return typeof pair[1] === "number" && pair[1] > 0; })
       .map(function (pair) {

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="en">
 <head>
+<script>
+(function(){var u=new URL(location.href),saved={},keys=['g','gross','a','r','u','m','mode','compare'];keys.forEach(function(k){if(u.searchParams.has(k)){saved[k]=u.searchParams.get(k);u.searchParams.delete(k);}});if(Object.keys(saved).length){window.__ZA_LEGACY_INPUT=saved;history.replaceState(history.state,'',u.pathname+u.search+u.hash);}})();
+</script>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -142,7 +145,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/south-africa/za-paye">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/south-africa/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/south-africa/za-paye">
-</head>
+<style>@media print{body:not([data-paye-valid="true"]) .results-card{display:none!important}#aiPreview,#aiConsent{display:none!important}}</style></head>
 <body class="country-tax-page-ui-refresh top-level-page-ui-refresh">
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar active="tools"></afro-navbar>
@@ -238,7 +241,7 @@
               </select>
             </div>
 
-            <!-- RETIREMENT -->
+            <p>Reverse mode targets the selected balance: employee-cash funding targets cash after the full contribution; tax-effect-only targets the balance before retirement payments.</p><!-- RETIREMENT -->
             <div class="field">
               <div class="f-label">
                 <label class="f-label-text" for="retirementAmt">Retirement Fund Contribution</label>
@@ -246,12 +249,14 @@
               </div>
               <div class="f-wrap">
                 <span class="f-prefix">R</span>
-                <input type="text" class="f-input" id="retirementAmt" placeholder="e.g. 50,000" inputmode="numeric" autocomplete="off">
+                <input type="text" class="f-input" id="retirementAmt" placeholder="e.g. 50,000" inputmode="decimal" autocomplete="off">
               </div>
-              <p class="f-note" style="color:#0063D1;">Pension, provident &amp; RA contributions deductible up to 27.5% of remuneration, capped at R430,000/year. Your most powerful legal tax reduction tool.</p>
+              <p class="f-note">Enter the full annual contribution, even above the salary-only tax deduction cap. Employer-funded and cost-to-company packages are not modelled.</p>
+<label for="retirementFunding">For a nonzero contribution, choose the funding basis</label>
+<select class="f-select" id="retirementFunding"><option value="">Choose funding basis</option><option value="employee_cash">I pay this from my salary cash</option><option value="tax_effect_only">Tax effect only — before retirement payments</option></select>
             </div>
 
-            <!-- TOGGLES -->
+            <p id="legacyRetirementNotice"></p><!-- TOGGLES -->
             <div class="field">
               <div class="f-label">
                 <span class="f-label-text">Deductions &amp; Credits</span>
@@ -285,7 +290,7 @@
               <p class="f-note">R376/month for main member &amp; first dependant, R254/month each additional. Applied directly as a tax credit against PAYE.</p>
             </div>
 
-            <button type="button" class="calc-btn" id="calcBtn" onclick="calculate()">Calculate My Take-Home Pay &rarr;</button>
+            <button type="button" class="calc-btn" id="calcBtn" onclick="calculate()">Calculate My Salary Estimate &rarr;</button>
           </div>
         </div>
 
@@ -294,7 +299,7 @@
           <div class="res-hero">
             <div class="res-hero-label" id="resLabel">Monthly Take-Home Pay</div>
             <div class="res-hero-amount" id="resAmount">R 0</div>
-            <div class="res-hero-period">After all deductions &amp; tax</div>
+            <div class="res-hero-period">PAYE/UIF and selected retirement funding basis</div>
             <div class="res-hero-gross" id="resGross"></div>
           </div>
           <div class="res-body">
@@ -350,7 +355,7 @@
 
           <!-- ACTIONS -->
           <div class="action-row">
-            <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdf()">
+            <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" data-current-result disabled onclick="downloadPdf()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Download PDF
             </button>
@@ -358,11 +363,11 @@
               <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
               WhatsApp
             </button>
-            <button type="button" class="act-btn act-share" onclick="shareResult()">
+            <button type="button" class="act-btn act-share" data-current-result disabled onclick="shareResult()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               Share Result
             </button>
-            <button type="button" class="act-btn" onclick="window.print()">
+            <button type="button" class="act-btn" data-current-result disabled onclick="printCurrent()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               Print
             </button>
@@ -396,7 +401,7 @@
             <span class="ai-head-by">Optional AI · provider required</span>
           </div>
           <div class="ai-body">
-            <p class="ai-status" id="aiStatus">Calculate your salary first. I'll analyse your SARS tax position, show how to maximise retirement deductions and medical credits, and give specific optimisation tips.</p>
+            <p id="calculationStatus" role="status" aria-live="polite"></p><pre id="aiPreview" style="white-space:pre-wrap"></pre><label><input type="checkbox" id="aiConsent"> I consent to send this displayed financial snapshot and my follow-up text to the AI service. Calculation does not request AI automatically. Workspace saving follows the existing account controls.</label><p class="ai-status" id="aiStatus">Calculate locally first. Optional AI analysis sends only the financial preview shown here after your explicit consent; it is not personal tax advice.</p>
             <div class="ai-response" id="aiResp"></div>
             <div class="ai-suggestions" id="aiSuggestions" style="display:none;">
               <button type="button" class="ai-suggest-btn" onclick="askSuggestion(this)">How do I maximise my retirement deduction?</button>
@@ -829,6 +834,7 @@
 // ================================================================
 
 var RESULT=null;
+var RESULT_REVISION=0,AI_CONTROLLER=null,AMOUNT_PROVENANCE="user_entered";
 let PERIOD = 'monthly';
 let MODE = 'gross'; // 'gross' or 'net'
 let CHART = null;
@@ -836,7 +842,7 @@ let CHART_TYPE = 'donut';
 let CHAT_HISTORY = [];
 let debounceTimer = null;
 
-const fmt = n => 'R\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-ZA');
+const fmt = n => (n < 0 ? '-R\u00A0' : 'R\u00A0') + Math.abs(n).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
 const pct = r => {
   const v = r * 100;
   return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%';
@@ -906,6 +912,24 @@ function getMarginalRate(taxableIncome) {
   return 0.18;
 }
 
+function retirementCashFields(gross, raw, allowed, afterTax, funding) {
+  funding = funding == null || funding === '' ? 'unspecified' : funding;
+  if (!['unspecified', 'employee_cash', 'tax_effect_only'].includes(funding)) throw new RangeError('Choose a supported retirement funding basis.');
+  const employeeCash = funding === 'employee_cash' ? raw : 0;
+  if (funding === 'employee_cash' && afterTax - employeeCash < 0) throw new RangeError('The retirement contribution leaves negative cash. Reduce the contribution or use tax effect only.');
+  const cash = raw === 0 ? afterTax : funding === 'employee_cash' ? afterTax - raw : null;
+  return {
+    retirementContributionAnnual: raw, retirementTaxDeductionAnnual: allowed,
+    retirementUndeductedAnnual: raw - allowed, retirementFunding: funding,
+    retirementStatus: raw > 0 && funding === 'unspecified' ? 'funding_required' : 'ready',
+    afterPayeAndUifAnnual: afterTax, afterPayeAndUifMonthly: afterTax / 12,
+    employeeRetirementCashAnnual: employeeCash, cashRemainingAnnual: cash,
+    cashRemainingMonthly: cash == null ? null : cash / 12,
+    netBasis: 'after_paye_and_uif_before_retirement',
+    displayBasis: funding === 'employee_cash' && raw > 0 ? 'cash_after_employee_retirement' : 'before_retirement_cash'
+  };
+}
+
 function computePAYE(gross, opts = {}) {
   if (!Number.isFinite(gross) || gross < 0) throw new RangeError('Annual salary must be a finite nonnegative amount.');
   const ageGroup = opts.ageGroup || 'under65';
@@ -958,6 +982,7 @@ function computePAYE(gross, opts = {}) {
 
   return {
     taxPeriod: { ...TAX_PERIOD },
+      ...retirementCashFields(gross, retRaw, retirement, netAnnual, opts.retirementFunding),
     gross, ageGroup, retirement, retCap, retRaw, taxableIncome,
     grossTax, rebate, mtcAnnual, mtcMonthly, medMembers,
     paye, uif, totalDeductions, netAnnual, netMonthly,
@@ -970,25 +995,40 @@ function computePAYE(gross, opts = {}) {
 }
 
 // -€-€ NET-TO-GROSS (binary search) -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function reverseCashCalc(target, opts = {}) {
+  if (!Number.isFinite(target) || target < 0) throw new RangeError('Cash target must be finite and nonnegative.');
+  if (opts.retirementFunding !== 'employee_cash') throw new RangeError('Cash reverse requires an explicit employee cash funding choice.');
+  const raw = opts.retirement == null || opts.retirement === '' ? 0 : opts.retirement;
+  if (!Number.isFinite(raw) || raw < 0) throw new RangeError('Retirement contribution must be finite and nonnegative.');
+  const cashAt = gross => computePAYE(gross, { ...opts, retirementFunding: 'tax_effect_only' }).netAnnual - raw;
+  let lo = 0, hi = Math.max(1, target + raw), attempts = 0;
+  while (Number.isFinite(hi) && cashAt(hi) < target && attempts++ < 60) hi *= 2;
+  if (!Number.isFinite(hi) || cashAt(hi) < target) throw new RangeError('Cash target could not be bracketed. Use gross salary mode.');
+  for (let i = 0; i < 100; i++) {
+    if (cashAt(hi) - target <= 0.01) return hi;
+    const mid = (lo + hi) / 2;
+    if (cashAt(mid) < target) lo = mid; else hi = mid;
+  }
+  throw new RangeError('Cash target could not be solved within R0.01 annual precision. Use gross salary mode.');
+}
+
 function reverseCalc(targetNet) {
   const opts = getInputOpts();
   let lo = targetNet, hi = targetNet * 3;
   for (let i = 0; i < 80; i++) {
     const mid = (lo + hi) / 2;
-    const r = computePAYE(mid, opts);
+    const r = computePAYE(mid, {...opts,retirementFunding:"tax_effect_only"});
     if (Math.abs(r.netAnnual - targetNet) < 1) return r;
     if (r.netAnnual < targetNet) lo = mid; else hi = mid;
   }
-  return computePAYE((lo + hi) / 2, opts);
+  return computePAYE((lo + hi) / 2, {...opts,retirementFunding:"tax_effect_only"});
 }
 
 function getInputOpts() {
-  return {
-    ageGroup: document.getElementById('ageGroup').value,
-    retirement: parseNum(document.getElementById('retirementAmt').value),
-    uif: isOn('uif'),
-    medMembers: isOn('medical') ? parseInt(document.getElementById('medMembers').value) || 0 : 0,
-  };
+  return { ageGroup:document.getElementById('ageGroup').value,
+    retirement:strictMoney(document.getElementById('retirementAmt').value, 'Retirement contribution'),
+    retirementFunding:document.getElementById('retirementFunding').value || 'unspecified',
+    uif:isOn('uif'),medMembers:readMedicalMembers() };
 }
 
 // -€-€ MODE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
@@ -996,7 +1036,7 @@ function setMode(m) {
   MODE = m;
   document.getElementById('modeGross').classList.toggle('on', m === 'gross');
   document.getElementById('modeNet').classList.toggle('on', m === 'net');
-  const label = m === 'gross' ? 'Annual Gross Remuneration' : 'Desired Annual Take-Home';
+  const label = m === 'gross' ? 'Annual Gross Remuneration' : 'Desired Annual Selected Balance';
   document.getElementById('sliderLabel').textContent = label;
   document.getElementById('inputLabel').textContent = label;
   document.getElementById('resLabel').textContent = m === 'gross' ? 'Monthly Take-Home Pay' : 'Required Monthly Gross';
@@ -1009,8 +1049,8 @@ function parseNum(v) {
   return parseFloat(String(v).replace(/[^0-9.-]/g, '')) || 0;
 }
 function fmtInput(v) {
-  const n = Math.round(parseNum(v));
-  return n > 0 ? n.toLocaleString('en-ZA') : '';
+  try {const n=strictMoney(v,'Amount');return n>0?n.toLocaleString('en-ZA',{maximumFractionDigits:2}):'';}
+  catch(error){return String(v);}
 }
 
 function setupInput(el) {
@@ -1055,8 +1095,7 @@ salaryInput.addEventListener('input', function () {
   scheduleCalc();
 });
 salaryInput.addEventListener('focus', function () {
-  const n = parseNum(this.value);
-  this.value = n > 0 ? n : '';
+  try {const n=strictMoney(this.value,'Salary');this.value=n>0?String(n):'';}catch(error){}
 });
 salaryInput.addEventListener('blur', function () {
   this.value = fmtInput(this.value);
@@ -1067,7 +1106,8 @@ salaryInput.value = '300,000';
 updateSliderFill();
 
 // Retirement input formatting
-setupInput(document.getElementById('retirementAmt'));
+document.getElementById('retirementAmt').addEventListener('input',function(){AMOUNT_PROVENANCE='user_entered';document.getElementById('legacyRetirementNotice').textContent='';scheduleCalc();});
+document.getElementById('retirementFunding').addEventListener('change',scheduleCalc);
 
 // -€-€ PRESETS -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function setPreset(v, btn) {
@@ -1100,133 +1140,50 @@ document.getElementById('ageGroup').addEventListener('change', scheduleCalc);
 
 // -€-€ DEBOUNCE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function scheduleCalc() {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(calculate, 300);
+  invalidateResult('Inputs changed. Calculate again before saving or exporting.');
+  clearTimeout(debounceTimer); debounceTimer=setTimeout(calculate,300);
 }
 
 // -€-€ MAIN CALCULATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function calculate() {
-  const raw = parseNum(salaryInput.value);
-  if (!Number.isFinite(raw) || raw <= 0) {const _el=document.getElementById('salaryInput')||salaryInput;_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return;}
-
-  const opts = getInputOpts();
-  let R;
-
-  if (MODE === 'net') {
-    R = reverseCalc(raw);
-  } else {
-    R = computePAYE(raw, opts);
-  }
-
-  RESULT = R;
-
-  // Hero display
-  if (MODE === 'net') {
-    document.getElementById('resLabel').textContent = 'Required Monthly Gross';
-    document.getElementById('resAmount').textContent = fmt(R.gross / 12);
-    document.getElementById('resGross').textContent = `Annual gross needed: ${fmt(R.gross)} | Net: ${fmt(R.netMonthly)}/mo`;
-  } else {
-    document.getElementById('resLabel').textContent = 'Monthly Take-Home Pay';
-    document.getElementById('resAmount').textContent = fmt(R.netMonthly);
-    document.getElementById('resGross').textContent = `Gross monthly: ${fmt(R.gross / 12)}`;
-  }
-
-  // Rows
-  document.getElementById('resContent').innerHTML = renderRows(R, PERIOD);
-
-  // Rates
-  document.getElementById('effRate').textContent = pct(R.effectiveRate);
-  document.getElementById('margRate').textContent = pct(R.marginalRate);
-
-  // Tax threshold
-  const exemptBox = document.getElementById('exemptBox');
-  if (R.isExempt) {
-    const ageLabel = { under65: 'under 65', '65to74': '65-74', '75plus': '75+' }[R.ageGroup];
-    exemptBox.innerHTML = `<strong>Below tax threshold.</strong> Income below ${fmt(R.threshold)} is effectively tax-free for age ${ageLabel} due to the rebate of ${fmt(R.rebate)}.`;
-    exemptBox.style.display = 'block';
-  } else {
-    exemptBox.style.display = 'none';
-  }
-
-  // Retirement optimizer
-  const retStrip = document.getElementById('retOptimizer');
-  if (R.retirement < R.retCap && R.gross > R.threshold) {
-    const optR = computePAYE(R.gross, { ...opts, retirement: R.retCap });
-    const saving = R.paye - optR.paye;
-    if (saving > 100) {
-      retStrip.innerHTML = `<strong>Retirement Optimizer:</strong> You can contribute up to ${fmt(R.retCap)}/year tax-free. Increasing from ${fmt(R.retirement)} to ${fmt(R.retCap)} would save you <strong>${fmt(saving)}/year</strong> in PAYE (${fmt(saving / 12)}/month).`;
-      retStrip.classList.add('on');
-    } else {
-      retStrip.classList.remove('on');
+  clearTimeout(debounceTimer);invalidateResult('Calculating current inputs.');
+  try {
+    const raw=strictMoney(salaryInput.value,'Salary or target');
+    if(raw<=0)throw new RangeError('Enter a salary or target greater than zero.');
+    const opts=getInputOpts();
+    if(opts.retirement>0&&opts.retirementFunding==='unspecified') {
+      document.getElementById('retirementFunding').focus();
+      throw new RangeError('Choose how this retirement contribution is funded. Legacy scenarios do not establish this choice.');
     }
-  } else {
-    retStrip.classList.remove('on');
-  }
-
-  // Employer strip
-  const empStrip = document.getElementById('employerStrip');
-  empStrip.innerHTML = `<strong>Total Employer Cost: ${fmt(R.totalEmployerCost / 12)}/month</strong><br>Gross salary + UIF ${fmt(R.employerUIF / 12)}/mo + SDL ${fmt(R.employerSDL / 12)}/mo.`;
-  empStrip.classList.add('on');
-
-  // Show results card
-  document.getElementById('resultsCard').classList.add('on');
-
-  // Band detail table
-  renderBandTable(R);
-
-  // Chart
-  renderChart(CHART_TYPE);
-  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-  // AI button
-  document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis \u2192';
-  document.getElementById('aiStatus').textContent = `Gross: ${fmt(R.gross)}/yr \u00B7 Net: ${fmt(R.netMonthly)}/mo \u00B7 PAYE: ${fmt(R.paye)}/yr \u00B7 Rate: ${pct(R.effectiveRate)}. Click to analyse.`;
-
-  // GA4
-  if (typeof gtag === 'function') {
-    const bucket = R.gross < 250000 ? '0-250k' : R.gross < 500000 ? '250k-500k' : R.gross < 1000000 ? '500k-1M' : '1M+';
-    gtag('event', 'calculation_complete', { tool_name: 'za-paye', country: 'South Africa', salary_bucket: bucket });
-  }
+    const gross=MODE==='net' ? (opts.retirementFunding==='employee_cash' ? reverseCashCalc(raw,opts) : reverseCalc(raw).gross) : raw;
+    const r={...computePAYE(gross,opts),amountProvenance:AMOUNT_PROVENANCE};
+    if(r.retirementStatus!=='ready')throw new RangeError('Confirm the retirement funding basis.');
+    RESULT=r;document.body.dataset.payeValid='true';
+    document.getElementById('resultsCard').classList.add('on');
+    updateResultView();renderBandTable(r);renderChart(CHART_TYPE);
+    document.getElementById('effRate').textContent=pct(r.effectiveRate);
+    document.getElementById('margRate').textContent=pct(r.marginalRate);
+    document.getElementById('exemptBox').style.display='none';
+    const extra=Math.max(0,r.retCap-r.retirementContributionAnnual);
+    const comparison=computePAYE(r.gross,{...opts,retirement:r.retirementContributionAnnual+extra,retirementFunding:'tax_effect_only'});
+    const saved=r.paye-comparison.paye;
+    const strip=document.getElementById('retOptimizer');
+    strip.textContent='Tax comparison, not a personal recommendation: an additional '+fmt(extra)+'/year contribution could reduce estimated PAYE by '+fmt(saved)+', while an employee cash payment would change cash by '+fmt(saved-extra)+'. Deductibility is limited; contributions are not tax-free cash.';
+    strip.classList.toggle('on',extra>0);
+    document.getElementById('employerStrip').textContent='Salary plus modelled employer UIF/SDL: '+fmt(r.totalEmployerCost/12)+'/month. Employer retirement and cost-to-company packages are not modelled.';
+    document.getElementById('employerStrip').classList.add('on');
+    document.getElementById('aiBtn').disabled=false;
+    document.getElementById('aiPreview').textContent=financialSummary(r);
+    setStatus(basisLabel(r)+'. Annual marginal-formula estimate; monthly values are annual / 12, not banded payroll-table results.');
+    document.querySelectorAll('[data-current-result]').forEach(el=>el.disabled=false);
+    return r;
+  } catch(error) { setStatus(error.message||'Unable to calculate these inputs.');return null; }
 }
 
 // -€-€ RENDER ROWS -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
-function renderRows(r, period) {
-  const d = period === 'monthly' ? 12 : 1;
-  const row = (lbl, val, cls = '') => `<div class="res-row"><span class="res-row-lbl">${lbl}</span><span class="res-row-val ${cls}">${val}</span></div>`;
-  const ageLabel = { under65: 'Under 65', '65to74': 'Age 65-74', '75plus': 'Age 75+' }[r.ageGroup] || '';
-
-  return `
-    <div class="res-section">
-      <div class="res-section-title">Gross Income</div>
-${row('Gross Remuneration', fmt(r.gross / d))}
-    </div>
-    ${r.retirement > 0 ? `
-    <div class="res-section">
-      <div class="res-section-title">Tax-Deductible Contributions</div>
-      ${row('Retirement fund (pension/RA)', '- ' + fmt(r.retirement / d), 'grn')}
-      ${row('Deduction cap (27.5% / R430k)', fmt(r.retCap / d), 'muted')}
-      ${row('Taxable income', fmt(r.taxableIncome / d))}
-    </div>` : ''}
-    <div class="res-section">
-      <div class="res-section-title">SARS PAYE Calculation</div>
-      ${row('Gross tax (SARS bands)', fmt(r.grossTax / d), 'red')}
-      ${row('Rebate (' + ageLabel + ')', '- ' + fmt(r.rebate / d), 'grn')}
-      ${r.mtcAnnual > 0 ? row('Medical tax credit (R' + r.mtcMonthly + '/mo)', '- ' + fmt(r.mtcAnnual / d), 'grn') : ''}
-      ${r.isExempt
-        ? '<div class="exempt-box" style="margin-top:6px">Below tax threshold &mdash; no PAYE due.</div>'
-        : row('PAYE Income Tax', fmt(r.paye / d), 'red')
-      }
-    </div>
-    ${r.uif > 0 ? `
-    <div class="res-section">
-      <div class="res-section-title">UIF</div>
-      ${row('UIF employee (1%, capped R17,712/mo)', fmt(r.uif / d), 'red')}
-    </div>` : ''}
-    <div class="res-section">
-      ${row('Total Deductions', fmt(r.totalDeductions / d), 'red')}
-      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val grn">${fmt(r.netAnnual / d)}</span></div>
-    </div>`;
+function renderRows(r,period) {
+  const d=period==='monthly'?12:1;
+  return '<div class="res-section">'+summaryRows(r).map(([label,value])=>'<div class="res-row"><span class="res-row-lbl">'+label+'</span><span class="res-row-val">'+fmt(value/d)+'</span></div>').join('')+'</div><p>Salary-only deduction estimate: the smaller of the contribution, 27.5% of remuneration and R430,000/year. The undeducted portion is not a promise of carry-forward relief. Employer retirement is not modelled.</p>';
 }
 
 // -€-€ BAND DETAIL TABLE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
@@ -1249,24 +1206,10 @@ function renderBandTable(r) {
 }
 
 // -€-€ PERIOD -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
-function setPeriod(period, btn) {
-  PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
-    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
-    document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Gross: ' + fmt(gr) + '/month'
-      : 'Gross: ' + fmt(gr) + '/year';
-    if (document.getElementById('resLabel')) {
-      document.getElementById('resLabel').textContent = isMonthly ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay';
-    }
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
-  }
+function setPeriod(period,btn) {
+  if(!['annual','monthly'].includes(period))return;
+  PERIOD=period;document.querySelectorAll('.per-btn').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');
+  if(RESULT){retirePendingJobs();updateResultView();renderChart(CHART_TYPE);}
 }
 
 // -€-€ BANDS TOGGLE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
@@ -1297,306 +1240,72 @@ function setChart(type, btn) {
 }
 
 async function renderChart(type) {
-  if (!RESULT) return;
-  await ensureChart();
-  const R = RESULT;
-  const canvas = document.getElementById('mainChart');
-  if (CHART) { CHART.destroy(); CHART = null; }
-
-  if (type === 'donut') {
-    const data = [R.netAnnual, R.paye, R.uif];
-    const labels = ['Take-Home', 'PAYE Tax', 'UIF'];
-    if (R.retirement > 0) { data.push(R.retirement); labels.push('Retirement'); }
-    CHART = new Chart(canvas, {
-      type: 'doughnut',
-      data: { labels, datasets: [{ data, backgroundColor: AfroChartColors.doughnut.slice(0, data.length), borderWidth: 2, borderColor: '#fff' }] },
-      options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', font: { size: 11, weight: '600', family: "'Inter',sans-serif" }, padding: 14, color: '#64748B' } }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8, padding: 12 } } }
-    });
-  } else if (type === 'bar') {
-    const bands = R.bandBreakdown.filter(b => b.taxInBand > 0);
-    if (!bands.length) return;
-    CHART = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: bands.map(b => (b.rate * 100) + '%'),
-        datasets: [{ label: 'Tax Paid (R)', data: bands.map(b => b.taxInBand), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius: 6 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'R' + (v / 1000).toFixed(0) + 'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText, font: { size: 10 } } } } }
-    });
-  } else if (type === 'employer') {
-    CHART = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: ['Take-Home', 'PAYE', 'UIF (emp)', 'Empl UIF', 'Empl SDL'],
-        datasets: [{ label: 'R', data: [R.netAnnual, R.paye, R.uif, R.employerUIF, R.employerSDL], backgroundColor: AfroChartColors.doughnut.slice(0, 5), borderRadius: 5 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'R' + (v / 1000).toFixed(0) + 'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText, font: { size: 9 } } } } }
-    });
-  }
+  const r=RESULT,revision=RESULT_REVISION;if(!r)return;
+  try {await ensureChart();}catch(error){if(isCurrentResult(r,revision))setStatus('Calculation ready; chart unavailable.');return;}
+  if(!isCurrentResult(r,revision)||type!==CHART_TYPE)return;
+  if(CHART){CHART.destroy();CHART=null;}
+  const split=chartParts(r);
+  const bands=r.bandBreakdown.filter(b=>b.taxInBand>0);
+  const labels=type==='bar'?bands.map(b=>b.rate*100+'%'):type==='employer'?['Balance before retirement cash','PAYE','Employee UIF','Employer UIF','Employer SDL']:split.labels;
+  const data=type==='bar'?bands.map(b=>b.taxInBand):type==='employer'?[r.netAnnual,r.paye,r.uif,r.employerUIF,r.employerSDL]:split.values;
+  CHART=new Chart(document.getElementById('mainChart'),{type:type==='donut'?'doughnut':'bar',data:{labels,datasets:[{label:'Annual ZAR estimate',data,backgroundColor:AfroChartColors.doughnut.slice(0,data.length)}]},options:{responsive:true,maintainAspectRatio:false}});
 }
 
 // -€-€ PDF EXPORT (jsPDF via shared library) -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 async function downloadPdf() {
-  if (!RESULT) return;
-  const R = RESULT;
-  const ageLabel = { under65: 'Under 65', '65to74': 'Age 65-74', '75plus': 'Age 75+' }[R.ageGroup] || '';
-
-  const sections = [
-    {
-      title: 'Income & Deductions',
-      rows: [
-        { label: 'Annual Gross Remuneration', value: fmt(R.gross) },
-        { label: 'Age Group', value: ageLabel },
-        ...(R.retirement > 0 ? [
-          { label: 'Retirement fund contribution', value: '- ' + fmt(R.retirement), type: 'deduction' },
-          { label: 'Deduction cap (27.5% / R430k)', value: fmt(R.retCap) },
-        ] : []),
-        { label: 'Taxable Income', value: fmt(R.taxableIncome) },
-      ]
-    },
-    {
-      title: 'PAYE Computation (SARS 2026/27)',
-      rows: [
-        ...R.bandBreakdown.filter(b => b.taxInBand > 0).map(b => ({
-          label: `  @ ${(b.rate * 100)}% on ${fmt(b.incomeInBand)}`,
-          value: fmt(b.taxInBand),
-          type: 'deduction'
-        })),
-        { label: 'Gross Tax', value: fmt(R.grossTax) },
-        { label: 'Rebate (' + ageLabel + ')', value: '- ' + fmt(R.rebate), type: 'deduction' },
-        ...(R.mtcAnnual > 0 ? [{ label: 'Medical tax credit', value: '- ' + fmt(R.mtcAnnual), type: 'deduction' }] : []),
-        { label: 'PAYE Income Tax', value: R.isExempt ? 'Nil' : fmt(R.paye), type: 'total' },
-      ]
-    },
-    {
-      title: 'Net Pay Summary',
-      rows: [
-        ...(R.uif > 0 ? [{ label: 'UIF employee (1%, capped)', value: fmt(R.uif), type: 'deduction' }] : []),
-        { label: 'PAYE Income Tax', value: R.isExempt ? 'Nil' : fmt(R.paye), type: 'deduction' },
-        { label: 'Total Deductions', value: fmt(R.totalDeductions), type: 'deduction' },
-        { label: 'Annual Take-Home Pay', value: fmt(R.netAnnual), type: 'total' },
-        { label: 'Monthly Take-Home Pay', value: fmt(R.netMonthly), type: 'total' },
-      ]
-    },
-    {
-      title: 'Employer Costs',
-      rows: [
-        { label: 'Employee gross salary', value: fmt(R.gross) },
-        { label: 'Employer UIF (1%, capped)', value: fmt(R.employerUIF), type: 'deduction' },
-        { label: 'Employer SDL (1%)', value: fmt(R.employerSDL), type: 'deduction' },
-        { label: 'Total Employer Cost', value: fmt(R.totalEmployerCost), type: 'total' },
-      ]
-    }
-  ];
-
-  // Get chart image
-  let chartImage = null;
+  const r=RESULT,revision=typeof RESULT_REVISION==='number'?RESULT_REVISION:0;if(!r)return;
+  const current=()=>isCurrentResult(r,revision);
   try {
-    const canvas = document.getElementById('mainChart');
-    if (canvas && CHART) chartImage = canvas;
-  } catch (e) { }
-
-  try {
-    await AfroTools.pdf.generate({
-      title: 'South Africa PAYE',
-      subtitle: 'Tax Summary 2026/27',
-      country: 'South Africa',
-      countryFlag: '\uD83C\uDDFF\uD83C\uDDE6',
-      toolId: 'za-paye',
-      heroStats: [
-        { label: 'Monthly Take-Home', value: fmt(R.netMonthly), highlight: true },
-        { label: 'Annual Gross', value: fmt(R.gross) },
-        { label: 'PAYE Tax', value: R.isExempt ? 'Nil' : fmt(R.paye), color: 'red' },
-        { label: 'Effective Rate', value: pct(R.effectiveRate), color: 'red' },
-      ],
-      sections,
-      chartImage,
-      disclaimer: 'Annual marginal-formula estimate for a full year of regular salary, 1 March 2026 - 28 February 2027. Monthly values are annual estimates divided by 12 and can differ from SARS banded payroll tables. Bonuses, part-year adjustments and directives are not modelled. Source: SARS (sars.gov.za), Income Tax Act 58 of 1962, Budget Speech 25 February 2026. For informational purposes only. Consult a registered tax practitioner.',
-      legalSources: [
-        'Income Tax Act 58 of 1962 (as amended)',
-        'SARS PAYE-GEN-01-G21 (2027), revision 1',
-        'Unemployment Insurance Act 63 of 2001',
-        'Skills Development Levies Act 9 of 1999',
-      ],
-      skipGate: true,
-    });
-    if (typeof gtag === 'function') gtag('event', 'pdf_download', { tool_name: 'za-paye', country: 'South Africa' });
-  } catch (e) {
-    console.error('PDF generation failed:', e);
-    if (typeof AfroTools !== 'undefined' && AfroTools.toast) window.print(); // fallback to browser print
-  }
+    const result=await AfroTools.pdf.generate({title:'South Africa PAYE estimate',subtitle:'Tax Summary 2026/27 — '+basisLabel(r),toolId:'za-paye',country:'South Africa',currency:'ZAR',
+      heroStats:[{label:r.retirementContributionAnnual===0?'Monthly Take-Home':basisLabel(r)+' / month',value:fmt(displayAnnual(r)/12),highlight:true},{label:'PAYE Tax',value:fmt(r.paye),color:'red'}],
+      sections:[{title:'PAYE Computation (SARS 2026/27)',rows:summaryRows(r).map(([label,value])=>({label,value:fmt(value)}))}],
+      disclaimer:estimateLimitations(),legalSources:['SARS PAYE-GEN-01-G21 (2027), revision 1','Unemployment Insurance Act 63 of 2001'],skipGate:true},{isCurrent:current});
+    if(!current()||result?.cancelled||result?.blocked)return;
+    setStatus('PDF downloaded for the current funding basis.');
+  } catch(error) {if(current())setStatus('PDF unavailable. Use the current Print action or local JSON backup.');}
 }
 
 // -€-€ WHATSAPP SHARE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function setStatus(message){const el=document.getElementById('calculationStatus');if(el)el.textContent=message;}
+function isCurrentResult(result,revision){return !!result&&RESULT===result&&revision===(typeof RESULT_REVISION==='number'?RESULT_REVISION:0);}
+function displayAnnual(r){return r.displayBasis==='cash_after_employee_retirement'?r.cashRemainingAnnual:r.afterPayeAndUifAnnual;}
+function basisLabel(r){return r.displayBasis==='cash_after_employee_retirement'?'Cash remaining after employee retirement':'Balance before retirement payments';}
+function summaryRows(r){const rows=[['Gross salary',r.gross],['Full retirement contribution entered',r.retirementContributionAnnual],['Allowed salary-only tax deduction',r.retirementTaxDeductionAnnual],['Contribution above this estimate’s deduction limit',r.retirementUndeductedAnnual],['Taxable income',r.taxableIncome],['PAYE estimate',r.paye],['Employee UIF',r.uif],['After PAYE/UIF, before retirement payments',r.afterPayeAndUifAnnual]];if(r.retirementFunding==='employee_cash')rows.push(['Full employee retirement cash payment',r.employeeRetirementCashAnnual],['Cash remaining after employee retirement',r.cashRemainingAnnual]);return rows;}
+function estimateLimitations(){return 'Annual marginal-formula estimate, 1 March 2026–28 February 2027; monthly values are annual estimates divided by 12 and can differ from SARS banded payroll tables. Regular full-year salary only; no employer retirement/CTC, directives, partial-year adjustments or additional medical credits. The raw contribution and limited tax deduction are different. The undeducted portion is not a carry-forward entitlement. '+(RESULT?basisLabel(RESULT)+'.':'');}
 function whatsappShare() {
-  if (!RESULT) return;
-  AfroTools.shareState.whatsappShare({
-    headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly) + '/mo',
-    subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/yr' },
-      { label: 'Tax', value: fmt(RESULT.tax) + '/yr' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
-    ],
-    state: {
-      g: Math.round(RESULT.gross),
-      a: RESULT.ageGroup,
-      r: Math.round(RESULT.retirement),
-      u: RESULT.includeUIF ? 1 : 0,
-      m: RESULT.medMembers || 0,
-      mode: MODE,
-    },
-    toolId: 'za-paye'
-  });
+  if(!RESULT)return;window.open('https://wa.me/?text='+encodeURIComponent('South Africa PAYE calculator: '+toolRoute()),'_blank','noopener,noreferrer');
 }
 
 // -€-€ SHARE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
-function shareResult() {
-  if (!RESULT) return;
-  const R = RESULT;
-  const state = {
-    g: Math.round(R.gross),
-    a: R.ageGroup,
-    r: Math.round(R.retirement),
-    u: R.includeUIF ? 1 : 0,
-    m: R.medMembers || 0,
-    mode: MODE,
-  };
-  if (typeof AfroTools !== 'undefined' && AfroTools.shareState) {
-    AfroTools.shareState.share({
-      title: 'My SA PAYE Breakdown',
-      text: `SA PAYE: Gross ${fmt(R.gross)}/yr \u2192 Take-home ${fmt(R.netMonthly)}/mo (${pct(R.effectiveRate)} rate)`,
-      state,
-    });
-  }
-  if (typeof gtag === 'function') gtag('event', 'share_click', { tool_name: 'za-paye', method: 'copy_link' });
+async function shareResult() {
+  const r=RESULT,revision=RESULT_REVISION;if(!r)return;
+  await copyCurrentText(toolRoute(),r,revision,'Tool link copied. No financial values are included.');
 }
 
 // -€-€ RESTORE FROM URL -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function restoreFromURL() {
-  if (typeof AfroTools === 'undefined' || !AfroTools.shareState) return;
-  const s = AfroTools.shareState.decode();
-  if (!s || !s.g) return;
-  salaryInput.value = parseInt(s.g).toLocaleString('en-ZA');
-  syncSlider(parseInt(s.g));
-  if (s.a) document.getElementById('ageGroup').value = s.a;
-  if (s.r) document.getElementById('retirementAmt').value = parseInt(s.r).toLocaleString('en-ZA');
-  if (s.u === '1' || s.u === 1) {
-    const uifTog = document.querySelector('[data-tog="uif"]');
-    if (uifTog && !uifTog.classList.contains('on')) togItem(uifTog);
-  } else {
-    const uifTog = document.querySelector('[data-tog="uif"]');
-    if (uifTog && uifTog.classList.contains('on')) togItem(uifTog);
-  }
-  if (s.m && parseInt(s.m) > 0) {
-    const medTog = document.querySelector('[data-tog="medical"]');
-    if (medTog && !medTog.classList.contains('on')) togItem(medTog);
-    document.getElementById('medMembers').value = s.m;
-  }
-  if (s.mode === 'net') setMode('net');
-  setTimeout(calculate, 100);
+  const s=window.__ZA_LEGACY_INPUT;delete window.__ZA_LEGACY_INPUT;
+  if(!s)return;
+  const gross=Number(s.g||s.gross);if(!Number.isFinite(gross)||gross<=0)return;
+  salaryInput.value=String(gross);syncSlider(gross);MODE='gross';
+  if(['under65','65to74','75plus'].includes(s.a))document.getElementById('ageGroup').value=s.a;
+  const raw=Number(s.r||0);document.getElementById('retirementAmt').value=Number.isFinite(raw)&&raw>=0?String(raw):'';
+  document.getElementById('retirementFunding').value='';AMOUNT_PROVENANCE='legacy_capped_or_unknown';document.getElementById('legacyRetirementNotice').textContent='Legacy amount may be capped. Review and, if necessary, edit the full annual contribution; the original raw amount cannot be reconstructed.';
+  invalidateResult('Legacy link restored as a draft. Its amount may be capped and its original desired-net target is unknown. Confirm the full contribution and funding basis, then calculate.');
 }
 
 // -€-€ AI ADVISOR -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 async function getAI() {
-  if (!RESULT) return;
-  const R = RESULT;
-  const btn = document.getElementById('aiBtn');
-  const respEl = document.getElementById('aiResp');
-  const ageLabel = { under65: 'Under 65', '65to74': 'Age 65-74', '75plus': 'Age 75+' }[R.ageGroup] || '';
-
-  btn.disabled = true; btn.textContent = 'Analysing\u2026';
-  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
-  document.getElementById('aiStatus').style.display = 'none';
-
-  const prompt = `South Africa PAYE tax analysis (2026/27 tax year):
-- Gross annual remuneration: R ${Math.round(R.gross).toLocaleString()}
-- Age group: ${ageLabel}
-- Retirement fund contribution: R ${Math.round(R.retirement).toLocaleString()} (cap: R ${Math.round(R.retCap).toLocaleString()})
-- Taxable income: R ${Math.round(R.taxableIncome).toLocaleString()}
-- Gross SARS tax: R ${Math.round(R.grossTax).toLocaleString()}
-- Rebate: R ${Math.round(R.rebate).toLocaleString()}
-- Medical tax credits: R ${Math.round(R.mtcAnnual).toLocaleString()}/yr
-- PAYE payable: R ${Math.round(R.paye).toLocaleString()}
-- UIF: R ${Math.round(R.uif).toLocaleString()}
-- Monthly take-home: R ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Remaining retirement deduction capacity: R ${Math.round(Math.max(0, R.retCap - R.retirement)).toLocaleString()}
-
-Give: 1) Plain-English summary of their SARS position 2) Two specific legal ways to reduce their PAYE 3) One SARS compliance point 4) One thing most SA employees get wrong. Under 200 words. No markdown.`;
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: 'You are AfroTools AI Tax Advisor specialising in South African personal income tax - SARS PAYE, retirement fund deductions, medical tax credits, UIF, and SDL. Be concise, specific, and practical. Tax year 1 March 2026 to 28 February 2027. No markdown, no asterisks, no dashes as bullets.',
-        messages: [{ role: 'user', content: prompt }]
-      }),
-      signal: controller.signal
-    });
-    clearTimeout(timeout);
-    if (res.status === 429) {
-      respEl.className = 'ai-response';
-      respEl.textContent = 'AI advisor is busy. Please try again in a moment.';
-      btn.disabled = false; btn.textContent = 'Try Again';
-      return;
-    }
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const text = data.text || 'Unable to generate analysis. Your calculated results above are accurate.';
-
-    respEl.className = 'ai-response'; respEl.textContent = '';
-    let i = 0;
-    const typeChar = () => {
-      if (i < text.length) { respEl.textContent += text[i++]; setTimeout(typeChar, 12); }
-      else {
-        document.getElementById('aiChat').classList.add('on');
-        document.getElementById('aiSuggestions').style.display = 'flex';
-        CHAT_HISTORY = [{ role: 'user', content: prompt }, { role: 'assistant', content: text }];
-      }
-    };
-    typeChar();
-    btn.textContent = 'Ask a follow-up below \u2193';
-  } catch (err) {
-    respEl.className = 'ai-response';
-    respEl.textContent = err.name === 'AbortError'
-      ? 'AI analysis timed out. Your calculation results above are accurate.'
-      : 'AI analysis temporarily unavailable. Your calculation results above are accurate.';
-    btn.disabled = false; btn.textContent = 'Try Again';
-  }
+  if(!RESULT)return;
+  if(!document.getElementById('aiConsent').checked){setStatus('Review the financial field preview and explicitly consent before sending it to the AI service.');document.getElementById('aiConsent').focus();return;}
+  return requestAI('Explain this annual estimate and its limitations. Do not treat the tax-deduction limit as a recommendation.');
 }
 
 async function sendChat() {
-  const input = document.getElementById('chatIn');
-  const msg = input.value.trim();
-  if (!msg || !RESULT) return;
-  input.value = '';
-  const R = RESULT;
-  const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
-  const aiEl = document.createElement('div');
-  aiEl.className = 'msg a'; aiEl.textContent = '\u2026';
-  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
-  CHAT_HISTORY.push({ role: 'user', content: msg });
-
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: `AfroTools AI Tax Advisor, South Africa. User: Gross R ${Math.round(R.gross).toLocaleString()}/yr, net R ${Math.round(R.netMonthly).toLocaleString()}/mo, rate ${pct(R.effectiveRate)}, age: ${R.ageGroup}. Concise. No markdown.`,
-        messages: CHAT_HISTORY
-      })
-    });
-    const data = await res.json();
-    const text = data.text || 'Unable to respond.';
-    aiEl.textContent = text;
-    CHAT_HISTORY.push({ role: 'assistant', content: text });
-    msgs.scrollTop = msgs.scrollHeight;
-  } catch { aiEl.textContent = 'Network error. Please try again.'; }
+  const input=document.getElementById('chatIn');const message=input.value.trim();
+  if(!message||!RESULT)return;
+  if(!document.getElementById('aiConsent').checked){setStatus('Consent is required for this current financial snapshot and your follow-up text.');return;}
+  input.value='';return requestAI(message);
 }
 
 function askSuggestion(btn) {
@@ -1611,8 +1320,38 @@ salaryInput.addEventListener('keydown', e => { if (e.key === 'Enter') calculate(
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(restoreFromURL, 200);
 });
+
+function readMedicalMembers(){const n=isOn('medical')?Number(document.getElementById('medMembers').value):0;if(!Number.isInteger(n)||n<0||n>5||(isOn('medical')&&n===0))throw new RangeError('Medical members must be a whole number from 0 to 5.');return n;}
+function strictMoney(value,label) {
+  if(typeof value==='number'){if(Number.isFinite(value)&&value>=0)return value;throw new RangeError(label+' must be a finite nonnegative amount.');}
+  let text=String(value==null?'':value).trim();if(!text)return 0;
+  if(!text.includes('.')&&text.split(',').length===2&&/,\d{1,2}$/.test(text))text=text.replace(',','.');
+  if(!/^(?:\d+|\d{1,3}(?:[,\s]\d{3})+)(?:\.\d{1,2})?$/.test(text))throw new RangeError(label+' must be a nonnegative amount with at most two decimal places.');
+  const amount=Number(text.replace(/[,\s]/g,''));if(!Number.isFinite(amount))throw new RangeError(label+' is too large.');return amount;
+}
+
+function retirePendingJobs(){RESULT_REVISION++;if(AI_CONTROLLER){AI_CONTROLLER.abort();AI_CONTROLLER=null;}CHAT_HISTORY=[];const consent=document.getElementById('aiConsent');if(consent)consent.checked=false;['aiResp','aiSuggestions'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='none';el.textContent='';}});const chat=document.getElementById('aiChat');if(chat)chat.classList.remove('on');}
+function invalidateResult(message){retirePendingJobs();RESULT=null;document.body.dataset.payeValid='false';if(CHART){CHART.destroy();CHART=null;}['resultsCard','retOptimizer','employerStrip'].forEach(id=>document.getElementById(id)?.classList.remove('on'));['resContent','resAmount','resGross','aiPreview'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});document.querySelectorAll('[data-current-result],#calcSaveBtn,#aiBtn').forEach(el=>el.disabled=true);setStatus(message);}
+
+
+
+
+
+function financialSummary(r){return '2026/27 ZAR annual estimate\nFunding basis: '+r.retirementFunding+'\n'+summaryRows(r).map(([label,value])=>label+': '+fmt(value)).join('\n')+'\nAmount provenance: '+(r.amountProvenance||'user_entered')+'\n'+estimateLimitations();}
+function chartParts(r){const values=[displayAnnual(r),r.paye,r.uif],labels=[basisLabel(r),'PAYE','Employee UIF'];if(r.retirementFunding==='employee_cash'){values.push(r.employeeRetirementCashAnnual);labels.push('Full employee retirement cash');}return{values,labels};}
+function updateResultView(){const r=RESULT;if(!r)return;const d=PERIOD==='monthly'?12:1;document.getElementById('resLabel').textContent=(PERIOD==='monthly'?'Monthly ':'Annual ')+(MODE==='net'?'gross required — ':'')+basisLabel(r);document.getElementById('resAmount').textContent=fmt((MODE==='net'?r.gross:displayAnnual(r))/d);document.getElementById('resGross').textContent='Gross '+fmt(r.gross/d)+'; '+basisLabel(r)+': '+fmt(displayAnnual(r)/d);document.getElementById('resContent').innerHTML=renderRows(r,PERIOD);}
+function toolRoute(){return location.origin+'/south-africa/za-paye/';}
+async function copyCurrentText(text,r,revision,message){try{await navigator.clipboard.writeText(text);if(isCurrentResult(r,revision))setStatus(message);return isCurrentResult(r,revision);}catch(error){if(!isCurrentResult(r,revision))return false;setStatus('Clipboard unavailable. Use the local JSON backup or select the displayed figures manually.');return false;}}
+function copySummary(){const r=RESULT,revision=RESULT_REVISION;if(!r)return;return copyCurrentText(financialSummary(r),r,revision,'Financial summary copied locally. Keep it private.');}
+function printCurrent(){if(!RESULT){setStatus('Calculate current inputs before printing.');return;}window.print();}
+window.addEventListener('beforeprint',function(){document.body.dataset.payeValid=RESULT?'true':'false';});
+function downloadSummary(){const r=RESULT;if(!r)return;const blob=new Blob([financialSummary(r)],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='za-paye-private-summary.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function downloadScenario(){if(!RESULT)return;const payload=window.PAYE_CALC_SYNC_ADAPTER.buildPayload();const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='za-paye-private-scenario.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+async function restoreScenarioFile(file){if(!file)return;invalidateResult('Reading local backup. Previous inputs are retained until validation completes.');const revision=RESULT_REVISION;try{if(file.size>65536)throw Error('Backup exceeds 64 KiB.');const text=await file.text();if(revision!==RESULT_REVISION)return;const payload=JSON.parse(text);if(!window.PAYE_CALC_SYNC_ADAPTER.restorePayload(payload,''))throw Error('Backup shape is invalid. Previous inputs remain.');}catch(error){if(revision===RESULT_REVISION)setStatus(error.message||'Unable to restore this backup.');}}
+async function requestAI(message){const r=RESULT,revision=RESULT_REVISION;if(!r||!document.getElementById('aiConsent').checked)return;const controller=new AbortController();if(AI_CONTROLLER)AI_CONTROLLER.abort();AI_CONTROLLER=controller;const current=()=>isCurrentResult(r,revision)&&AI_CONTROLLER===controller&&document.getElementById('aiConsent').checked;const response=document.getElementById('aiResp');const timer=setTimeout(()=>controller.abort(),15000);try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({system:'Explain this regular-salary annual marginal-formula estimate. Do not claim banded payroll-table equivalence, personal recommendations or tax-free contributions.',messages:[{role:'user',content:financialSummary(r)+'\nQuestion: '+message}]})});if(!current())return;if(!res.ok)throw Error('AI service unavailable.');const data=await res.json();if(!current())return;response.className='ai-response';response.style.display='block';response.textContent=typeof data.text==='string'?data.text:'No analysis returned.';document.getElementById('aiChat').classList.add('on');document.getElementById('aiSuggestions').style.display='flex';}catch(error){if(current())setStatus('AI unavailable. The local estimate remains available; retry only if you wish to send this snapshot again.');}finally{clearTimeout(timer);if(AI_CONTROLLER===controller)AI_CONTROLLER=null;}}
+document.getElementById('aiConsent').addEventListener('change',function(){if(!this.checked&&AI_CONTROLLER)AI_CONTROLLER.abort();});
 </script>
-<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<div class="container"><button type="button" data-current-result disabled onclick="copySummary()">Copy financial summary locally</button><button type="button" data-current-result disabled onclick="downloadSummary()">Save private TXT summary</button><button type="button" data-current-result disabled onclick="downloadScenario()">Save local JSON backup</button><label>Restore local JSON <input type="file" accept="application/json,.json" onchange="restoreScenarioFile(this.files[0])"></label><p>Backups contain financial data. Keep them private. Share links contain only the tool route.</p></div><script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script>
 window.PAYE_CALC_SYNC_CONFIG = {
   storageSlug: 'za-paye',
@@ -1630,148 +1369,42 @@ window.PAYE_TOOL_SAVE_META = {
   defaultDesc: 'Bookmark South Africa PAYE to your personal dashboard for quick access anytime.'
 };
 
-window.PAYE_CALC_SYNC_ADAPTER = (function () {
-  function setToggleState(toggleName, enabled) {
-    var toggle = document.querySelector('[data-tog="' + toggleName + '"]');
-    if (!toggle) return;
-    toggle.classList.toggle('on', !!enabled);
-    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
-    if(toggleName==='medical'&&document.getElementById('medicalField'))document.getElementById('medicalField').classList.toggle('on',!!enabled);
-    if (toggleName === 'medical') {
-      document.getElementById('medicalField').classList.toggle('on', !!enabled);
-    }
+window.PAYE_CALC_SYNC_ADAPTER=(function(){
+  function validate(payload){
+    if(!payload||payload.version!==2||!payload.inputs)throw Error('Unsupported scenario version.');
+    const i=payload.inputs,c=payload.retirementContract;
+    if(!Number.isFinite(i.salaryValue)||i.salaryValue<=0||!Number.isFinite(i.retirementAmount)||i.retirementAmount<0)throw Error('Invalid saved amounts.');
+    if(!['gross','net'].includes(i.mode)||!['monthly','annual'].includes(i.period)||!['under65','65to74','75plus'].includes(i.ageGroup))throw Error('Invalid saved choices.');
+    if(i.salaryPeriod!=='annual'||!i.toggles||typeof i.toggles.uif!=='boolean'||typeof i.toggles.medical!=='boolean'||!Number.isInteger(i.medMembers)||i.medMembers<0||i.medMembers>5)throw Error('Invalid saved tax options.');
+    if(i.toggles.medical&&i.medMembers===0)throw Error('Medical credit selected without a supported covered-person count.');
+    if(c&&(c.version!==1||!['unspecified','employee_cash','tax_effect_only'].includes(c.funding)||!['user_entered','legacy_capped_or_unknown'].includes(c.amountProvenance)))throw Error('Invalid retirement contract.');
+    return {inputs:i,contract:c||{version:1,funding:'unspecified',amountProvenance:'legacy_capped_or_unknown'}};
   }
-
-  function restoreLegacyPayload(payload) {
-    var salaryValue = parseNum(payload && (payload.salaryInput || payload.salarySlider || payload.g));
-    var medMembers = parseInt(payload && (payload.medMembers || payload.m), 10) || 0;
-    return {
-      version: 2,
-      inputs: {
-        salaryValue: salaryValue,
-        salaryPeriod: 'annual',
-        mode: payload && payload._mode && String(payload._mode).toLowerCase().includes('net') ? 'net' : ((payload && payload.mode) || 'gross'),
-        period: PERIOD,
-        ageGroup: (payload && (payload.ageGroup || payload.a)) || 'under65',
-        retirementAmount: parseNum(payload && (payload.retirementAmt || payload.r)),
-        toggles: {
-          uif: payload && payload.u ? payload.u === '1' || payload.u === 1 || payload.u === true : true,
-          medical: medMembers > 0
-        },
-        medMembers: medMembers || 1
-      }
-    };
+  function payload(){if(!RESULT)return null;return{version:2,toolSlug:'za-paye',toolName:'South Africa PAYE Calculator',countryCode:'ZA',currency:'ZAR',taxPeriod:RESULT.taxPeriod,
+    retirementContract:{version:1,funding:RESULT.retirementFunding,amountProvenance:AMOUNT_PROVENANCE},
+    inputs:{salaryValue:strictMoney(salaryInput.value,'Salary'),salaryPeriod:'annual',mode:MODE,period:PERIOD,ageGroup:document.getElementById('ageGroup').value,retirementAmount:RESULT.retirementContributionAnnual,toggles:{uif:isOn('uif'),medical:isOn('medical')},medMembers:isOn('medical')?Number(document.getElementById('medMembers').value):0},
+    snapshot:{...RESULT,netAnnual:RESULT.netAnnual,netMonthly:RESULT.netMonthly,netBasis:RESULT.netBasis,displayBasis:RESULT.displayBasis,balanceAnnual:displayAnnual(RESULT),balanceMonthly:displayAnnual(RESULT)/12}};}
+  function restore(value,title){let selected;try{
+    if(value&&(value.version===1||(!Object.prototype.hasOwnProperty.call(value,'version')&&['salaryInput','salarySlider','g'].some(key=>Object.prototype.hasOwnProperty.call(value,key))))){const f=value.version===1?value.fields||value:value;const salary=strictMoney(f.salaryInput||f.salarySlider||f.g||0,'Saved salary'),raw=strictMoney(f.retirementAmt||f.r||0,'Saved retirement');value={version:2,inputs:{salaryValue:salary,salaryPeriod:'annual',mode:(f.mode==='net'||String(f._mode||'').toLowerCase().includes('net'))?'net':'gross',period:'monthly',ageGroup:f.ageGroup||f.a||'under65',retirementAmount:raw,toggles:{uif:!(f.u===false||f.u===0||f.u==='0'),medical:Number(f.medMembers||f.m||0)>0},medMembers:Number(f.medMembers||f.m||0)}};}
+    selected=validate(value);}catch(error){invalidateResult('Saved scenario is invalid. Previous input values are preserved.');return false;}
+    const i=selected.inputs,c=selected.contract;invalidateResult('Restoring local draft.');
+    salaryInput.value=String(i.salaryValue);syncSlider(i.salaryValue);document.getElementById('ageGroup').value=i.ageGroup;document.getElementById('retirementAmt').value=String(i.retirementAmount||'');document.getElementById('retirementFunding').value=c.funding==='unspecified'?'':c.funding;AMOUNT_PROVENANCE=c.amountProvenance;document.getElementById('legacyRetirementNotice').textContent=c.amountProvenance==='legacy_capped_or_unknown'?'Legacy amount provenance is incomplete. Review the full annual contribution before choosing funding.':'';MODE=i.mode;PERIOD=i.period;
+    ['uif','medical'].forEach(name=>{const el=document.querySelector('[data-tog="'+name+'"]');el.classList.toggle('on',i.toggles[name]);el.setAttribute('aria-checked',String(i.toggles[name]));});document.getElementById('medicalField').classList.toggle('on',i.toggles.medical);document.getElementById('medMembers').value=String(i.medMembers||1);
+    document.getElementById('modeGross').classList.toggle('on',MODE==='gross');document.getElementById('modeNet').classList.toggle('on',MODE==='net');document.getElementById('inputLabel').textContent=MODE==='gross'?'Annual Gross Remuneration':'Desired Annual Selected Balance';document.getElementById('sliderLabel').textContent=document.getElementById('inputLabel').textContent;
+    document.querySelectorAll('.per-btn').forEach((b,index)=>b.classList.toggle('on',(PERIOD==='monthly'?0:1)===index));
+    if(document.getElementById('calcSaveName'))document.getElementById('calcSaveName').value=title||'';
+    clearTimeout(debounceTimer);
+    if(i.retirementAmount>0&&c.funding==='unspecified'){setStatus('Legacy scenario loaded as a draft. Confirm the full contribution and funding basis before calculating; stored history was not rewritten.');return true;}
+    calculate();return !!RESULT;
   }
-
-  return {
-    hasResult: function () {
-      return !!window.RESULT;
-    },
-    buildPayload: function () {
-      if (!window.RESULT) return null;
-
-      return {
-        version: 2,
-        toolSlug: 'za-paye',
-        toolName: 'South Africa PAYE Calculator',
-        countryCode: 'ZA',
-        currency: 'ZAR',
-        inputs: {
-          salaryValue: parseNum(document.getElementById('salaryInput').value),
-          salaryPeriod: 'annual',
-          mode: MODE,
-          period: PERIOD,
-          ageGroup: document.getElementById('ageGroup').value,
-          retirementAmount: parseNum(document.getElementById('retirementAmt').value),
-          toggles: {
-            uif: isOn('uif'),
-            medical: isOn('medical')
-          },
-          medMembers: isOn('medical') ? parseInt(document.getElementById('medMembers').value, 10) || 1 : 0
-        },
-        snapshot: {
-          gross: Number(window.RESULT.gross) || 0,
-          grossAnnual: Number(window.RESULT.gross) || 0,
-          grossMonthly: (Number(window.RESULT.gross) || 0) / 12,
-          tax: Number(window.RESULT.paye) || 0,
-          taxAnnual: Number(window.RESULT.paye) || 0,
-          taxMonthly: (Number(window.RESULT.paye) || 0) / 12,
-          netAnnual: Number(window.RESULT.netAnnual) || 0,
-          netMonthly: Number(window.RESULT.netMonthly) || 0,
-          effectiveRate: (Number(window.RESULT.effectiveRate) || 0) * 100,
-          marginalRate: (Number(window.RESULT.marginalRate) || 0) * 100,
-          taxableIncome: Number(window.RESULT.taxableIncome) || 0,
-          taxableAnnual: Number(window.RESULT.taxableIncome) || 0,
-          taxableMonthly: (Number(window.RESULT.taxableIncome) || 0) / 12,
-          uifAnnual: Number(window.RESULT.uif) || 0,
-          uifMonthly: (Number(window.RESULT.uif) || 0) / 12,
-          retirementAnnual: Number(window.RESULT.retirement) || 0,
-          retirementMonthly: (Number(window.RESULT.retirement) || 0) / 12,
-          medicalCreditAnnual: Number(window.RESULT.mtcAnnual) || 0,
-          medicalCreditMonthly: Number(window.RESULT.mtcMonthly) || 0,
-          employerCostAnnual: Number(window.RESULT.totalEmployerCost) || 0,
-          employerCostMonthly: (Number(window.RESULT.totalEmployerCost) || 0) / 12
-        }
-      };
-    },
-    restorePayload: function (payload, title) {
-      var restored = payload;
-      if (!restored || restored.version !== 2 || !restored.inputs) {
-        restored = restoreLegacyPayload(payload);
-      }
-
-      var inputs = restored.inputs || {};
-      var toggles = inputs.toggles || {};
-      var salaryValue = Number(inputs.salaryValue || 0);
-      function retireFailedRestore(){
-        RESULT=null;clearTimeout(debounceTimer);
-        ['resultsCard','aiChat'].forEach(function(id){var node=document.getElementById(id);if(node)node.classList.remove('on');});
-        ['calcSaveBtn','aiBtn'].forEach(function(id){var node=document.getElementById(id);if(node)node.disabled=true;});
-        ['aiResp','aiSuggestions'].forEach(function(id){var node=document.getElementById(id);if(node)node.style.display='none';});
-        var status=document.getElementById('aiStatus');if(status){status.style.display='';status.setAttribute('role','status');status.textContent='Saved scenario could not be loaded. Previous inputs are preserved. Calculate again before saving or exporting.';}
-      }
-      var fieldIds=['salaryInput','salarySlider','ageGroup','retirementAmt','medMembers'];
-      if(!Number.isFinite(salaryValue)||salaryValue<=0||fieldIds.concat(['sliderVal','modeGross','modeNet','sliderLabel','inputLabel','resLabel','medicalField']).some(function(id){return !document.getElementById(id);})){
-        retireFailedRestore();return false;
-      }
-      var previousMode=MODE,previousPeriod=PERIOD;
-      var previousFields=fieldIds.concat(['calcSaveName']).map(function(id){var node=document.getElementById(id);return node?{node:node,value:node.value}:null;}).filter(Boolean);
-      var previousViews=Array.from(document.querySelectorAll('[data-tog],.per-btn,.mode-btn,#medicalField,#salarySlider')).map(function(node){return {node:node,className:node.className,style:node.getAttribute('style'),checked:node.getAttribute('aria-checked')};});
-      var previousLabels=Array.from(document.querySelectorAll('#sliderVal,#sliderLabel,#inputLabel,#resLabel')).map(function(node){return {node:node,text:node.textContent};});
-      try {
-
-      document.getElementById('salaryInput').value = salaryValue ? fmtInput(salaryValue) : '';
-      if (salaryValue) syncSlider(salaryValue);
-      document.getElementById('ageGroup').value = inputs.ageGroup || 'under65';
-      document.getElementById('retirementAmt').value = inputs.retirementAmount ? fmtInput(inputs.retirementAmount) : '';
-      setToggleState('uif', toggles.uif !== false);
-      setToggleState('medical', !!toggles.medical);
-      document.getElementById('medMembers').value = String(inputs.medMembers || 1);
-
-      if (typeof setMode === 'function') setMode(inputs.mode || 'gross');
-      if (typeof calculate === 'function') calculate();
-
-      var periodButtons = document.querySelectorAll('.per-btn');
-      if (typeof setPeriod === 'function' && periodButtons.length >= 2) {
-        setPeriod(inputs.period === 'annual' ? 'annual' : 'monthly', inputs.period === 'annual' ? periodButtons[1] : periodButtons[0]);
-      }
-
-      if (document.getElementById('calcSaveName')) {
-        document.getElementById('calcSaveName').value = title || '';
-      }
-      if(!RESULT)throw new Error('Restore calculation unavailable');
-      clearTimeout(debounceTimer);
-      return true;
-      }catch(error){
-        retireFailedRestore();MODE=previousMode;PERIOD=previousPeriod;
-        previousFields.forEach(function(field){field.node.value=field.value;});
-        previousViews.forEach(function(view){view.node.className=view.className;[['style',view.style],['aria-checked',view.checked]].forEach(function(attribute){if(attribute[1]===null)view.node.removeAttribute(attribute[0]);else view.node.setAttribute(attribute[0],attribute[1]);});});
-        previousLabels.forEach(function(label){label.node.textContent=label.text;});
-        return false;
-      }
-    }
+  return{hasResult:()=>!!RESULT,buildPayload:payload,restorePayload:restore,
+    getDefaultTitle:p=>'South Africa PAYE — '+(p.snapshot?.displayBasis==='cash_after_employee_retirement'?'cash after retirement':'before retirement payments'),
+    getPayloadSummary:p=>(p.snapshot?.displayBasis==='cash_after_employee_retirement'?'Cash after retirement':'Before retirement payments')+'; full annual contribution '+fmt(p.inputs.retirementAmount),
+    buildWorkspaceMeta:p=>({title:'South Africa PAYE estimate',description:p.snapshot?.displayBasis==='cash_after_employee_retirement'?'Employee-cash retirement basis':'Before-retirement-payment basis',resultBasis:p.snapshot?.displayBasis,netMonthly:null,balanceMonthly:p.snapshot?.balanceMonthly}),
+    saveDeviceHistory:function(p,data){if(data&&typeof data.save==='function')data.save('za-paye',{grossAnnual:p.snapshot.gross,balanceAnnual:p.snapshot.balanceAnnual,balanceMonthly:p.snapshot.balanceMonthly,resultBasis:p.snapshot.displayBasis,retirementContract:p.retirementContract,summary:(p.snapshot.displayBasis==='cash_after_employee_retirement'?'Cash after retirement':'Before retirement payments')+': '+fmt(p.snapshot.balanceMonthly)+'/month'});}
   };
 })();
+
 </script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>

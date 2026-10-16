@@ -88,7 +88,25 @@
    * @param {number}  [opts.medMembers=0] - Medical aid members (main + dependents)
    * @returns {Object}
    */
-  function calculate(annualGross, opts = {}) {
+  function retirementCashFields(gross, raw, allowed, afterTax, funding) {
+  funding = funding == null || funding === '' ? 'unspecified' : funding;
+  if (!['unspecified', 'employee_cash', 'tax_effect_only'].includes(funding)) throw new RangeError('Choose a supported retirement funding basis.');
+  const employeeCash = funding === 'employee_cash' ? raw : 0;
+  if (funding === 'employee_cash' && afterTax - employeeCash < 0) throw new RangeError('The retirement contribution leaves negative cash. Reduce the contribution or use tax effect only.');
+  const cash = raw === 0 ? afterTax : funding === 'employee_cash' ? afterTax - raw : null;
+  return {
+    retirementContributionAnnual: raw, retirementTaxDeductionAnnual: allowed,
+    retirementUndeductedAnnual: raw - allowed, retirementFunding: funding,
+    retirementStatus: raw > 0 && funding === 'unspecified' ? 'funding_required' : 'ready',
+    afterPayeAndUifAnnual: afterTax, afterPayeAndUifMonthly: afterTax / 12,
+    employeeRetirementCashAnnual: employeeCash, cashRemainingAnnual: cash,
+    cashRemainingMonthly: cash == null ? null : cash / 12,
+    netBasis: 'after_paye_and_uif_before_retirement',
+    displayBasis: funding === 'employee_cash' && raw > 0 ? 'cash_after_employee_retirement' : 'before_retirement_cash'
+  };
+}
+
+function calculate(annualGross, opts = {}) {
     if (!Number.isFinite(annualGross) || annualGross < 0) throw new RangeError('Annual salary must be a finite nonnegative amount.');
     const gross     = annualGross;
     const ageGroup  = opts.ageGroup || 'under65';
@@ -141,6 +159,7 @@
 
     return {
       taxPeriod: { ...TAX_PERIOD },
+      ...retirementCashFields(gross, retRaw, retirement, netAnnual, opts.retirementFunding),
       gross, ageGroup,
       retirement, retCap, retRaw,
       taxableIncome,
@@ -166,12 +185,29 @@
     return { valid: true, error: null };
   }
 
-  function reverseCalc(desiredNetAnnual, opts = {}) {
+  function reverseCashCalc(target, opts = {}) {
+  if (!Number.isFinite(target) || target < 0) throw new RangeError('Cash target must be finite and nonnegative.');
+  if (opts.retirementFunding !== 'employee_cash') throw new RangeError('Cash reverse requires an explicit employee cash funding choice.');
+  const raw = opts.retirement == null || opts.retirement === '' ? 0 : opts.retirement;
+  if (!Number.isFinite(raw) || raw < 0) throw new RangeError('Retirement contribution must be finite and nonnegative.');
+  const cashAt = gross => calculate(gross, { ...opts, retirementFunding: 'tax_effect_only' }).netAnnual - raw;
+  let lo = 0, hi = Math.max(1, target + raw), attempts = 0;
+  while (Number.isFinite(hi) && cashAt(hi) < target && attempts++ < 60) hi *= 2;
+  if (!Number.isFinite(hi) || cashAt(hi) < target) throw new RangeError('Cash target could not be bracketed. Use gross salary mode.');
+  for (let i = 0; i < 100; i++) {
+    if (cashAt(hi) - target <= 0.01) return hi;
+    const mid = (lo + hi) / 2;
+    if (cashAt(mid) < target) lo = mid; else hi = mid;
+  }
+  throw new RangeError('Cash target could not be solved within R0.01 annual precision. Use gross salary mode.');
+}
+
+function reverseCalc(desiredNetAnnual, opts = {}) {
     if (!Number.isFinite(desiredNetAnnual) || desiredNetAnnual < 0) throw new RangeError('Net salary must be a finite nonnegative annual amount.');
     let lo = desiredNetAnnual, hi = desiredNetAnnual * 3;
     for (let i = 0; i < 50; i++) {
       const mid = (lo + hi) / 2;
-      const result = calculate(mid, opts);
+      const result = calculate(mid, { ...opts, retirementFunding: 'tax_effect_only' });
       if (Math.abs(result.netAnnual - desiredNetAnnual) < 1) return mid;
       if (result.netAnnual < desiredNetAnnual) lo = mid;
       else hi = mid;
@@ -179,29 +215,21 @@
     return (lo + hi) / 2;
   }
 
-  /**
-   * Retirement optimizer: find optimal contribution
-   */
+  /** Illustrative contribution-cap tax comparison, not personal advice.
+   * Legacy optimalAmount/maxAmount keys remain for API compatibility only. */
   function optimizeRetirement(annualGross, opts = {}) {
-    const maxRet = Math.min(annualGross * 0.275, 430000);
-    const step = Math.max(1000, Math.round(maxRet / 20));
-    let bestSaving = 0, bestAmount = 0;
-    const baseResult = calculate(annualGross, { ...opts, retirement: 0 });
-
-    for (let amount = step; amount <= maxRet; amount += step) {
-      const result = calculate(annualGross, { ...opts, retirement: amount });
-      const saving = baseResult.paye - result.paye;
-      if (saving > bestSaving) {
-        bestSaving = saving;
-        bestAmount = amount;
-      }
-    }
-
+    const maxAmount = Math.min(annualGross * 0.275, 430000);
+    const currentAmount = opts.retirement == null || opts.retirement === '' ? 0 : opts.retirement;
+    const baseResult = calculate(annualGross, { ...opts, retirement: currentAmount, retirementFunding: 'tax_effect_only' });
+    const comparedAmount = Math.max(currentAmount, maxAmount);
+    const compared = calculate(annualGross, { ...opts, retirement: comparedAmount, retirementFunding: 'tax_effect_only' });
+    const additional = comparedAmount - currentAmount;
+    const saving = baseResult.paye - compared.paye;
     return {
-      optimalAmount: bestAmount,
-      maxAmount: maxRet,
-      taxSaving: bestSaving,
-      baseTax: baseResult.paye,
+      comparisonKind: 'tax_saving_not_personal_recommendation', recommendation: false,
+      currentContributionAnnual: currentAmount, comparedContributionAnnual: comparedAmount,
+      additionalContributionAnnual: additional, cashChangeAnnual: saving - additional,
+      optimalAmount: comparedAmount, maxAmount, taxSaving: saving, baseTax: baseResult.paye
     };
   }
 
@@ -211,6 +239,7 @@
     calculate,
     validate,
     reverseCalc,
+    reverseCashCalc,
     optimizeRetirement,
     SARS_BANDS,
     REBATES,

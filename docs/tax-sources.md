@@ -38,16 +38,17 @@ Each PAYE engine references official tax legislation and government publications
 - **Last verified:** March 2026
 
 ### South Africa (`engines/za-paye.js`)
-- **Authority:** South African Revenue Service (SARS)
-- **Legislation:** Income Tax Act No. 58 of 1962 as amended
-- **Tax tables:** SARS 2025/26 tax year (7 bands: 18%–45%)
-- **Rebates:** Primary R17,235; Secondary (65+) R9,444; Tertiary (75+) R3,145
-- **Thresholds:** Under-65: R95,750; 65+: R148,217; 75+: R165,689
-- **UIF:** 1% employee, 1% employer (ceiling R212,544/yr = R17,712/month)
-- **Retirement:** Deductible up to 27.5% of remuneration, max R350,000
-- **Medical Credits:** R364/month (member + first dependent), R246/month (additional)
-- **Source URL:** https://www.sars.gov.za
-- **Last verified:** March 2026
+- **Authority:** South African Revenue Service (SARS), PAYE-GEN-01-G21, 2027 assessment, revision 1.
+- **Period:** 1 March 2026–28 February 2027 (2026/27); current-only annual marginal-formula estimate for regular full-year salary. Monthly amounts are annual estimates / 12, not SARS banded payroll-table equivalence.
+- **Rates:** Seven bands (18%–45%); primary rebate R17,820, secondary R9,765, tertiary R3,249. Thresholds R99,000 / R153,250 / R171,300 by age group.
+- **UIF:** 1% employee and modelled employer, earnings ceiling R17,712/month; employee cap R177.12/month.
+- **Retirement:** Salary-only tax deduction is min(full annual contribution, 27.5% of gross salary, R430,000). Raw contribution remains distinct from allowed deduction and undeducted amount; no carry-forward entitlement is asserted.
+- **Browser cash contract:** Zero contribution needs no funding choice. Nonzero contribution requires employee cash or tax-effect-only. Employee cash subtracts the full raw amount after PAYE/UIF; negative cash is rejected. Tax-effect-only shows the balance before retirement payments, without claiming cash remaining. Employer-funded/CTC packages are unsupported.
+- **API compatibility:** Legacy net and reverse targets remain before retirement cash; additive `meta.netBasis` and `meta.retirementCashModelled:false` clarify this. No API cash-mode parameter is introduced. French defaults remain unchanged.
+- **Medical credits:** English browser only: R376/month main member and first dependant, R254 additional. Server/French defaults do not model this input.
+- **Privacy and portability:** Outgoing tool links contain no salary/contribution values. Explicit local JSON backups retain full inputs and funding basis. Legacy nonzero scenarios require confirmation without deleting history. Optional AI requires consent to the displayed current snapshot.
+- **Primary sources:** https://www.sars.gov.za/guide-for-employers-in-respect-of-employees-tax-2027/ ; https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/ ; https://www.sars.gov.za/tax-rates/medical-tax-credit-rates/ ; https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/
+- **Source review provenance:** Current-period official-source review retained from 16 October 2026; this cash-contract change does not refresh source dates or claim complete statutory payroll treatment.
 
 ### Egypt (`engines/eg-paye.js`)
 - **Authority:** Egyptian Tax Authority (ETA)

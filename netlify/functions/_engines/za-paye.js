@@ -91,7 +91,7 @@ module.exports = {
         marginalRate: (taxableIncome > 0 ? ANNUAL_BRACKETS.find(([ceiling]) => taxableIncome <= ceiling)[1] * 100 : 0) + '%'
       },
       employer: { uif: Math.round(empUif), sdl: Math.round(grossAnnual * 0.01), totalCostAnnual: Math.round(grossAnnual + empUif + grossAnnual * 0.01), totalCostMonthly: Math.round((grossAnnual + empUif + grossAnnual * 0.01) / 12) },
-      meta: { taxPeriod: { ...TAX_PERIOD }, regime: 'STANDARD', currency: 'ZAR', lastUpdated: this.lastUpdated, source: this.source }
+      meta: { retirementContributionAnnual: retirement, retirementTaxDeductionAnnual: retirementDeduction, retirementUndeductedAnnual: retirement - retirementDeduction, netBasis: 'after_paye_and_uif_before_retirement', retirementCashModelled: false, taxPeriod: { ...TAX_PERIOD }, regime: 'STANDARD', currency: 'ZAR', lastUpdated: this.lastUpdated, source: this.source }
     };
   },
 
