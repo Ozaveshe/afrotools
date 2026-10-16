@@ -72,7 +72,7 @@ test("eligibility projection joins exact IDs and slugs and preserves content/his
 
 test("actual public API list/get require both query flags and reject an upstream non-public row before children", async () => {
   let returned = mixed(), calls = [];
-  const context = { exports: {}, process: { env: { SUPABASE_ANON_KEY: "synthetic-test-key" } }, fetch: async url => {
+  const context = { exports: {}, require:specifier=>{assert.equal(specifier,'../../engines/src/afrokitchen-engine');return require('../engines/src/afrokitchen-engine');},process: { env: { SUPABASE_ANON_KEY: "synthetic-test-key" } }, fetch: async url => {
     calls.push(url); return { ok: true, json: async () => returned };
   }};
   vm.runInNewContext(read("netlify/functions/afrokitchen-recipes.js"), context);

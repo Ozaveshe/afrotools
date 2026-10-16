@@ -1,3 +1,4 @@
+const attributedRecipes = require('../../engines/src/afrokitchen-engine');
 // netlify/functions/afrokitchen-recipes.js
 // Supabase CRUD for AfroKitchen recipes
 // Handles recipe fetching, filtering, and view count incrementing
@@ -63,7 +64,11 @@ exports.handler = async function (event) {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
       });
       if (!res.ok) throw new Error('Upstream ' + res.status);
-      const data = (await res.json()).filter(recipe => recipe.is_published === true && recipe.is_verified === true);
+      const data = (await res.json()).filter(recipe => recipe.is_published === true && recipe.is_verified === true).map(recipe => {
+        const projected = attributedRecipes.projectAttributedRecipe(recipe);
+        if (!projected) throw new Error("Attributed recipe identity mismatch");
+        return projected;
+      });
       return { statusCode: 200, headers, body: JSON.stringify(data) };
     }
 
@@ -94,7 +99,9 @@ exports.handler = async function (event) {
       recipe.media = await mediaRes.json();
       if (!Array.isArray(recipe.media) || recipe.media.some(row => row.recipe_id !== recipe.id)) throw new Error('Recipe media unavailable');
 
-      return { statusCode: 200, headers, body: JSON.stringify(recipe) };
+      const projected = attributedRecipes.projectAttributedRecipe(recipe);
+      if (!projected) throw new Error("Attributed recipe identity mismatch");
+      return { statusCode: 200, headers, body: JSON.stringify(projected) };
     }
 
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid action' }) };

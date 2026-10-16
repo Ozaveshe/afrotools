@@ -2,6 +2,7 @@
 "use strict";
 
 const fs = require("fs");
+const attributedRecipes = require("../engines/src/afrokitchen-engine");
 const path = require("path");
 const { imageSizeFromUrl } = require('./lib/image-size');
 const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
@@ -159,6 +160,11 @@ function loadRecipeResearchAudit() {
 }
 
 function applyRecipeResearchPatch(recipe, researchAudit) {
+  if (attributedRecipes.isAttributedTarget(recipe)) {
+    const projected = attributedRecipes.projectAttributedRecipe(recipe);
+    if (!projected) throw new Error("Attributed recipe requires exact identity and explicit public eligibility");
+    return projected;
+  }
   const entry = researchAudit && researchAudit[recipe.slug];
   const patch = entry && entry.static_recipe_patch;
   if (!patch) return recipe;
@@ -3197,7 +3203,7 @@ async function main() {
   const manifest = await buildManifest({ waveStrategy });
 
   manifest.recipes = manifest.recipes.map((recipe) => ({
-    ...(recipe.slug === 'kapenta-stew-zm' ? applyRecipeResearchPatch(recipe, recipeResearchAudit) : recipe),
+    ...((recipe.slug === 'kapenta-stew-zm' || attributedRecipes.isAttributedTarget(recipe)) ? applyRecipeResearchPatch(recipe, recipeResearchAudit) : recipe),
     country_route_path: `/tools/afrokitchen/countries/${recipe.country_slug}/`,
     country_route_url: countryUrl(recipe.country_slug)
   }));
@@ -3210,6 +3216,17 @@ async function main() {
         if (row.slug !== kapenta.slug) return row;
         if (row.id && row.id !== kapenta.id) throw new Error('Curated Kapenta summary identity mismatch');
         return { ...row, ...Object.fromEntries(fields.map(field => [field, kapenta[field]])) };
+      });
+    }
+  }
+  // Propagate only these two attributed summaries; every other recipe is untouched.
+  const attributedSummaryFields = ['name', 'description', 'story', 'author', 'source', 'image_url', 'image_alt', 'diet_tags', 'prep_time_minutes', 'cook_time_minutes', 'total_time_minutes', 'default_servings', 'serving_unit', 'yield_status', 'method_revision'];
+  for (const recipe of manifest.recipes.filter(row => attributedRecipes.isAttributedRecipe(row))) {
+    for (const group of [...(manifest.countries || []), ...(manifest.collections || [])]) {
+      group.recipes = (group.recipes || []).map(row => {
+        if (row.slug !== recipe.slug) return row;
+        if (row.id && row.id !== recipe.id) throw new Error('Attributed summary identity mismatch');
+        return { ...row, ...Object.fromEntries(attributedSummaryFields.map(field => [field, recipe[field]])) };
       });
     }
   }
