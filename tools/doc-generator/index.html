@@ -386,7 +386,10 @@
       var params = [];
       if (docType) params.push('type=' + encodeURIComponent(docType));
       if (country) params.push('country=' + encodeURIComponent(country));
-      window.location.href = 'generate' + (params.length ? '?' + params.join('&') : '');
+      var nextUrl = 'generate' + (params.length ? '?' + params.join('&') : '');
+      var privateHandoff = window.AfroTools && window.AfroTools.payrollPrivatePrefill;
+      var continued = privateHandoff && privateHandoff.continueDocument(nextUrl);
+      window.location.href = continued && continued.ok ? continued.url : nextUrl;
     });
   }
 
@@ -407,5 +410,6 @@
 }());
 </script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/lib/payroll-private-prefill.js?v=2d3ab156" defer></script>
 </body>
 </html>

@@ -101,9 +101,9 @@
 <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-<script src="/engines/afrokitchen-engine.js?v=beb93264"></script>
-<script src="image-manifest.js?v=518ea7e3"></script>
-<script src="image-pipeline.js?v=f8570562"></script>
+<script src="/engines/afrokitchen-engine.js?v=3cd54652"></script>
+<script src="image-manifest.js?v=985293d5"></script>
+<script src="image-pipeline.js?v=5afa2dfa"></script>
 <script src="static-routes.js?v=476490b3"></script>
 <script>
 (function () {
@@ -168,6 +168,32 @@
   var diffSelect = document.getElementById('filter-difficulty');
   AK.DIFFICULTIES.forEach(function (d) { var o = document.createElement('option'); o.value = d; o.textContent = d.charAt(0).toUpperCase() + d.slice(1); diffSelect.appendChild(o); });
 
+  function showPublicationState(rows, reload) {
+    var empty = document.getElementById('recipes-empty');
+    var loading = document.getElementById('recipes-loading');
+    var heading = empty.querySelector('h3'), description = empty.querySelector('p');
+    if (!showPublicationState.defaults) showPublicationState.defaults = [heading.textContent, description.innerHTML];
+    var retry = document.getElementById('ak-publication-retry');
+    if (!retry) {
+      retry = document.createElement('button'); retry.type = 'button';
+      retry.id = 'ak-publication-retry'; retry.className = 'ak-btn ak-btn-outline'; retry.textContent = 'Retry recipe availability';
+      empty.appendChild(retry);
+    }
+    var unavailable = AK.isPublicationUnavailable(rows);
+    retry.hidden = !unavailable; retry.style.display = unavailable ? "" : "none";
+    retry.onclick = function() { retry.disabled = true; AK.retryPublication(); return reload(); };
+    retry.disabled = false;
+    if (!unavailable) {
+      heading.textContent = showPublicationState.defaults[0]; description.innerHTML = showPublicationState.defaults[1];
+      return false;
+    }
+    loading.style.display = 'none'; empty.style.display = '';
+    empty.setAttribute('role', 'status'); empty.setAttribute('aria-live', 'polite');
+    heading.textContent = 'Recipe availability could not be checked';
+    description.textContent = 'Publication data is unavailable. Reconnect and retry; this does not mean the archive has no recipes.';
+    return true;
+  }
+
   async function load() {
     var grid = document.getElementById('recipes-grid');
     var loading = document.getElementById('recipes-loading');
@@ -180,6 +206,7 @@
 
     var recipes = await AK.fetchRecipes(filters);
     loading.style.display = 'none';
+    if (showPublicationState(recipes, load)) return;
     if (!recipes || !recipes.length) { empty.style.display = ''; return; }
     document.getElementById('country-count').textContent = String(recipes.length);
 

@@ -58,21 +58,37 @@ function localizeFrenchSolarCountryPicker(source, names) {
   if (seen.size !== copy.size) throw new Error("French Solar picker copy contract changed; inspect the controller");
   let finderText = source.slice(finder.start, finder.end);
   const normalizer=isRoot?"normalize":"normalizeCountry";
-  for (const [before,after] of [
+  const exactRoot = isRoot && finderText.includes('var exact=COUNTRIES.filter(')
+    && finderText.includes('if(exact.length===1)return exact[0];')
+    && finderText.includes('return currency.length===1?currency[0]:null;');
+  const finderEdits = [
     [normalizer+'(country.name)===query','('+normalizer+'(country.name)===query||'+normalizer+'(solarFrenchCountryName(country))===query)'],
-    [normalizer+'(country.name).indexOf(query)>=0','('+normalizer+'(country.name).indexOf(query)>=0||'+normalizer+'(solarFrenchCountryName(country)).indexOf(query)>=0)'],
-  ]) {
+  ];
+  // The current root deliberately rejects partial matches and ambiguous shared
+  // currencies. Translate its exact-name lookup without restoring fuzzy selection.
+  if (!exactRoot) finderEdits.push(
+    [normalizer+'(country.name).indexOf(query)>=0','('+normalizer+'(country.name).indexOf(query)>=0||'+normalizer+'(solarFrenchCountryName(country)).indexOf(query)>=0)']);
+  for (const [before,after] of finderEdits) {
     if (finderText.split(before).length !== 2) throw new Error("French Solar country search contract changed");
     finderText = finderText.replace(before,after);
   }
   edits.push({start:finder.start,end:finder.end,text:helper+'\n'+finderText});
   if(isRoot){
-    const invalid=nodes.filter(node=>node.type==="Literal"&&node.value==="No exact country match yet. Keep typing or use the dropdown.");
-    if(invalid.length!==1)throw new Error("French Solar root invalid-search owner changed");
-    edits.push({start:invalid[0].start,end:invalid[0].end,text:JSON.stringify("Aucun pays trouvé. Continuez à saisir ou utilisez la liste.")});
+    const invalidCopy = exactRoot ? [
+      ["Choose a country to open its calculator", "Choisissez un pays pour ouvrir son calculateur"],
+      ["Choose a matching country or use the dropdown. Shared currencies need an explicit country choice.", "Choisissez un pays correspondant ou utilisez la liste. Les devises partagées exigent un choix de pays explicite."],
+      ["Choose a country before copying or downloading a planning brief.", "Choisissez un pays avant de copier ou télécharger une fiche de préparation."],
+    ] : [["No exact country match yet. Keep typing or use the dropdown.", "Aucun pays trouvé. Continuez à saisir ou utilisez la liste."]];
+    const invalidOwner = exactRoot ? functions.get("clearCountry") : null;
+    if (exactRoot && !invalidOwner) throw new Error("French Solar root clear-selection owner changed");
+    for (const [before,after] of invalidCopy) {
+      const invalid=nodes.filter(node=>node.type==="Literal"&&node.value===before&&(!invalidOwner||(node.start>=invalidOwner.start&&node.end<=invalidOwner.end)));
+      if(invalid.length!==1)throw new Error("French Solar root invalid-search owner changed");
+      edits.push({start:invalid[0].start,end:invalid[0].end,text:JSON.stringify(after)});
+    }
     const cards=functions.get("updateCards");let text=source.slice(cards.start,cards.end);
     for(const [before,after]of [
-      ['var match=!query||card.getAttribute("data-country").indexOf(query)>=0;', 'var match=!query||card.getAttribute("data-country").indexOf(query)>=0||normalize(solarFrenchCountryName(findCountry(card.getAttribute("data-country-slug")))).indexOf(query)>=0;'],
+      [exactRoot ? 'var match=!query||normalize(card.getAttribute("data-country")).indexOf(query)>=0;' : 'var match=!query||card.getAttribute("data-country").indexOf(query)>=0;', 'var match=!query||'+(exactRoot?'normalize(card.getAttribute("data-country"))':'card.getAttribute("data-country")')+'.indexOf(query)>=0||normalize(solarFrenchCountryName(findCountry(card.getAttribute("data-country-slug")))).indexOf(query)>=0;'],
       ['status.textContent=query?("Showing "+visible+" matching "+(visible===1?"country":"countries")+"."):"Showing all "+cards.length+" countries.";', 'status.textContent=query?("Résultats : "+visible+" pays."):("Tous les pays : "+cards.length+".");'],
     ]){if(text.split(before).length!==2)throw new Error("French Solar card-filter owner changed");text=text.replace(before,after);}
     edits.push({start:cards.start,end:cards.end,text});

@@ -39,8 +39,17 @@ for (const artwork of importedArtwork) {
 
 for (const artwork of ledger.images) {
   test(`${artwork.slug}: reviewed image hashes, dimensions and mobile byte budget`, () => {
-    assert.ok(artwork.prompt.length > 200);
-    assert.equal(artwork.source, 'built-in image_gen');
+    if (artwork.prompt === null) {
+      assert.equal(artwork.slug, 'kapenta-stew-zm', 'only the reviewed saved candidate has unknown prompt history');
+      assert.equal(artwork.source, 'saved AI-generated candidate');
+      assert.match(artwork.upstream_prompt_status, /Generation transcript not established/);
+      assert.match(artwork.provenance, /Saved AI-generated serving illustration/);
+      assert.equal(artwork.saved_asset_blobs.length, artwork.variants.length);
+      for (const blob of artwork.saved_asset_blobs) assert.match(blob, /^[a-f0-9]{40}$/);
+    } else {
+      assert.ok(artwork.prompt.length > 200);
+      assert.equal(artwork.source, 'built-in image_gen');
+    }
     for (const variant of artwork.variants) {
       const file = path.join(ROOT, variant.path);
       const bytes = fs.readFileSync(file);

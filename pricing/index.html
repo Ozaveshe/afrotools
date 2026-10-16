@@ -254,23 +254,23 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   <h2>Frequently Asked Questions</h2>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">What's included in AfroTools Pro?<span class="arrow">&#9660;</span></button>
-    <div class="faq-a" data-claim-key="pro.current-capabilities" data-claim-variant="summary">Pro access follows the current app-readiness and entitlement matrix; preview features are labelled.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="pricing-faq-pro-answer">What's included in AfroTools Pro?<span class="arrow" aria-hidden="true">&#9660;</span></button>
+    <div class="faq-a" id="pricing-faq-pro-answer" data-claim-key="pro.current-capabilities" data-claim-variant="summary">Pro access follows the current app-readiness and entitlement matrix; preview features are labelled.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">How does billing work?<span class="arrow">&#9660;</span></button>
-    <div class="faq-a" data-claim-key="payment.provider-processing" data-claim-variant="summary">Checkout and billing actions are completed by the configured payment provider; status changes require provider confirmation.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="pricing-faq-billing-answer">How does billing work?<span class="arrow" aria-hidden="true">&#9660;</span></button>
+    <div class="faq-a" id="pricing-faq-billing-answer" data-claim-key="payment.provider-processing" data-claim-variant="summary">Checkout and billing actions are completed by the configured payment provider; status changes require provider confirmation.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I cancel anytime?<span class="arrow">&#9660;</span></button>
-    <div class="faq-a">Cancellation and access-end timing follow the configured payment provider and the status confirmed in your account.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="pricing-faq-cancel-answer">Can I cancel anytime?<span class="arrow" aria-hidden="true">&#9660;</span></button>
+    <div class="faq-a" id="pricing-faq-cancel-answer">Cancellation and access-end timing follow the configured payment provider and the status confirmed in your account.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Is my data safe?<span class="arrow">&#9660;</span></button>
-    <div class="faq-a" data-claim-key="privacy.browser-local" data-claim-variant="summary">This local workflow processes its working data in your browser; AI, account sync, email, TTS, analytics, payments, and explicit cloud uploads are separate disclosed actions.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="pricing-faq-data-answer">Is my data safe?<span class="arrow" aria-hidden="true">&#9660;</span></button>
+    <div class="faq-a" id="pricing-faq-data-answer" data-claim-key="privacy.browser-local" data-claim-variant="summary">This local workflow processes its working data in your browser; AI, account sync, email, TTS, analytics, payments, and explicit cloud uploads are separate disclosed actions.</div>
   </div>
 </section>
 
@@ -327,8 +327,14 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     btn.addEventListener('click', function(){
       const item = btn.parentElement;
       const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
-      if(!wasOpen) item.classList.add('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){
+        i.classList.remove('open');
+        i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if(!wasOpen){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
     });
   });
 })();

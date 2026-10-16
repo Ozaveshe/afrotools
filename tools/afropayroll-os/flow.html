@@ -62,6 +62,9 @@
 .apo-step-dot.active{border-color:var(--apo);background:var(--apo-pale);color:var(--apo)}
 .apo-step-dot.done{border-color:var(--green);background:var(--green-pale);color:var(--green)}
 .apo-step-dot.skipped{border-color:#e2e8f0;background:#f8fafc;color:#94a3b8}
+.apo-step-dot:focus-visible{outline:3px solid var(--apo);outline-offset:3px}
+.apo-field-error,.apo-setup .apo-field-error{color:#b91c1c;font-size:.85rem;text-align:left;margin:10px 0}
+[aria-invalid="true"]{border-color:#b91c1c!important}
 
 /* ── Step card ── */
 .apo-step-card{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px;margin-bottom:20px}
@@ -215,22 +218,34 @@
       </div>
       <div class="apo-field" id="setup-salary-field">
         <label for="setup-salary">Salary / Gross Pay <span style="color:var(--m);font-weight:400">(optional — used to pre-fill tools)</span></label>
-        <input type="number" id="setup-salary" placeholder="e.g. 250000" min="0">
+        <input type="number" id="setup-salary" placeholder="e.g. 250000" min="0" step="any">
       </div>
       <div class="apo-field" id="setup-role-field">
         <label for="setup-role">Job role <span style="color:var(--m);font-weight:400">(optional)</span></label>
         <input type="text" id="setup-role" placeholder="e.g. Software Engineer">
       </div>
     </div>
+    <p class="apo-field-error" id="apo-setup-error" role="alert"></p>
+    <p id="apo-country-notice" role="status"></p>
     <button type="button" class="apo-setup-start" id="apo-start-btn">Start Journey →</button>
     <div class="apo-setup-meta">
       <div class="apo-setup-note">Core workflow support is available across all 54 African countries. Country-specific calculators and guidance appear automatically where AfroTools has localized coverage.</div>
-      <div class="apo-sync-note" id="apo-sync-note">Progress saves in this browser. Sign in to sync your journey across devices.</div>
+      <div class="apo-sync-note" id="apo-sync-note">Progress saves in this browser. Account saving is optional and requires a separate choice below.</div>
     </div>
   </div>
 </div>
 
 <!-- Main flow layout -->
+<section class="apo-setup-meta" aria-labelledby="apo-account-title" style="max-width:760px;margin:16px auto;padding:16px">
+  <h2 id="apo-account-title" style="font-size:1rem">Optional account copy</h2>
+  <p>Keep working locally for free. To recover across devices, sign in and choose account access for this page. Save sends this journey's country, checklist progress and entered gross pay and job role to your signed-in AfroTools account (Supabase). Load reads that account copy. Neither action calculates or submits payroll.</p>
+  <label><input type="checkbox" id="apo-account-consent"> Allow account access for these Payroll fields on this page</label>
+  <p>Turning this off stops future account requests; existing account copies remain. <a href="/privacy/data-request/">Request account data deletion</a>.</p>
+  <button type="button" class="apo-nav-btn" id="apo-account-save" disabled>Save device copy to account</button>
+  <button type="button" class="apo-nav-btn" id="apo-account-load" disabled>Load account copy for review</button>
+  <button type="button" class="apo-nav-btn" id="apo-account-undo" hidden>Undo account restore</button>
+  <p id="apo-account-status" role="status" aria-live="polite">Device-only. Account access is off.</p>
+</section>
 <div class="apo-flow-layout" id="apo-flow-layout">
 
   <!-- Step dots -->
@@ -240,18 +255,21 @@
   <div class="apo-step-card" id="apo-step-card">
     <div class="apo-step-number" id="apo-step-number"></div>
     <div id="apo-step-badge"></div>
-    <h2 class="apo-step-title" id="apo-step-title"></h2>
+    <h2 class="apo-step-title" id="apo-step-title" tabindex="-1"></h2>
     <p class="apo-step-desc" id="apo-step-desc"></p>
     <div class="apo-step-prefill" id="apo-step-prefill"></div>
     <div class="apo-step-actions">
-      <a href="#" class="apo-btn-open" id="apo-btn-open" target="_blank" rel="noopener">Open Tool ↗</a>
+      <a href="#" class="apo-btn-open" id="apo-btn-open" target="_self" rel="noopener">Open Tool ↗</a>
+      <a href="#" class="apo-btn-skip" id="apo-open-without-prefill" hidden style="display:none">Open without private details</a>
       <button type="button" class="apo-btn-done" id="apo-btn-done">✓ Mark as done</button>
       <button type="button" class="apo-btn-skip" id="apo-btn-skip" style="display:none">Skip →</button>
     </div>
+    <p id="apo-handoff-status" role="status" aria-live="polite"></p>
     <!-- Carry-forward data capture -->
     <div class="apo-carry-form" id="apo-carry-form">
       <h4>Capture key outputs from this tool:</h4>
       <div class="apo-carry-fields" id="apo-carry-fields"></div>
+      <p class="apo-field-error" id="apo-carry-error" role="alert"></p>
     </div>
   </div>
 
@@ -278,14 +296,15 @@
 
 <!-- Completion screen -->
 <div class="apo-complete" id="apo-complete">
-  <div class="apo-complete-icon">🎉</div>
-  <h2 id="apo-complete-title">Journey Complete!</h2>
+  <div class="apo-complete-icon" id="apo-complete-icon">📋</div>
+  <h2 id="apo-complete-title" tabindex="-1">Journey Summary</h2>
   <p id="apo-complete-desc">You've completed every step. Here's a summary of what you covered.</p>
   <div class="apo-complete-summary">
     <h3>Journey Summary</h3>
     <div id="apo-summary-rows"></div>
   </div>
   <div class="apo-complete-actions">
+    <button type="button" class="apo-complete-btn primary" id="apo-resume-checklist-btn">Return to pending steps</button>
     <button type="button" class="apo-complete-btn primary" id="apo-share-btn">📤 Share checklist</button>
     <button type="button" class="apo-complete-btn secondary" id="apo-download-btn">Download summary PDF</button>
     <a href="index.html" class="apo-complete-btn secondary">Start another journey</a>
@@ -295,13 +314,17 @@
 
 <afro-footer></afro-footer>
 
-<script src="/engines/afropayroll-os-engine.js?v=96b7f079"></script>
+<script src="/engines/afropayroll-os-engine.js?v=9cf2c6f4"></script>
+<script src="/assets/js/lib/payroll-private-prefill.js?v=2d3ab156"></script>
+<script src="/assets/js/lib/payroll-cloud-sync.js?v=7efd0b6d"></script>
 <script>
 (async function () {
   'use strict';
 
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.afropayrollOs;
   if (!engine) { console.warn('AfroPayroll OS engine not loaded'); return; }
+  // Retire the old, unconsumed durable handoff. Journey drafts are separate.
+  engine.clearPreFill();
 
   // ── Parse query params ────────────────────────────────
   var params = new URLSearchParams(window.location.search);
@@ -436,9 +459,9 @@
     if (!syncNote) return;
 
     var user = getCurrentUser();
-    syncNote.innerHTML = user
-      ? '<strong>Signed in.</strong> Your journey progress now syncs across devices.'
-      : '<strong>Browser-only save.</strong> Sign in to sync your journey across devices.';
+    syncNote.textContent = user
+      ? 'Signed in. Device saves stay local until you allow account access and choose Save.'
+      : 'Browser-only save. Sign in if you want to make an optional account copy.';
   }
 
   function buildProgressSnapshot(stepIndex) {
@@ -457,11 +480,45 @@
       totalSteps: snapshot.totalSteps,
       stepStatuses: snapshot.stepStatuses
     });
-    var user = getCurrentUser();
-    if (user && engine.syncToSupabase) {
-      engine.syncToSupabase(journeyId, user.id, snapshot);
-    }
+    if (cloud) cloud.changed();
     return snapshot;
+  }
+
+  function normalizeProgress(progress) {
+    return progress && typeof progress === 'object' && !Array.isArray(progress) ? progress : {};
+  }
+
+  function validSalary(input) {
+    return !input.validity.badInput && (input.value.trim() === '' ||
+      (Number.isFinite(Number(input.value)) && Number(input.value) >= 0));
+  }
+
+  function fieldError(input, message, errorId) {
+    document.getElementById(errorId).textContent = message;
+    input.setAttribute('aria-invalid', message ? 'true' : 'false');
+    var descriptions = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean).filter(function (id) { return id !== errorId; });
+    if (message) descriptions.push(errorId);
+    if (descriptions.length) input.setAttribute('aria-describedby', descriptions.join(' '));
+    else input.removeAttribute('aria-describedby');
+    if (message) input.focus();
+  }
+
+  function checklistCounts() {
+    var done = state.stepStatuses.filter(function (s) { return s === 'done'; }).length;
+    var skipped = state.stepStatuses.filter(function (s) { return s === 'skipped'; }).length;
+    return { done: done, skipped: skipped, pending: state.steps.length - done - skipped,
+      complete: state.steps.length > 0 && done === state.steps.length };
+  }
+
+  function nextUnresolvedStep() {
+    var pending = state.stepStatuses.indexOf('pending');
+    return pending >= 0 ? pending : Math.max(state.stepStatuses.indexOf('skipped'), 0);
+  }
+
+  function escapeSummary(value) {
+    return String(value).replace(/[&<>"']/g, function (character) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
+    });
   }
 
   document.getElementById('setup-journey-icon').textContent = journey.icon;
@@ -471,20 +528,9 @@
   updateSyncNote();
   window.addEventListener('afro-auth-change', updateSyncNote);
 
-  var savedProgress = engine.loadProgress(journeyId);
-  if (isResume) {
-    var currentUser = getCurrentUser();
-    if (currentUser && engine.loadProgressFromSupabase) {
-      var remoteProgress = await engine.loadProgressFromSupabase(journeyId, currentUser.id);
-      if (remoteProgress && (!savedProgress || !savedProgress.updatedAt || remoteProgress.updatedAt > savedProgress.updatedAt)) {
-        savedProgress = remoteProgress;
-        engine.saveProgress(journeyId, remoteProgress.currentStep || 0, remoteProgress.carryData || {}, remoteProgress.country, {
-          totalSteps: remoteProgress.totalSteps || 0,
-          stepStatuses: remoteProgress.stepStatuses || []
-        });
-      }
-    }
-  }
+  var rawProgress = engine.loadProgress(journeyId);
+  var savedProgress = normalizeProgress(rawProgress);
+  if (rawProgress !== savedProgress) engine.clearProgress(journeyId);
 
   // If resuming, prefill from saved progress
   if (isResume) {
@@ -497,10 +543,93 @@
     }
   }
 
+  var setupCountry = document.getElementById('setup-country');
+  var previousCountry = setupCountry.value;
+  var countryChanged = false;
+  var cloudApi = window.AfroTools.payrollCloudSync;
+  var cloud = cloudApi && cloudApi.mount({
+    engine: engine, journeyId: journeyId,
+    snapshot: function () {
+      if (!state.steps.length) return null;
+      var input = document.getElementById('carry-salary');
+      if (input && document.getElementById('apo-carry-form').style.display !== 'none') {
+        if (!validSalary(input)) { fieldError(input, 'Enter a finite gross pay amount of zero or more, or leave it blank.', 'apo-carry-error'); return null; }
+        state.carryData.salary = input.value.trim();
+      }
+      return persistProgress(state.currentStep);
+    },
+    backup: function () {
+      try {
+        var copy = { raw: localStorage.getItem('apo_journey_' + journeyId), state: JSON.parse(JSON.stringify(state)),
+          saved: savedProgress, isResume: isResume, countryChanged: countryChanged, previousCountry: previousCountry,
+          notice: document.getElementById('apo-country-notice').textContent,
+          fields: ['setup-country', 'setup-salary', 'setup-role', 'carry-salary'].map(function (id) {
+            var input = document.getElementById(id); return { id: id, value: input ? input.value : null };
+          }), screens: [setupEl, flowEl, completeEl, topbar].map(function (el) { return el.style.display || ''; }) };
+        localStorage.setItem('apo_restore_backup_' + journeyId, JSON.stringify(copy));
+        return copy;
+      } catch (error) { return null; }
+    },
+    restore: function (progress) {
+      if (!Object.keys(COUNTRY_GROUPS).some(function (group) { return COUNTRY_GROUPS[group].some(function (country) { return country.code === progress.country; }); })) return false;
+      try {
+        // Write the exact validated copy first; do not merge the old country's fields.
+        localStorage.setItem('apo_journey_' + journeyId, JSON.stringify(progress));
+      } catch (error) { return false; }
+      savedProgress = progress; isResume = true; countryChanged = false; previousCountry = progress.country;
+      setupCountry.value = progress.country;
+      document.getElementById('setup-salary').value = progress.carryData.salary || '';
+      document.getElementById('setup-role').value = progress.carryData.role || '';
+      state.steps = []; setupEl.style.display = 'block'; flowEl.style.display = 'none'; completeEl.style.display = 'none'; topbar.style.display = 'none';
+      document.getElementById('apo-country-notice').textContent = 'Account copy loaded. Review country and pay, then Start Journey to continue its checklist.';
+      setupCountry.focus(); return true;
+    },
+    undo: function (copy) {
+      try {
+        if (copy.raw === null) localStorage.removeItem('apo_journey_' + journeyId);
+        else localStorage.setItem('apo_journey_' + journeyId, copy.raw);
+      } catch (error) { return false; }
+      state = JSON.parse(JSON.stringify(copy.state)); savedProgress = copy.saved;
+      isResume = copy.isResume; countryChanged = copy.countryChanged; previousCountry = copy.previousCountry;
+      document.getElementById('apo-country-notice').textContent = copy.notice;
+      if (state.steps.length) renderStep();
+      // renderStep autosaves; restore the exact retained record after rebuilding controls.
+      try { if (copy.raw === null) localStorage.removeItem('apo_journey_' + journeyId); else localStorage.setItem('apo_journey_' + journeyId, copy.raw); } catch (error) { return false; }
+      copy.fields.forEach(function (field) { var input = document.getElementById(field.id); if (input && field.value !== null) input.value = field.value; });
+      [setupEl, flowEl, completeEl, topbar].forEach(function (el, index) { el.style.display = copy.screens[index]; });
+      return true;
+    }
+  });
+  if (document.addEventListener) document.addEventListener('input', function (event) {
+    if (cloud && /^(setup-(country|salary|role)|carry-salary)$/.test(event.target.id || '')) cloud.changed();
+  });
+  setupCountry.addEventListener('change', function () {
+    if (cloud) cloud.changed();
+    if (previousCountry && previousCountry !== setupCountry.value) {
+      countryChanged = true;
+      document.getElementById('setup-salary').value = '';
+      document.getElementById('apo-country-notice').textContent =
+        'Country changed. Previous pay and checklist answers will not be reused. Enter pay for this country if needed; no currency conversion is applied.';
+    }
+    previousCountry = setupCountry.value;
+  });
+
   document.getElementById('apo-start-btn').addEventListener('click', function () {
-    var country = document.getElementById('setup-country').value;
-    var salary  = document.getElementById('setup-salary').value;
+    var country = setupCountry.value;
+    var salaryInput = document.getElementById('setup-salary');
+    fieldError(setupCountry, '', 'apo-setup-error');
+    fieldError(salaryInput, '', 'apo-setup-error');
+    var knownCountry = Object.keys(COUNTRY_GROUPS).some(function (group) {
+      return COUNTRY_GROUPS[group].some(function (entry) { return entry.code === country; });
+    });
+    if (!knownCountry) { fieldError(setupCountry, 'Select a country to start.', 'apo-setup-error'); return; }
+    if (!validSalary(salaryInput)) { fieldError(salaryInput, 'Enter a finite gross pay amount of zero or more, or leave it blank.', 'apo-setup-error'); return; }
+    var salary = salaryInput.value.trim();
     var role    = document.getElementById('setup-role').value;
+
+    // Rebuild this journey record from validated state, including corrupt JSON
+    // which the engine safely reads as empty but cannot merge on its next save.
+    engine.clearProgress(journeyId);
 
     state.country  = country;
     state.salary   = salary;
@@ -513,19 +642,17 @@
     });
 
     // Init step statuses
-    if (isResume) {
-      var savedP = savedProgress || engine.loadProgress(journeyId);
-      var savedStep = typeof savedP.currentStep === 'number' ? savedP.currentStep : 0;
+    var savedP = normalizeProgress(savedProgress);
+    if (isResume && !countryChanged && savedP.country === country) {
+      var savedStep = Number.isInteger(savedP.currentStep) && savedP.currentStep >= 0 ? savedP.currentStep : 0;
       state.currentStep = Math.min(savedStep, Math.max(state.steps.length - 1, 0));
       if (Array.isArray(savedP.stepStatuses) && savedP.stepStatuses.length === state.steps.length) {
-        state.stepStatuses = savedP.stepStatuses.slice();
-      } else {
-        state.stepStatuses = state.steps.map(function (_, i) {
-          if (i < savedStep) return 'done';
-          return 'pending';
+        state.stepStatuses = savedP.stepStatuses.map(function (status) {
+          return status === 'done' || status === 'skipped' ? status : 'pending';
         });
+      } else {
+        state.stepStatuses = state.steps.map(function () { return 'pending'; });
       }
-      Object.assign(state.carryData, savedP.carryData || {});
     } else {
       state.stepStatuses = state.steps.map(function () { return 'pending'; });
       state.currentStep = 0;
@@ -553,13 +680,12 @@
 
     // Persist
     persistProgress(state.currentStep);
-    engine.setPreFill(state.carryData);
 
     // Update progress bar
-    var done = state.stepStatuses.filter(function (s) { return s === 'done' || s === 'skipped'; }).length;
+    var done = checklistCounts().done;
     var pct  = Math.round((done / state.steps.length) * 100);
     document.getElementById('apo-progress-fill').style.width = pct + '%';
-    document.getElementById('apo-progress-label').textContent = done + ' / ' + state.steps.length;
+    document.getElementById('apo-progress-label').textContent = done + ' / ' + state.steps.length + ' done';
 
     // Step dots
     var dotsEl = document.getElementById('apo-step-dots');
@@ -569,7 +695,8 @@
       else if (state.stepStatuses[i] === 'done') cls += ' done';
       else if (state.stepStatuses[i] === 'skipped') cls += ' skipped';
       var label = state.stepStatuses[i] === 'done' ? '✓' : (i + 1);
-      return '<div class="' + cls + '" data-step="' + i + '">' + label + '</div>';
+      return '<button type="button" class="' + cls + '" data-step="' + i + '" aria-label="Step ' + (i + 1) + ': ' + s.label + ', ' + state.stepStatuses[i] + '"' +
+        (i === state.currentStep ? ' aria-current="step"' : '') + '>' + label + '</button>';
     }).join('');
     dotsEl.querySelectorAll('.apo-step-dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
@@ -609,8 +736,13 @@
     var openBtn = document.getElementById('apo-btn-open');
     openBtn.href = toolUrl;
     openBtn.textContent = 'Open ' + step.label + ' ↗';
-    // Mobile: same tab; desktop: new tab
-    openBtn.target = window.innerWidth < 768 ? '_self' : '_blank';
+    // Private session handoff stays in this tab; Back returns to the saved journey.
+    openBtn.target = '_self';
+    var manualOpen = document.getElementById('apo-open-without-prefill');
+    manualOpen.href = toolUrl;
+    manualOpen.hidden = true;
+    manualOpen.style.display = 'none';
+    document.getElementById('apo-handoff-status').textContent = 'Opening this tool carries the country, pay and role privately in this tab for up to 20 minutes. Review the details on arrival; no amounts are calculated or submitted.';
 
     // Skip button
     var skipBtn = document.getElementById('apo-btn-skip');
@@ -621,29 +753,45 @@
     var carryFields = document.getElementById('apo-carry-fields');
     if (state.currentStep === 0 && !state.carryData.salary) {
       carryForm.style.display = 'block';
-      carryFields.innerHTML = '<div class="apo-carry-field"><label>Net Salary / Monthly Pay</label><input aria-label="E.g. 250000" type="number" id="carry-salary" placeholder="e.g. 250000" value="' + (state.carryData.salary || '') + '"></div>';
+      carryFields.innerHTML = '<div class="apo-carry-field"><label for="carry-salary">Monthly gross pay (optional)</label><input type="number" min="0" step="any" id="carry-salary" placeholder="e.g. 250000"></div>';
     } else {
       carryForm.style.display = 'none';
     }
 
     // Nav buttons
     document.getElementById('apo-prev-btn').disabled = state.currentStep === 0;
-    document.getElementById('apo-next-btn').textContent = state.currentStep === state.steps.length - 1 ? 'Finish journey →' : 'Next step →';
+    document.getElementById('apo-next-btn').textContent = state.currentStep === state.steps.length - 1 ? 'View checklist summary →' : 'Next step →';
 
     // AI panel placeholder for this step
     document.getElementById('apo-ai-input').placeholder = 'Ask about ' + step.label.toLowerCase() + ' in ' + (state.country || 'Africa') + '...';
     document.getElementById('apo-ai-response').style.display = 'none';
     document.getElementById('apo-ai-response').textContent = '';
+    document.getElementById('apo-carry-error').textContent = '';
+    document.getElementById('apo-step-title').focus();
   }
 
   // ── Button handlers ───────────────────────────────────
+  document.getElementById('apo-btn-open').addEventListener('click', function (event) {
+    event.preventDefault();
+    var handoff = window.AfroTools && window.AfroTools.payrollPrivatePrefill;
+    var step = state.steps[state.currentStep];
+    var result = handoff && handoff.prepareLaunch(this.href, Object.assign({}, state.carryData, { docType: step && step.docType || '' }));
+    if (result && result.ok) { window.location.assign(result.url); return; }
+    document.getElementById('apo-handoff-status').textContent = result && result.reason || 'Private handoff is unavailable. Your checklist is still saved. Open without private details and enter them manually.';
+    var manualOpen = document.getElementById('apo-open-without-prefill');
+    manualOpen.hidden = false;
+    manualOpen.style.display = '';
+  });
+
   document.getElementById('apo-btn-done').addEventListener('click', function () {
     // Capture any carry data entries
     var sEl = document.getElementById('carry-salary');
-    if (sEl && sEl.value) { state.carryData.salary = sEl.value; }
+    if (sEl && document.getElementById('apo-carry-form').style.display !== 'none') {
+      if (!validSalary(sEl)) { fieldError(sEl, 'Enter a finite gross pay amount of zero or more, or leave it blank.', 'apo-carry-error'); return; }
+      state.carryData.salary = sEl.value.trim();
+    }
 
     state.stepStatuses[state.currentStep] = 'done';
-    persistProgress(state.currentStep + 1);
     advanceStep();
   });
 
@@ -672,13 +820,15 @@
     topbar.style.display  = 'none';
     completeEl.style.display = 'block';
 
-    var doneCount    = state.stepStatuses.filter(function (s) { return s === 'done'; }).length;
-    var skippedCount = state.stepStatuses.filter(function (s) { return s === 'skipped'; }).length;
+    var counts = checklistCounts();
+    var doneCount = counts.done;
+    var skippedCount = counts.skipped;
 
-    document.getElementById('apo-complete-title').textContent = journey.icon + ' ' + journey.label + ' — Complete!';
+    document.getElementById('apo-complete-title').textContent = journey.icon + ' ' + journey.label + (counts.complete ? ' — Complete!' : ' — Checklist summary');
+    document.getElementById('apo-complete-icon').textContent = counts.complete ? '🎉' : '📋';
     document.getElementById('apo-complete-desc').textContent =
-      'You\'ve completed ' + doneCount + ' of ' + state.steps.length + ' steps' +
-      (skippedCount ? ' (' + skippedCount + ' skipped).' : '.');
+      doneCount + ' of ' + state.steps.length + ' steps marked done; ' + skippedCount + ' skipped; ' + counts.pending + ' pending.' +
+      (counts.complete ? ' This records your checklist answers, not verification of payroll compliance.' : ' Your unfinished checklist is saved. Return to review the remaining steps.');
 
     // Summary rows
     var rows = [];
@@ -686,15 +836,34 @@
     if (state.carryData.salary) rows.push({ label: 'Gross Salary', value: Number(state.carryData.salary).toLocaleString() });
     if (state.role)     rows.push({ label: 'Role', value: state.role });
     rows.push({ label: 'Steps completed', value: doneCount + ' / ' + state.steps.length });
+    rows.push({ label: 'Skipped / pending', value: skippedCount + ' / ' + counts.pending });
 
     document.getElementById('apo-summary-rows').innerHTML = rows.map(function (r) {
-      return '<div class="apo-summary-row"><span class="apo-summary-label">' + r.label + '</span><span class="apo-summary-value">' + r.value + '</span></div>';
+      return '<div class="apo-summary-row"><span class="apo-summary-label">' + escapeSummary(r.label) + '</span><span class="apo-summary-value">' + escapeSummary(r.value) + '</span></div>';
     }).join('');
 
-    persistProgress(state.steps.length);
-    engine.clearProgress(journeyId);
+    var resumeButton = document.getElementById('apo-resume-checklist-btn');
+    resumeButton.hidden = counts.complete;
+    resumeButton.style.display = counts.complete ? 'none' : '';
+    resumeButton.textContent = counts.pending ? 'Return to pending steps' : 'Review skipped steps';
+    if (counts.complete) {
+      persistProgress(state.steps.length);
+      engine.clearProgress(journeyId);
+    } else {
+      persistProgress(nextUnresolvedStep());
+    }
     engine.clearPreFill();
+    document.getElementById('apo-complete-title').focus();
   }
+
+  document.getElementById('apo-resume-checklist-btn').addEventListener('click', function () {
+    if (checklistCounts().complete) return;
+    state.currentStep = nextUnresolvedStep();
+    completeEl.style.display = 'none';
+    flowEl.style.display = 'block';
+    topbar.style.display = 'flex';
+    renderStep();
+  });
 
   document.getElementById('apo-download-btn').addEventListener('click', function () {
     var doneCount = state.stepStatuses.filter(function (status) { return status === 'done'; }).length;
@@ -707,6 +876,7 @@
       { label: 'Completed steps', value: doneCount + ' / ' + state.steps.length },
       { label: 'Skipped steps', value: String(skippedCount) }
     ];
+    rows.push({ label: 'Pending steps', value: String(checklistCounts().pending) });
 
     state.steps.forEach(function (step, index) {
       var status = state.stepStatuses[index] || 'pending';
@@ -741,7 +911,9 @@
 
   // Share
   document.getElementById('apo-share-btn').addEventListener('click', function () {
-    var text = 'I just completed the ' + journey.label + ' on AfroTools AfroPayroll OS!';
+    var counts = checklistCounts();
+    var text = journey.label + ' checklist on AfroTools AfroPayroll OS: ' + counts.done + ' of ' + state.steps.length +
+      ' marked done, ' + counts.skipped + ' skipped, ' + counts.pending + ' pending.';
     var url  = 'https://afrotools.com/tools/afropayroll-os/';
     if (navigator.share) {
       navigator.share({ title: 'AfroPayroll OS', text: text, url: url });

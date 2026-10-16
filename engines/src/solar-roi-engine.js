@@ -65,8 +65,10 @@
     var a = Math.pow(10, null == t ? 2 : t);
     return Math.round(((isFinite(e) ? e : 0) + Number.EPSILON) * a) / a;
   }
+  // All callers use percentage points (Pct fields, APR or discount percent).
+  // Values such as 0.6 mean 0.6%, never a 60% ratio.
   function o(e) {
-    return (e = a(e, 0)) > 1 ? e / 100 : e;
+    return a(e, 0) / 100;
   }
   function i(e, t) {
     return (e = a(e, t || 0)) > 0 ? e : t || 0;

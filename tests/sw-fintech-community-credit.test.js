@@ -7,6 +7,7 @@ const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
 const { assertLifecycle } = require('./support/swahili-acceptance-lifecycle');
 
+const { resolveReviewedToolArtwork } = require('../scripts/lib/reviewed-tool-image-bindings');
 const ROOT = path.resolve(__dirname, '..');
 const apps = [
   ['sacco-calc', 'sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/index.html', '/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/', '/tools/sacco-calc/', '/fr/tools/calculateur-sacco-cooperative/'],
@@ -27,7 +28,7 @@ for (const [id, file, sw, en, fr] of apps) {
   assert.ok(html.includes('lang="sw"'), id);
   assert.ok(html.includes('content="scripts/build-sw-fintech-community-credit.js"'), id);
   assert.ok(html.includes(`href="https://afrotools.com${sw}"`), id);
-  assert.ok(html.includes(`/assets/img/tools/${id}.webp`), id);
+  assert.ok(html.includes(resolveReviewedToolArtwork(sw, `/assets/img/tools/${id}.webp`)), id);
   assert.ok(html.includes(`fintech-shared-controllers/${id}.js`), id);
   assert.ok(html.includes(`href="/sw/ai/?tool=${id}"`), id);
   assert.ok(html.includes('Udhamini au ushirika wa kibiashara'), id);

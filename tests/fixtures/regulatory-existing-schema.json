@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "sourceEvidence": {
+    "projectRef": "zpclagtgczsygrgztlts",
+    "capturedAt": "2026-10-16T09:00:31.684Z",
+    "serverVersion": "17.6",
+    "sha256": "ba67d0272c66390b6b36f935fde7123bd2a3cf2bd8d762abc49d34c2808f1406",
+    "scope": "Read-only schema metadata, no user rows"
+  },
+  "existing_columns": [
+    {
+      "type": "uuid",
+      "table": "gazette_changes",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "country_code",
+      "default": null,
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "country_name",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "change_type",
+      "default": null,
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "description",
+      "default": null,
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "old_value",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "new_value",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "date",
+      "table": "gazette_changes",
+      "column": "effective_date",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "source_url",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "gazette_changes",
+      "column": "source_name",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "double precision",
+      "table": "gazette_changes",
+      "column": "confidence",
+      "default": "0.5",
+      "nullable": "YES"
+    },
+    {
+      "type": "boolean",
+      "table": "gazette_changes",
+      "column": "verified",
+      "default": "false",
+      "nullable": "YES"
+    },
+    {
+      "type": "boolean",
+      "table": "gazette_changes",
+      "column": "applied_to_tools",
+      "default": "false",
+      "nullable": "YES"
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "gazette_changes",
+      "column": "detected_at",
+      "default": "now()",
+      "nullable": "YES"
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "gazette_changes",
+      "column": "verified_at",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "uuid",
+      "table": "review_queue",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "nullable": "NO"
+    },
+    {
+      "type": "uuid",
+      "table": "review_queue",
+      "column": "data_confidence_id",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "category",
+      "default": null,
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "country_code",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "metric",
+      "default": null,
+      "nullable": "NO"
+    },
+    {
+      "type": "numeric",
+      "table": "review_queue",
+      "column": "scraped_value",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "numeric",
+      "table": "review_queue",
+      "column": "previous_value",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "double precision",
+      "table": "review_queue",
+      "column": "change_pct",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "reason",
+      "default": null,
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "status",
+      "default": "'pending'::text",
+      "nullable": "NO"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "reviewed_by",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "review_queue",
+      "column": "reviewed_at",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "text",
+      "table": "review_queue",
+      "column": "notes",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "review_queue",
+      "column": "created_at",
+      "default": "now()",
+      "nullable": "YES"
+    }
+  ],
+  "existing_constraints": [
+    {
+      "name": "gazette_changes_change_type_check",
+      "table": "gazette_changes",
+      "definition": "CHECK ((change_type = ANY (ARRAY['minimum_wage'::text, 'paye_bracket'::text, 'vat_rate'::text, 'pension_rate'::text, 'nhif_rate'::text, 'tax_relief'::text, 'other'::text])))"
+    },
+    {
+      "name": "gazette_changes_pkey",
+      "table": "gazette_changes",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "review_queue_data_confidence_id_fkey",
+      "table": "review_queue",
+      "definition": "FOREIGN KEY (data_confidence_id) REFERENCES data_confidence(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "review_queue_pkey",
+      "table": "review_queue",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "review_queue_status_check",
+      "table": "review_queue",
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'approved'::text, 'rejected'::text, 'auto_resolved'::text])))"
+    }
+  ],
+  "existing_rls": [
+    {
+      "rls": true,
+      "table": "gazette_changes",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "table": "review_queue",
+      "force_rls": false
+    }
+  ]
+}

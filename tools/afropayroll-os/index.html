@@ -177,7 +177,7 @@
 </script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is AfroPayroll OS free to use?","acceptedAnswer":{"@type":"Answer","text":"The guided workflow is free to use. The Pro direction is the company workspace layer: employee rosters, payroll run history, branded batch exports, and synced team records."}},{"@type":"Question","name":"Which African countries are supported?","acceptedAnswer":{"@type":"Answer","text":"All 54 African countries. Country-specific pension tools auto-select for Nigeria (CPS), Kenya (NSSF), Ghana (SSNIT), and South Africa (GEPF). For all other countries, the general pension projection and social security tools apply."}},{"@type":"Question","name":"Is my data saved? Do I need to create an account?","acceptedAnswer":{"@type":"Answer","text":"No account required. Your journey progress is saved automatically in your browser. If you create a free AfroTools account, your progress syncs to the cloud so you can resume on any device."}},{"@type":"Question","name":"What does \"data carries forward\" mean?","acceptedAnswer":{"@type":"Answer","text":"When you enter your country and salary in step 1 (minimum wage check), AfroPayroll OS passes that data to step 2 (staff cost calculator) as pre-filled values. You don't re-enter the same information — it moves with you through the flow."}},{"@type":"Question","name":"Can I skip steps I don't need?","acceptedAnswer":{"@type":"Answer","text":"Yes. Optional steps can be skipped with one click. Required steps are flagged — these are the ones where skipping creates legal risk (e.g., checking minimum wage, generating a legally compliant payslip)."}},{"@type":"Question","name":"Does this replace payroll software?","acceptedAnswer":{"@type":"Answer","text":"No. It is a workflow hub and calculator layer. It can support payroll software, client education and sales pilots."}},{"@type":"Question","name":"Can this become a branded payroll portal?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use custom calculators, widgets or API pilots for client-facing payroll products."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is AfroPayroll OS free to use?","acceptedAnswer":{"@type":"Answer","text":"The guided workflow is free to use. The Pro direction is the company workspace layer: employee rosters, payroll run history, branded batch exports, and synced team records."}},{"@type":"Question","name":"Which African countries are supported?","acceptedAnswer":{"@type":"Answer","text":"All 54 African countries. Country-specific pension tools auto-select for Nigeria (CPS), Kenya (NSSF), Ghana (SSNIT), and South Africa (GEPF). For all other countries, the general pension projection and social security tools apply."}},{"@type":"Question","name":"Is my data saved? Do I need to create an account?","acceptedAnswer":{"@type":"Answer","text":"No account required. Journey progress saves in your browser. With a free AfroTools account, you can separately allow account access and choose Save in a guided journey. On another device, explicitly Load and review that account copy. Signing in alone does not upload or restore your journey."}},{"@type":"Question","name":"What does \"data carries forward\" mean?","acceptedAnswer":{"@type":"Answer","text":"When you enter your country and salary in step 1 (minimum wage check), AfroPayroll OS passes that data to step 2 (staff cost calculator) as pre-filled values. You don't re-enter the same information — it moves with you through the flow."}},{"@type":"Question","name":"Can I skip steps I don't need?","acceptedAnswer":{"@type":"Answer","text":"Yes. Optional steps can be skipped with one click. Required steps are flagged — these are the ones where skipping creates legal risk (e.g., checking minimum wage, generating a legally compliant payslip)."}},{"@type":"Question","name":"Does this replace payroll software?","acceptedAnswer":{"@type":"Answer","text":"No. It is a workflow hub and calculator layer. It can support payroll software, client education and sales pilots."}},{"@type":"Question","name":"Can this become a branded payroll portal?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use custom calculators, widgets or API pilots for client-facing payroll products."}}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/afropayroll-os/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afropayroll-os/">
@@ -208,7 +208,7 @@
       <span class="apo-proof-pill">Device drafts now, saved-to-account Pro when synced</span>
     </div>
     <div class="apo-save-model" aria-label="AfroPayroll save status">
-      <div class="apo-save-card"><strong>Device draft</strong><span>Workflow progress and workspace snapshots stay in this browser unless you sign in and save to Pro.</span></div>
+      <div class="apo-save-card"><strong>Device draft</strong><span>Guided workflow progress stays in this browser unless you explicitly choose Save to account. Company workspace saving is separate.</span></div>
       <div class="apo-save-card"><strong>Saved-to-account Pro</strong><span>Signed-in Pro users can save payroll runs, roles, approvals, employees, and audit records to their account.</span></div>
       <div class="apo-save-card"><strong>No authority filing</strong><span>AfroPayroll prepares review and handoff files. It does not file returns, remit deductions, or move salary funds.</span></div>
     </div>
@@ -235,6 +235,14 @@
 </div>
 
 <!-- Customer map -->
+<section class="apo-wrap" aria-labelledby="apo-account-title" style="margin-top:20px;margin-bottom:20px">
+  <h2 id="apo-account-title">Optional account journey recovery</h2>
+  <p>Your device journey stays available without an account. Sign in and allow access to list your saved account journeys. This list reads journey names and progress dates, without loading pay or role. Open a journey and explicitly Load its account copy to recover those fields.</p>
+  <label><input type="checkbox" id="apo-account-consent"> Allow reading my account journey list on this page</label>
+  <button type="button" class="apo-btn-secondary" id="apo-account-load" disabled>Find account journeys</button>
+  <p id="apo-account-status" role="status" aria-live="polite">Device-only. Account access is off.</p>
+  <ul id="apo-account-journeys"></ul>
+</section>
 <section class="apo-customer-section">
   <div class="apo-wrap">
     <div class="apo-section-label">Expected customers</div>
@@ -478,7 +486,7 @@
       </div>
       <div class="apo-faq-item">
         <button type="button" class="apo-faq-q">Is my data saved? Do I need to create an account?</button>
-        <div class="apo-faq-a">No account required. Your journey progress is saved automatically in your browser. If you create a free AfroTools account, your progress syncs to the cloud so you can resume on any device.</div>
+        <div class="apo-faq-a">No account required. Journey progress saves in your browser. With a free AfroTools account, you can separately allow account access and choose Save in a guided journey. On another device, explicitly Load and review that account copy. Signing in alone does not upload or restore your journey.</div>
       </div>
       <div class="apo-faq-item">
         <button type="button" class="apo-faq-q">What does "data carries forward" mean?</button>
@@ -555,7 +563,8 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/engines/afropayroll-os-engine.js?v=96b7f079"></script>
+<script src="/engines/afropayroll-os-engine.js?v=9cf2c6f4"></script>
+<script src="/assets/js/lib/payroll-cloud-sync.js?v=7efd0b6d"></script>
 <script>
 (async function () {
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.afropayrollOs;
@@ -563,7 +572,7 @@
 
   function showResumeBanner(j) {
     var wrap = document.getElementById('apo-resume-wrap');
-    var source = j && j.source === 'account' ? 'Saved-to-account Pro progress' : 'Device progress';
+    var source = 'Device progress';
     document.getElementById('apo-resume-icon').textContent = j.icon;
     document.getElementById('apo-resume-title').textContent = 'Resume: ' + j.label;
     document.getElementById('apo-resume-meta').textContent =
@@ -578,19 +587,23 @@
     journey.source = 'device';
     return journey;
   });
-  if (window.AfroAuth && typeof window.AfroAuth.getUser === 'function' && engine.getIncompleteJourneysFromSupabase) {
-    var user = window.AfroAuth.getUser();
-    if (user) {
-      var remoteIncomplete = await engine.getIncompleteJourneysFromSupabase(user.id);
-      remoteIncomplete.forEach(function (journey) { journey.source = 'account'; });
-      if (!incomplete.length || (remoteIncomplete.length && remoteIncomplete[0].updatedAt > incomplete[0].updatedAt)) {
-        incomplete = remoteIncomplete;
-      }
-    }
-  }
   if (incomplete.length) {
     showResumeBanner(incomplete[0]);
   }
+  var cloud = window.AfroTools.payrollCloudSync;
+  if (cloud) cloud.mount({
+    engine: engine,
+    clearList: function () { document.getElementById('apo-account-journeys').textContent = ''; },
+    list: function (journeys) {
+      var list = document.getElementById('apo-account-journeys'); list.textContent = '';
+      journeys.forEach(function (journey) {
+        var item = document.createElement('li'), link = document.createElement('a');
+        link.href = 'flow.html?journey=' + encodeURIComponent(journey.id);
+        link.textContent = journey.label + ' — account copy, updated ' + new Date(journey.updatedAt).toLocaleDateString() + ' (open to review)';
+        item.appendChild(link); list.appendChild(item);
+      });
+    }
+  });
 
   // FAQ accordion
   document.querySelectorAll('.apo-faq-q').forEach(function (btn) {

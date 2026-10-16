@@ -98,7 +98,7 @@ exports.handler = async function(event) {
     }
 
     var gazetteLookup = await fetch(
-      SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + body.id + '&select=id,country_code,change_type',
+      SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + encodeURIComponent(body.id) + '&select=id,country_code,change_type,source_name',
       { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
     );
     var gazetteRows = gazetteLookup.ok ? await gazetteLookup.json() : [];
@@ -112,11 +112,30 @@ exports.handler = async function(event) {
       '&metric=eq.' + encodeURIComponent(gazetteChange.change_type) +
       '&reason=eq.gazette_detected&status=eq.pending';
 
+    // Community decisions atomically bind the exact receipt's signal and queue.
+    // Legacy scanner moderation and market-points workflows remain separate.
+    if (gazetteChange.source_name === 'Community report (unverified)') {
+      if (!['approve','reject'].includes(body.action) || (body.notes != null && (typeof body.notes !== 'string' || body.notes.length > 2000))) {
+        return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid report decision or notes' }) };
+      }
+      try {
+        var decisionRes = await fetch(SUPABASE_URL + '/rest/v1/rpc/review_regulatory_report', {
+          method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p_gazette_id: gazetteChange.id, p_action: body.action, p_notes: body.notes || '' })
+        });
+        var decision = decisionRes.ok ? await decisionRes.json() : null;
+        if (!decision || decision.ok !== true || decision.decision !== body.action || decision.gazette_id !== gazetteChange.id) throw new Error('Unconfirmed decision');
+        return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true, message: body.action === 'approve' ? 'Report source verified. Calculator data still needs a separate manual update.' : 'Report rejected and dismissed.' }) };
+      } catch (err) {
+        return { statusCode: 503, headers: CORS, body: JSON.stringify({ error: 'Report decision was not confirmed; retry the same decision' }) };
+      }
+    }
+
     var now = new Date().toISOString();
 
     if (body.action === 'approve') {
       // Mark gazette change as verified
-      await fetch(SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + body.id, {
+      await fetch(SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + encodeURIComponent(body.id), {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +175,7 @@ exports.handler = async function(event) {
       };
 
     } else if (body.action === 'reject') {
-      await fetch(SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + body.id, {
+      await fetch(SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + encodeURIComponent(body.id), {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -227,7 +246,7 @@ async function reconcileRejectedGazetteChanges(supabaseUrl, supabaseKey) {
     await fetch(
       supabaseUrl + '/rest/v1/gazette_changes?country_code=eq.' + encodeURIComponent(row.country_code) +
         '&change_type=eq.' + encodeURIComponent(row.metric) +
-        '&applied_to_tools=eq.false',
+        '&applied_to_tools=eq.false&or=' + encodeURIComponent('(source_name.is.null,source_name.neq."Community report (unverified)")'),
       {
         method: 'PATCH',
         headers: {

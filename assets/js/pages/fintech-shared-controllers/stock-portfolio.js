@@ -8,7 +8,24 @@ function spText(key,fallback){
     : fallback;
 }
 var currentCurrency='NGN';
+function spMarkInvalid(input,invalid){
+  var described=(input.getAttribute('aria-describedby')||'').split(/\s+/).filter(function(id){return id&&id!=='sp-error';});
+  if(invalid){input.setAttribute('aria-invalid','true');described.push('sp-error');}
+  else input.removeAttribute('aria-invalid');
+  if(described.length)input.setAttribute('aria-describedby',described.join(' '));
+  else input.removeAttribute('aria-describedby');
+}
+function spInvalidatePortfolio(){
+  document.getElementById('sp-results').classList.remove('on');
+  document.getElementById('sp-table-body').innerHTML='';
+  ['sp-total-value','sp-total-cost','sp-total-gain','sp-return-pct'].forEach(function(id){document.getElementById(id).textContent='';});
+  var error=document.getElementById('sp-error');
+  error.classList.remove('on');
+  error.textContent='';
+  document.querySelectorAll('#holdings-tbody tr').forEach(function(row){row.querySelectorAll('input').forEach(function(input){spMarkInvalid(input,false);});});
+}
 function setExchange(cur,sym,btn){
+  if(currentCurrency!==cur)spInvalidatePortfolio();
   currentCurrency=cur;
   document.querySelectorAll('.etab').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-pressed','false');});
   btn.classList.add('active');
@@ -20,33 +37,57 @@ function addRow(){
   var n=tbody.children.length+1;
   tr.innerHTML='<td><input aria-label="'+spText('holding','Holding')+' '+n+' '+spText('ticker','ticker')+'" type="text" placeholder="'+spText('ticker','Ticker')+'"></td><td><input type="number" placeholder="100" min="0" step="any" aria-label="'+spText('holding','Holding')+' '+n+' '+spText('shares','shares')+'"></td><td><input type="number" placeholder="0" min="0" step="any" aria-label="'+spText('holding','Holding')+' '+n+' '+spText('buyPrice','buy price per share')+'"></td><td><input type="number" placeholder="0" min="0" step="any" aria-label="'+spText('holding','Holding')+' '+n+' '+spText('currentPrice','current price per share')+'"></td><td><button type="button" class="btn-del" onclick="delRow(this)" aria-label="'+spText('delete','Delete holding')+' '+n+'">&#x2715;</button></td>';
   tbody.appendChild(tr);
+  spInvalidatePortfolio();
 }
-function delRow(btn){btn.closest('tr').remove();}
+function delRow(btn){btn.closest('tr').remove();spInvalidatePortfolio();}
 function calcPortfolio(){
+  spInvalidatePortfolio();
   var rows=document.querySelectorAll('#holdings-tbody tr');
   var totalValue=0,totalCost=0;
   var items=[];
   var invalid=false;
+  var outOfRange=false;
+  var firstInvalid=null;
   rows.forEach(function(row,index){
     var inputs=row.querySelectorAll('input');
     var name=inputs[0].value.trim()||(spText('holding','Holding')+' '+(index+1));
     var raw=[inputs[1].value,inputs[2].value,inputs[3].value];
-    if(raw.every(function(value){return value==='';})&&!inputs[0].value.trim())return;
+    var badInput=raw.some(function(value,i){return inputs[i+1].validity&&inputs[i+1].validity.badInput;});
+    if(raw.every(function(value){return value.trim()==='';})&&!inputs[0].value.trim()&&!badInput)return;
     var shares=Number(raw[0]);
     var buyPrice=Number(raw[1]);
     var curPrice=Number(raw[2]);
-    if(!Number.isFinite(shares)||!Number.isFinite(buyPrice)||!Number.isFinite(curPrice)||shares<=0||buyPrice<=0||curPrice<0){invalid=true;return;}
+    var values=[shares,buyPrice,curPrice];
+    var rowInvalid=false;
+    raw.forEach(function(value,i){
+      var input=inputs[i+1];
+      if(value.trim()===''||(input.validity&&input.validity.badInput)||!Number.isFinite(values[i])||(i<2?values[i]<=0:values[i]<0)){
+        rowInvalid=true;spMarkInvalid(input,true);if(!firstInvalid)firstInvalid=input;
+      }
+    });
+    if(rowInvalid){invalid=true;return;}
       var cost=shares*buyPrice;
       var value=shares*curPrice;
       var gain=value-cost;
       var returnPct=gain/cost*100;
+      if(cost<=0||(curPrice>0&&value===0)||![cost,value,gain,returnPct,totalValue+value,totalCost+cost].every(Number.isFinite)){
+        outOfRange=true;
+        [inputs[1],inputs[2],inputs[3]].forEach(function(input){spMarkInvalid(input,true);});
+        if(!firstInvalid)firstInvalid=inputs[1];
+        return;
+      }
       totalValue+=value;
       totalCost+=cost;
       items.push({name,shares,buyPrice,curPrice,cost,value,gain,returnPct});
   });
   var error=document.getElementById('sp-error');
   var results=document.getElementById('sp-results');
-  if(invalid||!items.length){error.textContent=invalid?spText('invalid','Each used row needs positive shares and buy price, plus a non-negative current price.'):spText('empty','Enter at least one complete holding.');error.classList.add('on');results.classList.remove('on');return;}
+  if(invalid||outOfRange||!items.length){
+    error.textContent=invalid?spText('invalid','Each used row needs positive shares and buy price, plus a non-negative current price.'):outOfRange?spText('outOfRange','These holdings are outside the supported numeric range. Adjust the amounts or quantities and try again.'):spText('empty','Enter at least one complete holding.');
+    error.classList.add('on');
+    if(firstInvalid)firstInvalid.focus();
+    return;
+  }
   error.classList.remove('on');
   var totalGain=totalValue-totalCost;
   var totalReturn=totalGain/totalCost*100;
@@ -70,3 +111,7 @@ function calcPortfolio(){
   });
   results.classList.add('on');
 }
+var spHoldingsBody=document.getElementById('holdings-tbody');
+if(spHoldingsBody)spHoldingsBody.addEventListener('input',function(event){
+  if(event.target.tagName==='INPUT')spInvalidatePortfolio();
+});

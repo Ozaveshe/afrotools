@@ -21,6 +21,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { parseTelecomData } = require('./lib/read-telecom-data');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'data', 'telecom', 'official-sources.json');
@@ -42,7 +43,7 @@ function readLedger() {
 function readDataset() {
   try {
     const src = fs.readFileSync(DATASET, 'utf8');
-    return new Function(`${src}; return TELECOM_DATA;`)();
+    return parseTelecomData(src);
   } catch (e) {
     errors.push(`Cannot load ${path.relative(ROOT, DATASET)}: ${e.message}`);
     return null;
