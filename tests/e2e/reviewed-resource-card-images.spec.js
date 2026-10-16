@@ -3,11 +3,17 @@ const bindings=require('../../data/image-generation/blog-artwork-bindings.json')
 test.use({trace:'off'});
 
 for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:'dark'}]){
-  test('Resources artwork renders through real pagination at '+appearance.width+'px in '+appearance.colorScheme+' mode',async({page})=>{
+  test('Resources artwork renders through real pagination at '+appearance.width+'px in '+appearance.colorScheme+' mode',async({page},testInfo)=>{
     test.setTimeout(300000);
     await page.setViewportSize({width:appearance.width,height:844});
     await page.emulateMedia({colorScheme:appearance.colorScheme});
     await page.route('**/*',route=>new URL(route.request().url()).hostname==='127.0.0.1'?route.continue():route.abort());
+    // Observe existing image traffic only; no fetch, response body, headers or trace changes.
+    const imageTraffic=[];
+    const imageURL=value=>{try{const u=new URL(value,page.url());return u.origin+u.pathname;}catch{return null;}};
+    const remember=row=>{imageTraffic.push(row);if(imageTraffic.length>128)imageTraffic.shift();};
+    page.on('response',response=>{const url=imageURL(response.url());if(url&&new URL(url).pathname.startsWith('/assets/img/blog/'))remember({kind:'response',url,status:response.status()});});
+    page.on('requestfailed',request=>{const url=imageURL(request.url());if(url&&new URL(url).pathname.startsWith('/assets/img/blog/'))remember({kind:'requestfailed',url,failure:(request.failure()?.errorText||'unknown').slice(0,160)});});
     const seen=new Set();
     for(const file of [...new Set(bindings.map(row=>row.file))]){
       await page.goto('/'+file.replace(/index\.html$/,''));
@@ -36,7 +42,20 @@ for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:
             await expect(image).toHaveAttribute('src',row.path);
             await expect(image).toHaveAttribute('alt',row.alt);
           }
-          await expect.poll(()=>image.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+          try{
+            await expect.poll(()=>image.evaluate(img=>img.complete&&img.naturalWidth>0),{message:'Resource image decode: file='+file+' route='+route+' src='+imageSource}).toBe(true);
+          }catch(error){
+            const state=await Promise.race([
+              image.evaluate(img=>({src:(img.getAttribute('src')||'').slice(0,512),srcset:(img.getAttribute('srcset')||'').slice(0,1024),currentSrc:img.currentSrc.slice(0,512),complete:img.complete,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,loading:img.loading})).catch(()=>({unavailable:'DOM image state unavailable after failure'})),
+              new Promise(resolve=>setTimeout(()=>resolve({unavailable:'Diagnostic DOM read exceeded1500ms'}),1500))
+            ]);
+            const selectedURLs=new Set([imageURL(imageSource),imageURL(state.src||''),imageURL(state.currentSrc||'')].filter(Boolean));
+            const evidence={file,route,imageSource,state,traffic:imageTraffic.filter(row=>selectedURLs.has(row.url)).slice(-8),limits:'Saved existing-page metadata only; missing traffic is unobserved, not a failed response. No newHTTP, response bodies, headers or trace.'};
+            let body=Buffer.from(JSON.stringify(evidence,null,2));
+            if(body.length>8192)body=Buffer.from(JSON.stringify({...evidence,state:{...state,srcset:(state.srcset||'').slice(0,256)},traffic:evidence.traffic.slice(-2)}));
+            if(body.length<=8192)await testInfo.attach('resource-image-failure.json',{body,contentType:'application/json'}).catch(()=>{});
+            throw error;
+          }
           const box=await image.boundingBox();
           expect(box?.width,route).toBeGreaterThan(0);
           expect(box.x,route).toBeGreaterThanOrEqual(-1);
