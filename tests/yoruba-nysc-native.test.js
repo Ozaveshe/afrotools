@@ -195,6 +195,8 @@ test('print invokes the actual print boundary only after valid calculation', asy
 test('actual print worksheet equals full TXT including date/source notes and safely written user text', async () => {
   const h = host(); h.set({...complete(), planName: 'Ètò àpẹẹrẹ', checkedOn: '2026-10-17', sourceNotes: '<img src=x onerror=bad()> Àkọsílẹ̀ àpẹẹrẹ'}); await h.submit();
   assert.ok(h.elements.nyscPrintWorksheet, 'real HTML must declare the print worksheet');
+  const worksheetTag = tags.find(row => row[3] === 'nyscPrintWorksheet');
+  assert.equal(attr(worksheetTag[2], 'aria-hidden'), undefined, 'the print-visible worksheet must remain eligible for accessibility/PDF tagging');
   assert.equal(h.elements.nyscPrintWorksheet.children.length, 0);
   const text = h.elements.nyscPrintWorksheet.textContent;
   assert.match(text, /2026-10-17/); assert.match(text, /<img src=x onerror=bad\(\)>/);
