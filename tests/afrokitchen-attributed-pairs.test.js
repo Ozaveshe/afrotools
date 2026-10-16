@@ -85,12 +85,12 @@ test('source arithmetic and unknown-quantity semantics follow the two original s
     const unknown=doubled.find(x=>x.amount===null);assert.equal(unknown.scaled_amount,'');assert.equal(api.formatAmount(unknown.scaled_amount),'');
   }
 });
-test('all other408 recipe projections, index summaries and source identities remain equal',()=>{
+test('all other406 recipe projections, index summaries and source identities remain equal',()=>{
   assert.equal(manifest.recipes.length,410);
   const allowed=manifest.recipes.map(row=>({...row,is_published:true,is_verified:true,generated_in_wave:true}));
   const result=indexOwner.buildRecipeIndex({...manifest,recipes:allowed});
   assert.equal(result.recipes.length,410);
-  for(const row of allowed.filter(r=>!IDS[r.slug])) {
+  for(const row of allowed.filter(r=>!IDS[r.slug] && !(r.id==='d7d7e305-3c5d-40db-9033-36843e102176' && r.slug==='ibihaza-rw') && !(r.id==='feabebb3-cd55-48c6-be9a-17f118dddfcc' && r.slug==='kat-kat-banane-sc'))) {
     assert.strictEqual(api.projectAttributedRecipe(row),row);
     const singleton=indexOwner.buildRecipeIndex({...manifest,recipes:[row]}).recipes[0];
     assert.deepEqual(result.recipes.find(r=>r.id===row.id),singleton);

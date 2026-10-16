@@ -276,7 +276,7 @@ test('actual dynamic community stats initializes with an ordinary DOM node for u
   for(const [times,expected] of [[{prep_time_minutes:null,cook_time_minutes:40,total_time_minutes:null},'Not recorded'],[{prep_time_minutes:30,cook_time_minutes:65,total_time_minutes:95},'95 min'],[{prep_time_minutes:0,cook_time_minutes:0,total_time_minutes:0},'0 min']]) {
     const box={innerHTML:''},target={...recipe(),...times};
     const context={AfroKitchenEngine:api,p:id=>{assert.equal(id,'community-stats');return box},w:()=>null,b:()=>0,d:{cooksnaps:[]},i:target,I:(label,value)=>label+':'+value+';'};
-    vm.runInNewContext(runtimeFunction('U','tools/afrokitchen/recipe-page.js')+';U();',context);
+    vm.runInNewContext(runtimeFunction('communityMethodUnlinked','tools/afrokitchen/recipe-page.js')+';'+runtimeFunction('U','tools/afrokitchen/recipe-page.js')+';U();',context);
     assert.ok(box.innerHTML.includes('Total cook time:'+expected));
     assert.ok(box.innerHTML.includes('Timed steps:1'));
   }

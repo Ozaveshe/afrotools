@@ -1768,7 +1768,7 @@ var AfroKitchenEngine = function() {
       return t.slug === e.slug;
     })), e.limit && (t = t.slice(0, e.limit)), t;
   }
-  // Exactly two source-attributed display methods. These do not authorize publication
+  // Four finite source-attributed display methods. These do not authorize publication
   // or write canonical recipe data. Shared by browser, static/index owners and API.
   var attributedMethods = {
     "mandazi-tanzania-tz": {
@@ -2192,6 +2192,421 @@ var AfroKitchenEngine = function() {
             "source_type": "ai_generated_illustration",
             "credit_text": "AfroKitchen adaptation; source:2020 FIRST Global Flavors of the World, page 13",
             "credit_url": "https://first.global/wp-content/uploads/2020/10/2020-FGC-Flavors-of-the-World-Cookbook_v1.2.pdf",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "ibihaza-rw": {
+      "id": "d7d7e305-3c5d-40db-9033-36843e102176",
+      "revision": "ibihaza-georgia-reader-20261017-v1",
+      "fields": {
+        "name": "Ibihaza",
+        "description": "Pumpkin and fully cooked beans, adapted from Georgia Reader for Together Women Rise.",
+        "story": "This credited version uses fully cooked beans and chunky pumpkin. The source does not state a serving yield or overall preparation and cooking times. Preparing dried beans is a separate task. AfroTools has not kitchen-tested this adaptation.",
+        "regional_variations": null,
+        "best_served_with": "Serve warm.",
+        "occasion": null,
+        "tags": [
+          "pumpkin",
+          "beans",
+          "rwanda"
+        ],
+        "diet_tags": [],
+        "default_servings": null,
+        "serving_unit": "servings",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "difficulty": null,
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://togetherwomenrise.org/recipes/ibihaza/",
+        "image_url": "/assets/img/kitchen/ibihaza-rw.webp",
+        "author": "AfroKitchen adaptation; recipe by Georgia Reader for Together Women Rise",
+        "image_alt": "AI-generated serving illustration of chunky pumpkin, cooked beans and onion in a bowl.",
+        "yield_status": "not-recorded",
+        "ingredients": [
+          {
+            "amount": 3,
+            "unit": "tbsp",
+            "name": "olive oil",
+            "prep_note": "",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-1",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 10
+          },
+          {
+            "amount": 1,
+            "unit": "cup",
+            "name": "purple onion",
+            "prep_note": "sliced",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-2",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 20
+          },
+          {
+            "amount": 5,
+            "unit": "cups",
+            "name": "pie pumpkin",
+            "prep_note": "diced, seeds removed, skin retained",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-3",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 30
+          },
+          {
+            "amount": 3,
+            "unit": "lb",
+            "name": "cooked beans",
+            "prep_note": "fully cooked; not dried beans",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-4",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 40
+          },
+          {
+            "amount": 2,
+            "unit": "tsp",
+            "name": "coriander",
+            "prep_note": "",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-5",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 50
+          },
+          {
+            "amount": 2,
+            "unit": "tsp",
+            "name": "tarragon",
+            "prep_note": "",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-6",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 60
+          },
+          {
+            "amount": 3,
+            "unit": "cups",
+            "name": "water",
+            "prep_note": "Start with 3 cups; add up to 1 cup more if needed (source range: 3–4 cups).",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-7",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 70
+          },
+          {
+            "amount": null,
+            "unit": "",
+            "name": "salt",
+            "prep_note": "to taste",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-8",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 80
+          },
+          {
+            "amount": null,
+            "unit": "",
+            "name": "black pepper",
+            "prep_note": "to taste",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-9",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 90
+          }
+        ],
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "Prepare pumpkin",
+            "instruction": "Wash the pumpkin, discard seeds and fibres, and dice with skin intact.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "source-ibihaza-rw-step-1",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 2,
+            "title": "Brown vegetables",
+            "instruction": "Heat oil and cook onion with pumpkin until browned; set aside.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "source-ibihaza-rw-step-2",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 3,
+            "title": "Heat beans",
+            "instruction": "Simmer the fully cooked beans, coriander and tarragon in 3 cups of water for 5–10 minutes. Add up to 1 cup more water if needed.",
+            "timer_seconds": 300,
+            "timer_label": "Check beans",
+            "id": "source-ibihaza-rw-step-3",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 4,
+            "title": "Finish",
+            "instruction": "Add the browned pumpkin and onion. Simmer about 15 minutes, checking that the pumpkin is cooked through but still holds its shape. Season with salt and black pepper and serve warm.",
+            "timer_seconds": 900,
+            "timer_label": "Check pumpkin",
+            "id": "source-ibihaza-rw-step-4",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-ibihaza-rw-hero",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/ibihaza-rw.webp",
+            "alt_text": "AI-generated serving illustration of chunky pumpkin, cooked beans and onion in a bowl.",
+            "caption": "AI-generated serving illustration of the attributed pumpkin and cooked-bean adaptation; not a photograph of an AfroTools kitchen-tested batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; recipe by Georgia Reader for Together Women Rise",
+            "credit_url": "https://togetherwomenrise.org/recipes/ibihaza/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "kat-kat-banane-sc": {
+      "id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+      "revision": "katkat-creole-melting-pot-20190910-v1",
+      "fields": {
+        "name": "Kat-Kat Banane",
+        "description": "A savoury plantain and fish dish, adapted from The Creole Melting Pot's trevally katkat.",
+        "story": "Adapted from The Creole Melting Pot's savoury trevally katkat. Four servings and 15-minute preparation/45-minute cooking are the publisher's planning estimates, not measured AfroTools results. Check fish, plantain and consistency as you cook. AfroTools has not kitchen-tested this adaptation.",
+        "regional_variations": "Other households use different fish or cooking bananas.",
+        "best_served_with": "Rice or chilli sauce, if desired.",
+        "occasion": "Main meal",
+        "tags": [
+          "plantain",
+          "fish",
+          "coconut",
+          "seychelles"
+        ],
+        "diet_tags": [],
+        "default_servings": 4,
+        "serving_unit": "servings",
+        "prep_time_minutes": 15,
+        "cook_time_minutes": 45,
+        "total_time_minutes": 60,
+        "difficulty": "medium",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://www.thecreolemeltingpot.com/trevally-katkat-with-green-plantain-katkat-karang/",
+        "image_url": "/assets/img/kitchen/kat-kat-banane-sc.webp",
+        "author": "AfroKitchen adaptation; recipe by The Creole Melting Pot",
+        "image_alt": "AI-generated serving illustration of coarse plantain mash with flaked fish in a creamy coconut mixture.",
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "sort_order": 10,
+            "group_name": "Katkat",
+            "amount": 500,
+            "unit": "g",
+            "name": "boneless trevally",
+            "prep_note": "contains fish",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-1",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 20,
+            "group_name": "Katkat",
+            "amount": 4,
+            "unit": "pieces",
+            "name": "unripe plantains",
+            "prep_note": "",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-2",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 30,
+            "group_name": "Katkat",
+            "amount": 800,
+            "unit": "ml",
+            "name": "coconut milk",
+            "prep_note": "",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-3",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 40,
+            "group_name": "Katkat",
+            "amount": 2,
+            "unit": "pieces",
+            "name": "cinnamon leaves",
+            "prep_note": "remove before serving",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-4",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 50,
+            "group_name": "Katkat",
+            "amount": null,
+            "unit": "",
+            "name": "salt and pepper",
+            "prep_note": "to taste",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-5",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 60,
+            "group_name": "Cooking",
+            "amount": null,
+            "unit": "as needed",
+            "name": "water",
+            "prep_note": "for separate boiling pots",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-6",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          }
+        ],
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "Cook fish",
+            "instruction": "Season fish pieces. Boil gently until cooked, about 10 minutes. Reserve the liquid; cool, check for bones and flake.",
+            "timer_seconds": 600,
+            "timer_label": "check fish",
+            "id": "source-kat-kat-banane-sc-step-1",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 2,
+            "title": "Cook plantains",
+            "instruction": "Trim and halve the washed, unpeeled plantains. Boil separately until tender, about 15 minutes. Cool enough to handle, peel and roughly mash.",
+            "timer_seconds": 900,
+            "timer_label": "check plantains",
+            "id": "source-kat-kat-banane-sc-step-2",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 3,
+            "title": "Combine",
+            "instruction": "Warm the mash with coconut milk. Add fish and cinnamon; simmer 10-15 minutes, stirring frequently. Loosen with reserved fish liquid if needed.",
+            "timer_seconds": 600,
+            "timer_label": "check consistency",
+            "id": "source-kat-kat-banane-sc-step-3",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 4,
+            "title": "Finish",
+            "instruction": "Remove cinnamon, adjust seasoning and serve. Keep a thick, coarse texture with visible fish pieces.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "source-kat-kat-banane-sc-step-4",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-kat-kat-banane-sc-hero",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/kat-kat-banane-sc.webp",
+            "alt_text": "AI-generated serving illustration of coarse plantain mash with flaked fish in a creamy coconut mixture.",
+            "caption": "AI-generated serving illustration of the attributed savoury plantain and trevally adaptation; not kitchen-tested photography.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; recipe by The Creole Melting Pot",
+            "credit_url": "https://www.thecreolemeltingpot.com/trevally-katkat-with-green-plantain-katkat-karang/",
             "created_at": null,
             "updated_at": null
           }
