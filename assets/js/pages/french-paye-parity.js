@@ -64,10 +64,11 @@
       bands: [[8555.50, 0], [10000, 0.15], [83333, 0.20], [Infinity, 0.30]]
     },
     'za-paye': {
+      taxPeriod: { assessmentYear: 2027, label: '2026/27', effectiveFrom: '2026-03-01', effectiveTo: '2027-02-28', inputBasis: 'monthly', currency: 'ZAR', method: 'annual-marginal-formula-estimate', monthlyBasis: 'annual-estimate-divided-by-12' },
       country: 'Afrique du Sud', currency: 'ZAR', symbol: 'R', period: 'annual',
-      checkedOn: '2026-01-01', employeeRate: 0.01, employeeCapAnnual: 212544,
-      employerRate: 0.01, employerCapAnnual: 212544, rebateAnnual: 17235,
-      bands: [[237100, 0.18], [370500, 0.26], [512800, 0.31], [673000, 0.36], [857900, 0.39], [1817000, 0.41], [Infinity, 0.45]]
+      checkedOn: '2026-10-16', employeeRate: 0.01, employeeCapAnnual: 212544,
+      employerRate: 0.01, employerCapAnnual: 212544, rebateAnnual: 17820,
+      bands: [[245100, 0.18], [383100, 0.26], [530200, 0.31], [695800, 0.36], [887000, 0.39], [1878600, 0.41], [Infinity, 0.45]]
     },
     'sd-paye': {
       country: 'Soudan', currency: 'SDG', symbol: 'SDG', period: 'monthly',
@@ -144,6 +145,7 @@
   }
 
   function calculate(config, grossMonthly, basicMonthly) {
+    if (config.taxPeriod && (!Number.isFinite(grossMonthly) || grossMonthly < 0)) throw new RangeError('Le salaire doit être un montant mensuel fini et positif ou nul.');
     var healthMonthly = 0;
     if (config.basicHealthRate) {
       var basic = basicMonthly == null || basicMonthly === '' ? grossMonthly : Number(basicMonthly);
@@ -193,7 +195,7 @@
       ? Math.max(0, grossMonthly - employeeMonthly - taxMonthly) * config.stampRate
       : 0;
     var deductionsMonthly = employeeMonthly + healthMonthly + taxMonthly + stampMonthly;
-    return {
+    var result = {
       grossMonthly: grossMonthly,
       grossAnnual: grossMonthly * 12,
       employeeMonthly: employeeMonthly,
@@ -207,6 +209,8 @@
       ...(config.basicHealthRate ? { healthMonthly: healthMonthly } : {}),
       effectiveRate: grossMonthly > 0 ? (taxMonthly / grossMonthly) * 100 : 0
     };
+    if (config.taxPeriod) result.taxPeriod = Object.assign({}, config.taxPeriod);
+    return result;
   }
 
   function addStyles() {
@@ -258,6 +262,7 @@
       '</section>',
       '<div class="fr-paye-native__actions"><button type="button" data-reset>Réinitialiser</button></div>',
       '<p class="fr-paye-native__meta">Source et paramètres du propriétaire anglais vérifiés le <time data-checked-date datetime="' + config.checkedOn + '">' + config.checkedOn + '</time>. Estimation de planification uniquement : elle ne remplace ni une fiche de paie, ni une déclaration, ni l’avis de l’autorité fiscale.</p>',
+      (config.taxPeriod ? '<p class="fr-paye-native__meta">Année fiscale ' + config.taxPeriod.label + ' : du ' + config.taxPeriod.effectiveFrom + ' au ' + config.taxPeriod.effectiveTo + '. Barème actuel uniquement. Estimation annualisée pour 12 mois de salaire régulier ; le montant mensuel est le résultat annuel divisé par 12 et peut différer des tables de retenue SARS. Primes, année incomplète et directives fiscales non modélisées.</p>' : ''),
       '<p class="fr-paye-native__meta">Confidentialité : calcul et exports effectués dans ce navigateur, sans compte ni adresse e-mail.</p>',
       '</section>'
     ].join('');
@@ -317,6 +322,7 @@
         ['Coût employeur mensuel', money(config, result.employerCostMonthly)],
         ['Taux effectif PAYE', result.effectiveRate.toFixed(2) + ' %']
       );
+      if (config.taxPeriod) outputRows.unshift(['Année fiscale', config.taxPeriod.label + ' : ' + config.taxPeriod.effectiveFrom + ' — ' + config.taxPeriod.effectiveTo + ' — Estimation annuelle divisée par 12 ; écart possible avec les tables SARS.']);
       rows.innerHTML = outputRows.map(function (row) {
         return '<dt>' + clean(row[0]) + '</dt><dd>' + clean(row[1]) + '</dd>';
       }).join('');

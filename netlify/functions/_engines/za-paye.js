@@ -1,12 +1,14 @@
 // South Africa PAYE Engine — extracted from AfroTools payslip generator
-// Source: South African Revenue Service (SARS) 2025/2026
+// Source: South African Revenue Service (SARS) 2026/2027
 
-const ANNUAL_BRACKETS = [[237100,0.18],[370500,0.26],[512800,0.31],[673000,0.36],[857900,0.39],[1817000,0.41],[Infinity,0.45]];
+const ANNUAL_BRACKETS = [[245100,0.18],[383100,0.26],[530200,0.31],[695800,0.36],[887000,0.39],[1878600,0.41],[Infinity,0.45]];
+
+const TAX_PERIOD = Object.freeze({ assessmentYear: 2027, label: '2026/27', effectiveFrom: '2026-03-01', effectiveTo: '2027-02-28', inputBasis: 'annual', currency: 'ZAR', method: 'annual-marginal-formula-estimate', monthlyBasis: 'annual-estimate-divided-by-12' });
 
 // Rebates by age
-const REBATES = { primary: 17235, secondary: 9444, tertiary: 3145 };
+const REBATES = { primary: 17820, secondary: 9765, tertiary: 3249 };
 // Tax thresholds by age (income below threshold = no tax)
-const THRESHOLDS = { under65: 95750, age65to74: 148217, age75plus: 165689 };
+const THRESHOLDS = { under65: 99000, age65to74: 153250, age75plus: 171300 };
 
 const UIF_RATE = 0.01;
 const UIF_MONTHLY_CAP = 177.12;
@@ -33,14 +35,16 @@ module.exports = {
   regimes: ['STANDARD'],
   lastUpdated: '2026-03-01',
   /* source-confidence-stamp:start */
-  sourceCheckedOn: '2025-03-01',
-  nextReviewDate: '2025-05-30',
+  sourceCheckedOn: '2026-10-16',
+  nextReviewDate: '2027-01-14',
   /* source-confidence-stamp:end */
 
   source: 'South African Revenue Service (SARS)',
 
   calculate(params) {
     const { grossAnnual, uif: inclUif = true, age = 35, retirement = 0 } = params;
+    if (!Number.isFinite(grossAnnual) || grossAnnual < 0) throw new RangeError('Annual salary must be a finite nonnegative amount.');
+    if (!Number.isFinite(retirement) || retirement < 0) throw new RangeError('Retirement must be a finite nonnegative annual amount.');
     const monthly = grossAnnual / 12;
 
     // Determine rebate and threshold based on age
@@ -57,8 +61,8 @@ module.exports = {
     // If income is below threshold, no tax
     const uifAmt = inclUif ? Math.min(monthly * UIF_RATE, UIF_MONTHLY_CAP) * 12 : 0;
 
-    // Retirement fund deduction (limited to 27.5% of taxable income, capped at R350,000/yr)
-    const retirementDeduction = Math.min(retirement, grossAnnual * 0.275, 350000);
+    // Retirement fund deduction (limited to 27.5% of taxable income, capped at R430,000/yr)
+    const retirementDeduction = Math.min(retirement, grossAnnual * 0.275, 430000);
     const taxableIncome = Math.max(0, grossAnnual - retirementDeduction);
 
     const { tax: grossTax, bands: bandDetail } = calcBands(taxableIncome, ANNUAL_BRACKETS);
@@ -83,11 +87,11 @@ module.exports = {
       result: {
         netAnnual: Math.round(netAnnual),
         netMonthly: Math.round(netAnnual / 12),
-        effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
+        effectiveRate: (grossAnnual > 0 ? netTax / grossAnnual * 100 : 0).toFixed(2) + '%',
         marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
       },
       employer: { uif: Math.round(empUif), sdl: Math.round(grossAnnual * 0.01), totalCostAnnual: Math.round(grossAnnual + empUif + grossAnnual * 0.01), totalCostMonthly: Math.round((grossAnnual + empUif + grossAnnual * 0.01) / 12) },
-      meta: { regime: 'STANDARD', currency: 'ZAR', lastUpdated: this.lastUpdated, source: this.source }
+      meta: { taxPeriod: { ...TAX_PERIOD }, regime: 'STANDARD', currency: 'ZAR', lastUpdated: this.lastUpdated, source: this.source }
     };
   },
 
@@ -108,7 +112,7 @@ module.exports = {
       deductions: [
         { key: 'uif', label: 'UIF (1%, cap R177.12/mo)', default: true }
       ],
-      regimes: [{ key: 'STANDARD', label: 'SARS 2025/26', default: true }]
+      regimes: [{ key: 'STANDARD', label: 'SARS 2026/27', default: true }]
     };
   }
 };

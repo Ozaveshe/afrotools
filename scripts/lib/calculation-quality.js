@@ -638,8 +638,8 @@ function sourceRefsFromVerification(entry) {
 function effectivePeriodForServerCountry(code) {
   const periods = {
     ZA: {
-      effectiveFrom: "2025-03-01",
-      effectiveTo: "2026-02-28",
+      effectiveFrom: "2026-03-01",
+      effectiveTo: "2027-02-28",
       effectiveDateStatus: "declared",
     },
     TZ: {
