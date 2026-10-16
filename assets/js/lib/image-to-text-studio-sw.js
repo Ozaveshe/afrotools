@@ -29,6 +29,8 @@
       .replace(/^Loaded (.+)\. Adjust cleanup or run OCR\.$/, '$1 imefunguliwa. Rekebisha usafishaji au endesha OCR.')
       .replace(/^(\d+) images? added to the queue\.$/, '$1 picha zimeongezwa kwenye foleni.')
       .replace(/^Processing queue image (\d+) of (\d+)\.\.\.$/, 'Inachakata picha $1 kati ya $2...')
+      .replace(/^Processed (\d+) of (\d+) queued images; (\d+) failed\.$/, 'Picha $1 kati ya $2 zimechakatwa; $3 zimeshindwa.')
+      .replace(/^Processed (\d+) of (\d+) queued images\.$/, 'Picha $1 kati ya $2 zimechakatwa.')
       .replace(/^Processed (\d+) queued images?\.$/, 'Picha $1 za foleni zimechakatwa.')
       .replace(/^(.+) OCR recipe loaded\.$/, 'Mpangilio wa OCR wa $1 umepakiwa.')
       .replace(/^(\d+) matches? found in current result\.$/, 'Mechi $1 zimepatikana kwenye matokeo.')

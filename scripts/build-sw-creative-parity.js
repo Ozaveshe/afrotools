@@ -1,4 +1,6 @@
 "use strict";
+const { loadBindings, resolveReviewedToolArtwork } = require('./lib/reviewed-tool-image-bindings');
+const reviewedArtwork = loadBindings().filter(binding => binding.placement_group === 'sw-practical-tool-artwork-2026-10-16');
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -292,7 +294,7 @@ function polishExisting(html) {
 
 function page(row, config, frRoute) {
   const canonical = row.primarySwahiliRoute.endsWith("/") ? row.primarySwahiliRoute : `${row.primarySwahiliRoute}/`;
-  const image = `/assets/img/tools/${row.englishId}.webp`;
+  const image = resolveReviewedToolArtwork(canonical, `/assets/img/tools/${row.englishId}.webp`, reviewedArtwork);
   const appConfig = { owner: row.englishId, title: config.title, boundary: config.boundary, engineGlobal: config.engineGlobal, fields: config.fields };
   return `<!doctype html>
 <html lang="sw">
@@ -319,7 +321,7 @@ function page(row, config, frRoute) {
   <meta name="twitter:image" content="https://afrotools.com${image}">
   <link rel="stylesheet" href="/assets/css/design-system.min.css">
   <link rel="stylesheet" href="/assets/css/sw-creative-parity.css">
-  <script type="application/ld+json">${json({ "@context": "https://schema.org", "@type": "WebApplication", name: config.title, url: url(canonical), inLanguage: "sw", description: config.description, applicationCategory: "DesignApplication", operatingSystem: "Web" })}</script>
+  <script type="application/ld+json">${json({ "@context": "https://schema.org", "@type": "WebApplication", name: config.title, url: url(canonical), inLanguage: "sw", description: config.description, applicationCategory: "DesignApplication", operatingSystem: "Web", ...(reviewedArtwork.some(b => b.route === canonical) ? { image: url(image) } : {}) })}</script>
   <script type="application/ld+json">${json({ "@context": "https://schema.org", "@type": "FAQPage", inLanguage: "sw", mainEntity: [{ "@type": "Question", name: "Je, taarifa zangu zinatumwa kwenye server?", acceptedAnswer: { "@type": "Answer", text: "Hapana. Ukokotoaji na export za ukurasa huu zinafanyika ndani ya kivinjari chako." } }, { "@type": "Question", name: "Je, matokeo ni bei au makubaliano rasmi?", acceptedAnswer: { "@type": "Answer", text: "Hapana. Matokeo ni makadirio ya kupanga na lazima yahakikiwe kabla ya uamuzi wa biashara au mkataba." } }] })}</script>
 </head>
 <body class="swc-page">

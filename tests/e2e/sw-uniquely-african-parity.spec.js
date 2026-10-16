@@ -11,6 +11,16 @@ const fixturesById = new Map(fixtures.routes.map((fixture) => [fixture.id, fixtu
 const evidencePath = process.env.AFROTOOLS_SW_UNIQUELY_AFRICAN_EVIDENCE_PATH || path.resolve(__dirname, "../../reports/sw-uniquely-african-browser-evidence.json");
 const results = [];
 
+// These two reviewed Swahili bindings intentionally differ from the English artwork.
+const reviewedArtworkPaths = Object.freeze({
+  "fuel-cost": "assets/img/tools/zana-gharama-za-mafuta-sw.webp",
+  "okada-income": "assets/img/tools/zana-mapato-ya-okada-boda-sw.webp"
+});
+
+function expectedArtworkPath(row) {
+  return reviewedArtworkPaths[row.english.id] || row.artwork.path;
+}
+
 const invalidFields = {
   "fintech-fee-watch": ["amount", 0],
   "ajo-chama": ["members", 0],
@@ -105,7 +115,7 @@ async function assertMetadata(page, row) {
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", expectedUrl);
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", expectedUrl);
   await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute("content", "sw_TZ");
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", new RegExp(row.artwork.path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"));
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", new RegExp(expectedArtworkPath(row).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"));
   const alternates = await page.locator('link[rel="alternate"][hreflang]').evaluateAll((nodes) => Object.fromEntries(nodes.map((node) => [node.hreflang, node.href])));
   expect(alternates.sw).toBe(expectedUrl);
   expect(alternates.en).toBe(`https://afrotools.com${row.english.route}`);
@@ -279,7 +289,7 @@ for (const row of rows) {
     await assertMetadata(page, row);
     await assertLabelsAndKeyboard(page);
     const artwork = page.locator("[data-sw-ua-artwork]");
-    await expect(artwork).toHaveAttribute("src", `/${row.artwork.path}`);
+    await expect(artwork).toHaveAttribute("src", `/${expectedArtworkPath(row)}`);
     expect(await artwork.evaluate((image) => image.complete && image.naturalWidth > 0)).toBeTruthy();
     await assertNoPageOverflow(page);
 

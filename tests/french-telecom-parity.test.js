@@ -3,6 +3,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const { parseTelecomData } = require('../scripts/lib/read-telecom-data');
 
 const ROOT = path.resolve(__dirname, '..');
 const {
@@ -405,7 +406,7 @@ assert.strictEqual(engine.whatsappVsSms(fixture, {
 }).error, 'message_mix_not_100', 'invalid message mix must fail closed');
 
 const telecomDataScript = fs.readFileSync(path.join(ROOT, 'data/telecom/country-telecom-index.js'), 'utf8');
-const telecomData = new Function(`${telecomDataScript}; return TELECOM_DATA;`)();
+const telecomData = parseTelecomData(telecomDataScript);
 assert.deepStrictEqual(
   Object.keys(frenchTelecom.countryNames).sort(),
   Object.keys(telecomData.countries).sort(),
@@ -501,7 +502,7 @@ assert.ok(controller.includes('setResultActionsAvailable(false);'), 'reset and i
 assert.ok(controller.includes("config.kind !== 'whatsappVsSms'"), 'WhatsApp mix balancing must remain scoped to that app');
 const dataScript = fs.readFileSync(path.join(ROOT, 'data/telecom/country-telecom-index.js'), 'utf8');
 assert.ok(dataScript.includes('window.AFROTOOLS_TELECOM_DISABLE_LIVE_DATA'), 'dataset overlay must honor local-only mode');
-const carriedData = new Function(`${dataScript}; return TELECOM_DATA;`)();
+const carriedData = parseTelecomData(dataScript);
 assert.strictEqual(Object.keys(carriedData.countries).length, 12, 'country dataset denominator');
 for (const [code, record] of Object.entries(carriedData.countries)) {
   assert.ok(record.currency && record.symbol, `${code}: local currency code and display symbol`);

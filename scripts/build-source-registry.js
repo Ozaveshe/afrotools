@@ -6,6 +6,7 @@ const crypto = require('crypto');
 
 const sourceConfidence = require('../assets/js/lib/source-confidence.js');
 const canonicalRegistry = require('./lib/canonical-registry');
+const { parseTelecomData } = require('./lib/read-telecom-data');
 
 const ROOT = path.resolve(__dirname, '..');
 const SOURCE_PATH = path.join(ROOT, 'data', 'source-registry.json');
@@ -40,7 +41,7 @@ function readJson(filePath) {
 
 function buildTelecomSnapshotEntry(today) {
   const datasetSource = fs.readFileSync(TELECOM_DATASET_PATH, 'utf8');
-  const dataset = new Function(datasetSource + '; return TELECOM_DATA;')();
+  const dataset = parseTelecomData(datasetSource);
   const ledger = readJson(TELECOM_LEDGER_PATH);
   const reviewedAt = dateOnly(dataset.lastUpdated);
   const cadenceDays = Number(ledger.highRiskCadenceDays) || 30;

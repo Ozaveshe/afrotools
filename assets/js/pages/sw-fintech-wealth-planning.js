@@ -27,6 +27,7 @@
       currentPrice: 'bei ya sasa kwa hisa',
       delete: 'Futa nafasi',
       invalid: 'Kila mstari unaotumiwa unahitaji idadi chanya ya hisa na bei chanya ya ununuzi, pamoja na bei ya sasa isiyo hasi.',
+      outOfRange: 'Nafasi hizi ziko nje ya wigo wa namba unaotumika. Rekebisha kiasi au idadi kisha ujaribu tena.',
       empty: 'Weka angalau nafasi moja iliyokamilika.'
     }
   };

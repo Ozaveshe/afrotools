@@ -3,6 +3,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("node:child_process");
 
 const retirement = require("../scripts/retire-french-english-iframe-routes");
 const routeApi = require("../scripts/lib/route-contract");
@@ -60,7 +61,15 @@ for (const [slug, selector] of [
 
 const redirects = fs.readFileSync(path.join(ROOT, "_redirects"), "utf8");
 assert.match(redirects, /# BEGIN FRENCH ENGLISH-IFRAME RETIREMENT/);
-assert.match(redirects, /\/fr\/agriculture\/export-docs\/:country\.html\s+\/fr\/agriculture\/export-docs\/\?country=:country\s+301!/);
+for (const alias of retirement.loadCountryAliases()) {
+  for (const sourcePath of [`/${alias.sourceFile}`, `/${alias.sourceFile.replace(/\.html$/, "")}`, `/${alias.sourceFile.replace(/\.html$/, "/")}`]) {
+    assert.ok(redirects.includes(`${sourcePath}  ${alias.canonicalHub}?country=${alias.countrySlug}  301!`));
+  }
+}
+assert.strictEqual(result.report.countryPrefillAliases.length, 138);
+assert.strictEqual(result.report.countryPrefillAliases.flatMap(alias => alias.variants).length, 414);
+assert.strictEqual(result.report.agricultureRedirectRules, 429);
 assert.match(redirects, /\/fr\/agriculture\/harvest-date\/:country\s+\/fr\/agriculture\/harvest-date\/\s+301!/);
 
 console.log(`French English-iframe retirement tests passed (${result.report.wrapperPages} governed wrappers).`);
+execFileSync(process.execPath, [path.join(ROOT, "tests/french-agriculture-literal-country-redirects.test.mjs")], { stdio: "inherit" });
