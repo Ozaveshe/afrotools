@@ -1704,22 +1704,39 @@ var AfroKitchenEngine = function() {
     is_featured: !1
   } ];
   var staticRecipePromise = null;
+  function isPublicRecipe(recipe) {
+    return !!recipe && recipe.is_published === true && recipe.is_verified === true;
+  }
+  function publicationUnavailable() {
+    var rows = [];
+    Object.defineProperty(rows, "publicationUnavailable", { value: true });
+    return rows;
+  }
   function loadPublishedRecipeIndex() {
     if (!staticRecipePromise) {
-      staticRecipePromise = typeof window.fetch === 'function'
-        ? window.fetch('/tools/afrokitchen/recipe-index.json').then(function(response) {
+      var controller = typeof AbortController === 'function' ? new AbortController() : null, timer;
+      var operation = typeof window.fetch === 'function'
+        ? Promise.resolve().then(function() { return window.fetch('/tools/afrokitchen/recipe-index.json', { cache: 'no-cache', signal: controller ? controller.signal : undefined }); }).then(function(response) {
           if (!response.ok) throw new Error('Published recipe index unavailable');
           return response.json();
         }).then(function(payload) {
-          return payload && payload.version === 1 && Array.isArray(payload.recipes) && payload.recipes.length
-            ? payload.recipes : null;
-        }).catch(function() { return null; })
-        : Promise.resolve(null);
+          if (!payload || payload.version !== 2 || !Array.isArray(payload.recipes) ||
+              payload.recipes.some(function(row) { return !row || typeof row.is_published !== 'boolean' || typeof row.is_verified !== 'boolean'; })) return null;
+          return payload.recipes.filter(isPublicRecipe);
+        }) : Promise.resolve(null);
+      staticRecipePromise = Promise.race([operation, new Promise(function(resolve) {
+        timer = setTimeout(function() { if (controller) controller.abort(); resolve(null); }, 8000);
+      })]).catch(function() { return null; }).then(function(rows) {
+          clearTimeout(timer); if (controller) controller.abort();
+          if (rows === null) staticRecipePromise = null;
+          return rows;
+        });
     }
     return staticRecipePromise;
   }
   function h(e, rows) {
-    var t = rows || g;
+    if (rows && rows.publicationUnavailable) return rows;
+    var t = (rows || []).filter(isPublicRecipe);
     if (!e) {
       return t;
     }
@@ -1751,11 +1768,30 @@ var AfroKitchenEngine = function() {
       return t.slug === e.slug;
     })), e.limit && (t = t.slice(0, e.limit)), t;
   }
-  function f(e) {
-    var t = g.find(function(t) {
-      return t.slug === e;
-    });
-    return t && (t.reviews = [], t.avg_rating = null, t.review_count = 0), t || null;
+  function hasRecordedRecipeYield(recipe) { return !!recipe && recipe.yield_status !== 'not-recorded'; }
+  // One reviewed display method; ordinary publication approval is required first.
+  function kapentaSourceDetail(recipe, published) {
+    if (!recipe || recipe.slug !== 'kapenta-stew-zm') return recipe;
+    if (recipe.id !== '76572d95-eb8e-4c78-bbb6-ea754f61c758' || !isPublicRecipe(recipe)) return null;
+    var approval = (published || []).find(function(row) { return row.id === recipe.id && row.slug === recipe.slug && isPublicRecipe(row); });
+    var detail = approval && approval.curated_detail;
+    if (!detail || detail.id !== recipe.id || detail.slug !== recipe.slug || detail.method_revision !== 'kapenta-zambian-kitchen-20261016') return null;
+    var fields = detail.fields, allowed = ['name','description','story','author','source','best_served_with','occasion','regional_variations','prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','yield_status','calories','protein_g','carbs_g','fat_g','fiber_g','diet_tags','image_url','image_alt','ingredients','steps','media'];
+    if (!fields || Object.keys(fields).some(function(key) { return allowed.indexOf(key) === -1; }) || fields.yield_status !== 'not-recorded' || fields.default_servings !== null ||
+        !Array.isArray(fields.ingredients) || !Array.isArray(fields.steps) || !Array.isArray(fields.media) ||
+        fields.ingredients.concat(fields.steps, fields.media).some(function(row) { return !row || row.recipe_id !== recipe.id; })) return null;
+    return Object.assign({}, recipe, JSON.parse(JSON.stringify(fields)), { method_revision: detail.method_revision });
+  }
+  function f(slug, published) {
+    if (slug === 'kapenta-stew-zm') {
+      var approved = (published || []).find(function(row) { return row.slug === slug && isPublicRecipe(row); });
+      return approved ? kapentaSourceDetail(Object.assign({}, approved, { reviews: [], avg_rating: null, review_count: 0 }), published) : null;
+    }
+    var seed = g.find(function(row) { return row.slug === slug; });
+    if (!seed || seed.is_published === false || seed.is_verified === false || !published) return null;
+    var approval = published.find(function(row) { return row.id === seed.id && row.slug === seed.slug && isPublicRecipe(row); });
+    if (!approval) return null;
+    return Object.assign({}, seed, { is_published: true, is_verified: true, reviews: [], avg_rating: null, review_count: 0 });
   }
   return {
     COUNTRIES: i,
@@ -1791,11 +1827,30 @@ var AfroKitchenEngine = function() {
     DIETS: [ "vegetarian", "vegan", "halal", "gluten-free", "dairy-free" ],
     DIFFICULTIES: [ "easy", "medium", "hard", "expert" ],
     SEED_RECIPES: g,
+    hasRecordedRecipeYield: hasRecordedRecipeYield,
+    isPublicationUnavailable: function(value) { return !!value && value.publicationUnavailable === true; },
+    retryPublication: function() { staticRecipePromise = null; r = {}; },
+    checkRecipePublication: async function(recipe) {
+      if (!recipe || !recipe.slug) return { kind: 'unavailable' };
+      if (recipe.is_published === false || recipe.is_verified === false) return { kind: 'withheld' };
+      if ((Object.prototype.hasOwnProperty.call(recipe, 'is_published') && recipe.is_published !== true) ||
+          (Object.prototype.hasOwnProperty.call(recipe, 'is_verified') && recipe.is_verified !== true)) return { kind: 'unavailable' };
+      var uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (uuid.test(recipe.id || '') && isPublicRecipe(recipe)) return { kind: 'eligible' };
+      var children = (recipe.ingredients || []).concat(recipe.steps || []);
+      if (!recipe.ingredients || !recipe.ingredients.length || !recipe.steps || !recipe.steps.length ||
+          children.some(function(row) { return !row || !uuid.test(row.recipe_id || ''); })) return { kind: 'unavailable' };
+      var id = children[0].recipe_id;
+      if (children.some(function(row) { return row.recipe_id !== id; }) || (recipe.id && recipe.id !== id)) return { kind: 'unavailable' };
+      var published = await loadPublishedRecipeIndex();
+      if (!published) return { kind: 'unavailable' };
+      return { kind: published.some(function(row) { return row.id === id && row.slug === recipe.slug && isPublicRecipe(row); }) ? 'eligible' : 'withheld' };
+    },
     SEED_COLLECTIONS: p,
     fetchRecipes: async function(e) {
       var r = "recipes_" + JSON.stringify(e || {}), i = o(r);
       if (i) {
-        return i;
+        return h(e, i);
       }
       var published = await loadPublishedRecipeIndex();
       if (published) {
@@ -1803,12 +1858,13 @@ var AfroKitchenEngine = function() {
         n(r, matching);
         return matching;
       }
+      if (window.navigator && window.navigator.onLine === false) return publicationUnavailable();
       var a = t();
       if (!a) {
-        return h(e);
+        return publicationUnavailable();
       }
       try {
-        var s = a.from("recipes").select("*").eq("is_verified", !0);
+        var s = a.from("recipes").select("*").eq("is_published", true).eq("is_verified", true);
         e && (e.country && (s = s.eq("country_code", e.country)), e.region && (s = s.eq("region", e.region)),
         e.category && (s = s.eq("category", e.category)), e.difficulty && (s = s.eq("difficulty", e.difficulty)),
         e.diet && (s = s.contains("diet_tags", [ e.diet ])), e.search && (s = s.or("name.ilike.%" + e.search + "%,description.ilike.%" + e.search + "%,country_name.ilike.%" + e.search + "%")),
@@ -1822,28 +1878,34 @@ var AfroKitchenEngine = function() {
         if (c.error) {
           throw c.error;
         }
-        return n(r, c.data), c.data;
+        var eligible = h(e, c.data || []);
+        return n(r, eligible), eligible;
       } catch (t) {
-        return console.warn("AfroKitchen: Supabase fetch failed, using seed data", t), h(e);
+        return console.warn("AfroKitchen: Public recipe availability could not be checked"), publicationUnavailable();
       }
     },
     fetchRecipeBySlug: async function(e) {
       var r = "recipe_" + e, i = o(r);
-      if (i) {
+      if (isPublicRecipe(i)) {
         return i;
       }
+      var published = await loadPublishedRecipeIndex();
+      if (window.navigator && window.navigator.onLine === false) return f(e, published) || { publicationUnavailable: true };
       var a = t();
       if (!a) {
-        return f(e);
+        return f(e, published) || { publicationUnavailable: true };
       }
       try {
-        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_verified", !0).single();
+        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_published", true).eq("is_verified", true).maybeSingle();
         if (s.error) {
           throw s.error;
         }
+        if (!s.data || !isPublicRecipe(s.data)) return null;
         var c = s.data, u = a.from("recipe_ingredients").select("*").eq("recipe_id", c.id).order("sort_order"), l = a.from("recipe_steps").select("*").eq("recipe_id", c.id).order("step_number"), d = a.from("recipe_reviews").select("*").eq("recipe_id", c.id).order("created_at", {
           ascending: !1
-        }).limit(20), m = await Promise.all([ u, l, d ]);
+        }).limit(20), mediaQuery = a.from("recipe_media").select("*").eq("recipe_id", c.id).order("sort_order"), m = await Promise.all([ u, l, d, mediaQuery ]);
+        if (m[3].error || !Array.isArray(m[3].data) || m[3].data.some(function(row) { return row.recipe_id !== c.id; })) throw new Error("Recipe media unavailable");
+        c.media = m[3].data;
         if (c.ingredients = m[0].data || [], c.steps = m[1].data || [], c.reviews = m[2].data || [],
         c.reviews.length > 0) {
           var g = c.reviews.reduce(function(e, t) {
@@ -1851,11 +1913,13 @@ var AfroKitchenEngine = function() {
           }, 0);
           c.avg_rating = Math.round(g / c.reviews.length * 10) / 10, c.review_count = c.reviews.length;
         }
+        c = kapentaSourceDetail(c, published);
+        if (!c) return { publicationUnavailable: true };
         return a.rpc("increment_recipe_views", {
           recipe_id: c.id
         }).catch(function() {}), n(r, c), c;
       } catch (t) {
-        return console.warn("AfroKitchen: Fetch by slug failed, using seed", t), f(e);
+        return console.warn("AfroKitchen: Public recipe detail availability could not be checked"), f(e, published) || { publicationUnavailable: true };
       }
     },
     fetchIngredientPrices: async function(e, r) {
@@ -1926,33 +1990,26 @@ var AfroKitchenEngine = function() {
       }
     },
     submitRecipe: async function(e) {
-      var r = t();
-      if (!r) {
-        return {
-          error: "Database not available"
-        };
-      }
+      var controller = new AbortController(), timer;
       try {
-        var o = await r.from("recipe_submissions").insert({
-          name: e.name,
-          country_code: e.country_code,
-          description: e.description || null,
-          ingredients_text: e.ingredients_text,
-          steps_text: e.steps_text,
-          story: e.story || null,
-          submitted_by: e.submitted_by || null,
-          email: e.email || null
-        });
-        if (o.error) {
-          throw o.error;
-        }
-        return {
-          success: !0
-        };
-      } catch (e) {
-        return {
-          error: e.message
-        };
+        return await Promise.race([ (async function() {
+          var response = await fetch('/.netlify/functions/afrokitchen-community', {
+            method: 'POST', credentials: 'omit', signal: controller.signal,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.assign({}, e, { action: 'submit-recipe' }))
+          });
+          var data = await response.json();
+          if (response.status === 201 && response.ok && data && data.success === true && data.status === 'pending') return { success: true, status: 'pending' };
+          var fields = ['name', 'country_code', 'description', 'ingredients_text', 'steps_text', 'story', 'submitted_by', 'email', 'region_community', 'contributor_type', 'occasion', 'total_time', 'serve_with', 'photo_links', 'photo_permission', 'variations', 'consent'];
+          return { error: response.status === 429 ? 'Submission limit reached. Please try later' : 'We could not confirm your recipe was saved', field: data && fields.indexOf(data.field) !== -1 ? data.field : null };
+        })(), new Promise(function(resolve, reject) {
+          timer = setTimeout(function() { controller.abort(); reject(new Error('Submission timeout')); }, 12000);
+        }) ]);
+      } catch (error) {
+        return { error: 'We could not confirm your recipe was saved' };
+      } finally {
+        clearTimeout(timer);
+        controller.abort();
       }
     },
     scaleIngredients: s,
@@ -2069,9 +2126,28 @@ var AfroKitchenEngine = function() {
     getTimer: function(e) {
       return l[e] || null;
     },
+    classifyRecipeDuration: function(value) {
+      if (value == null || (typeof value === 'string' && value.trim() === '')) return { kind: 'unknown', minutes: null };
+      if (typeof value !== 'number' && typeof value !== 'string') return { kind: 'invalid', minutes: null };
+      if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)\s*$/.test(value)) return { kind: 'invalid', minutes: null };
+      var number = Number(value);
+      return Number.isFinite(number) && number >= 0 ? { kind: 'known', minutes: number } : { kind: 'invalid', minutes: null };
+    },
+    getRecipeTiming: function(recipe) {
+      return { prep: this.classifyRecipeDuration(recipe.prep_time_minutes).minutes, cook: this.classifyRecipeDuration(recipe.cook_time_minutes).minutes, total: this.classifyRecipeDuration(recipe.total_time_minutes).minutes };
+    },
+    formatRecipeMinutes: function(value) {
+      return value === null || value === undefined ? 'Not recorded' : value + ' min';
+    },
+    getRecipeIllustrationCaption: function(recipe) {
+      var media = Array.isArray(recipe.media) ? recipe.media : [];
+      var hero = media.find(function(row) { return row.recipe_id === recipe.id && row.role === 'hero' && row.image_url === recipe.image_url && row.source_type === 'ai_generated_illustration'; });
+      return hero && typeof hero.caption === 'string' ? hero.caption : '';
+    },
     formatTime: m,
     getStructuredData: function(e, t) {
-      var r = s(e.ingredients || [], e.default_servings, t || e.default_servings);
+      var recordedYield = hasRecordedRecipeYield(e), r = s(e.ingredients || [], recordedYield ? e.default_servings : 1, recordedYield ? t || e.default_servings : 1), timing = this.getRecipeTiming(e);
+      if (['prep_time_minutes', 'cook_time_minutes', 'total_time_minutes'].some(function(field) { return this.classifyRecipeDuration(e[field]).kind === 'invalid'; }, this)) return null;
       // Recipe rich-result nutrition describes one serving, never an unknown stored basis.
       var nutrition, servings = Number(e.default_servings);
       if (Number.isFinite(servings) && servings > 0 && ['per_serving', 'batch'].indexOf(e.nutrition_basis) !== -1) {
@@ -2094,10 +2170,9 @@ var AfroKitchenEngine = function() {
           name: "AfroKitchen by AfroTools"
         },
         datePublished: e.created_at ? e.created_at.slice(0, 10) : "2026-03-17",
-        prepTime: "PT" + e.prep_time_minutes + "M",
-        cookTime: "PT" + e.cook_time_minutes + "M",
-        totalTime: "PT" + (e.prep_time_minutes + e.cook_time_minutes) + "M",
-        recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings"),
+        ...(timing.prep !== null && timing.cook !== null ? { prepTime: "PT" + timing.prep + "M", cookTime: "PT" + timing.cook + "M" } : {}),
+        ...(timing.total !== null ? { totalTime: "PT" + timing.total + "M" } : {}),
+        ...(recordedYield ? { recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings") } : {}),
         recipeCategory: "main" === e.category ? "Main Course" : e.category,
         recipeCuisine: e.country_name + ", " + e.region,
         nutrition: nutrition,
@@ -2111,7 +2186,7 @@ var AfroKitchenEngine = function() {
             text: e.instruction
           };
         }),
-        aggregateRating: e.avg_rating ? {
+        aggregateRating: e.avg_rating && !(e.id === "76572d95-eb8e-4c78-bbb6-ea754f61c758" && e.method_revision === "kapenta-zambian-kitchen-20261016") ? {
           "@type": "AggregateRating",
           ratingValue: e.avg_rating,
           reviewCount: e.review_count
@@ -2131,7 +2206,10 @@ var AfroKitchenEngine = function() {
       return navigator.clipboard && navigator.clipboard.writeText(t), t;
     },
     printRecipe: function(e, t) {
-      var r = s(e.ingredients || [], e.default_servings, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + " | Serves " + t + " | " + e.prep_time_minutes + " min prep + " + e.cook_time_minutes + " min cook</div><h2>Ingredients</h2><ul>", n = "";
+      if (!hasRecordedRecipeYield(e)) t = 1;
+      var timing = this.getRecipeTiming(e);
+      var timingText = timing.prep === null && timing.cook === null ? "Time not recorded" : "Prep: " + this.formatRecipeMinutes(timing.prep) + "; cook: " + this.formatRecipeMinutes(timing.cook);
+      var r = s(e.ingredients || [], hasRecordedRecipeYield(e) ? e.default_servings : 1, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + (hasRecordedRecipeYield(e) ? " | Serves " + t : " | Yield not recorded; source quantities") + " | " + (timingText) + "</div><h2>Ingredients</h2><ul>", n = "";
       r.forEach(function(e) {
         e.group_name && e.group_name !== n && (o += "</ul><strong>" + e.group_name + "</strong><ul>",
         n = e.group_name), o += "<li>" + u(e.scaled_amount) + " " + e.unit + " " + e.name,

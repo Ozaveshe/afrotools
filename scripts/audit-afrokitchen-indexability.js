@@ -4,7 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { isDeepStrictEqual } = require("util");
-const { loadRecipeImages, resolveRecipeMedia } = require("./lib/afrokitchen-static");
+const { classifyRecipeDuration, loadRecipeImages, resolveRecipeMedia } = require("./lib/afrokitchen-static");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -73,13 +73,22 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
   if (recipes.length) {
     if (recipes.length !== 1) errors.push("duplicate Recipe JSON-LD");
     if (markers.length) errors.push("Recipe JSON-LD conflicts with a schema blocker");
-    return { state: "recipe-markup", errors };
+    const schema = recipes[0];
+    const expected = {};
+    const prep = classifyRecipeDuration(recipe.prep_time_minutes), cook = classifyRecipeDuration(recipe.cook_time_minutes), total = classifyRecipeDuration(recipe.total_time_minutes);
+    if (prep.kind === 'known' && cook.kind === 'known') { expected.prepTime = `PT${Math.round(prep.minutes)}M`; expected.cookTime = `PT${Math.round(cook.minutes)}M`; }
+    if (total.kind === 'known') expected.totalTime = `PT${Math.round(total.minutes)}M`;
+    for (const field of ['prepTime', 'cookTime', 'totalTime']) if (!isDeepStrictEqual(schema[field], expected[field])) errors.push(`Recipe duration does not match source: ${field}`);
+    if (schema.name !== recipe.name || schema.description !== recipe.description) errors.push('Recipe metadata does not match source');
+    if (!Array.isArray(schema.recipeInstructions) || schema.recipeInstructions.length !== (recipe.steps || []).length || schema.recipeInstructions.some((step, index) => step.text !== recipe.steps[index]?.instruction)) errors.push('Recipe instructions do not match source');
   }
 
   // A missing dish photo affects rich-result eligibility, not the complete page's indexability.
   // Verify the source and rendered content; the marker alone is never an exemption.
-  if (markers.length !== 1 || markers[0][1] !== "missing_image") errors.push("missing or invalid image-only schema blocker");
-  if (!resolveRecipeMedia(recipe, recipeImages).isFallback) errors.push("dish image is available; Recipe JSON-LD is required");
+  if (!recipes.length) {
+    if (markers.length !== 1 || markers[0][1] !== "missing_image") errors.push("missing or invalid image-only schema blocker");
+    if (!resolveRecipeMedia(recipe, recipeImages).isFallback) errors.push("dish image is available; Recipe JSON-LD is required");
+  }
   const canonicalLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi)];
   if (canonicalLinks.length !== 1 || extractCanonical(html) !== recipe.route_url) errors.push("photo-less page canonical is missing or mismatched");
   if (!/^index,\s*follow$/i.test(extractMetaContent(html, "robots"))) errors.push("photo-less page must remain index, follow");
@@ -110,9 +119,9 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
   for (const field of ["ingredients", "steps"]) {
     if (!isDeepStrictEqual(cookingContent(payload?.[field]), cookingContent(recipe[field]))) errors.push(`static recipe payload does not match source: ${field}`);
   }
-  const sourceIncomplete = !recipe.generated_in_wave ||
+  const sourceIncomplete = !recipe.generated_in_wave || recipe.is_published !== true || recipe.is_verified !== true ||
     textFields.some(field => !String(recipe[field] || "").trim()) ||
-    durationFields.some(field => recipe[field] == null || !Number.isFinite(Number(recipe[field])) || Number(recipe[field]) < 0) ||
+    durationFields.some(field => classifyRecipeDuration(recipe[field]).kind === "invalid") ||
     !Number.isFinite(Number(recipe.default_servings)) || Number(recipe.default_servings) <= 0 ||
     !Array.isArray(recipe.ingredients) || !recipe.ingredients.length ||
     recipe.ingredients.some(item => !String(item?.name || "").trim()) ||
@@ -126,7 +135,7 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
     .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
     .replace(/\s+/g, " ");
   if (![recipe.name, recipe.description, ...(recipe.ingredients || []).map(item => item.name), ...(recipe.steps || []).map(item => item.instruction)].every(value => visibleText.includes(String(value || "").replace(/\s+/g, " ")))) errors.push("photo-less recipe content must be visible in HTML");
-  return { state: errors.length ? "invalid" : "awaiting-dish-image", errors };
+  return { state: errors.length ? "invalid" : recipes.length ? "recipe-markup" : "awaiting-dish-image", errors };
 }
 
 function htmlRouteUrl(filePath) {

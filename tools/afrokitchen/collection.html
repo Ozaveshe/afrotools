@@ -131,6 +131,32 @@
   var params = new URLSearchParams(window.location.search);
   var slug = params.get('slug');
 
+  function showPublicationState(rows, reload) {
+    var empty = document.getElementById('recipes-empty');
+    var loading = document.getElementById('recipes-loading');
+    var heading = empty.querySelector('h3'), description = empty.querySelector('p');
+    if (!showPublicationState.defaults) showPublicationState.defaults = [heading.textContent, description.innerHTML];
+    var retry = document.getElementById('ak-publication-retry');
+    if (!retry) {
+      retry = document.createElement('button'); retry.type = 'button';
+      retry.id = 'ak-publication-retry'; retry.className = 'ak-btn ak-btn-outline'; retry.textContent = 'Retry recipe availability';
+      empty.appendChild(retry);
+    }
+    var unavailable = AK.isPublicationUnavailable(rows);
+    retry.hidden = !unavailable; retry.style.display = unavailable ? "" : "none";
+    retry.onclick = function() { retry.disabled = true; AK.retryPublication(); return reload(); };
+    retry.disabled = false;
+    if (!unavailable) {
+      heading.textContent = showPublicationState.defaults[0]; description.innerHTML = showPublicationState.defaults[1];
+      return false;
+    }
+    loading.style.display = 'none'; empty.style.display = '';
+    empty.setAttribute('role', 'status'); empty.setAttribute('aria-live', 'polite');
+    heading.textContent = 'Recipe availability could not be checked';
+    description.textContent = 'Publication data is unavailable. Reconnect and retry; this does not mean the archive has no recipes.';
+    return true;
+  }
+
   async function load() {
     var collections = await AK.fetchCollections();
     var col = (collections || []).find(function (c) { return c.slug === slug; });
@@ -161,8 +187,9 @@
     var loading = document.getElementById('recipes-loading');
     var grid = document.getElementById('recipes-grid');
     var empty = document.getElementById('recipes-empty');
+    grid.innerHTML = ''; empty.style.display = 'none';
     loading.style.display = 'none';
-
+    if (showPublicationState(recipes, load)) return;
     if (!recipes || !recipes.length) { empty.style.display = ''; return; }
     document.getElementById('col-count').textContent = String(recipes.length);
 

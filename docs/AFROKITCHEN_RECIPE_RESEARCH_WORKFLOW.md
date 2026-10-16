@@ -43,6 +43,34 @@ Do not describe a recipe as source-confirmed unless it has an audit entry. Stati
 
 Keep source notes internal. AfroKitchen pages should read like a confident chef's recipe, not a research memo. Use the audit data to fix ingredients, timing, method, substitutions, and cultural context, but do not render citations or source-count cards on public recipe pages.
 
+A named cook's adaptation may include a short, accurate attribution in the recipe
+story. AI serving artwork must have a visible illustration label beside its use;
+it is not a cooking photograph, endorsement or kitchen-test result. Keep detailed
+source comparisons in the audit. Publication flags are eligibility, not proof of
+a kitchen test or dietary, religious, allergen or nutrition assurance.
+
+## Measured And Unknown Time
+
+Missing, null or blank durations stay unknown. They are diagnostic advisories,
+not publication or indexing blockers by themselves. Do not replace them with
+zero or count a known cooking duration as the whole preparation and cooking
+time. An explicitly measured zero remains valid. Boolean, negative, nonfinite or
+malformed measurements are invalid and remain source-quality blockers.
+
+Recipe markup emits prepTime and cookTime together only when both are valid;
+an independently recorded valid totalTime may be emitted instead or alongside
+that pair. Omit unknown properties. A visible approximate cooking checkpoint
+may still be useful when total time is unknown; explain doneness in the method.
+No duration policy waives method, ingredient, identity, canonical, publication,
+image, nutrition-basis or payload-equality checks or guarantees rich results.
+Reference: https://developers.google.com/search/docs/appearance/structured-data/recipe
+
+Curated corrections use an identity-checked single-recipe audit patch, not a
+batch importer. Keep canonical record correction separate and compare it with
+the saved source projection; an HTML-only override cannot establish API or
+database correctness. Record an actual source review date separately from the
+later database operation date; do not invent a future modified timestamp.
+
 ## Expansion Batches
 
 Use expansion batch files for new recipes:
@@ -115,3 +143,40 @@ For local generated images, use:
 - `/assets/img/kitchen/<recipe-slug>-5.webp`
 
 Do not insert placeholder image URLs. If a recipe has no image yet, leave the image fields empty so the page falls back cleanly and does not ship broken media.
+
+## Kapenta saved-art successor (private source)
+
+The exact `kapenta-stew-zm` UUID `76572d95-eb8e-4c78-bbb6-ea754f61c758`
+uses one paraphrased adaptation of [Zambian Kitchen's dry-kapenta recipe](https://zambiankitchen.com/cook-dry-kapenta/),
+not a universal Zambian method or a kitchen-tested result. The legacy route stays;
+the display title identifies the pan-fried tomato/onion version. Two pre-existing
+AI illustration files are selected by their saved byte hashes and actual pixels.
+No generation transcript or documentary photograph is claimed.
+
+Its source states no person-yield or overall preparation/cooking time. These
+fields and unsupported nutrition stay null; unsupported diet tags stay empty.
+The two approximate five-minute method checkpoints are not a total cooking time.
+The explicit `yield_status: not-recorded` hides serving scaling, disables
+meal-plan portions and per-serving costing, and keeps original quantities in
+static/dynamic controls, schema, TXT and print. Recipe metadata omits unknown
+yield/time/nutrition; it does not infer serves1/4/6. Oleleh retains known-yield
+controls and its existing attributed method.
+
+The existing public recipe index may project full display content for only this
+exact UUID/slug/method revision. The browser joins that source content only after
+ordinary public eligibility and an exact identity/revision match; publication,
+verification and counters are never overwritten. Missing/malformed target source
+content fails closed. The saved image family also requires that identity/revision;
+raw legacy methods and slug-only image lookup cannot silently adopt the artwork.
+No canonical database content, flags or SQL are changed by this source work.
+
+Legacy saved/picked/locked planner choices remain stored but cannot produce
+portion claims for this method, including old online summaries without the marker.
+Community ratings, photos and contribution forms are marked unavailable for this
+source adaptation until canonical community records are linked to its method;
+old-method counters are preserved, not presented as adaptation evidence.
+
+Focused owner HTML fixtures and mocked Node contracts are separate from native
+visitor, real provider, full build, image-inventory and publisher release proof.
+The shared engine must still be composed with the unit-nine submission child;
+this successor remains unit ten, not a twelfth accepted unit.

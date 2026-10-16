@@ -62,3 +62,25 @@ test('a schema-only refresh preserves the route owner head ordering', () => {
   assert.equal(replaceHeadLinks(refreshed, route, hreflangs), refreshed);
   assert.equal(refreshRecipeSchema(refreshed, null, ['missing_image']), refreshed);
 });
+
+test('valid dish image with unknown optional times keeps Recipe metadata without invented duration',()=>{
+  const item={...recipe('jollof-rice-ng'),prep_time_minutes:null,cook_time_minutes:40,total_time_minutes:null};
+  const html=page(item), schema=recipeSchema(html);
+  assert.ok(schema);
+  for(const field of ['prepTime','cookTime','totalTime']) assert.equal(Object.hasOwn(schema,field),false);
+  assert.match(html,/<meta name="robots" content="index, follow">/);
+  assert.match(html,/About 40 min cook/);
+  assert.match(html,/Not recorded prep/);
+});
+test('an independently measured total and a measured zero pair retain distinct meanings',()=>{
+  let schema=recipeSchema(page({...recipe('jollof-rice-ng'),prep_time_minutes:null,cook_time_minutes:40,total_time_minutes:65}));
+  assert.equal(schema.totalTime,'PT65M');
+  assert.equal(Object.hasOwn(schema,'prepTime'),false);
+  assert.equal(Object.hasOwn(schema,'cookTime'),false);
+  schema=recipeSchema(page({...recipe('jollof-rice-ng'),prep_time_minutes:0,cook_time_minutes:0,total_time_minutes:0}));
+  assert.deepEqual([schema.prepTime,schema.cookTime,schema.totalTime],['PT0M','PT0M','PT0M']);
+});
+test('known measured duration regression remains a complete pair and independent total',()=>{
+  const schema=recipeSchema(page({...recipe('jollof-rice-ng'),prep_time_minutes:30,cook_time_minutes:65,total_time_minutes:95}));
+  assert.deepEqual([schema.prepTime,schema.cookTime,schema.totalTime],['PT30M','PT65M','PT95M']);
+});

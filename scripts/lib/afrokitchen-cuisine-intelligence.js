@@ -629,6 +629,27 @@ function attachSocialRefsToRecipes(recipeInsights, socialShowcase) {
   });
 }
 
+// Only the explicitly reviewed one-recipe method may replace heuristic advice.
+function curatedMethodProfile(recipe, researchAudit) {
+  const entry = researchAudit && researchAudit[recipe.slug];
+  if (!entry || entry.curated_method !== true) return null;
+  if (recipe.slug === 'kapenta-stew-zm') {
+    if (recipe.id !== '76572d95-eb8e-4c78-bbb6-ea754f61c758' || recipe.method_revision !== 'kapenta-zambian-kitchen-20261016' || entry.method_revision !== recipe.method_revision || entry.static_recipe_patch?.expected_recipe_id !== recipe.id) throw new Error('Curated Kapenta identity/revision mismatch');
+    return { chefNotes: { common_mistakes: [], readiness_cues: ['Fish begins to brown; onion and tomato are cooked before adding green pepper.'], pantry_notes: [], technique_notes: [], serve_with: recipe.best_served_with || '' }, menuTags: ['kapenta', 'pan-fried-fish', 'zambia'] };
+  }
+  if (recipe.id !== 'ee3d60da-f4cd-4955-955f-987c0912dc34' || recipe.slug !== 'oleleh-sl' || entry.method_revision !== 'oleleh-isata-89959d1b' || recipe.method_revision !== entry.method_revision || entry.static_recipe_patch?.expected_recipe_id !== recipe.id) throw new Error('Curated intelligence identity/revision mismatch');
+  return {
+    chefNotes: {
+      common_mistakes: [],
+      readiness_cues: ['Bake until firm and a knife inserted into the centre comes out clean; the method gives an approximate 40-minute check.'],
+      pantry_notes: [],
+      technique_notes: [],
+      serve_with: ''
+    },
+    menuTags: ['black-eyed-beans', 'oven-water-bath', 'snack', 'sierra-leone']
+  };
+}
+
 function buildCuisineIntelligence(manifest, options) {
   const settings = options || {};
   const rules = settings.rules || loadCuisineRules();
@@ -643,8 +664,9 @@ function buildCuisineIntelligence(manifest, options) {
     const regionLens = assignRegionalLens(recipe, rules);
     const image = buildImageStatus(recipe, recipeImages, rules);
     const quality = scoreRecipe(recipe, researchAudit, image);
-    const chefNotes = buildChefNotes(recipe, rules);
-    const menuTags = buildMenuTags(recipe, regionLens);
+    const curated = curatedMethodProfile(recipe, researchAudit);
+    const chefNotes = curated ? curated.chefNotes : buildChefNotes(recipe, rules);
+    const menuTags = curated ? curated.menuTags : buildMenuTags(recipe, regionLens);
 
     recipeInsights[recipe.slug] = {
       slug: recipe.slug,
