@@ -173,6 +173,10 @@ test('actual availability synchronizer preserves this single route byte-for-byte
   const record = manifest.routes.find(r => r.route === '/yo/awon-ise/alawus-na-nysc/');
   assert.equal(require('../scripts/sync-yoruba-fallbacks.js').syncContent(html, record), html);
 });
+test('English destination is disclosed without mispronouncing the Yoruba link label as English', () => {
+  const link = html.match(/<a href="\/tools\/nysc-allowance\/"[^>]*>/)[0];
+  assert.match(link, /hreflang="en"/); assert.doesNotMatch(link, /\slang=/);
+});
 test('full numeric workflow parity includes every maintained English budget field', () => {
   const source = fs.readFileSync(path.join(root, 'tools/nysc-allowance/index.html'), 'utf8');
   const ids = [...source.matchAll(/<input id="([^"]+)" type="number"/g)].map(m => m[1]).sort();
