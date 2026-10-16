@@ -1,17 +1,16 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
+const { readTelecomData } = require('../../scripts/lib/read-telecom-data');
 const frenchTelecom = require('../../assets/js/lib/fr-telecom-localization');
 
 const HUB_ROUTE = '/fr/telecom/';
 const TV_ROUTE = '/fr/telecom/comparateur-tv-streaming/';
 const REFLOW_WIDTHS = [320, 375];
 const ROOT_FONT_SIZES = [16, 32];
-const telecomDataSource = fs.readFileSync(
-  path.join(__dirname, '..', '..', 'data', 'telecom', 'country-telecom-index.js'),
-  'utf8'
-).split(';void 0')[0];
-const ARCHIVED_TELECOM_DATA = new Function(`${telecomDataSource}; return TELECOM_DATA;`)();
+const ARCHIVED_TELECOM_DATA = readTelecomData(
+  path.join(__dirname, '..', '..', 'data', 'telecom', 'country-telecom-index.js')
+);
 const FRENCH_COUNTRY_NAMES = {
   CI: 'Côte d’Ivoire',
   EG: 'Égypte',

@@ -38,7 +38,7 @@ function build() {
         sha256: variant.sha256,
         text_status: 'text-free-reviewed',
         locale_reuse: true,
-        review_note: image.provenance + ' Visually reviewed for the same recipe; generation prompt and variant hashes are recorded in ' + file + '.',
+        review_note: image.provenance + (typeof image.prompt === 'string' && image.prompt.trim() ? ' Visually reviewed for the same recipe; generation prompt and variant hashes are recorded in ' : ' Visually reviewed for the same recipe; the upstream generation prompt is not established; variant hashes are recorded in ') + file + '.',
       });
     }
   }

@@ -24,6 +24,7 @@ function searchIntentCopy(row, location, date) {
     title: row.code === "TN" ? "Prix essence et gasoil en Tunisie | AfroFuel" : `Prix du carburant ${location} : essence et gasoil | AfroFuel`,
     description: `Essence, gasoil et GPL ${location} : relevé du ${date} en ${row.currency}. Prix à confirmer en station et calculateur de budget mensuel.`,
     note: `Vous cherchez le prix du litre aujourd’hui ? Ce relevé daté du ${date} ne confirme pas le tarif du jour. Comparez la même unité et le même carburant avec le prix affiché par votre station avant de calculer votre budget.` + (row.code === "TN" ? " Le jeu de données ne distingue pas les différentes qualités commerciales de gasoil : ne considérez pas la ligne diesel comme le tarif confirmé d’une qualité précise." : ""),
+    faqAnswer: `Non. Le relevé du ${date} ne confirme pas le tarif du jour. Avant de payer, vérifiez auprès de la station la monnaie et le prix par litre pour l’essence ou le diesel, ou par kilogramme pour le GPL.` + (row.code === "TN" ? " Le jeu de données ne distingue pas les différentes qualités commerciales de gasoil : faites également confirmer la qualité correspondant au prix annoncé." : ""),
   };
 }
 
@@ -341,7 +342,7 @@ function visiblePage(row, rows, country) {
   const faqs = localizedFaqs(row, name, estimate, date);
   const source = sourceDisclosure(row);
   const intent = searchIntentCopy(row, location, date);
-  if (intent) { faqs[4] = { q: `Ces prix du carburant ${location} sont-ils ceux d’aujourd’hui ?`, a: intent.note }; }
+  if (intent) { faqs[4] = { q: `Ces prix du carburant ${location} sont-ils ceux d’aujourd’hui ?`, a: intent.faqAnswer }; }
   const description = intent ? intent.description : `Carburant ${location} : relevé du ${date}, à vérifier localement. Consultez essence, diesel et GPL, puis calculez votre budget selon la quantité consommée.`;
   const canonical = `${BASE_URL}/fr/tools/suivi-carburant/${slug}/`;
   const compareHref = '#related-countries';

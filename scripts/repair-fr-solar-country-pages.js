@@ -530,6 +530,7 @@ function processHtml(html) {
   html = localizeSolarRuntimeCopy(html);
   // Preserve distinct, visible names when repairing older translated pickers.
   html = html.replace(/(<label\b[^>]*for="solarCountryPageSearch"[^>]*>)[^<]*(<\/label>)/, '$1Rechercher un pays$2');
+  html = html.replace(/(<label\b[^>]*for="solarCountryPageSelect"[^>]*>)[^<]*(<\/label>)/, '$1Sélectionner un pays$2');
   if (html.includes('id="solarCountryPageSelect"') && !html.includes('for="solarCountryPageSelect"')) {
     html = html.replace('<select id="solarCountryPageSelect"', '<label for="solarCountryPageSelect">Sélectionner un pays</label>\n<select id="solarCountryPageSelect"');
   }
