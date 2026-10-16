@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const libyaSource = require("./libya-tax-source-boundary");
 const { normalizeReviewedArtworkPresentation } = require("./reviewed-artwork-formula-presentation");
 const { normalizeReviewedRelatedProPresentation } = require("./reviewed-related-pro-presentation");
 
@@ -631,7 +632,7 @@ function sourceRefsFromVerification(entry) {
     title: (entry.source_titles || [])[index] || url,
     url,
     kind: "authority-link",
-    authorityStatus: "source-reviewed",
+    authorityStatus: libyaSource.isLibyaTool(entry.tool_id) ? "review-required" : "source-reviewed",
   }));
 }
 

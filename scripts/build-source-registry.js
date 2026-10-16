@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const libyaSource = require('./lib/libya-tax-source-boundary');
 
 const sourceConfidence = require('../assets/js/lib/source-confidence.js');
 const canonicalRegistry = require('./lib/canonical-registry');
@@ -305,6 +306,7 @@ function buildRegistry(asOf) {
     entry.routes = coverage.routes.slice();
   });
   function add(entry) {
+    entry = libyaSource.curateSourceEntry(entry);
     if (entries.has(entry.id)) throw new Error('Duplicate generated source id: ' + entry.id);
     entry.appliesTo = normalizeAppliesToScopes(entry.appliesTo);
     if (entry.confidence === 'authoritative') entry.confidence = 'reviewed';
@@ -1502,7 +1504,8 @@ function buildRegistry(asOf) {
     entry.routes = (entry.routes || []).filter(function (route) {
       const file = routeFile(route);
       if (!file) return true;
-      return fs.readFileSync(file, 'utf8').includes('data-source-meta-id="' + entry.id + '"');
+      const html = fs.readFileSync(file, 'utf8');
+      return html.includes('data-source-meta-id="' + entry.id + '"') || libyaSource.ownsPendingSourcePanel(entry.id, html);
     });
   });
 

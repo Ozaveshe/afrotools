@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const libyaSource = require('./lib/libya-tax-source-boundary');
 
 const ROOT = path.resolve(__dirname, '..');
 const GENERATED_AT = '2026-05-02';
@@ -130,6 +131,7 @@ function shouldKeepUrl(url) {
 }
 
 function shouldKeepToolSource(url, toolId) {
+  if (libyaSource.isLibyaTool(toolId)) return url === libyaSource.LEGISLATION_URL;
   // Preserve the reviewed pension authority notice in this tool's source ledger.
   if (toolId === 'zm-paye' && url === 'https://www.linkedin.com/posts/national-pension-scheme-authority_public-notice-revision-in-contribution-ceiling-activity-7417941633180090368-y4Dr') return true;
   if (!shouldKeepUrl(url)) return false;
@@ -413,7 +415,7 @@ function buildManifest(files) {
         return !/1767960417|NEW_INCOME_TAX_RATES_2022/i.test(decodedUrl);
       })
       .slice(0, 5);
-    const entry = existing || {
+    const entry = (libyaSource.isLibyaTool(page.toolId) && existing ? { ...existing } : existing) || {
       tool_id: page.toolId,
       jurisdiction: page.country,
       routes: [],
@@ -455,6 +457,10 @@ function buildManifest(files) {
       .sort()
       .pop();
     tools[page.toolId] = entry;
+  }
+
+  for (const id of ['ly-paye', 'ly-vat']) {
+    if (tools[id]) tools[id] = libyaSource.curateVerification(tools[id], previousTools[id]);
   }
 
   return {
@@ -584,6 +590,7 @@ const ESWATINI_VERIFICATION_FR = new Map([
 ]);
 
 function localizeVerificationValue(value, lang) {
+  value = libyaSource.localizeValue(value, lang);
   if (lang !== 'fr') return value;
   return ESWATINI_VERIFICATION_FR.get(String(value || '')) || FR_VERIFICATION_VALUES.get(String(value || '')) || value;
 }
@@ -592,10 +599,13 @@ function buildPanel(entry, lang = 'en') {
   if (entry.tool_id === 'sz-paye' && lang === 'fr') {
     entry = { ...entry, source_titles: entry.source_titles.map(value => localizeVerificationValue(value, lang)) };
   }
-  const copy = PANEL_COPY[lang] || PANEL_COPY.en;
+  const libyaPending = libyaSource.isLibyaTool(entry.tool_id);
+  const copy = { ...(PANEL_COPY[lang] || PANEL_COPY.en), ...(libyaPending ? libyaSource.pendingPanelCopy(lang) : {}) };
   const kind = kindFor(entry.tool_id);
   const countryCode = codeFor(entry.tool_id, '');
-  const sourceMetaId = countryCode ? `${kind}-${countryCode}-source` : '';
+  // Pending Libya evidence is rendered here; the old generated registry must
+  // not inject its legacy cross-country authority beside the corrected scope.
+  const sourceMetaId = countryCode && !libyaPending ? `${kind}-${countryCode}-source` : '';
   // Bespoke verification records are authored in English. Until a record has
   // an owned French translation, use the already translated, calculation-type
   // contract rather than leaking a large English block onto a French route.
@@ -619,7 +629,7 @@ function buildPanel(entry, lang = 'en') {
 
   return `${START}
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="${escapeAttr(entry.tool_id)}">
-  ${sourceMetaId ? `<!-- AfroTools source confidence -->
+${sourceMetaId ? `  <!-- AfroTools source confidence -->
   <div class="container afro-source-meta" data-source-meta-id="${escapeAttr(sourceMetaId)}" data-source-meta-compact="true"></div>` : ''}
   <div class="container">
     <div class="tool-verification-card">
@@ -716,6 +726,7 @@ function applyPanelToFile(file, entry) {
   html = replaceGenericBadges(html);
   html = replaceRatings(html);
   const lang = rel(file).startsWith('fr/') ? 'fr' : 'en';
+  html = libyaSource.applyPageScope(html, entry.tool_id, lang);
   if (entry.tool_id === 'sz-paye') {
     const scopeStart = '<!-- ESWATINI_ESTIMATE_SCOPE_START -->';
     const scopeEnd = '<!-- ESWATINI_ESTIMATE_SCOPE_END -->';
