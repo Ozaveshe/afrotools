@@ -75,6 +75,8 @@ module.exports = {
     const totalDeductions = uifAmt + netTax;
     const netAnnual = grossAnnual - totalDeductions;
     const empUif = inclUif ? Math.min(monthly * UIF_RATE, UIF_MONTHLY_CAP) * 12 : 0;
+    const employerSDLBaseAnnual = Math.max(0, grossAnnual - retirementDeduction);
+    const employerSDL = employerSDLBaseAnnual * 0.01;
 
     const reliefs = { primaryRebate: REBATES.primary };
     if (age >= 65) reliefs.secondaryRebate = REBATES.secondary;
@@ -90,8 +92,8 @@ module.exports = {
         effectiveRate: (grossAnnual > 0 ? netTax / grossAnnual * 100 : 0).toFixed(2) + '%',
         marginalRate: (taxableIncome > 0 ? ANNUAL_BRACKETS.find(([ceiling]) => taxableIncome <= ceiling)[1] * 100 : 0) + '%'
       },
-      employer: { uif: Math.round(empUif), sdl: Math.round(grossAnnual * 0.01), totalCostAnnual: Math.round(grossAnnual + empUif + grossAnnual * 0.01), totalCostMonthly: Math.round((grossAnnual + empUif + grossAnnual * 0.01) / 12) },
-      meta: { retirementContributionAnnual: retirement, retirementTaxDeductionAnnual: retirementDeduction, retirementUndeductedAnnual: retirement - retirementDeduction, netBasis: 'after_paye_and_uif_before_retirement', retirementCashModelled: false, taxPeriod: { ...TAX_PERIOD }, regime: 'STANDARD', currency: 'ZAR', lastUpdated: this.lastUpdated, source: this.source }
+      employer: { uif: Math.round(empUif), sdl: Math.round(employerSDL), totalCostAnnual: Math.round(grossAnnual + empUif + employerSDL), totalCostMonthly: Math.round((grossAnnual + empUif + employerSDL) / 12) },
+      meta: { employerSDLBaseAnnual, employerSDLBasis: 'salary_less_modelled_allowable_retirement', employerSDLAssumesLiability: true, retirementContributionAnnual: retirement, retirementTaxDeductionAnnual: retirementDeduction, retirementUndeductedAnnual: retirement - retirementDeduction, netBasis: 'after_paye_and_uif_before_retirement', retirementCashModelled: false, taxPeriod: { ...TAX_PERIOD }, regime: 'STANDARD', currency: 'ZAR', lastUpdated: this.lastUpdated, source: this.source }
     };
   },
 

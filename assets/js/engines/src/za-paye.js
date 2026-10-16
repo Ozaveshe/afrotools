@@ -146,7 +146,8 @@ function calculate(annualGross, opts = {}) {
 
     // Employer costs
     const employerUIF = uifBase * 0.01;
-    const employerSDL = gross * 0.01;
+    const employerSDLBaseAnnual = Math.max(0, gross - retirement);
+  const employerSDL = employerSDLBaseAnnual * 0.01;
     const totalEmployerCost = gross + employerUIF + employerSDL;
 
     // Net
@@ -173,7 +174,8 @@ function calculate(annualGross, opts = {}) {
       threshold,
       bandBreakdown: breakdown,
       // Employer
-      employerUIF, employerSDL,
+      employerUIF, employerSDL, employerSDLBaseAnnual,
+      employerSDLBasis: 'salary_less_modelled_allowable_retirement', employerSDLAssumesLiability: true,
       totalEmployerCost,
     };
   }
