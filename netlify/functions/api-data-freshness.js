@@ -218,6 +218,10 @@ async function supabaseGet(path, deadline) {
 
 async function buildCategoryStatus(cat, config, meta, now, read = getData) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
+  if (cat === 'stocks') {
+    const payload = await read(config.blobKey);
+    return { ...require('./_shared/stock-observations').categoryStatus(payload, now, config.thresholds, catMeta), blob_key: config.blobKey };
+  }
   if (cat === 'shipping') {
     const payload = await read(config.blobKey);
     return {...require('./_shared/shipping-reference').referenceStatus(payload,catMeta,now,config.thresholds.live,

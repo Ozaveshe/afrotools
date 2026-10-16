@@ -9,6 +9,29 @@
       return e.stepAppliesToCountry(t, o);
     }) : [];
   }
+  var consentVersion = "payroll-workflow-sync-v1";
+  function permitted(userId, permission) {
+    try {
+      var auth = window.AfroAuth, user = auth && auth.getUser && auth.getUser();
+      return !!(userId && auth && (!auth.isLoggedIn || auth.isLoggedIn()) && user && user.id === userId &&
+        permission && permission.accountId === userId && permission.consentVersion === consentVersion &&
+        typeof permission.canRequest === "function" && permission.canRequest());
+    } catch (error) { return false; }
+  }
+  function failure(error) {
+    return { ok: false, reason: error && (error.code === "42P01" || error.code === "PGRST205") ? "backend-unavailable" : "request-failed" };
+  }
+  function validProgress(engine, journeyId, value) {
+    if (!value || typeof value !== "object" || Array.isArray(value) || !engine.JOURNEYS[journeyId] ||
+      !/^[A-Z]{2}$/.test(value.country || "")) return false;
+    var length = t(engine, journeyId, value.country).length, carry = value.carryData;
+    return value.totalSteps === length && length > 0 && Number.isInteger(value.currentStep) && value.currentStep >= 0 && value.currentStep <= length &&
+      Array.isArray(value.stepStatuses) && value.stepStatuses.length === length && value.stepStatuses.every(function(status) { return ["pending", "done", "skipped"].indexOf(status) >= 0; }) &&
+      (value.currentStep < length || value.stepStatuses.every(function(status) { return status === "done"; })) &&
+      carry && typeof carry === "object" && !Array.isArray(carry) && carry.country === value.country &&
+      Object.keys(carry).every(function(key) { return ["country", "salary", "role", "currency"].indexOf(key) >= 0 && typeof carry[key] === "string"; }) &&
+      (carry.salary === undefined || carry.salary.trim() === "" || Number.isFinite(Number(carry.salary)) && Number(carry.salary) >= 0);
+  }
   var o = {
     id: "afropayroll-os",
     version: "1.0.1",
@@ -221,8 +244,8 @@
     },
     buildPreFillUrl: function(e, t) {
       var o = this.getToolPath(e), r = [], a = t || {};
-      return a.country && r.push("country=" + encodeURIComponent(a.country)), a.salary && r.push("salary=" + encodeURIComponent(a.salary)),
-      a.currency && r.push("currency=" + encodeURIComponent(a.currency)), a.role && r.push("role=" + encodeURIComponent(a.role)),
+      return a.country && r.push("country=" + encodeURIComponent(a.country)),
+      a.currency && r.push("currency=" + encodeURIComponent(a.currency)),
       a.sector && r.push("sector=" + encodeURIComponent(a.sector)), a.docType && r.push("docType=" + encodeURIComponent(a.docType)),
       r.length ? o + "?" + r.join("&") : o;
     },
@@ -283,59 +306,67 @@
         }
       }), e;
     },
-    loadProgressFromSupabase: async function(e, t) {
+    loadProgressFromSupabase: async function(e, t, permission) {
+      if (!permitted(t, permission)) return { ok: false, reason: "consent-required" };
       try {
         var o = window.AfroAuth && window.AfroAuth.getSupabase ? window.AfroAuth.getSupabase() : null;
-        if (!o || !t) {
-          return null;
-        }
-        var r = await o.from("apo_workflows").select("country, current_step, total_steps, carry_data, step_statuses, updated_at").eq("user_id", t).eq("journey_type", e).maybeSingle(), a = r && r.data;
-        return a ? {
+        if (!o) return { ok: false, reason: "client-unavailable" };
+        if (!this.JOURNEYS[e] || !permitted(t, permission)) return { ok: false, reason: "consent-required" };
+        var r = await o.from("apo_workflows").select("country, current_step, total_steps, carry_data, step_statuses, updated_at, sync_consent_version, sync_consented_at").eq("user_id", t).eq("journey_type", e).maybeSingle(), a = r && r.data;
+        if (!permitted(t, permission)) return { ok: false, reason: "cancelled" };
+        if (!r || r.error) return failure(r && r.error);
+        if (!a) return { ok: true, progress: null };
+        var progress = {
           country: a.country || "",
-          currentStep: "number" == typeof a.current_step ? a.current_step : 0,
-          totalSteps: "number" == typeof a.total_steps ? a.total_steps : 0,
-          carryData: a.carry_data || {},
-          stepStatuses: Array.isArray(a.step_statuses) ? a.step_statuses : [],
-          updatedAt: a.updated_at ? new Date(a.updated_at).getTime() : Date.now()
-        } : null;
-      } catch (e) {
-        return null;
+          currentStep: a.current_step, totalSteps: a.total_steps,
+          carryData: a.carry_data, stepStatuses: a.step_statuses,
+          updatedAt: Date.parse(a.updated_at)
+        };
+        if (a.sync_consent_version !== consentVersion || !Number.isFinite(Date.parse(a.sync_consented_at)) ||
+          !Number.isFinite(progress.updatedAt) || !validProgress(this, e, progress)) return { ok: false, reason: "invalid-copy" };
+        return { ok: true, progress: progress };
+      } catch (error) {
+        return failure(error);
       }
     },
-    getIncompleteJourneysFromSupabase: async function(e) {
+    getIncompleteJourneysFromSupabase: async function(e, permission) {
+      if (!permitted(e, permission)) return { ok: false, reason: "consent-required" };
       try {
         var t = window.AfroAuth && window.AfroAuth.getSupabase ? window.AfroAuth.getSupabase() : null;
-        if (!t || !e) {
-          return [];
-        }
-        var o = await t.from("apo_workflows").select("journey_type, current_step, total_steps, updated_at, status").eq("user_id", e).neq("status", "complete").order("updated_at", {
+        if (!t) return { ok: false, reason: "client-unavailable" };
+        if (!permitted(e, permission)) return { ok: false, reason: "consent-required" };
+        var o = await t.from("apo_workflows").select("journey_type, current_step, total_steps, updated_at, status, sync_consent_version, sync_consented_at").eq("user_id", e).eq("sync_consent_version", consentVersion).neq("status", "complete").order("updated_at", {
           ascending: !1
-        }), r = o && o.data ? o.data : [], a = this;
-        return r.filter(function(e) {
-          return a.JOURNEYS[e.journey_type];
+        }), a = this;
+        if (!permitted(e, permission)) return { ok: false, reason: "cancelled" };
+        if (!o || o.error) return failure(o && o.error);
+        if (!Array.isArray(o.data)) return { ok: false, reason: "unconfirmed" };
+        return { ok: true, journeys: o.data.filter(function(e) {
+          return a.JOURNEYS[e.journey_type] && e.sync_consent_version === consentVersion && Number.isFinite(Date.parse(e.sync_consented_at)) &&
+            Number.isInteger(e.current_step) && Number.isInteger(e.total_steps) && e.current_step >= 0 && e.current_step < e.total_steps && Number.isFinite(Date.parse(e.updated_at));
         }).map(function(e) {
           var t = a.JOURNEYS[e.journey_type];
           return {
             id: e.journey_type,
             label: t.label,
             icon: t.icon,
-            currentStep: "number" == typeof e.current_step ? e.current_step : 0,
-            totalSteps: "number" == typeof e.total_steps ? e.total_steps : 0,
-            updatedAt: e.updated_at ? new Date(e.updated_at).getTime() : Date.now()
+            currentStep: e.current_step, totalSteps: e.total_steps,
+            updatedAt: Date.parse(e.updated_at)
           };
-        });
-      } catch (e) {
-        return [];
+        }) };
+      } catch (error) {
+        return failure(error);
       }
     },
-    syncToSupabase: async function(e, o, r) {
+    syncToSupabase: async function(e, o, r, permission) {
+      if (!permitted(o, permission) || !permission.consentedAt || !Number.isFinite(Date.parse(permission.consentedAt))) return { ok: false, reason: "consent-required" };
+      if (!validProgress(this, e, r)) return { ok: false, reason: "invalid-copy" };
       try {
         var a = window.AfroAuth && window.AfroAuth.getSupabase ? window.AfroAuth.getSupabase() : null;
-        if (!a || !o) {
-          return;
-        }
-        var n = r || this.loadProgress(e), l = "number" == typeof n.totalSteps ? n.totalSteps : t(this, e, n.country).length, s = "number" == typeof n.currentStep ? n.currentStep : 0, i = Array.isArray(n.stepStatuses) ? n.stepStatuses : [], c = n.carryData || {}, u = l > 0 && s >= l;
-        await a.from("apo_workflows").upsert({
+        if (!a) return { ok: false, reason: "client-unavailable" };
+        if (!permitted(o, permission)) return { ok: false, reason: "consent-required" };
+        var n = r, l = n.totalSteps, s = n.currentStep, i = n.stepStatuses.slice(), c = Object.assign({}, n.carryData), u = i.every(function(status) { return status === "done"; });
+        var result = await a.from("apo_workflows").upsert({
           user_id: o,
           journey_type: e,
           country: n.country || null,
@@ -345,11 +376,19 @@
           step_statuses: i,
           last_completed_at: u ? (new Date).toISOString() : null,
           status: u ? "complete" : "in-progress",
+          sync_consent_version: consentVersion,
+          sync_consented_at: permission.consentedAt,
           updated_at: (new Date).toISOString()
         }, {
           onConflict: "user_id,journey_type"
-        });
-      } catch (e) {}
+        }).select("user_id,journey_type,sync_consent_version,sync_consented_at,updated_at").single();
+        if (!permitted(o, permission)) return { ok: false, reason: "cancelled" };
+        if (!result || result.error) return failure(result && result.error);
+        var ack = result.data;
+        if (!ack || ack.user_id !== o || ack.journey_type !== e || ack.sync_consent_version !== consentVersion ||
+          Date.parse(ack.sync_consented_at) !== Date.parse(permission.consentedAt) || !Number.isFinite(Date.parse(ack.updated_at))) return { ok: false, reason: "unconfirmed" };
+        return { ok: true, updatedAt: Date.parse(ack.updated_at) };
+      } catch (error) { return failure(error); }
     }
   };
   window.AfroTools = window.AfroTools || {}, window.AfroTools.engines = window.AfroTools.engines || {},

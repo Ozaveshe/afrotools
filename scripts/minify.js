@@ -25,6 +25,7 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['engines/src/solar-roi-engine.js', 'assets/js/engines/solar-roi-engine.js'],
   ['assets/js/src/legal-workflow-copilot.js', 'assets/js/legal-workflow-copilot.js'],
   ['assets/js/lib/src/paye-calculation-sync.js', 'assets/js/lib/paye-calculation-sync.js'],
   ['assets/js/lib/src/paye-save.js', 'assets/js/lib/paye-save.js'],
