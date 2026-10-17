@@ -13,6 +13,10 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE = "https://afrotools.com";
+const HUB_TITLE = "Widgets à intégrer à votre site | AfroTools";
+const HUB_DESCRIPTION = "Choisissez un widget à intégrer à votre site. Consultez son outil complet et ses limites, puis copiez le code d’intégration.";
+// This existing page has bespoke margin/markup copy; generic generation must not replace it.
+const BESPOKE_PARENT_SLUG = "marge-beneficiaire";
 const WIDGETS = require("../widgets/WIDGET-REGISTRY.js");
 const { FRENCH_WIDGET_PARENT_PAGES } = require("./lib/french-widget-parent-map");
 
@@ -135,7 +139,7 @@ function pageTemplate(item, widget) {
   const route = `/fr/widgets/${item.slug}/`;
   const url = pageUrl(route);
   const embedCode = iframeCode(widget, item);
-  const description = `${item.description} L'iframe reste une route technique noindex; cette page est le parent francais a partager.`;
+  const description = item.description;
 
   return `<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="fr">
@@ -281,11 +285,11 @@ function hubTemplate(items) {
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Widgets AfroTools en francais | Pages parent et integrations</title>
-<meta name="description" content="Pages parent francaises pour des widgets AfroTools utiles aux sites africains, avec iframes techniques gardees en noindex.">
+<title>${escapeHtml(HUB_TITLE)}</title>
+<meta name="description" content="${escapeHtml(HUB_DESCRIPTION)}">
 <link rel="canonical" href="${SITE}/fr/widgets/">
-<meta property="og:title" content="Widgets AfroTools en francais">
-<meta property="og:description" content="Pages parent francaises pour des widgets AfroTools utiles, sans promouvoir les iframes techniques.">
+<meta property="og:title" content="${escapeHtml(HUB_TITLE)}">
+<meta property="og:description" content="${escapeHtml(HUB_DESCRIPTION)}">
 <meta property="og:image" content="${SITE}/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -295,8 +299,8 @@ function hubTemplate(items) {
 <meta property="og:locale" content="fr_FR">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Widgets AfroTools en francais">
-<meta name="twitter:description" content="Pages parent francaises pour integrer des calculateurs AfroTools utiles.">
+<meta name="twitter:title" content="${escapeHtml(HUB_TITLE)}">
+<meta name="twitter:description" content="${escapeHtml(HUB_DESCRIPTION)}">
 <meta name="twitter:image" content="${SITE}/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -317,7 +321,7 @@ function hubTemplate(items) {
 <script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"CollectionPage","name":"Widgets AfroTools en francais","url":"${SITE}/fr/widgets/","description":"Pages parent francaises pour des widgets AfroTools utiles, avec les iframes gardees comme routes techniques noindex.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"${SITE}/"}}
+{"@context":"https://schema.org","@type":"CollectionPage","name":"${escapeHtml(HUB_TITLE)}","url":"${SITE}/fr/widgets/","description":"${escapeHtml(HUB_DESCRIPTION)}","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"${SITE}/"}}
 </script>
 <link rel="alternate" hreflang="en" href="${SITE}/widgets/" />
 <link rel="alternate" hreflang="fr" href="${SITE}/fr/widgets/" />
@@ -402,6 +406,75 @@ ${cards}
 `;
 }
 
+// Refresh existing metadata without replacing polished body copy, route tags or asset versions.
+function existingMetadata(html, route, isHub = false) {
+  const heads = [...html.matchAll(/<head\b[^>]*>([\s\S]*?)<\/head>/gi)];
+  if (heads.length !== 1) throw new Error(`Expected one head: ${route}`);
+  const originalHead = heads[0][1];
+  const canonical = [...originalHead.matchAll(/<link\b[^>]*\brel=["']canonical["'][^>]*>/gi)];
+  if (canonical.length !== 1 || !canonical[0][0].includes(`href="${SITE}${route}"`)) {
+    throw new Error(`Unexpected canonical: ${route}`);
+  }
+  const stripTail = (value) => value.replace(/ L'iframe reste une route technique noindex; cette page est le parent (?:francais a|français à) partager\.$/, "");
+  const seen = new Set();
+  let head = originalHead.replace(/<meta\b[^>]*>/gi, (tag) => {
+    const key = /\b(?:name|property)=["'](description|og:description|twitter:description|og:title|twitter:title)["']/i.exec(tag)?.[1];
+    if (!key || (!isHub && key.endsWith(":title"))) return tag;
+    if (seen.has(key)) throw new Error(`Duplicate ${key}: ${route}`);
+    seen.add(key);
+    const content = /\bcontent=("[^"]*"|'[^']*')/i.exec(tag);
+    if (!content) throw new Error(`Missing ${key} content: ${route}`);
+    const old = content[1].slice(1, -1);
+    const next = isHub ? escapeHtml(key.endsWith(":title") ? HUB_TITLE : HUB_DESCRIPTION) : stripTail(old);
+    return tag.slice(0, content.index) + content[0].replace(content[1], `"${next}"`) + tag.slice(content.index + content[0].length);
+  });
+  for (const key of ["description", "og:description", "twitter:description", ...(isHub ? ["og:title", "twitter:title"] : [])]) {
+    if (!seen.has(key)) throw new Error(`Missing ${key}: ${route}`);
+  }
+  if (isHub) {
+    const titles = [...head.matchAll(/<title\b[^>]*>[\s\S]*?<\/title>/gi)];
+    if (titles.length !== 1) throw new Error(`Expected one title: ${route}`);
+    head = head.replace(titles[0][0], `<title>${escapeHtml(HUB_TITLE)}</title>`);
+  }
+  let schemas = 0;
+  head = head.replace(/<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi, (tag, json) => {
+    const value = JSON.parse(json);
+    if (value["@type"] !== (isHub ? "CollectionPage" : "WebPage") || value.url !== SITE + route) return tag;
+    schemas++;
+    let next = json;
+    for (const key of isHub ? ["name", "description"] : ["description"]) {
+      if (typeof value[key] !== "string") throw new Error(`Missing schema ${key}: ${route}`);
+      const replacement = isHub ? (key === "name" ? HUB_TITLE : HUB_DESCRIPTION) : stripTail(value[key]);
+      let matched = 0;
+      next = next.replace(/("(name|description)"\s*:\s*)("(?:\\.|[^"\\])*")/g, (field, prefix, fieldKey, token) => {
+        if (fieldKey !== key || JSON.parse(token) !== value[key]) return field;
+        matched++;
+        return prefix + JSON.stringify(replacement);
+      });
+      if (matched !== 1) throw new Error(`Ambiguous schema ${key}: ${route}`);
+    }
+    return tag.replace(json, next);
+  });
+  if (schemas !== 1) throw new Error(`Expected one matching page schema: ${route}`);
+  return html.replace(originalHead, head);
+}
+
+function refreshMetadata(resolved, checkOnly) {
+  // Compute and validate every planned result before the first write.
+  const outputs = [{ route: "/fr/widgets/", isHub: true }, ...resolved
+    .filter(({ item }) => item.slug !== BESPOKE_PARENT_SLUG)
+    .map(({ item }) => ({ route: `/fr/widgets/${item.slug}/`, isHub: false }))]
+    .map(({ route, isHub }) => {
+      const file = path.join(ROOT, route.slice(1), "index.html");
+      const before = fs.readFileSync(file, "utf8");
+      return { file, route, before, after: existingMetadata(before, route, isHub) };
+    });
+  const changed = outputs.filter(({ before, after }) => before !== after);
+  if (!checkOnly) for (const { file, after } of changed) fs.writeFileSync(file, after, "utf8");
+  console.log(JSON.stringify({ metadataOnly: true, checkOnly, changed: changed.length, preservedBespokeParent: BESPOKE_PARENT_SLUG, routes: changed.map(({ route }) => route) }, null, 2));
+  if (checkOnly && changed.length) process.exitCode = 1;
+}
+
 function main() {
   const resolved = FRENCH_WIDGET_PARENT_PAGES.map((item) => {
     const widget = widgetById(item.id);
@@ -411,19 +484,28 @@ function main() {
     return { item, widget };
   });
 
+  const bespoke = path.join(ROOT, "fr", "widgets", BESPOKE_PARENT_SLUG, "index.html");
+  if (!fs.existsSync(bespoke)) throw new Error("Missing bespoke French margin widget page");
+  if (process.argv.includes("--metadata-only")) {
+    refreshMetadata(resolved, process.argv.includes("--check"));
+    return;
+  }
+
   const frWidgetsDir = path.join(ROOT, "fr", "widgets");
   fs.mkdirSync(frWidgetsDir, { recursive: true });
 
   fs.writeFileSync(path.join(frWidgetsDir, "index.html"), hubTemplate(resolved), "utf8");
 
   for (const entry of resolved) {
+    if (entry.item.slug === BESPOKE_PARENT_SLUG) continue;
     const outDir = path.join(frWidgetsDir, entry.item.slug);
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, "index.html"), pageTemplate(entry.item, entry.widget), "utf8");
   }
 
   console.log(JSON.stringify({
-    parentPagesGenerated: resolved.length,
+    parentPagesGenerated: resolved.length - 1,
+    bespokeParentPagesPreserved: 1,
     routes: resolved.map(({ item }) => `/fr/widgets/${item.slug}/`),
   }, null, 2));
 }

@@ -99,9 +99,9 @@ function syncMainListing(html, manifest) {
   return { html: cleanHtml(output), count };
 }
 
-function listingErrors(file, locale, manifest) {
+function listingErrors(file, locale, manifest, proposedHtml) {
   if (!fs.existsSync(file)) return [`${path.relative(ROOT, file)}: locale listing is missing`];
-  const html = fs.readFileSync(file, 'utf8');
+  const html = proposedHtml === undefined ? fs.readFileSync(file, 'utf8') : proposedHtml;
   const byFile = new Map(manifest.articles.map((row) => [row.file, row]));
   const prefix = locale === 'fr' ? '/fr/blog/' : '/blog/';
   const base = locale === 'fr' ? 'fr/blog/' : 'blog/';
@@ -116,7 +116,7 @@ function listingErrors(file, locale, manifest) {
   return errors;
 }
 
-function validate(manifest, discovered) {
+function validate(manifest, discovered, { checkPublicationStatus = true } = {}) {
   if (manifest.schemaVersion !== 1 || !Array.isArray(manifest.articles)) throw new Error('Blog manifest must use schemaVersion 1 and an articles array.');
   const byFile = new Map(manifest.articles.map((row) => [row.file, row]));
   const errors = [];
@@ -124,6 +124,7 @@ function validate(manifest, discovered) {
     const declared = byFile.get(row.file);
     if (!declared) errors.push(`${row.file}: missing manifest record`);
     else if (declared.locale !== row.locale) errors.push(`${row.file}: manifest locale ${declared.locale} does not match html lang ${row.locale}`);
+    else if (checkPublicationStatus && declared.publicationStatus !== row.publicationStatus) errors.push(`${row.file}: manifest publicationStatus ${declared.publicationStatus} does not match html status ${row.publicationStatus}`);
   }
   for (const row of manifest.articles) if (!fs.existsSync(path.join(ROOT, row.file))) errors.push(`${row.file}: manifest source is missing`);
   return errors;
@@ -137,17 +138,34 @@ function main() {
   }
   if (!fs.existsSync(MANIFEST)) throw new Error('Blog content manifest is missing; run with --bootstrap once.');
   const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
-  const errors = validate(manifest, discovered);
+  // Reject structural/locale drift before considering any reconciliation.
+  const errors = validate(manifest, discovered, { checkPublicationStatus: false });
+  if (errors.length) throw new Error(`Blog content manifest invalid:\n${errors.join('\n')}`);
+  let statusChanged = false;
+  if (WRITE) {
+    const byFile = new Map(discovered.map((row) => [row.file, row]));
+    for (const row of manifest.articles) {
+      const actual = byFile.get(row.file);
+      if (!actual) continue;
+      const status = actual.publicationStatus;
+      if (row.publicationStatus === status) continue;
+      row.publicationStatus = status;
+      statusChanged = true;
+    }
+  } else {
+    errors.push(...validate(manifest, discovered));
+  }
   const mainIndex = path.join(ROOT, 'blog/index.html');
   const mainBefore = fs.readFileSync(mainIndex, 'utf8');
   const mainListing = syncMainListing(mainBefore, manifest);
   if (mainListing.html !== mainBefore) {
-    if (WRITE || BOOTSTRAP) fs.writeFileSync(mainIndex, mainListing.html, 'utf8');
-    else errors.push('blog/index.html: locale listing is stale');
+    if (!WRITE && !BOOTSTRAP) errors.push('blog/index.html: locale listing is stale');
   }
-  errors.push(...listingErrors(mainIndex, 'en', manifest));
+  errors.push(...listingErrors(mainIndex, 'en', manifest, mainListing.html));
   errors.push(...listingErrors(path.join(ROOT, 'fr/blog/index.html'), 'fr', manifest));
   if (errors.length) throw new Error(`Blog content manifest invalid:\n${errors.join('\n')}`);
+  if ((WRITE || BOOTSTRAP) && mainListing.html !== mainBefore) fs.writeFileSync(mainIndex, mainListing.html, 'utf8');
+  if (statusChanged) fs.writeFileSync(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 
   const stale = [];
   for (const row of manifest.articles) {
