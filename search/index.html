@@ -1682,6 +1682,8 @@ function pushURL() {
 // ACTIONS
 // ════════════════════════════════════════════════════════════
 function setQuery(q) {
+  // An explicit query replaces any older value waiting in the input debounce.
+  clearTimeout(debounceTimer);
   if (!isSearchReady) requestSearchIndexLoad();
   if (q && q.trim()) requestFullSearchIndexLoad();
   if (!q) privateSearchHandoffQuery = '';
@@ -1841,7 +1843,7 @@ document.addEventListener('keydown', function(e) {
     resultsEl.setAttribute('aria-busy', 'false');
     sortSelect.disabled = false;
     updateChipCounts();
-    readURL();
+    // Initial URL/session intake already ran; readiness must preserve visitor edits.
     doRender();
     return true;
   }

@@ -382,6 +382,7 @@
       currentPrice: 'cours actuel par action',
       delete: 'Supprimer la position',
       invalid: 'Chaque ligne utilisée doit comporter un nombre d’actions et un prix d’achat positifs, ainsi qu’un cours actuel positif ou nul.',
+      outOfRange: 'Ces positions sont hors de la plage numérique prise en charge. Modifiez les montants ou les quantités et réessayez.',
       empty: 'Saisissez au moins une position complète.'
     },
     'thrift-calc': {

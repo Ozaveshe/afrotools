@@ -11,6 +11,8 @@ const { normalizeBuildManagedHtml } = require("../scripts/lib/shared-asset-refer
 const routeEntry = require("../assets/js/pages/sw-ai-route-entry");
 const routeMap = require("../assets/js/ai/swahili-route-map.generated");
 const { assertLifecycle } = require("./support/swahili-acceptance-lifecycle");
+const { loadBindings, resolveReviewedToolArtwork, applyReviewedBindings } = require("../scripts/lib/reviewed-tool-image-bindings");
+const reviewedArtwork = loadBindings();
 
 const ROOT = path.resolve(__dirname, "..");
 const EXPECTED_REMAINING = [
@@ -63,8 +65,12 @@ test("source-owned hub links exactly 17 promoted apps plus 3 preserved apps", ()
 test("all 17 pages are native, source-bound, private and export-capable", () => {
   const registry = read("assets/js/components/tool-registry.js");
   const fallbacks = read("data/localization/explicit-language-fallbacks.json");
+  const routes = new Set(SW_ENERGY_REMAINING_APPS.map(app => app.swRoute));
+  assert.equal(applyReviewedBindings(registry, reviewedArtwork.filter(binding => routes.has(binding.route))), registry,
+    "reviewed imagery must already agree with the actual registry");
   for (const app of SW_ENERGY_REMAINING_APPS) {
     const html = read(app.file);
+    const image = resolveReviewedToolArtwork(app.swRoute, app.image, reviewedArtwork);
     assert.match(html, /<html\b[^>]*\blang="sw"/i, `${app.id}: native Swahili document`);
     const localeTokens = app.id === "prepaid-meter" ? [] : [
       `hreflang="en" href="https://afrotools.com${app.enRoute}"`,
@@ -73,7 +79,7 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
     ];
     const sharedTokens = [
       `data-sw-energy-app="${app.id}"`, `https://afrotools.com${app.swRoute}`,
-      ...localeTokens, app.image, `/engines/${app.engine}.js`,
+      ...localeTokens, image, `/engines/${app.engine}.js`,
     ];
     const productTokens = app.exactTariff ? [
       "/assets/js/pages/electricity-cost-prepaid-units.js", "/assets/js/pages/swahili-electricity-parity.js",
@@ -98,7 +104,7 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
     for (const forbidden of ["<iframe", "afrotools-language-fallback", "fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage"]) {
       assert.ok(!html.includes(forbidden), `${app.id}: ${forbidden}`);
     }
-    assert.ok(fs.existsSync(path.join(ROOT, app.image.slice(1))), `${app.id}: artwork`);
+    assert.ok(fs.existsSync(path.join(ROOT, image.replace(/^\//, ""))), `${app.id}: artwork`);
     assert.ok(registry.includes(app.swRoute), `${app.id}: registry`);
     assert.ok(!fallbacks.includes(app.file), `${app.id}: fallback removed`);
   }
