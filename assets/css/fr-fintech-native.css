@@ -25,3 +25,12 @@ html[data-theme="dark"] :is(.btn-add,.btn-rm,.person-card){background:#101c2c;bo
   :where(.tool-hero,.card) :where(h1,h2,h3,p,label,summary,a,button,span,div,section,nav,header,footer,fieldset){min-width:0;overflow-wrap:anywhere}
   :where(input,select,textarea,button){min-width:0;max-width:100%}
 }
+
+/* Keep the eight-column portfolio result readable inside its own scroll area. */
+#sp-results .portfolio-results-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+#sp-results .portfolio-results-scroll:focus-visible{outline:3px solid #075fae;outline-offset:3px}
+#sp-results .portfolio-table-hint{font-size:.875rem;margin:.75rem 0 .25rem}
+@media(max-width:720px){
+  #sp-results .portfolio-results-scroll table{display:table!important;min-width:64rem!important;max-width:none!important;table-layout:auto!important}
+  #sp-results .portfolio-results-scroll :is(th,td){white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;padding-inline:.75rem!important}
+}
