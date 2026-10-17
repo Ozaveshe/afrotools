@@ -209,10 +209,25 @@ test('formula resolver never falls back across jurisdiction or effective dates',
   });
 
   const expired = quality.resolveFormula(artifacts.formulas, {
-    formulaFamily: 'paye-server', jurisdiction: 'ZA', effectiveOn: '2026-03-01'
+    formulaFamily: 'paye-server', jurisdiction: 'ZA', effectiveOn: '2027-03-01'
   });
   assert.strictEqual(expired.ok, false);
   assert.strictEqual(expired.error, 'UNSUPPORTED_DATE');
+
+  // The current-only SARS2027 period has exact inclusive endpoints.
+  for (const effectiveOn of ['2026-03-01', '2027-02-28']) {
+    const formula = quality.resolveFormula(artifacts.formulas, {
+      formulaFamily: 'paye-server', jurisdiction: 'ZA', effectiveOn
+    });
+    assert.strictEqual(formula.ok, true, effectiveOn);
+  }
+  for (const effectiveOn of ['2026-02-28', '2027-03-01']) {
+    const formula = quality.resolveFormula(artifacts.formulas, {
+      formulaFamily: 'paye-server', jurisdiction: 'ZA', effectiveOn
+    });
+    assert.strictEqual(formula.ok, false, effectiveOn);
+    assert.strictEqual(formula.error, 'UNSUPPORTED_DATE', effectiveOn);
+  }
 
   const leapDay = quality.resolveFormula(artifacts.formulas, {
     formulaFamily: 'paye-server', jurisdiction: 'ZA', effectiveOn: '2024-02-29'
@@ -226,9 +241,17 @@ test('formula resolver never falls back across jurisdiction or effective dates',
   const unknownEngine = engineRegistry.resolve('XX', '2026-01-01');
   assert.strictEqual(unknownEngine.ok, false);
   assert.strictEqual(unknownEngine.error, 'UNSUPPORTED_JURISDICTION');
-  const expiredEngine = engineRegistry.resolve('ZA', '2026-03-01');
+  const expiredEngine = engineRegistry.resolve('ZA', '2027-03-01');
   assert.strictEqual(expiredEngine.ok, false);
   assert.strictEqual(expiredEngine.error, 'UNSUPPORTED_DATE');
+  for (const effectiveOn of ['2026-03-01', '2027-02-28']) {
+    assert.strictEqual(engineRegistry.resolve('ZA', effectiveOn).ok, true, effectiveOn);
+  }
+  for (const effectiveOn of ['2026-02-28', '2027-03-01']) {
+    const result = engineRegistry.resolve('ZA', effectiveOn);
+    assert.strictEqual(result.ok, false, effectiveOn);
+    assert.strictEqual(result.error, 'UNSUPPORTED_DATE', effectiveOn);
+  }
   const tracedResult = engineRegistry.get('NG').calculate({ grossAnnual: 1000000 });
   assert.match(tracedResult.meta.formulaVersion, /\+sha256\.[a-f0-9]{12}$/);
   assert.strictEqual(tracedResult.meta.formulaId, 'paye-server-ng');
@@ -378,6 +401,9 @@ test('quality report is deterministic for an explicit as-of date', function () {
     'paye-gh-defaults',
     'paye-gh-large-decimal',
     'paye-ug-large-decimal',
+    'paye-za-defaults',
+    'paye-za-exact-threshold',
+    'paye-za-large-decimal',
     'paye-zm-defaults',
     'paye-zm-large-decimal'
   ]);

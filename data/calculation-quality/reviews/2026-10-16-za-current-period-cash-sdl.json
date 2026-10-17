@@ -1,0 +1,64 @@
+{
+  "reviewedBy": "Codex Root with independent Codex peer source/method review; not professional human tax approval",
+  "reviewedAt": "2026-10-16",
+  "sourceUrl": "https://www.sars.gov.za/guide-for-employers-in-respect-of-employees-tax-2027/",
+  "reason": "Source0dff4e922 current-only2026-03-01 through2027-02-28 annual marginal-formula salary estimate, explicit retirement cash basis, cent-marginal label and limited SDL base after existing allowable retirement. Root source/method acceptance+independent Codex peers; professional approval false. Independent Root Decimal arithmetic88220e8c1e2a38ece351cc9c5aa38a7252815f6708d8100752296ef7dcefc643 fixes expected values before generator execution; server rounds netTax before adding unrounded UIF. Browser cash tests are separate; these seven joined goldens are legacy server/period only. Unsupported-date input moves to2027-03-01 and exact-threshold gross to99000. Other errors/zero/tolerances and all other formulas preserved. Not full statutory payroll, native, provider or deployment certification.",
+  "formulaIds": [
+    "paye-browser-za",
+    "paye-server-za",
+    "route-za-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-za-defaults",
+      "formulaId": "paye-server-za",
+      "before": {
+        "deductions.totalDeductions": 294409,
+        "result.netAnnual": 705591,
+        "result.netMonthly": 58799,
+        "tax.netTax": 292284
+      },
+      "after": {
+        "deductions.totalDeductions": 290418,
+        "result.netAnnual": 709582,
+        "result.netMonthly": 59132,
+        "tax.netTax": 288293
+      },
+      "reason": "Reviewed SARS2027 annual salary base-charge estimate and unchanged server whole-rand tax-before-UIF rounding; threshold fixture now uses99000. Not banded payroll-table certification."
+    },
+    {
+      "fixtureId": "paye-za-exact-threshold",
+      "formulaId": "paye-server-za",
+      "before": {
+        "deductions.totalDeductions": 958,
+        "result.netAnnual": 94793,
+        "result.netMonthly": 7899,
+        "tax.netTax": 0
+      },
+      "after": {
+        "deductions.totalDeductions": 990,
+        "result.netAnnual": 98010,
+        "result.netMonthly": 8168,
+        "tax.netTax": 0
+      },
+      "reason": "Reviewed SARS2027 annual salary base-charge estimate and unchanged server whole-rand tax-before-UIF rounding; threshold fixture now uses99000. Not banded payroll-table certification."
+    },
+    {
+      "fixtureId": "paye-za-large-decimal",
+      "formulaId": "paye-server-za",
+      "before": {
+        "deductions.totalDeductions": 449811729,
+        "result.netAnnual": 550188271,
+        "result.netMonthly": 45849023,
+        "tax.netTax": 449809604
+      },
+      "after": {
+        "deductions.totalDeductions": 449805274,
+        "result.netAnnual": 550194726,
+        "result.netMonthly": 45849561,
+        "tax.netTax": 449803149
+      },
+      "reason": "Reviewed SARS2027 annual salary base-charge estimate and unchanged server whole-rand tax-before-UIF rounding; threshold fixture now uses99000. Not banded payroll-table certification."
+    }
+  ]
+}

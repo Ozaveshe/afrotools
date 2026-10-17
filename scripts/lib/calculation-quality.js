@@ -1601,7 +1601,7 @@ function generateGoldenFixtures(formulas, root) {
     ]);
   }
 
-  addCalculate("ZA", "exact-threshold", { grossAnnual: 95750 }, [
+  addCalculate("ZA", "exact-threshold", { grossAnnual: 99000 }, [
     "exact_threshold",
     "band_boundary",
   ]);
@@ -1660,7 +1660,7 @@ function generateGoldenFixtures(formulas, root) {
     {
       id: "unsupported-date",
       jurisdiction: "ZA",
-      effectiveOn: "2026-03-01",
+      effectiveOn: "2027-03-01",
       classes: ["unsupported_date", "date_boundary"],
       error: "UNSUPPORTED_DATE",
     },
