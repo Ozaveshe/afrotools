@@ -91,7 +91,9 @@ test('all other406 recipe projections, index summaries and source identities rem
   const result=indexOwner.buildRecipeIndex({...manifest,recipes:allowed});
   assert.equal(result.recipes.length,410);
   for(const row of allowed.filter(r=>!IDS[r.slug] && !(r.id==='d7d7e305-3c5d-40db-9033-36843e102176' && r.slug==='ibihaza-rw') && !(r.id==='feabebb3-cd55-48c6-be9a-17f118dddfcc' && r.slug==='kat-kat-banane-sc'))) {
-    assert.strictEqual(api.projectAttributedRecipe(row),row);
+    const additional=[['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
+    if(additional){const projected=api.projectAttributedRecipe(row);assert.ok(api.isAttributedRecipe(projected));assert.equal(projected.method_revision,additional[2]);}
+    else assert.strictEqual(api.projectAttributedRecipe(row),row);
     const singleton=indexOwner.buildRecipeIndex({...manifest,recipes:[row]}).recipes[0];
     assert.deepEqual(result.recipes.find(r=>r.id===row.id),singleton);
   }
