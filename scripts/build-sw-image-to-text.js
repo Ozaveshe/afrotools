@@ -53,8 +53,8 @@ const copy = new Map([
   ['Can I extract text from PDFs?', 'Ninaweza kutoa maandishi kwenye PDF?'], ['This image tool works with browser-supported image files. Use the AfroTools PDF OCR tool for scanned PDFs, or export a PDF page as an image and run it here.', 'Zana hii hutumia faili za picha zinazokubaliwa na kivinjari. Tumia PDF OCR kwa PDF zilizochanganuliwa, au geuza ukurasa wa PDF kuwa picha kwanza.']
 ]);
 
-function build() {
-  let html = fs.readFileSync(sourcePath, 'utf8');
+function build(sourceHtml = fs.readFileSync(sourcePath, 'utf8')) {
+  let html = sourceHtml;
   html = html.replace('lang="en"', 'lang="sw"');
   html = html.replace(/<title>[\s\S]*?<\/title>/, '<title>OCR ya Picha: Toa Maandishi | AfroTools</title>');
   html = html.replace(/(<meta name="description" content=")[^"]*(")/, '$1Toa maandishi kwenye picha kwa OCR ya ndani, safisha matokeo, kagua uhakika na uhamishe TXT, Markdown, JSON au CSV bila kupakia picha.$2');
@@ -92,18 +92,28 @@ function build() {
   html = html.replaceAll('aria-label="Extracted text appears here and can be edited before export."', 'aria-label="Maandishi yaliyotolewa yataonekana hapa na yanaweza kuhaririwa kabla ya kuhamishwa."');
   html = html.replace('<main class="ocr-studio" id="main-content">', '<!-- Source owner: scripts/build-sw-image-to-text.js; OCR owners: assets/js/lib/image-to-text-ocr-local.js + assets/js/lib/image-to-text-studio.js -->\n<main class="ocr-studio" id="main-content">');
   html = html.replace(/<afro-related-tools category="image-design" current="image-to-text"[\s\S]*?<\/afro-related-tools>/, '<afro-related-tools category="image-design" current="image-to-text" data-ssr="1"><nav class="seo-links related-tools-ssr" aria-label="Zana zinazohusiana"><h2 class="seo-links-title">Zana zinazohusiana</h2><ul class="seo-links-list"><li><a href="/sw/zana/kubana-picha/">Bana picha</a></li><li><a href="/sw/zana/kukata-picha/">Kata picha</a></li><li><a href="/sw/zana/kubadilisha-ukubwa-wa-picha/">Badilisha ukubwa wa picha</a></li><li><a href="/sw/zana/picha-ya-pasipoti/">Tengeneza picha ya pasipoti</a></li><li><a href="/sw/zana/kitengeneza-qr/">Tengeneza QR Code</a></li></ul></nav></afro-related-tools>');
-  html = html.replace('<script src="/assets/js/lib/image-to-text-studio.js?v=a5611fd9" defer></script>', '<script src="/assets/js/lib/image-to-text-studio.js?v=a5611fd9" defer></script>\n<script src="/assets/js/lib/image-to-text-studio-sw.js" defer></script>');
+  const studioScript = /<script\b(?=[^>]*\bsrc=["']\/assets\/js\/lib\/image-to-text-studio\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/g;
+  const adapterScript = /<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/image-to-text-studio-sw\.js(?:\?[^"']*)?["'][^>]*>\s*<\/script>/g;
+  if ((html.match(studioScript) || []).length !== 1 || (html.match(adapterScript) || []).length !== 0) {
+    throw new Error('Expected exactly one English OCR studio and no inherited Swahili adapter');
+  }
+  html = html.replace(studioScript, tag => tag + '\n<script src="/assets/js/lib/image-to-text-studio-sw.js" defer></script>');
   const schema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'OCR ya Picha', description: 'Toa, safisha, hariri na hamisha maandishi ya picha ndani ya kivinjari.', url: 'https://afrotools.com/sw/zana/kutoa-maandishi-kwenye-picha/', inLanguage: 'sw', applicationCategory: 'DesignApplication', operatingSystem: 'Web', browserRequirements: 'JavaScript, Canvas, FileReader na WebAssembly', image: 'https://afrotools.com/assets/img/tools/image-to-text.webp', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, author: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' } };
   html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(schema)}</script>\n</head>`);
   return html;
 }
 
-const output = build();
-if (process.argv.includes('--check')) {
-  if (!fs.existsSync(outputPath) || normalizeReleaseOwnedHtml(fs.readFileSync(outputPath, 'utf8')) !== normalizeReleaseOwnedHtml(output)) { console.error('Swahili image-to-text route is stale.'); process.exit(1); }
-  console.log('Swahili image-to-text route matches the English OCR studio contract.');
-} else {
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, output);
-  console.log('Built native Swahili image-to-text studio.');
+function main() {
+  const output = build();
+  if (process.argv.includes('--check')) {
+    if (!fs.existsSync(outputPath) || normalizeReleaseOwnedHtml(fs.readFileSync(outputPath, 'utf8')) !== normalizeReleaseOwnedHtml(output)) { console.error('Swahili image-to-text route is stale.'); process.exit(1); }
+    console.log('Swahili image-to-text route matches the English OCR studio contract.');
+  } else {
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    fs.writeFileSync(outputPath, output);
+    console.log('Built native Swahili image-to-text studio.');
+  }
 }
+
+if (require.main === module) main();
+module.exports = { build };

@@ -65,6 +65,8 @@ const LEGACY_BUNDLE_ALIASES = {
     'core.02ddca36.min.js',
     // Preserve the 56a4c321 production URL for retained HTML during saved-work rollout.
     'core.aeb1b82d.min.js',
+    // Preserve the published 0444626e core URL for pages retained during updates.
+    'core.9a4ccbbc.min.js',
   ],
   // Some generated and country-level salary/tax pages still reference these
   // historical tool-page bundle names. Keep them available until a full HTML

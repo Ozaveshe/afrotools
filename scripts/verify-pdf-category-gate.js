@@ -74,6 +74,8 @@ function verifyTesseractVendor() {
     'assets/vendor/tesseract/lang/ara.traineddata.gz',
     'assets/vendor/tesseract/lang/swa.traineddata.gz',
     'assets/vendor/tesseract/lang/por.traineddata.gz',
+    'assets/vendor/tesseract/lang/amh.traineddata.gz',
+    'assets/vendor/tesseract/licenses/tessdata-LICENSE',
     'assets/vendor/tesseract/licenses/tesseract.js-LICENSE.md',
     'assets/vendor/tesseract/licenses/tesseract.js-core-LICENSE',
   ];

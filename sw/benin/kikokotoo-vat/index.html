@@ -81,7 +81,7 @@ html[data-theme="dark"] :where(button,a,input):focus-visible{outline-color:#93c5
 <button class="q-chip" type="button" onclick="setChip(50000,this)">CFA50,000</button>
 <button class="q-chip" type="button" onclick="setChip(100000,this)">CFA100,000</button>
 </div>
-<label class="sw-field"><span><span>Tumia kiwango maalum</span><small>hiari</small></span><input aria-label="Mf. 12.5" class="sw-input" id="customRate" type="number" min="0" step="0.01" placeholder="mf. 12.5" oninput="onCustomRate()"></label>
+<label class="sw-field"><span><span>Tumia kiwango maalum</span><small>hiari</small></span><input aria-label="Mf. 12.5" class="sw-input" id="customRate" aria-describedby="customRateError" type="number" min="0" step="0.01" placeholder="mf. 12.5" oninput="onCustomRate()"><small id="customRateError" role="alert"></small></label>
 <button class="sw-button" type="button" onclick="calculate()">Kokotoa VAT</button>
 <div class="result-box" id="results" role="region" aria-label="Matokeo ya VAT Benin">
 <div class="result-hero"><div class="result-label" id="heroLabel">Jumla na VAT</div><div class="result-amount" id="heroAmount">-</div></div>
@@ -184,23 +184,40 @@ var MODE = 'add';
 var RESULT = null;
 var CHART = null;
 var ITEMS = [];
-var customRate = 0;
+var customRate = null;
 function pct(v){var n=v*100;return (n%1===0?n.toFixed(0):n.toFixed(2).replace(/0+$/,'').replace(/\.$/,''))+'%';}
 function fmt(n){var value=Number(n)||0;return VAT_DATA.currencySymbol+Math.abs(value).toLocaleString('sw-TZ',{maximumFractionDigits:2});}
-function rate(){return customRate>0?customRate/100:RATE;}
+function rate(){return customRate===null?RATE:customRate/100;}
+function customRateIsValid(){
+  var input=document.getElementById('customRate');
+  var invalid=Boolean(input.validity&&input.validity.badInput)||(customRate!==null&&(!Number.isFinite(customRate)||customRate<0||customRate>100));
+  input.setAttribute('aria-invalid',String(invalid));
+  input.setCustomValidity(invalid?'Ingiza kiwango maalum kati ya 0 na 100.':'');
+  document.getElementById('customRateError').textContent=invalid?'Ingiza kiwango maalum kati ya 0 na 100.':'';
+  return !invalid;
+}
 function setMode(mode){MODE=mode;document.getElementById('modeAdd').classList.toggle('on',mode==='add');document.getElementById('modeRemove').classList.toggle('on',mode==='remove');document.getElementById('amountLabel').textContent=mode==='add'?'Kiasi bila VAT':'Kiasi kilichojumuisha VAT';calculate();}
-function setRate(r,label,btn){RATE=Number(r)||0;RATE_LABEL=label;customRate=0;document.getElementById('customRate').value='';document.querySelectorAll('.rate-btn').forEach(function(b){b.classList.remove('rate-on')});btn.classList.add('rate-on');calculate();}
-function onCustomRate(){customRate=parseFloat(document.getElementById('customRate').value)||0;document.querySelectorAll('.rate-btn').forEach(function(b){b.classList.remove('rate-on')});calculate();}
+function setRate(r,label,btn){RATE=Number(r)||0;RATE_LABEL=label;customRate=null;document.getElementById('customRate').value='';document.querySelectorAll('.rate-btn').forEach(function(b){b.classList.remove('rate-on')});btn.classList.add('rate-on');calculate();}
+function onCustomRate(){var raw=document.getElementById('customRate').value.trim();customRate=raw===''?null:Number(raw);document.querySelectorAll('.rate-btn').forEach(function(b){b.classList.remove('rate-on')});calculate();}
 function setChip(v,btn){document.getElementById('amount').value=v;document.querySelectorAll('.q-chip').forEach(function(c){c.classList.remove('on')});btn.classList.add('on');calculate();}
+function clearResult(){
+  RESULT=null;document.getElementById('results').classList.remove('on');
+  ['heroAmount','netAmount','vatAmount','totalAmount','usedRate'].forEach(function(id){document.getElementById(id).textContent='—';});
+  document.getElementById('formulaText').textContent='';
+  document.getElementById('itemsTotal').textContent='—';
+  if(CHART){CHART.destroy();CHART=null;}
+}
 function calculate(){
+  if(!customRateIsValid()){clearResult();return null;}
   var amountInput=document.getElementById('amount'),customInput=document.getElementById('customRate'),status=document.getElementById('calcStatus');
   var amount=Number(amountInput.value),r=rate(),engineResult;
+  var amountInvalid=Boolean(amountInput.validity&&amountInput.validity.badInput)||amountInput.value.trim()===''||!Number.isFinite(amount)||amount<0;
   try{
-    if(!Number.isFinite(amount)||amount<0)throw new RangeError('amount');
-    if(customInput.value!==''&&(!Number.isFinite(customRate)||customRate<0||customRate>100))throw new RangeError('rate');
-    engineResult=window.AfroTools.BJVatEngine.calculate({amount:amount,mode:MODE==='add'?'add':'extract',rateKind:customRate>0?'scenario':r===0?'export':'standard',rate:r*100});
+    if(amountInvalid)throw new RangeError('amount');
+    if(customRate!==null&&(!Number.isFinite(customRate)||customRate<0||customRate>100))throw new RangeError('rate');
+    engineResult=window.AfroTools.BJVatEngine.calculate({amount:amount,mode:MODE==='add'?'add':'extract',rateKind:customRate!==null?'scenario':r===0?'export':'standard',rate:r*100});
   }catch(error){
-    RESULT=null;amountInput.setAttribute('aria-invalid',String(!Number.isFinite(amount)||amount<0));customInput.setAttribute('aria-invalid',String(customInput.value!==''&&(!Number.isFinite(customRate)||customRate<0||customRate>100)));
+    clearResult();amountInput.setAttribute('aria-invalid',String(amountInvalid));customInput.setAttribute('aria-invalid',String(customRate!==null&&(!Number.isFinite(customRate)||customRate<0||customRate>100)));
     status.textContent='Weka kiasi cha 0 au zaidi na kiwango maalum kati ya 0 na 100.';
     document.getElementById('results').classList.remove('on');document.getElementById('formulaText').textContent='';return null;
   }
@@ -226,8 +243,8 @@ function renderChart(){
   var colors=(window.AfroChartColors&&window.AfroChartColors.series)||['#0062cc','#10b981','#f59e0b','#ef4444'];
   CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Kiasi bila VAT','VAT ('+pct(RESULT.rate)+')'],datasets:[{data:[RESULT.netAmount,RESULT.vatAmount],backgroundColor:[colors[0],colors[3]||colors[1]],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(ctx){return ' '+ctx.label+': '+fmt(ctx.raw);}}}}}});
 }
-function printResult(){if(!RESULT&&!calculate())return;window.print();}
-function shareResult(){if(!RESULT&&!calculate())return;var text='VAT '+VAT_DATA.swName+': jumla '+fmt(RESULT.totalInclusive)+', VAT '+fmt(RESULT.vatAmount)+' ('+pct(RESULT.rate)+')';if(navigator.share){navigator.share({title:'Kikokotoo cha VAT '+VAT_DATA.swName,text:text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);document.getElementById('calcStatus').textContent='Matokeo yamenakiliwa kwenye kifaa.';}}
+function printResult(){if(!calculate())return;window.print();}
+function shareResult(){if(!calculate())return;var text='VAT '+VAT_DATA.swName+': jumla '+fmt(RESULT.totalInclusive)+', VAT '+fmt(RESULT.vatAmount)+' ('+pct(RESULT.rate)+')';if(navigator.share){navigator.share({title:'Kikokotoo cha VAT '+VAT_DATA.swName,text:text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);document.getElementById('calcStatus').textContent='Matokeo yamenakiliwa kwenye kifaa.';}}
 function addItem(desc,qty,price){ITEMS.push({desc:desc||'',qty:qty||1,price:price||0});renderItems();}
 function renderItems(){
   var body=document.getElementById('itemsBody');
@@ -236,6 +253,7 @@ function renderItems(){
   calcItems();
 }
 function calcItems(){
+  if(!customRateIsValid()){document.getElementById('itemsTotal').textContent='—';return;}
   if(!document.getElementById('itemsTotal'))return;
   var invoice=window.AfroTools.BJVatEngine.calculateInvoice(ITEMS.map(function(it){return {description:it.desc,quantity:Number(it.qty)||0,unitPrice:Number(it.price)||0,rate:rate()*100};}));
   document.getElementById('itemsTotal').innerHTML='<div>Jumla kabla ya VAT: <strong>'+fmt(invoice.net)+'</strong></div><div>VAT: <strong>'+fmt(invoice.vat)+'</strong></div><div>Jumla ya ankara: <strong>'+fmt(invoice.gross)+'</strong></div>';

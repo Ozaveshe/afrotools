@@ -3,9 +3,9 @@
  * Runs every hour via Netlify Scheduled Functions.
  *
  * Sources:
- *  1. Alpha Vantage (if key available) — real-time-ish stock data
- *  2. MarketStack API (free tier, 100/month)
- *  3. Yahoo Finance scrape (backup)
+ *  1. Alpha Vantage GLOBAL_QUOTE end-of-day observations (key required)
+ *  2. MarketStack end-of-day observations (key required)
+ *  Provider failure retains the last-known-good payload; static references are not quotes.
  *
  * Tracks major African stock exchanges:
  *   NGX (Nigeria), JSE (South Africa), NSE (Kenya), GSE (Ghana),
@@ -15,6 +15,7 @@
  */
 
 const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const stockObservations = require('./_shared/stock-observations');
 
 // African stock exchanges and their index symbols
 var EXCHANGES = [
@@ -41,7 +42,7 @@ async function fetchFromAlphaVantage() {
   var fetchable = EXCHANGES.filter(function(e) { return e.yahoo; });
 
   // Fetch all in parallel — each call is independent and fast.
-  // Alpha Vantage free tier allows 5/min and 25/day, so we limit to 5 symbols.
+  // Retain the existing five-symbol limit; provider plan/symbol access is separate.
   var promises = fetchable.slice(0, 5).map(function(ex) {
     var url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' +
       encodeURIComponent(ex.yahoo) + '&apikey=' + key;
@@ -66,20 +67,21 @@ async function fetchFromAlphaVantage() {
         return null;
       })
       .catch(function(e) {
-        console.log('[stocks] AV failed for ' + ex.code + ': ' + e.message);
+        console.log('[stocks] AlphaVantage request failed for ' + ex.code);
         return null;
       });
   });
 
   var settled = await Promise.all(promises);
-  var results = settled.filter(Boolean);
-
-  if (results.length < 2) throw new Error('Alpha Vantage: only ' + results.length + ' indices');
-  return results;
+  var payload = { indices: settled, collection_coverage: {
+    requested_exchanges: fetchable.slice(0, 5).map(function(ex) { return ex.code; }) } };
+  var count = stockObservations.normalizeSnapshot(payload, Date.now()).count;
+  if (count < 2) throw new Error('Alpha Vantage: only ' + count + ' dated indices');
+  return payload;
 }
 
 /**
- * Source 2: MarketStack API (free tier)
+ * Source 2: MarketStack EOD API (account and symbol access required)
  */
 async function fetchFromMarketStack() {
   var key = process.env.MARKETSTACK_KEY;
@@ -87,10 +89,10 @@ async function fetchFromMarketStack() {
 
   var symbols = EXCHANGES.filter(function(e) { return e.marketstack; }).map(function(e) { return e.marketstack; });
 
-  var url = 'http://api.marketstack.com/v1/eod/latest?access_key=' + key +
+  var url = 'https://api.marketstack.com/v1/eod/latest?access_key=' + encodeURIComponent(key) +
     '&symbols=' + symbols.join(',');
 
-  var res = await fetchWithRetry(url);
+  var res = await fetchWithRetry(url, { redirect: 'error' });
   var json = await res.json();
 
   if (!json.data || json.data.length === 0) throw new Error('MarketStack returned no data');
@@ -115,36 +117,15 @@ async function fetchFromMarketStack() {
     };
   }).filter(Boolean);
 
-  if (results.length < 2) throw new Error('MarketStack: only ' + results.length + ' indices');
-  return results;
-}
-
-/**
- * Source 3: Reference data (fallback — static benchmarks)
- */
-async function fetchFallbackReference() {
-  return EXCHANGES.map(function(ex) {
-    return {
-      exchange: ex.code,
-      country: ex.country,
-      name: ex.name,
-      index_name: ex.index,
-      price: null,
-      change: null,
-      change_pct: null,
-      volume: null,
-      last_trading_day: null,
-      source: 'reference-only',
-    };
-  });
+  var payload = { indices: results, collection_coverage: {
+    requested_exchanges: EXCHANGES.filter(function(ex) { return ex.marketstack; }).map(function(ex) { return ex.code; }) } };
+  var count = stockObservations.normalizeSnapshot(payload, Date.now()).count;
+  if (count < 2) throw new Error('MarketStack: only ' + count + ' dated indices');
+  return payload;
 }
 
 function transformStockData(indices) {
-  return {
-    timestamp: new Date().toISOString(),
-    indices: indices,
-    record_count: indices.length,
-  };
+  return stockObservations.buildSnapshot(indices, new Date().toISOString());
 }
 
 exports.handler = async function(event) {
@@ -155,9 +136,8 @@ exports.handler = async function(event) {
     sources: [
       { name: 'AlphaVantage', fn: fetchFromAlphaVantage },
       { name: 'MarketStack', fn: fetchFromMarketStack },
-      { name: 'Reference', fn: fetchFallbackReference },
     ],
     transform: transformStockData,
-    validateOpts: { maxChangeRatio: 2.0 },
+    validate: function(next, previous) { return stockObservations.validateSnapshot(next, previous, Date.now()); },
   });
 };

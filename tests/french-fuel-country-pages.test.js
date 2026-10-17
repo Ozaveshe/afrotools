@@ -117,6 +117,16 @@ test("reviewed search snippets preserve dated data, routes and visible FAQ inten
     assert.ok(visibleText(html).includes(answer));
     assert.equal(data.find(item => item['@type'] === 'Dataset').dateModified, row.last_updated);
     const clean = localizePage(html, row, rows, country);
+    // Native postbuild must retain the visible question/answer represented by JSON-LD.
+    const deduped = require("../scripts/lib/content-integrity").dedupeRepeatedParagraphs(clean).html;
+    const plain = text => visibleText(text).replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+    const visibleFaqs = [...deduped.matchAll(/<details\b[^>]*>\s*<summary\b[^>]*>([\s\S]*?)<\/summary>\s*<p\b[^>]*>([\s\S]*?)<\/p>\s*<\/details>/gi)]
+      .map(match => ({ question: plain(match[1]), answer: plain(match[2]) }));
+    for (const item of schemas(deduped).find(item => item["@type"] === "FAQPage").mainEntity) {
+      const rendered = visibleFaqs.find(entry => entry.question === plain(item.name));
+      assert.ok(rendered, slug + ": JSON-LD question must survive native dedupe in visible FAQ");
+      assert.equal(rendered.answer, plain(item.acceptedAnswer.text), slug + ": visible and schema answers must match");
+    }
     assert.equal(localizePage(clean, row, rows, country), clean);
     const stamped = clean.replace('/assets/js/pages/fr-fuel-country-planner.js"', '/assets/js/pages/fr-fuel-country-planner.js?v=synthetic-release-hash"');
     assert.equal(localizePage(stamped, row, rows, country), clean);

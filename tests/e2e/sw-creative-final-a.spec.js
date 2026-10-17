@@ -24,6 +24,38 @@ const depthRoutes = [
   "/sw/zana/ukurasa-wa-mtayarishi/",
   "/sw/zana/boresha-maudhui-ya-mtayarishi/",
 ];
+test("shared creator and content hero headings retain readable contrast in both themes", async ({ page }) => {
+  for (const route of ["/sw/zana/mapato-ya-mtayarishi/", "/sw/zana/mawazo-ya-mtayarishi/"]) {
+    for (const width of [390, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(route);
+      for (const theme of ["light", "dark"]) {
+        await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
+        const result = await page.locator("header.swfa-hero").evaluate((hero) => {
+          const heading = hero.querySelector("h1");
+          const luminance = (color) => {
+            const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map((value) => {
+              const channel = value / 255;
+              return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+            });
+            return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+          };
+          const foreground = luminance(getComputedStyle(heading).color);
+          const backgroundStyle = getComputedStyle(hero);
+          const background = luminance(backgroundStyle.backgroundColor);
+          return {
+            ratio: (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05),
+            backgroundImage: backgroundStyle.backgroundImage,
+            headingBackground: getComputedStyle(heading).backgroundColor,
+          };
+        });
+        expect(result.backgroundImage).toBe("none");
+        expect(result.headingBackground).toBe("rgba(0, 0, 0, 0)");
+        expect(result.ratio, `${route} ${theme} ${width}px`).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  }
+});
 async function grab(page, kind) {
   const waiting = page.waitForEvent("download");
   await page.locator(`[data-export="${kind}"]`).click();
