@@ -19,13 +19,13 @@ function context() {
     readAsset: file => fs.readFileSync(path.join(root, file.replace(/^\//, ''))) };
 }
 
-test('retained original200 batch reconciles only the six accepted source asset deliveries', () => {
+test('retained original200 batch reconciles only the eight reviewed source asset deliveries', () => {
   const input = context();
   const originalStems = new Set(input.library.images.map(row => row.path.replace(/\.[^.]+$/, '')));
   assert.deepEqual(batch.images.filter(row => originalStems.has(row.path.replace(/\.[^.]+$/, ''))).map(row => row.id).sort(),
-    ['recipe-ibihaza-rw', 'recipe-kapenta-stew-zm', 'recipe-kat-kat-banane-sc', 'recipe-koba-mg', 'recipe-mandazi-tanzania-tz', 'recipe-oleleh-sl']);
+    ['recipe-ibihaza-rw', 'recipe-kapenta-stew-zm', 'recipe-kat-kat-banane-sc', 'recipe-koba-mg', 'recipe-latchiri-kossan-gn', 'recipe-mandazi-tanzania-tz', 'recipe-ndizi-nyama-tz', 'recipe-oleleh-sl']);
   assert.deepEqual(reconcileImageBatch(input), {
-    retainedRequests: 200, reviewedSourceDeliveries: 6, unreconciledRequests: 194
+    retainedRequests: 200, reviewedSourceDeliveries: 8, unreconciledRequests: 192
   });
   for (const row of proof.deliveries) {
     const size = imageSize(path.join(root, row.path.slice(1)));
@@ -46,7 +46,7 @@ test('wrong reviewed intake variant hash cannot authorize delivery', () => {
   input.ledger.images.find(row => row.slug === 'kapenta-stew-zm').variants.find(row => row.path === proof.deliveries[0].path).sha256 = '0'.repeat(64);
   assert.throws(() => reconcileImageBatch(input), /intake sha256 drift/);
 });
-test('an unexpected delivered request among the other194 retains the no-existing-stem guard', () => {
+test('an unexpected delivered request among the other192 retains the no-existing-stem guard', () => {
   const input = context(), unexpected = batch.images.find(row => !proof.deliveries.some(delivery => delivery.id === row.id));
   input.library.images.push({ path: unexpected.path });
   assert.throws(() => reconcileImageBatch(input), /Unexpected existing request stem/);
@@ -90,21 +90,23 @@ test('unknown Kapenta generation prompt stays unknown; queued prompt is historic
   assert.match(proof.note, /Retained prompts are not evidence/);
 });
 
-// Additional finite source deliveries; neither this fixture nor the six rows are a full inventory/deploy proof.
+// Additional finite source deliveries; neither this fixture nor the eight rows are a full inventory/deploy proof.
 const FUTURE = {
   'recipe-mandazi-tanzania-tz': ['mandazi-tanzania-tz', '7b24d43e-e00f-47fe-8943-0dbf74b81bc0', 'mandazi-malaquias-20171122-v1', '5b5268c4db7456bd6c5bb979a98008758fa66230'],
   'recipe-koba-mg': ['koba-mg', '3b4af630-750d-467f-939c-7befadf44d32', 'koba-firstglobal-p13-small-parcels-v1', '5b5268c4db7456bd6c5bb979a98008758fa66230'],
   'recipe-ibihaza-rw': ['ibihaza-rw', 'd7d7e305-3c5d-40db-9033-36843e102176', 'ibihaza-georgia-reader-20261017-v1', 'e5163b4485ecb08352d78176fd430c3d2560ce9c'],
-  'recipe-kat-kat-banane-sc': ['kat-kat-banane-sc', 'feabebb3-cd55-48c6-be9a-17f118dddfcc', 'katkat-creole-melting-pot-20190910-v1', 'e5163b4485ecb08352d78176fd430c3d2560ce9c']
+  'recipe-kat-kat-banane-sc': ['kat-kat-banane-sc', 'feabebb3-cd55-48c6-be9a-17f118dddfcc', 'katkat-creole-melting-pot-20190910-v1', 'e5163b4485ecb08352d78176fd430c3d2560ce9c'],
+  'recipe-ndizi-nyama-tz': ['ndizi-nyama-tz', '63325da8-6678-414f-b431-f88d8d6b2fe1', 'ndizi-darlene-international-cuisine-20261017-v1', '1b3573739d34a0b415949b6d2cbbf49914ca1d17'],
+  'recipe-latchiri-kossan-gn': ['latchiri-kossan-gn', '91740809-c813-417e-8af4-c5c7c989c1be', 'latchiri-gassama-maize-cultured-milk-20261017-v1', '1b3573739d34a0b415949b6d2cbbf49914ca1d17']
 };
 const digest = value => crypto.createHash('sha256').update(value).digest('hex');
 function reviewedRow(id) { const row=proof.deliveries.find(row=>row.id===id); assert.ok(row,'Missing reviewed source delivery: '+id); return row; }
-test('actual helper admits the independent finite six-ledger inventory and no additional request',()=>{
+test('actual helper admits the independent finite eight-ledger inventory and no additional request',()=>{
  const input=context(),slugs=['kapenta-stew-zm','oleleh-sl',...Object.values(FUTURE).map(row=>row[0])];
  input.library.images=slugs.map(slug=>{const intake=ledger.images.find(row=>row.slug===slug);assert.ok(intake);return {...intake.variants.find(v=>v.path===intake.target)};});
- assert.deepEqual(reconcileImageBatch(input),{retainedRequests:200,reviewedSourceDeliveries:6,unreconciledRequests:194});
+ assert.deepEqual(reconcileImageBatch(input),{retainedRequests:200,reviewedSourceDeliveries:8,unreconciledRequests:192});
 });
-test('four additional rows join exact request, recipe revision, ledger prompt and accepted source lineage',()=>{
+test('six additional rows join exact request, recipe revision, ledger prompt and accepted source lineage',()=>{
  for(const [id,[slug,recipeId,revision,commit]] of Object.entries(FUTURE)){
   const row=reviewedRow(id),request=batch.images.find(x=>x.id===id),intake=ledger.images.find(x=>x.slug===slug);
   assert.equal(row.slug,slug);assert.equal(row.recipe_id,recipeId);assert.equal(intake.recipe_id||intake.expected_recipe_id,recipeId);assert.equal(row.method_revision,revision);assert.equal(intake.method_revision,revision);
@@ -112,10 +114,11 @@ test('four additional rows join exact request, recipe revision, ledger prompt an
   assert.equal(row.historical_request_prompt_sha256,digest(request.prompt));assert.equal(row.recorded_generation_prompt_sha256,digest(intake.prompt));assert.notEqual(row.historical_request_prompt_sha256,row.recorded_generation_prompt_sha256);
   assert.match(row.delivery_scope,/repository bytes only/);assert.match(row.delivery_scope,/no deployment/);
  }
- assert.ok(Array.isArray(proof.additional_source_intakes));assert.equal(proof.additional_source_intakes.length,2);
+ assert.ok(Array.isArray(proof.additional_source_intakes));assert.equal(proof.additional_source_intakes.length,3);
  const expected=[
   {ordered_source_commits:['5b5268c4db7456bd6c5bb979a98008758fa66230'],root_acceptance_sha256:'4cd2dd33ee303cb92e13b24233f35bf6eb743d44db2785bcf8c2db30e0caaa24',committed_readback_sha256:'39c958047016a8e104e9e92693fc62d75fba611bf2f7f40d77324e4fccf29050',delivery_ids:['recipe-mandazi-tanzania-tz','recipe-koba-mg']},
-  {ordered_source_commits:['e5163b4485ecb08352d78176fd430c3d2560ce9c'],root_acceptance_sha256:'b486de213b87cd011c3087a8cf8396df098a76d04ac07f2c70c93d42134f9c03',committed_readback_sha256:'754e0f2350c5ef83fc91fab6f7d8d2d9b90c7f314dc35661e11320a66ca20d76',delivery_ids:['recipe-ibihaza-rw','recipe-kat-kat-banane-sc']}
+  {ordered_source_commits:['e5163b4485ecb08352d78176fd430c3d2560ce9c'],root_acceptance_sha256:'b486de213b87cd011c3087a8cf8396df098a76d04ac07f2c70c93d42134f9c03',committed_readback_sha256:'754e0f2350c5ef83fc91fab6f7d8d2d9b90c7f314dc35661e11320a66ca20d76',delivery_ids:['recipe-ibihaza-rw','recipe-kat-kat-banane-sc']},
+  {ordered_source_commits:['1b3573739d34a0b415949b6d2cbbf49914ca1d17'],root_acceptance_sha256:'915d087da31b4298633db7825ed910aeb1ff5feea5c286edcc3bf1414b72b458',committed_readback_sha256:'f4548fa77a7c44e5918b17ee9cbe3cb0ed710b56b444d593748fca68c6834935',independent_implementation_peer_sha256:'e032b19a8ff85674c1b8fe4d3cb7691ba422f39b7cde5677fe14f2a250305985',delivery_ids:['recipe-ndizi-nyama-tz','recipe-latchiri-kossan-gn']}
  ];
  for(const [index,want]of expected.entries())for(const key of Object.keys(want))assert.deepEqual(proof.additional_source_intakes[index][key],want[key]);
 });
@@ -139,7 +142,7 @@ for(const id of Object.keys(FUTURE)) {
   const row=reviewedRow(id),input=context();input.library.images.push({...input.library.images.find(x=>x.path===row.path),path:row.path.replace(/\.webp$/,'.png')});assert.throws(()=>reconcileImageBatch(input),/unexpected extra extension/);
  });
 }
-test('every one of the other194 requests retains its no-existing-stem guard',()=>{
- const pending=batch.images.filter(row=>!proof.deliveries.some(x=>x.id===row.id));assert.equal(pending.length,194);
+test('every one of the other192 requests retains its no-existing-stem guard',()=>{
+ const pending=batch.images.filter(row=>!proof.deliveries.some(x=>x.id===row.id));assert.equal(pending.length,192);
  for(const request of pending){const input=context();input.library.images.push({path:request.path});assert.throws(()=>reconcileImageBatch(input),/Unexpected existing request stem/,request.id);}
 });
