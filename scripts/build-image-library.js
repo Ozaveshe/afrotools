@@ -5,6 +5,7 @@ const path = require('path');
 const crypto = require('crypto');
 const cp = require('child_process');
 const vm = require('vm');
+const { isDeepStrictEqual } = require('node:util');
 const { imageSize } = require('./lib/image-size');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = 'data/image-generation';
@@ -28,6 +29,30 @@ function registry() {
   return { rows: sandbox.AFRO_TOOLS, imageIndex: sandbox.TOOL_CARD_IMAGE_EXTENSIONS || {}, imagePath: sandbox.getToolCardImagePath };
 }
 function csv(rows, keys) { return '\uFEFF' + [keys, ...rows.map(row => keys.map(k => Array.isArray(row[k]) ? row[k].join('; ') : row[k] ?? ''))].map(row => row.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n') + '\n'; }
+function withoutInventoryMetadata(value) {
+  return Object.fromEntries(Object.entries(value).filter(([key]) => key !== 'generated_at' && key !== 'source_commit'));
+}
+function previousInventory(file) {
+  try { return JSON.parse(read(file)); }
+  catch (error) { if (error.code === 'ENOENT' || error instanceof SyntaxError) return null; throw error; }
+}
+function validInventoryTime(value) {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
+}
+function preserveUnchangedInventoryProvenance(library, missingReferences) {
+  if (!process.argv.includes('--inventory-only')) return;
+  const previousLibrary = previousInventory(OUT + '/image-library.json');
+  const previousMissing = previousInventory(OUT + '/missing-image-references.json');
+  if (!previousLibrary || !previousMissing || typeof previousLibrary !== 'object' || typeof previousMissing !== 'object' || Array.isArray(previousLibrary) || Array.isArray(previousMissing)) return;
+  if (!validInventoryTime(previousLibrary.generated_at) || !validInventoryTime(previousMissing.generated_at) || typeof previousLibrary.source_commit !== 'string' || !/^[a-f0-9]{40}$/.test(previousLibrary.source_commit)) return;
+  if (previousMissing.source_commit !== undefined && (typeof previousMissing.source_commit !== 'string' || !/^[a-f0-9]{40}$/.test(previousMissing.source_commit))) return;
+  if (!isDeepStrictEqual(withoutInventoryMetadata(library), withoutInventoryMetadata(previousLibrary)) || !isDeepStrictEqual(withoutInventoryMetadata(missingReferences), withoutInventoryMetadata(previousMissing))) return;
+  // Keep the genuine earlier producer provenance only when both complete
+  // semantic inventories are unchanged. All other keys and array order matter.
+  library.generated_at = previousLibrary.generated_at;
+  library.source_commit = previousLibrary.source_commit;
+  missingReferences.generated_at = previousMissing.generated_at;
+}
 function build() {
   const all = files();
   const incoming = JSON.parse(read(OUT + '/kitchen-import-2026-09-08.json')).images;
@@ -135,12 +160,16 @@ function build() {
     if(decision){if(decision.sha256!==item.sha256)throw new Error('Reviewed image hash changed: '+item.path);item.placement_decision=decision.decision;item.review_note=decision.reason;item.assignment=decision.owner;item.text_status=decision.text_status||item.text_status;if(decision.decision!=='active')item.status=decision.decision;}
   }
   images.sort((a,b) => a.path.localeCompare(b.path));
-  const generated_at = new Date().toISOString();
+  let generated_at = new Date().toISOString();
   const summary = { images: images.length, placed: images.filter(i=>i.status==='placed').length, unassigned: images.filter(i=>i.status==='unassigned').length, duplicates: images.filter(i=>i.duplicate_of).length, held: images.filter(i=>i.status==='needs-review').length, text_free_reviewed: images.filter(i=>i.locale_reuse).length, shared_across_locales: images.filter(i=>i.locales_in_use.length>1).length, bytes: images.reduce((s,i)=>s+i.bytes,0), missing_reference_candidates: missing.size };
   summary.placement_review_resolved=decisions.size;
   summary.lifecycle_counts=images.reduce((o,i)=>(o[i.status]=(o[i.status]||0)+1,o),{});
-  json(OUT + '/image-library.json', { schema_version: 1, generated_at, source_commit: cp.execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(), scope: 'Repository product images plus dated verified AfroTools Supabase creator/news media bindings. Excludes build, dependency, test and evidence directories. Lifecycle decisions distinguish active use from reserved, retired and rejected artwork. No claim of exhaustive runtime reachability or live URL availability.', summary, images });
-  json(OUT + '/missing-image-references.json', { schema_version: 1, generated_at, note: 'Static reference candidates: may include dormant templates and dynamic fallbacks. Review before changing routes.', images: [...missing].map(([path, owners]) => ({ path: '/' + path, owners: [...new Set(owners)] })) });
+  const library = { schema_version: 1, generated_at, source_commit: cp.execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(), scope: 'Repository product images plus dated verified AfroTools Supabase creator/news media bindings. Excludes build, dependency, test and evidence directories. Lifecycle decisions distinguish active use from reserved, retired and rejected artwork. No claim of exhaustive runtime reachability or live URL availability.', summary, images };
+  const missingReferences = { schema_version: 1, generated_at, note: 'Static reference candidates: may include dormant templates and dynamic fallbacks. Review before changing routes.', images: [...missing].map(([path, owners]) => ({ path: '/' + path, owners: [...new Set(owners)] })) };
+  preserveUnchangedInventoryProvenance(library, missingReferences);
+  generated_at = library.generated_at;
+  json(OUT + '/image-library.json', library);
+  json(OUT + '/missing-image-references.json', missingReferences);
   write(OUT + '/image-library.csv', csv(images.map(i=>({...i,locales:i.locales_in_use,placement_count:i.placements.length})), ['path','family','status','assignment','width','height','bytes','sha256','duplicate_of','placement_count','text_status','locale_reuse','locales','review_note']));
   write(OUT+'/image-audit.md',`# Image library audit\n\nGenerated ${generated_at}. Repository proof only; no deployment.\n\n`+Object.entries(summary).map(([k,v])=>`- ${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`).join('\n')+`\n\n## Review boundaries\n\nAll product image files are inventoried and hashed. Existing raster artwork is not labelled text-free without visual review. Shared references across languages do not prove text-free content. Unassigned files and duplicates have explicit review assignments; none are deleted or forced onto unrelated pages. Reference candidates are not verified live 404s. The 60 accepted new food images were visually checked; three are held with reasons in the import receipt.\n\n## Reuse\n\nUse one canonical asset path for the same subject in every locale; translate HTML alt text/captions instead of burning text into pixels. The shared tool registry and AfroKitchen cuisine image data already support canonical paths. Do not reuse an English social card with embedded text as translated artwork. Do not conflate related but distinct regional dishes.\n\n## Daily batch\n\nRun node scripts/build-image-library.js --batch=YYYY-MM-DD after reviewed deliveries are imported. Use node scripts/build-image-library.js --inventory-only when references or review metadata changed but the current batch is still pending. The next-200 outputs are the current work queue; pending prompts remain pending until their files exist and pass review. CSV includes exact destination, route, priority and complete prompt.\n`);
   return { images, manifest, generated_at, summary, byPath };

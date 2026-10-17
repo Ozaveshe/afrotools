@@ -1,6 +1,7 @@
 const { test, expect, chromium } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
+const { readTelecomData } = require('../../scripts/lib/read-telecom-data');
 const swahiliTelecom = require('../../assets/js/lib/sw-telecom-localization');
 
 const HUB_ROUTE = '/sw/mawasiliano-na-mtandao/';
@@ -8,11 +9,9 @@ const TV_ROUTE = '/sw/zana/kilinganisha-tv-na-streaming/';
 const REFLOW_WIDTHS = [320, 375];
 const ROOT_FONT_SIZES = [16, 32];
 const contrastMinima = { text: Infinity, boundary: Infinity, focus: Infinity };
-const telecomDataSource = fs.readFileSync(
-  path.join(__dirname, '..', '..', 'data', 'telecom', 'country-telecom-index.js'),
-  'utf8'
-).split(';void 0')[0];
-const ARCHIVED_TELECOM_DATA = new Function(`${telecomDataSource}; return TELECOM_DATA;`)();
+const ARCHIVED_TELECOM_DATA = readTelecomData(
+  path.join(__dirname, '..', '..', 'data', 'telecom', 'country-telecom-index.js')
+);
 const SWAHILI_COUNTRY_NAMES = {
   CI: 'Cote d Ivoire', EG: 'Misri', ET: 'Ethiopia', GH: 'Ghana', KE: 'Kenya',
   MA: 'Morocco', NG: 'Nigeria', RW: 'Rwanda', SN: 'Senegal', TZ: 'Tanzania',

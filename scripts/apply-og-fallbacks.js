@@ -15,6 +15,12 @@ const DEFAULT_WIDTH = "1200";
 const DEFAULT_HEIGHT = "630";
 const TOOL_REGISTRY_PATH = path.join(ROOT, "assets", "js", "components", "tool-registry.js");
 const TOOL_IMAGE_EXTENSIONS = [".webp", ".png", ".jpg", ".jpeg"];
+const { loadBindings, resolveReviewedToolArtwork } = require('./lib/reviewed-tool-image-bindings');
+// Preserve the explicit measured dimensions promised by reviewed same-tool artwork.
+// Other routes retain the existing policy of leaving absent dimensions undeclared.
+const REVIEWED_TOOL_SOCIAL_IMAGES = new Map(loadBindings()
+  .filter(binding => binding.status === 'reviewed_same_tool_binding' && binding.placement_group === 'sw-practical-tool-artwork-2026-10-16')
+  .map(binding => [binding.route, SITE_ORIGIN + resolveReviewedToolArtwork(binding.route, binding.path)]));
 const REVIEWED_BLOG_SOCIAL_IMAGES = new Map(
   require('../data/image-generation/blog-artwork-bindings.json').images
     .filter(row => row.placement === 'article-hero' && row.update_social)
@@ -42,14 +48,14 @@ function escapeRegExp(value) {
  * itself swaps in. Social platforms lay the card out from these hints before fetching the file, so
  * a wrong hint mis-renders it.
  *
- * Deliberately only corrects declarations that already exist. Adding dimensions to the thousands of
+ * Except for explicitly reviewed same-tool artwork, only correct declarations that already exist. Adding dimensions to the thousands of
  * pages that omit them is not a correctness fix (platforms measure the image themselves) and would
  * churn the whole site. If the image cannot be measured, the claim is dropped rather than guessed.
  */
-function syncOgImageDimensions(html, imageUrl) {
+function syncOgImageDimensions(html, imageUrl, requireReviewedDimensions = false) {
   const hasWidth = getMetaContent(html, "property", "og:image:width");
   const hasHeight = getMetaContent(html, "property", "og:image:height");
-  if (hasWidth === null && hasHeight === null) return html;
+  if (hasWidth === null && hasHeight === null && !requireReviewedDimensions) return html;
 
   const size = imageSizeFromUrl(imageUrl, ROOT);
   let next = html;
@@ -513,7 +519,7 @@ function applyFallbacks(html, filePath) {
   }
 
   if (preferredToolImage) {
-    const dimsSync = syncOgImageDimensions(next, targetImage);
+    const dimsSync = syncOgImageDimensions(next, targetImage, REVIEWED_TOOL_SOCIAL_IMAGES.get(fileToPathname(filePath)) === targetImage);
     if (dimsSync !== next) {
       next = dimsSync;
       changed = true;
@@ -547,7 +553,7 @@ function applyFallbacks(html, filePath) {
     } else {
       // Page carries its own og:image. Only correct dimensions it already declares; do not add
       // them where absent (that would rewrite thousands of pages for no correctness gain).
-      const dimsSync = syncOgImageDimensions(next, existingOgImage);
+      const dimsSync = syncOgImageDimensions(next, existingOgImage, REVIEWED_TOOL_SOCIAL_IMAGES.get(fileToPathname(filePath)) === existingOgImage);
       if (dimsSync !== next) {
         next = dimsSync;
         changed = true;

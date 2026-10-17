@@ -11,6 +11,8 @@
     splitFile: null,
     splitBytes: null,
     splitPdfDoc: null,
+    splitLoadId: 0,
+    splitLoading: false,
     splitThumbnails: {},
     splitCuts: {},
     splitSelectedPages: {},
@@ -108,6 +110,15 @@
     syncSplitButton();
   }
 
+  function setSplitLoading(loading) {
+    state.splitLoading = loading;
+    document.querySelectorAll('.mode-btn').forEach(function (button) {
+      button.disabled = state.busy || loading;
+    });
+    syncMergeButton();
+    syncSplitButton();
+  }
+
   function downloadBlob(blob, filename) {
     function runDownload() {
       var url = URL.createObjectURL(blob);
@@ -145,7 +156,7 @@
   }
 
   function activateMode(mode) {
-    if (state.busy) return;
+    if (state.busy || state.splitLoading) return;
     invalidateOutput();
     state.currentMode = mode;
     document.querySelectorAll('.mode-btn').forEach(function (button) {
@@ -276,7 +287,7 @@
         totalPages += parsed.pages.length;
       }
     });
-    els.mergeBtn.disabled = state.busy || hasLoading || valid.length < 2 || hasErrors || rangeError;
+    els.mergeBtn.disabled = state.busy || state.splitLoading || hasLoading || valid.length < 2 || hasErrors || rangeError;
     els.clearMergeBtn.disabled = state.mergeFiles.length === 0 || state.busy;
     if (!state.mergeFiles.length) els.mergeSummary.textContent = native("Add at least two PDFs to merge.","Ajoutez au moins deux PDF à fusionner.","Ongeza angalau PDF mbili za kuunganisha.");
     else if (hasErrors) els.mergeSummary.textContent = native("Remove unreadable PDFs before merging.","Supprimez les PDF illisibles avant la fusion.","Ondoa PDF zisizosomeka kabla ya kuunganisha.");
@@ -308,7 +319,7 @@
   }
 
   async function mergePdfs() {
-    if (state.busy || state.mergeFiles.some(function (entry) { return entry.loading || entry.error; })) return;
+    if (state.busy || state.splitLoading || state.mergeFiles.some(function (entry) { return entry.loading || entry.error; })) return;
     var items = state.mergeFiles.filter(function (entry) { return !entry.error && !entry.loading; });
     if (items.length < 2) return;
     setBusy(els.mergeBtn, native("Merging...","Fusion…","Inaunganisha…"));
@@ -344,12 +355,11 @@
 
   async function loadSplitFile(file) {
     if (state.busy) return;
+    // A newer selection owns the document, progress and result even if an older
+    // read, parser or thumbnail render finishes afterwards.
+    var loadId = ++state.splitLoadId;
     invalidateOutput();
-    if (!isPdfFile(file)) {
-      showResult(native("Please choose a PDF file.","Choisissez un fichier PDF.","Chagua faili la PDF."), true);
-      return;
-    }
-    state.splitFile = file;
+    state.splitFile = null;
     state.splitBytes = null;
     state.splitPdfDoc = null;
     state.splitCuts = {};
@@ -357,39 +367,66 @@
     state.splitThumbnails = {};
     els.splitInfo.style.display = 'none';
     els.actionRow.style.display = 'none';
+    renderSplitGrid();
+    setSplitLoading(false);
+    if (!isPdfFile(file)) {
+      hideProgress();
+      showResult(native("Please choose a PDF file.","Choisissez un fichier PDF.","Chagua faili la PDF."), true);
+      return;
+    }
+    setSplitLoading(true);
+    state.splitFile = file;
     showResult(native("Reading PDF...","Lecture du PDF…","Inasoma PDF…"), false);
     setProgress(12);
     try {
       var arrayBuffer = await file.arrayBuffer();
+      if (loadId !== state.splitLoadId) return;
+      var pdfDoc = await getPDFLib().PDFDocument.load(arrayBuffer.slice(0), { ignoreEncryption: true });
+      if (loadId !== state.splitLoadId) return;
+      var pageCount = pdfDoc.getPageCount();
+      setProgress(35);
+      var thumbnails = await generateThumbnails(arrayBuffer.slice(0), pageCount, loadId);
+      if (loadId !== state.splitLoadId) return;
       state.splitBytes = arrayBuffer.slice(0);
-      state.splitPdfDoc = await getPDFLib().PDFDocument.load(arrayBuffer.slice(0), { ignoreEncryption: true });
-      var pageCount = state.splitPdfDoc.getPageCount();
+      state.splitPdfDoc = pdfDoc;
+      state.splitThumbnails = thumbnails;
+      setSplitLoading(false);
       els.splitFileName.setAttribute('translate', 'no');
       els.splitFileName.textContent = file.name;
       els.splitPageCount.textContent = pageCount;
       els.splitInfo.style.display = 'block';
-      setProgress(35);
-      await generateThumbnails(arrayBuffer.slice(0), pageCount);
       renderSplitGrid();
       syncSplitButton();
       hideProgress();
       els.resultCard.classList.remove('on');
     } catch (err) {
+      if (loadId !== state.splitLoadId) return;
+      state.splitFile = null;
+      state.splitBytes = null;
+      state.splitPdfDoc = null;
+      state.splitThumbnails = {};
+      els.splitInfo.style.display = 'none';
+      els.splitGrid.innerHTML = '';
+      setSplitLoading(false);
       hideProgress();
       showResult(native('Could not read this PDF. Choose a valid, unlocked PDF.', 'Impossible de lire ce PDF. Choisissez un PDF valide et non verrouillé.', 'PDF hii haisomeki. Chagua PDF halali isiyofungwa.'), true);
       syncSplitButton();
     }
   }
 
-  async function generateThumbnails(bytes, pageCount) {
+  async function generateThumbnails(bytes, pageCount, loadId) {
+    var thumbnails = {};
     var pdfjs = getPdfJs();
-    if (!pdfjs) return;
+    if (!pdfjs) return thumbnails;
+    var pdf;
     try {
-      var pdf = await pdfjs.getDocument({ data: new Uint8Array(bytes.slice(0)) }).promise;
+      pdf = await pdfjs.getDocument({ data: new Uint8Array(bytes.slice(0)) }).promise;
+      if (loadId !== state.splitLoadId) return thumbnails;
       var limit = Math.min(pdf.numPages, MAX_THUMBNAILS);
       for (var i = 0; i < limit; i++) {
         try {
           var page = await pdf.getPage(i + 1);
+          if (loadId !== state.splitLoadId) return thumbnails;
           var viewport = page.getViewport({ scale: 0.32 });
           var canvas = document.createElement('canvas');
           canvas.width = viewport.width;
@@ -397,11 +434,19 @@
           var ctx = canvas.getContext('2d');
           if (!ctx) continue;
           await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-          state.splitThumbnails[i] = canvas.toDataURL('image/jpeg', 0.68);
+          if (loadId !== state.splitLoadId) return thumbnails;
+          thumbnails[i] = canvas.toDataURL('image/jpeg', 0.68);
         } catch (_) {}
+        if (loadId !== state.splitLoadId) return thumbnails;
         setProgress(35 + ((i + 1) / Math.max(1, limit)) * 55);
       }
     } catch (_) {}
+    finally {
+      if (pdf && typeof pdf.destroy === 'function') {
+        try { await pdf.destroy(); } catch (_) {}
+      }
+    }
+    return thumbnails;
   }
 
   function setSplitMode(mode) {
@@ -576,7 +621,7 @@
       label = native('Pages → ZIP: ', 'Pages → ZIP : ', 'Kurasa → ZIP: ') + total;
       summary = native("Each page will become its own PDF.","Chaque page devient un PDF distinct.","Kila ukurasa utakuwa PDF tofauti.");
     }
-    els.splitBtn.disabled = state.busy || !enabled;
+    els.splitBtn.disabled = state.busy || state.splitLoading || !enabled;
     els.splitBtn.textContent = label;
     els.splitSummary.textContent = state.splitPdfDoc ? summary : '';
   }
@@ -674,7 +719,7 @@
   }
 
   async function performSplit() {
-    if (!state.splitPdfDoc) return;
+    if (state.busy || state.splitLoading || !state.splitPdfDoc) return;
     var baseName = cleanBaseName(state.splitFile.name);
     setBusy(els.splitBtn, native("Working...","Traitement…","Inachakata…"));
     setProgress(0);

@@ -56,6 +56,7 @@ function api(payload,meta={}) {
     './_shared/data-store':{getData:async key=>key==='meta'?meta:key==='shipping-rates-latest'?payload:null},
     './_shared/api-auth':{validateApiKey:async()=>({tier:'free'})},
     './_shared/shipping-reference':reference,'./scheduled-fetch-shipping':{_referenceCatalog:catalog},
+    './_shared/stock-observations':require('../netlify/functions/_shared/stock-observations'),
     './_shared/agri-reference':{referenceStatus:()=>({status:'offline'})},
     './_shared/reference-feeds':{KEYS:{},referenceStatus:()=>({status:'offline'})}
   });

@@ -20,6 +20,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const acorn = require("acorn");
 const { localizeFrenchSolarRoutes } = require("./lib/french-solar-country-routes");
 const { localizeFrenchSolarCountryPickerHtml } = require("./lib/french-solar-country-picker");
 const { ensureSolarCountryPickerReadiness } = require("./lib/solar-country-picker-readiness");
@@ -492,12 +493,44 @@ function frenchSolarCountryDisplayNames() {
     .map(country => [country.code, frName(country.countryName)]));
 }
 
+function localizeSolarRuntimeCopy(html) {
+  const copy = new Map([
+    ["Correct highlighted inputs to update this estimate.", "Corrigez les champs signalés pour actualiser cette estimation."],
+    ["Correct highlighted inputs to compare system sizes.", "Corrigez les champs signalés pour comparer les tailles de système."],
+    ["Correct highlighted inputs before sharing or exporting.", "Corrigez les champs signalés avant de partager ou d’exporter."],
+    ["Selected size", "Taille choisie"],
+    ["Nearest listed size", "Taille répertoriée la plus proche"],
+    [". Selected system size: ", ". Taille du système choisie : "],
+    ["The selected row is highlighted.", "La ligne choisie est mise en évidence."],
+    ["This size is outside the listed comparison sizes; the nearest listed ", "Cette taille ne figure pas dans la comparaison ; la ligne la plus proche de "],
+    [" kW row is highlighted for comparison only.", " kW est mise en évidence uniquement pour comparaison."],
+  ]);
+  return html.replace(/(<script\b([^>]*)>)([\s\S]*?)(<\/script>)/gi, (whole, open, attributes, source, close) => {
+    if (/\bsrc\s*=|application\/(?:ld\+json|json)/i.test(attributes) || !source.includes("var DEFAULTS=") || !source.includes("function invalidateReport(")) return whole;
+    const edits = [];
+    function visit(node) {
+      if (!node || typeof node !== "object") return;
+      if (node.type === "Literal" && copy.has(node.value)) edits.push({start:node.start,end:node.end,text:JSON.stringify(copy.get(node.value))});
+      for (const [key,value] of Object.entries(node)) {
+        if (["start","end","raw"].includes(key)) continue;
+        if (Array.isArray(value)) value.forEach(visit);
+        else if (value && typeof value === "object") visit(value);
+      }
+    }
+    visit(acorn.parse(source, {ecmaVersion:"latest"}));
+    for (const edit of edits.sort((a,b)=>b.start-a.start)) source=source.slice(0,edit.start)+edit.text+source.slice(edit.end);
+    return open+source+close;
+  });
+}
+
 function processHtml(html) {
   html = ensureSolarCountryPickerReadiness(html);
   html = localizeFrenchSolarRoutes(html);
   html = localizeFrenchSolarCountryPickerHtml(html, frenchSolarCountryDisplayNames());
+  html = localizeSolarRuntimeCopy(html);
   // Preserve distinct, visible names when repairing older translated pickers.
   html = html.replace(/(<label\b[^>]*for="solarCountryPageSearch"[^>]*>)[^<]*(<\/label>)/, '$1Rechercher un pays$2');
+  html = html.replace(/(<label\b[^>]*for="solarCountryPageSelect"[^>]*>)[^<]*(<\/label>)/, '$1Sélectionner un pays$2');
   if (html.includes('id="solarCountryPageSelect"') && !html.includes('for="solarCountryPageSelect"')) {
     html = html.replace('<select id="solarCountryPageSelect"', '<label for="solarCountryPageSelect">Sélectionner un pays</label>\n<select id="solarCountryPageSelect"');
   }
