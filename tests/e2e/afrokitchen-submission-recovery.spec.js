@@ -86,20 +86,19 @@ async function focusBounds(page, selector) {
   pointerProof.get(page).push({ selector, focusedControl: b });
 }
 
-const provider = 'https://zpclagtgczsygrgztlts.supabase.co/rest/v1/recipe_submissions';
+const providerPath = '/.netlify/functions/afrokitchen-community';
 const wires = new WeakMap(), errors = new WeakMap();
 const originalName = 'Synthetic test recipe';
 const newerName = 'Newer synthetic test recipe';
 const keptDraft = 'Your original recipe was submitted for review. Your newer edits are still here and have not been sent.';
-const authStub = `window.AfroAuth={getSupabase:function(){
-  if(window.__getterThrows)throw new Error('Synthetic client unavailable');
-  return {from:function(table){if(table!=='recipe_submissions')throw new Error('Unexpected table');
-    return {insert:function(payload){
-      window.__insertSnapshots.push(JSON.parse(JSON.stringify(payload)));
-      return fetch('${provider}',{method:'POST',credentials:'omit',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(response){return response.json()});
-    }};
-  }};
-}};`;
+const authStub = `window.AfroAuth={getSupabase:function(){throw new Error('Browser database access forbidden');}};
+(function(){var actualFetch=window.fetch;window.fetch=function(url,options){
+ if(url==='/.netlify/functions/afrokitchen-community' && options && options.method==='POST'){
+  if(window.__transportThrows)throw new Error('Synthetic transport unavailable');
+  window.__submissionSnapshots.push(JSON.parse(options.body));
+ }
+ return actualFetch.apply(this,arguments);
+};})();`;
 
 test.beforeEach(async ({ page, context, baseURL }) => {
   errors.set(page, []); wires.set(page, []); pointerEvents.set(page, []); pointerProof.set(page, []);
@@ -109,15 +108,15 @@ test.beforeEach(async ({ page, context, baseURL }) => {
   const origin = new URL(baseURL).origin;
   await context.route('**/*', async route => {
     const request = route.request(), url = new URL(request.url());
-    if (url.href === provider && request.method() === 'POST') {
+    if (url.origin === origin && url.pathname === providerPath && request.method() === 'POST') {
       expect(request.headers().authorization).toBeUndefined();
       expect(request.headers().apikey).toBeUndefined();
       const row = { body: JSON.parse(request.postData()), headers: request.headers() };
       wires.get(page).push(row);
       const response = await new Promise(resolve => { row.release = resolve; });
-      return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': origin }, body: JSON.stringify(response) });
+      return route.fulfill({ status: response.success === true ? 201 : 503, contentType: 'application/json', body: JSON.stringify(response) });
     }
-    if (url.href === provider && request.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Headers': 'content-type', 'Access-Control-Allow-Methods': 'POST' } });
+    if (url.origin === origin && url.pathname === providerPath && request.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Headers': 'content-type', 'Access-Control-Allow-Methods': 'POST' } });
     if (url.origin === origin && ['GET', 'HEAD'].includes(request.method())) {
       if (url.pathname === '/assets/js/afro-auth.js') return route.fulfill({ contentType: 'application/javascript', body: authStub });
       return route.continue();
@@ -127,7 +126,7 @@ test.beforeEach(async ({ page, context, baseURL }) => {
   });
   await page.addInitScript(() => {
     localStorage.setItem('afrotools_cookie_consent', 'declined'); window.AfroDisableAssistant = true;
-    window.__insertSnapshots = []; window.__copyRequests = []; window.__legacy = [];
+    window.__submissionSnapshots = []; window.__copyRequests = []; window.__legacy = [];
     window.__configureClipboard = (mode, legacy = 'false') => {
       window.__legacyMode = legacy;
       Object.defineProperty(navigator, 'clipboard', { configurable: true, value: mode === 'absent' ? undefined : { writeText(text) {
@@ -149,7 +148,7 @@ test.beforeEach(async ({ page, context, baseURL }) => {
 
 test.afterEach(async ({ page }, info) => {
   await info.attach('native-controls', { body: Buffer.from(JSON.stringify(pointerProof.get(page), null, 2)), contentType: 'application/json' });
-  await info.attach('synthetic-wire-and-engine-mapping', { body: Buffer.from(JSON.stringify({ wires: wires.get(page).map(row => row.body), engine: await page.evaluate(() => window.__insertSnapshots) }, null, 2)), contentType: 'application/json' });
+  await info.attach('synthetic-wire-and-engine-mapping', { body: Buffer.from(JSON.stringify({ wires: wires.get(page).map(row => row.body), engine: await page.evaluate(() => window.__submissionSnapshots) }, null, 2)), contentType: 'application/json' });
   await info.attach('observed-page-errors', { body: Buffer.from(JSON.stringify({ errors: errors.get(page), nativeTransitionAborts: errors.get(page).filter(error => error.name === 'AbortError' && error.message === 'Transition was skipped').length }, null, 2)), contentType: 'application/json' });
   expect(errors.get(page)).toEqual([]);
   expect(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth))).toBe(0);
@@ -181,15 +180,16 @@ async function fill(page) {
   await page.getByLabel('Country of Origin').selectOption('NG');
   await page.getByLabel('Ingredients', { exact: false }).fill('2 cups synthetic rice');
   await page.getByLabel('Cooking Steps').fill('1. Simmer the synthetic ingredients for 20 minutes.');
+  await page.locator('#f-consent').check();
 }
 function body(name = originalName, permission = false, links = '') {
-  return { name, country_code: 'NG', description: null, ingredients_text: '2 cups synthetic rice', steps_text: '1. Simmer the synthetic ingredients for 20 minutes.', story: `Editorial context\n${links ? `Photo links: ${links}\n` : ''}Photo permission: ${permission ? 'yes' : 'not confirmed'}`, submitted_by: null, email: null };
+  return { name, country_code: 'NG', description: '', ingredients_text: '2 cups synthetic rice', steps_text: '1. Simmer the synthetic ingredients for 20 minutes.', story: '', region_community: '', contributor_type: '', occasion: '', total_time: '', serve_with: '', photo_links: links, photo_permission: permission, variations: '', consent: true, website: '', submitted_by: '', email: '', action: 'submit-recipe' };
 }
 async function held(page, count, expectedBody = body()) {
   await pointer(page, '#submit-btn');
   await expect.poll(() => wires.get(page).length).toBe(count);
   expect(wires.get(page)[count - 1].body).toEqual(expectedBody);
-  expect(await page.evaluate(() => window.__insertSnapshots.at(-1))).toEqual(expectedBody);
+  expect(await page.evaluate(() => window.__submissionSnapshots.at(-1))).toEqual(expectedBody);
   await expect(page.locator('#submit-btn')).toBeDisabled();
   await expect(page.locator('#submit-btn')).toHaveText('Sending…');
 }
@@ -234,7 +234,7 @@ for (const variant of variants) test.describe(`submission ${variant.width} ${var
     await open(page, variant.theme); await fill(page); await held(page, 1);
     await nativeName(page, newerName);
     const before = await geometry(page, '#f-country');
-    wires.get(page)[0].release({ error: null });
+    wires.get(page)[0].release({ success: true, status: 'pending' });
     await expect(page.locator('#submit-form')).toBeVisible();
     await expect(page.locator('#submit-success')).toBeHidden();
     await expect(page.locator('#submit-status')).toHaveText(keptDraft);
@@ -243,18 +243,18 @@ for (const variant of variants) test.describe(`submission ${variant.width} ${var
     await focusBounds(page, '#f-country');
     expect(await geometry(page, '#f-country')).toEqual(before);
     await held(page, 2, body(newerName));
-    wires.get(page)[1].release({ error: null });
+    wires.get(page)[1].release({ success: true, status: 'pending' });
     await expect(page.locator('#submit-form')).toBeHidden();
     await expect(page.locator('#submit-success')).toBeVisible();
     // A native edit reverted to the original normalized payload does not become an unsent draft.
     await open(page, variant.theme); await fill(page); await held(page, 3);
     await nativeName(page, newerName); await nativeName(page, originalName);
-    wires.get(page)[2].release({ error: null });
+    wires.get(page)[2].release({ success: true, status: 'pending' });
     await expect(page.locator('#submit-success')).toBeVisible();
     await expect(page.locator('#submit-form')).toBeHidden();
   });
 
-  test('native invalid and photo consent block sending; failure and thrown getter retain editable draft and recover', async ({ page }) => {
+  test('native invalid and photo consent block sending; failure and thrown transport retain editable draft and recover', async ({ page }) => {
     await open(page, variant.theme);
     await stableSubmitEdge(page);
     await pointer(page, '#submit-btn');
@@ -268,6 +268,8 @@ for (const variant of variants) test.describe(`submission ${variant.width} ${var
     await page.locator('#f-photo-links').fill('https://example.invalid/synthetic-photo');
     await pointer(page, '#submit-btn');
     expect(wires.get(page)).toHaveLength(0);
+    await expect(page.locator('#submit-status')).toContainText('Confirm image permission');
+    await expect(page.locator('#f-photo-permission')).toHaveAttribute('aria-invalid', 'true');
     await page.locator('#f-photo-permission').check();
     await held(page, 1, body(originalName, true, 'https://example.invalid/synthetic-photo'));
     // Disabled native Send cannot initiate a second request.
@@ -280,15 +282,34 @@ for (const variant of variants) test.describe(`submission ${variant.width} ${var
     await expect(page.locator('#submit-btn')).toBeEnabled();
     await expect(page.locator('#f-name')).toHaveValue(newerName); await focusBounds(page, '#f-country');
     await held(page, 2, body(newerName, true, 'https://example.invalid/synthetic-photo'));
-    wires.get(page)[1].release({ error: null }); await expect(page.locator('#submit-success')).toBeVisible();
+    wires.get(page)[1].release({ success: true, status: 'pending' }); await expect(page.locator('#submit-success')).toBeVisible();
     await open(page, variant.theme); await fill(page);
-    await page.evaluate(() => { window.__getterThrows = true; });
+    await page.evaluate(() => { window.__transportThrows = true; });
     await pointer(page, '#submit-btn');
     await expect(page.locator('#submit-status')).toContainText('could not send');
     await expect(page.locator('#submit-btn')).toBeEnabled(); await expect(page.locator('#submit-form')).toBeVisible();
     expect(wires.get(page)).toHaveLength(2);
-    await page.evaluate(() => { window.__getterThrows = false; });
-    await held(page, 3); wires.get(page)[2].release({ error: null });
+    await page.evaluate(() => { window.__transportThrows = false; });
+    await held(page, 3); wires.get(page)[2].release({ success: true, status: 'pending' });
+    await expect(page.locator('#submit-success')).toBeVisible();
+  });
+
+  test('private send consent blocks network and an unconfirmed ack keeps the draft', async ({ page }) => {
+    await open(page, variant.theme); await fill(page);
+    await page.locator('#f-consent').uncheck();
+    await pointer(page, '#submit-btn');
+    await expect(page.locator('#f-consent')).toBeFocused();
+    expect(wires.get(page)).toHaveLength(0);
+    await expect(page.locator('#submission-privacy')).toContainText('optional name or email privately');
+    await page.locator('#f-consent').check();
+    await held(page, 1);
+    wires.get(page)[0].release({ success: true });
+    await expect(page.locator('#submit-status')).toContainText('could not confirm');
+    await expect(page.locator('#submit-form')).toBeVisible();
+    await expect(page.locator('#submit-success')).toBeHidden();
+    await expect(page.locator('#f-name')).toHaveValue(originalName);
+    await expect(page.locator('#submit-btn')).toBeEnabled();
+    await held(page, 2); wires.get(page)[1].release({ success: true, status: 'pending' });
     await expect(page.locator('#submit-success')).toBeVisible();
   });
 

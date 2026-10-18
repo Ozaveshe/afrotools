@@ -12,7 +12,10 @@ const published = JSON.parse(fs.readFileSync(path.join(root, "tools/afrokitchen/
 const expected = buildRecipeIndex(manifest);
 assert.deepEqual(published, expected, "published index must match the static recipe route manifest");
 assert.equal(published.recipes.length, 410);
-assert.ok(published.recipes.every((recipe) => recipe.id && recipe.slug && recipe.ingredients.length));
+const engineSource = require('../engines/src/afrokitchen-engine');
+assert.ok(published.recipes.every((recipe) => recipe.id && recipe.slug && (recipe.ingredients.length ||
+  (engineSource.isPendingRecipeMethod(recipe) && recipe.method_review_status === 'pending-source-method' && recipe.yield_status === 'not-recorded'))));
+assert.equal(published.recipes.filter(recipe => engineSource.isPendingRecipeMethod(recipe)).length, 2);
 
 const source = fs.readFileSync(path.join(root, "engines/src/afrokitchen-engine.js"), "utf8");
 let fetchCount = 0;
@@ -26,7 +29,10 @@ const context = {
   },
   console,
   Promise,
-  Date
+  Date,
+  AbortController,
+  setTimeout,
+  clearTimeout
 };
 vm.runInNewContext(source, context);
 

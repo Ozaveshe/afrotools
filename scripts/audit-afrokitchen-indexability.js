@@ -4,7 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { isDeepStrictEqual } = require("util");
-const { loadRecipeImages, resolveRecipeMedia } = require("./lib/afrokitchen-static");
+const { classifyRecipeDuration, loadRecipeImages, resolveRecipeMedia } = require("./lib/afrokitchen-static");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -48,7 +48,30 @@ function hasNoindex(html) {
   return /\bnoindex\b/i.test(extractMetaContent(html, "robots"));
 }
 
+function inspectPendingMethodPage(recipe, html) {
+  const engine = require('../engines/src/afrokitchen-engine');
+  const errors = [];
+  let expected;
+  try { expected = engine.projectPendingRecipeMethod(recipe); } catch (error) { return { state: 'invalid', errors: ['pending method identity mismatch'] }; }
+  if (!engine.isPendingRecipeMethod(recipe) || expected.method_review_status !== 'pending-source-method') return { state: 'invalid', errors: ['not an exact pending source method'] };
+  if (recipe.is_published !== true || recipe.is_verified !== true || !recipe.generated_in_wave) errors.push('pending page lacks explicit public eligibility');
+  if (!/^noindex,\s*follow$/i.test(extractMetaContent(html, 'robots'))) errors.push('pending source method must be noindex, follow');
+  if (extractCanonical(html) !== recipe.route_url) errors.push('pending method canonical mismatch');
+  if (extractMetaContent(html, 'afrokitchen-schema-blockers') !== 'source_method_pending') errors.push('pending method blocker missing');
+  for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try { const nodes = []; const visit = value => { if (Array.isArray(value)) return value.forEach(visit); if (!value || typeof value !== 'object') return; nodes.push(value); if (value['@graph']) visit(value['@graph']); }; visit(JSON.parse(match[1])); if (nodes.some(node => [node['@type']].flat().some(type => ['Recipe', 'HowTo'].includes(type)))) errors.push('pending method must not emit cooking schema'); } catch { errors.push('malformed JSON-LD'); }
+  }
+  const payloads = [...html.matchAll(/window\.__AK_STATIC_RECIPE\s*=\s*([\s\S]*?);\s*<\/script>/g)];
+  let payload; try { if (payloads.length === 1) payload = JSON.parse(payloads[0][1]); } catch { errors.push('malformed pending payload'); }
+  const fields = ['id','slug','is_published','is_verified','method_review_status','method_review_revision','method_revision','yield_status','default_servings','serving_unit','prep_time_minutes','cook_time_minutes','total_time_minutes','calories','protein_g','carbs_g','fat_g','fiber_g','ingredients','steps','chef_notes','reviews','avg_rating','review_count','diet_tags'];
+  for (const field of fields) if (!isDeepStrictEqual(payload?.[field], expected[field])) errors.push('pending payload mismatch: ' + field);
+  if (!/Preparation method under source review/.test(html) || !/AI-generated/.test(html)) errors.push('pending review/illustration disclosure missing');
+  if (/onclick=["'][^"']*(?:AKPage|AKStaticRecipePage)|data-ak-cook-mode|id=["']ak-static-ingredients/.test(html)) errors.push('pending method must not expose cooking controls');
+  return { state: errors.length ? 'invalid' : 'pending-source-method', errors };
+}
+
 function inspectRecipeSchemaState(recipe, html, recipeImages) {
+  if (require('../engines/src/afrokitchen-engine').isPendingRecipeMethod(recipe)) return inspectPendingMethodPage(recipe, html);
   const errors = [];
   const nodes = [];
   const contexts = new Map();
@@ -73,13 +96,22 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
   if (recipes.length) {
     if (recipes.length !== 1) errors.push("duplicate Recipe JSON-LD");
     if (markers.length) errors.push("Recipe JSON-LD conflicts with a schema blocker");
-    return { state: "recipe-markup", errors };
+    const schema = recipes[0];
+    const expected = {};
+    const prep = classifyRecipeDuration(recipe.prep_time_minutes), cook = classifyRecipeDuration(recipe.cook_time_minutes), total = classifyRecipeDuration(recipe.total_time_minutes);
+    if (prep.kind === 'known' && cook.kind === 'known') { expected.prepTime = `PT${Math.round(prep.minutes)}M`; expected.cookTime = `PT${Math.round(cook.minutes)}M`; }
+    if (total.kind === 'known') expected.totalTime = `PT${Math.round(total.minutes)}M`;
+    for (const field of ['prepTime', 'cookTime', 'totalTime']) if (!isDeepStrictEqual(schema[field], expected[field])) errors.push(`Recipe duration does not match source: ${field}`);
+    if (schema.name !== recipe.name || schema.description !== recipe.description) errors.push('Recipe metadata does not match source');
+    if (!Array.isArray(schema.recipeInstructions) || schema.recipeInstructions.length !== (recipe.steps || []).length || schema.recipeInstructions.some((step, index) => step.text !== recipe.steps[index]?.instruction)) errors.push('Recipe instructions do not match source');
   }
 
   // A missing dish photo affects rich-result eligibility, not the complete page's indexability.
   // Verify the source and rendered content; the marker alone is never an exemption.
-  if (markers.length !== 1 || markers[0][1] !== "missing_image") errors.push("missing or invalid image-only schema blocker");
-  if (!resolveRecipeMedia(recipe, recipeImages).isFallback) errors.push("dish image is available; Recipe JSON-LD is required");
+  if (!recipes.length) {
+    if (markers.length !== 1 || markers[0][1] !== "missing_image") errors.push("missing or invalid image-only schema blocker");
+    if (!resolveRecipeMedia(recipe, recipeImages).isFallback) errors.push("dish image is available; Recipe JSON-LD is required");
+  }
   const canonicalLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi)];
   if (canonicalLinks.length !== 1 || extractCanonical(html) !== recipe.route_url) errors.push("photo-less page canonical is missing or mismatched");
   if (!/^index,\s*follow$/i.test(extractMetaContent(html, "robots"))) errors.push("photo-less page must remain index, follow");
@@ -110,9 +142,9 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
   for (const field of ["ingredients", "steps"]) {
     if (!isDeepStrictEqual(cookingContent(payload?.[field]), cookingContent(recipe[field]))) errors.push(`static recipe payload does not match source: ${field}`);
   }
-  const sourceIncomplete = !recipe.generated_in_wave ||
+  const sourceIncomplete = !recipe.generated_in_wave || recipe.is_published !== true || recipe.is_verified !== true ||
     textFields.some(field => !String(recipe[field] || "").trim()) ||
-    durationFields.some(field => recipe[field] == null || !Number.isFinite(Number(recipe[field])) || Number(recipe[field]) < 0) ||
+    durationFields.some(field => classifyRecipeDuration(recipe[field]).kind === "invalid") ||
     !Number.isFinite(Number(recipe.default_servings)) || Number(recipe.default_servings) <= 0 ||
     !Array.isArray(recipe.ingredients) || !recipe.ingredients.length ||
     recipe.ingredients.some(item => !String(item?.name || "").trim()) ||
@@ -126,7 +158,7 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
     .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
     .replace(/\s+/g, " ");
   if (![recipe.name, recipe.description, ...(recipe.ingredients || []).map(item => item.name), ...(recipe.steps || []).map(item => item.instruction)].every(value => visibleText.includes(String(value || "").replace(/\s+/g, " ")))) errors.push("photo-less recipe content must be visible in HTML");
-  return { state: errors.length ? "invalid" : "awaiting-dish-image", errors };
+  return { state: errors.length ? "invalid" : recipes.length ? "recipe-markup" : "awaiting-dish-image", errors };
 }
 
 function htmlRouteUrl(filePath) {
@@ -273,8 +305,9 @@ function main() {
     const schema = inspectRecipeSchemaState(recipe, html, recipeImages);
     if (schema.state === "recipe-markup") recipeMarkupPages.push(url);
     else if (schema.state === "awaiting-dish-image") awaitingDishImage.push(url);
-    else missingJsonLd.push(url);
+    else if (schema.state !== "pending-source-method") missingJsonLd.push(url);
     if (schema.errors.length) invalidSchemaStates.push({ url, errors: schema.errors });
+    if (schema.state === "pending-source-method") continue;
     if (!Array.isArray(recipe.ingredients) || recipe.ingredients.length === 0) missingIngredients.push(url);
     if (!Array.isArray(recipe.steps) || recipe.steps.length === 0) missingInstructions.push(url);
 
@@ -289,7 +322,7 @@ function main() {
     }
   }
 
-  const missingRecipeSitemap = [...generatedRecipeUrls].filter((url) => !sitemapEntries.has(url));
+  const missingRecipeSitemap = [...generatedRecipeUrls].filter((url) => !require('../engines/src/afrokitchen-engine').isPendingRecipeMethod(recipeByUrl.get(url)) && !sitemapEntries.has(url));
   const includedRecipeUrls = [...generatedRecipeUrls].filter((url) => sitemapEntries.has(url));
   const missingCountrySitemap = [...countryUrls].filter((url) => !sitemapEntries.has(url));
   const missingCollectionSitemap = [...collectionUrls].filter((url) => !sitemapEntries.has(url));
@@ -388,4 +421,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { inspectRecipeSchemaState };
+module.exports = { inspectRecipeSchemaState, inspectPendingMethodPage };

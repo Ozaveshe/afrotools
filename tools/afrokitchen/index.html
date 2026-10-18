@@ -1326,6 +1326,32 @@
     updateMoreButton();
   }
 
+  function showPublicationState(rows, reload) {
+    var empty = document.getElementById('recipes-empty');
+    var loading = document.getElementById('recipes-loading');
+    var heading = empty.querySelector('h3'), description = empty.querySelector('p');
+    if (!showPublicationState.defaults) showPublicationState.defaults = [heading.textContent, description.innerHTML];
+    var retry = document.getElementById('ak-publication-retry');
+    if (!retry) {
+      retry = document.createElement('button'); retry.type = 'button';
+      retry.id = 'ak-publication-retry'; retry.className = 'ak-btn ak-btn-outline'; retry.textContent = 'Retry recipe availability';
+      empty.appendChild(retry);
+    }
+    var unavailable = AK.isPublicationUnavailable(rows);
+    retry.hidden = !unavailable; retry.style.display = unavailable ? "" : "none";
+    retry.onclick = function() { retry.disabled = true; AK.retryPublication(); return reload(); };
+    retry.disabled = false;
+    if (!unavailable) {
+      heading.textContent = showPublicationState.defaults[0]; description.innerHTML = showPublicationState.defaults[1];
+      return false;
+    }
+    loading.style.display = 'none'; empty.style.display = '';
+    empty.setAttribute('role', 'status'); empty.setAttribute('aria-live', 'polite');
+    heading.textContent = 'Recipe availability could not be checked';
+    description.textContent = 'Publication data is unavailable. Reconnect and retry; this does not mean the archive has no recipes.';
+    return true;
+  }
+
   async function loadRecipes() {
     var requestId = ++recipeRequestId;
     var grid = document.getElementById('recipes-grid');
@@ -1363,6 +1389,10 @@
       search: filters.search
     });
     if (requestId !== recipeRequestId) return;
+    if (showPublicationState(recipes, retryRecipePublication)) {
+      resultsSummary.textContent = "Recipe publication data is unavailable. Retry to check the archive.";
+      return;
+    }
     if (savedOnly) {
       try {
         var savedSlugs = window.AfroKitchenCookbook.read();
@@ -1407,10 +1437,12 @@
   // ── Featured recipe ──
   async function loadFeatured() {
     var recipes = await AK.fetchRecipes({ featured: true, limit: 1 });
+    if (AK.isPublicationUnavailable(recipes)) { document.getElementById("featured-recipe").innerHTML = ""; return; }
     var r = recipes && recipes[0];
     if (!r) return;
     var country = AK.COUNTRIES[r.country_code] || {};
     var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+    var methodPending = typeof AK.isPendingRecipeMethod === 'function' && AK.isPendingRecipeMethod(r);
     var description = (r.description || '').slice(0, 140);
     if (r.description && r.description.length > 140) {
       description += '…';
@@ -1426,9 +1458,9 @@
         '<div class="ak-featured-overlay">' +
           '<div class="ak-featured-label">Featured recipe</div>' +
           '<h3>' + r.name + '</h3>' +
-          '<p class="ak-featured-meta"><strong>' + (country.flag || '') + ' ' + r.country_name + '</strong> · ' + totalMin + ' min · Serves ' + r.default_servings + '</p>' +
+          '<p class="ak-featured-meta"><strong>' + (country.flag || '') + ' ' + r.country_name + '</strong> · ' + (methodPending ? 'Time and yield not recorded' : totalMin + ' min · Serves ' + r.default_servings) + '</p>' +
           '<p class="ak-featured-desc">' + description + '</p>' +
-          '<span class="ak-featured-link">Cook this dish</span>' +
+          '<span class="ak-featured-link">' + (methodPending ? 'View dish information' : 'Cook this dish') + '</span>' +
         '</div>' +
       '</a>';
     AKImages.hydrate(featuredRoot);
@@ -1495,6 +1527,11 @@
 
   async function loadLandingMeta() {
     var allRecipes = await AK.fetchRecipes({});
+    if (AK.isPublicationUnavailable(allRecipes)) {
+      mealPlannerCatalogReady = false; mealPlannerRecipes = [];
+      setPlanStatus("Recipe publication data is unavailable. Retry the recipe archive before planning.");
+      return;
+    }
     mealPlannerRecipes = allRecipes || [];
     mealPlannerCatalogReady = true;
     if (recipeTotal && allRecipes && allRecipes.length) {
@@ -1534,7 +1571,13 @@
     return amount + unit + item.name + (item.prep_note ? ' (' + item.prep_note + ')' : '') + (item.is_optional ? ' optional' : '');
   }
 
+  // This curated method has no recorded person-yield; legacy online summaries may lack its marker.
+  function hasUnrecordedPlanYield(recipe) {
+    return !!recipe && (recipe.yield_status === 'not-recorded' || recipe.id === '76572d95-eb8e-4c78-bbb6-ea754f61c758' || recipe.slug === 'kapenta-stew-zm' || recipe.id === 'd7d7e305-3c5d-40db-9033-36843e102176' || recipe.slug === 'ibihaza-rw' || recipe.id === '8a2bb743-87d9-462e-bc09-335e78f9584a' || recipe.slug === 'kunu-zaki-ng' || recipe.id === 'f2850789-0ffd-41b3-bbaf-e3229132c9e6' || recipe.slug === 'ikivuguto-rw');
+  }
+
   function recipeIngredientsByGroup(recipe, servings) {
+    if (hasUnrecordedPlanYield(recipe)) return [];
     if (!recipe || !Array.isArray(recipe.ingredients) || !recipe.ingredients.length) return [];
     var scaled = AK.scaleIngredients(recipe.ingredients, recipe.default_servings || 1, servings);
     var groups = [];
@@ -1564,6 +1607,7 @@
   }
 
   function buildGroupedShoppingList(recipes, servings) {
+    if ((recipes || []).some(hasUnrecordedPlanYield)) return {};
     var groups = {};
     (recipes || []).forEach(function (recipe, recipeIndex) {
       if (!recipe || !Array.isArray(recipe.ingredients) || !recipe.ingredients.length) return;
@@ -1985,6 +2029,10 @@
       setPlanStatus('Saved plan could not be restored because a recipe is unavailable.');
       return;
     }
+    if (recipes.some(hasUnrecordedPlanYield)) {
+      setPlanStatus('Your saved plan remains saved. A recipe has no recorded person-yield, so portion planning is unavailable.');
+      return;
+    }
     ['days', 'maxTime', 'servings', 'diet', 'country', 'occasion'].forEach(function (key) {
       var id = { days: 'ak-plan-days', maxTime: 'ak-plan-time', servings: 'ak-plan-servings', diet: 'ak-plan-diet', country: 'ak-plan-country', occasion: 'ak-plan-occasion' }[key];
       var field = document.getElementById(id);
@@ -2003,7 +2051,7 @@
   }
 
   function matchesPlan(recipe, inputs) {
-    if (!recipe) return false;
+    if (!recipe || hasUnrecordedPlanYield(recipe)) return false;
     var ok = inputs.maxTime >= 999 || recipeTotalMinutes(recipe) <= inputs.maxTime;
     if (inputs.country) ok = ok && recipe.country_code === inputs.country;
     if (inputs.diet) ok = ok && normalizeTags(recipe.diet_tags).indexOf(inputs.diet) !== -1;
@@ -2016,7 +2064,7 @@
 
   // A day in the weekly plan needs a meal recipe; drinks, snacks, sides and desserts remain browseable.
   function isPlanMeal(recipe) {
-    return !!recipe && ['main', 'stew', 'soup', 'seafood', 'grill', 'rice'].indexOf(String(recipe.category || '').toLowerCase()) !== -1;
+    return !!recipe && !hasUnrecordedPlanYield(recipe) && ['main', 'stew', 'soup', 'seafood', 'grill', 'rice'].indexOf(String(recipe.category || '').toLowerCase()) !== -1;
   }
 
   function isStarchLedPlanMeal(recipe) {
@@ -2059,6 +2107,7 @@
   }
 
   async function fetchRecipeDetails(recipe) {
+    if (hasUnrecordedPlanYield(recipe)) throw new Error('This recipe has no recorded person-yield; portion planning is unavailable.');
     if (!recipe || !recipe.slug) return recipe;
     if (recipe.ingredients && recipe.ingredients.length) return recipe;
     var cacheKey = recipe.id || recipe.slug;
@@ -2084,6 +2133,7 @@
   }
 
   function buildPlanText(recipes, inputs) {
+    if ((recipes || []).some(hasUnrecordedPlanYield)) return 'Plan unavailable: a recipe has no recorded person-yield. Your saved choices remain unchanged.';
     var lines = [
       'AfroKitchen ' + inputs.days + '-day recipe plan',
       'Servings per recipe: ' + inputs.servings,
@@ -2222,6 +2272,10 @@
   }
 
   function renderPlan(recipes, inputs) {
+    if ((recipes || []).some(hasUnrecordedPlanYield)) {
+      setPlanStatus('Portion planning is unavailable for a recipe without recorded person-yield. Your choices remain unchanged.');
+      return;
+    }
     invalidatePlanCopy();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
@@ -2412,7 +2466,13 @@
     setPlanButtonState('loading');
     setPlanStatus('Finding matching stored recipes…');
     pool = pool.filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); });
-    var savedPicks = usePicked ? readPickedRecipes().filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); }).slice(0, inputs.days) : [];
+    var rawPicks = usePicked ? readPickedRecipes() : [];
+    if (rawPicks.some(hasUnrecordedPlanYield)) {
+      setPlanStatus('Your picked recipes remain saved. A recipe has no recorded person-yield; choose other recipes for portion planning.');
+      setPlanButtonState('idle');
+      return;
+    }
+    var savedPicks = usePicked ? rawPicks.filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); }).slice(0, inputs.days) : [];
     if (usePicked && pickedRecipesStorageIssue) {
       renderPickedRecipes();
       setPlanStatus(pickedRecipesStorageMessage());
@@ -2450,6 +2510,11 @@
     try {
       var keepCurrent = currentPlanInputs && JSON.stringify(currentPlanInputs) === JSON.stringify(inputs);
       var locked = keepCurrent ? currentPlanRecipes.filter(function(recipe) { return planLocks[recipe.slug]; }) : [];
+      if (locked.some(hasUnrecordedPlanYield)) {
+        setPlanStatus('Your locked choices remain unchanged. A recipe has no recorded person-yield, so portion planning is unavailable.');
+        setPlanButtonState('idle');
+        return;
+      }
       var fixed = locked.concat(savedPicks.filter(function(recipe) { return !locked.some(function(pick) { return pick.slug === recipe.slug; }); }));
       var savedSlugs = new Set(fixed.map(function (recipe) { return recipe.slug; }));
       var replacements = savedPicks.filter(function(recipe) { return !locked.some(function(pick) { return pick.slug === recipe.slug; }); }).concat(choosePlanRecipes(pool.filter(function (recipe) { return !savedSlugs.has(recipe.slug); }), inputs.days - fixed.length));
@@ -2599,12 +2664,19 @@
   syncFilterDisclosure();
   smallFilterScreen.addEventListener('change', syncFilterDisclosure);
 
+  function retryRecipePublication() {
+    return Promise.all([loadLandingMeta(), loadFeatured(), loadRecipes()]).then(function() {
+      pickedRecipesCatalogReady = mealPlannerCatalogReady;
+      if (pickedRecipesCatalogReady) revealPickedRecipesFragment();
+    });
+  }
+
   // ── Init ──
   // Storage recovery must be reachable even before the recipe catalog finishes loading.
   renderPickedRecipes();
   Promise.all([loadLandingMeta(), loadFeatured(), loadRecipes(), loadCollections()]).then(function () {
-    pickedRecipesCatalogReady = true;
-    revealPickedRecipesFragment();
+    pickedRecipesCatalogReady = mealPlannerCatalogReady;
+    if (pickedRecipesCatalogReady) revealPickedRecipesFragment();
   });
 })();
 

@@ -168,6 +168,32 @@
   var diffSelect = document.getElementById('filter-difficulty');
   AK.DIFFICULTIES.forEach(function (d) { var o = document.createElement('option'); o.value = d; o.textContent = d.charAt(0).toUpperCase() + d.slice(1); diffSelect.appendChild(o); });
 
+  function showPublicationState(rows, reload) {
+    var empty = document.getElementById('recipes-empty');
+    var loading = document.getElementById('recipes-loading');
+    var heading = empty.querySelector('h3'), description = empty.querySelector('p');
+    if (!showPublicationState.defaults) showPublicationState.defaults = [heading.textContent, description.innerHTML];
+    var retry = document.getElementById('ak-publication-retry');
+    if (!retry) {
+      retry = document.createElement('button'); retry.type = 'button';
+      retry.id = 'ak-publication-retry'; retry.className = 'ak-btn ak-btn-outline'; retry.textContent = 'Retry recipe availability';
+      empty.appendChild(retry);
+    }
+    var unavailable = AK.isPublicationUnavailable(rows);
+    retry.hidden = !unavailable; retry.style.display = unavailable ? "" : "none";
+    retry.onclick = function() { retry.disabled = true; AK.retryPublication(); return reload(); };
+    retry.disabled = false;
+    if (!unavailable) {
+      heading.textContent = showPublicationState.defaults[0]; description.innerHTML = showPublicationState.defaults[1];
+      return false;
+    }
+    loading.style.display = 'none'; empty.style.display = '';
+    empty.setAttribute('role', 'status'); empty.setAttribute('aria-live', 'polite');
+    heading.textContent = 'Recipe availability could not be checked';
+    description.textContent = 'Publication data is unavailable. Reconnect and retry; this does not mean the archive has no recipes.';
+    return true;
+  }
+
   async function load() {
     var grid = document.getElementById('recipes-grid');
     var loading = document.getElementById('recipes-loading');
@@ -180,11 +206,13 @@
 
     var recipes = await AK.fetchRecipes(filters);
     loading.style.display = 'none';
+    if (showPublicationState(recipes, load)) return;
     if (!recipes || !recipes.length) { empty.style.display = ''; return; }
     document.getElementById('country-count').textContent = String(recipes.length);
 
     recipes.forEach(function (r) {
       var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+      var methodPending = typeof AK.isPendingRecipeMethod === 'function' && AK.isPendingRecipeMethod(r);
       var card = document.createElement('a');
       card.className = 'ak-recipe-card';
       card.href = AKRoutes.recipe(r.slug);
@@ -200,7 +228,7 @@
           '<h3 class="ak-recipe-card-title">' + r.name + '</h3>' +
           '<p class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + '</p>' +
           '<div class="ak-recipe-card-meta">' +
-            '<span><small>Time</small><strong>' + totalMin + ' min</strong></span><span><small>Level</small><strong>' + (r.difficulty || 'medium') + '</strong></span>' +
+            '<span><small>Time</small><strong>' + (methodPending ? 'Not recorded' : totalMin + ' min') + '</strong></span><span><small>Level</small><strong>' + (methodPending ? 'Source method pending' : (r.difficulty || 'medium')) + '</strong></span>' +
           '</div>' +
         '</div>';
       AKImages.hydrate(card);

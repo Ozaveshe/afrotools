@@ -10,6 +10,8 @@ const { imageSize } = require('../scripts/lib/image-size');
 const { routeFile } = require('../scripts/build-image-library');
 const library = require('../data/image-generation/image-library.json');
 const batch = require('../data/image-generation/next-200.json');
+const deliveryProof = require('../data/image-generation/next-200-delivery-reconciliation.json');
+const { reconcileImageBatch } = require('../scripts/lib/image-batch-delivery-reconciliation');
 const intake = require('../data/image-generation/kitchen-import-2026-09-08.json');
 assert.equal(intake.images.length, 63);
 assert.equal(intake.images.filter(i=>i.status==='placed').length, 60);
@@ -47,10 +49,15 @@ for(const entry of intake.images) {
 assert.equal(batch.images.length,200);
 assert.equal(new Set(batch.images.map(i=>i.id)).size,200);
 assert.equal(new Set(batch.images.map(i=>i.path)).size,200);
-const stems=new Set(library.images.map(i=>i.path.replace(/\.[^.]+$/,'')));
+const batchDelivery = reconcileImageBatch({
+  batchBytes: fs.readFileSync(path.join(ROOT, 'data/image-generation/next-200.json')),
+  library, proof: deliveryProof,
+  ledger: require('../data/image-generation/kitchen-generated-2026-10-09.json'),
+  readAsset: file => fs.readFileSync(path.join(ROOT, file.replace(/^\//, '')))
+});
 for(const row of batch.images) {
   assert.ok(routeFile(row.route),'Missing route '+row.route);
-  assert.ok(!stems.has(row.path.replace(/\.[^.]+$/,'')),'Already available '+row.path);
+  // Prompts below remain the historical requests, not claims about delivered pixels.
   assert.ok(row.prompt.length>250);
   assert.ok(row.locale_reuse);
   if(row.reference_image) assert.ok(fs.existsSync(path.join(ROOT,row.reference_image)));
@@ -154,4 +161,4 @@ for(const file of ['tool-registry.js','tool-registry.min.js']) {
     }
   }
 }
-console.log(`PASS: 63 incoming assets, 60 placements, ${Object.keys(aliases).length} canonical image aliases, metadata preserved, 200 unique gaps, reference scan clean.`);
+console.log(`PASS: 63 incoming assets, 60 placements, ${Object.keys(aliases).length} canonical image aliases, metadata preserved, ${batchDelivery.retainedRequests} retained requests, ${batchDelivery.reviewedSourceDeliveries} reviewed repository deliveries, ${batchDelivery.unreconciledRequests} unreconciled requests, reference scan clean.`);

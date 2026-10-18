@@ -131,7 +131,7 @@
       <form id="submit-form" onsubmit="return handleSubmit(event)">
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-name">Recipe Name *</label>
-          <input class="ak-form-input" id="f-name" required placeholder="e.g., Grandma's Egusi Soup">
+          <input class="ak-form-input" id="f-name" maxlength="160" required placeholder="e.g., Grandma's Egusi Soup">
         </div>
 
         <div class="ak-form-group">
@@ -144,7 +144,7 @@
         <div class="ak-form-grid">
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-region-community">Region / Community</label>
-            <input class="ak-form-input" id="f-region-community" placeholder="e.g., Northern Nigeria, Baoule, Wolof">
+            <input class="ak-form-input" id="f-region-community" maxlength="160" placeholder="e.g., Northern Nigeria, Baoule, Wolof">
           </div>
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-contributor-type">Contributor type</label>
@@ -162,22 +162,22 @@
         <div class="ak-form-grid">
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-occasion">Best occasion</label>
-            <input class="ak-form-input" id="f-occasion" placeholder="Everyday, Eid, Sunday lunch, wedding, market snack">
+            <input class="ak-form-input" id="f-occasion" maxlength="160" placeholder="Everyday, Eid, Sunday lunch, wedding, market snack">
           </div>
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-total-time">Approx total time</label>
-            <input class="ak-form-input" id="f-total-time" placeholder="e.g., 45 minutes, overnight soak + 1 hour">
+            <input class="ak-form-input" id="f-total-time" maxlength="160" placeholder="e.g., 45 minutes, overnight soak + 1 hour">
           </div>
         </div>
 
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-desc">Short Description</label>
-          <input class="ak-form-input" id="f-desc" placeholder="One-line description of the dish">
+          <input class="ak-form-input" id="f-desc" maxlength="500" placeholder="One-line description of the dish">
         </div>
 
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-ingredients">Ingredients *</label>
-          <textarea class="ak-form-textarea" id="f-ingredients" required placeholder="List each ingredient on a new line, e.g.:
+          <textarea class="ak-form-textarea" id="f-ingredients" maxlength="12000" required placeholder="List each ingredient on a new line, e.g.:
 3 cups rice
 6 fresh tomatoes
 3 scotch bonnet peppers
@@ -188,7 +188,7 @@
 
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-steps">Cooking Steps *</label>
-          <textarea class="ak-form-textarea" id="f-steps" required placeholder="Describe each step clearly, e.g.:
+          <textarea class="ak-form-textarea" id="f-steps" maxlength="18000" required placeholder="Describe each step clearly, e.g.:
 Step 1: Blend the tomatoes, peppers, and onions until smooth.
 Step 2: Heat oil in a large pot and fry the sliced onions.
 Step 3: Add the tomato paste and fry for 3 minutes.
@@ -198,23 +198,23 @@ Step 3: Add the tomato paste and fry for 3 minutes.
 
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-story">Story / Cultural Context</label>
-          <textarea class="ak-form-textarea" id="f-story" placeholder="Tell us about this dish. Where does it come from? When is it traditionally served? What makes it special to your family?"></textarea>
+          <textarea class="ak-form-textarea" id="f-story" maxlength="8000" placeholder="Tell us about this dish. Where does it come from? When is it traditionally served? What makes it special to your family?"></textarea>
         </div>
 
         <div class="ak-form-grid">
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-serve-with">Serve with</label>
-            <input class="ak-form-input" id="f-serve-with" placeholder="e.g., rice, fufu, attieke, salad, tea">
+            <input class="ak-form-input" id="f-serve-with" maxlength="500" placeholder="e.g., rice, fufu, attieke, salad, tea">
           </div>
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-photo-links">Photo links</label>
-            <input class="ak-form-input" id="f-photo-links" placeholder="Optional image links or drive folder">
+            <input class="ak-form-input" id="f-photo-links" maxlength="2000" placeholder="Optional image links or drive folder">
           </div>
         </div>
 
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-variations">Regional variations / substitutions</label>
-          <textarea class="ak-form-textarea" id="f-variations" placeholder="What changes by family, town, region, season, budget, or availability?"></textarea>
+          <textarea class="ak-form-textarea" id="f-variations" maxlength="2000" placeholder="What changes by family, town, region, season, budget, or availability?"></textarea>
         </div>
 
         <label class="ak-form-check">
@@ -225,14 +225,20 @@ Step 3: Add the tomato paste and fry for 3 minutes.
         <div class="ak-name-email-grid">
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-author">Your Name</label>
-            <input class="ak-form-input" id="f-author" placeholder="Optional">
+            <input class="ak-form-input" id="f-author" maxlength="80" placeholder="Optional">
           </div>
           <div class="ak-form-group">
             <label class="ak-form-label" for="f-email">Email</label>
-            <input class="ak-form-input" type="email" id="f-email" placeholder="Optional (for follow-up)">
+            <input class="ak-form-input" type="email" id="f-email" maxlength="254" placeholder="Optional (for follow-up)">
           </div>
         </div>
 
+        <p class="ak-form-hint" id="submission-privacy">Send shares your recipe, photo links and any optional name or email privately with AfroKitchen editors for review and follow-up. It does not publish the recipe or create an account. To keep your work local, leave Send unused and copy your draft before closing this page.</p>
+        <label class="ak-form-check">
+          <input id="f-consent" type="checkbox" required aria-describedby="submission-privacy submit-status">
+          <span>I agree to send these details for private editorial review.</span>
+        </label>
+        <div hidden aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" tabindex="-1" autocomplete="off"></div>
         <div class="ak-submit-actions">
           <button type="submit" class="ak-btn ak-btn-primary" id="submit-btn">Send recipe for review</button>
         </div>
@@ -316,25 +322,6 @@ Step 3: Add the tomato paste and fry for 3 minutes.
 function fieldValue(id) {
   var el = document.getElementById(id);
   return el ? el.value.trim() : '';
-}
-
-function buildEditorialContext() {
-  var lines = [
-    ['Region or community', fieldValue('f-region-community')],
-    ['Contributor type', fieldValue('f-contributor-type')],
-    ['Best occasion', fieldValue('f-occasion')],
-    ['Approx total time', fieldValue('f-total-time')],
-    ['Serve with', fieldValue('f-serve-with')],
-    ['Photo links', fieldValue('f-photo-links')],
-    ['Photo permission', document.getElementById('f-photo-permission').checked ? 'yes' : 'not confirmed'],
-    ['Regional variations or substitutions', fieldValue('f-variations')]
-  ].filter(function (entry) {
-    return entry[1];
-  }).map(function (entry) {
-    return entry[0] + ': ' + entry[1];
-  });
-
-  return lines.length ? 'Editorial context\n' + lines.join('\n') : '';
 }
 
 function contributionFocus() {
@@ -444,21 +431,50 @@ function recipeDraftPayload() {
     description: fieldValue('f-desc'),
     ingredients_text: fieldValue('f-ingredients'),
     steps_text: fieldValue('f-steps'),
-    story: [fieldValue('f-story'), buildEditorialContext()].filter(Boolean).join('\n\n'),
+    story: fieldValue('f-story'),
+    region_community: fieldValue('f-region-community'),
+    contributor_type: fieldValue('f-contributor-type'),
+    occasion: fieldValue('f-occasion'),
+    total_time: fieldValue('f-total-time'),
+    serve_with: fieldValue('f-serve-with'),
+    photo_links: fieldValue('f-photo-links'),
+    photo_permission: document.getElementById('f-photo-permission').checked,
+    variations: fieldValue('f-variations'),
+    consent: document.getElementById('f-consent').checked,
+    website: fieldValue('f-website'),
     submitted_by: fieldValue('f-author'),
     email: fieldValue('f-email')
   };
 }
+
+function submissionError(field, message) {
+  var ids = {country_code: 'country', description: 'desc', ingredients_text: 'ingredients', steps_text: 'steps', submitted_by: 'author'};
+  var control = document.getElementById('f-' + (ids[field] || String(field || '').replace(/_/g, '-')));
+  if (control) {
+    control.setAttribute('aria-invalid', 'true');
+    control.setAttribute('aria-describedby', field === 'consent' ? 'submission-privacy submit-status' : 'submit-status');
+    control.focus({preventScroll: true});
+    revealContributionControl(control);
+  }
+  document.getElementById('submit-status').textContent = message;
+}
+contributionForm.addEventListener('input', function (event) { event.target.removeAttribute('aria-invalid'); });
+contributionForm.addEventListener('change', function (event) { event.target.removeAttribute('aria-invalid'); });
 
 async function handleSubmit(e) {
   e.preventDefault();
   var btn = document.getElementById('submit-btn');
   var status = document.getElementById('submit-status');
   if (btn.disabled) return false;
+  if (!contributionForm.reportValidity()) return false;
+  if (!document.getElementById('f-consent').checked) {
+    submissionError('consent', 'Confirm the private editorial submission. Your draft is still here.');
+    return false;
+  }
   var photoLinks = fieldValue('f-photo-links');
   var photoPermission = document.getElementById('f-photo-permission');
   if (photoLinks && photoPermission && !photoPermission.checked) {
-    alert('Please confirm image permission before submitting photo links, or remove the photo links.');
+    submissionError('photo_permission', 'Confirm image permission or remove the photo links. Your draft is still here.');
     return false;
   }
   btn.disabled = true;
@@ -469,7 +485,7 @@ async function handleSubmit(e) {
   var submittedRevision = recipeDraftRevision;
   try {
     var res = await AfroKitchenEngine.submitRecipe(payload);
-    if (res && res.success) {
+    if (res && res.success === true && res.status === 'pending') {
       if (recipeDraftRevision !== submittedRevision && JSON.stringify(recipeDraftPayload()) !== JSON.stringify(payload)) {
         status.textContent = 'Your original recipe was submitted for review. Your newer edits are still here and have not been sent.';
       } else {
@@ -478,10 +494,10 @@ async function handleSubmit(e) {
         document.getElementById('submit-success').style.display = '';
       }
     } else {
-      status.textContent = 'We could not send your recipe: ' + (res && res.error || 'Please try again') + '. Your draft is still here.';
+      submissionError(res && res.field, 'We could not send your recipe: ' + (res && res.error || 'Save could not be confirmed') + '. Your draft is still here.');
     }
   } catch (error) {
-    status.textContent = 'We could not send your recipe. Your draft is still here. Please try again.';
+    status.textContent = 'We could not confirm your recipe was saved. Your draft is still here. Copy it before trying again.';
   } finally {
     contributionForm.removeAttribute('aria-busy');
     btn.disabled = false;

@@ -118,3 +118,41 @@ test('duplicate Recipe markup is blocking', () => {
   item.html = item.html.replace('</head>', '<script type="application/ld+json">{"@type":"Recipe"}</script></head>');
   assert.ok(inspect(item).errors.includes('duplicate Recipe JSON-LD'));
 });
+
+function withTiming(slug, values) {
+  const item=fixture(slug);
+  Object.assign(item.recipe,values);
+  item.html=buildRecipePageHtml(item.recipe,manifest,engine,images,{recipes:{}});
+  return item;
+}
+for(const value of [null,undefined,'','  ']) test(`unknown optional prep/total (${String(value)}) does not waive other checks`,()=>{
+  for(const slug of ['jollof-rice-ng','fisherman-soup-ng']) {
+    const item=withTiming(slug,{prep_time_minutes:value,cook_time_minutes:40,total_time_minutes:value});
+    assert.deepEqual(inspect(item),{state:slug==='jollof-rice-ng'?'recipe-markup':'awaiting-dish-image',errors:[]});
+    assert.doesNotMatch(item.html,/PTnullM|PTundefinedM|0 min prep/);
+    assert.match(item.html,/About 40 min cook/);
+    const schema=[...item.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(row=>JSON.parse(row[1])).find(row=>row['@type']==='Recipe');
+    if(schema) for(const field of ['prepTime','cookTime','totalTime']) assert.equal(Object.hasOwn(schema,field),false);
+    item.html=replacePayload(item.html,data=>{data.steps[0].instruction='Unapproved replacement';});
+    assert.equal(inspect(item).state,'invalid');
+  }
+});
+for(const value of [false,true,-1,NaN,Infinity,'not-a-duration']) test(`explicit invalid duration (${String(value)}) remains blocking`,()=>{
+  const item=withTiming('jollof-rice-ng',{prep_time_minutes:value,cook_time_minutes:40,total_time_minutes:null});
+  assert.match(item.html,/invalid_prep_time/);
+  assert.match(item.html,/<meta name="robots" content="noindex, follow">/);
+  assert.equal(inspect(item).state,'invalid');
+});
+test('duration presence must match source even in a normal Recipe object',()=>{
+  const item=withTiming('jollof-rice-ng',{prep_time_minutes:null,cook_time_minutes:40,total_time_minutes:null});
+  item.html=item.html.replace('"@type":"Recipe"','"@type":"Recipe","cookTime":"PT40M"');
+  assert.ok(inspect(item).errors.includes('Recipe duration does not match source: cookTime'));
+});
+test('unknown duration does not excuse canonical or publication mismatch',()=>{
+  const item=withTiming('jollof-rice-ng',{prep_time_minutes:null,cook_time_minutes:40,total_time_minutes:null});
+  item.html=item.html.replace(/(<link rel="canonical" href=")[^"]+/,'$1https://example.test/wrong/');
+  assert.equal(inspect(item).state,'invalid');
+  const second=withTiming('jollof-rice-ng',{prep_time_minutes:null,cook_time_minutes:40,total_time_minutes:null});
+  second.recipe.is_published=false;
+  assert.equal(inspect(second).state,'invalid');
+});
