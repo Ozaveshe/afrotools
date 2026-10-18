@@ -303,7 +303,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
 .as-source-dot{width:9px;height:9px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 4px rgba(148,163,184,.16);flex:0 0 auto}
 .as-source-rail.live .as-source-dot,.as-source-pill.live::before{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.18)}
 .as-source-rail.preview .as-source-dot,.as-source-pill.preview::before{background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
-.as-source-rail.stale .as-source-dot,.as-source-pill.stale::before{background:#f97316;box-shadow:0 0 0 4px rgba(249,115,22,.18)}
+.as-source-rail.stale .as-source-dot,.as-source-pill.stale::before,.as-source-rail.partial .as-source-dot,.as-source-pill.partial::before{background:#f97316;box-shadow:0 0 0 4px rgba(249,115,22,.18)}
 .as-source-rail.blocked .as-source-dot,.as-source-pill.blocked::before{background:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,.18)}
 .as-source-rail.unavailable .as-source-dot,.as-source-pill.unavailable::before{background:#64748b;box-shadow:0 0 0 4px rgba(100,116,139,.22)}
 .as-source-lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
@@ -949,6 +949,7 @@ var SOURCE_STATUS_LABELS = {
   live:'Live',
   preview:'Preview',
   stale:'Stale',
+  partial:'Partial coverage',
   blocked:'Blocked',
   unavailable:'Unavailable'
 };
@@ -980,6 +981,10 @@ function isBlockedRun(run){
   return /blocked|error|failed|fail|timeout/.test(status);
 }
 
+function isPartialRun(run){
+  return !!(run && typeof run.error_message === 'string' && run.error_message.trim());
+}
+
 function formatAge(hours){
   if(hours == null) return '';
   if(hours < 1) return 'under 1h ago';
@@ -991,7 +996,7 @@ function summarizeSourceHealth(lanes){
   var statuses = SOURCE_LANES.map(function(lane){
     return lanes[lane.key] && lanes[lane.key].status || 'unavailable';
   });
-  var order = ['blocked','unavailable','stale','preview','live'];
+  var order = ['blocked','unavailable','stale','partial','preview','live'];
   var state = 'live';
   for(var i=0;i<order.length;i++){
     if(statuses.indexOf(order[i]) !== -1){
@@ -1002,6 +1007,7 @@ function summarizeSourceHealth(lanes){
   if(state === 'live') return { state:state, title:'Live data', detail:'Streams, rankings, and news all updated recently.' };
   if(state === 'preview') return { state:state, title:'Preview mode', detail:'Showing sample data on this preview.' };
   if(state === 'stale') return { state:state, title:'Some data may be delayed', detail:'Most feeds loaded; we are double-checking how fresh a few of them are.' };
+  if(state === 'partial') return { state:state, title:'Some sources could not be checked', detail:'Available listings are still shown. Coverage may be incomplete.' };
   if(state === 'blocked') return { state:state, title:'Live data temporarily unavailable', detail:'One or more feeds could not be reached right now. Historical content remains available.' };
   return { state:state, title:'Live data temporarily unavailable', detail:'We could not confirm how fresh some feeds are right now. Historical content remains available.' };
 }
@@ -1148,6 +1154,19 @@ function buildSourceLanes(data, health, healthError){
   } else if(calendarLoaded){
     lanes.calendar = laneHealth('live', (data.streams.upcoming.length || 0) + ' upcoming rows; stream source checked ' + (formatAge(latestStreamAge) || 'recently') + '.');
   }
+
+  // A successful run can still have unavailable individual sources. Keep stronger
+  // failed/stale/unavailable states and never expose the provider's raw diagnostics.
+  [
+    { key:'streams', run:liveRun, count:streamsLoaded ? data.streams.live.length : 0, label:'live stream listings', source:'stream' },
+    { key:'rankings', run:syncRun, count:creatorsLoaded ? data.creators.length : 0, label:'creator listings', source:'creator' },
+    { key:'news', run:newsRun, count:newsLoaded ? data.news.length : 0, label:'news items', source:'news' },
+    { key:'calendar', run:liveRun, count:calendarLoaded ? data.streams.upcoming.length : 0, label:'upcoming listings', source:'stream' }
+  ].forEach(function(lane){
+    if(lanes[lane.key].status === 'live' && isPartialRun(lane.run)){
+      lanes[lane.key] = laneHealth('partial', lane.count + ' ' + lane.label + ' shown. Some ' + lane.source + ' sources could not be checked; coverage may be incomplete.');
+    }
+  });
 
   return lanes;
 }
