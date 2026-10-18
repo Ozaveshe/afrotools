@@ -89,10 +89,11 @@ function countryAliasVariants(alias) {
 function parseArgs(argv) {
   const write = argv.includes("--write");
   const check = argv.includes("--check");
-  if (write === check || argv.some((arg) => !["--write", "--check", "--country-prefill-only"].includes(arg))) {
+  if (argv.includes("--blog-labels-only") && argv.includes("--country-prefill-only")) throw new Error("Blog labels and country-prefill modes cannot be combined.");
+  if (write === check || argv.some((arg) => !["--write", "--check", "--country-prefill-only", "--blog-labels-only"].includes(arg))) {
     throw new Error("Choose exactly one of --write or --check; --country-prefill-only limits generation to the owned redirects/report.");
   }
-  return { write, check, countryPrefillOnly: argv.includes("--country-prefill-only") };
+  return { write, check, countryPrefillOnly: argv.includes("--country-prefill-only"), blogLabelsOnly: argv.includes("--blog-labels-only") };
 }
 
 function walkHtml(directory, files = []) {
@@ -174,7 +175,31 @@ function replaceOrInsertHeadTag(html, matcher, replacement) {
   return html.replace(/<\/head>/i, `${replacement}\n</head>`);
 }
 
-function retireWrapper(html, canonical) {
+function relabelBlogFallback(html) {
+  const paragraph = "<p>Contenu disponible en anglais — traduction à venir.</p>";
+  const linkText = "Lire la version originale en anglais";
+  if (!html.includes("Contenu disponible en anglais") && !html.includes(linkText)) return html;
+  const links = [...html.matchAll(/<a href="([^"]+)">Lire la version originale en anglais<\/a>/g)];
+  const frames = html.match(/<iframe\b[^>]*>/gi) || [];
+  const reject = (message) => { throw new Error(`Blog fallback labels: ${message}`); };
+  if (html.split(paragraph).length !== 2 || links.length !== 1 || html.split(linkText).length !== 2 || frames.length !== 1) reject("expected one exact paragraph, source link and iframe");
+  const source = attr(frames[0], "src");
+  if (!/^\/blog\/[a-z0-9]+(?:-[a-z0-9]+)*\/?$/.test(source) || links[0][1] !== source) reject("expected matching same-origin local blog target and link");
+  const target = path.resolve(ROOT, source.slice(1), "index.html");
+  if (!fs.existsSync(target) || !fs.lstatSync(target).isFile()) reject("source HTML is missing or not a regular file");
+  const relative = path.relative(fs.realpathSync(ROOT), fs.realpathSync(target));
+  if (relative.startsWith("..") || path.isAbsolute(relative)) reject("source HTML is outside the repository");
+  const sourceHtml = fs.readFileSync(target, "utf8");
+  const language = attr(findTag(sourceHtml, "html", () => true), "lang").trim().toLowerCase().split("-")[0];
+  if (language === "en") return html;
+  const label = new Map([["fr", "français"], ["sw", "swahili"]]).get(language);
+  const notice = label ? `Article disponible en ${label} sur la page source.` : "Consultez la page source pour lire l’article.";
+  const link = label ? `Lire l’article source en ${label}` : "Ouvrir l’article source";
+  return html.replace(paragraph, `<p>${notice}</p>`).replace(links[0][0], `<a href="${source}"${label ? ` hreflang="${language}"` : ""}>${link}</a>`);
+}
+
+function retireWrapper(html, canonical, { blogFallback = false } = {}) {
+  if (blogFallback) html = relabelBlogFallback(html);
   let output = html.replace(/<link\b[^>]*>/gi, (tag) => {
     return attr(tag, "rel").toLowerCase() === "alternate" && attr(tag, "hreflang") ? "" : tag;
   });
@@ -243,11 +268,12 @@ function buildChanges() {
   for (const filePath of allFiles.filter((file) => path.relative(ROOT, file).replace(/\\/g, "/").startsWith("fr/"))) {
     const html = fs.readFileSync(filePath, "utf8");
     const source = iframeSource(html);
-    if (!source) continue;
+    const blogFallback = path.relative(ROOT, filePath).replace(/\\/g, "/").startsWith("fr/blog/");
+    if (!source) { if (blogFallback) relabelBlogFallback(html); continue; }
     const route = fileRoute(filePath);
     for (const value of pathVariants(route)) retiredPaths.add(value);
     const canonical = canonicalFor(filePath, source);
-    const expected = retireWrapper(html, canonical);
+    const expected = retireWrapper(html, canonical, { blogFallback });
     if (expected !== html) changes.set(filePath, expected);
     wrappers.push({
       route,
@@ -299,16 +325,29 @@ function buildCountryPrefillChanges() {
   return { changes, report };
 }
 
+function buildBlogLabelChanges() {
+  const changes = new Map(), directory = path.join(ROOT, "fr/blog");
+  if (fs.existsSync(directory)) {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const file = path.join(directory, entry.name, "index.html");
+      if (!entry.isDirectory() || !fs.existsSync(file)) continue;
+      const before = fs.readFileSync(file, "utf8"), expected = relabelBlogFallback(before);
+      if (expected !== before) changes.set(file, expected);
+    }
+  }
+  return { changes, report: null };
+}
+
 function run(options) {
-  const { changes, report } = options.countryPrefillOnly ? buildCountryPrefillChanges() : buildChanges();
+  const { changes, report } = options.blogLabelsOnly ? buildBlogLabelChanges() : options.countryPrefillOnly ? buildCountryPrefillChanges() : buildChanges();
   if (options.check && changes.size) {
     for (const filePath of changes.keys()) console.error(`STALE ${path.relative(ROOT, filePath).replace(/\\/g, "/")}`);
     process.exitCode = 1;
   } else if (options.write) {
-    fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
+    if (!options.blogLabelsOnly) fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
     for (const [filePath, content] of changes) writeFileSyncWithRetry(filePath, content, "utf8");
   }
-  console.log(`French English-iframe retirement: ${report.wrapperPages} wrappers; ${report.reciprocalAlternatesRemaining} false reciprocal alternates remain; ${changes.size} stale files.`);
+  console.log(options.blogLabelsOnly ? `French blog fallback labels: ${changes.size} stale files.` : `French English-iframe retirement: ${report.wrapperPages} wrappers; ${report.reciprocalAlternatesRemaining} false reciprocal alternates remain; ${changes.size} stale files.`);
   return { changes, report };
 }
 
@@ -319,6 +358,7 @@ if (require.main === module) {
 module.exports = {
   AGRICULTURE_FAMILIES,
   buildChanges,
+  buildBlogLabelChanges,
   buildCountryPrefillChanges,
   canonicalFor,
   iframeSource,

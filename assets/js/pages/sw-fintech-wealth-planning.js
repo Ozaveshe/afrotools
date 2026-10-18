@@ -42,6 +42,27 @@
     }
   };
 
+  function preparePortfolioTableReading() {
+    var table = document.querySelector('#sp-results .table-wrap table');
+    if (!table || table.querySelectorAll('thead th').length !== 8) return;
+    var wrap = table.parentElement;
+    wrap.classList.add('portfolio-results-scroll');
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-label', "Matokeo ya hisa — jedwali linalosogezwa");
+    wrap.setAttribute('aria-describedby', 'sp-table-reading-hint');
+    table.querySelectorAll('thead th').forEach(function (header) { header.setAttribute('scope', 'col'); });
+    if (!document.getElementById('sp-table-reading-hint')) {
+      var hint = document.createElement('p');
+      hint.id = 'sp-table-reading-hint';
+      hint.className = 'portfolio-table-hint';
+      hint.textContent = "Sogeza jedwali kushoto au kulia ili kuona safu zote.";
+      wrap.parentNode.insertBefore(hint, wrap);
+    }
+  }
+
+  preparePortfolioTableReading();
+
   var configs = [
     { selector: '[data-sw-fire-form]', result: 'fire-results', error: 'fire-error', calculate: 'calcFIRE' },
     { selector: '[data-sw-property-stocks-form]', result: 'pvs-results', error: 'pvs-error', calculate: 'calcPvS' },

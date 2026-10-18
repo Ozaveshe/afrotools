@@ -10,7 +10,7 @@ const { localizeVisibleLanguage } = require('./lib/french-visible-language');
 const { enhanceCategory } = require('./lib/localized-category-standard');
 const { app: architecturalFeeForm } = require('./lib/architectural-fee-form');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
-const { repairFrenchBoqWorkspaceLinks } = require('./lib/fr-boq-workspace-links');
+const { repairFrenchBoqWorkspaceLinks, repairFrenchBoqSavedWorkspaceRuntime } = require('./lib/fr-boq-workspace-links');
 const {
   OWNER_COPY,
   OWNER_PAIRS,
@@ -410,7 +410,7 @@ function extractControllers(row, html) {
 }
 
 function localizeOwnerRuntimeCode(code, row) {
-  let localized = code;
+  let localized = repairFrenchBoqSavedWorkspaceRuntime(row, code);
   if (row.id === 'boq-gen') {
     // Translate descriptive engine output before both rendering and CSV export.
     // Keep item IDs, units of calculation, quantities, rates and totals unchanged.

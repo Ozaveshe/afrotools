@@ -20,4 +20,20 @@ function repairFrenchBoqWorkspaceLinks(row, html) {
   });
 }
 
-module.exports = { repairFrenchBoqWorkspaceLinks };
+// BOQ-only module projection. Shared SaveState and other locale owners remain unchanged.
+function repairFrenchBoqSavedWorkspaceRuntime(row, code) {
+  if (row.id !== 'boq-generator') return code;
+  const before = "renderSavedItems('boq-builder', 'saved-boqs', { appUrl: 'app.html', itemNoun: 'BOQ' });";
+  const after = "function discloseSavedBoqWorkspace() {\n  const target = document.getElementById('saved-boqs');\n  if (!target) return;\n  target.querySelectorAll('.saved-card-open').forEach(link => {\n    link.textContent = 'Ouvrir ce devis (éditeur en anglais)';\n    link.setAttribute('hreflang', 'en');\n    link.setAttribute('aria-label', 'Ouvrir ce devis dans l’éditeur de devis (en anglais)');\n  });\n}\nrenderSavedItems('boq-builder', 'saved-boqs', {\n  appUrl: '/tools/boq-builder/app',\n  itemNoun: 'BOQ',\n  onDelete() { queueMicrotask(discloseSavedBoqWorkspace); }\n});\ndiscloseSavedBoqWorkspace();";
+  const beforeCount = code.split(before).length - 1;
+  const afterCount = code.split(after).length - 1;
+  const callCount = (code.match(/\brenderSavedItems\s*\(\s*(['"])boq-builder\1\s*,\s*(['"])saved-boqs\2\s*,/g) || []).length;
+  if (callCount === 0 && beforeCount === 0 && afterCount === 0) return code;
+  if (callCount !== 1 || beforeCount + afterCount !== 1) {
+    throw new Error('Ambiguous French BOQ saved-workspace module');
+  }
+  if (afterCount === 1) return code;
+  return code.replace(before, after);
+}
+
+module.exports = { repairFrenchBoqWorkspaceLinks, repairFrenchBoqSavedWorkspaceRuntime };

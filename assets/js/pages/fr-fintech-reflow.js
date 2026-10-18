@@ -146,7 +146,27 @@
     });
   }
 
+  function preparePortfolioTableReading() {
+    var table = document.querySelector('#sp-results .table-wrap table');
+    if (!table || table.querySelectorAll('thead th').length !== 8) return;
+    var wrap = table.parentElement;
+    wrap.classList.add('portfolio-results-scroll');
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-label', "Résultats du portefeuille — tableau défilant");
+    wrap.setAttribute('aria-describedby', 'sp-table-reading-hint');
+    table.querySelectorAll('thead th').forEach(function (header) { header.setAttribute('scope', 'col'); });
+    if (!document.getElementById('sp-table-reading-hint')) {
+      var hint = document.createElement('p');
+      hint.id = 'sp-table-reading-hint';
+      hint.className = 'portfolio-table-hint';
+      hint.textContent = "Faites défiler le tableau vers la gauche ou la droite pour lire toutes les colonnes.";
+      wrap.parentNode.insertBefore(hint, wrap);
+    }
+  }
+
   function init() {
+    preparePortfolioTableReading();
     repairPageReflow();
     mountArtwork();
     watchComponent('afro-navbar', repairNavbarReflow);

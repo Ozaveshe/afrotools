@@ -447,7 +447,75 @@ function syncVisibleToolImage(html, relativePath) {
   };
 }
 
-function applyFallbacks(html, filePath) {
+// Type-only repairs require route-contract context: a filename alone cannot establish
+// indexability, locale availability or semantic type. Existing declarations always win.
+function applyMissingOgType(html, filePath, record) {
+  const unchanged = { html, changed: false, usedToolImage: false };
+  if (!record || record.state !== "page" || record.indexability !== "indexable") return unchanged;
+  if (record.localeCoverage && (record.localeCoverage.indexableEligible === false || record.localeCoverage.state === "unavailable")) return unchanged;
+  if (/^\/(?:fr\/|sw\/|yo\/|ha\/)?(?:auth|admin|private|api)(?:\/|$)/i.test(record.route || "")) return unchanged;
+  const relative = path.relative(ROOT, filePath).replace(/\\/g, "/");
+  if (!record.source || record.source.file !== relative || relative.startsWith("../")) return unchanged;
+  const head = /<head\b[^>]*>([\s\S]*?)<\/head\s*>/i.exec(html);
+  if (!head) return unchanged;
+  const content = head[1].replace(/<!--[\s\S]*?-->|<script\b[^>]*>[\s\S]*?<\/script\s*>|<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, "");
+  const attribute = (tag, name) => {
+    const match = new RegExp("(?:^|\\s)" + name + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))", "i").exec(tag);
+    return match ? decodeHtml(match[1] ?? match[2] ?? match[3]) : "";
+  };
+  const metas = content.match(/<meta\b[^>]*>/gi) || [];
+  if (metas.some(tag => [attribute(tag, "name"), attribute(tag, "property")].some(value => value.toLowerCase() === "og:type"))) return unchanged;
+  if (metas.some(tag => /^(?:robots|googlebot|bingbot)$/i.test(attribute(tag, "name")) && /(?:^|[,\s])(?:noindex|none)(?:[,\s]|$)/i.test(attribute(tag, "content")))) return unchanged;
+  if (metas.some(tag => /^refresh$/i.test(attribute(tag, "http-equiv")))) return unchanged;
+  const canonicals = (content.match(/<link\b[^>]*>/gi) || []).filter(tag => /(?:^|\s)canonical(?:\s|$)/i.test(attribute(tag, "rel")));
+  if (canonicals.length !== 1) return unchanged;
+  const canonicalHref = attribute(canonicals[0], "href");
+  if (!canonicalHref) return unchanged;
+  let canonical;
+  try { canonical = new URL(canonicalHref, SITE_ORIGIN); } catch (_) { return unchanged; }
+  if (canonical.origin !== SITE_ORIGIN || canonical.search || canonical.hash || canonical.username || canonical.password) return unchanged;
+  if (normalizePathname(canonical.pathname) !== normalizePathname(fileToPathname(filePath)) || normalizePathname(canonical.pathname) !== normalizePathname(record.route)) return unchanged;
+  if (!["page", "country-tool", "category", "tool"].includes(record.pageType)) {
+    throw new Error("Missing og:type needs semantic classification review: " + relative + " (" + record.pageType + ")");
+  }
+  const isArticle = value => {
+    if (!value || typeof value !== "object") return false;
+    const types = [].concat(value["@type"] || []);
+    // Schema URL/CURIE forms share the local type name. Only the documented
+    // Article posting family conflicts here; JobPosting is not an Article.
+    return types.some(type => /Article$|^(?:BlogPosting|LiveBlogPosting|SocialMediaPosting|DiscussionForumPosting|Report|APIReference)$/i.test(String(type).trim().replace(/[\/#]+$/, "").split(/[\/#:]/).pop())) || Object.values(value).some(child => Array.isArray(child) ? child.some(isArticle) : isArticle(child));
+  };
+  for (const script of head[1].replace(/<!--[\s\S]*?-->/g, "").matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)) {
+    if (attribute(script[1], "type").toLowerCase() !== "application/ld+json") continue;
+    let schema;
+    try { schema = JSON.parse(script[2]); } catch (_) {
+      throw new Error("Missing og:type needs classification review: malformed JSON-LD in " + relative);
+    }
+    if (isArticle(schema)) throw new Error("Missing og:type needs article semantics review: " + relative);
+  }
+  const closing = /<\/head\s*>$/i.exec(head[0]);
+  const offset = head.index + head[0].length - closing[0].length;
+  return { html: html.slice(0, offset) + '<meta property="og:type" content="website">\n' + html.slice(offset), changed: true, usedToolImage: false };
+}
+
+// Complete validation precedes the first write, including unknown classifications.
+function planOgTypeRepairs(records, readHtml = record => fs.readFileSync(path.join(ROOT, record.source.file), "utf8")) {
+  const planned = [];
+  const seen = new Set();
+  for (const record of records) {
+    if (record.state !== "page" || record.indexability !== "indexable") continue;
+    const file = path.resolve(ROOT, record.source.file);
+    if (!file.startsWith(ROOT + path.sep)) throw new Error("OG owner outside source root");
+    if (seen.has(file)) throw new Error("Duplicate OG owner requires review: " + record.source.file);
+    seen.add(file);
+    const result = applyMissingOgType(readHtml(record), file, record);
+    if (result.changed) planned.push({ file, html: result.html });
+  }
+  return planned;
+}
+
+function applyFallbacks(html, filePath, options = {}) {
+  if (options.typeOnly) return applyMissingOgType(html, filePath, options.routeRecord);
   if (!html.includes("</head>")) return { html, changed: false, usedToolImage: false };
   const robots = getMetaContent(html, "name", "robots");
   if (robots && /(?:^|[,\s])noindex(?:[,\s]|$)/i.test(robots)) {
@@ -455,10 +523,11 @@ function applyFallbacks(html, filePath) {
   }
   if (isRedirectLike(html, filePath)) return { html, changed: false, usedToolImage: false };
 
+  const typed = applyMissingOgType(html, filePath, options.routeRecord).html;
   let next = getHtmlLang(html).startsWith('fr')
-    ? require('./lib/french-document-seo').repairDocumentBreadcrumbs(html,
+    ? require('./lib/french-document-seo').repairDocumentBreadcrumbs(typed,
       normalizePathname(getCanonicalPath(html) || fileToPathname(filePath)),
-      require('../data/localization/fr-document-pdf-parity.json')) : html;
+      require('../data/localization/fr-document-pdf-parity.json')) : typed;
   let changed = next !== html;
 
   const canonicalUrl = getCanonicalUrl(next);
@@ -569,15 +638,25 @@ function applyFallbacks(html, filePath) {
 }
 
 function main() {
-  const files = require('./lib/route-contract').buildRouteGraph().routes
-    .filter(record => record.state === 'page' && record.indexability === 'indexable')
-    .map(record => path.join(ROOT, record.source.file));
+  const args = process.argv.slice(2);
+  if (args.some(arg => !["--type-only", "--check"].includes(arg)) || (args.includes("--check") && !args.includes("--type-only"))) throw new Error("Usage: apply-og-fallbacks.js [--type-only [--check]]");
+  const records = require('./lib/route-contract').buildRouteGraph().routes
+    .filter(record => record.state === 'page' && record.indexability === 'indexable');
+  const typePlan = planOgTypeRepairs(records);
+  if (args.includes("--type-only")) {
+    const planned = typePlan;
+    if (!args.includes("--check")) planned.forEach(row => writeFileAtomic(row.file, row.html));
+    console.log("Missing OG types " + (args.includes("--check") ? "pending:" : "patched:"), planned.length);
+    if (args.includes("--check") && planned.length) process.exitCode = 1;
+    return;
+  }
   const patched = [];
   let toolImagePages = 0;
 
-  for (const file of files) {
+  for (const record of records) {
+    const file = path.join(ROOT, record.source.file);
     const html = fs.readFileSync(file, "utf8");
-    const result = applyFallbacks(html, file);
+    const result = applyFallbacks(html, file, { routeRecord: record });
 
     if (!result.changed) continue;
 
@@ -598,4 +677,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { applyFallbacks, getMetaContent, getPageTitle };
+module.exports = { applyFallbacks, planOgTypeRepairs, getMetaContent, getPageTitle };

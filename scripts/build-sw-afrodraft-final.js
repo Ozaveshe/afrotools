@@ -40,6 +40,9 @@ function addSwReciprocal(relativePath) {
 
 function buildSwApp() {
   let html = read(ENGLISH_APP);
+  // Reapply the owned website type after the workspace metadata below, so
+  // inherited English tag placement cannot reorder this generated head.
+  html = html.replace(/<meta property="og:type" content="website">\r?\n?/, '');
   html = html
     .replace(/<html([^>]*)\blang="en"/, '<html$1lang="sw"')
     .replace(/<title>[\s\S]*?<\/title>/, '<title>AfroDraft CAD v7.0 — Uchoraji wa 2D | AfroTools</title>')
@@ -87,7 +90,7 @@ function buildSwApp() {
 <meta name="afrotools-ai-tool-id" content="afrodraft">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/afrodraft.webp">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroDraft CAD v7.0 — Uchoraji wa 2D","description":"Chora, pima, hariri na uhamishe michoro ya CAD ya 2D ndani ya kivinjari.","url":"https://afrotools.com/sw/zana/afrodraft-cad/app","inLanguage":"sw","applicationCategory":"DesignApplication","operatingSystem":"Kivinjari cha kisasa","isAccessibleForFree":true,"image":"https://afrotools.com/assets/img/tools/afrodraft.webp","featureList":["Mchoro kamili wa CAD wa 2D","Tabaka, vitalu, vipimo na violezo","ADRAFT, DXF, SVG, PNG na PDF","Hifadhi ya ndani na urejeshaji wa kiotomatiki"]}</script>`;
-  html = html.replace('</head>', `${metadata}\n</head>`);
+  html = html.replace('</head>', `${metadata}\n<meta property="og:type" content="website">\n</head>`);
   html = html.replace(
     '<script type="module" src="/engineering/afrodraft/app.js"></script>',
     '<script src="/assets/js/pages/sw-afrodraft-i18n.js"></script>\n  <script type="module" src="/engineering/afrodraft/app.js"></script>'

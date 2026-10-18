@@ -48,3 +48,62 @@ assert.match(generation.stdout, /Would change 0 French BOQ workspace-link page/)
 const invalid = spawnSync(process.execPath, [path.join(root, 'scripts/build-french-engineering-parity.js'), '--boq-workspace-links-only', '--ids=other'], { encoding: 'utf8' });
 assert.notEqual(invalid.status, 0, 'Targeted generation cannot expand to other owners');
 console.log('French BOQ workspace CTA source checks passed: 4 targets, visible/accessibility language disclosure, owner scope, idempotence, preserved native review.');
+
+
+// Exercise the owned module projection and actual shared renderer; the shared
+// SaveState implementation is read, never edited or replaced by this fix.
+const vm = require('node:vm');
+const { test } = require('node:test');
+const { repairFrenchBoqSavedWorkspaceRuntime: repairSaved } = require('../scripts/lib/fr-boq-workspace-links');
+const legacySavedModule = fs.readFileSync(path.join(root, 'assets/js/pages/engineering-parity/boq-generator-1.js'), 'utf8');
+const projectedSavedModule = repairSaved(owner, legacySavedModule);
+test('French BOQ saved-workspace admission rejects ambiguous source before idempotence', () => {
+  assert.equal(repairSaved({ id: 'boq-gen' }, legacySavedModule), legacySavedModule);
+  assert.equal(repairSaved(owner, 'const unrelated = true;'), 'const unrelated = true;');
+  assert.equal(repairSaved(owner, projectedSavedModule), projectedSavedModule);
+  const legacyCall = legacySavedModule.slice(legacySavedModule.indexOf('renderSavedItems(')).trim();
+  const projectedBody = projectedSavedModule.slice(projectedSavedModule.indexOf('function discloseSavedBoqWorkspace'));
+  const mixed = [projectedSavedModule + '\n' + legacyCall, legacySavedModule + '\n' + projectedBody];
+  for (const input of [...mixed, projectedSavedModule + '\n' + projectedBody, legacySavedModule + '\n' + legacyCall]) {
+    assert.throws(() => repairSaved(owner, input), /Ambiguous French BOQ/);
+  }
+  const unsupported = legacyCall.replace("appUrl: 'app.html'", "appUrl: '/wrong-target'");
+  assert.throws(() => repairSaved(owner, unsupported), /Ambiguous French BOQ/);
+  assert.throws(() => repairSaved(owner, projectedSavedModule + '\n' + unsupported), /Ambiguous French BOQ/);
+  assert.equal(projectedSavedModule.split('\n')[0], legacySavedModule.split('\n')[0], 'Shared import is unchanged');
+});
+
+test('actual shared saved-card rendering retains encoded IDs and BOQ-only disclosure after deletion', () => {
+  const queue = [], storage = new Map(), parent = { style: {}, classList: { contains: name => name === 'landing-saved' } };
+  const makeLink = attributes => ({ attributes, textContent: 'Ouvrir', setAttribute(k,v) { this.attributes[k]=String(v); }, getAttribute(k) { return this.attributes[k]; }, focus() {} });
+  const target = { links: [], buttons: [], closest: () => parent,
+    querySelectorAll(selector) { return selector === '.saved-card-open' ? this.links : selector === '[data-delete]' ? this.buttons : []; },
+    querySelector() { return this.buttons[0] || this.links[0] || null; },
+    replaceChildren() { this.links=[];this.buttons=[]; },
+    set innerHTML(html) {
+      this.links=[...html.matchAll(/<a class="saved-card-open" href="([^"]+)">/g)].map(m=>makeLink({href:m[1]}));
+      this.buttons=[...html.matchAll(/<button class="saved-card-delete" data-delete="([^"]+)">/g)].map(m=>({ getAttribute:()=>m[1], addEventListener(type,fn){this.click=fn;},focus(){} }));
+    }
+  };
+  const rootWindow = { document: { documentElement:{lang:'fr'},getElementById:id=>id==='saved-boqs'?target:null }, localStorage: {
+    getItem:key=>storage.has(key)?storage.get(key):null,setItem:(key,value)=>storage.set(key,value)
+  },confirm:()=>true };
+  const box = vm.createContext({ window:rootWindow, document:rootWindow.document, queueMicrotask:fn=>queue.push(fn) });
+  vm.runInContext(fs.readFileSync(path.join(root,'assets/js/lib/src/save-state.js'),'utf8')+'\nthis.actualSaveApi=createSaveStateApi(window);',box);
+  box.renderSavedItems=box.actualSaveApi.renderSavedItems;
+  const store=new box.actualSaveApi.SaveState('boq-builder');
+  const first=store.save({id:'draft/one ?&',title:'Synthetic first',data:{projName:'Synthetic first'}});
+  store.save({id:'draft-two',title:'Synthetic second',data:{projName:'Synthetic second'}});
+  vm.runInContext(projectedSavedModule.replace(/^import[^\n]*\n/,''),box);
+  assert.equal(parent.style.display,'');assert.equal(target.links.length,2);
+  for(const link of target.links){
+    const url=new URL(link.getAttribute('href'),'https://afrotools.com/fr/tools/devis-quantitatif/');
+    assert.equal(url.pathname,'/tools/boq-builder/app');assert(['draft-two',first.id].includes(url.searchParams.get('id')));
+    assert.equal(link.textContent,'Ouvrir ce devis (éditeur en anglais)');assert.equal(link.getAttribute('hreflang'),'en');assert.match(link.getAttribute('aria-label'),/éditeur de devis \(en anglais\)$/);
+  }
+  target.buttons[0].click({preventDefault(){},stopPropagation(){}});
+  assert.equal(target.links.length,1);assert.equal(target.links[0].textContent,'Ouvrir','Actual renderer rerender occurs before local callback');
+  assert.equal(queue.length,1);queue.shift()();
+  assert.equal(target.links[0].textContent,'Ouvrir ce devis (éditeur en anglais)');assert.equal(target.links[0].getAttribute('hreflang'),'en');
+  assert.equal(store.getAll().length,1);assert.equal(storage.has('afrotools-saved-boq-builder'),true);
+});
