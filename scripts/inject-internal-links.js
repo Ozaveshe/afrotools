@@ -23,6 +23,7 @@ const crypto = require('crypto');
 
 const { ROOT, preferredRouteForFile } = require('./lib/canonical-aliases');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { FRENCH_SOLAR_FILE, isFrenchSolarRoot, hasProtectedRelatedHost, localizeFrenchSolarRelatedTools } = require('./lib/french-solar-related-tools');
 
 // Country slug → readable name
 const COUNTRY_NAMES = {
@@ -261,8 +262,35 @@ function processRelatedTools(options = {}) {
     }
   }
 
+  // French Energy clones can predate the English SSR host. Project this one
+  // reviewed panel here, in the late native owner, rather than relying on clone
+  // state or translating the shared component / every French tool link.
+  if (!selectedFiles || selectedFiles.has(FRENCH_SOLAR_FILE)) {
+    const source = allTools.find((tool) => tool.id === 'solar-roi' && tool.url === '/tools/solar-roi/');
+    const absolute = path.join(ROOT, FRENCH_SOLAR_FILE);
+    if (source && fs.existsSync(absolute)) {
+      const original = fs.readFileSync(absolute, 'utf8');
+      if (!MANUAL_RELATED_NAV_RE.test(original)) {
+        if (!isFrenchSolarRoot(original) || hasProtectedRelatedHost(original)) {
+          throw new Error('French Solar related-tools scope or protected content requires review');
+        }
+        const related = relatedForTool(source, allTools);
+        const project = (html) => localizeFrenchSolarRelatedTools(transformRelatedTools(html, source, related));
+        const updated = project(original);
+        if (project(updated) !== updated) throw new Error('French Solar related-tools projection is not idempotent');
+        stats.targeted += 1;
+        stats.links += related.length;
+        if (updated !== original) {
+          stats.updated += 1;
+          if (write) writeFileSyncWithRetry(absolute, updated, 'utf8');
+        }
+      }
+    } else if (selectedFiles) stats.missing.push(FRENCH_SOLAR_FILE);
+  }
+
   if (selectedFiles) {
     for (const selected of selectedFiles) {
+      if (selected === FRENCH_SOLAR_FILE) continue;
       if (!allTools.some((tool) => routeToRelativeFile(tool.url) === selected)) stats.missing.push(`${selected} (not in data/tool-directory.json)`);
     }
   }
@@ -693,7 +721,7 @@ if (!relatedOnly && !checkRelated && !selectedFiles) {
   legacyTotal = agCount + hubCount + toolCount + frCount + catCount;
 }
 
-console.log(`  Related tools: ${relatedStats.links} links across ${relatedStats.targeted} English directory pages`);
+console.log(`  Related tools: ${relatedStats.links} links across ${relatedStats.targeted} directory pages`);
 console.log(`                 ${relatedStats.updated} pages ${checkRelated ? 'need regeneration' : 'updated'}`);
 console.log(`                 ${relatedStats.dataScriptsRemoved} full related-data scripts removed, ${relatedStats.componentScriptsAdded} lightweight component scripts added`);
 if (relatedStats.missing.length) {
