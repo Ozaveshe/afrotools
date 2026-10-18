@@ -13,7 +13,9 @@
     if (value === '' || value === null || value === undefined || (typeof value === 'string' && value.trim() === '')) {
       return fail('Enter ' + field + '.', field);
     }
-    var number = typeof value === 'string' ? Number(value.replace(/,/g, '').trim()) : Number(value);
+    var normalized = typeof value === 'string' ? value.replace(/,/g, '').trim() : value;
+    if (normalized === '') return fail('Enter ' + field + '.', field);
+    var number = Number(normalized);
     if (!Number.isFinite(number)) return fail('Enter a finite ' + field + '.', field);
     if (number < options.min || number > options.max) {
       return fail(field + ' must be between ' + options.min + ' and ' + options.max + '.', field);

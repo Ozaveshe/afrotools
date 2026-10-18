@@ -130,3 +130,59 @@ for (const [code, country] of Object.entries(pack.countries)) {
 }
 
 console.log('Pan-African VAT custom-rate engine and 54-market preset/gap contract passed.');
+
+const { test } = require('node:test');
+const separatorOnly = [',', ',,', ' , , ', '\t,\n'];
+
+test('separator-only input is missing, not a zero amount or zero VAT rate', () => {
+  for (const value of separatorOnly) {
+    assert.deepStrictEqual(engine.validateAmount(value), { ok: false, error: 'Enter amount.', field: 'amount' });
+    assert.deepStrictEqual(engine.validateRate(value), { ok: false, error: 'Enter VAT rate.', field: 'VAT rate' });
+  }
+});
+
+test('single, invoice, withholding and comparison reject the affected field', () => {
+  const cases = [
+    ['amount', value => engine.calculateSingle({ amount: value, rate: 16 })],
+    ['VAT rate', value => engine.calculateSingle({ amount: 1000, rate: value })],
+    ['items[0].amount', value => engine.calculateInvoice({ items: [{ amount: value, rate: 16 }] })],
+    ['items[0].rate', value => engine.calculateInvoice({ items: [{ amount: 1000, rate: value }] })],
+    ['amount', value => engine.calculateWithholdingScenario({ netAmount: value, vatRate: 16, withholdingPercent: 25 })],
+    ['VAT rate', value => engine.calculateWithholdingScenario({ netAmount: 1000, vatRate: value, withholdingPercent: 25 })],
+    ['withholding percentage', value => engine.calculateWithholdingScenario({ netAmount: 1000, vatRate: 16, withholdingPercent: value })],
+    ['amount', value => engine.compareRateScenarios({ amount: value, scenarios: [{ rate: 0 }, { rate: 16 }] })],
+    ['scenarios[1].rate', value => engine.compareRateScenarios({ amount: 1000, scenarios: [{ rate: 0 }, { rate: value }] })]
+  ];
+  for (const [field, calculate] of cases) {
+    for (const value of separatorOnly) {
+      const result = calculate(value);
+      assert.strictEqual(result.ok, false, `${field}: ${JSON.stringify(value)}`);
+      assert.strictEqual(result.field, field);
+    }
+  }
+});
+
+test('zero, grouped values and established numeric notation retain their arithmetic', () => {
+  const amounts = [[0, 0], ['0', 0], ['0.00', 0], ['1,234.56', 1234.56], ['1,160.00', 1160], [' 1,000 ', 1000]];
+  for (const [input, amount] of amounts) {
+    for (const rate of [0, 7.5, 16, 100]) {
+      const added = engine.calculateSingle({ amount: input, rate, mode: 'add' });
+      assert.strictEqual(added.ok, true);
+      near(added.net, amount, 'formatted net');
+      near(added.vat, amount * rate / 100, 'formatted VAT');
+      near(added.total, amount + amount * rate / 100, 'formatted total');
+      const extracted = engine.calculateSingle({ amount: added.total, rate, mode: 'extract' });
+      near(extracted.net, amount, 'formatted add/extract inverse');
+    }
+  }
+  // This repair does not introduce a stricter numeric grammar or change unused rates.
+  for (const [input, amount] of [['1,,234', 1234], ['0x10', 16], ['1e3', 1000]]) {
+    assert.deepStrictEqual(engine.calculateSingle({ amount: input, rate: '7.5' }), engine.calculateSingle({ amount, rate: 7.5 }));
+  }
+  for (const treatment of ['zero-rated', 'exempt']) {
+    const result = engine.calculateInvoice({ items: [{ amount: '1,000', rate: ',', treatment }] });
+    assert.strictEqual(result.ok, true);
+    assert.strictEqual(result.total, 1000);
+    assert.strictEqual(result.vat, 0);
+  }
+});
