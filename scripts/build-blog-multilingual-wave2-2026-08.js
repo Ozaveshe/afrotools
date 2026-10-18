@@ -10,6 +10,7 @@ const sourcePath = path.join(root, sourceRelative);
 const frenchManifestPath = path.join(root, 'data/localization/fr-blog-manifest.json');
 const reportRelative = 'reports/blog-multilingual-wave2-2026-08.md';
 const write = process.argv.includes('--write');
+const readerParagraphOnly = process.argv.includes('--reader-paragraph-only');
 const data = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 
 function assetVersion(relativePath) {
@@ -92,7 +93,7 @@ const localeConfig = {
       'Anza na uamuzi unaotakiwa, si kikokotoo. Andika nani atatumia matokeo, nyaraka au workflow inayosaidiwa, tarehe inayohitajika na sharti la kukubalika. Namba au faili inaweza kuwa sahihi lakini ikakataliwa ikiwa inajibu swali tofauti, imetumia kipindi kisicho sahihi au iko katika format isiyokubalika.',
       'Hifadhi ushahidi pamoja na taarifa ulizoingiza. Ushahidi unaweza kuwa mkataba, kalenda, design token, source document, sheria ya akaunti, style guide, orodha ya bei au kipimo. Weka tarehe na version ikiwa sharti linaweza kubadilika. Taarifa ya makisio iitwe makisio na isigeuzwe kuwa ukweli bila ushahidi.',
       'Tengeneza matokeo ya kwanza kama baseline, kisha badilisha jambo moja muhimu kwa wakati. Hii inaonyesha sensitivity na kumsaidia mtu mwingine kuelewa kwa nini jibu limebadilika. Usibadilishe taarifa nyingi kimya kimya hadi upate jibu unalotaka. Hifadhi pia scenario iliyokataliwa ikiwa inaonyesha hatari.',
-      'Fungua tena kila faili uliyopakua na rudia hesabu muhimu kwa njia tofauti. Kagua labels, units, mpangilio wa kurasa, tarehe, alama, rounding na sehemu ya kuwasilisha. Preview au download iliyofanikiwa inaonyesha hatua imekamilika tu, si kwamba matokeo yamekubaliwa au yanafaa.',
+      'Fungua tena kila faili uliyopakua na uhakiki hesabu muhimu kwa njia huru. Kagua majina ya sehemu, vipimo, mpangilio wa kurasa, tarehe, alama, uzungushaji wa namba na mahali pa kuwasilisha. Kuona hakikisho au kukamilisha upakuaji kunathibitisha kuwa hatua hiyo imekamilika tu; hakuthibitishi kwamba matokeo ni kamili, yamekubaliwa au yanafaa kwa hatua inayofuata.',
       'Tengeneza rekodi fupi yenye source, taarifa, makisio, matokeo, mkaguzi na hatua inayofuata. Hali ikibadilika, tengeneza version mpya yenye tarehe badala ya kufuta rekodi pekee. Hii huwapa timu, wanafunzi na familia audit trail ya vitendo bila kudai idhini rasmi.',
       'Tumia taarifa binafsi au za siri kwa kiwango cha chini. Pendelea processing ya ndani kwa ID, fedha, ajira, masomo na nyaraka za biashara. Usiweke nenosiri, namba ya utambulisho, mkataba wa siri au rekodi binafsi kwenye huduma usiyoamini. Mamlaka, taasisi, mwajiri, mteja au mtaalamu husika ndiye wa mwisho kuamua.',
       'Kabla ya kumaliza, linganisha matokeo na sharti halisi linalotakiwa kutimizwa. Jiulize kama nchi, taasisi, kifaa, unit, toleo la hati au kundi la watumiaji lingebadilisha jibu. Ikiwa kuna tafsiri mbili zinazowezekana, hifadhi zote na eleza uliyochagua na sababu. Handoff nzuri ina maelezo ya kutosha ili mwenzako, mteja, mwalimu au mtu wa familia akague makisio bila kurudia kazi yote. Sheria ya nje ikiwa muhimu, fungua tena source rasmi siku ya kuchukua hatua. Source ikiwa haipatikani au haiko wazi, simamisha hatua isiyoweza kurudishwa na omba uthibitisho. Usibadilishe draft kuwa jibu la mwisho kwa sababu tu zana imetoa namba au faili. Tenganisha wazi data uliyoona, makisio uliyochagua na uamuzi wa mtu mwenye mamlaka.',
@@ -363,6 +364,78 @@ function renderReport() {
   return `# Multilingual blog keyword wave two, August 2026\n\nGenerated from \`${sourceRelative}\`.\n\n## Scope\n\n- Ten new search-intent clusters.\n- Thirty publishable pages: English, French and Swahili for each cluster.\n- Every locale version is a native editorial rewrite with a canonical URL, reciprocal EN/FR/SW hreflang, Article, Breadcrumb and FAQ structured data, at least 800 article-body words and a direct live-tool handoff.\n- Opportunity selection uses current repository overlap, tool fit, authoritative source availability and sampled web research. It does not claim measured search volume, keyword difficulty or guaranteed rankings.\n\n| # | English keyword | French keyword | Swahili keyword | Search job | Existing image |\n| ---: | --- | --- | --- | --- | --- |\n${rows}\n\n## Editorial controls\n\nThe source rejects em dashes, likely mojibake, duplicate locale keywords, thin bodies and incomplete topic fields. The guides avoid fixed prices, legal promises, security guarantees and automatic acceptance claims. Existing registry-backed tools and artwork are reused.\n`;
 }
 
+
+// Update this reviewed reader paragraph without replacing postprocessed articles.
+function syncReaderVerificationParagraphs() {
+  if (data.topics.length !== 10) throw new Error('Expected exactly ten reader-paragraph topics');
+  const legacy = 'Fungua tena kila faili uliyopakua na rudia hesabu muhimu kwa njia tofauti. Kagua labels, units, mpangilio wa kurasa, tarehe, alama, rounding na sehemu ya kuwasilisha. hakikisho la awali au download iliyofanikiwa inaonyesha hatua imekamilika tu, si kwamba matokeo yamekubaliwa au yanafaa.';
+  const accepted = [legacy, legacy.replace('au download iliyofanikiwa', 'au pakua iliyofanikiwa')];
+  const replacement = '<p>' + esc(localeConfig.sw.shared[3]) + '</p>';
+  const paths = new Set();
+  const plans = data.topics.map((topic) => {
+    const item = localized(topic, 'sw');
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(item.slug)) throw new Error('Unexpected reader-paragraph slug');
+    const file = fileFor('sw', item.slug);
+    if (paths.has(file)) throw new Error('Duplicate reader-paragraph target: ' + file);
+    paths.add(file);
+    const target = path.join(root, file);
+    const before = fs.readFileSync(target, 'utf8');
+    const fail = (reason) => { throw new Error(file + ': ' + reason); };
+    const exactlyOne = (pattern, reason) => {
+      const matches = Array.from(before.matchAll(pattern));
+      if (matches.length !== 1) fail(reason);
+      return matches[0];
+    };
+    exactlyOne(/<html\b[^>]*\blang="sw"[^>]*>/g, 'expected Swahili HTML');
+    exactlyOne(/<meta name="afrotools-source-owner" content="scripts\/build-blog-multilingual-wave2-2026-08\.js">/g, 'unexpected source owner');
+    const canonical = exactlyOne(/<link rel="canonical" href="([^"]+)">/g, 'expected one canonical');
+    const route = 'https://afrotools.com' + routeFor('sw', item.slug);
+    if (canonical[1] !== route) fail('unexpected canonical');
+    const article = exactlyOne(/<article class="article-body">([\s\S]*?)<\/article>/g, 'expected one article body');
+    if (/<article\b|<\/article>/i.test(article[1])) fail('nested article is unsupported');
+    const details = Array.from(article[1].matchAll(/<h2 id="details">[^<]*<\/h2>([\s\S]*?)<h2 id="pitfalls">/g));
+    if (details.length !== 1) fail('expected one details section');
+    const candidates = accepted.map((value) => '<p>' + esc(value) + '</p>').concat(replacement);
+    const matches = candidates.flatMap((value) => {
+      const positions = []; let at = before.indexOf(value);
+      while (at !== -1) { positions.push({ value, at }); at = before.indexOf(value, at + value.length); }
+      return positions;
+    });
+    if (matches.length !== 1 || !details[0][1].includes(matches[0].value)) fail('unexpected or duplicate reader paragraph');
+    const bodyWords = visibleWordCount(article[1]);
+    const schemas = Array.from(before.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g));
+    const articles = schemas.filter((match) => JSON.parse(match[1])['@type'] === 'Article');
+    if (articles.length !== 1) fail('expected one flat Article schema');
+    const schema = articles[0], parsed = JSON.parse(schema[1]);
+    if (parsed.inLanguage !== 'sw' || parsed.mainEntityOfPage !== route) fail('unexpected Article identity');
+    const counts = Array.from(schema[1].matchAll(/"wordCount"\s*:\s*(\d+)\b/g));
+    if (counts.length !== 1 || (schema[1].match(/"wordCount"\s*:/g) || []).length !== 1 || parsed.wordCount !== bodyWords) fail('unexpected or stale Article wordCount');
+    const oldParagraph = matches[0].value;
+    const nextBody = article[1].replace(oldParagraph, replacement);
+    const nextWords = visibleWordCount(nextBody);
+    if (nextWords - bodyWords !== visibleWordCount(replacement) - visibleWordCount(oldParagraph)) fail('unexpected body wordCount delta');
+    if (Math.max(6, Math.ceil(bodyWords / 190)) !== Math.max(6, Math.ceil(nextWords / 190))) fail('reading-time change requires review');
+    const count = counts[0], numberAt = count.index + count[0].lastIndexOf(count[1]);
+    const nextSchema = schema[1].slice(0, numberAt) + nextWords + schema[1].slice(numberAt + count[1].length);
+    const after = before.replace(oldParagraph, replacement).replace(schema[0], schema[0].replace(schema[1], nextSchema));
+    if (after.replace(replacement, oldParagraph).replace(nextSchema, schema[1]) !== before) fail('unexpected raw-byte delta');
+    return { file, target, before, after };
+  });
+  const changed = plans.filter((plan) => plan.before !== plan.after);
+  // All documents must pass preflight before any mutation starts.
+  if (write) {
+    for (const plan of plans) {
+      if (fs.readFileSync(plan.target, 'utf8') !== plan.before) throw new Error(plan.file + ': changed after preflight');
+    }
+    for (const plan of changed) {
+      if (fs.readFileSync(plan.target, 'utf8') !== plan.before) throw new Error(plan.file + ': changed before write');
+      fs.writeFileSync(plan.target, plan.after, 'utf8');
+      if (fs.readFileSync(plan.target, 'utf8') !== plan.after) throw new Error(plan.file + ': write verification failed');
+    }
+  } else if (changed.length) process.exitCode = 1;
+  console.log((write ? 'updated ' : 'checked ') + plans.length + ' Swahili reader paragraphs; ' + changed.length + ' file(s) ' + (write ? 'updated' : 'out of date'));
+}
+
 let mismatches = 0;
 function sync(file, expected) {
   const target = path.join(root, file);
@@ -376,6 +449,9 @@ function sync(file, expected) {
   } else console.error(`out of date: ${file}`);
 }
 
+if (readerParagraphOnly) {
+  syncReaderVerificationParagraphs();
+} else {
 validateSource();
 
 for (const topic of data.topics) for (const locale of ['en', 'fr', 'sw']) {
@@ -409,3 +485,5 @@ sync(reportRelative, renderReport());
 
 if (mismatches && !write) process.exitCode = 1;
 console.log(`${write ? 'built' : 'checked'} ${data.topics.length * 3} multilingual blog pages; ${mismatches} file(s) ${write ? 'updated' : 'out of date'}`);
+
+}

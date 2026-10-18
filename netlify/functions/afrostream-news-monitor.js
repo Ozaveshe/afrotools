@@ -362,17 +362,21 @@ function findCreatorMatches(item, creators) {
   });
 }
 
-async function fetchFeed(source) {
+async function fetchFeed(source, onResponse) {
   var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
   var timeout = controller ? setTimeout(function() { controller.abort(); }, FEED_TIMEOUT_MS) : null;
   try {
-    return await fetch(source.feed_url, {
+    var res = await fetch(source.feed_url, {
       signal: controller ? controller.signal : undefined,
       headers: {
         'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, text/html, */*',
         'User-Agent': 'Mozilla/5.0 (compatible; AfroStreamNewsMonitor/1.1; +https://afrotools.com/tools/afrostream/)'
       }
     });
+    // Capture the known status before a body read can fail, while retaining
+    // the same deadline until the entire successful feed body is consumed.
+    onResponse(res);
+    return res.ok ? await res.text() : '';
   } finally {
     if (timeout) clearTimeout(timeout);
   }
@@ -499,8 +503,11 @@ async function processSource(source, creators, summary, options) {
   var fetchedItemCount = 0;
   var fetchStatusCode = null;
   try {
-    var res = await fetchFeed(source);
-    fetchStatusCode = res.status;
+    var res;
+    var xml = await fetchFeed(source, function(response) {
+      res = response;
+      fetchStatusCode = response.status;
+    });
     if (!res.ok) {
       await updateSourceHealth(source, {
         last_checked_at: checkedAt,
@@ -511,7 +518,6 @@ async function processSource(source, creators, summary, options) {
       summary.errors.push(source.name + ': HTTP ' + res.status);
       return;
     }
-    var xml = await res.text();
     var items = prepareFeedItems(parseFeed(xml)).slice(0, 30);
     fetchedItemCount = items.length;
     summary.items_seen += items.length;
