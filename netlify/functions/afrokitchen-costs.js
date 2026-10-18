@@ -1,5 +1,7 @@
 // netlify/functions/afrokitchen-costs.js
 // Ingredient cost lookup for AfroKitchen recipes
+const { checkPublicRecipe, isRecipeId } = require('./_shared/afrokitchen-publication');
+const { isPendingRecipeMethodId } = require('../../engines/src/afrokitchen-engine');
 
 // AfroKitchen recipes, recipe ingredients, and ingredient prices live on the
 // Auth/Kitchen Supabase instance, not the generic data instance.
@@ -48,11 +50,21 @@ exports.handler = async function (event) {
   const recipeId = String(params.recipe_id || '').trim();
   const countryCode = String(params.country || '').trim().toUpperCase();
 
-  if (!/^[0-9a-f-]{36}$/i.test(recipeId) || !/^[A-Z]{2}$/.test(countryCode)) {
+  if (!isRecipeId(recipeId) || !/^[A-Z]{2}$/.test(countryCode)) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'recipe_id and country required' }) };
   }
 
   try {
+    const publication = await checkPublicRecipe(recipeId, SUPABASE_URL, SUPABASE_KEY);
+    if (publication.kind === 'not-found') {
+      return { statusCode: 404, headers, body: JSON.stringify({ error: 'Recipe not found' }) };
+    }
+    if (publication.kind !== 'eligible') {
+      return { statusCode: 503, headers, body: JSON.stringify({ error: 'Recipe availability could not be checked' }) };
+    }
+    if (isPendingRecipeMethodId(recipeId)) {
+      return { statusCode: 409, headers, body: JSON.stringify({ error: 'Recipe method review pending', code: 'METHOD_REVIEW_PENDING' }) };
+    }
     // Get ingredient IDs for this recipe
     const ingRes = await fetch(
       `${SUPABASE_URL}/rest/v1/recipe_ingredients?recipe_id=eq.${encodeURIComponent(recipeId)}&select=ingredient_id`,
@@ -77,7 +89,7 @@ exports.handler = async function (event) {
     const prices = await priceRes.json();
 
     return { statusCode: 200, headers, body: JSON.stringify(prices) };
-  } catch (err) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+  } catch {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Recipe cost lookup unavailable' }) };
   }
 };

@@ -3,7 +3,7 @@
 Use this as the working list for generating and saving recipe images.
 
 - Canonical recipe pages needing image coverage: 410
-- Recipes with at least one image detected: 396
+- Recipes with at least one image detected: 406
 - Gallery-ready recipes with three or more images: 8
 - Save finished images under `assets/img/kitchen/`
 - Preferred format: `.webp` at roughly 1600x1200 or 1200x900
@@ -200,7 +200,7 @@ Use this as the working list for generating and saving recipe images.
 | 186 | Fouti | Guinea | porridge | `fouti-guinea-gn.webp` | /tools/afrokitchen/recipes/fouti-guinea-gn/ | Finished Fouti, porridge from Guinea, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 187 | Guinean Ginger Juice | Guinea | beverage | `ginger-juice-gn.webp` | /tools/afrokitchen/recipes/ginger-juice-gn/ | Finished Guinean Ginger Juice, beverage from Guinea, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 188 | Konkoe | Guinea | seafood | `konkoe-gn.webp` | /tools/afrokitchen/recipes/konkoe-gn/ | Finished Konkoe, seafood from Guinea, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 189 | Latchiri Kossan | Guinea | breakfast | `latchiri-kossan-gn.webp` | /tools/afrokitchen/recipes/latchiri-kossan-gn/ | Finished Latchiri Kossan, breakfast from Guinea, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 189 | Latchiri Kossan — maize with cultured milk | Guinea | breakfast | `latchiri-kossan-gn.webp` | /tools/afrokitchen/recipes/latchiri-kossan-gn/ | Finished Latchiri Kossan — maize with cultured milk, breakfast from Guinea, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 190 | Sauce Feuille | Guinea | sauce | `sauce-feuille-gn.webp` | /tools/afrokitchen/recipes/sauce-feuille-gn/ | Finished Sauce Feuille, sauce from Guinea, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 191 | Cafriela | Guinea-Bissau | grill | `cafriela-gw.webp` | /tools/afrokitchen/recipes/cafriela-gw/ | Finished Cafriela, grill from Guinea-Bissau, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 192 | Caldo de Chabeu | Guinea-Bissau | stew | `caldo-chabeu-gw.webp` | /tools/afrokitchen/recipes/caldo-chabeu-gw/ | Finished Caldo de Chabeu, stew from Guinea-Bissau, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
@@ -231,7 +231,7 @@ Use this as the working list for generating and saving recipe images.
 | 217 | Sharba Libiya | Libya | soup | `sharba-libiya-ly.webp` | /tools/afrokitchen/recipes/sharba-libiya-ly/ | Finished Sharba Libiya, soup from Libya, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 218 | Usban | Libya | main | `usban-ly.webp` | /tools/afrokitchen/recipes/usban-ly/ | Finished Usban, main from Libya, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 219 | Akoho sy Voanio | Madagascar | main | `akoho-sy-voanio-mg.webp` | /tools/afrokitchen/recipes/akoho-sy-voanio-mg/ | Finished Akoho sy Voanio, main from Madagascar, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 220 | Koba | Madagascar | dessert | `koba-mg.webp` | /tools/afrokitchen/recipes/koba-mg/ | Finished Koba, dessert from Madagascar, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 220 | Koba — small steamed parcels | Madagascar | dessert | `koba-mg.webp` | /tools/afrokitchen/recipes/koba-mg/ | Finished Koba — small steamed parcels, dessert from Madagascar, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 221 | Lasary Voatabia | Madagascar | salad | `lasary-voatabia-mg.webp` | /tools/afrokitchen/recipes/lasary-voatabia-mg/ | Finished Lasary Voatabia, salad from Madagascar, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 222 | Mofo Gasy | Madagascar | breakfast | `mofo-gasy.webp` | /tools/afrokitchen/recipes/mofo-gasy/ | Finished Mofo Gasy, breakfast from Madagascar, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 223 | Ranonapango | Madagascar | beverage | `ranonapango-mg.webp` | /tools/afrokitchen/recipes/ranonapango-mg/ | Finished Ranonapango, beverage from Madagascar, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
@@ -384,7 +384,7 @@ Use this as the working list for generating and saving recipe images.
 | 370 | Shaiyah | Sudan | main | `shaiyah-sd.webp` | /tools/afrokitchen/recipes/shaiyah-sd/ | Finished Shaiyah, main from Sudan, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 371 | Chipsi Mayai | Tanzania | snack | `chipsi-mayai.webp` | /tools/afrokitchen/recipes/chipsi-mayai/ | Finished Chipsi Mayai, snack from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 372 | Mchemsho | Tanzania | main | `mchemsho-tz.webp` | /tools/afrokitchen/recipes/mchemsho-tz/ | Finished Mchemsho, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 373 | Ndizi na Nyama | Tanzania | main | `ndizi-nyama-tz.webp` | /tools/afrokitchen/recipes/ndizi-nyama-tz/ | Finished Ndizi na Nyama, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 373 | Ndizi na Nyama — beef and green plantains | Tanzania | main | `ndizi-nyama-tz.webp` | /tools/afrokitchen/recipes/ndizi-nyama-tz/ | Finished Ndizi na Nyama — beef and green plantains, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 374 | Tangawizi | Tanzania | beverage | `tangawizi-tz.webp` | /tools/afrokitchen/recipes/tangawizi-tz/ | Finished Tangawizi, beverage from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 375 | Tanzanian Mandazi | Tanzania | snack | `mandazi-tanzania-tz.webp` | /tools/afrokitchen/recipes/mandazi-tanzania-tz/ | Finished Tanzanian Mandazi, snack from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 376 | Tanzanian Pilau | Tanzania | main | `tanzanian-pilau.webp` | /tools/afrokitchen/recipes/tanzanian-pilau/ | Finished Tanzanian Pilau, main from Tanzania, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
@@ -412,7 +412,7 @@ Use this as the working list for generating and saving recipe images.
 | 398 | Chikanda | Zambia | snack | `chikanda-zm.webp` | /tools/afrokitchen/recipes/chikanda-zm/ | Finished Chikanda, snack from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 399 | Delele | Zambia | side | `deleele-zm.webp` | /tools/afrokitchen/recipes/deleele-zm/ | Finished Delele, side from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 400 | Kapenta | Zambia | side | `kapenta.webp` | /tools/afrokitchen/recipes/kapenta/ | Finished Kapenta, side from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
-| 401 | Kapenta Stew | Zambia | seafood | `kapenta-stew-zm.webp` | /tools/afrokitchen/recipes/kapenta-stew-zm/ | Finished Kapenta Stew, seafood from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
+| 401 | Kapenta with tomato and onion | Zambia | seafood | `kapenta-stew-zm.webp` | /tools/afrokitchen/recipes/kapenta-stew-zm/ | Finished Kapenta with tomato and onion, seafood from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 402 | Nshima with Ifisashi | Zambia | main | `nshima-ifisashi.webp` | /tools/afrokitchen/recipes/nshima-ifisashi/ | Finished Nshima with Ifisashi, main from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 403 | Vinkubala | Zambia | main | `vinkubala-zm.webp` | /tools/afrokitchen/recipes/vinkubala-zm/ | Finished Vinkubala, main from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |
 | 404 | Zambian Maheu | Zambia | beverage | `maheu-zm.webp` | /tools/afrokitchen/recipes/maheu-zm/ | Finished Zambian Maheu, beverage from Zambia, plated finished dish in warm natural light, inspectable texture, no text, no logos. |

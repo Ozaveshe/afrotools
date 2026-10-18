@@ -557,7 +557,7 @@ var AfroKitchenEngine = function() {
     var o = r / t;
     return e.map(function(e) {
       return Object.assign({}, e, {
-        scaled_amount: c(e.amount * o)
+        scaled_amount: e.source_quantity_unrecorded === true ? "" : c(e.amount * o)
       });
     });
   }
@@ -1704,22 +1704,39 @@ var AfroKitchenEngine = function() {
     is_featured: !1
   } ];
   var staticRecipePromise = null;
+  function isPublicRecipe(recipe) {
+    return !!recipe && recipe.is_published === true && recipe.is_verified === true;
+  }
+  function publicationUnavailable() {
+    var rows = [];
+    Object.defineProperty(rows, "publicationUnavailable", { value: true });
+    return rows;
+  }
   function loadPublishedRecipeIndex() {
     if (!staticRecipePromise) {
-      staticRecipePromise = typeof window.fetch === 'function'
-        ? window.fetch('/tools/afrokitchen/recipe-index.json').then(function(response) {
+      var controller = typeof AbortController === 'function' ? new AbortController() : null, timer;
+      var operation = typeof window.fetch === 'function'
+        ? Promise.resolve().then(function() { return window.fetch('/tools/afrokitchen/recipe-index.json', { cache: 'no-cache', signal: controller ? controller.signal : undefined }); }).then(function(response) {
           if (!response.ok) throw new Error('Published recipe index unavailable');
           return response.json();
         }).then(function(payload) {
-          return payload && payload.version === 1 && Array.isArray(payload.recipes) && payload.recipes.length
-            ? payload.recipes : null;
-        }).catch(function() { return null; })
-        : Promise.resolve(null);
+          if (!payload || payload.version !== 2 || !Array.isArray(payload.recipes) ||
+              payload.recipes.some(function(row) { return !row || typeof row.is_published !== 'boolean' || typeof row.is_verified !== 'boolean'; })) return null;
+          return payload.recipes.filter(isPublicRecipe);
+        }) : Promise.resolve(null);
+      staticRecipePromise = Promise.race([operation, new Promise(function(resolve) {
+        timer = setTimeout(function() { if (controller) controller.abort(); resolve(null); }, 8000);
+      })]).catch(function() { return null; }).then(function(rows) {
+          clearTimeout(timer); if (controller) controller.abort();
+          if (rows === null) staticRecipePromise = null;
+          return rows;
+        });
     }
     return staticRecipePromise;
   }
   function h(e, rows) {
-    var t = rows || g;
+    if (rows && rows.publicationUnavailable) return rows;
+    var t = (rows || []).filter(isPublicRecipe).map(projectAttributedRecipe).filter(Boolean);
     if (!e) {
       return t;
     }
@@ -1751,13 +1768,1425 @@ var AfroKitchenEngine = function() {
       return t.slug === e.slug;
     })), e.limit && (t = t.slice(0, e.limit)), t;
   }
-  function f(e) {
-    var t = g.find(function(t) {
-      return t.slug === e;
+  // Four finite source-attributed display methods. These do not authorize publication
+  // or write canonical recipe data. Shared by browser, static/index owners and API.
+  var attributedMethods = {
+    "mandazi-tanzania-tz": {
+      "id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+      "revision": "mandazi-malaquias-20171122-v1",
+      "fields": {
+        "description": "Round coconut-cardamom yeast breads, adapted from Miriam Malaquias's Maandazi.",
+        "story": "Miriam's version serves eight and advises starting about 90 minutes ahead. Let the dough double; exact preparation and frying durations are not specified. AfroTools has not kitchen-tested this adaptation.",
+        "author": "AfroKitchen adaptation; source recipe by Miriam Malaquias",
+        "default_servings": 8,
+        "serving_unit": "servings",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/mandazi-tanzania-tz.webp",
+        "image_alt": "AI-generated serving illustration of round golden mandazi, one opened to show its airy interior.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://miriammalaquias.com/2017/11/22/maandazi/",
+        "diet_tags": [],
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": null,
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-1",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "dry yeast",
+            "amount": 2.25,
+            "unit": "tsp",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-2",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "warm water",
+            "amount": 0.5,
+            "unit": "cup",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-3",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 1,
+            "unit": "tsp",
+            "prep_note": "For activating the yeast",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-4",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "ground cardamom",
+            "amount": 1,
+            "unit": "tsp",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 40,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-5",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "all-purpose flour",
+            "amount": 3,
+            "unit": "cups",
+            "prep_note": "Extra flour only to adjust the dough/work surface",
+            "is_optional": false,
+            "sort_order": 50,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-6",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 2,
+            "unit": "tbsp",
+            "prep_note": "Source allows2–4 tablespoons",
+            "is_optional": false,
+            "sort_order": 60,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-7",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "coconut milk",
+            "amount": 0.75,
+            "unit": "cup",
+            "prep_note": "Start with½ cup; reserve the rest",
+            "is_optional": false,
+            "sort_order": 70,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-8",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "oil",
+            "amount": 1,
+            "unit": "tbsp",
+            "prep_note": "For the dough",
+            "is_optional": true,
+            "sort_order": 80,
+            "group_name": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-ingredient-9",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "vegetable oil",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "For deep frying",
+            "is_optional": false,
+            "sort_order": 90,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-mandazi-tanzania-tz-step-1",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Activate yeast",
+            "instruction": "Dissolve the starter sugar and yeast in warm water; cover until active.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-2",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Make dough",
+            "instruction": "Stir the remaining sugar, cardamom, optional oil and half a cup of coconut milk into the activated yeast mixture. Mix in the flour; use reserved coconut milk or extra flour to adjust the dough.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-3",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Knead and rise",
+            "instruction": "Knead ten minutes. Cover in an oiled bowl until doubled.",
+            "timer_seconds": 600,
+            "timer_label": "Kneading only; rising has no fixed timer"
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-4",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Cut rounds",
+            "instruction": "Knead two minutes, roll about 5 mm thick and cut rounds.",
+            "timer_seconds": 120,
+            "timer_label": "Second kneading only"
+          },
+          {
+            "id": "source-mandazi-tanzania-tz-step-5",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Fry",
+            "instruction": "Deep-fry until golden. Serve warm or at room temperature.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-mandazi-tanzania-tz-hero",
+            "recipe_id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/mandazi-tanzania-tz.webp",
+            "alt_text": "AI-generated serving illustration of round golden mandazi, one opened to show its airy interior.",
+            "caption": "AI-generated serving illustration of this attributed adaptation; not a kitchen-tested photograph.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; source recipe by Miriam Malaquias",
+            "credit_url": "https://miriammalaquias.com/2017/11/22/maandazi/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "koba-mg": {
+      "id": "3b4af630-750d-467f-939c-7befadf44d32",
+      "revision": "koba-firstglobal-p13-small-parcels-v1",
+      "fields": {
+        "name": "Koba — small steamed parcels",
+        "description": "Banana, rice-flour and peanut parcels adapted from the FIRST Global cookbook’s Kobandravina.",
+        "story": "This adaptation follows the cookbook’s small leaf-wrapped parcels and ordinary steaming method. Allow about 20–25 minutes for steaming; the15-minute preparation figure comes from the source. AfroTools has not kitchen-tested this adaptation.",
+        "author": "AfroKitchen adaptation; source:2020 FIRST Global Flavors of the World, page 13",
+        "default_servings": 10,
+        "serving_unit": "servings",
+        "prep_time_minutes": 15,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/koba-mg.webp",
+        "image_alt": "AI-generated serving illustration of two leaf-wrapped Koba parcels and an opened parcel showing its pale interior.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://first.global/wp-content/uploads/2020/10/2020-FGC-Flavors-of-the-World-Cookbook_v1.2.pdf",
+        "diet_tags": [],
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": null,
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "id": "source-koba-mg-ingredient-1",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "bananas",
+            "amount": 3,
+            "unit": "whole",
+            "prep_note": "Peeled and mashed",
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-2",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "vanilla pod",
+            "amount": 1,
+            "unit": "pod",
+            "prep_note": "Seeds only; source alternatively lists 0.33 tsp vanilla",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-3",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "peanuts",
+            "amount": 30,
+            "unit": "g",
+            "prep_note": "Crushed",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-4",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 30,
+            "unit": "g",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 40,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-5",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "rice flour",
+            "amount": 150,
+            "unit": "g",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 50,
+            "group_name": null
+          },
+          {
+            "id": "source-koba-mg-ingredient-6",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "banana leaves",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "For small parcels; the source allows parchment as an alternative",
+            "is_optional": false,
+            "sort_order": 60,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-koba-mg-step-1",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Mix batter",
+            "instruction": "Mash the bananas. Mix in vanilla seeds, crushed peanuts, sugar and rice flour.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-koba-mg-step-2",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Prepare wrappers",
+            "instruction": "Wash leaves, cut squares, soften briefly in hot water and drain.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-koba-mg-step-3",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Wrap parcels",
+            "instruction": "Put about 3 tablespoons of batter in each wrapper; fold and secure with kitchen twine.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-koba-mg-step-4",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Steam",
+            "instruction": "Steam the small parcels for about 20–25 minutes using the ordinary steamer method.",
+            "timer_seconds": 1200,
+            "timer_label": "Start checking; approximate 20–25-minute steaming range"
+          },
+          {
+            "id": "source-koba-mg-step-5",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Unwrap",
+            "instruction": "Let parcels cool enough to handle, remove wrappers and twine, and serve warm.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-koba-mg-hero",
+            "recipe_id": "3b4af630-750d-467f-939c-7befadf44d32",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/koba-mg.webp",
+            "alt_text": "AI-generated serving illustration of two leaf-wrapped Koba parcels and an opened parcel showing its pale interior.",
+            "caption": "AI-generated serving illustration of the attributed small-parcel adaptation; not kitchen-tested photography.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; source:2020 FIRST Global Flavors of the World, page 13",
+            "credit_url": "https://first.global/wp-content/uploads/2020/10/2020-FGC-Flavors-of-the-World-Cookbook_v1.2.pdf",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "ibihaza-rw": {
+      "id": "d7d7e305-3c5d-40db-9033-36843e102176",
+      "revision": "ibihaza-georgia-reader-20261017-v1",
+      "fields": {
+        "name": "Ibihaza",
+        "description": "Pumpkin and fully cooked beans, adapted from Georgia Reader for Together Women Rise.",
+        "story": "This credited version uses fully cooked beans and chunky pumpkin. The source does not state a serving yield or overall preparation and cooking times. Preparing dried beans is a separate task. AfroTools has not kitchen-tested this adaptation.",
+        "regional_variations": null,
+        "best_served_with": "Serve warm.",
+        "occasion": null,
+        "tags": [
+          "pumpkin",
+          "beans",
+          "rwanda"
+        ],
+        "diet_tags": [],
+        "default_servings": null,
+        "serving_unit": "servings",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "difficulty": null,
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://togetherwomenrise.org/recipes/ibihaza/",
+        "image_url": "/assets/img/kitchen/ibihaza-rw.webp",
+        "author": "AfroKitchen adaptation; recipe by Georgia Reader for Together Women Rise",
+        "image_alt": "AI-generated serving illustration of chunky pumpkin, cooked beans and onion in a bowl.",
+        "yield_status": "not-recorded",
+        "ingredients": [
+          {
+            "amount": 3,
+            "unit": "tbsp",
+            "name": "olive oil",
+            "prep_note": "",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-1",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 10
+          },
+          {
+            "amount": 1,
+            "unit": "cup",
+            "name": "purple onion",
+            "prep_note": "sliced",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-2",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 20
+          },
+          {
+            "amount": 5,
+            "unit": "cups",
+            "name": "pie pumpkin",
+            "prep_note": "diced, seeds removed, skin retained",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-3",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 30
+          },
+          {
+            "amount": 3,
+            "unit": "lb",
+            "name": "cooked beans",
+            "prep_note": "fully cooked; not dried beans",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-4",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 40
+          },
+          {
+            "amount": 2,
+            "unit": "tsp",
+            "name": "coriander",
+            "prep_note": "",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-5",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 50
+          },
+          {
+            "amount": 2,
+            "unit": "tsp",
+            "name": "tarragon",
+            "prep_note": "",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-6",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 60
+          },
+          {
+            "amount": 3,
+            "unit": "cups",
+            "name": "water",
+            "prep_note": "Start with 3 cups; add up to 1 cup more if needed (source range: 3–4 cups).",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-7",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 70
+          },
+          {
+            "amount": null,
+            "unit": "",
+            "name": "salt",
+            "prep_note": "to taste",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-8",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 80
+          },
+          {
+            "amount": null,
+            "unit": "",
+            "name": "black pepper",
+            "prep_note": "to taste",
+            "is_optional": false,
+            "group_name": "Main",
+            "id": "source-ibihaza-rw-ingredient-9",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "sort_order": 90
+          }
+        ],
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "Prepare pumpkin",
+            "instruction": "Wash the pumpkin, discard seeds and fibres, and dice with skin intact.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "source-ibihaza-rw-step-1",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 2,
+            "title": "Brown vegetables",
+            "instruction": "Heat oil and cook onion with pumpkin until browned; set aside.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "source-ibihaza-rw-step-2",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 3,
+            "title": "Heat beans",
+            "instruction": "Simmer the fully cooked beans, coriander and tarragon in 3 cups of water for 5–10 minutes. Add up to 1 cup more water if needed.",
+            "timer_seconds": 300,
+            "timer_label": "Check beans",
+            "id": "source-ibihaza-rw-step-3",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 4,
+            "title": "Finish",
+            "instruction": "Add the browned pumpkin and onion. Simmer about 15 minutes, checking that the pumpkin is cooked through but still holds its shape. Season with salt and black pepper and serve warm.",
+            "timer_seconds": 900,
+            "timer_label": "Check pumpkin",
+            "id": "source-ibihaza-rw-step-4",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-ibihaza-rw-hero",
+            "recipe_id": "d7d7e305-3c5d-40db-9033-36843e102176",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/ibihaza-rw.webp",
+            "alt_text": "AI-generated serving illustration of chunky pumpkin, cooked beans and onion in a bowl.",
+            "caption": "AI-generated serving illustration of the attributed pumpkin and cooked-bean adaptation; not a photograph of an AfroTools kitchen-tested batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; recipe by Georgia Reader for Together Women Rise",
+            "credit_url": "https://togetherwomenrise.org/recipes/ibihaza/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "kat-kat-banane-sc": {
+      "id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+      "revision": "katkat-creole-melting-pot-20190910-v1",
+      "fields": {
+        "name": "Kat-Kat Banane",
+        "description": "A savoury plantain and fish dish, adapted from The Creole Melting Pot's trevally katkat.",
+        "story": "Adapted from The Creole Melting Pot's savoury trevally katkat. Four servings and 15-minute preparation/45-minute cooking are the publisher's planning estimates, not measured AfroTools results. Check fish, plantain and consistency as you cook. AfroTools has not kitchen-tested this adaptation.",
+        "regional_variations": "Other households use different fish or cooking bananas.",
+        "best_served_with": "Rice or chilli sauce, if desired.",
+        "occasion": "Main meal",
+        "tags": [
+          "plantain",
+          "fish",
+          "coconut",
+          "seychelles"
+        ],
+        "diet_tags": [],
+        "default_servings": 4,
+        "serving_unit": "servings",
+        "prep_time_minutes": 15,
+        "cook_time_minutes": 45,
+        "total_time_minutes": 60,
+        "difficulty": "medium",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://www.thecreolemeltingpot.com/trevally-katkat-with-green-plantain-katkat-karang/",
+        "image_url": "/assets/img/kitchen/kat-kat-banane-sc.webp",
+        "author": "AfroKitchen adaptation; recipe by The Creole Melting Pot",
+        "image_alt": "AI-generated serving illustration of coarse plantain mash with flaked fish in a creamy coconut mixture.",
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "sort_order": 10,
+            "group_name": "Katkat",
+            "amount": 500,
+            "unit": "g",
+            "name": "boneless trevally",
+            "prep_note": "contains fish",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-1",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 20,
+            "group_name": "Katkat",
+            "amount": 4,
+            "unit": "pieces",
+            "name": "unripe plantains",
+            "prep_note": "",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-2",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 30,
+            "group_name": "Katkat",
+            "amount": 800,
+            "unit": "ml",
+            "name": "coconut milk",
+            "prep_note": "",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-3",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 40,
+            "group_name": "Katkat",
+            "amount": 2,
+            "unit": "pieces",
+            "name": "cinnamon leaves",
+            "prep_note": "remove before serving",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-4",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 50,
+            "group_name": "Katkat",
+            "amount": null,
+            "unit": "",
+            "name": "salt and pepper",
+            "prep_note": "to taste",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-5",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "sort_order": 60,
+            "group_name": "Cooking",
+            "amount": null,
+            "unit": "as needed",
+            "name": "water",
+            "prep_note": "for separate boiling pots",
+            "is_optional": false,
+            "id": "source-kat-kat-banane-sc-ingredient-6",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null
+          }
+        ],
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "Cook fish",
+            "instruction": "Season fish pieces. Boil gently until cooked, about 10 minutes. Reserve the liquid; cool, check for bones and flake.",
+            "timer_seconds": 600,
+            "timer_label": "check fish",
+            "id": "source-kat-kat-banane-sc-step-1",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 2,
+            "title": "Cook plantains",
+            "instruction": "Trim and halve the washed, unpeeled plantains. Boil separately until tender, about 15 minutes. Cool enough to handle, peel and roughly mash.",
+            "timer_seconds": 900,
+            "timer_label": "check plantains",
+            "id": "source-kat-kat-banane-sc-step-2",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 3,
+            "title": "Combine",
+            "instruction": "Warm the mash with coconut milk. Add fish and cinnamon; simmer 10-15 minutes, stirring frequently. Loosen with reserved fish liquid if needed.",
+            "timer_seconds": 600,
+            "timer_label": "check consistency",
+            "id": "source-kat-kat-banane-sc-step-3",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "step_number": 4,
+            "title": "Finish",
+            "instruction": "Remove cinnamon, adjust seasoning and serve. Keep a thick, coarse texture with visible fish pieces.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "source-kat-kat-banane-sc-step-4",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-kat-kat-banane-sc-hero",
+            "recipe_id": "feabebb3-cd55-48c6-be9a-17f118dddfcc",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/kat-kat-banane-sc.webp",
+            "alt_text": "AI-generated serving illustration of coarse plantain mash with flaked fish in a creamy coconut mixture.",
+            "caption": "AI-generated serving illustration of the attributed savoury plantain and trevally adaptation; not kitchen-tested photography.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; recipe by The Creole Melting Pot",
+            "credit_url": "https://www.thecreolemeltingpot.com/trevally-katkat-with-green-plantain-katkat-karang/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "ndizi-nyama-tz": {
+      "id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+      "revision": "ndizi-darlene-international-cuisine-20261017-v1",
+      "fields": {
+        "name": "Ndizi na Nyama — beef and green plantains",
+        "description": "Beef, green plantains and vegetables in coconut-tomato gravy.",
+        "story": "An adaptation of Darlene’s International Cuisine recipe, choosing its plantain option. Four servings and 10/45/55-minute estimates come from that source. AfroTools has not kitchen-tested this version.",
+        "author": "AfroKitchen adaptation; source recipe by Darlene at International Cuisine",
+        "default_servings": 4,
+        "serving_unit": "servings",
+        "prep_time_minutes": 10,
+        "cook_time_minutes": 45,
+        "total_time_minutes": 55,
+        "image_url": "/assets/img/kitchen/ndizi-nyama-tz.webp",
+        "image_alt": "AI-generated serving illustration of beef, pale plantain chunks and carrot slices in tomato-coconut gravy.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://www.internationalcuisine.com/ndizi-nyama/",
+        "tags": [
+          "plantain",
+          "beef",
+          "tanzania"
+        ],
+        "diet_tags": [],
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": null,
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-1",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "vegetable oil",
+            "amount": 2,
+            "unit": "tbsp",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-2",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "beef fillet",
+            "amount": 1,
+            "unit": "lb",
+            "prep_note": "Cut into approximately 1-inch pieces",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-3",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "green plantains",
+            "amount": 4,
+            "unit": "whole",
+            "prep_note": "Peeled and cut into approximately 3-inch pieces",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-4",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "onion",
+            "amount": 1,
+            "unit": "medium",
+            "prep_note": "Chopped",
+            "is_optional": false,
+            "sort_order": 40,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-5",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "garlic",
+            "amount": 4,
+            "unit": "cloves",
+            "prep_note": "Minced",
+            "is_optional": false,
+            "sort_order": 50,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-6",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "tomatoes",
+            "amount": 2,
+            "unit": "whole",
+            "prep_note": "Diced",
+            "is_optional": false,
+            "sort_order": 60,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-7",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "carrot",
+            "amount": 1,
+            "unit": "whole",
+            "prep_note": "Sliced",
+            "is_optional": false,
+            "sort_order": 70,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-8",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "coconut milk",
+            "amount": 1,
+            "unit": "cup",
+            "prep_note": "",
+            "is_optional": false,
+            "sort_order": 80,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-9",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "water",
+            "amount": 2,
+            "unit": "cups",
+            "prep_note": "About 2 cups; approximate quantity from the source method",
+            "is_optional": false,
+            "sort_order": 90,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-10",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "cilantro",
+            "amount": 1,
+            "unit": "small bunch",
+            "prep_note": "Chopped for garnish",
+            "is_optional": false,
+            "sort_order": 100,
+            "group_name": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-ingredient-11",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "salt and pepper",
+            "amount": null,
+            "unit": "to taste",
+            "prep_note": "Unmeasured seasoning",
+            "is_optional": false,
+            "sort_order": 110,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-ndizi-nyama-tz-step-1",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Brown aromatics and beef",
+            "instruction": "Heat oil over medium heat. Fry onion and garlic until golden, then brown the beef.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-step-2",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Add vegetables and water",
+            "instruction": "Add carrot, tomatoes, about two cups of water and seasoning. Cover and bring to a boil.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-ndizi-nyama-tz-step-3",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Cook plantains",
+            "instruction": "Add plantains; boil about ten minutes before checking their texture.",
+            "timer_seconds": 600,
+            "timer_label": "Check plantain texture; continue cooking as needed"
+          },
+          {
+            "id": "source-ndizi-nyama-tz-step-4",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Finish with coconut milk",
+            "instruction": "Stir in coconut milk; simmer about five minutes, then check that beef and plantains are tender. Continue cooking if needed; garnish with cilantro.",
+            "timer_seconds": 300,
+            "timer_label": "Check beef and plantain tenderness; continue as needed"
+          }
+        ],
+        "media": [
+          {
+            "id": "source-ndizi-nyama-tz-hero",
+            "recipe_id": "63325da8-6678-414f-b431-f88d8d6b2fe1",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/ndizi-nyama-tz.webp",
+            "alt_text": "AI-generated serving illustration of beef, pale plantain chunks and carrot slices in tomato-coconut gravy.",
+            "caption": "AI-generated serving illustration of this attributed adaptation; not a kitchen-tested photograph.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; source recipe by Darlene at International Cuisine",
+            "credit_url": "https://www.internationalcuisine.com/ndizi-nyama/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "latchiri-kossan-gn": {
+      "id": "91740809-c813-417e-8af4-c5c7c989c1be",
+      "revision": "latchiri-gassama-maize-cultured-milk-20261017-v1",
+      "fields": {
+        "name": "Latchiri Kossan — maize with cultured milk",
+        "description": "Steamed maize couscous served with ready-made cultured milk; contains dairy.",
+        "story": "Adapted from the public Latchiri Kössan document attributed to Youssouf Gassama: 1 kg maize for 12 people. This version uses ready-made cultured milk; it excludes the document’s homemade dairy process. Overall preparation and cooking times are unrecorded. AfroTools has not kitchen-tested it.",
+        "author": "AfroKitchen adaptation; document attributed to Youssouf Gassama",
+        "default_servings": 12,
+        "serving_unit": "servings",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/latchiri-kossan-gn.webp",
+        "image_alt": "AI-generated serving illustration of loose pale maize couscous with white cultured milk in a shallow bowl.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "source": "https://www.fichier-pdf.fr/2015/07/09/latchiri-ko-ssan/",
+        "tags": [
+          "maize",
+          "cultured-milk",
+          "guinea"
+        ],
+        "diet_tags": [],
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": null,
+        "yield_status": "recorded",
+        "ingredients": [
+          {
+            "id": "source-latchiri-kossan-gn-ingredient-1",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "maize flour",
+            "amount": 1,
+            "unit": "kg",
+            "prep_note": "Not corn starch; for steaming",
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-latchiri-kossan-gn-ingredient-2",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "water",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "For the steamer and moistening",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          },
+          {
+            "id": "source-latchiri-kossan-gn-ingredient-3",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "ready-made cultured milk",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "For serving; contains dairy",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          },
+          {
+            "id": "source-latchiri-kossan-gn-ingredient-4",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "salt",
+            "amount": null,
+            "unit": "to taste",
+            "prep_note": "Optional savoury seasoning",
+            "is_optional": true,
+            "sort_order": 40,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          },
+          {
+            "id": "source-latchiri-kossan-gn-ingredient-5",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": null,
+            "unit": "to taste",
+            "prep_note": "Optional sweet serving",
+            "is_optional": true,
+            "sort_order": 50,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-latchiri-kossan-gn-step-1",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Prepare the steamer",
+            "instruction": "Boil water below the upper basket. Line the basket with a clean, light steaming cloth and add maize flour above the water.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-latchiri-kossan-gn-step-2",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "First steaming",
+            "instruction": "Cover and steam about thirty minutes. Carefully lift the cloth into a bowl; replenish and reboil the steamer water.",
+            "timer_seconds": 1800,
+            "timer_label": "Check after the first steam; maize needs another steaming"
+          },
+          {
+            "id": "source-latchiri-kossan-gn-step-3",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Moisten and loosen",
+            "instruction": "Separate with a spoon, moisten lightly and rest ten minutes. Once safe to handle, loosen the granules.",
+            "timer_seconds": 600,
+            "timer_label": "Check and loosen the rested granules before steaming again"
+          },
+          {
+            "id": "source-latchiri-kossan-gn-step-4",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Second steaming",
+            "instruction": "Steam again about thirty minutes, then repeat the moistening, ten-minute rest and loosening. Check softness; if firm, steam for a further 15 minutes, checking water below.",
+            "timer_seconds": 1800,
+            "timer_label": "Check maize softness; further steaming may be needed"
+          },
+          {
+            "id": "source-latchiri-kossan-gn-step-5",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Serve with cultured milk",
+            "instruction": "Fluff the maize and serve with ready-made cultured milk. Offer sugar or salt to taste.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-latchiri-kossan-gn-hero",
+            "recipe_id": "91740809-c813-417e-8af4-c5c7c989c1be",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/latchiri-kossan-gn.webp",
+            "alt_text": "AI-generated serving illustration of loose pale maize couscous with white cultured milk in a shallow bowl.",
+            "caption": "AI-generated serving illustration of this attributed adaptation; not a kitchen-tested photograph.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation; document attributed to Youssouf Gassama",
+            "credit_url": "https://www.fichier-pdf.fr/2015/07/09/latchiri-ko-ssan/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    }
+  };
+  // Exact two source-method holds; publication approval remains independent.
+  var pendingBeverageMethods = {
+    "kunu-zaki-ng": {
+      "id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+      "fields": {
+        "description": "Nigerian millet-based drink. A reviewed preparation method, quantities, duration and yield are not available on this page.",
+        "story": null,
+        "occasion": null,
+        "best_served_with": null,
+        "regional_variations": null,
+        "method_review_status": "pending-source-method",
+        "method_review_revision": "kunu-ikivuguto-source-hold-20261018",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "ingredients": [],
+        "steps": []
+      }
+    },
+    "ikivuguto-rw": {
+      "id": "f2850789-0ffd-41b3-bbaf-e3229132c9e6",
+      "fields": {
+        "description": "Rwandan cultured milk. A reviewed preparation method, quantities, duration and yield are not available on this page.",
+        "story": null,
+        "occasion": null,
+        "best_served_with": null,
+        "regional_variations": null,
+        "method_review_status": "pending-source-method",
+        "method_review_revision": "kunu-ikivuguto-source-hold-20261018",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "ingredients": [],
+        "steps": []
+      }
+    }
+  };
+  function pendingRecipeMethodTarget(recipe) {
+    if (!recipe || typeof recipe !== 'object') return null;
+    if (Object.prototype.hasOwnProperty.call(pendingBeverageMethods, recipe.slug)) return { slug: recipe.slug, hold: pendingBeverageMethods[recipe.slug] };
+    var slug = Object.keys(pendingBeverageMethods).find(function(key) { return pendingBeverageMethods[key].id === recipe.id; });
+    return slug ? { slug: slug, hold: pendingBeverageMethods[slug] } : null;
+  }
+  function isPendingRecipeMethod(recipe) {
+    return !!pendingRecipeMethodTarget(recipe);
+  }
+  function isPendingRecipeMethodId(id) {
+    return typeof id === 'string' && Object.keys(pendingBeverageMethods).some(function(slug) { return pendingBeverageMethods[slug].id === id.toLowerCase(); });
+  }
+  function projectPendingRecipeMethod(recipe) {
+    var target = pendingRecipeMethodTarget(recipe);
+    if (!target) return recipe;
+    if (recipe.id !== target.hold.id || recipe.slug !== target.slug) throw new Error('Pending recipe identity mismatch');
+    var result = Object.assign({}, recipe, JSON.parse(JSON.stringify(target.hold.fields)), {
+      method_revision: null, nutrition_basis: null, chef_notes: null, reviews: [], media: [], avg_rating: null, review_count: null
     });
-    return t && (t.reviews = [], t.avg_rating = null, t.review_count = 0), t || null;
+    if (recipe.slug === 'ikivuguto-rw') result.diet_tags = (recipe.diet_tags || []).filter(function(tag) { return tag !== 'dairy-free'; });
+    return result;
+  }
+  function isAttributedTarget(recipe) {
+    return !!(recipe && Object.prototype.hasOwnProperty.call(attributedMethods, recipe.slug));
+  }
+  function isAttributedRecipe(recipe) {
+    var method = isAttributedTarget(recipe) && attributedMethods[recipe.slug];
+    return !!(method && isPublicRecipe(recipe) && recipe.id === method.id && recipe.method_revision === method.revision);
+  }
+  function projectAttributedRecipe(recipe) {
+    if (isPendingRecipeMethod(recipe)) return projectPendingRecipeMethod(recipe);
+    if (!isAttributedTarget(recipe)) return recipe;
+    var method = attributedMethods[recipe.slug];
+    if (recipe.id !== method.id || !isPublicRecipe(recipe)) return null;
+    return Object.assign({}, recipe, JSON.parse(JSON.stringify(method.fields)), {
+      method_revision: method.revision,
+      content_representation: 'attributed-source-adaptation',
+      reviews: [], avg_rating: null, review_count: 0
+    });
+  }
+  function hasRecordedRecipeYield(recipe) { return !!recipe && !isPendingRecipeMethod(recipe) && recipe.yield_status !== 'not-recorded'; }
+  // One reviewed display method; ordinary publication approval is required first.
+  function kapentaSourceDetail(recipe, published) {
+    if (!recipe || recipe.slug !== 'kapenta-stew-zm') return recipe;
+    if (recipe.id !== '76572d95-eb8e-4c78-bbb6-ea754f61c758' || !isPublicRecipe(recipe)) return null;
+    var approval = (published || []).find(function(row) { return row.id === recipe.id && row.slug === recipe.slug && isPublicRecipe(row); });
+    var detail = approval && approval.curated_detail;
+    if (!detail || detail.id !== recipe.id || detail.slug !== recipe.slug || detail.method_revision !== 'kapenta-zambian-kitchen-20261016') return null;
+    var fields = detail.fields, allowed = ['name','description','story','author','source','best_served_with','occasion','regional_variations','prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','yield_status','calories','protein_g','carbs_g','fat_g','fiber_g','diet_tags','image_url','image_alt','ingredients','steps','media'];
+    if (!fields || Object.keys(fields).some(function(key) { return allowed.indexOf(key) === -1; }) || fields.yield_status !== 'not-recorded' || fields.default_servings !== null ||
+        !Array.isArray(fields.ingredients) || !Array.isArray(fields.steps) || !Array.isArray(fields.media) ||
+        fields.ingredients.concat(fields.steps, fields.media).some(function(row) { return !row || row.recipe_id !== recipe.id; })) return null;
+    return Object.assign({}, recipe, JSON.parse(JSON.stringify(fields)), { method_revision: detail.method_revision });
+  }
+  function f(slug, published) {
+    if (Object.prototype.hasOwnProperty.call(pendingBeverageMethods, slug)) {
+      var pendingApproval = (published || []).find(function(row) { return row.slug === slug && isPublicRecipe(row); });
+      return pendingApproval ? projectPendingRecipeMethod(pendingApproval) : null;
+    }
+    if (Object.prototype.hasOwnProperty.call(attributedMethods, slug)) {
+      var sourceApproval = (published || []).find(function(row) { return row.slug === slug && isPublicRecipe(row); });
+      return sourceApproval ? projectAttributedRecipe(sourceApproval) : null;
+    }
+    if (slug === 'kapenta-stew-zm') {
+      var approved = (published || []).find(function(row) { return row.slug === slug && isPublicRecipe(row); });
+      return approved ? kapentaSourceDetail(Object.assign({}, approved, { reviews: [], avg_rating: null, review_count: 0 }), published) : null;
+    }
+    var seed = g.find(function(row) { return row.slug === slug; });
+    if (!seed || seed.is_published === false || seed.is_verified === false || !published) return null;
+    var approval = published.find(function(row) { return row.id === seed.id && row.slug === seed.slug && isPublicRecipe(row); });
+    if (!approval) return null;
+    return Object.assign({}, seed, { is_published: true, is_verified: true, reviews: [], avg_rating: null, review_count: 0 });
   }
   return {
+    projectAttributedRecipe: projectAttributedRecipe,
+    isAttributedRecipe: isAttributedRecipe,
+    isAttributedTarget: isAttributedTarget,
     COUNTRIES: i,
     REGIONS: [ "West Africa", "East Africa", "North Africa", "Southern Africa", "Central Africa" ],
     CATEGORIES: [ {
@@ -1791,11 +3220,30 @@ var AfroKitchenEngine = function() {
     DIETS: [ "vegetarian", "vegan", "halal", "gluten-free", "dairy-free" ],
     DIFFICULTIES: [ "easy", "medium", "hard", "expert" ],
     SEED_RECIPES: g,
+    hasRecordedRecipeYield: hasRecordedRecipeYield,
+    isPublicationUnavailable: function(value) { return !!value && value.publicationUnavailable === true; },
+    retryPublication: function() { staticRecipePromise = null; r = {}; },
+    checkRecipePublication: async function(recipe) {
+      if (!recipe || !recipe.slug) return { kind: 'unavailable' };
+      if (recipe.is_published === false || recipe.is_verified === false) return { kind: 'withheld' };
+      if ((Object.prototype.hasOwnProperty.call(recipe, 'is_published') && recipe.is_published !== true) ||
+          (Object.prototype.hasOwnProperty.call(recipe, 'is_verified') && recipe.is_verified !== true)) return { kind: 'unavailable' };
+      var uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (uuid.test(recipe.id || '') && isPublicRecipe(recipe)) return { kind: 'eligible' };
+      var children = (recipe.ingredients || []).concat(recipe.steps || []);
+      if (!recipe.ingredients || !recipe.ingredients.length || !recipe.steps || !recipe.steps.length ||
+          children.some(function(row) { return !row || !uuid.test(row.recipe_id || ''); })) return { kind: 'unavailable' };
+      var id = children[0].recipe_id;
+      if (children.some(function(row) { return row.recipe_id !== id; }) || (recipe.id && recipe.id !== id)) return { kind: 'unavailable' };
+      var published = await loadPublishedRecipeIndex();
+      if (!published) return { kind: 'unavailable' };
+      return { kind: published.some(function(row) { return row.id === id && row.slug === recipe.slug && isPublicRecipe(row); }) ? 'eligible' : 'withheld' };
+    },
     SEED_COLLECTIONS: p,
     fetchRecipes: async function(e) {
       var r = "recipes_" + JSON.stringify(e || {}), i = o(r);
       if (i) {
-        return i;
+        return h(e, i);
       }
       var published = await loadPublishedRecipeIndex();
       if (published) {
@@ -1803,12 +3251,13 @@ var AfroKitchenEngine = function() {
         n(r, matching);
         return matching;
       }
+      if (window.navigator && window.navigator.onLine === false) return publicationUnavailable();
       var a = t();
       if (!a) {
-        return h(e);
+        return publicationUnavailable();
       }
       try {
-        var s = a.from("recipes").select("*").eq("is_verified", !0);
+        var s = a.from("recipes").select("*").eq("is_published", true).eq("is_verified", true);
         e && (e.country && (s = s.eq("country_code", e.country)), e.region && (s = s.eq("region", e.region)),
         e.category && (s = s.eq("category", e.category)), e.difficulty && (s = s.eq("difficulty", e.difficulty)),
         e.diet && (s = s.contains("diet_tags", [ e.diet ])), e.search && (s = s.or("name.ilike.%" + e.search + "%,description.ilike.%" + e.search + "%,country_name.ilike.%" + e.search + "%")),
@@ -1822,28 +3271,36 @@ var AfroKitchenEngine = function() {
         if (c.error) {
           throw c.error;
         }
-        return n(r, c.data), c.data;
+        var eligible = h(e, c.data || []);
+        return n(r, eligible), eligible;
       } catch (t) {
-        return console.warn("AfroKitchen: Supabase fetch failed, using seed data", t), h(e);
+        return console.warn("AfroKitchen: Public recipe availability could not be checked"), publicationUnavailable();
       }
     },
     fetchRecipeBySlug: async function(e) {
       var r = "recipe_" + e, i = o(r);
-      if (i) {
-        return i;
+      if (isPublicRecipe(i)) {
+        return projectAttributedRecipe(i);
       }
+      var published = await loadPublishedRecipeIndex();
+      if (window.navigator && window.navigator.onLine === false) return f(e, published) || { publicationUnavailable: true };
       var a = t();
       if (!a) {
-        return f(e);
+        return f(e, published) || { publicationUnavailable: true };
       }
       try {
-        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_verified", !0).single();
+        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_published", true).eq("is_verified", true).maybeSingle();
         if (s.error) {
           throw s.error;
         }
-        var c = s.data, u = a.from("recipe_ingredients").select("*").eq("recipe_id", c.id).order("sort_order"), l = a.from("recipe_steps").select("*").eq("recipe_id", c.id).order("step_number"), d = a.from("recipe_reviews").select("*").eq("recipe_id", c.id).order("created_at", {
+        if (!s.data || !isPublicRecipe(s.data)) return null;
+        var c = s.data;
+        if (isPendingRecipeMethod(c)) { c = projectPendingRecipeMethod(c); n(r, c); return c; }
+        var u = a.from("recipe_ingredients").select("*").eq("recipe_id", c.id).order("sort_order"), l = a.from("recipe_steps").select("*").eq("recipe_id", c.id).order("step_number"), d = a.from("recipe_reviews").select("*").eq("recipe_id", c.id).order("created_at", {
           ascending: !1
-        }).limit(20), m = await Promise.all([ u, l, d ]);
+        }).limit(20), mediaQuery = a.from("recipe_media").select("*").eq("recipe_id", c.id).order("sort_order"), m = await Promise.all([ u, l, d, mediaQuery ]);
+        if (m[3].error || !Array.isArray(m[3].data) || m[3].data.some(function(row) { return row.recipe_id !== c.id; })) throw new Error("Recipe media unavailable");
+        c.media = m[3].data;
         if (c.ingredients = m[0].data || [], c.steps = m[1].data || [], c.reviews = m[2].data || [],
         c.reviews.length > 0) {
           var g = c.reviews.reduce(function(e, t) {
@@ -1851,14 +3308,18 @@ var AfroKitchenEngine = function() {
           }, 0);
           c.avg_rating = Math.round(g / c.reviews.length * 10) / 10, c.review_count = c.reviews.length;
         }
+        c = projectAttributedRecipe(kapentaSourceDetail(c, published));
+        if (!c) return { publicationUnavailable: true };
         return a.rpc("increment_recipe_views", {
           recipe_id: c.id
         }).catch(function() {}), n(r, c), c;
       } catch (t) {
-        return console.warn("AfroKitchen: Fetch by slug failed, using seed", t), f(e);
+        return console.warn("AfroKitchen: Public recipe detail availability could not be checked"), f(e, published) || { publicationUnavailable: true };
       }
     },
     fetchIngredientPrices: async function(e, r) {
+      if (isPendingRecipeMethodId(e)) return null;
+      if (Object.keys(attributedMethods).some(function(slug) { return attributedMethods[slug].id === e; })) return [];
       var o = t();
       if (!o) {
         return [];
@@ -1926,33 +3387,26 @@ var AfroKitchenEngine = function() {
       }
     },
     submitRecipe: async function(e) {
-      var r = t();
-      if (!r) {
-        return {
-          error: "Database not available"
-        };
-      }
+      var controller = new AbortController(), timer;
       try {
-        var o = await r.from("recipe_submissions").insert({
-          name: e.name,
-          country_code: e.country_code,
-          description: e.description || null,
-          ingredients_text: e.ingredients_text,
-          steps_text: e.steps_text,
-          story: e.story || null,
-          submitted_by: e.submitted_by || null,
-          email: e.email || null
-        });
-        if (o.error) {
-          throw o.error;
-        }
-        return {
-          success: !0
-        };
-      } catch (e) {
-        return {
-          error: e.message
-        };
+        return await Promise.race([ (async function() {
+          var response = await fetch('/.netlify/functions/afrokitchen-community', {
+            method: 'POST', credentials: 'omit', signal: controller.signal,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.assign({}, e, { action: 'submit-recipe' }))
+          });
+          var data = await response.json();
+          if (response.status === 201 && response.ok && data && data.success === true && data.status === 'pending') return { success: true, status: 'pending' };
+          var fields = ['name', 'country_code', 'description', 'ingredients_text', 'steps_text', 'story', 'submitted_by', 'email', 'region_community', 'contributor_type', 'occasion', 'total_time', 'serve_with', 'photo_links', 'photo_permission', 'variations', 'consent'];
+          return { error: response.status === 429 ? 'Submission limit reached. Please try later' : 'We could not confirm your recipe was saved', field: data && fields.indexOf(data.field) !== -1 ? data.field : null };
+        })(), new Promise(function(resolve, reject) {
+          timer = setTimeout(function() { controller.abort(); reject(new Error('Submission timeout')); }, 12000);
+        }) ]);
+      } catch (error) {
+        return { error: 'We could not confirm your recipe was saved' };
+      } finally {
+        clearTimeout(timer);
+        controller.abort();
       }
     },
     scaleIngredients: s,
@@ -1962,6 +3416,7 @@ var AfroKitchenEngine = function() {
       return o && n ? void 0 !== o.ml && void 0 !== n.ml ? e * o.ml / n.ml : void 0 !== o.g && void 0 !== n.g ? e * o.g / n.g : null : null;
     },
     scaleNutrition: function(e, t) {
+      if (isPendingRecipeMethod(e)) return null;
       function nutrientValue(value) {
         if (typeof value !== 'number' && typeof value !== 'string') return null;
         if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)(?:e[+-]?\d+)?\s*$/i.test(value)) return null;
@@ -2069,9 +3524,33 @@ var AfroKitchenEngine = function() {
     getTimer: function(e) {
       return l[e] || null;
     },
+    classifyRecipeDuration: function(value) {
+      if (value == null || (typeof value === 'string' && value.trim() === '')) return { kind: 'unknown', minutes: null };
+      if (typeof value !== 'number' && typeof value !== 'string') return { kind: 'invalid', minutes: null };
+      if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)\s*$/.test(value)) return { kind: 'invalid', minutes: null };
+      var number = Number(value);
+      return Number.isFinite(number) && number >= 0 ? { kind: 'known', minutes: number } : { kind: 'invalid', minutes: null };
+    },
+    getRecipeTiming: function(recipe) {
+      if (isPendingRecipeMethod(recipe)) return { prep: null, cook: null, total: null };
+      return { prep: this.classifyRecipeDuration(recipe.prep_time_minutes).minutes, cook: this.classifyRecipeDuration(recipe.cook_time_minutes).minutes, total: this.classifyRecipeDuration(recipe.total_time_minutes).minutes };
+    },
+    formatRecipeMinutes: function(value) {
+      return value === null || value === undefined ? 'Not recorded' : value + ' min';
+    },
+    getRecipeIllustrationCaption: function(recipe) {
+      var media = Array.isArray(recipe.media) ? recipe.media : [];
+      var hero = media.find(function(row) { return row.recipe_id === recipe.id && row.role === 'hero' && row.image_url === recipe.image_url && row.source_type === 'ai_generated_illustration'; });
+      return hero && typeof hero.caption === 'string' ? hero.caption : '';
+    },
     formatTime: m,
+    isPendingRecipeMethod: isPendingRecipeMethod,
+    isPendingRecipeMethodId: isPendingRecipeMethodId,
+    projectPendingRecipeMethod: projectPendingRecipeMethod,
     getStructuredData: function(e, t) {
-      var r = s(e.ingredients || [], e.default_servings, t || e.default_servings);
+      if (isPendingRecipeMethod(e)) return null;
+      var recordedYield = hasRecordedRecipeYield(e), r = s(e.ingredients || [], recordedYield ? e.default_servings : 1, recordedYield ? t || e.default_servings : 1), timing = this.getRecipeTiming(e);
+      if (['prep_time_minutes', 'cook_time_minutes', 'total_time_minutes'].some(function(field) { return this.classifyRecipeDuration(e[field]).kind === 'invalid'; }, this)) return null;
       // Recipe rich-result nutrition describes one serving, never an unknown stored basis.
       var nutrition, servings = Number(e.default_servings);
       if (Number.isFinite(servings) && servings > 0 && ['per_serving', 'batch'].indexOf(e.nutrition_basis) !== -1) {
@@ -2094,10 +3573,9 @@ var AfroKitchenEngine = function() {
           name: "AfroKitchen by AfroTools"
         },
         datePublished: e.created_at ? e.created_at.slice(0, 10) : "2026-03-17",
-        prepTime: "PT" + e.prep_time_minutes + "M",
-        cookTime: "PT" + e.cook_time_minutes + "M",
-        totalTime: "PT" + (e.prep_time_minutes + e.cook_time_minutes) + "M",
-        recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings"),
+        ...(timing.prep !== null && timing.cook !== null ? { prepTime: "PT" + timing.prep + "M", cookTime: "PT" + timing.cook + "M" } : {}),
+        ...(timing.total !== null ? { totalTime: "PT" + timing.total + "M" } : {}),
+        ...(recordedYield ? { recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings") } : {}),
         recipeCategory: "main" === e.category ? "Main Course" : e.category,
         recipeCuisine: e.country_name + ", " + e.region,
         nutrition: nutrition,
@@ -2111,7 +3589,7 @@ var AfroKitchenEngine = function() {
             text: e.instruction
           };
         }),
-        aggregateRating: e.avg_rating ? {
+        aggregateRating: e.avg_rating && !isAttributedRecipe(e) && !(e.id === "76572d95-eb8e-4c78-bbb6-ea754f61c758" && e.method_revision === "kapenta-zambian-kitchen-20261016") ? {
           "@type": "AggregateRating",
           ratingValue: e.avg_rating,
           reviewCount: e.review_count
@@ -2131,7 +3609,11 @@ var AfroKitchenEngine = function() {
       return navigator.clipboard && navigator.clipboard.writeText(t), t;
     },
     printRecipe: function(e, t) {
-      var r = s(e.ingredients || [], e.default_servings, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + " | Serves " + t + " | " + e.prep_time_minutes + " min prep + " + e.cook_time_minutes + " min cook</div><h2>Ingredients</h2><ul>", n = "";
+      if (isPendingRecipeMethod(e)) return false;
+      if (!hasRecordedRecipeYield(e)) t = 1;
+      var timing = this.getRecipeTiming(e);
+      var timingText = timing.prep === null && timing.cook === null ? "Time not recorded" : "Prep: " + this.formatRecipeMinutes(timing.prep) + "; cook: " + this.formatRecipeMinutes(timing.cook);
+      var r = s(e.ingredients || [], hasRecordedRecipeYield(e) ? e.default_servings : 1, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + (hasRecordedRecipeYield(e) ? " | Serves " + t : " | Yield not recorded; source quantities") + " | " + (timingText) + "</div><h2>Ingredients</h2><ul>", n = "";
       r.forEach(function(e) {
         e.group_name && e.group_name !== n && (o += "</ul><strong>" + e.group_name + "</strong><ul>",
         n = e.group_name), o += "<li>" + u(e.scaled_amount) + " " + e.unit + " " + e.name,
@@ -2146,3 +3628,6 @@ var AfroKitchenEngine = function() {
     }
   };
 }();
+
+// Node owners import the same pure projection; no client/database is opened here.
+if (typeof module === "object" && module.exports) module.exports = AfroKitchenEngine;

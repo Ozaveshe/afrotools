@@ -55,6 +55,7 @@
       window.addEventListener('storage', function (event) { if (event.key === key || event.key === null) showSaved(); });
     }
     var open = document.querySelector('[data-ak-cook-mode]');
+    if (window.AfroKitchenEngine && typeof window.AfroKitchenEngine.isPendingRecipeMethod === 'function' && window.AfroKitchenEngine.isPendingRecipeMethod(recipe)) { if (open) open.hidden = true; return; }
     var layout = document.querySelector('#recipe-ingredients .ak-recipe-layout');
     if (!open || !layout) return;
     var steps = Array.from(layout.querySelectorAll('.ak-step'));
@@ -88,7 +89,7 @@
       ingredientsDetails.appendChild(ingredients);
       ingredientsDetails.open = window.matchMedia('(min-width: 641px)').matches;
       dialog.querySelector('[data-ak-cook-workspace]').appendChild(layout);
-      dialog.querySelector('[data-ak-cook-servings]').textContent = 'Cooking for ' + document.getElementById('ak-static-servings').textContent + ' ' + (recipe.serving_unit || 'servings');
+      dialog.querySelector('[data-ak-cook-servings]').textContent = recipe.yield_status === 'not-recorded' ? 'Source quantities; portions not recorded' : 'Cooking for ' + document.getElementById('ak-static-servings').textContent + ' ' + (recipe.serving_unit || 'servings');
       renderStep();
       dialog.showModal();
       dialog.querySelector('[data-ak-cook-close]').focus();

@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11567 |
-| Indexable pages | 7876 |
+| Indexable pages | 7874 |
 | Permanent and temporary redirects | 3102 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4263 |
+| Genuine equivalence groups | 4261 |
 | Documented fallbacks | 14977 |
-| Routes eligible for primary sitemaps | 7876 |
+| Routes eligible for primary sitemaps | 7874 |
 
 ## Locale Coverage
 
@@ -3820,7 +3820,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2863854b2a68: en=`/blog/eswatini-employer-payroll-compliance-2026/`; x-default=`/blog/eswatini-employer-payroll-compliance-2026/`
 - equivalence:288938fd601b: en=`/tools/car-insurance/algeria`, fr=`/fr/tools/assurance-auto/algeria`; x-default=`/tools/car-insurance/algeria`
 - equivalence:2889d471ac6c: en=`/guinea/gn-vat`, fr=`/fr/guinee/calculateur-tva`, sw=`/sw/guinea/kikokotoo-vat/`; x-default=`/guinea/gn-vat`
-- equivalence:28b9a958538a: en=`/tools/afrokitchen/recipes/ikivuguto-rw/`; x-default=`/tools/afrokitchen/recipes/ikivuguto-rw/`
 - equivalence:28bb087315aa: en=`/tools/employee-cost/mali/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-mali/`; x-default=`/tools/employee-cost/mali/`
 - equivalence:28c4335661a4: en=`/tools/afrokitchen/recipes/shaah-cadays-dj/`; x-default=`/tools/afrokitchen/recipes/shaah-cadays-dj/`
 - equivalence:28e056573f21: fr=`/fr/widgets/roi-volaille/`; x-default=`/fr/widgets/roi-volaille/`
@@ -7376,7 +7375,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fe3e750c7718: en=`/tools/gratuity-calculator/cote-divoire/`, sw=`/sw/cote-divoire/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/cote-divoire/`
 - equivalence:fe436560fadb: en=`/tools/maternity-leave/egypt/`; x-default=`/tools/maternity-leave/egypt/`
 - equivalence:fe436c4a12d8: en=`/developers/`, fr=`/fr/developers/`, sw=`/sw/developers/`; x-default=`/developers/`
-- equivalence:fe530aa93195: en=`/tools/afrokitchen/recipes/kunu-zaki-ng/`; x-default=`/tools/afrokitchen/recipes/kunu-zaki-ng/`
 - equivalence:fe5d5571a4c8: en=`/tools/employee-cost/gambia/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-gambie/`; x-default=`/tools/employee-cost/gambia/`
 - equivalence:fe7cf61ffdd8: en=`/tools/afrokitchen/recipes/ntaba-cd/`; x-default=`/tools/afrokitchen/recipes/ntaba-cd/`
 - equivalence:fe8da5f1393e: en=`/jamb/mathematics/2025/`; x-default=`/jamb/mathematics/2025/`

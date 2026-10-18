@@ -421,7 +421,7 @@ function recipe(row) {
   const isDrink = row.method === "beverage" || row.method === "fermented";
   const description =
     `${row.name} is a ${row.country_name} ${isDrink ? "drink" : row.category} built around ${row.core}, ${row.accent || "local seasoning"}, and the serving logic of ${row.serve}.`;
-  return {
+  const result = {
     slug: row.slug,
     name: row.name,
     description,
@@ -458,6 +458,61 @@ function recipe(row) {
     ingredients: ingredientSet(row).map((item, index) => ({ sort_order: (index + 1) * 10, ...item })),
     steps: stepsFor(row).map((item, index) => ({ step_number: index + 1, ...item }))
   };
+  // These source rows lack UUIDs; browser/API projection independently enforces UUID + slug.
+  const pending = {
+  "kunu-zaki-ng": {
+    "description": "Nigerian millet-based drink. A reviewed preparation method, quantities, duration and yield are not available on this page.",
+    "story": null,
+    "occasion": null,
+    "best_served_with": null,
+    "regional_variations": null,
+    "method_review_status": "pending-source-method",
+    "method_review_revision": "kunu-ikivuguto-source-hold-20261018",
+    "prep_time_minutes": null,
+    "cook_time_minutes": null,
+    "total_time_minutes": null,
+    "default_servings": null,
+    "serving_unit": null,
+    "yield_status": "not-recorded",
+    "calories": null,
+    "protein_g": null,
+    "carbs_g": null,
+    "fat_g": null,
+    "fiber_g": null,
+    "ingredients": [],
+    "steps": []
+  },
+  "ikivuguto-rw": {
+    "description": "Rwandan cultured milk. A reviewed preparation method, quantities, duration and yield are not available on this page.",
+    "story": null,
+    "occasion": null,
+    "best_served_with": null,
+    "regional_variations": null,
+    "method_review_status": "pending-source-method",
+    "method_review_revision": "kunu-ikivuguto-source-hold-20261018",
+    "prep_time_minutes": null,
+    "cook_time_minutes": null,
+    "total_time_minutes": null,
+    "default_servings": null,
+    "serving_unit": null,
+    "yield_status": "not-recorded",
+    "calories": null,
+    "protein_g": null,
+    "carbs_g": null,
+    "fat_g": null,
+    "fiber_g": null,
+    "ingredients": [],
+    "steps": []
+  }
+};
+  if (!Object.prototype.hasOwnProperty.call(pending, row.slug)) return result;
+  Object.assign(result, pending[row.slug]);
+  if (row.slug === 'ikivuguto-rw') result.diet_tags = result.diet_tags.filter(tag => tag !== 'dairy-free');
+  result.confidence = 'review-required';
+  result.review_summary = 'Dish identity references are available; a preparation recipe has not been established for this record.';
+  result.recommended_changes = [];
+  result.official_source_status = 'Source-method review pending. References do not establish a complete recipe, timing, yield or nutrition.';
+  return result;
 }
 
 const rows = [
@@ -569,6 +624,13 @@ const seen = new Set();
 for (const item of recipes) {
   if (seen.has(item.slug)) throw new Error(`Duplicate slug: ${item.slug}`);
   seen.add(item.slug);
+  if (['kunu-zaki-ng', 'ikivuguto-rw'].includes(item.slug)) {
+    if (item.method_review_status !== 'pending-source-method' || item.method_review_revision !== 'kunu-ikivuguto-source-hold-20261018' ||
+        item.ingredients.length || item.steps.length || item.default_servings !== null || item.prep_time_minutes !== null || item.cook_time_minutes !== null || item.total_time_minutes !== null) {
+      throw new Error(`${item.slug} must remain an explicit source-method hold`);
+    }
+    continue;
+  }
   if (!Array.isArray(item.sources) || item.sources.length < 2) {
     throw new Error(`${item.slug} needs at least two sources`);
   }
@@ -588,7 +650,7 @@ const batch = {
   batch_id: "2026-05-03-gap-fill-wave-1",
   reviewed_at: reviewedAt,
   notes:
-    "One-hundred recipe AfroKitchen gap-fill wave focused on countries with low representation plus a traditional drinks lane. The generator uses curated dish rows, stable source references, method-specific ingredient templates, and timed cooking steps to keep the output consistent and auditable.",
+    "One-hundred recipe AfroKitchen gap-fill wave focused on countries with low representation plus a traditional drinks lane. The generator uses curated dish rows, stable source references, method-specific ingredient templates, and timed cooking steps. Kunu Zaki and Ikivuguto are explicit pending source-method records with no preparation instructions, quantities, timing, yield or nutrition; their informational identity does not certify a method.",
   recipes
 };
 

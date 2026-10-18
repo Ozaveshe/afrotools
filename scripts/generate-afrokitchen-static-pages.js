@@ -2,6 +2,7 @@
 "use strict";
 
 const fs = require("fs");
+const attributedRecipes = require("../engines/src/afrokitchen-engine");
 const path = require("path");
 const { imageSizeFromUrl } = require('./lib/image-size');
 const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
@@ -16,6 +17,7 @@ const reusedArtworkByPath = new Map(reusedArtwork.map(image => [image.path, imag
 const { writeRecipeIndex } = require('./lib/afrokitchen-recipe-index');
 const {
   ROOT,
+  classifyRecipeDuration,
   TOOL_DIR,
   RECIPES_DIR,
   COUNTRIES_DIR,
@@ -158,9 +160,21 @@ function loadRecipeResearchAudit() {
 }
 
 function applyRecipeResearchPatch(recipe, researchAudit) {
+  if (attributedRecipes.isPendingRecipeMethod(recipe)) return attributedRecipes.projectPendingRecipeMethod(recipe);
+  if (attributedRecipes.isAttributedTarget(recipe)) {
+    const projected = attributedRecipes.projectAttributedRecipe(recipe);
+    if (!projected) throw new Error("Attributed recipe requires exact identity and explicit public eligibility");
+    return projected;
+  }
   const entry = researchAudit && researchAudit[recipe.slug];
   const patch = entry && entry.static_recipe_patch;
   if (!patch) return recipe;
+  if (entry.curated_method === true) {
+    const identities = { 'oleleh-sl': 'ee3d60da-f4cd-4955-955f-987c0912dc34', 'kapenta-stew-zm': '76572d95-eb8e-4c78-bbb6-ea754f61c758' };
+    if (!identities[recipe.slug] || recipe.id !== identities[recipe.slug] || patch.expected_recipe_id !== recipe.id) throw new Error('Curated recipe identity mismatch');
+    const forbidden = ['id', 'slug', 'is_published', 'is_verified', 'total_time_minutes'];
+    if (forbidden.some(key => Object.prototype.hasOwnProperty.call(patch.recipe || {}, key))) throw new Error('Curated recipe patch changes protected fields');
+  }
 
   const next = {
     ...recipe,
@@ -253,6 +267,12 @@ function applyRecipeResearchPatch(recipe, researchAudit) {
     next.ingredients.sort((left, right) => (left.sort_order || 0) - (right.sort_order || 0));
   }
 
+  if (entry.curated_method === true) {
+    if (!/^[a-z0-9-]{1,64}$/.test(entry.method_revision || '')) throw new Error('Missing curated method revision');
+    next.method_revision = entry.method_revision;
+    next.content_source_reviewed_at = entry.reviewed_at;
+    if (next.prep_time_minutes == null || next.cook_time_minutes == null) next.total_time_minutes = null;
+  }
   return next;
 }
 
@@ -607,7 +627,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
   const country = recipe.country_name || "Africa";
   const diet = recipeDietLabel(recipe);
   const region = recipe.region || "";
-  const time = recipe.total_time_minutes ? `${recipe.total_time_minutes} min` : "Time varies";
+  const time = classifyRecipeDuration(recipe.total_time_minutes).kind === "known" ? `${recipe.total_time_minutes} min` : "Not recorded";
   const servings = recipe.default_servings ? `Serves ${recipe.default_servings}` : "";
   const imageAlt = recipeImageAlt(recipe);
   const thumb = hasImage
@@ -639,7 +659,7 @@ function renderCompactRecipeLink(recipe, contextLabel) {
   const meta = [
     recipe.country_name,
     categoryLabel(recipe),
-    recipe.total_time_minutes ? `${recipe.total_time_minutes} min` : ""
+    classifyRecipeDuration(recipe.total_time_minutes).kind === "known" ? `${recipe.total_time_minutes} min` : ""
   ]
     .filter(Boolean)
     .join(" - ");
@@ -965,7 +985,7 @@ function addGalleryImage(images, seen, src, alt, caption, credit) {
   images.push({
     src: input,
     alt: artworkByPath.get(input)?.alt || reusedArtworkByPath.get(input)?.alt || alt || "AfroKitchen recipe photo",
-    caption: artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · Recipe illustration` : caption || "",
+    caption: artworkByPath.get(input)?.caption || (artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · Recipe illustration` : caption || ""),
     credit: credit || null
   });
 }
@@ -999,7 +1019,7 @@ function collectRecipeGalleryImages(recipe, media, recipeImages) {
     seen,
     media.pageImage,
     baseAlt,
-    `${recipe.name} finished dish`,
+    media.illustrationCaption || artworkByPath.get(media.pageImage)?.caption || `${recipe.name} finished dish`,
     media.credit
   );
 
@@ -1188,9 +1208,8 @@ function isoDate(value) {
 }
 
 function isoDurationFromMinutes(value) {
-  const minutes = Number(value);
-  if (!Number.isFinite(minutes) || minutes < 0) return "";
-  return `PT${Math.round(minutes)}M`;
+  const duration = classifyRecipeDuration(value);
+  return duration.kind === 'known' ? `PT${Math.round(duration.minutes)}M` : '';
 }
 
 function isUsableSchemaText(value) {
@@ -1198,6 +1217,10 @@ function isUsableSchemaText(value) {
 }
 
 function collectRecipeSchemaBlockers(recipe, schemaImages, schemaIngredients) {
+  if (attributedRecipes.isPendingRecipeMethod(recipe)) {
+    attributedRecipes.projectPendingRecipeMethod(recipe);
+    return ['source_method_pending'];
+  }
   const blockers = [];
   const steps = Array.isArray(recipe.steps) ? recipe.steps : [];
 
@@ -1206,10 +1229,10 @@ function collectRecipeSchemaBlockers(recipe, schemaImages, schemaIngredients) {
   if (!Array.isArray(schemaImages) || !schemaImages.length) blockers.push("missing_image");
   if (!isUsableSchemaText(recipe.country_name)) blockers.push("missing_cuisine");
   if (!isUsableSchemaText(recipe.category)) blockers.push("missing_category");
-  if (!isoDurationFromMinutes(recipe.prep_time_minutes)) blockers.push("missing_prep_time");
-  if (!isoDurationFromMinutes(recipe.cook_time_minutes)) blockers.push("missing_cook_time");
-  if (!isoDurationFromMinutes(recipe.total_time_minutes)) blockers.push("missing_total_time");
-  if (!recipe.default_servings) blockers.push("missing_yield");
+  if (classifyRecipeDuration(recipe.prep_time_minutes).kind === "invalid") blockers.push("invalid_prep_time");
+  if (classifyRecipeDuration(recipe.cook_time_minutes).kind === "invalid") blockers.push("invalid_cook_time");
+  if (classifyRecipeDuration(recipe.total_time_minutes).kind === "invalid") blockers.push("invalid_total_time");
+  if (!recipe.default_servings && recipe.yield_status !== "not-recorded") blockers.push("missing_yield");
   if (!Array.isArray(schemaIngredients) || !schemaIngredients.length) blockers.push("missing_ingredients");
   if (!steps.length || steps.some((step) => !isUsableSchemaText(step.title) || !isUsableSchemaText(step.instruction))) {
     blockers.push("missing_instructions");
@@ -1285,13 +1308,16 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
       url: SITE_ORIGIN + '/'
     };
     recipeSchema.datePublished = isoDate(recipe.created_at) || undefined;
-    recipeSchema.dateModified = isoDate(recipe.updated_at) || undefined;
-    recipeSchema.prepTime = isoDurationFromMinutes(recipe.prep_time_minutes);
-    recipeSchema.cookTime = isoDurationFromMinutes(recipe.cook_time_minutes);
-    recipeSchema.totalTime = isoDurationFromMinutes(recipe.total_time_minutes);
+    // A source review date describes this page's editorial change, not a future DB operation.
+    recipeSchema.dateModified = [isoDate(recipe.updated_at), isoDate(recipe.content_source_reviewed_at)].filter(Boolean).sort().at(-1) || undefined;
+    const prepDuration = isoDurationFromMinutes(recipe.prep_time_minutes), cookDuration = isoDurationFromMinutes(recipe.cook_time_minutes), totalDuration = isoDurationFromMinutes(recipe.total_time_minutes);
+    if (prepDuration && cookDuration) { recipeSchema.prepTime = prepDuration; recipeSchema.cookTime = cookDuration; }
+    else { delete recipeSchema.prepTime; delete recipeSchema.cookTime; }
+    if (totalDuration) recipeSchema.totalTime = totalDuration; else delete recipeSchema.totalTime;
     recipeSchema.recipeCuisine = [recipe.country_name, recipe.region].filter(Boolean).join(", ");
     recipeSchema.recipeCategory = categoryLabel(recipe);
-    recipeSchema.recipeYield = `${recipe.default_servings} ${recipe.serving_unit || "servings"}`;
+    if (recipe.yield_status === "not-recorded") delete recipeSchema.recipeYield;
+    else recipeSchema.recipeYield = `${recipe.default_servings} ${recipe.serving_unit || "servings"}`;
     recipeSchema.recipeIngredient = schemaIngredients;
     recipeSchema.recipeInstructions = buildRecipeInstructionSchemas(
       recipe,
@@ -1348,14 +1374,70 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
 
   return {
     recipeSchema: schemaBlockers.length ? null : recipeSchema,
+    durationAdvisories: ["prep", "cook", "total"].filter(kind => classifyRecipeDuration(recipe[kind + "_time_minutes"]).kind === "unknown").map(kind => "unknown_" + kind + "_time"),
     breadcrumbSchema,
     schemaBlockers
   };
 }
 
+function buildPendingMethodPageHtml(recipe, recipeImages) {
+  if (recipe.is_published !== true || recipe.is_verified !== true) throw new Error("Pending informational page requires explicit public eligibility");
+  recipe = attributedRecipes.projectPendingRecipeMethod(recipe);
+  const media = resolveRecipeMedia(recipe, recipeImages);
+  const gallery = collectRecipeGalleryImages(recipe, media, recipeImages);
+  const illustration = gallery[0];
+  const payload = { ...recipe, method_review_status: 'pending-source-method', ingredients: [], steps: [] };
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(recipe.name)} | Source method review | AfroKitchen</title>
+<meta name="description" content="${escapeHtml(recipe.description)}"><meta name="robots" content="noindex, follow">
+<meta name="afrokitchen-schema-blockers" content="source_method_pending"><link rel="canonical" href="${escapeHtml(recipe.route_url)}">
+<meta property="og:title" content="${escapeHtml(recipe.name)} | AfroKitchen"><meta property="og:description" content="${escapeHtml(recipe.description)}">
+<meta property="og:type" content="website"><meta property="og:image" content="${escapeHtml(media.socialImage || TOOL_OG_IMAGE)}">
+<link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/tools/afrokitchen/style.css">
+<style>
+.ak-pending-page { background:var(--color-bg); color:var(--color-text); }
+.ak-pending-page .ak-pending-shell { padding-block:var(--space-section-sm); }
+.ak-pending-page .ak-pending-breadcrumb { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-bottom:var(--space-5); color:var(--color-text-muted); font-size:var(--text-sm); }
+.ak-pending-page .ak-pending-breadcrumb a { color:var(--color-primary); text-decoration:underline; text-underline-offset:.2em; }
+.ak-pending-page .ak-pending-content { padding:var(--card-padding); }
+.ak-pending-page h1 { margin:var(--space-4) 0 var(--space-3); font-family:var(--font-sans); font-size:var(--text-3xl); font-weight:var(--weight-bold); line-height:var(--leading-tight); color:var(--color-text); }
+.ak-pending-page h2 { margin:var(--space-5) 0 var(--space-2); font-family:var(--font-sans); font-size:var(--text-lg); font-weight:var(--weight-semibold); line-height:var(--leading-normal); color:var(--color-text); }
+.ak-pending-page p { margin:var(--space-3) 0; line-height:var(--leading-relaxed); }
+.ak-pending-page figure { margin:0; }
+.ak-pending-page figure img { display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover; }
+.ak-pending-page figcaption { padding:var(--space-3) var(--card-padding); color:var(--color-text-muted); font-size:var(--text-sm); line-height:var(--leading-relaxed); border-top:1px solid var(--color-border); }
+.ak-pending-page .ak-pending-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-3); margin-top:var(--space-5); }
+.ak-pending-page [data-ak-cookbook-status] { min-height:var(--space-6); color:var(--color-text-muted); }
+.ak-pending-page .btn { min-height:44px; white-space:normal; }
+.ak-pending-page .btn-primary { color:var(--color-text-inverse); }
+.ak-pending-page :is(a,button):focus-visible { outline:3px solid var(--color-primary); outline-offset:3px; }
+</style>
+</head><body class="page-shell"><afro-navbar></afro-navbar>
+<main class="ak-page ak-static-page ak-pending-page" data-ak-pending-method-view="${escapeHtml(recipe.id)}" data-ak-pending-slug="${escapeHtml(recipe.slug)}">
+<div class="container--narrow ak-pending-shell">
+<nav class="ak-pending-breadcrumb" aria-label="Breadcrumb"><a href="/tools/afrokitchen/">AfroKitchen</a><span aria-hidden="true">/</span><span aria-current="page">${escapeHtml(recipe.name)}</span></nav>
+<article class="card" aria-labelledby="ak-pending-title">
+<div class="ak-pending-content"><span class="badge badge-grey" role="status">Recipe method review pending</span>
+<h1 id="ak-pending-title">${escapeHtml(recipe.name)}</h1><p>${escapeHtml(recipe.country_name)}</p>
+<p data-ak-pending-reason>${escapeHtml(recipe.description)}</p>
+<h2>Preparation method under source review</h2>
+<p>Ingredients, quantities, preparation and fermentation times, yield and nutrition are not established. Cooking, portion planning and recipe exports stay unavailable until a preparation method is reviewed.</p>
+${recipe.slug === 'ikivuguto-rw' ? '<p><strong>Contains dairy:</strong> this is a dairy-milk drink; it is not dairy-free.</p>' : ''}
+<div class="ak-pending-actions"><button type="button" class="btn btn-primary" data-ak-save-recipe aria-pressed="false">Save dish</button><a class="btn btn-secondary" href="/tools/afrokitchen/#browse-panel">Browse other dishes</a></div>
+<p data-ak-cookbook-status role="status" aria-live="polite">Save this dish on this device to find it again later.</p></div>
+${illustration ? `<figure><img src="${escapeHtml(illustration.src)}" alt="${escapeHtml(illustration.alt)}" decoding="async"${recipeImageAttributes(illustration.src, 1200, 800)}><figcaption>AI-generated illustration; not a photograph or proof of a reviewed preparation method or food safety.</figcaption></figure>` : ''}
+</article></div></main><afro-footer></afro-footer>
+<script>window.__AK_STATIC_RECIPE = ${safeJson(payload)};</script>
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="/engines/afrokitchen-engine.js"></script><script src="/tools/afrokitchen/static-recipe-runtime.js"></script><script src="/tools/afrokitchen/cookbook.js"></script>
+</body></html>\n`;
+}
+
 function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, cuisineIntelligence) {
   recipe = cleanPatchedRecipeCopy(applyRecipeResearchPatch(recipe, researchAudit));
-  const recipeInsight = getRecipeInsight(recipe, cuisineIntelligence);
+  if (attributedRecipes.isPendingRecipeMethod(recipe)) return buildPendingMethodPageHtml(recipe, recipeImages);
+  const recipeInsight = researchAudit && researchAudit[recipe.slug]?.curated_method === true ? null : getRecipeInsight(recipe, cuisineIntelligence);
   const recipeInternalLinkGroups = pickRecipeInternalLinkGroups(recipe, manifest);
   const media = resolveRecipeMedia(recipe, recipeImages);
   const galleryImages = collectRecipeGalleryImages(recipe, media, recipeImages);
@@ -1390,11 +1472,15 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const equipmentHtml = equipment.length ? '<section class="ak-equipment" aria-label="Suggested equipment"><div><h3>A few kitchen essentials</h3><p>Suggested from the recipe method. Use equivalent equipment you have.</p></div><div class="ak-equipment-list">' + equipment.map(item => '<div class="ak-equipment-item">' + item.svg + '<span>' + escapeHtml(item.name) + '</span></div>').join('') + '</div></section>' : '';
 
   const recipeData = {
+    id: recipe.id,
+    is_published: recipe.is_published,
+    is_verified: recipe.is_verified,
     slug: recipe.slug,
     name: recipe.name,
     description: recipe.description,
     story: recipe.story || "",
-    default_servings: recipe.default_servings || 1,
+    default_servings: recipe.yield_status === 'not-recorded' ? null : recipe.default_servings || 1,
+    ...(recipe.yield_status === 'not-recorded' ? { yield_status: 'not-recorded' } : {}),
     serving_unit: recipe.serving_unit || "servings",
     prep_time_minutes: recipe.prep_time_minutes,
     cook_time_minutes: recipe.cook_time_minutes,
@@ -1410,7 +1496,9 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     gallery_images: galleryImages,
     region_lens: recipeInsight ? recipeInsight.region_lens : null,
     chef_notes: recipeInsight ? recipeInsight.chef_notes : null,
-    image_status: recipeInsight ? recipeInsight.image : null
+    image_status: recipeInsight ? recipeInsight.image : null,
+    media: recipe.media || [],
+    ...(recipe.method_revision ? { method_revision: recipe.method_revision } : {})
   };
 
   return `<!DOCTYPE html>
@@ -1608,8 +1696,8 @@ ${renderCookbookNav()}
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Region</div><div class="ak-stat-val">${escapeHtml(recipe.region)}</div></div>
-          <div class="ak-stat"><div class="ak-stat-lbl">Time</div><div class="ak-stat-val accent">${escapeHtml(String(recipe.total_time_minutes || 0))} min</div></div>
-          <div class="ak-stat"><div class="ak-stat-lbl">Serves</div><div class="ak-stat-val">${escapeHtml(String(recipe.default_servings || 1))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">Time</div><div class="ak-stat-val accent">${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
         <div class="ak-hero-actions">
@@ -1630,6 +1718,7 @@ ${renderCookbookNav()}
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
           ${recipe.primary_collection_slug ? `<div><span>Collection</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
         </div>
+        ${media.illustrationCaption || artworkByPath.get(media.pageImage)?.caption ? `<p class="ak-static-credit">${escapeHtml(media.illustrationCaption || artworkByPath.get(media.pageImage).caption)}</p>` : ""}
         ${media.credit ? `<div class="ak-static-credit">${akIcon("source", "ak-icon-sm ak-icon-muted")}<span>Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</span></div>` : ""}
         </div>
       </aside>
@@ -1641,13 +1730,13 @@ ${renderCookbookNav()}
       <div class="ak-cook-shell" id="recipe-ingredients">
         <div class="ak-visual-intro"><div class="ak-panel-kicker">01 / Get ready</div><h2 class="ak-panel-title">Everything you need</h2><p class="ak-panel-helper">Tap each ingredient as you gather it. Illustrations are visual guides; follow the ingredient names and quantities.</p></div>
         <div class="ak-static-serving-bar">
-          <div class="ak-servings">
+            <div class="ak-servings"${recipe.yield_status === 'not-recorded' ? ' hidden style="display:none"' : ''}>
             <span class="ak-servings-label">Servings</span>
             <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
-            <span class="ak-servings-val" id="ak-static-servings">${escapeHtml(String(recipe.default_servings || 1))}</span>
+            <span class="ak-servings-val" id="ak-static-servings">${recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</span>
             <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
-          <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
+            <p class="ak-static-serving-note">${recipe.yield_status === 'not-recorded' ? 'The source does not state portions. Quantities are shown as listed; serving scaling and meal-plan portions are unavailable.' : 'Scale the dish before you shop, then use the checklist while you cook.'}</p>
         </div>
         <div class="ak-cookbook-tools"><button type="button" class="ak-btn ak-btn-outline" data-ak-save-recipe aria-pressed="false">Save recipe</button><button type="button" class="ak-btn ak-btn-primary" data-ak-cook-mode>Open cook mode</button><a class="ak-btn ak-btn-outline" href="#recipe-method">Jump to method</a><a href="/tools/afrokitchen/?saved=1#browse-panel">My cookbook</a></div>
         <p class="ak-cookbook-status" data-ak-cookbook-status role="status" aria-live="polite"></p>
@@ -1657,7 +1746,7 @@ ${renderCookbookNav()}
             <div class="ak-panel-title-row">
               <div>
                 <h2 class="ak-panel-title">Ingredients</h2>
-                <p class="ak-panel-helper">For ${escapeHtml(String(recipe.default_servings || 1))} ${escapeHtml(recipe.serving_unit || "servings")}</p>
+                 <p class="ak-panel-helper">${recipe.yield_status === 'not-recorded' ? 'Source quantities; portions not recorded' : 'For ' + escapeHtml(String(recipe.default_servings || 1)) + ' ' + escapeHtml(recipe.serving_unit || "servings")}</p>
               </div>
               <span class="ak-panel-pill">${escapeHtml(categoryLabel(recipe))}</span>
             </div>
@@ -1677,14 +1766,14 @@ ${renderCookbookNav()}
             </div>
             <div class="ak-method-stat-row">
               <span>${akIcon("check", "ak-icon-sm")}${escapeHtml(String((recipe.steps || []).length))} steps</span>
-              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(String(recipe.prep_time_minutes || 0))} min prep</span>
-              <span>${akIcon("timer", "ak-icon-sm")}${escapeHtml(String(recipe.cook_time_minutes || 0))} min cook</span>
-              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(String(recipe.total_time_minutes || 0))} min total</span>
+              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
+              <span>${akIcon("timer", "ak-icon-sm")}${engine.getRecipeTiming(recipe).total === null && engine.getRecipeTiming(recipe).cook !== null ? "About " : ""}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).cook))} cook (check method)</span>
+              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))} total</span>
               <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>
             </div>
             <div class="ak-steps">${renderedSteps}</div>
             <div class="ak-static-helper-note">
-              <p>${akIcon("warning", "ak-icon-sm ak-icon-accent")}<span>${escapeHtml(recipe.regional_variations || "Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.")}</span></p>
+              <p>${akIcon("warning", "ak-icon-sm ak-icon-accent")}<span>${escapeHtml(recipe.regional_variations || (recipe.method_revision ? "Regional variations have not been documented for this adaptation." : "Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen."))}</span></p>
             </div>
           </section>
         </div>
@@ -1698,7 +1787,7 @@ ${renderCookbookNav()}
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
+            <p>${recipe.method_revision && !recipe.occasion ? "An occasion has not been documented for this adaptation." : "Best for " + escapeHtml(recipeOccasionText(recipe)) + "."} Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook. ${engine.getRecipeTiming(recipe).total === null ? "Total time is not recorded." : "Allow about " + escapeHtml(String(recipe.total_time_minutes)) + " minutes total."}</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -2256,8 +2345,8 @@ function collectionCategoryNames(collection, limit) {
 
 function collectionTimeSummary(collection) {
   const times = (collection.recipes || [])
-    .map((recipe) => Number(recipe.total_time_minutes || 0))
-    .filter((value) => value > 0)
+    .map((recipe) => classifyRecipeDuration(recipe.total_time_minutes).minutes)
+    .filter((value) => value !== null)
     .sort((left, right) => left - right);
   if (!times.length) return "";
   const min = times[0];
@@ -3067,6 +3156,45 @@ function refreshRecipeDescriptions() {
   console.log(`Refreshed recipe description tags from saved manifest: ${changed} pages.`);
 }
 
+function projectReviewedManifest(input, researchAudit) {
+  const manifest = JSON.parse(JSON.stringify(input));
+  manifest.recipes = manifest.recipes.map((recipe) => ({
+    ...((recipe.slug === 'kapenta-stew-zm' || recipe.slug === 'oleleh-sl' || attributedRecipes.isAttributedTarget(recipe) || attributedRecipes.isPendingRecipeMethod(recipe)) ? applyRecipeResearchPatch(recipe, researchAudit) : recipe),
+    country_route_path: `/tools/afrokitchen/countries/${recipe.country_slug}/`,
+    country_route_url: countryUrl(recipe.country_slug)
+  }));
+
+  const kapenta = manifest.recipes.find(recipe => recipe.slug === 'kapenta-stew-zm' && recipe.method_revision === 'kapenta-zambian-kitchen-20261016');
+  if (kapenta) {
+    const fields = ['name','description','image_url','image_alt','prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','yield_status','method_revision'];
+    for (const group of [...(manifest.countries || []), ...(manifest.collections || [])]) {
+      group.recipes = (group.recipes || []).map(row => {
+        if (row.slug !== kapenta.slug) return row;
+        if (row.id && row.id !== kapenta.id) throw new Error('Curated Kapenta summary identity mismatch');
+        return { ...row, ...Object.fromEntries(fields.map(field => [field, kapenta[field]])) };
+      });
+    }
+  }
+  // Project only the explicitly curated summaries; identity and publication flags remain unchanged.
+  const attributedSummaryFields = ['name', 'description', 'story', 'author', 'source', 'image_url', 'image_alt', 'diet_tags', 'prep_time_minutes', 'cook_time_minutes', 'total_time_minutes', 'default_servings', 'serving_unit', 'yield_status', 'method_revision', 'method_review_status', 'method_review_revision'];
+  for (const recipe of manifest.recipes.filter(row => attributedRecipes.isAttributedRecipe(row) || attributedRecipes.isPendingRecipeMethod(row) || (row.slug === 'oleleh-sl' && row.id === 'ee3d60da-f4cd-4955-955f-987c0912dc34' && row.method_revision === 'oleleh-isata-89959d1b'))) {
+    for (const group of [...(manifest.countries || []), ...(manifest.collections || [])]) {
+      group.recipes = (group.recipes || []).map(row => {
+        if (row.slug !== recipe.slug) return row;
+        if (row.id && row.id !== recipe.id) throw new Error('Attributed summary identity mismatch');
+        const summary = { ...row, ...Object.fromEntries(attributedSummaryFields.map(field => [field, recipe[field]])) };
+        if (attributedRecipes.isPendingRecipeMethod(recipe)) {
+          const projected = attributedRecipes.projectPendingRecipeMethod({ ...summary, id: recipe.id });
+          if (!Object.hasOwn(row, 'id')) delete projected.id;
+          return projected;
+        }
+        return summary;
+      });
+    }
+  }
+  return manifest;
+}
+
 async function main() {
   if (process.argv.includes('--refresh-recipe-schema')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
@@ -3112,11 +3240,18 @@ async function main() {
     return;
   }
   if (process.argv.includes('--refresh-cookbook')) {
-    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    const researchAudit = loadRecipeResearchAudit();
+    const manifest = projectReviewedManifest(JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')), researchAudit);
+    // Validate explicit historical/live eligibility before any saved-manifest or page writes.
+    const { buildRecipeIndex } = require('./lib/afrokitchen-recipe-index');
+    if (manifest.recipes.some(recipe => typeof recipe.is_published !== 'boolean' || typeof recipe.is_verified !== 'boolean')) throw new Error('Saved refresh requires explicit publication eligibility');
+    buildRecipeIndex(manifest);
     const engine = loadAfroKitchenEngine();
     const recipeImages = loadRecipeImages();
-    const researchAudit = loadRecipeResearchAudit();
     const intelligence = buildCuisineIntelligence(manifest, { recipeImages, researchAudit });
+    mergeIntelligenceCollections(manifest, intelligence);
+    Object.assign(manifest, projectReviewedManifest(manifest, researchAudit));
+    writeCuisineIntelligenceFiles(intelligence);
     const recipes = manifest.recipes.filter(recipe => recipe.generated_in_wave);
     const analytics = require('./inject-analytics-loader');
     const routes = require('./lib/route-contract');
@@ -3124,6 +3259,8 @@ async function main() {
     const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
     const { execFileSync } = require('child_process');
     const files = [];
+    writeManifest(manifest, MANIFEST_PATH);
+    writeRecipeIndex(manifest);
     function refreshPage(directory, html) {
       const relative = path.relative(ROOT, path.join(directory, 'index.html')).replace(/\\/g, '/');
       const normalized = analytics.normalizeLoaderInHtml(html, analytics.canonicalLoaderTag());
@@ -3142,7 +3279,7 @@ async function main() {
     if (!process.argv.includes('--recipes-only')) manifest.collections.forEach(collection => refreshPage(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages)));
     // Preserve the established canonical and locale contracts through their owner.
     const refreshedFiles = new Set(files);
-    routes.syncRouteMetadata({ ...routeGraph, routes: routeGraph.routes.filter(record => refreshedFiles.has(record.source?.file)) }, { write: true });
+    routes.syncRouteMetadata({ ...routeGraph, routes: routeGraph.routes.filter(record => refreshedFiles.has(record.source?.file)).map(record => recipes.some(recipe => attributedRecipes.isPendingRecipeMethod(recipe) && record.source?.file === `tools/afrokitchen/recipes/${recipe.slug}/index.html`) ? { ...record, indexability: 'noindex' } : record) }, { write: true });
     // Use the same owner as build:seo, with bounded argument lists for Windows.
     for (let offset = 0; offset < files.length; offset += 80) {
       execFileSync(process.execPath, [path.join(ROOT, 'scripts/add-webapplication-schema.js'), '--fix', '--files=' + files.slice(offset, offset + 80).join(',')], { cwd: ROOT, stdio: 'pipe' });
@@ -3173,17 +3310,13 @@ async function main() {
   const recipeResearchAudit = loadRecipeResearchAudit();
   const manifest = await buildManifest({ waveStrategy });
 
-  manifest.recipes = manifest.recipes.map((recipe) => ({
-    ...recipe,
-    country_route_path: `/tools/afrokitchen/countries/${recipe.country_slug}/`,
-    country_route_url: countryUrl(recipe.country_slug)
-  }));
-
+  Object.assign(manifest, projectReviewedManifest(manifest, recipeResearchAudit));
   const cuisineIntelligence = buildCuisineIntelligence(manifest, {
     recipeImages,
     researchAudit: recipeResearchAudit
   });
   mergeIntelligenceCollections(manifest, cuisineIntelligence);
+  Object.assign(manifest, projectReviewedManifest(manifest, recipeResearchAudit));
   writeCuisineIntelligenceFiles(cuisineIntelligence);
 
   writeManifest(manifest, MANIFEST_PATH);
@@ -3327,4 +3460,4 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
+module.exports = { projectReviewedManifest, buildPendingMethodPageHtml, buildCollectionPageHtml, buildCountryPageHtml, applyRecipeResearchPatch, isoDurationFromMinutes, collectRecipeGalleryImages, buildRecipeSchemas, buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };

@@ -37,10 +37,36 @@ for (const artwork of importedArtwork) {
   });
 }
 
+// Exact admitted source records, not a general exception for missing generation history.
+// Whole-row digests bind prompt/provenance/asset identities to accepted recipe8 d5416fb6.
+const admittedHistoricalArtwork = Object.freeze({
+  'kapenta-stew-zm': '2863c6bf4af058043f25fde68ec23618caecfebfbaf46e68a6ace006e0b4ff43',
+  'koba-mg': '99da95992cce2e6ec8c38af58528c86e13ceb238c2102b656f3bce5937f72102',
+  'ibihaza-rw': 'dc1357fb74371db1894ea28b9190ec3a80f77d36eb2769ca4a1b016dfda60e9a',
+  'kat-kat-banane-sc': '81f462000fae91e9bdffe4c3a3cf560721bd174a0f6c416f73bca74c29dcc750'
+});
+const attributedArtworkCaptions = Object.freeze({
+  'mandazi-tanzania-tz': 'AI-generated serving illustration of this attributed adaptation; not a kitchen-tested photograph.',
+  'koba-mg': 'AI-generated serving illustration of the attributed small-parcel adaptation; not kitchen-tested photography.'
+});
+
 for (const artwork of ledger.images) {
   test(`${artwork.slug}: reviewed image hashes, dimensions and mobile byte budget`, () => {
-    assert.ok(artwork.prompt.length > 200);
-    assert.equal(artwork.source, 'built-in image_gen');
+    if (Object.hasOwn(admittedHistoricalArtwork, artwork.slug)) {
+      assert.equal(crypto.createHash('sha256').update(JSON.stringify(artwork)).digest('hex'), admittedHistoricalArtwork[artwork.slug], 'exact accepted prompt/provenance/asset record');
+      if (artwork.slug === 'kapenta-stew-zm') {
+        assert.equal(artwork.prompt, null);
+        assert.equal(artwork.source, 'saved AI-generated candidate');
+        assert.equal(artwork.upstream_prompt_status, 'Generation transcript not established in this review; saved pixel/byte identity inspected');
+        assert.equal(artwork.saved_asset_blobs.length, artwork.variants.length);
+        for (const blob of artwork.saved_asset_blobs) assert.match(blob, /^[a-f0-9]{40}$/);
+      } else {
+        assert.ok(artwork.prompt.length > 200);
+      }
+    } else {
+      assert.ok(artwork.prompt.length > 200);
+      assert.equal(artwork.source, 'built-in image_gen');
+    }
     for (const variant of artwork.variants) {
       const file = path.join(ROOT, variant.path);
       const bytes = fs.readFileSync(file);
@@ -53,7 +79,12 @@ for (const artwork of ledger.images) {
     const recipe = manifest.recipes.find(row => row.slug === artwork.slug);
     const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
     assert.ok(html.includes(artwork.alt));
-    assert.ok(html.includes('AI-generated illustration'));
+    if (Object.hasOwn(attributedArtworkCaptions, artwork.slug)) {
+      assert.equal(artwork.caption, attributedArtworkCaptions[artwork.slug]);
+      assert.ok(html.includes(attributedArtworkCaptions[artwork.slug]));
+    } else {
+      assert.ok(html.includes('AI-generated illustration'));
+    }
     assert.ok(html.includes(`content="https://afrotools.com${artwork.target}"`));
     for (const variant of artwork.variants) assert.ok(html.includes(`${variant.path} ${variant.width}w`));
     const card = renderStaticRecipeCard(recipe, recipeImages);

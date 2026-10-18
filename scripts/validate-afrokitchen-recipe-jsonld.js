@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { resolveRecipeMedia, loadRecipeImages, isUsableRecipeImage } = require('./lib/afrokitchen-static');
+const { resolveRecipeMedia, loadRecipeImages, isUsableRecipeImage, classifyRecipeDuration } = require('./lib/afrokitchen-static');
 
 const ROOT = path.resolve(__dirname, "..");
 const MANIFEST_PATH = path.join(ROOT, "tools", "afrokitchen", "seo-manifest.json");
@@ -100,6 +100,28 @@ function validateNutritionSchema(recipe, nutrition) {
   return errors;
 }
 
+// Optional durations must still match the measured source exactly. A partial
+// prep/cook measurement is visible content, not a one-sided schema duration.
+function validateDurationSchema(recipe, schema) {
+  const errors = [];
+  const values = Object.fromEntries(['prep', 'cook', 'total'].map(kind => [kind, classifyRecipeDuration(recipe[kind + '_time_minutes'])]));
+  for (const kind of ['prep', 'cook', 'total']) {
+    if (values[kind].kind === 'invalid') errors.push(kind + '_time_minutes is invalid in source');
+  }
+  const pair = values.prep.kind === 'known' && values.cook.kind === 'known';
+  for (const kind of ['prep', 'cook', 'total']) {
+    const field = kind + 'Time';
+    const expected = (kind === 'total' ? values.total.kind === 'known' : pair)
+      ? `PT${Math.round(values[kind].minutes)}M` : null;
+    if (expected !== null) {
+      if (!Object.hasOwn(schema, field) || !isIsoDuration(schema[field]) || schema[field] !== expected) errors.push(field + ' missing or does not match measured source');
+    } else if (Object.hasOwn(schema, field)) {
+      errors.push(field + ' must be omitted without the required source measurement');
+    }
+  }
+  return errors;
+}
+
 function validateRecipePage(recipe) {
   const filePath = routeToFile(recipe.route_path);
   const relativeFile = path.relative(ROOT, filePath).replace(/\\/g, "/");
@@ -110,6 +132,10 @@ function validateRecipePage(recipe) {
   }
 
   const html = fs.readFileSync(filePath, "utf8");
+  if (require('../engines/src/afrokitchen-engine').isPendingRecipeMethod(recipe)) {
+    const result = require('./audit-afrokitchen-indexability').inspectPendingMethodPage(recipe, html);
+    return { slug: recipe.slug, file: relativeFile, errors: result.errors, schemaState: result.state };
+  }
   const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i);
   const robots = html.match(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["']/i);
   const blocks = extractJsonLd(html);
@@ -163,9 +189,7 @@ function validateRecipePage(recipe) {
   }
   if (!recipeSchema.recipeCategory || !String(recipeSchema.recipeCategory).trim()) errors.push("recipeCategory missing");
   if (!recipeSchema.keywords || !String(recipeSchema.keywords).trim()) errors.push("keywords missing");
-  ["prepTime", "cookTime", "totalTime"].forEach((field) => {
-    if (!isIsoDuration(recipeSchema[field])) errors.push(`${field} missing or not ISO 8601 duration`);
-  });
+  errors.push(...validateDurationSchema(recipe, recipeSchema));
   if (!recipeSchema.recipeYield || !String(recipeSchema.recipeYield).includes(String(recipe.default_servings))) {
     errors.push("recipeYield missing servings");
   }
@@ -249,4 +273,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { validateNutritionSchema };
+module.exports = { validateNutritionSchema, validateDurationSchema };
