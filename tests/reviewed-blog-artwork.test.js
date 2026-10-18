@@ -5,6 +5,7 @@ const fs=require('fs');
 const path=require('path');
 const crypto=require('crypto');
 const {imageSize}=require('../scripts/lib/image-size');
+const routeApi=require('../scripts/lib/route-contract');
 const ROOT=path.resolve(__dirname,'..');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
 const generatedArtwork=new Map([
@@ -14,6 +15,7 @@ const generatedArtwork=new Map([
 
 test('reviewed blog imagery retains exact subjects, hashes and explicit illustration labels',()=>{
  assert.equal(new Set(bindings.map(row=>row.file+'#'+row.route)).size,bindings.length);
+ const graph=routeApi.buildRouteGraph();
  for(const row of bindings){
   const file=path.join(ROOT,row.path),bytes=fs.readFileSync(file);
   assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),row.sha256);
@@ -32,7 +34,7 @@ test('reviewed blog imagery retains exact subjects, hashes and explicit illustra
    else assert.ok(!figures[0].includes('AI-generated'),'Legacy illustration review is not generation evidence');
    assert.ok(html.includes('href="https://afrotools.com'+row.route+'"'),'Canonical route retained');
   }else{
-   const cards=[...html.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(m=>m[0]).filter(card=>card.includes('href="'+row.route+'"'));
+   const cards=[...html.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(m=>m[0]).filter(card=>[row.route,routeApi.rewriteInternalHref(graph,row.route)].some(route=>card.includes('href="'+route+'"')));
    assert.equal(cards.length,1);
    assert.ok(cards[0].includes('src="'+row.path+'"'));
    assert.ok(!cards[0].includes('/assets/img/og-home.png'));
@@ -59,4 +61,39 @@ test('later OG fallback passes preserve reviewed article imagery around embedded
    if(['Article','BlogPosting','WebPage','WebApplication'].includes(schema['@type'])&&schema.image)assert.equal(schema.image,url,row.file);
   }
  }
+});
+
+// A finite graph models the reviewed permanent alias; the genuine route resolver
+// and image owner still execute. No full-site generator is required by these cases.
+const CARD_ALIAS='/fr/blog/tva-maroc-taux-calcul/';
+const CARD_CANONICAL='/blog/tva-maroc-taux-calcul/';
+function cardGraph(){return {routes:[{route:CARD_ALIAS,state:'redirect',statusCode:301,normalizedRoute:CARD_ALIAS.slice(0,-1),redirectTarget:CARD_CANONICAL},{route:CARD_CANONICAL,state:'page',normalizedRoute:CARD_CANONICAL.slice(0,-1)}]};}
+function cardFixture(){return fs.readFileSync(path.join(ROOT,'fr/blog/index.html'),'utf8').replace('href="'+CARD_ALIAS+'"','href="'+CARD_CANONICAL+'"');}
+function canonicalCard(html){return [...html.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(m=>m[0]).find(card=>card.includes('href="'+CARD_CANONICAL+'"'));}
+function applyCard(html){return require('../scripts/apply-reviewed-blog-images').applyBindingsToHtml('fr/blog/index.html',html,cardGraph());}
+test('canonical reviewed card: canonical href retains exact reviewed artwork and all other bytes',()=>{
+ const html=cardFixture(),card=canonicalCard(html);assert.ok(card);
+ assert.match(card,/src="\/assets\/img\/blog\/invoice-planning-illustration.webp"/);
+ assert.equal(applyCard(html),html);
+});
+test('canonical reviewed card: original reviewed alias still binds and is idempotent',()=>{
+ const html=cardFixture().replace('href="'+CARD_CANONICAL+'"','href="'+CARD_ALIAS+'"');
+ assert.equal(applyCard(html),html);assert.equal(applyCard(applyCard(html)),html);
+});
+test('canonical reviewed card: baseline placeholder refresh preserves final canonical href',()=>{
+ const html=cardFixture(),card=canonicalCard(html);
+ const old=card.replace(/src="[^"]*"/,'src="/assets/img/og-home.png"');
+ const output=applyCard(html.replace(card,old));assert.equal(output,html);assert.equal(applyCard(output),output);
+});
+test('canonical reviewed card: alias plus canonical duplicate is rejected',()=>{
+ const html=cardFixture(),card=canonicalCard(html);
+ assert.throws(()=>applyCard(html+card.replace('href="'+CARD_CANONICAL+'"','href="'+CARD_ALIAS+'"')),/Expected one reviewed article card/);
+});
+test('canonical reviewed card: unrelated route and missing reviewed identity fail closed',()=>{
+ const html=cardFixture().replace('href="'+CARD_CANONICAL+'"','href="/blog/unrelated-article/"');
+ assert.throws(()=>applyCard(html),/Expected one reviewed article card/);
+});
+test('canonical reviewed card: wrong image on correctly routed card is rejected',()=>{
+ const html=cardFixture(),card=canonicalCard(html);
+ assert.throws(()=>applyCard(html.replace(card,card.replace(/src="[^"]*"/,'src="/assets/img/unknown.webp"'))),/Article card imagery changed/);
 });

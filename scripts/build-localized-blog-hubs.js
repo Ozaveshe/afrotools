@@ -2,6 +2,16 @@
 
 const fs = require("fs");
 const path = require("path");
+const routeApi = require("./lib/route-contract");
+let routeGraph;
+function getRouteGraph() {
+  return routeGraph || (routeGraph = routeApi.buildRouteGraph());
+}
+function canonicalizeExpectedHrefs(html) {
+  const graph = getRouteGraph();
+  return html.replace(/(\bhref(?:Fr|Sw|Ha|Yo)?\s*(?:=|:)\s*)(["'])([^"']+)\2/gi,
+    (full, prefix, quote, href) => prefix + quote + routeApi.rewriteInternalHref(graph, href) + quote);
+}
 const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
 const { analyticsVersion, bootstrapVersion, canonicalLoaderTag, earlyBootstrapTag } = require("./inject-analytics-loader");
 const root = path.resolve(__dirname, "..");
@@ -109,7 +119,7 @@ function decorateHub(html, locale) {
 let changed = 0;
 for (const locale of ["fr", "sw"]) {
   const file = locale === "fr" ? "fr/blog/index.html" : "sw/blogu/index.html";
-  const expected = require('./apply-reviewed-blog-images').applyBindingsToHtml(file, decorateHub(render(locale, articles(locale)), locale));
+  const expected = canonicalizeExpectedHrefs(require('./apply-reviewed-blog-images').applyBindingsToHtml(file, decorateHub(render(locale, articles(locale)), locale), getRouteGraph()));
   const current = read(file);
   const hasAnalyticsContract = current.includes('/assets/js/lazy-analytics.js')
     && (locale !== 'fr' || current.includes('/assets/js/analytics-bootstrap.js'));

@@ -1,5 +1,8 @@
 const {test,expect}=require('@playwright/test');
 const bindings=require('../../data/image-generation/blog-artwork-bindings.json').images.filter(row=>row.placement==='listing-card');
+const {createReviewedCardIdentity}=require('../support/reviewed-resource-card-identity');
+const graph=require('../../data/registry/route-graph.json');
+const identities=createReviewedCardIdentity(bindings,graph);
 test.use({trace:'off'});
 
 for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:'dark'}]){
@@ -15,6 +18,7 @@ for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:
     page.on('response',response=>{const url=imageURL(response.url());if(url&&new URL(url).pathname.startsWith('/assets/img/blog/'))remember({kind:'response',url,status:response.status()});});
     page.on('requestfailed',request=>{const url=imageURL(request.url());if(url&&new URL(url).pathname.startsWith('/assets/img/blog/'))remember({kind:'requestfailed',url,failure:(request.failure()?.errorText||'unknown').slice(0,160)});});
     const seen=new Set();
+    const coverage=identities.createCoverage();
     for(const file of [...new Set(bindings.map(row=>row.file))]){
       await page.goto('/'+file.replace(/index\.html$/,''));
       const selector=file==='blog/index.html'?'#blogGrid .article-card':'[data-blog-card]';
@@ -30,10 +34,9 @@ for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:
           const link=card.locator('a[href^="/blog/"],a[href^="/fr/blog/"]').first();
           await expect(link).toBeAttached();
           const route=await link.getAttribute('href');
-          const key=file+'#'+route;
+          const {key,row}=coverage.observe(file,route);
           expect(fileSeen.has(key),'A card must not repeat across pagination: '+key).toBe(false);
           fileSeen.add(key);seen.add(key);
-          const row=bindings.find(row=>row.file===file&&row.route===route);
           const image=card.locator('img');
           await image.scrollIntoViewIfNeeded();
           const imageSource=await image.getAttribute('src');
@@ -41,6 +44,7 @@ for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:
           if(row){
             await expect(image).toHaveAttribute('src',row.path);
             await expect(image).toHaveAttribute('alt',row.alt);
+            coverage.assertArtwork(file,route,imageSource,await image.getAttribute('alt'));
           }
           try{
             await expect.poll(()=>image.evaluate(img=>img.complete&&img.naturalWidth>0),{message:'Resource image decode: file='+file+' route='+route+' src='+imageSource}).toBe(true);
@@ -67,6 +71,7 @@ for(const appearance of [{width:390,colorScheme:'light'},{width:320,colorScheme:
       }
       expect(fileSeen.size,'Every story card must be rendered: '+file).toBe(expectedCount);
     }
-    for(const row of bindings)expect(seen.has(row.file+'#'+row.route),row.route).toBe(true);
+    coverage.assertComplete();
+    for(const row of bindings)expect(seen.has(identities.keyFor(row.file,row.route)),row.route).toBe(true);
   });
 }

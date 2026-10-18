@@ -3,6 +3,8 @@
 const fs=require('fs'),path=require('path');
 const crypto=require('crypto');
 const {imageSize}=require('./lib/image-size');
+const routeApi=require('./lib/route-contract');
+let listingRouteGraph;
 const ROOT=path.resolve(__dirname,'..');
 const cohort=require('../data/image-generation/placement-review-cohort.json');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
@@ -32,7 +34,7 @@ function replacePreviousHero(html,row,figure) {
 function validateBindingPaths(row) {
   if(!/^(?:fr\/)?blog\/[a-z0-9/-]+\.html$/.test(row.file)||row.file.includes('..')||!/^\/assets\/img\/(?:blog|tools)\/[a-z0-9-]+\.webp$/.test(row.path)) throw new Error('Invalid reviewed article binding');
 }
-function applyBinding(before,row) {
+function applyBinding(before,row,graph) {
   validateBindingPaths(row);
   const file=path.join(ROOT,row.file),image=path.join(ROOT,row.path),bytes=fs.readFileSync(image),size=imageSize(image);
   if(crypto.createHash('sha256').update(bytes).digest('hex')!==row.sha256||size.w!==row.width||size.h!==row.height) throw new Error('Reviewed artwork changed '+row.path);
@@ -62,9 +64,11 @@ function applyBinding(before,row) {
     after=before.replace(marker,figure+'\n'+marker);
    }
   } else if(row.placement==='listing-card') {
+   graph=graph||(listingRouteGraph||(listingRouteGraph=routeApi.buildRouteGraph()));
+   const routes=new Set([row.route,routeApi.rewriteInternalHref(graph,row.route)]);
    let matches=0;
    after=before.replace(/<article\b[^>]*>[\s\S]*?<\/article>/g,card=>{
-    if(!card.includes(`href="${row.route}"`)) return card;
+    if(![...routes].some(route=>card.includes(`href="${route}"`))) return card;
     matches++;
     const tag=card.match(/<img\b[^>]*>/)?.[0];
     if(!tag||!['/assets/img/og-home.png',row.previous_path,row.path].filter(Boolean).some(src=>tag.includes(`src="${src}"`))) throw new Error('Article card imagery changed '+row.route);
@@ -88,8 +92,8 @@ function applyBinding(before,row) {
   }
   return after;
 }
-function applyBindingsToHtml(relativeFile,html) {
- for(const row of bindings.filter(row=>row.file===relativeFile)) html=applyBinding(html,row);
+function applyBindingsToHtml(relativeFile,html,graph) {
+ for(const row of bindings.filter(row=>row.file===relativeFile)) html=applyBinding(html,row,graph);
  return html;
 }
 function applyBindings(check=false) {

@@ -387,9 +387,29 @@ async function fetchKickChannel(slug, token) {
       });
       if (r1.ok) {
         var d1 = await r1.json();
-        var ch1 = d1.data && d1.data[0] ? d1.data[0] : null;
-        if (ch1) return ch1;
-        attempts.push('v1-channels: ok but no data');
+        var ch1 = Array.isArray(d1.data) ? d1.data.find(function(channel) {
+          return channel && typeof channel.slug === 'string' &&
+            channel.slug.toLowerCase() === slug.toLowerCase();
+        }) : null;
+        // Official channel responses put the checked state under stream,
+        // not the legacy is_live/livestream shape consumed by checkKick.
+        // Missing or malformed state is unavailable, never confirmed offline.
+        var stream1 = ch1 && ch1.stream;
+        if (stream1 && typeof stream1.is_live === 'boolean') {
+          return {
+            is_live: stream1.is_live,
+            livestream: {
+              is_live: stream1.is_live,
+              session_title: typeof ch1.stream_title === 'string' && ch1.stream_title.trim() ? ch1.stream_title : 'Live on Kick',
+              viewer_count: Number.isSafeInteger(stream1.viewer_count) && stream1.viewer_count >= 0 ? stream1.viewer_count : 0,
+              categories: ch1.category && typeof ch1.category.name === 'string' ? [ch1.category] : [],
+              thumbnail: typeof stream1.thumbnail === 'string' ? stream1.thumbnail : null
+            },
+            banner_image: typeof ch1.banner_picture === 'string' ? ch1.banner_picture : '',
+            _v1_channels: true
+          };
+        }
+        attempts.push('v1-channels: no matching confirmed live state');
       } else {
         attempts.push('v1-channels: ' + r1.status);
       }
@@ -435,13 +455,19 @@ async function fetchKickChannel(slug, token) {
     });
     if (r2.ok) {
       var d2 = await r2.json();
-      return {
-        is_live: !!(d2.livestream && d2.livestream.is_live),
-        follower_count: d2.following_count || 0,
-        profile_image: d2.user && d2.user.profile_pic,
-        livestream: d2.livestream || null,
-        _v2: true
-      };
+      // An absent/invalid legacy state cannot establish that a creator is offline.
+      // Null livestream has no substantiated offline contract here; keep it unknown.
+      if (d2 && typeof d2 === 'object' && !Array.isArray(d2) &&
+          d2.livestream && typeof d2.livestream === 'object' &&
+          !Array.isArray(d2.livestream) && typeof d2.livestream.is_live === 'boolean') {
+        return {
+          is_live: d2.livestream.is_live,
+          follower_count: d2.following_count || 0,
+          profile_image: d2.user && d2.user.profile_pic,
+          livestream: d2.livestream || null,
+          _v2: true
+        };
+      }
     }
     attempts.push('v2-channels: ' + r2.status);
   } catch(e) { attempts.push('v2-channels: ' + e.message); }

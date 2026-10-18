@@ -5,6 +5,87 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
+
+const routeApi = require('../scripts/lib/route-contract');
+const routeGraph = routeApi.buildRouteGraph();
+const escapeCardTitle = value => String(value).replace(/[&<>\"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+function cardQuotedAttribute(tag, name) {
+  const values = [...tag.matchAll(/\s+([^\s=/>]+)\s*=\s*(["'])([\s\S]*?)\2/g)].filter(match => match[1].toLowerCase() === name);
+  assert.ok(values.length <= 1, 'Duplicate actual article-card attribute: ' + name);
+  return values.length ? values[0][3] : null;
+}
+function cardOpeningTag(card) {
+  const match = card.match(/^<article(?=\s|>)(?:[^"'<>]|"[^"]*"|'[^']*')*>/i);
+  assert(match, 'Actual article opening tag required');
+  return match[0];
+}
+function cardHasMarker(opening) {
+  if (cardQuotedAttribute(opening, 'data-blog-card') !== null) return true;
+  const withoutQuotedAttributes = opening.replace(/\s+([^\s=/>]+)\s*=\s*(["'])([\s\S]*?)\2/g, '');
+  return /\sdata-blog-card(?=\s|>)/i.test(withoutQuotedAttributes);
+}
+function assertCanonicalManifestCards(html, entries, graph) {
+  const cards = [...html.matchAll(/<article(?=\s|>)(?:[^"'<>]|"[^"]*"|'[^']*')*>[\s\S]*?<\/article\s*>/gi)].map(match => match[0]).filter(card => cardHasMarker(cardOpeningTag(card)));
+  assert.strictEqual(cards.length, entries.length, 'French manifest and article-card counts must match');
+  const identities = new Set();
+  for (const item of entries) {
+    const href = routeApi.rewriteInternalHref(graph, '/fr/blog/' + item.slug + '/');
+    assert(!identities.has(href), 'French manifest must not duplicate a canonical card identity');
+    identities.add(href);
+    const destination = routeApi.getRouteRecord(graph, new URL(href, 'https://afrotools.com').pathname);
+    assert(destination && destination.state === 'page' && destination.locale === 'fr', 'French card must reach its genuine native French page');
+    const matching = cards.filter(card => {
+      const mainLink = [...card.matchAll(/<a(?=\s|>)(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi)].map(match => match[0]).find(tag => {
+        const classes = cardQuotedAttribute(tag, 'class');
+        return classes !== null && classes.split(/\s+/).includes('localized-blog-card__link');
+      });
+      return mainLink && cardQuotedAttribute(mainLink, 'href') === href;
+    });
+    assert.strictEqual(matching.length, 1, 'Exactly one French card must own canonical destination ' + href);
+    const card = matching[0], opening = cardOpeningTag(card);
+    assert.strictEqual(cardQuotedAttribute(opening, 'data-locale'), 'fr', 'French card locale must be explicit');
+    assert(card.includes('<h3>' + escapeCardTitle(item.title) + '</h3>'), 'French card must retain the manifest/source title identity');
+  }
+}
+const cardFixtureGraph = { routes: [
+  { route: '/fr/blog/old/', state: 'redirect', statusCode: 301, redirectTarget: '/blog/native/' },
+  { route: '/blog/native/', state: 'page', locale: 'fr' },
+  { route: '/fr/blog/other/', state: 'page', locale: 'fr' }
+] };
+const cardFixtureEntries = [{ slug: 'old', title: 'Premier & guide' }, { slug: 'other', title: 'Second guide' }];
+const fixtureCard = (href, title, locale = 'fr') => '<article data-blog-card data-locale="' + locale + '"><a class="localized-blog-card__link" href="' + href + '"><h3>' + escapeCardTitle(title) + '</h3></a></article>';
+const firstCard = fixtureCard('/blog/native/', cardFixtureEntries[0].title), secondCard = fixtureCard('/fr/blog/other/', cardFixtureEntries[1].title);
+assertCanonicalManifestCards(firstCard + secondCard, cardFixtureEntries, cardFixtureGraph);
+assertCanonicalManifestCards(secondCard, [cardFixtureEntries[1]], cardFixtureGraph);
+assert.throws(() => assertCanonicalManifestCards(fixtureCard('/fr/blog/old/', cardFixtureEntries[0].title) + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(fixtureCard('/blog/native-extra/', cardFixtureEntries[0].title) + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard + firstCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards('<aside>/blog/native/</aside>' + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(fixtureCard('/blog/native/', cardFixtureEntries[0].title, 'en') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(fixtureCard('/blog/native/', 'Wrong title') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('localized-blog-card__link', 'unrelated-link') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard + secondCard, cardFixtureEntries, { routes: cardFixtureGraph.routes.map(row => row.route === '/blog/native/' ? { ...row, locale: 'en' } : row) }));
+assert.throws(() => assertCanonicalManifestCards(firstCard + secondCard, [{ slug: 'missing', title: 'Missing' }, cardFixtureEntries[1]], cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard + secondCard, [cardFixtureEntries[0], cardFixtureEntries[0]], cardFixtureGraph));
+assertCanonicalManifestCards(firstCard.replace('localized-blog-card__link', 'leading localized-blog-card__link trailing') + secondCard, cardFixtureEntries, cardFixtureGraph);
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('localized-blog-card__link', 'fake-localized-blog-card__link') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('localized-blog-card__link', 'localized-blog-card__link-extra') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assertCanonicalManifestCards(firstCard.replace('class="localized-blog-card__link"', 'class = "localized-blog-card__link"').replace('href="/blog/native/"', 'href = "/blog/native/"') + secondCard, cardFixtureEntries, cardFixtureGraph);
+assertCanonicalManifestCards(firstCard.replace('class="localized-blog-card__link"', 'data-class="wrong" class="localized-blog-card__link"') + secondCard, cardFixtureEntries, cardFixtureGraph);
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('class="localized-blog-card__link"', 'data-class="localized-blog-card__link"') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('href="/blog/native/"', 'data-href="/blog/native/" href="/blog/wrong/"') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('href="/blog/native/"', 'data-href="/blog/native/"') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('data-locale="fr"', 'data-data-locale="fr"') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('data-blog-card', 'fake-data-blog-card') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('data-blog-card', 'data-blog-card-extra') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('data-blog-card', 'data-note=" data-blog-card "') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('class="localized-blog-card__link"', "data-note=' class=\"localized-blog-card__link\"' class=\"wrong\"") + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('href="/blog/native/"', 'href="/blog/native/" href="/blog/wrong/"') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('class="localized-blog-card__link"', 'class="localized-blog-card__link" class="wrong"') + secondCard, cardFixtureEntries, cardFixtureGraph));
+assert.throws(() => assertCanonicalManifestCards(firstCard.replace('<article ', '<article-extra ').replace('</article>', '</article-extra>') + secondCard, cardFixtureEntries, cardFixtureGraph));
+console.log('Canonical manifest-card controls: 5 positive and 24 negative passed.');
+
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 const allHtml = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
   const target = path.join(dir, entry.name);
@@ -52,7 +133,14 @@ assert(redirect && redirect.destination === '/fr/terms-of-use/' && redirect.stat
 
 const manifest = JSON.parse(read('data/localization/fr-blog-manifest.json'));
 const blog = read('fr/blog/index.html');
-assert(manifest.articles.length > 0 && manifest.articles.every((item) => blog.includes(`/fr/blog/${item.slug}/`)), 'French blog must be generated from the explicit French manifest');
+assert(manifest.articles.length > 0, 'French manifest must contain published article identities');
+const manifestCardEntries = manifest.articles.map(item => {
+  const source = read('fr/blog/' + item.slug + '/index.html');
+  const title = item.title || (source.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  assert(title, 'French card source title must be present: ' + item.slug);
+  return { slug: item.slug, title };
+});
+assertCanonicalManifestCards(blog, manifestCardEntries, routeGraph);
 assert(!/Published guides|Tool-led articles|All Articles|Read article|Loading articles/i.test(blog), 'French blog controls and status copy must be French');
 assert(fs.existsSync(path.join(ROOT, 'fr/blog/feed.xml')), 'French blog must publish a locale-specific feed');
 

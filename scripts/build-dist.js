@@ -138,6 +138,13 @@ const BLOCKED_ROOT_FILES = new Set([
 const BLOCKED_ROOT_EXTENSIONS = new Set([
   '.bat',
   '.csv',
+  '.cjs',
+  '.mjs',
+  '.ts',
+  '.cts',
+  '.mts',
+  '.jsx',
+  '.tsx',
   '.docx',
   '.gz',
   '.js',
@@ -512,6 +519,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  shouldSkipFile,
   writeReleaseMetadata,
   minifyCss,
   optimizeDistAssets,

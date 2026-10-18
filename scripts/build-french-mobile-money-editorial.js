@@ -3,6 +3,16 @@
 
 const fs = require('fs');
 const path = require('path');
+const routeApi = require('./lib/route-contract');
+let routeGraph;
+function getRouteGraph() {
+  return routeGraph || (routeGraph = routeApi.buildRouteGraph());
+}
+function canonicalizeExpectedHrefs(html) {
+  const graph = getRouteGraph();
+  return html.replace(/(\bhref(?:Fr|Sw|Ha|Yo)?\s*(?:=|:)\s*)(["'])([^"']+)\2/gi,
+    (full, prefix, quote, href) => prefix + quote + routeApi.rewriteInternalHref(graph, href) + quote);
+}
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -277,7 +287,7 @@ function transform(source) {
 }
 
 const current = fs.readFileSync(PAGE_PATH, 'utf8');
-const expected = require('./apply-reviewed-blog-images').applyBindingsToHtml(PAGE_REL, transform(current));
+const expected = canonicalizeExpectedHrefs(require('./apply-reviewed-blog-images').applyBindingsToHtml(PAGE_REL, transform(current), getRouteGraph()));
 
 if (current === expected) {
   console.log(`French mobile-money editorial surface is current: ${PAGE_REL}`);
