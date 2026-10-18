@@ -794,6 +794,20 @@
       },
       "stepSha256": "3925270dcfe544e8a5442d86c0c2d9cacd0dfc89fed9597fdde42ba95b4533cf",
       "originalYaml": "      - name: Verify CAC local preflight and qualified Idea registration evidence in the artifact\n        env:\n          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'\n          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'\n          PORT: '4194'\n        run: npx playwright test tests/e2e/cac-source-accuracy.spec.js tests/e2e/idea-registration-evidence.spec.js --project=chromium --workers=2 --retries=0 --trace=off\n\n"
+    },
+    {
+      "id": "browser-46",
+      "group": 2,
+      "step": {
+        "name": "Verify same-origin fallback frames under actual artifact HTTP CSP",
+        "env": {
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1",
+          "PORT": "4269"
+        },
+        "run": "npm run test:same-origin-frames:browser"
+      },
+      "stepSha256": "224fc97a78452714018bd5528ac8297199974d3adadc73e0bae44c01da81a007"
     }
   ],
   "consumerSetup": [
@@ -828,6 +842,7 @@
     "browser-42",
     "browser-43",
     "browser-44",
-    "browser-45"
+    "browser-45",
+    "browser-46"
   ]
 }

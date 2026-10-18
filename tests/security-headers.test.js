@@ -108,6 +108,18 @@ for (const p of WIDGET_PATHS) {
 const documentRoutes = ['/tools/pdf-workflow', '/tools/pdf-ocr', '/fr/tools/flux-pdf', '/fr/tools/ocr-pdf', '/sw/zana/workflow-ya-pdf', '/sw/zana/ocr-pdf'];
 const wasmPaths = documentRoutes.flatMap(route => [route, route + '/*']).concat('/assets/vendor/tesseract/worker.min.js', '/assets/vendor/qpdf/qpdf-worker.js');
 assert(!globalCsp.includes("'wasm-unsafe-eval'"), 'Global CSP must not permit WASM compilation');
+// A parent's frame-src controls its child documents, separately from ancestors.
+const expectedPolicyPaths = ['/*', ...WIDGET_PATHS, ...wasmPaths];
+const explicitPolicyPaths = Object.entries(blocks).filter(([, block]) => block['content-security-policy']).map(([pattern]) => pattern);
+assert(explicitPolicyPaths.length === expectedPolicyPaths.length && expectedPolicyPaths.every(pattern => explicitPolicyPaths.includes(pattern)), 'Explicit CSP routes must remain the approved global, widget and local-WASM set');
+for (const pattern of explicitPolicyPaths) {
+  const directives = blocks[pattern]['content-security-policy'].split(';').map(value => value.trim().split(/\s+/));
+  const frameDirectives = directives.filter(tokens => tokens[0] === 'frame-src');
+  assert(frameDirectives.length === 1, pattern + ' must define exactly one child frame-src directive');
+  const sources = frameDirectives[0] ? frameDirectives[0].slice(1) : [];
+  assert(sources.length === 2 && sources.filter(source => source === "'self'").length === 1 && sources.filter(source => source === 'https://js.stripe.com').length === 1, pattern + ' child frames must allow only the same origin and the existing Stripe host');
+}
+
 for (const [pattern, block] of Object.entries(blocks)) {
   const policy = block['content-security-policy'] || '';
   assert(!policy.includes("'unsafe-eval'"), `${pattern} must not enable JavaScript eval`);
