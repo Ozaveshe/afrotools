@@ -1571,9 +1571,10 @@
     return amount + unit + item.name + (item.prep_note ? ' (' + item.prep_note + ')' : '') + (item.is_optional ? ' optional' : '');
   }
 
-  // This curated method has no recorded person-yield; legacy online summaries may lack its marker.
+  // Deny-only legacy identity recognition: known pending/unknown-yield rows may lack their marker.
+  // A known ID or slug can withhold planning; it never grants a method identity or invents a UUID.
   function hasUnrecordedPlanYield(recipe) {
-    return !!recipe && (recipe.yield_status === 'not-recorded' || recipe.id === '76572d95-eb8e-4c78-bbb6-ea754f61c758' || recipe.slug === 'kapenta-stew-zm' || recipe.id === 'd7d7e305-3c5d-40db-9033-36843e102176' || recipe.slug === 'ibihaza-rw' || recipe.id === '8a2bb743-87d9-462e-bc09-335e78f9584a' || recipe.slug === 'kunu-zaki-ng' || recipe.id === 'f2850789-0ffd-41b3-bbaf-e3229132c9e6' || recipe.slug === 'ikivuguto-rw');
+    return !!recipe && (recipe.yield_status === 'not-recorded' || recipe.id === '76572d95-eb8e-4c78-bbb6-ea754f61c758' || recipe.slug === 'kapenta-stew-zm' || recipe.id === 'd7d7e305-3c5d-40db-9033-36843e102176' || recipe.slug === 'ibihaza-rw' || recipe.id === '8a2bb743-87d9-462e-bc09-335e78f9584a' || recipe.slug === 'kunu-zaki-ng' || recipe.id === 'f2850789-0ffd-41b3-bbaf-e3229132c9e6' || recipe.slug === 'ikivuguto-rw' || recipe.id === 'c0aced74-68d6-437d-b00b-abd1895605f0' || recipe.slug === 'kisra-south-sudan-ss' || recipe.id === '626fd465-87e1-4f93-bca7-747decbf63d0' || recipe.slug === 'maheu-zm' || recipe.id === '4caf4ed6-13ec-4fbb-8039-ce51a4201cfe' || recipe.slug === 'mchemsho-tz');
   }
 
   function recipeIngredientsByGroup(recipe, servings) {

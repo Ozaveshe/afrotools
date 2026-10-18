@@ -19,13 +19,13 @@ function context() {
     readAsset: file => fs.readFileSync(path.join(root, file.replace(/^\//, ''))) };
 }
 
-test('retained original200 batch reconciles only the ten reviewed source asset deliveries', () => {
+test('retained original200 batch reconciles only the eleven reviewed source asset deliveries', () => {
   const input = context();
   const originalStems = new Set(input.library.images.map(row => row.path.replace(/\.[^.]+$/, '')));
   assert.deepEqual(batch.images.filter(row => originalStems.has(row.path.replace(/\.[^.]+$/, ''))).map(row => row.id).sort(),
-    ['recipe-ibihaza-rw', 'recipe-ikivuguto-rw', 'recipe-kapenta-stew-zm', 'recipe-kat-kat-banane-sc', 'recipe-koba-mg', 'recipe-kunu-zaki-ng', 'recipe-latchiri-kossan-gn', 'recipe-mandazi-tanzania-tz', 'recipe-ndizi-nyama-tz', 'recipe-oleleh-sl']);
+    ['recipe-ibihaza-rw', 'recipe-ikivuguto-rw', 'recipe-kapenta-stew-zm', 'recipe-kat-kat-banane-sc', 'recipe-koba-mg', 'recipe-kunu-zaki-ng', 'recipe-latchiri-kossan-gn', 'recipe-mandazi-tanzania-tz', 'recipe-mchemsho-tz', 'recipe-ndizi-nyama-tz', 'recipe-oleleh-sl']);
   assert.deepEqual(reconcileImageBatch(input), {
-    retainedRequests: 200, reviewedSourceDeliveries: 10, unreconciledRequests: 190
+    retainedRequests: 200, reviewedSourceDeliveries: 11, unreconciledRequests: 189
   });
   for (const row of proof.deliveries) {
     const size = imageSize(path.join(root, row.path.slice(1)));
@@ -46,7 +46,7 @@ test('wrong reviewed intake variant hash cannot authorize delivery', () => {
   input.ledger.images.find(row => row.slug === 'kapenta-stew-zm').variants.find(row => row.path === proof.deliveries[0].path).sha256 = '0'.repeat(64);
   assert.throws(() => reconcileImageBatch(input), /intake sha256 drift/);
 });
-test('an unexpected delivered request among the other190 retains the no-existing-stem guard', () => {
+test('an unexpected delivered request among the other189 retains the no-existing-stem guard', () => {
   const input = context(), unexpected = batch.images.find(row => !proof.deliveries.some(delivery => delivery.id === row.id));
   input.library.images.push({ path: unexpected.path });
   assert.throws(() => reconcileImageBatch(input), /Unexpected existing request stem/);
@@ -101,10 +101,10 @@ const FUTURE = {
 };
 const digest = value => crypto.createHash('sha256').update(value).digest('hex');
 function reviewedRow(id) { const row=proof.deliveries.find(row=>row.id===id); assert.ok(row,'Missing reviewed source delivery: '+id); return row; }
-test('actual helper admits the independent finite ten-ledger inventory and no additional request',()=>{
- const input=context(),slugs=['kapenta-stew-zm','oleleh-sl',...Object.values(FUTURE).map(row=>row[0]),'kunu-zaki-ng','ikivuguto-rw'];
+test('actual helper admits the independent finite eleven-ledger inventory and no additional request',()=>{
+ const input=context(),slugs=['kapenta-stew-zm','oleleh-sl',...Object.values(FUTURE).map(row=>row[0]),'kunu-zaki-ng','ikivuguto-rw','mchemsho-tz'];
  input.library.images=slugs.map(slug=>{const intake=ledger.images.find(row=>row.slug===slug);assert.ok(intake);return {...intake.variants.find(v=>v.path===intake.target)};});
- assert.deepEqual(reconcileImageBatch(input),{retainedRequests:200,reviewedSourceDeliveries:10,unreconciledRequests:190});
+ assert.deepEqual(reconcileImageBatch(input),{retainedRequests:200,reviewedSourceDeliveries:11,unreconciledRequests:189});
 });
 test('six additional rows join exact request, recipe revision, ledger prompt and accepted source lineage',()=>{
  for(const [id,[slug,recipeId,revision,commit]] of Object.entries(FUTURE)){
@@ -142,8 +142,8 @@ for(const id of Object.keys(FUTURE)) {
   const row=reviewedRow(id),input=context();input.library.images.push({...input.library.images.find(x=>x.path===row.path),path:row.path.replace(/\.webp$/,'.png')});assert.throws(()=>reconcileImageBatch(input),/unexpected extra extension/);
  });
 }
-test('every one of the other190 requests retains its no-existing-stem guard',()=>{
- const pending=batch.images.filter(row=>!proof.deliveries.some(x=>x.id===row.id));assert.equal(pending.length,190);
+test('every one of the other189 requests retains its no-existing-stem guard',()=>{
+ const pending=batch.images.filter(row=>!proof.deliveries.some(x=>x.id===row.id));assert.equal(pending.length,189);
  for(const request of pending){const input=context();input.library.images.push({path:request.path});assert.throws(()=>reconcileImageBatch(input),/Unexpected existing request stem/,request.id);}
 });
 
@@ -172,3 +172,28 @@ for(const id of Object.keys(GAP_FILL)){
  test(id+': duplicate delivery fails',()=>{const row=reviewedRow(id),input=context();input.proof.deliveries.push(clone(row));input.proof.reviewed_deliveries++;assert.throws(()=>reconcileImageBatch(input),/Duplicate delivery ID/)});
  test(id+': extra extension fails',()=>{const row=reviewedRow(id),input=context();input.library.images.push({...input.library.images.find(x=>x.path===row.path),path:row.path.replace(/\.webp$/,'.png')});assert.throws(()=>reconcileImageBatch(input),/unexpected extra extension/)});
 }
+
+test('only recovered canonical Mchemsho advances delivery; three fixed 1280 candidates remain pending',()=>{
+ const row=reviewedRow('recipe-mchemsho-tz'),request=batch.images.find(x=>x.id===row.id);
+ assert.equal(row.recipe_id,'4caf4ed6-13ec-4fbb-8039-ce51a4201cfe');assert.equal(row.width,1200);assert.equal(row.height,800);
+ assert.equal(row.path,'/assets/img/kitchen/mchemsho-tz.webp');assert.equal(row.path,request.path);assert.equal(request.dimensions,'1200x800');
+ assert.equal(row.sha256,'b2ec5ce348680aa0fa54216ac60c0d44afcc5a40bec9550a5e35fdff44b9a26a');
+ assert.equal(row.recovered_asset_commit,'24429e29c022dae6b89b31d61470835d3a2302d3');assert.equal(row.admission_status,'proposed-offtree-source-adoption-not-accepted');assert.equal(row.accepted_source_commit,undefined);
+ const physical=fs.readFileSync(path.join(root,row.path.slice(1)));assert.equal(row.accepted_asset_blob,crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+physical.length+'\0'),physical])).digest('hex'));
+ for(const slug of ['kisra-south-sudan-ss','maheu-zm','octopus-curry-sc']){
+  assert.equal(proof.deliveries.some(x=>x.id==='recipe-'+slug),false);
+  const intake=ledger.images.find(x=>x.slug===slug),primary=intake.variants.find(x=>x.path===intake.target),retained=batch.images.find(x=>x.id==='recipe-'+slug);
+  assert.equal(primary.width,1280);assert.equal(primary.height,853);assert.notEqual(primary.path,retained.path);assert.equal(retained.dimensions,'1200x800');
+  const input=context();input.library.images.push({path:retained.path});assert.throws(()=>reconcileImageBatch(input),/Unexpected existing request stem/);
+ }
+});
+for(const fault of ['physical','inventory','intake','missing','duplicate','extension']) test('Mchemsho recovery retains '+fault+' negative',()=>{
+ const row=reviewedRow('recipe-mchemsho-tz'),input=context(),read=input.readAsset;
+ if(fault==='physical')input.readAsset=file=>{const b=Buffer.from(read(file));if(file===row.path)b[b.length-1]^=1;return b};
+ if(fault==='inventory')input.library.images.find(x=>x.path===row.path).sha256='0'.repeat(64);
+ if(fault==='intake')input.ledger.images.find(x=>x.slug===row.slug).variants.find(x=>x.path===row.path).sha256='0'.repeat(64);
+ if(fault==='missing')input.library.images=input.library.images.filter(x=>x.path!==row.path);
+ if(fault==='duplicate'){input.proof.deliveries.push(clone(row));input.proof.reviewed_deliveries++}
+ if(fault==='extension')input.library.images.push({...input.library.images.find(x=>x.path===row.path),path:row.path.replace(/\.webp$/,'.png')});
+ assert.throws(()=>reconcileImageBatch(input));
+});
