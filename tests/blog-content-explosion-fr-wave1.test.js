@@ -14,6 +14,52 @@ const hub = fs.readFileSync(path.join(root, 'fr', 'blog', 'index.html'), 'utf8')
 const feed = fs.readFileSync(path.join(root, 'fr', 'blog', 'feed.xml'), 'utf8');
 const report = fs.readFileSync(path.join(root, 'reports', 'blog-seo-opportunities-fr-wave1-2026-08.md'), 'utf8');
 
+const routeApi = require('../scripts/lib/route-contract');
+const routeGraph = routeApi.buildRouteGraph();
+function relatedQuotedAttribute(tag, name) {
+  const values = [...tag.matchAll(/\s+([^\s=/>]+)\s*=\s*(["'])([\s\S]*?)\2/g)].filter(match => match[1].toLowerCase() === name);
+  assert.ok(values.length <= 1, 'Duplicate actual related-link attribute: ' + name);
+  return values.length ? values[0][3] : null;
+}
+function assertCanonicalRelatedLinks(html, related, graph, label) {
+  assert.ok(related.length >= 2, label + ': au moins deux liens associés requis');
+  const actual = [...html.matchAll(/<a(?=\s|>)(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi)].map(match => relatedQuotedAttribute(match[0], 'href')).filter(value => value !== null);
+  const expected = related.map(([href]) => routeApi.rewriteInternalHref(graph, href));
+  assert.ok(new Set(expected).size >= 2, label + ': liens associés distincts requis');
+  for (let index = 0; index < expected.length; index += 1) {
+    const href = expected[index];
+    const record = routeApi.getRouteRecord(graph, new URL(href, 'https://afrotools.com').pathname);
+    assert.ok(record && record.state === 'page', label + ': destination associée inconnue');
+    assert.ok(actual.includes(href), label + ': lien associé canonique manquant ' + href);
+    if (href !== related[index][0]) assert.ok(!actual.includes(related[index][0]), label + ': ancien alias associé encore présent');
+  }
+}
+// Closed controls call the genuine resolver with a declared synthetic route graph.
+const relatedFixtureGraph = { routes: [
+  { route: '/fr/blog/old/', state: 'redirect', statusCode: 301, redirectTarget: '/blog/native/' },
+  { route: '/blog/native/', state: 'page', locale: 'fr' },
+  { route: '/fr/blog/other/', state: 'page', locale: 'fr' }
+] };
+const relatedFixture = [['/fr/blog/old/', 'Premier'], ['/fr/blog/other/', 'Second']];
+const relatedLinks = (first, second = '/fr/blog/other/') => '<a href="' + first + '">Premier</a><a href="' + second + '">Second</a>';
+assertCanonicalRelatedLinks(relatedLinks('/blog/native/'), relatedFixture, relatedFixtureGraph, 'canonical-only');
+assertCanonicalRelatedLinks(relatedLinks('/blog/native/'), [['/blog/native/', 'Premier'], relatedFixture[1]], relatedFixtureGraph, 'unchanged-page');
+assertCanonicalRelatedLinks(relatedLinks('/blog/native/?q=1#proof'), [['/fr/blog/old/?q=1#proof', 'Premier'], relatedFixture[1]], relatedFixtureGraph, 'suffix-preserved');
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/fr/blog/old/'), relatedFixture, relatedFixtureGraph, 'stale-alias'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native-extra/'), relatedFixture, relatedFixtureGraph, 'wrong-target'));
+assert.throws(() => assertCanonicalRelatedLinks('/blog/native/ /fr/blog/other/', relatedFixture, relatedFixtureGraph, 'text-is-not-link'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/'), [relatedFixture[0], relatedFixture[0]], relatedFixtureGraph, 'duplicate-declared-target'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/missing/'), [['/blog/missing/', 'Premier'], relatedFixture[1]], relatedFixtureGraph, 'unknown-declared-target'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/'), [['/fr/blog/old/?q=1#proof', 'Premier'], relatedFixture[1]], relatedFixtureGraph, 'suffix-lost'));
+assertCanonicalRelatedLinks(relatedLinks('/blog/native/').replace('href="/blog/native/"', 'data-href="/blog/wrong/" href = "/blog/native/"'), relatedFixture, relatedFixtureGraph, 'actual-attribute-with-spacing');
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/').replace('href="/blog/native/"', 'data-href="/blog/native/"'), relatedFixture, relatedFixtureGraph, 'data-href-is-not-href'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/').replace('href="/blog/native/"', 'data-href="/blog/native/" href="/blog/wrong/"'), relatedFixture, relatedFixtureGraph, 'data-href-cannot-mask-wrong-href'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/').replace('href="/blog/native/"', "data-note=' href=\"/blog/native/\"' href=\"/blog/wrong/\""), relatedFixture, relatedFixtureGraph, 'quoted-value-is-not-attribute'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/').replace('href="/blog/native/"', 'href="/blog/native/" href="/blog/wrong/"'), relatedFixture, relatedFixtureGraph, 'duplicate-href-is-ambiguous'));
+assert.throws(() => assertCanonicalRelatedLinks(relatedLinks('/blog/native/').replace('<a href=', '<a-extra href=').replace('</a>', '</a-extra>'), relatedFixture, relatedFixtureGraph, 'custom-tag-is-not-anchor'));
+console.log('Canonical related-link controls: 4 positive and 11 negative passed.');
+
+
 function routeExists(href) {
   const rel = href.replace(/^\//, '').replace(/\/$/, '');
   return fs.existsSync(path.join(root, rel, 'index.html')) || fs.existsSync(path.join(root, `${rel}.html`));
@@ -49,7 +95,7 @@ for (const article of data.articles) {
   assert.ok(routeExists(article.tool[0]), `${article.slug}: route de l’app introuvable`);
   assert.ok(fs.existsSync(path.join(root, 'assets', 'img', 'tools', `${article.image}.webp`)), `${article.slug}: image sociale manquante`);
   assert.ok(article.sources.length >= 3 && article.sources.every(([href]) => href.startsWith('https://') && html.includes(href)), `${article.slug}: couverture des sources insuffisante`);
-  assert.ok(article.related.length >= 2 && article.related.every(([href]) => html.includes(href)), `${article.slug}: liens internes incomplets`);
+  assertCanonicalRelatedLinks(html, article.related, routeGraph, article.slug);
   assert.ok(html.includes(`<strong>Sources relues le ${data.reviewedLabel}.</strong>`), `${article.slug}: date de revue des sources manquante`);
   assert.ok(html.includes('"@type":"Article"'), `${article.slug}: schéma Article manquant`);
   assert.ok(html.includes('"@type":"BreadcrumbList"'), `${article.slug}: schéma Breadcrumb manquant`);
