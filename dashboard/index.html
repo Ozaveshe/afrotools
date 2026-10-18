@@ -2891,11 +2891,15 @@
                 <div class="editor-panel" data-panel="notifications">
                     <h3 style="font-size:1rem;font-weight:600;margin-bottom:16px;">Email Notifications</h3>
                     <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;">
-                        <input aria-label="EditEmailDigest" type="checkbox" id="editEmailDigest" style="accent-color:#0062CC;width:18px;height:18px;margin-top:2px;flex-shrink:0;">
+                        <input aria-label="Optional email updates" type="checkbox" id="editEmailDigest" style="accent-color:#0062CC;width:18px;height:18px;margin-top:2px;flex-shrink:0;">
                         <span>
-                            <span style="font-size:0.92rem;font-weight:500;color:#1e293b;display:block;">Monthly financial digest</span>
-                            <span style="font-size:0.82rem;color:#64748b;">Your take-home, FX rates, salary benchmarks, and tool recommendations — sent on the 1st of each month.</span>
+                            <span style="font-size:0.92rem;font-weight:500;color:#1e293b;display:block;">Optional email updates</span>
+                            <span style="font-size:0.82rem;color:#64748b;">Monthly digests and occasional account tips, reminders and tool updates. Unsubscribe at any time.</span>
                         </span>
+                    </label>
+                    <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;margin-top:12px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;">
+                        <input aria-label="Weekly brief" type="checkbox" id="editEmailWeekly" style="accent-color:#0062CC;width:18px;height:18px;margin-top:2px;flex-shrink:0;">
+                        <span><span style="font-size:0.92rem;font-weight:500;color:#1e293b;display:block;">Also include the weekly brief</span><span style="font-size:0.82rem;color:#64748b;">Sent only while optional email updates are enabled. Account access and security emails are separate.</span></span>
                     </label>
                 </div>
 
@@ -3073,9 +3077,9 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/components/tool-registry.min.js?v=9ea256a9" defer></script>
-    <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-    <script src="/assets/js/components/auth-modal.js?v=f5936ca1"></script>
-  <script src="/assets/js/auth-cookie-upgrade.js?v=be4eb169"></script>
+    <script src="/assets/js/afro-auth.js?v=63f50905"></script>
+    <script src="/assets/js/components/auth-modal.js?v=bd3bb879"></script>
+  <script src="/assets/js/auth-cookie-upgrade.js?v=c26b56e2"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
     <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
@@ -3085,7 +3089,7 @@
     <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
     <script src="/dashboard/dashboard-app.js?v=e1e7c421"></script>
     <script src="/dashboard/afropoints-lane-account.js?v=401e149a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=a4be1be7"></script>
+    <script src="/assets/js/components/navbar.min.js?v=b4d8029c"></script>
     <script src="/assets/js/components/footer.min.js?v=6bd937ab"></script>
 
     <script>
@@ -3448,6 +3452,29 @@
             }
         }
 
+        function hydrateEmailPreferences(profile) {
+            var digest = document.getElementById('editEmailDigest');
+            var weekly = document.getElementById('editEmailWeekly');
+            if (digest) {
+                digest.checked = profile.email_digest_enabled === true;
+                digest.dataset.emailConsentEdited = 'false';
+            }
+            if (weekly) {
+                weekly.checked = profile.email_weekly_enabled === true;
+                weekly.disabled = !digest || !digest.checked;
+                weekly.dataset.emailConsentEdited = 'false';
+            }
+        }
+
+        function appendEditedEmailPreferences(profileData) {
+            [['editEmailDigest', 'email_digest_enabled'], ['editEmailWeekly', 'email_weekly_enabled']].forEach(function(entry) {
+                var control = document.getElementById(entry[0]);
+                if (control && control.dataset.emailConsentEdited === 'true') {
+                    profileData[entry[1]] = control.checked === true;
+                }
+            });
+        }
+
         function hydrateEditorForms() {
             if (!currentUser) return;
             var p = extendedProfile || {};
@@ -3486,8 +3513,7 @@
             // Interests
             selectedInterests = (p.interests && Array.isArray(p.interests)) ? p.interests.slice() : [];
             // Email digest
-            var digestCb = document.getElementById('editEmailDigest');
-            if (digestCb) digestCb.checked = p.email_digest_enabled !== false;
+            hydrateEmailPreferences(p);
             // Clear password fields
             document.getElementById('editCurrentPassword').value = '';
             document.getElementById('editNewPassword').value = '';
@@ -3559,9 +3585,9 @@
                 linkedin_url: document.getElementById('editLinkedIn').value.trim(),
                 website_url: document.getElementById('editWebsite').value.trim(),
                 interests: selectedInterests,
-                email_digest_enabled: document.getElementById('editEmailDigest') ? document.getElementById('editEmailDigest').checked : true,
                 updated_at: new Date().toISOString()
             };
+            appendEditedEmailPreferences(profileData);
 
             // Country select already uses 2-letter codes
             var countryCode = country;
@@ -4101,6 +4127,15 @@
 
             // Bio counter
             document.getElementById('editBio').addEventListener('input', updateBioCounter);
+            var emailDigestControl = document.getElementById('editEmailDigest');
+            var emailWeeklyControl = document.getElementById('editEmailWeekly');
+            if (emailDigestControl) emailDigestControl.addEventListener('change', function() {
+                emailDigestControl.dataset.emailConsentEdited = 'true';
+                if (emailWeeklyControl) emailWeeklyControl.disabled = !emailDigestControl.checked;
+            });
+            if (emailWeeklyControl) emailWeeklyControl.addEventListener('change', function() {
+                emailWeeklyControl.dataset.emailConsentEdited = 'true';
+            });
 
             // Editor tabs
             initEditorTabs();

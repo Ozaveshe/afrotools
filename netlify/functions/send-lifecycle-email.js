@@ -69,7 +69,7 @@ async function loadRecipient(kind, email, body) {
   if (!profileRes.ok) return { skip: true, providerStatus: 'profile_lookup_failed' };
   var profiles = await profileRes.json();
   var profile = profiles && profiles[0];
-  if (!profile || profile.email_digest_enabled === false || profile.email_welcome_sent_at) {
+  if (!profile || profile.email_digest_enabled !== true || profile.email_welcome_sent_at) {
     return { skip: true, providerStatus: 'profile_not_eligible' };
   }
   return {

@@ -20,10 +20,11 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5">
   <script src="/assets/js/data/african-countries.js?v=0d872b4b" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=a4be1be7" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=b4d8029c" defer></script>
   <script src="/assets/js/components/country-selector.js?v=a55dcf5d" defer></script>
   <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
   <style>
+    @view-transition{navigation:none}
     :root{--auth-ink:#111827;--auth-muted:#526173;--auth-line:#d8e0ea;--auth-accent:#0062cc;--auth-accent-dark:#074f9f;--auth-soft:#edf5ff;--auth-bg:#f6f8fb}
     body.auth-page{margin:0;background:var(--auth-bg);color:var(--auth-ink);font-family:"DM Sans",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     .auth-main{min-height:calc(100vh - 120px);padding:96px 20px 64px}
@@ -48,6 +49,11 @@
     .auth-body h2{margin:0 0 8px;font-size:1.45rem;line-height:1.2;letter-spacing:0}
     .auth-body p{margin:0 0 18px;color:var(--auth-muted);line-height:1.6;font-size:0.94rem}
     .auth-form{display:grid;gap:14px}
+    .auth-email-options{margin:0;padding:12px 14px;border:1px solid var(--auth-line);border-radius:8px;min-width:0}
+    .auth-email-options legend{padding:0 4px;font-size:.88rem;font-weight:700}
+    .auth-email-options label{display:flex;align-items:flex-start;gap:10px;margin:8px 0;font-size:.88rem;line-height:1.5;cursor:pointer}
+    .auth-email-options input{flex:0 0 auto;width:18px;height:18px;margin-top:2px;accent-color:var(--auth-accent)}
+    .auth-body .auth-email-options p{margin:6px 0 0;font-size:.8rem}
     .auth-form[hidden],.auth-extra[hidden]{display:none!important}
     .field{display:grid;gap:7px}
     .field label{font-size:0.82rem;font-weight:700;color:#233247}
@@ -173,6 +179,13 @@
               <label for="signupPassword">Password</label>
               <input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="6" required>
             </div>
+            <fieldset class="auth-email-options" aria-describedby="signupEmailScope">
+              <legend>Optional emails</legend>
+              <label><input id="signupEmailDigest" name="email_digest_enabled" type="checkbox" value="true">Send me optional email updates</label>
+              <p id="signupEmailScope">Monthly digests and occasional account tips, reminders and tool updates. You can unsubscribe at any time.</p>
+              <label><input id="signupEmailWeekly" name="email_weekly_enabled" type="checkbox" value="true" aria-describedby="signupWeeklyScope">Also include the weekly brief</label>
+              <p id="signupWeeklyScope">Weekly emails require optional email updates to be enabled. Account access and security emails are separate.</p>
+            </fieldset>
             <button class="auth-submit" type="submit">Create account</button>
           </form>
 
@@ -216,15 +229,15 @@
           </section>
 
           <p class="auth-footnote">By continuing you agree to the <a href="/terms/">terms</a> and <a href="/privacy/">privacy policy</a>.</p>
-          <noscript><p class="auth-footnote">JavaScript is off. Sign-in and account creation still submit through the secure auth endpoints.</p></noscript>
+          <noscript><style>#signupForm[hidden]{display:grid!important;margin-top:24px}</style><p class="auth-footnote">JavaScript is off. Sign-in and account creation still submit through the secure auth endpoints. For weekly emails, select both optional email choices.</p></noscript>
         </div>
       </section>
     </div>
   </main>
 
   <afro-footer></afro-footer>
-  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-  <script src="/assets/js/auth-cookie-upgrade.js?v=be4eb169"></script>
+  <script src="/assets/js/afro-auth.js?v=63f50905"></script>
+  <script src="/assets/js/auth-cookie-upgrade.js?v=c26b56e2"></script>
   <script src="/assets/js/auth-oauth-guard.js?v=f3091641"></script>
   <script>
   (function(){
@@ -361,6 +374,15 @@
       }
     });
 
+    var signupDigest = document.getElementById('signupEmailDigest');
+    var signupWeekly = document.getElementById('signupEmailWeekly');
+    function syncSignupEmailChoices() {
+      signupWeekly.disabled = !signupDigest.checked;
+      if (!signupDigest.checked) signupWeekly.checked = false;
+    }
+    signupDigest.addEventListener('change', syncSignupEmailChoices);
+    syncSignupEmailChoices();
+
     document.getElementById('signupForm').addEventListener('submit', async function(evt){
       if (!window.AfroAuth || typeof AfroAuth.signup !== 'function') return;
       evt.preventDefault();
@@ -371,7 +393,10 @@
       var country = selectedCountry && selectedCountry.name ? selectedCountry.name : document.getElementById('signupCountry').value;
       setStatus('Creating your account...');
       try {
-        var result = await AfroAuth.signup(email, name, password, country);
+        var result = await AfroAuth.signup(email, name, password, country, {
+          email_digest_enabled: signupDigest.checked === true,
+          email_weekly_enabled: signupDigest.checked === true && signupWeekly.checked === true
+        });
         if (result && result.ok !== false) {
           syncApiEmail(email);
           if (window.AfroCountry && selectedCountry && selectedCountry.code) {

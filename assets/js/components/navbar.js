@@ -2908,13 +2908,13 @@
       }
     }
     _authLS('/assets/js/data/african-countries.js', function() {
-      _authLS('/assets/js/afro-auth.js', function() {
+      _authLS('/assets/js/afro-auth.js?v=63f50905', function() {
         var loadOAuthAndModal = function() {
           _authLS('/assets/js/auth-oauth-guard.js?v=1', function() {
-            _authLS('/assets/js/components/auth-modal.js?v=2');
+            _authLS('/assets/js/components/auth-modal.js?v=bd3bb879');
           });
         };
-        if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=6', loadOAuthAndModal);
+        if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=c26b56e2', loadOAuthAndModal);
         else loadOAuthAndModal();
       });
     });
@@ -3000,7 +3000,7 @@
     if (window._afroAuthLoaded) return;
     if (!document.getElementById('afro-auth-js')) {
       var s = document.createElement('script'); s.id = 'afro-auth-js';
-      s.src = '/assets/js/afro-auth.js?v=6'; document.head.appendChild(s);
+      s.src = '/assets/js/afro-auth.js?v=63f50905'; document.head.appendChild(s);
     }
   }); }, _hasLocalAuthHint() ? 800 : 12000);
 })();
