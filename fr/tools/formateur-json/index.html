@@ -195,6 +195,8 @@
     var sample = document.getElementById('jsonSample');
     var copy = document.getElementById('jsonCopy');
     var download = document.getElementById('jsonDownload');
+    var renderedInput = null;
+    var renderRevision = 0;
 
     function setStatus(message, isError) {
       status.textContent = message;
@@ -228,10 +230,13 @@
     }
 
     function render(compact) {
+      renderRevision += 1;
+      copy.textContent = 'Copier';
       try {
         var parsed = parseCurrent();
         var formatted = JSON.stringify(parsed, null, compact ? 0 : 2);
         output.value = formatted;
+        renderedInput = input.value;
         var stats = analyse(parsed, 0);
         size.textContent = new Intl.NumberFormat('fr-FR').format(formatted.length) + ' caractères';
         keys.textContent = stats.keys + ' clés';
@@ -242,12 +247,34 @@
       } catch (error) {
         setStatus(error.message || 'JSON invalide.', true);
         output.value = '';
+        renderedInput = null;
         size.textContent = '-';
         keys.textContent = '-';
         depth.textContent = '-';
         return '';
       }
     }
+
+    function exportCurrent() {
+      return renderedInput === input.value && output.value ? output.value : render(false);
+    }
+
+    function currentCopy(revision, source, text) {
+      return revision === renderRevision && input.value === source && renderedInput === source && output.value === text;
+    }
+
+    input.addEventListener('input', function () {
+      renderRevision += 1;
+      renderedInput = null;
+      output.value = '';
+      size.textContent = '-';
+      keys.textContent = '-';
+      depth.textContent = '-';
+      copy.textContent = 'Copier';
+      status.textContent = 'Entrée modifiée. Formatez ou minifiez pour vérifier le nouveau contenu.';
+      status.classList.toggle('is-error', false);
+      validity.textContent = 'À vérifier';
+    });
 
     function repairText(text) {
       return String(text || '')
@@ -270,24 +297,37 @@
       render(false);
     });
     sample.addEventListener('click', function () {
-      input.value = '{\\n  \"country\": \"Sénégal\",\\n  \"workflow\": \"API test\",\\n  \"items\": [{\"name\":\"PDF\", \"count\": 3}],\\n  \"private\": true\\n}';
+      input.value = JSON.stringify({ country: 'Sénégal', workflow: 'API test', items: [{ name: 'PDF', count: 3 }], private: true }, null, 2);
       render(false);
     });
     copy.addEventListener('click', function () {
-      var text = output.value || render(false);
+      var text = exportCurrent();
+      if (!text) return;
+      var source = input.value;
+      var revision = ++renderRevision;
+      copy.textContent = 'Copier';
+      setStatus('Copie en cours…', false);
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function () {
+          if (!currentCopy(revision, source, text)) return;
           copy.textContent = 'Copié';
           setStatus('Résultat copié dans le presse-papiers.', false);
-          setTimeout(function () { copy.textContent = 'Copier'; }, 1300);
-        }).catch(function () { output.select(); });
+          setTimeout(function () { if (currentCopy(revision, source, text)) copy.textContent = 'Copier'; }, 1300);
+        }).catch(function () {
+          if (!currentCopy(revision, source, text)) return;
+          output.select();
+          setStatus('Copie automatique indisponible. Copiez la sélection avec les commandes du navigateur.', false);
+        });
       } else {
         output.select();
+        setStatus('Copie automatique indisponible. Copiez la sélection avec les commandes du navigateur.', false);
       }
     });
     download.addEventListener('click', function () {
-      var text = output.value || render(false);
+      var text = exportCurrent();
       if (!text) return;
+      renderRevision += 1;
+      copy.textContent = 'Copier';
       var blob = new Blob([text], { type: 'application/json;charset=utf-8' });
       var url = URL.createObjectURL(blob);
       var link = document.createElement('a');

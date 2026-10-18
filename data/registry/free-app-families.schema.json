@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Partial proposed free-app identity and acceptance inventory; never a functional verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "coverage", "acceptancePolicy", "snapshot", "families", "members", "ambiguities"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "coverage": { "const": "partial" },
+    "acceptancePolicy": { "const": "requirements-only-no-functional-verdict" },
+    "snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["commit", "tree", "registry", "rawRegistry", "expectedCounts", "exclusions"],
+      "properties": {
+        "commit": { "$ref": "#/$defs/gitId" }, "tree": { "$ref": "#/$defs/gitId" },
+        "registry": { "$ref": "#/$defs/pin" }, "rawRegistry": { "$ref": "#/$defs/pin" },
+        "expectedCounts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["raw", "eligible", "english", "localized", "freeEnglish", "freeAndProEnglish", "separateProApps"],
+          "properties": {
+            "raw": { "$ref": "#/$defs/count" }, "eligible": { "$ref": "#/$defs/count" },
+            "english": { "$ref": "#/$defs/count" }, "localized": { "$ref": "#/$defs/count" },
+            "freeEnglish": { "$ref": "#/$defs/count" }, "freeAndProEnglish": { "$ref": "#/$defs/count" },
+            "separateProApps": { "$ref": "#/$defs/count" }
+          }
+        },
+        "exclusions": { "type": "array", "items": {
+          "type": "object", "additionalProperties": false, "required": ["id", "route", "reason"],
+          "properties": { "id": { "$ref": "#/$defs/text" }, "route": { "$ref": "#/$defs/route" }, "reason": { "enum": ["redirect", "unpublished-compatibility", "english-pro-landing"] } }
+        } }
+      }
+    },
+    "families": { "type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["appFamilyId", "label", "workflow", "freeCore", "identityReview", "membershipClosure", "sourceEvidence", "ambiguityKeys"],
+      "properties": {
+        "appFamilyId": { "$ref": "#/$defs/key" }, "label": { "$ref": "#/$defs/text" },
+        "workflow": { "$ref": "#/$defs/text" }, "freeCore": { "$ref": "#/$defs/text" },
+        "identityReview": { "const": "proposed" }, "membershipClosure": { "const": "partial" },
+        "sourceEvidence": { "$ref": "#/$defs/evidenceList" },
+        "ambiguityKeys": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/key" } }
+      }
+    } },
+    "members": { "type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "catalogueId", "route", "role", "appFamilyId", "identityReview", "locale", "countryIds", "variant", "reason", "sourceEvidence", "requirements"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" }, "catalogueId": { "type": ["string", "null"], "minLength": 1 },
+        "route": { "$ref": "#/$defs/route" },
+        "role": { "enum": ["app", "alias", "hub", "reference", "collection", "pro-only", "discovery", "unresolved"] },
+        "appFamilyId": { "type": ["string", "null"], "minLength": 1 },
+        "identityReview": { "const": "proposed" },
+        "locale": { "type": "string", "pattern": "^[a-z]{2}$" },
+        "countryIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z]{2}$" } },
+        "variant": { "enum": ["canonical", "country", "locale", "country-locale", "source-only"] },
+        "reason": { "$ref": "#/$defs/text" }, "sourceEvidence": { "$ref": "#/$defs/evidenceList" },
+        "targetRoute": { "$ref": "#/$defs/route" },
+        "requirements": { "type": "array", "items": {
+          "type": "object", "additionalProperties": false, "required": ["kind", "description", "state", "notes"],
+          "properties": {
+            "kind": { "enum": ["happy", "error", "export", "recovery", "accessibility", "privacy"] },
+            "description": { "$ref": "#/$defs/text" }, "state": { "enum": ["unknown", "blocked"] },
+            "notes": { "type": "array", "items": { "$ref": "#/$defs/text" } }
+          }
+        } }
+      }
+    } },
+    "ambiguities": { "type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["key", "memberKeys", "reason", "neededEvidence"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "memberKeys": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/key" } },
+        "reason": { "$ref": "#/$defs/text" }, "neededEvidence": { "$ref": "#/$defs/text" }
+      }
+    } }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1 },
+    "key": { "type": "string", "pattern": "^[a-z0-9]+(?:[a-z0-9:-]*[a-z0-9])?$" },
+    "gitId": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "count": { "type": "integer", "minimum": 0 },
+    "route": { "type": "string", "pattern": "^/(?:[a-z0-9-]+/)*(?:[a-z0-9-]+\\.html)?$" },
+    "pin": {
+      "type": "object", "additionalProperties": false, "required": ["path", "gitBlob", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^[a-zA-Z0-9_][a-zA-Z0-9_./-]*$" },
+        "gitBlob": { "$ref": "#/$defs/gitId" }, "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "evidenceList": { "type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["pin", "kind", "literal", "scope"],
+      "properties": {
+        "pin": { "$ref": "#/$defs/pin" },
+        "kind": { "enum": ["page-owner", "engine-entrypoint"] },
+        "literal": { "type": "string", "minLength": 6 }, "scope": { "$ref": "#/$defs/text" }
+      }
+    } }
+  }
+}

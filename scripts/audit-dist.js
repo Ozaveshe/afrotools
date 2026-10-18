@@ -78,6 +78,7 @@ const FORBIDDEN_PATHS = [
 ];
 
 const FORBIDDEN_FILE_PATTERNS = [
+  /^[^/]+\.(?:[cm]?[jt]s|[jt]sx)$/i,
   /^data\/jamb\/(?!pools$|universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|original-practice|original-practice-index|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
   /(^|\/)package(?:-lock)?\.json$/i,
   /^.*\.(?:pid|exit)$/i,
@@ -98,6 +99,12 @@ const ALLOWED_HIDDEN_PATHS = new Set([
   '.well-known',
   '.well-known/security.txt'
 ]);
+
+function isForbiddenFile(relativePath) {
+  // The explicitly allowed public root worker is the only root JS exception.
+  return relativePath !== 'service-worker.js' &&
+    FORBIDDEN_FILE_PATTERNS.some((pattern) => pattern.test(relativePath));
+}
 
 function exists(relativePath) {
   return fs.existsSync(path.join(DIST, relativePath));
@@ -160,7 +167,7 @@ function main() {
       if (hasHiddenSegment && !ALLOWED_HIDDEN_PATHS.has(rel)) {
         failures.push(`Hidden path present in dist: ${rel}`);
       }
-      if (FORBIDDEN_FILE_PATTERNS.some((pattern) => pattern.test(rel))) {
+      if (isForbiddenFile(rel)) {
         failures.push(`Forbidden file type/name present in dist: ${rel}`);
       }
     }
@@ -180,4 +187,5 @@ function main() {
   console.log('Deploy artifact audit passed.');
 }
 
-main();
+if (require.main === module) main();
+module.exports = { isForbiddenFile };

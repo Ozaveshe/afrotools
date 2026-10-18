@@ -92,3 +92,42 @@ test('build assets leave readable sources intact and optimize only deploy copies
     fs.rmSync(temporaryRoot, { recursive: true, force: true });
   }
 });
+
+const { shouldSkipFile } = require('../scripts/build-dist');
+const { isForbiddenFile } = require('../scripts/audit-dist');
+const ROOT_MODULE_EXTENSIONS = ['js', 'cjs', 'mjs', 'ts', 'cts', 'mts', 'jsx', 'tsx'];
+const ROOT_TOOLING_FIXTURE = ROOT_MODULE_EXTENSIONS.flatMap(extension => [
+ 'playwright.same-origin-frames.config.' + extension,
+ 'ordinary-tooling.' + extension,
+ ('PLAYWRIGHT.CONFIG.' + extension).toUpperCase()
+]);
+test('root module artifact filter excludes exact leaked config and typed/case variants', () => {
+ assert.ok(ROOT_TOOLING_FIXTURE.includes('playwright.same-origin-frames.config.cjs'));
+ for (const relative of ROOT_TOOLING_FIXTURE) {
+  assert.equal(shouldSkipFile(path.basename(relative), relative.split('/').join(path.sep)), true, relative);
+ }
+});
+test('independent artifact auditor rejects injected root modules without using copy decisions', () => {
+ for (const relative of ROOT_TOOLING_FIXTURE) {
+  assert.equal(isForbiddenFile(relative), true, relative);
+ }
+ for (const forbidden of ['package.json', 'assets/private.py', 'data/private.sql', 'private.toml']) {
+  assert.equal(isForbiddenFile(forbidden), true, 'retain existing audit guard ' + forbidden);
+ }
+});
+test('root module policy preserves explicit worker and public subdirectory runtimes', () => {
+ for (const relative of ['service-worker.js', 'assets/runtime.cjs', 'assets/runtime.mjs', 'assets/worker.js', 'assets/nested/runtime.CJS', 'tools/example/runtime.mjs']) {
+  assert.equal(shouldSkipFile(path.basename(relative), relative.split('/').join(path.sep)), false, relative);
+  assert.equal(isForbiddenFile(relative), false, relative);
+ }
+ for (const relative of ['Service-Worker.js', 'service-worker.JS']) {
+  assert.equal(shouldSkipFile(relative, relative), true, relative);
+  assert.equal(isForbiddenFile(relative), true, relative);
+ }
+});
+test('root module fixture leaves unrelated public pages metadata and assets eligible', () => {
+ for (const relative of ['index.html', '404.html', 'robots.txt', 'manifest.json', '_headers', '_redirects', 'assets/app.css', 'assets/icon.webp', 'tools/example/index.html']) {
+  assert.equal(shouldSkipFile(path.basename(relative), relative.split('/').join(path.sep)), false, relative);
+  assert.equal(isForbiddenFile(relative), false, relative);
+ }
+});

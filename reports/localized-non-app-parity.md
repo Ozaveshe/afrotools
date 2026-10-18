@@ -6,7 +6,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 2 | 312 |
+| fr | 162 | 2 | 311 |
 | sw | 137 | 1 | 337 |
 
 ## By surface class
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 31 | 0 | 1 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 348 | 40 | 0 | 308 | 21 | 0 | 327 |
+| editorial | 348 | 41 | 0 | 307 | 21 | 0 | 327 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -213,7 +213,6 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/free-event-flyer-maker-online/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/free-gpa-calculator-nigerian-universities/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/free-gpa-calculator-nigerian-universities/ | editorial | sw | — | missing | no localized route or owner file |
-| /blog/free-json-formatter-developer-tools/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/free-json-formatter-developer-tools/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/freelance-pricing-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/freelance-pricing-africa/ | editorial | sw | — | missing | no localized route or owner file |
