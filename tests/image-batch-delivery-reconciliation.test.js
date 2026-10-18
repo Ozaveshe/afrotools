@@ -114,7 +114,7 @@ test('six additional rows join exact request, recipe revision, ledger prompt and
   assert.equal(row.historical_request_prompt_sha256,digest(request.prompt));assert.equal(row.recorded_generation_prompt_sha256,digest(intake.prompt));assert.notEqual(row.historical_request_prompt_sha256,row.recorded_generation_prompt_sha256);
   assert.match(row.delivery_scope,/repository bytes only/);assert.match(row.delivery_scope,/no deployment/);
  }
- assert.ok(Array.isArray(proof.additional_source_intakes));assert.equal(proof.additional_source_intakes.length,4);
+ assert.ok(Array.isArray(proof.additional_source_intakes));assert.equal(proof.additional_source_intakes.length,5);
  const expected=[
   {ordered_source_commits:['5b5268c4db7456bd6c5bb979a98008758fa66230'],root_acceptance_sha256:'4cd2dd33ee303cb92e13b24233f35bf6eb743d44db2785bcf8c2db30e0caaa24',committed_readback_sha256:'39c958047016a8e104e9e92693fc62d75fba611bf2f7f40d77324e4fccf29050',delivery_ids:['recipe-mandazi-tanzania-tz','recipe-koba-mg']},
   {ordered_source_commits:['e5163b4485ecb08352d78176fd430c3d2560ce9c'],root_acceptance_sha256:'b486de213b87cd011c3087a8cf8396df098a76d04ac07f2c70c93d42134f9c03',committed_readback_sha256:'754e0f2350c5ef83fc91fab6f7d8d2d9b90c7f314dc35661e11320a66ca20d76',delivery_ids:['recipe-ibihaza-rw','recipe-kat-kat-banane-sc']},
@@ -178,7 +178,8 @@ test('only recovered canonical Mchemsho advances delivery; three fixed 1280 cand
  assert.equal(row.recipe_id,'4caf4ed6-13ec-4fbb-8039-ce51a4201cfe');assert.equal(row.width,1200);assert.equal(row.height,800);
  assert.equal(row.path,'/assets/img/kitchen/mchemsho-tz.webp');assert.equal(row.path,request.path);assert.equal(request.dimensions,'1200x800');
  assert.equal(row.sha256,'b2ec5ce348680aa0fa54216ac60c0d44afcc5a40bec9550a5e35fdff44b9a26a');
- assert.equal(row.recovered_asset_commit,'24429e29c022dae6b89b31d61470835d3a2302d3');assert.equal(row.admission_status,'proposed-offtree-source-adoption-not-accepted');assert.equal(row.accepted_source_commit,undefined);
+ assert.equal(row.recovered_asset_commit,'24429e29c022dae6b89b31d61470835d3a2302d3');assert.equal(row.admission_status,'accepted-private-source-not-deployed');assert.equal(row.accepted_source_commit,'f239e7985355b20fad4f79c3db5df3aa58908fe4');
+ const accepted=proof.additional_source_intakes[4];assert.deepEqual(accepted.ordered_source_commits,['f239e7985355b20fad4f79c3db5df3aa58908fe4']);assert.equal(accepted.root_acceptance_sha256,'fdc81ae27aae0e3780bba89a875be0e3e8c7b0312fd0e1abf0cd198c3da6e837');assert.equal(accepted.committed_readback_sha256,'4e447259a3c8aac1d6fd6f6507b569586dacbdab51b6be3443fa905d36796a94');assert.deepEqual(accepted.delivery_ids,['recipe-mchemsho-tz']);assert.match(accepted.scope,/private repository source bytes/);assert.match(accepted.scope,/native qualification remains separate/);assert.equal(proof.proposal_status,'ACCEPTED_PRIVATE_SOURCE_NOT_READY_NOT_DEPLOYED');
  const physical=fs.readFileSync(path.join(root,row.path.slice(1)));assert.equal(row.accepted_asset_blob,crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+physical.length+'\0'),physical])).digest('hex'));
  for(const slug of ['kisra-south-sudan-ss','maheu-zm','octopus-curry-sc']){
   assert.equal(proof.deliveries.some(x=>x.id==='recipe-'+slug),false);
