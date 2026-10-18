@@ -19,6 +19,7 @@
 const { corsHeaders, corsResponse, getAllowedOrigin } = require('./utils/cors');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { sendLifecycleEmail } = require('./_shared/lifecycle-email');
+const { normalizeSignupEmailConsent } = require('./_shared/signup-email-consent');
 
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
@@ -121,7 +122,8 @@ function parseRequestBody(event) {
     try {
       var params = new URLSearchParams(raw);
       params.forEach(function (value, key) { formBody[key] = value; });
-      return { body: formBody, isForm: true };
+      return { body: formBody, isForm: true, rawForm: raw,
+        formEncoding: contentType.indexOf('application/x-www-form-urlencoded') !== -1 ? 'urlencoded' : 'multipart' };
     } catch (e) {
       return { body: {}, isForm: true, error: 'Invalid form submission' };
     }
@@ -153,7 +155,32 @@ function redirectResponse(location, extraHeaders, multiValueHeaders) {
   return response;
 }
 
+function signupFormErrorResponse(statusCode, message, cors) {
+  // A native form visitor may have JavaScript disabled. Use only fixed copy:
+  // provider strings, submitted fields and redirect query values never enter HTML.
+  var explanation = 'Review your details and try again. If you already have an account, you can sign in.';
+  if (message === 'Email and password (min 6 chars) required') {
+    explanation = 'Enter your email and a password of at least 6 characters, then try again.';
+  } else if (message === 'Email preferences must be explicit choices') {
+    explanation = 'Choose optional emails using the checkboxes, or leave them unchecked, then try again.';
+  } else if (statusCode >= 500 || statusCode === 429) {
+    explanation = 'Account creation is temporarily unavailable. Wait a moment and try again.';
+  }
+  return {
+    statusCode: statusCode,
+    headers: Object.assign({}, cors, {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Content-Security-Policy': "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'no-referrer',
+    }),
+    body: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Account creation needs another try — AfroTools</title></head><body><main><h1>We could not create your account</h1><p>' + explanation + '</p><p><a href="/auth/?mode=signup">Try creating your account again</a></p><p><a href="/auth/?mode=login">Sign in</a></p></main></body></html>',
+  };
+}
+
 function authErrorResponse(mode, statusCode, message, cors, isForm, next) {
+  if (isForm && mode === 'signup') return signupFormErrorResponse(statusCode, message, cors);
   if (isForm) {
     var location = '/auth/?mode=' + encodeURIComponent(mode || 'login') + '&error=' + encodeURIComponent(message || 'Auth failed');
     if (next) location += '&next=' + encodeURIComponent(safeRedirectTarget(next, '/dashboard/'));
@@ -300,7 +327,7 @@ async function sendSignupWelcome(user, body) {
   if (!user || !user.email) return;
   try {
     var state = await profileEmailState(user.id);
-    if (state && (state.email_digest_enabled === false || state.email_welcome_sent_at)) return;
+    if (!state || state.email_digest_enabled !== true || state.email_welcome_sent_at) return;
     var token = state && state.email_unsubscribe_token;
     var result = await sendLifecycleEmail('signup_welcome', {
       email: user.email,
@@ -383,10 +410,18 @@ exports.handler = async function (event) {
   // ── SIGNUP ──
   if (action === 'signup' && event.httpMethod === 'POST') {
     var parsed = parseRequestBody(event);
-    var body = parsed.body;
+    var body = parsed.body || {};
     var signupNext = safeRedirectTarget(body.next || body.redirect || '/dashboard/', '/dashboard/');
     if (parsed.error) {
       return authErrorResponse('signup', 400, parsed.error, cors, parsed.isForm, signupNext);
+    }
+    if (parsed.isForm && parsed.formEncoding !== 'urlencoded') {
+      return authErrorResponse('signup', 400, 'Unsupported signup form encoding', cors, true, signupNext);
+    }
+    var consent = normalizeSignupEmailConsent(parsed.isForm ? parsed.rawForm : parsed.body,
+      { format: parsed.isForm ? 'form' : 'json' });
+    if (!consent.ok) {
+      return authErrorResponse('signup', 400, 'Email preferences must be explicit choices', cors, parsed.isForm, signupNext);
     }
     if (!body.email || !body.password || body.password.length < 6) {
       return authErrorResponse('signup', 400, 'Email and password (min 6 chars) required', cors, parsed.isForm, signupNext);
@@ -401,6 +436,8 @@ exports.handler = async function (event) {
           name: body.name || body.email.split('@')[0],
           country: body.country || '',
           tier: 'free',
+          email_digest_enabled: consent.preferences.email_digest_enabled,
+          email_weekly_enabled: consent.preferences.email_weekly_enabled,
         },
       },
     });
@@ -412,7 +449,7 @@ exports.handler = async function (event) {
 
     var session = result.data;
     var user = buildUser(session.user);
-    if (!body.skipWelcome && !body.skip_welcome) {
+    if (consent.preferences.email_digest_enabled === true && !body.skipWelcome && !body.skip_welcome) {
       await sendSignupWelcome(user, body);
     }
 

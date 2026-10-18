@@ -42,6 +42,20 @@ exports.handler = async function (event) {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
 
+  // Validate explicit consent before even asking the Auth provider about the session.
+  // Missing fields remain absent, so unrelated profile saves preserve stored choices.
+  let parsedPostBody;
+  if (event.httpMethod === 'POST') {
+    try { parsedPostBody = JSON.parse(event.body); } catch { parsedPostBody = undefined; }
+    if (parsedPostBody && typeof parsedPostBody === 'object' && !Array.isArray(parsedPostBody)) {
+      for (const field of ['email_digest_enabled', 'email_weekly_enabled']) {
+        if (Object.prototype.hasOwnProperty.call(parsedPostBody, field) && typeof parsedPostBody[field] !== 'boolean') {
+          return jsonResponse(400, { error: 'Email preferences must be boolean choices', synced: false });
+        }
+      }
+    }
+  }
+
   // Auth check. Supports both bearer tokens and secure session cookies.
   const authResult = await getUserFromEvent(event);
   const user = authResult && authResult.user ? authResult.user : null;
@@ -72,8 +86,11 @@ exports.handler = async function (event) {
 
   // POST: save profile
   if (event.httpMethod === 'POST') {
-    let body;
-    try { body = JSON.parse(event.body); } catch { return jsonResponse(400, { error: 'Invalid JSON' }, sessionResponse); }
+    const body = parsedPostBody;
+    if (body === undefined) return jsonResponse(400, { error: 'Invalid JSON' }, sessionResponse);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return jsonResponse(400, { error: 'Invalid profile payload' }, sessionResponse);
+    }
 
     // Sanitize — only allow known profile fields
     const allowed = [
