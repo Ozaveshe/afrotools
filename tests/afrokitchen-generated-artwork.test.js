@@ -50,6 +50,29 @@ const attributedArtworkCaptions = Object.freeze({
   'koba-mg': 'AI-generated serving illustration of the attributed small-parcel adaptation; not kitchen-tested photography.'
 });
 
+
+// Finite historical 1280 exceptions: literal byte identities, never derived from ledger metadata.
+const legacy1280Artwork = Object.freeze({
+  "octopus-curry-sc": {
+    "path": "/assets/img/kitchen/responsive/octopus-curry-sc-1280.webp",
+    "sha256": "e34b9e31285fe6467bf1ddc1d9e0b673cb657bf92b297615a45cc2d38246031e",
+    "width": 1280,
+    "height": 853
+  },
+  "kisra-south-sudan-ss": {
+    "path": "/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp",
+    "sha256": "2c30c6b981b17c7973f1fc2aa59a4d8f128d23f7be9d9b1602e1a107cbad0f15",
+    "width": 1280,
+    "height": 853
+  },
+  "maheu-zm": {
+    "path": "/assets/img/kitchen/responsive/maheu-zm-1280.webp",
+    "sha256": "e6c2738ac7bdb8852317906576815d24888cb685c0bf1433b64a5eb616991f8a",
+    "width": 1280,
+    "height": 853
+  }
+});
+
 for (const artwork of ledger.images) {
   test(`${artwork.slug}: reviewed image hashes, dimensions and mobile byte budget`, () => {
     if (Object.hasOwn(admittedHistoricalArtwork, artwork.slug)) {
@@ -89,7 +112,11 @@ for (const artwork of ledger.images) {
     for (const variant of artwork.variants) assert.ok(html.includes(`${variant.path} ${variant.width}w`));
     const card = renderStaticRecipeCard(recipe, recipeImages);
     assert.ok(card.includes('loading="lazy"'));
-    assert.ok(card.includes('width="1200" height="800"'));
+    const fixed = Object.hasOwn(legacy1280Artwork, artwork.slug) ? legacy1280Artwork[artwork.slug] : { width: 1200, height: 800 };
+    const primary = artwork.variants.find(row => row.path === artwork.target);
+    assert.equal(primary.width, fixed.width); assert.equal(primary.height, fixed.height);
+    if (Object.hasOwn(legacy1280Artwork, artwork.slug)) { assert.equal(primary.path, fixed.path); assert.equal(primary.sha256, fixed.sha256); }
+    assert.ok(card.includes(`width="${fixed.width}" height="${fixed.height}"`));
     assert.ok(card.includes('srcset='));
     assert.ok(card.includes(artwork.alt));
   });
@@ -136,4 +163,10 @@ test('legacy Waakye navigation reaches the existing illustrated recipe without i
   assert.ok(html.includes('content="noindex, follow"'));
   assert.ok(!html.includes('<img'));
   assert.ok(!html.includes('"@type":"Recipe"'));
+});
+
+test('the original 39 artwork rows remain unchanged and only four exact recoveries are added',()=>{
+ assert.equal(ledger.images.length,43);assert.equal(crypto.createHash('sha256').update(JSON.stringify(ledger.images.slice(0,39))).digest('hex'),'7825f375bfa93bc9f374ae110bb8a2f0f217b0310754b2168392e71f6a581770');
+ assert.deepEqual(ledger.images.slice(39).map(row=>row.slug).sort(),['kisra-south-sudan-ss','maheu-zm','mchemsho-tz','octopus-curry-sc']);
+ assert.deepEqual(Object.keys(legacy1280Artwork).sort(),['kisra-south-sudan-ss','maheu-zm','octopus-curry-sc']);
 });

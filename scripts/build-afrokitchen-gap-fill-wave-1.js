@@ -458,6 +458,483 @@ function recipe(row) {
     ingredients: ingredientSet(row).map((item, index) => ({ sort_order: (index + 1) * 10, ...item })),
     steps: stepsFor(row).map((item, index) => ({ step_number: index + 1, ...item }))
   };
+  // Exact reviewed source rows; no UUID/public approval is assigned by this source batch.
+  const attributed = {
+  "mchemsho-tz": {
+    "name": "Mchemsho — TaTEDO beef version",
+    "description": "Beef, potatoes and vegetables in broth, adapted from TaTEDO’s Tanzania eCookbook. Source batch quantities are shown; person yield and full duration are unrecorded.",
+    "story": "Adapted from the 2020 TaTEDO Tanzania eCookbook, hosted by MECS, using indexed printed pages 38–39. Beef is selected from the source’s beef/chicken option; optional spaghetti, beans and peas are omitted. The full PDF and page images were not inspected in this review. The source describes 20-minute and 7-minute pressure phases, not a 27-minute total. Heat-up and pressure release are additional, unrecorded stages. Use a pressure cooker of suitable capacity and follow its manufacturer’s fill, liquid and release instructions. The quantity is a source batch, not six person portions. AfroTools has not kitchen-tested this adaptation.",
+    "author": "AfroKitchen adaptation of TaTEDO Tanzania eCookbook (2020)",
+    "default_servings": null,
+    "serving_unit": null,
+    "yield_status": "not-recorded",
+    "prep_time_minutes": null,
+    "cook_time_minutes": null,
+    "total_time_minutes": null,
+    "image_url": "/assets/img/kitchen/mchemsho-tz.webp",
+    "image_alt": "AI-generated illustration of beef Mchemsho with potatoes, carrots, bell pepper, onion and broccoli in light broth.",
+    "calories": null,
+    "protein_g": null,
+    "carbs_g": null,
+    "fat_g": null,
+    "fiber_g": null,
+    "nutrition_basis": null,
+    "source": "https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf",
+    "tags": [
+      "beef",
+      "potato",
+      "vegetables",
+      "tanzania"
+    ],
+    "diet_tags": [],
+    "chef_notes": null,
+    "best_served_with": null,
+    "occasion": null,
+    "regional_variations": null,
+    "ingredients": [
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "beef",
+        "amount": 1,
+        "unit": "kg",
+        "prep_note": "Selected instead of the source chicken option; cut into pieces",
+        "is_optional": false,
+        "sort_order": 10,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "carrot",
+        "amount": 1,
+        "unit": "whole",
+        "prep_note": "Prepare and cut",
+        "is_optional": false,
+        "sort_order": 20,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "bell pepper",
+        "amount": 1,
+        "unit": "whole",
+        "prep_note": "Prepare and cut",
+        "is_optional": false,
+        "sort_order": 30,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "onion",
+        "amount": 1,
+        "unit": "large",
+        "prep_note": "Prepare and cut",
+        "is_optional": false,
+        "sort_order": 40,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "potatoes",
+        "amount": 5,
+        "unit": "whole",
+        "prep_note": "Prepare and cut",
+        "is_optional": false,
+        "sort_order": 50,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "broccoli",
+        "amount": 2,
+        "unit": "heads",
+        "prep_note": "Prepare and cut",
+        "is_optional": false,
+        "sort_order": 60,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "water",
+        "amount": 8,
+        "unit": "cups",
+        "prep_note": "Source batch amount; use a suitably sized appliance within its fill limits",
+        "is_optional": false,
+        "sort_order": 70,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "salt",
+        "amount": null,
+        "unit": "to taste",
+        "prep_note": "Source quantity not stated",
+        "is_optional": false,
+        "sort_order": 80,
+        "group_name": null,
+        "source_quantity_unrecorded": true
+      }
+    ],
+    "steps": [
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 1,
+        "title": "Prepare the source batch",
+        "instruction": "Prepare and cut the beef. Put the beef and source water quantity into a suitably sized pressure cooker, staying within the appliance’s fill and liquid requirements.",
+        "timer_seconds": null,
+        "timer_label": null
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 2,
+        "title": "First source pressure phase",
+        "instruction": "Following the appliance instructions, pressure-cook the beef for the source’s 20-minute phase. Prepare and cut the vegetables while it cooks. This is a source stage checkpoint, not the full cooking time or a guarantee that the meat is done.",
+        "timer_seconds": null,
+        "timer_label": null
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 3,
+        "title": "Release pressure and add vegetables",
+        "instruction": "Release pressure and open only as directed by the appliance manufacturer. Add carrot, bell pepper, onion, potatoes, broccoli and salt. Check the water before proceeding; the source gives no replacement-water quantity.",
+        "timer_seconds": null,
+        "timer_label": null
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 4,
+        "title": "Second source pressure phase",
+        "instruction": "Pressure-cook the remaining ingredients for the source’s further 7-minute phase, following the appliance instructions. Release pressure safely before opening and inspect the meat and vegetables; continue cooking as needed. The two timed phases exclude heat-up and pressure release and do not establish total elapsed time.",
+        "timer_seconds": null,
+        "timer_label": null
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 5,
+        "title": "Serve the batch",
+        "instruction": "Serve hot once the meat and vegetables are cooked. This adaptation uses beef and omits the source’s optional spaghetti, beans and peas. Person yield is not recorded; keep these quantities as a batch.",
+        "timer_seconds": null,
+        "timer_label": null
+      }
+    ],
+    "method_revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1",
+    "confidence": "Source-attributed adaptation, not kitchen-tested",
+    "review_summary": "Exact source quantities and adaptation choices; unknown total and nutrition remain unknown. Person yield is not recorded; no person scaling or pressure timer completion claim.",
+    "official_source_status": "TaTEDO institutional eCookbook; indexed printed pages 38–39 only, not full PDF or safety certification",
+    "recommended_changes": [],
+    "sources": [
+      {
+        "url": "https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf",
+        "title": "TaTEDO Tanzania eCookbook (2020), printed pages 38–39",
+        "accessed_at": "2026-10-18",
+        "access_basis": "Prior official indexed ingredient/method text only; full PDF open failed and no page screenshots",
+        "supports": [
+          "Source ingredients and explicit adaptation choices",
+          "Specific attributed method",
+          "Known versus unrecorded timing/yield"
+        ]
+      }
+    ]
+  },
+  "octopus-curry-sc": {
+    "name": "Octopus curry — Ben Pierce Jones adaptation",
+    "description": "An attributed Seychelles-style octopus and coconut curry, using water and omitting the source’s cilantro garnish.",
+    "story": "Adapted from Ben Pierce Jones at Tastes From The Road. The source publishes estimates of 20 minutes preparation, 90 minutes cooking and four servings; it does not separately state total time. Its ingredient list describes boiled octopus while its method includes a preboil. This adaptation starts with cleaned raw octopus and includes that preboil, so do not count it twice if starting with already cooked octopus. Water is selected instead of fish stock; two optional curry leaves and one chilli select within the source ranges. The cilantro garnish is omitted. The image is an AI serving illustration, not evidence of a tested batch; AfroTools has not kitchen-tested this adaptation.",
+    "author": "AfroKitchen adaptation of Ben Pierce Jones at Tastes From The Road",
+    "default_servings": 4,
+    "serving_unit": "servings",
+    "yield_status": "recorded",
+    "prep_time_minutes": 20,
+    "cook_time_minutes": 90,
+    "total_time_minutes": null,
+    "image_url": "/assets/img/kitchen/responsive/octopus-curry-sc-1280.webp",
+    "image_alt": "AI-generated serving illustration of octopus pieces in coconut curry sauce.",
+    "calories": null,
+    "protein_g": null,
+    "carbs_g": null,
+    "fat_g": null,
+    "fiber_g": null,
+    "nutrition_basis": null,
+    "source": "https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles",
+    "tags": [
+      "octopus",
+      "coconut",
+      "seychelles"
+    ],
+    "diet_tags": [],
+    "chef_notes": null,
+    "best_served_with": null,
+    "occasion": null,
+    "regional_variations": null,
+    "ingredients": [
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "cleaned raw octopus",
+        "amount": 1,
+        "unit": "large",
+        "prep_note": "About 2–3 lb. Raw starting point chosen because the source method includes preboiling, despite its boiled-octopus ingredient wording",
+        "is_optional": false,
+        "sort_order": 10,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "cooking oil",
+        "amount": 2,
+        "unit": "tablespoons",
+        "prep_note": null,
+        "is_optional": false,
+        "sort_order": 20,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "cinnamon sticks",
+        "amount": 2,
+        "unit": "sticks",
+        "prep_note": null,
+        "is_optional": false,
+        "sort_order": 30,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "onion",
+        "amount": 1,
+        "unit": "whole",
+        "prep_note": "Chopped",
+        "is_optional": false,
+        "sort_order": 40,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "garlic",
+        "amount": 3,
+        "unit": "cloves",
+        "prep_note": "Minced",
+        "is_optional": false,
+        "sort_order": 50,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "ginger",
+        "amount": 1,
+        "unit": "inch",
+        "prep_note": "Grated",
+        "is_optional": false,
+        "sort_order": 60,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "curry leaves",
+        "amount": 2,
+        "unit": "leaves",
+        "prep_note": "Optional; two selected from the source range of 2–3",
+        "is_optional": true,
+        "sort_order": 70,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "curry powder",
+        "amount": 2,
+        "unit": "tablespoons",
+        "prep_note": null,
+        "is_optional": false,
+        "sort_order": 80,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "turmeric",
+        "amount": 1,
+        "unit": "teaspoon",
+        "prep_note": null,
+        "is_optional": false,
+        "sort_order": 90,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "paprika",
+        "amount": 1,
+        "unit": "teaspoon",
+        "prep_note": "Optional source ingredient",
+        "is_optional": true,
+        "sort_order": 100,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "chilli",
+        "amount": 1,
+        "unit": "whole",
+        "prep_note": "One selected from the source range of 1–2",
+        "is_optional": false,
+        "sort_order": 110,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "coconut milk",
+        "amount": 1,
+        "unit": "can",
+        "prep_note": "13.5 oz source can",
+        "is_optional": false,
+        "sort_order": 120,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "water",
+        "amount": 0.5,
+        "unit": "cup",
+        "prep_note": "Water selected instead of fish stock",
+        "is_optional": false,
+        "sort_order": 130,
+        "group_name": null
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "salt",
+        "amount": null,
+        "unit": "to taste",
+        "prep_note": "Source quantity not stated",
+        "is_optional": false,
+        "sort_order": 140,
+        "group_name": null,
+        "source_quantity_unrecorded": true
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "black pepper",
+        "amount": null,
+        "unit": "to taste",
+        "prep_note": "Source quantity not stated",
+        "is_optional": false,
+        "sort_order": 150,
+        "group_name": null,
+        "source_quantity_unrecorded": true
+      },
+      {
+        "ingredient_id": null,
+        "substitution": null,
+        "name": "lime",
+        "amount": 1,
+        "unit": "whole",
+        "prep_note": null,
+        "is_optional": false,
+        "sort_order": 160,
+        "group_name": null
+      }
+    ],
+    "steps": [
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 1,
+        "title": "Preboil the raw octopus",
+        "instruction": "Start with cleaned raw octopus for this adaptation. Boil until tender; the source gives an approximate 30–40 minutes. Check tenderness from about 30 minutes and continue as needed, then cut into bite-size pieces. If using already boiled octopus, do not automatically repeat the raw preboil.",
+        "timer_seconds": 1800,
+        "timer_label": "Check octopus tenderness; continue as needed"
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 2,
+        "title": "Cook the aromatics",
+        "instruction": "Heat the oil with the cinnamon sticks. Add onion, garlic, ginger and the optional curry leaves; cook until fragrant.",
+        "timer_seconds": null,
+        "timer_label": null
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 3,
+        "title": "Add spices",
+        "instruction": "Stir in curry powder, turmeric, optional paprika and chilli, coating the aromatics.",
+        "timer_seconds": null,
+        "timer_label": null
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 4,
+        "title": "Simmer with coconut milk",
+        "instruction": "Add the octopus, coconut milk and the selected half cup of water. Simmer approximately 20–25 minutes as described by the source, checking the texture and continuing as needed.",
+        "timer_seconds": 1200,
+        "timer_label": "Check the curry; continue as needed"
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 5,
+        "title": "Finish seasoning",
+        "instruction": "Season with salt, black pepper and lime. The source calls for a further approximately 5-minute simmer after seasoning. This adaptation omits the cilantro garnish.",
+        "timer_seconds": 300,
+        "timer_label": "Check final seasoning and texture"
+      },
+      {
+        "tip": null,
+        "image_url": null,
+        "step_number": 6,
+        "title": "Serve the attributed adaptation",
+        "instruction": "Serve the curry. Four servings and the 20-minute preparation/90-minute cooking figures are the author’s estimates, not guaranteed completion or a separately established total duration.",
+        "timer_seconds": null,
+        "timer_label": null
+      }
+    ],
+    "method_revision": "octopus-ben-pierce-jones-water-20261018-v1",
+    "confidence": "Source-attributed adaptation, not kitchen-tested",
+    "review_summary": "Exact source quantities and adaptation choices; unknown total and nutrition remain unknown. Four source servings and approximate 20/90-minute author estimates; raw/preboil ambiguity, water and omitted cilantro disclosed.",
+    "official_source_status": "Named culinary author’s own recipe; not official certification",
+    "recommended_changes": [],
+    "sources": [
+      {
+        "url": "https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles",
+        "title": "Octopus Curry From The Seychelles — Ben Pierce Jones",
+        "accessed_at": "2026-10-18",
+        "access_basis": "Prior successful primary article open at 03:23 UTC",
+        "supports": [
+          "Source ingredients and explicit adaptation choices",
+          "Specific attributed method",
+          "Known versus unrecorded timing/yield"
+        ]
+      }
+    ]
+  }
+};
+  if (Object.prototype.hasOwnProperty.call(attributed, row.slug)) return Object.assign(result, attributed[row.slug]);
   // These source rows lack UUIDs; browser/API projection independently enforces UUID + slug.
   const pending = {
   "kunu-zaki-ng": {
@@ -503,8 +980,54 @@ function recipe(row) {
     "fiber_g": null,
     "ingredients": [],
     "steps": []
-  }
-};
+  },
+    "kisra-south-sudan-ss": {
+      "story": null,
+      "occasion": null,
+      "best_served_with": null,
+      "regional_variations": null,
+      "prep_time_minutes": null,
+      "cook_time_minutes": null,
+      "total_time_minutes": null,
+      "default_servings": null,
+      "serving_unit": null,
+      "calories": null,
+      "protein_g": null,
+      "carbs_g": null,
+      "fat_g": null,
+      "fiber_g": null,
+      "description": "South Sudanese Kisra, a thin cereal flatbread. A reviewed preparation method, quantities, duration and meal-portion yield are not available on this page.",
+      "method_review_status": "pending-source-method",
+      "method_review_revision": "kisra-maheu-source-hold-20261018",
+      "yield_status": "not-recorded",
+      "ingredients": [],
+      "steps": [],
+      "diet_tags": []
+    },
+    "maheu-zm": {
+      "story": null,
+      "occasion": null,
+      "best_served_with": null,
+      "regional_variations": null,
+      "prep_time_minutes": null,
+      "cook_time_minutes": null,
+      "total_time_minutes": null,
+      "default_servings": null,
+      "serving_unit": null,
+      "calories": null,
+      "protein_g": null,
+      "carbs_g": null,
+      "fat_g": null,
+      "fiber_g": null,
+      "description": "Zambian maize-meal drink. A reviewed preparation method, quantities, fermentation conditions, duration and yield are not available on this page.",
+      "method_review_status": "pending-source-method",
+      "method_review_revision": "kisra-maheu-source-hold-20261018",
+      "yield_status": "not-recorded",
+      "ingredients": [],
+      "steps": [],
+      "diet_tags": []
+    }
+  };
   if (!Object.prototype.hasOwnProperty.call(pending, row.slug)) return result;
   Object.assign(result, pending[row.slug]);
   if (row.slug === 'ikivuguto-rw') result.diet_tags = result.diet_tags.filter(tag => tag !== 'dairy-free');
@@ -624,11 +1147,16 @@ const seen = new Set();
 for (const item of recipes) {
   if (seen.has(item.slug)) throw new Error(`Duplicate slug: ${item.slug}`);
   seen.add(item.slug);
-  if (['kunu-zaki-ng', 'ikivuguto-rw'].includes(item.slug)) {
-    if (item.method_review_status !== 'pending-source-method' || item.method_review_revision !== 'kunu-ikivuguto-source-hold-20261018' ||
+  if (['kunu-zaki-ng', 'ikivuguto-rw', 'kisra-south-sudan-ss', 'maheu-zm'].includes(item.slug)) {
+    if (item.method_review_status !== 'pending-source-method' || item.method_review_revision !== (['kisra-south-sudan-ss','maheu-zm'].includes(item.slug) ? 'kisra-maheu-source-hold-20261018' : 'kunu-ikivuguto-source-hold-20261018') ||
         item.ingredients.length || item.steps.length || item.default_servings !== null || item.prep_time_minutes !== null || item.cook_time_minutes !== null || item.total_time_minutes !== null) {
       throw new Error(`${item.slug} must remain an explicit source-method hold`);
     }
+    continue;
+  }
+  if (['mchemsho-tz','octopus-curry-sc'].includes(item.slug)) {
+    const expected = {"mchemsho-tz": {"revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1", "source": "https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf"}, "octopus-curry-sc": {"revision": "octopus-ben-pierce-jones-water-20261018-v1", "source": "https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles"}}[item.slug];
+    if (item.method_revision !== expected.revision || item.source !== expected.source || item.sources.length !== 1 || item.sources[0].url !== expected.source || item.total_time_minutes !== null || item.diet_tags.length || item.calories !== null || item.ingredients.length < 8 || item.steps.length < 5 || Object.prototype.hasOwnProperty.call(item,'id') || Object.prototype.hasOwnProperty.call(item,'is_published') || Object.prototype.hasOwnProperty.call(item,'is_verified')) throw new Error(item.slug + ' source adaptation drift');
     continue;
   }
   if (!Array.isArray(item.sources) || item.sources.length < 2) {
@@ -650,7 +1178,7 @@ const batch = {
   batch_id: "2026-05-03-gap-fill-wave-1",
   reviewed_at: reviewedAt,
   notes:
-    "One-hundred recipe AfroKitchen gap-fill wave focused on countries with low representation plus a traditional drinks lane. The generator uses curated dish rows, stable source references, method-specific ingredient templates, and timed cooking steps. Kunu Zaki and Ikivuguto are explicit pending source-method records with no preparation instructions, quantities, timing, yield or nutrition; their informational identity does not certify a method.",
+    "One-hundred recipe AfroKitchen gap-fill wave focused on countries with low representation plus a traditional drinks lane. The generator uses curated dish rows, stable source references, method-specific ingredient templates, and timed cooking steps. Kunu Zaki, Ikivuguto, Kisra and Maheu are explicit pending source-method records with no preparation instructions, quantities, timing, yield or nutrition. Mchemsho and Octopus Curry use named attributed adaptations with unknown facts left unrecorded; illustrations do not certify a method.",
   recipes
 };
 
