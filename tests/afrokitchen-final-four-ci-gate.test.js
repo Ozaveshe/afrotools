@@ -6,7 +6,15 @@ const PROTECTED46_SHA='a7649a7632bb99bfc5185cd50ebb8ac56bca679e830335c1e615099a3
 const SPEC='tests/e2e/afrokitchen-visual-recipe.spec.js',expectedStep={name:'Verify complete Kitchen visual recipe suite including FINAL4 journeys',env:{CI:'1',AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1',AFROTOOLS_TEST_SECURITY_HEADERS:'1'},run:'npx playwright test '+SPEC+' --project=chromium --workers=1 --retries=0 --global-timeout=180000'};
 function kitchenIsExact(value){
  assert.equal(c.sha(priorBytes),'7b2bd9623fe42d4c341637a0e19b856c9718245c87a82bb3178d2843466e1928');assert.equal(c.jsonHash(prior),'3543bada4fb75090f00defac93b3cd5896a07623544177b4e153a15bac8d21bc');
- assert.ok(value.browser.length>=47);assert.equal(c.jsonHash(value.browser.slice(0,46)),PROTECTED46_SHA);assert.equal(c.jsonHash(expectedStep),OWNED47_HASH);assert.deepEqual(value.browser[46],{id:'browser-47',group:2,step:expectedStep,stepSha256:OWNED47_HASH});
+ assert.ok(value.browser.length>=47);
+ // Recover the old46 pin from genuine original45 plus the unchanged owned CSP46.
+ const cspStep={name:'Verify same-origin fallback frames under actual artifact HTTP CSP',env:{AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1',AFROTOOLS_TEST_SECURITY_HEADERS:'1',PORT:'4269'},run:'npm run test:same-origin-frames:browser'};
+ const protected46=[...structuredClone(prior.browser),{id:'browser-46',group:2,step:cspStep,stepSha256:c.jsonHash(cspStep)}];
+ assert.equal(c.jsonHash(protected46),PROTECTED46_SHA);
+ assert.equal(protected46[2].id,'browser-03');assert.equal(protected46[2].group,1);
+ const expectedSchedule=structuredClone(protected46);expectedSchedule[2].group=2;
+ assert.deepEqual(value.browser.slice(0,46),expectedSchedule);
+ assert.equal(c.jsonHash(expectedStep),OWNED47_HASH);assert.deepEqual(value.browser[46],{id:'browser-47',group:2,step:expectedStep,stepSha256:OWNED47_HASH});
  const prefix=[...prior.additiveGateIds,'browser-46','browser-47'];assert.deepEqual(value.additiveGateIds.slice(0,prefix.length),prefix);assert.deepEqual(value.additiveGateIds.slice(prefix.length),value.browser.slice(47).map(g=>g.id));c.inventoryCheck(value);
  const inverse=structuredClone(value);inverse.browser=structuredClone(prior.browser);inverse.additiveGateIds=structuredClone(prior.additiveGateIds);assert.deepEqual(inverse,prior);assert.equal(JSON.stringify(inverse,null,2)+'\n',priorBytes.toString());
 }
@@ -47,7 +55,7 @@ test('unchanged generic runGroup emits ALL47 exact commands/env through a SYNTHE
 // Exact Root/native-peer accepted V3 source binding; these checks do not execute browser journeys.
 const LEGACY_FIXTURE='tests/fixtures/afrokitchen/final-four-legacy-source-html.json';
 function final4NativeInputsAreExact(specBytes,fixtureBytes){
- assert.equal(specBytes.length,27475,'Exact accepted V3 spec byte count');assert.equal(c.sha(specBytes),'8c73727cb12a4feb06f3aa5d7864ff8d548071d9fedac2f304b9f413f754d12d','Exact accepted V3 spec SHA');
+ assert.equal(specBytes.length,33543,'Exact accepted V3 spec byte count');assert.equal(c.sha(specBytes),'b9c71ea706c23a1927bbd73b5a2f8964ff9c6d53c01aa31736d8fdcf48b64d47','Exact accepted V3 spec SHA');
  assert.equal(fixtureBytes.length,139393,'Exact accepted historical fixture byte count');assert.equal(c.sha(fixtureBytes),'3e794ba4f824c042c8e981f0cdbcbb7945863816b5053b0b39d9eccb362b556f','Exact accepted historical fixture SHA');
  const fixture=JSON.parse(fixtureBytes.toString('utf8'));assert.equal(fixture.schemaVersion,1);assert.equal(fixture.records.length,2);
  const expected=[{slug:'kisra-south-sudan-ss',bytes:67127,sha256:'172e7839cdec45b32d55e4fb8fd8a183ee08a986b0bebf3f7d0f8c8329e9f6cc'},{slug:'maheu-zm',bytes:64291,sha256:'9c0c6635464cd55d7e37848ad7b6c82713f5d2d63841ac6422a16f7ede7c7b72'}];
@@ -60,4 +68,18 @@ test('native source binding rejects skipped FINAL4, corrupt cached HTML and subs
  const skipped=Buffer.from(text.replace("test('FINAL4 ","test.skip('FINAL4 "));assert.notDeepEqual(skipped,spec);assert.throws(()=>final4NativeInputsAreExact(skipped,fixtureBytes),/Exact accepted V3 spec/);
  const corrupted=Buffer.from(fixtureBytes);corrupted[Math.floor(corrupted.length/2)]^=1;assert.throws(()=>final4NativeInputsAreExact(spec,corrupted),/Exact accepted historical fixture/);
  const substituted=JSON.parse(fixtureBytes.toString('utf8'));substituted.records[0].sourceCommit='0'.repeat(40);assert.throws(()=>final4NativeInputsAreExact(spec,Buffer.from(JSON.stringify(substituted))),/Exact accepted historical fixture/);
+});
+
+test('reviewed scheduling retains all47 once and sends education evidence to group2',()=>{
+ kitchenIsExact(live);const f=fixture();
+ assert.equal(f.reports.flatMap(r=>r.gates).filter(g=>g.id==='browser-03').length,1);
+ assert.ok(f.reports.find(r=>r.group===2).gates.some(g=>g.id==='browser-03'));
+ assert.ok(!f.reports.find(r=>r.group===1).gates.some(g=>g.id==='browser-03'));
+ assert.equal(aggregate(live,f),true);
+ const record=f.reports[1].gates.find(g=>g.id==='browser-03');
+ f.reports[1].gates=f.reports[1].gates.filter(g=>g.id!=='browser-03');f.reports[0].gates.push(record);
+ assert.throws(()=>aggregate(live,f),/misassigned/);
+});
+test('Kitchen strict scheduling comparison refuses any unreviewed group move',()=>{
+ for(const index of [0,2,3,45,46]){const value=structuredClone(live);value.browser[index].group=value.browser[index].group===1?2:1;assert.throws(()=>kitchenIsExact(value),'group move '+value.browser[index].id);}
 });
