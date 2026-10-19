@@ -3,6 +3,8 @@
 
   var STRINGS = {
     'fire-calc': {
+      invalidAgeRange: 'Weka umri wa sasa wa miaka kamili 18 hadi 70 na umri unaolenga wa miaka kamili 20 hadi 80, ulio mkubwa kuliko umri wa sasa.',
+      outOfRange: 'Thamani hizi zinatoa makadirio nje ya wigo wa namba unaotumika. Punguza kiasi au viwango kisha ujaribu tena.',
       invalidAge: 'Umri unaolenga lazima uwe mkubwa kuliko umri wa sasa.',
       invalidAmounts: 'Weka matumizi, akiba na michango isiyo hasi, pamoja na matumizi ya uzeeni yaliyo juu ya sifuri.',
       invalidRates: 'Kiwango cha faida na mfumuko lazima viwe juu ya -100% na visizidi 1,000%; kiwango cha kutoa lazima kiwe juu ya 0% na kisizidi 20%.',

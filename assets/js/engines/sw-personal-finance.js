@@ -114,9 +114,17 @@
     if (!Number.isInteger(months) || months < 1 || months > 24) return fail('targetMonths', 'Chagua idadi kamili ya miezi kati ya 1 na 24.');
     var oneOff = Number(input.oneOffCosts), saved = Number(input.currentSavings), contribution = Number(input.monthlyContribution);
     var target = expenses * months + oneOff;
+    var tier1 = expenses + oneOff, tier3 = expenses * 6 + oneOff;
     var gap = Math.max(0, target - saved);
-    return { ok: true, target: target, tier1: expenses + oneOff, tier2: target, tier3: expenses * 6 + oneOff,
-      gap: gap, monthsToGoal: gap === 0 ? 0 : (contribution > 0 ? Math.ceil(gap / contribution) : null) };
+    var monthsToGoal = gap === 0 ? 0 : (contribution > 0 ? Math.max(1, Math.ceil(gap / contribution)) : null);
+    if ([target,tier1,tier3,gap].some(function (value) { return !Number.isFinite(value); })) {
+      return fail('monthlyExpenses', 'Kiasi hiki kinazidi uwezo wa hesabu. Punguza kiasi kisha ujaribu tena.');
+    }
+    if (monthsToGoal !== null && !Number.isFinite(monthsToGoal)) {
+      return fail('monthlyContribution', 'Muda wa kufikia lengo unazidi uwezo wa hesabu. Ongeza mchango wa mwezi kisha ujaribu tena.');
+    }
+    return { ok: true, target: target, tier1: tier1, tier2: target, tier3: tier3,
+      gap: gap, monthsToGoal: monthsToGoal };
   }
 
   function capitalBandFor(hustle) { return hustle.capitalMin === 0 ? 0 : (hustle.capitalMin <= 50 ? 1 : (hustle.capitalMin <= 200 ? 2 : 3)); }

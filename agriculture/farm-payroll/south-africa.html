@@ -147,7 +147,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
 @media print {
   .tool-hero, afro-navbar, afro-footer, .calc-btn, .card-toggle { display: none !important; }
-  .results-wrap { display: block !important; }
+  .results-wrap { display: none !important; }
+  .results-wrap.on { display: block !important; }
   .section-body.collapsed { display: block !important; }
 }
 </style>
@@ -361,7 +362,9 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       var mw = CD.agriMinWage_monthly || CD.nationalMinWage_monthly;
       mwHint.textContent = mw
         ? 'Agricultural minimum wage: ' + sym + mw.toLocaleString() + '/month'
-        : 'No legislated minimum wage in ' + COUNTRY_NAME;
+        : 'No monthly minimum-wage benchmark is loaded.' + (CD.agriMinWage_daily
+          ? ' A daily benchmark is available for daily pay calculations.'
+          : ' Confirm the applicable pay basis and current requirements.');
     }
     var dHint = document.getElementById('hintDailyMin');
     if (dHint && CD.agriMinWage_daily) {
@@ -471,7 +474,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
         : r.sym + fmt(mc.diff) + mwLabel + ' BELOW agricultural minimum wage';
       mwBox.innerHTML = '<div class="mw-check ' + cls + '">' + icon + ' Agricultural minimum in ' + COUNTRY_NAME + ': ' + r.sym + mc.minWage.toLocaleString() + mwLabel + '. Your rate is ' + diffText + '.</div>';
     } else {
-      mwBox.innerHTML = '<div class="mw-check ok">&#9432; ' + COUNTRY_NAME + ' does not have a legislated agricultural minimum wage. Wages are set by market rates and negotiation.</div>';
+      var payBasis = r.workerType === 'piece_rate' ? 'piece-rate' : (r.workerType === 'permanent' ? 'monthly' : 'daily');
+      mwBox.innerHTML = '<div class="mw-check">&#9432; Minimum-wage comparison is unavailable for this ' + payBasis + ' pay calculation. Confirm the applicable pay basis and current requirements for ' + COUNTRY_NAME + '.</div>';
     }
 
     var ll = r.laborLaw || {};
