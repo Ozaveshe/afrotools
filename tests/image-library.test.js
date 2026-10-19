@@ -11,7 +11,7 @@ const { routeFile } = require('../scripts/build-image-library');
 const library = require('../data/image-generation/image-library.json');
 const batch = require('../data/image-generation/next-200.json');
 const deliveryProof = require('../data/image-generation/next-200-delivery-reconciliation.json');
-const { reconcileImageBatch } = require('../scripts/lib/image-batch-delivery-reconciliation');
+const { reconcileImageBatch, reviewedRecipeAlias } = require('../scripts/lib/image-batch-delivery-reconciliation');
 const intake = require('../data/image-generation/kitchen-import-2026-09-08.json');
 assert.equal(intake.images.length, 63);
 assert.equal(intake.images.filter(i=>i.status==='placed').length, 60);
@@ -86,7 +86,17 @@ for(const [slug,canonical] of Object.entries(aliases)) {
   const expected='/assets/img/kitchen/'+canonical+'.webp';
   assert.equal(sandbox.window.AfroKitchenImages.getCandidatePaths(slug)[0],expected,'Alias must load canonical image before nonexistent probes');
   assert.ok(fs.readFileSync(path.join(ROOT,'tools/afrokitchen/recipes',slug,'index.html'),'utf8').includes('src="'+expected+'"'));
-  assert.ok(!batch.images.some(i=>i.path==='/assets/img/kitchen/'+slug+'.webp'),'Aliased recipe must not request a duplicate image');
+  const alias = reviewedRecipeAlias({ slug, aliases, library,
+    readAsset: file => fs.readFileSync(path.join(ROOT, file.replace(/^\//, ''))) });
+  for (const request of batch.images.filter(row => row.path === alias.canonicalRequestPath)) {
+    // Retained requests keep their original contract; a reviewed alternate is not delivery.
+    assert.equal(request.type, 'recipe-hero');
+    assert.equal(request.route, alias.route);
+    assert.equal(request.status, 'pending');
+    assert.notEqual(request.path, alias.path);
+    assert.equal(alias.originalRequestFulfilled, false);
+    assert.ok(!deliveryProof.deliveries.some(row => row.id === request.id), 'Alias must not fake canonical request delivery');
+  }
 }
 const sharedArtwork = require('../data/image-generation/reviewed-shared-artwork.json');
 for (const review of sharedArtwork.tool_reviews || []) {
