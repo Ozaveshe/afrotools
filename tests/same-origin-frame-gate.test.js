@@ -8,8 +8,11 @@ const command='playwright test --config=playwright.same-origin-frames.config.cjs
 const expectedStep={name:'Verify same-origin fallback frames under actual artifact HTTP CSP',env:{AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1',AFROTOOLS_TEST_SECURITY_HEADERS:'1',PORT:'4269'},run:'npm run test:same-origin-frames:browser'};
 function predecessorIsExact(value){
  assert.equal(c.sha(priorBytes),OLD_RAW_SHA);assert.equal(c.jsonHash(prior),OLD_JSON_SHA);assert.equal(prior.browser.length,45);
- assert.equal(value.browser.length,46);assert.deepEqual(value.browser.slice(0,45),prior.browser);
- const recovered=structuredClone(value);recovered.browser.pop();recovered.additiveGateIds.pop();assert.deepEqual(recovered,prior);
+ assert.ok(value.browser.length>=46);assert.deepEqual(value.browser.slice(0,45),prior.browser);
+ assert.deepEqual(value.browser[45],{id:'browser-46',group:2,step:expectedStep,stepSha256:c.jsonHash(expectedStep)});
+ const prefix=[...prior.additiveGateIds,'browser-46'];assert.deepEqual(value.additiveGateIds.slice(0,prefix.length),prefix);
+ assert.deepEqual(value.additiveGateIds.slice(prefix.length),value.browser.slice(46).map(g=>g.id));c.inventoryCheck(value);
+ const recovered=structuredClone(value);recovered.browser=structuredClone(prior.browser);recovered.additiveGateIds=structuredClone(prior.additiveGateIds);assert.deepEqual(recovered,prior);
  assert.equal(JSON.stringify(recovered,null,2)+'\n',priorBytes.toString(),'Whole predecessor bytes must recover, including producer/deadline/workflow metadata');
 }
 function loadConfig(port='4269'){
@@ -17,10 +20,10 @@ function loadConfig(port='4269'){
  try{process.env.PORT=port;process.env.AFROTOOLS_TEST_SECURITY_HEADERS='0';process.env.PLAYWRIGHT_BASE_URL='https://must-not-be-used.invalid';delete require.cache[require.resolve(file)];const config=require(file);return {config,workerFlag:process.env.AFROTOOLS_TEST_SECURITY_HEADERS};}
  finally{for(const [key,value]of [['PORT',old.PORT],['AFROTOOLS_TEST_SECURITY_HEADERS',old.flag],['PLAYWRIGHT_BASE_URL',old.base]])if(value===undefined)delete process.env[key];else process.env[key]=value;}
 }
-test('live46 recovers every original45 object and all producer/deadline/workflow bytes',()=>{predecessorIsExact(live);assert.equal(c.inventoryCheck(live),c.jsonHash(live));});
-test('the only new gate has exact command/env/hash and is not invented historical YAML',()=>{
+test('protected46 prefix recovers every original45 object and all producer/deadline/workflow bytes',()=>{predecessorIsExact(live);assert.equal(c.inventoryCheck(live),c.jsonHash(live));});
+test('owned CSP46 remains exact command/env/hash and is not invented historical YAML',()=>{
  const gate=live.browser[45];assert.deepEqual(gate,{id:'browser-46',group:2,step:expectedStep,stepSha256:c.jsonHash(expectedStep)});
- assert.deepEqual(live.additiveGateIds,[...prior.additiveGateIds,'browser-46']);assert.equal(live.originalBuildTimeoutMinutes,75);
+ assert.deepEqual(live.additiveGateIds.slice(0,prior.additiveGateIds.length+1),[...prior.additiveGateIds,'browser-46']);assert.equal(live.originalBuildTimeoutMinutes,75);
  const pkg=JSON.parse(fs.readFileSync(path.join(ROOT,'package.json')));assert.equal(pkg.scripts['test:same-origin-frames:browser'],command);
 });
 test('moving historical regular8 reads changes no existing assertion or historical case',()=>{
@@ -56,7 +59,7 @@ test('actual maintained spec guard admits static GET only while all original3 ca
 function complete(){const deadline=Date.parse('2026-10-18T00:00:00Z')+75*60000,manifest={commit:'a'.repeat(40),tree:'b'.repeat(40),runId:'synthetic46',attempt:'1',deadline,inventorySha256:c.jsonHash(live),distTreeSha256:'c'.repeat(64),sourceTreeSha256:'d'.repeat(64),archiveSha256:'e'.repeat(64)};
  return {manifest,reports:[1,2].map(group=>({...manifest,group,status:'success',integrity:'pass',setup:'pass',gates:live.browser.filter(g=>g.group===group).map(g=>({id:g.id,stepSha256:g.stepSha256,status:'success',exitCode:0}))})),needs:{artifact:{result:'success'},browser:{result:'success'}}};}
 const accept=f=>c.aggregate(live,f.manifest,f.reports,f.needs,f.manifest.deadline-1);
-test('actual maintained aggregate requires complete46 under the original75-minute binding',()=>{const f=complete();assert.equal(f.reports.flatMap(r=>r.gates).length,46);assert.equal(accept(f),true);assert.throws(()=>c.aggregate(live,f.manifest,f.reports,f.needs,f.manifest.deadline),/75-minute deadline/);});
+test('actual maintained aggregate requires every current gate under the original75-minute binding',()=>{const f=complete();assert.equal(f.reports.flatMap(r=>r.gates).length,live.browser.length);assert.equal(accept(f),true);assert.throws(()=>c.aggregate(live,f.manifest,f.reports,f.needs,f.manifest.deadline),/75-minute deadline/);});
 for(const [name,change,reason]of [
  ['missing new gate',f=>{f.reports[1].gates=f.reports[1].gates.filter(g=>g.id!=='browser-46');},/gate missing/],
  ['failed new gate',f=>{f.reports[1].gates.find(g=>g.id==='browser-46').exitCode=1;},/gate failed/],
@@ -76,3 +79,20 @@ test('unchanged generic runGroup actually selects and emits the additive command
  const result=await module.exports.runGroup(root,'SYNTHETIC_NO_REAL_SEAL',evidence,2,live,{});assert.equal(result.status,'success');assert.equal(result.gates.filter(g=>g.id==='browser-46').length,1);
  const added=emitted.filter(x=>x.script==='npm run test:same-origin-frames:browser');assert.equal(added.length,1);assert.equal(added[0].env.AFROTOOLS_TEST_PUBLISH_ARTIFACT,'1');assert.equal(added[0].env.AFROTOOLS_TEST_SECURITY_HEADERS,'1');assert.equal(added[0].env.PORT,'4269');assert.equal(result.deadline,manifest.deadline);assert.equal(emitted.length,live.consumerSetup.length+live.browser.filter(g=>g.group===2).length+1);
 });
+
+// Trailing additions are permitted; all original45+owned46 and non-extension metadata stay protected.
+function futureInventory(){const value=structuredClone(live),step={name:'Synthetic future append only',env:{CI:'1'},run:'SYNTHETIC_NOT_EXECUTED future-static-check'};value.browser.push({id:'browser-future',group:1,step,stepSha256:c.jsonHash(step)});value.additiveGateIds.push('browser-future');return value;}
+test('declared valid future trailing gate passes protected46 without replacing any immutable fixture',()=>{const value=futureInventory();predecessorIsExact(value);assert.equal(typeof c.inventoryCheck(value),'string');});
+for(const [name,change]of [
+ ['owned46 command rehashed',v=>{v.browser[45].step.run+=' --skip';v.browser[45].stepSha256=c.jsonHash(v.browser[45].step);}],
+ ['owned46 environment rehashed',v=>{v.browser[45].step.env.AFROTOOLS_TEST_SECURITY_HEADERS='0';v.browser[45].stepSha256=c.jsonHash(v.browser[45].step);}],
+ ['protected45 reorder',v=>{[v.browser[0],v.browser[1]]=[v.browser[1],v.browser[0]];}],
+ ['owned46 reorder',v=>{[v.browser[44],v.browser[45]]=[v.browser[45],v.browser[44]];}],
+ ['owned46 removal',v=>{v.browser.splice(45,1);v.additiveGateIds=v.additiveGateIds.filter(x=>x!=='browser-46');}],
+ ['protected45 removal',v=>{v.browser.splice(0,1);}],
+ ['unlisted trailing gate',v=>{v.additiveGateIds.pop();}],
+ ['orphan additive id',v=>{v.additiveGateIds.push('orphan');}],
+ ['future step hash mismatch',v=>{v.browser.at(-1).stepSha256='0'.repeat(64);}],
+ ['non-extension deadline',v=>{v.originalBuildTimeoutMinutes=76;}],
+ ['non-extension producer command',v=>{v.producer[2].step.run+=' --skip';}]
+])test('protected46 append-safe contract rejects '+name,()=>{const value=futureInventory();change(value);assert.throws(()=>predecessorIsExact(value));});
