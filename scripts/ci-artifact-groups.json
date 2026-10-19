@@ -128,7 +128,7 @@
     {
       "id": "browser-03",
       "originalIndex": 10,
-      "group": 1,
+      "group": 2,
       "step": {
         "name": "Verify education journeys and shared accessibility in the optimized artifact",
         "env": {
@@ -808,6 +808,20 @@
         "run": "npm run test:same-origin-frames:browser"
       },
       "stepSha256": "224fc97a78452714018bd5528ac8297199974d3adadc73e0bae44c01da81a007"
+    },
+    {
+      "id": "browser-47",
+      "group": 2,
+      "step": {
+        "name": "Verify complete Kitchen visual recipe suite including FINAL4 journeys",
+        "env": {
+          "CI": "1",
+          "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+          "AFROTOOLS_TEST_SECURITY_HEADERS": "1"
+        },
+        "run": "npx playwright test tests/e2e/afrokitchen-visual-recipe.spec.js --project=chromium --workers=1 --retries=0 --global-timeout=180000"
+      },
+      "stepSha256": "0a65722dbb5557f18bbbf29cccd8dab60efdf253c63b99cee78eb5b2089c4d40"
     }
   ],
   "consumerSetup": [
@@ -843,6 +857,7 @@
     "browser-43",
     "browser-44",
     "browser-45",
-    "browser-46"
+    "browser-46",
+    "browser-47"
   ]
 }

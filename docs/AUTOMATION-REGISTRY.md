@@ -364,4 +364,41 @@ image queue was activated instead of recreating a duplicate schedule.
 
 The account-wide control plane also records the existing human-authorized `raalhu-solar-friday-blog-draft` heartbeat. It drafts weekly at Friday 09:00 in its Raalhu Solar target chat and separate `C:\Users\Oza\Desktop\RS\Website` project. Its original human schedule answer is retained in publisher evidence. This monitor entry does not grant AfroTools source integration or publication authority, or permission to publish a Raalhu draft. Source/release identity, exact remote ownership and producer-role checks still apply.
 
-The current account policy contains 29 declared existing lanes after the car owner and external draft registration. The budget matches that declared inventory; no saved schedule, model, execution settings or target was changed by registration. Unknown active definitions remain integrity errors. Historical 24-cron descriptions remain historical operating-model evidence.
+That October 1 registration documented 29 declared lanes after the car owner and external draft registration; this historical count is not the current inventory. No saved schedule, model, execution settings or target was changed by that registration. Unknown active definitions remain integrity errors. Historical 24-cron descriptions remain historical operating-model evidence.
+
+## Existing completed-workspace maintenance registration (October 19, 2026)
+
+The account-wide policy registers the existing human-authorized
+`clean-completed-codex-workspaces` heartbeat, every six hours, in target chat
+`01a12fc3-0fe5-7f81-abe8-9a8db12de438`. It is a nonproduction observer for
+external workspace maintenance, with no repository source integration or
+publisher authority. The ten-minute field is a planning/checkpoint budget;
+registration does not change the saved automation, execute cleanup, or grant
+new removal authority. The registry's twelve-hour SLA is observation metadata,
+not proof that a natural cleanup invocation ran.
+
+The user authorized continued completed-workspace cleanup on October 19 and
+required every IBV/ibvogt file to remain untouched. The separately installed
+`C:\Users\Oza\.codex\maintenance\workspace-cleanup` policy and README retain
+the stricter 72-hour minimum, maximum six retirements, fresh activity/owner
+protection checks, clean registered source and verified remote-main history,
+non-force retirement, archives and refusal protections. Live, published,
+frozen, dirty, unmerged, ambiguous and protected work remains retained.
+
+The verified preimage contains 30 lanes and a cap of 30. Registering exactly
+this already requested heartbeat intentionally changes both counts to 31;
+all thirty existing lane records and saved settings remain unchanged. It
+creates no additional scheduler, subscription or service. The first 30-cap
+prototype failed the unchanged strict controls; that failure remains preserved.
+The authoritative human request is retained in "Free up disk space", message
+`01a15244-1a0f-7130-8652-96cb0fda0398`, turn
+`01a15244-16be-7e63-bb25-17fb7563c2ac`: "keep clearing more old completed Codex
+builds and workspaces, and set up cleanup so they don’t keep piling up. keep all
+IBV/ibvogt files untouched". Registration recognizes that existing authorization.
+Unknown active IDs remain integrity blockers, and 32 lanes exceed this cap. Saved
+kind, schedule and target remain configuration-owned; the policy records the
+exact target, while the existing checker validates target presence rather
+than comparing nonempty target identities. No checker behavior is broadened
+by this registration. Before the publisher rechecks release policy, this
+governance source must have its own validated handoff and be applied under the
+normal source contract. Registration alone is not release authorization.

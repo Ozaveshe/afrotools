@@ -129,3 +129,57 @@ function loadAdapter(env) {
   console.error(error);
   process.exitCode = 1;
 });
+
+// Optional-email regression: synthetic API key handler boundary, no real services.
+(function apiKeyEmailBoundary() {
+ const {test}=require('node:test'),assert=require('node:assert/strict');
+ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+ function apiFixture(options={}) {
+  const calls={rate:[],auth:0,list:0,get:0,set:[],fetch:[],random:[],plan:[]};
+  const lead={opt_in_digest:options.existingPreference===undefined?false:options.existingPreference,suppressed:true};
+  const records=options.records||{};
+  const store={list:async()=>{calls.list++;return{blobs:Object.keys(records).map(key=>({key}))}},get:async key=>{calls.get++;return records[key]},setJSON:async(key,value)=>{calls.set.push({key,value});if(options.failStore)throw Error('Synthetic store failure')}};
+  const mocks={
+   '@netlify/blobs':{getStore:name=>{assert.equal(name,'apikeys');return store}},
+   crypto:{randomBytes:n=>{calls.random.push(n);return Buffer.alloc(n,7)}},
+   './utils/cors':{getAllowedOrigin:()=> 'https://afrotools.com'},
+   './_shared/rate-limit':{checkRateLimit:(key,limit)=>{calls.rate.push({key,limit});return options.rateAllowed!==false}},
+   './utils/supabase-session':{resolveAuthenticatedUser:async(_event,policy)=>{calls.auth++;assert.deepEqual(JSON.parse(JSON.stringify(policy)),{requireVerifiedEmail:true});return options.authError||{userId:'synthetic-user',email:' Reader@Example.test '}}},
+   './_shared/api-plans':{getApiPlanLimit:tier=>{calls.plan.push(tier);assert.equal(tier,'free');return{day:100,month:3000}}}
+  };
+  const module={exports:{}};
+  const context={module,exports:module.exports,Buffer,URLSearchParams,Date,
+   process:{env:{SUPABASE_DATA_URL:'https://synthetic.invalid',SUPABASE_DATA_SERVICE_ROLE_KEY:'synthetic-service-key'}},
+   console:{error:()=>{}},
+   require:name=>{assert.ok(Object.hasOwn(mocks,name),'No external dependency '+name);return mocks[name]},
+   fetch:async(url,init)=>{calls.fetch.push({url,init});const body=JSON.parse(init.body);lead.opt_in_digest=body.opt_in_digest;return{ok:true}}
+  };
+  const source=fs.readFileSync(path.join(__dirname,'../netlify/functions/api-keys-create.js'),'utf8');
+  vm.runInNewContext(source,context,{filename:'synthetic-api-key-handler.js'});
+  const request=(body={},method='POST',extra={})=>({httpMethod:method,headers:{'content-type':'application/json','x-nf-client-connection-ip':'192.0.2.10'},body:JSON.stringify(body),...extra});
+  return{calls,lead,handler:module.exports.handler,request};
+ }
+ for(const choice of [undefined,false,true])test('API key optional-email: issuance never enrolls from '+String(choice),async()=>{
+  const f=apiFixture(),body={name:'  Synthetic Key  ',useCase:'comparison',email:'ignored@example.test'};
+  if(choice!==undefined){body.opt_in_digest=choice;body.email_digest_enabled=choice;}
+  const result=await f.handler(f.request(body)),data=JSON.parse(result.body);
+  assert.equal(result.statusCode,200);assert.equal(data.ok,true);assert.equal(data.apiKey,'afro_live_'+Buffer.alloc(16,7).toString('hex'));assert.equal(data.key,data.apiKey);assert.equal(data.tier,'free');
+  assert.deepEqual(data.rateLimit,{requests_per_day:100,requests_per_month:3000});assert.equal(data.message,'Store this key securely. It will not be shown again in full.');
+  assert.equal(f.calls.set.length,1);const saved=f.calls.set[0].value;
+  assert.equal(saved.email,'reader@example.test');assert.equal(saved.userId,'synthetic-user');assert.equal(saved.name,'Synthetic Key');assert.equal(saved.useCase,'comparison');assert.equal(saved.tier,'free');assert.equal(saved.lastUsed,null);assert.equal(Object.keys(saved.usage).length,0);assert.ok(Number.isFinite(Date.parse(saved.createdAt)));
+  assert.deepEqual(f.calls.random,[16]);assert.deepEqual(f.calls.plan,['free']);assert.equal(f.calls.rate[0].limit,12);
+  assert.equal(f.calls.fetch.length,0,'Key creation must not issue any optional email-lead mutation');assert.deepEqual(f.lead,{opt_in_digest:false,suppressed:true});
+ });
+ test('API key optional-email: existing explicit true is also untouched, not rewritten false',async()=>{const f=apiFixture({existingPreference:true});assert.equal((await f.handler(f.request())).statusCode,200);assert.equal(f.calls.fetch.length,0);assert.equal(f.lead.opt_in_digest,true);assert.equal(f.lead.suppressed,true)});
+ test('API key optional-email: verified-session rejection precedes storage and enrollment',async()=>{const f=apiFixture({authError:{error:'Verified account required',status:403}}),r=await f.handler(f.request());assert.equal(r.statusCode,403);assert.equal(JSON.parse(r.body).error,'Verified account required');assert.equal(f.calls.list,0);assert.equal(f.calls.set.length,0);assert.equal(f.calls.fetch.length,0)});
+ test('API key optional-email: three account keys preserve existing hard limit',async()=>{const f=apiFixture({records:{afro_live_a:{userId:'synthetic-user'},afro_live_b:{email:'reader@example.test'},afro_live_c:{userId:'synthetic-user'},other_record:{email:'reader@example.test'}}}),r=await f.handler(f.request());assert.equal(r.statusCode,429);assert.match(JSON.parse(r.body).error,/Maximum 3 API keys/);assert.equal(f.calls.random.length,0);assert.equal(f.calls.set.length,0);assert.equal(f.calls.fetch.length,0)});
+ test('API key optional-email: unrelated owners do not consume this account limit',async()=>{const f=apiFixture({records:{afro_live_other:{userId:'other',email:'other@example.test'},ignored:{userId:'synthetic-user'}}}),r=await f.handler(f.request());assert.equal(r.statusCode,200);assert.equal(f.calls.set.length,1);assert.equal(f.calls.fetch.length,0)});
+ test('API key optional-email: storage failure preserves safe issuance failure without enrollment',async()=>{const f=apiFixture({failStore:true}),r=await f.handler(f.request());assert.equal(r.statusCode,500);assert.equal(JSON.parse(r.body).error,'Failed to create key. Try again.');assert.equal(f.calls.set.length,1);assert.equal(f.calls.plan.length,0);assert.equal(f.calls.fetch.length,0)});
+ test('API key optional-email: method, preflight, malformed JSON and rate limit preserve no-mutation exits',async()=>{
+  for(const [method,extra,expected]of [['GET',{},405],['OPTIONS',{},204],['POST',{body:'{'},400]]){const f=apiFixture(),r=await f.handler(f.request({},method,extra));assert.equal(r.statusCode,expected);assert.equal(f.calls.auth,0);assert.equal(f.calls.set.length,0);assert.equal(f.calls.fetch.length,0)}
+  const f=apiFixture({rateAllowed:false}),r=await f.handler(f.request());assert.equal(r.statusCode,429);assert.equal(f.calls.auth,0);assert.equal(f.calls.set.length,0);assert.equal(f.calls.fetch.length,0);
+ });
+ test('API key optional-email: form and base64 request contracts retain ordinary key issuance',async()=>{
+  for(const extra of [{headers:{'content-type':'application/x-www-form-urlencoded'},body:'name=Form+Key&use_case=local'}, {isBase64Encoded:true,body:Buffer.from(JSON.stringify({name:'Base64 Key'})).toString('base64')}]){const f=apiFixture(),r=await f.handler(f.request({},'POST',extra));assert.equal(r.statusCode,200);assert.equal(f.calls.set.length,1);assert.equal(f.calls.fetch.length,0)}
+ });
+})();
