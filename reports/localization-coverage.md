@@ -12,14 +12,14 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | englishFallback | 33 |
 | unavailable | 20 |
 | deprecated | 1 |
-| indexableEligible | 7874 |
-| sitemapEligible | 7874 |
+| indexableEligible | 7872 |
+| sitemapEligible | 7872 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 6150 | 6150 | 0 | 0 | 0 | 0 | 4021 | 180 |
+| en | default | 6150 | 6150 | 0 | 0 | 0 | 0 | 4019 | 180 |
 | fr | launched | 3662 | 2047 | 1614 | 0 | 0 | 1 | 2165 | 180 |
 | sw | launched | 1596 | 763 | 828 | 5 | 0 | 0 | 1584 | 180 |
 | yo | partial | 46 | 10 | 13 | 3 | 20 | 0 | 23 | 180 |
@@ -39,7 +39,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | country-tool | 514 | 186 | 327 | 0 | 0 | 1 | 510 |
 | legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
 | page | 5406 | 4676 | 678 | 32 | 20 | 0 | 2440 |
-| tool | 4010 | 2646 | 1364 | 0 | 0 | 0 | 3658 |
+| tool | 4010 | 2646 | 1364 | 0 | 0 | 0 | 3656 |
 | widget | 379 | 235 | 144 | 0 | 0 | 0 | 145 |
 
 ## Definitions
