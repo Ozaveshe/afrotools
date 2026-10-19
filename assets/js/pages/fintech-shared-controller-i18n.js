@@ -89,8 +89,9 @@
       less: 'de moins'
     },
     'digital-lending': {
+      outOfRange: "Ces montants et cette durée donnent un coût ou un taux annualisé hors de la plage numérique prise en charge. Vérifiez la durée et les remboursements.",
       offer: 'Offre',
-      invalid: 'Saisissez un montant supérieur à zéro, une durée de 1 à 3 650 jours et des remboursements totaux au moins égaux au montant reçu.',
+      invalid: 'Saisissez un montant supérieur à zéro, une durée entière de 1 à 3 650 jours et des remboursements totaux au moins égaux au montant reçu.',
       lowest: 'REMBOURSEMENT LE PLUS BAS'
     },
     'sacco-calc': {
@@ -184,6 +185,7 @@
       strongTip: 'Les choix de cette auto-évaluation sont solides. Un rapport officiel peut néanmoins contenir des erreurs ou utiliser d’autres facteurs.'
     },
     'dca-calc': {
+      outOfRange: "Ces valeurs donnent une projection hors de la plage numérique prise en charge. Réduisez les montants, le rendement ou la durée, puis réessayez.",
       invalid: 'Saisissez des versements positifs ou nuls avec au moins un montant supérieur à zéro, et un rendement annuel supérieur à −100 % et inférieur ou égal à 1 000 %.',
       totalInvested: 'Total versé',
       over: 'sur',
@@ -230,6 +232,8 @@
       verdictSuffix: 'du rendement de comparaison saisi. Ce calcul arithmétique ne rend pas les risques identiques et ne recommande aucune option.'
     },
     'fire-calc': {
+      invalidAgeRange: "Saisissez un âge actuel entier de 18 à 70 ans et un âge cible entier de 20 à 80 ans, supérieur à votre âge actuel.",
+      outOfRange: "Ces valeurs donnent une estimation hors de la plage numérique prise en charge. Réduisez les montants ou les taux, puis réessayez.",
       invalidAge: 'L’âge cible doit être supérieur à l’âge actuel.',
       invalidAmounts: 'Saisissez des dépenses actuelles, une épargne et des versements positifs ou nuls, ainsi que des dépenses de retraite supérieures à zéro.',
       invalidRates: 'Le rendement et l’inflation doivent être supérieurs à −100 % et inférieurs ou égaux à 1 000 % ; le taux de retrait doit être supérieur à 0 % et inférieur ou égal à 20 %.',
@@ -494,8 +498,9 @@
       less: 'pungufu'
     },
     'digital-lending': {
+      outOfRange: "Kiasi na muda huu vinatoa makadirio ya gharama au kiwango cha mwaka nje ya wigo wa namba unaotumika. Kagua muda na jumla za kulipa.",
       offer: 'Ofa',
-      invalid: 'Weka kiasi zaidi ya sifuri, muda wa siku 1 hadi 3,650, na jumla za kulipa zisizopungua kiasi ulichopokea.',
+      invalid: 'Weka kiasi zaidi ya sifuri, muda wa siku kamili 1 hadi 3,650, na jumla za kulipa zisizopungua kiasi ulichopokea.',
       lowest: 'JUMLA NDOGO ZAIDI'
     },
     'bnpl-calc': {
@@ -616,6 +621,7 @@
       bankEnds: 'Michango ileile ya mwisho wa mwezi kwa kiwango cha benki ulichoingiza inafikia'
     },
     'dca-calc': {
+      outOfRange: "Thamani hizi zinatoa makadirio nje ya wigo wa namba unaotumika. Punguza kiasi, faida au muda kisha ujaribu tena.",
       invalid: 'Weka michango isiyo hasi na angalau kiasi kimoja zaidi ya sifuri, pamoja na faida ya mwaka zaidi ya -100% na isiyozidi 1,000%.',
       totalInvested: 'Jumla iliyowekezwa', over: 'Kwa', years: 'miaka',
       lowerScenario: 'Hali ya chini', enteredScenario: 'Hali uliyoingiza', higherScenario: 'Hali ya juu'

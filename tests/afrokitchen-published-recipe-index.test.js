@@ -15,7 +15,12 @@ assert.equal(published.recipes.length, 410);
 const engineSource = require('../engines/src/afrokitchen-engine');
 assert.ok(published.recipes.every((recipe) => recipe.id && recipe.slug && (recipe.ingredients.length ||
   (engineSource.isPendingRecipeMethod(recipe) && recipe.method_review_status === 'pending-source-method' && recipe.yield_status === 'not-recorded'))));
-assert.equal(published.recipes.filter(recipe => engineSource.isPendingRecipeMethod(recipe)).length, 2);
+assert.deepEqual(published.recipes.filter(recipe => engineSource.isPendingRecipeMethod(recipe)).map(recipe => [recipe.slug, recipe.id]).sort((a,b)=>a[0].localeCompare(b[0])), [
+  ['ikivuguto-rw','f2850789-0ffd-41b3-bbaf-e3229132c9e6'],
+  ['kisra-south-sudan-ss','c0aced74-68d6-437d-b00b-abd1895605f0'],
+  ['kunu-zaki-ng','8a2bb743-87d9-462e-bc09-335e78f9584a'],
+  ['maheu-zm','626fd465-87e1-4f93-bca7-747decbf63d0']
+], 'only the exact four held identities may carry empty instructional ingredients');
 
 const source = fs.readFileSync(path.join(root, "engines/src/afrokitchen-engine.js"), "utf8");
 let fetchCount = 0;

@@ -278,7 +278,19 @@ function fmt(n, cur) {
   return cur + ' ' + Math.round(n).toLocaleString();
 }
 
+function clearFundResult() {
+  var output = document.getElementById('results');
+  output.classList.remove('on');
+  output.style.display = 'none';
+  output.setAttribute('aria-hidden', 'true');
+  ['res-total', 'res-months', 'res-t1', 'res-t2', 'res-t3', 'res-monthly', 'tier1-amount', 'tier2-amount', 'tier3-amount'].forEach(function (id) {
+    document.getElementById(id).textContent = '';
+  });
+  document.getElementById('fundStatus').textContent = '';
+}
+
 function calculate() {
+  clearFundResult();
   var status = document.getElementById('fundStatus');
   var expenses = Number(document.getElementById('monthly-expenses').value);
   var targetMonths = Number(document.getElementById('target-months').value);
@@ -288,14 +300,16 @@ function calculate() {
   if ([expenses,targetMonths,oneOff,currentSavings,monthlyContribution].some(function(value){return !Number.isFinite(value)||value<0;})) { status.textContent='Enter zero or a positive number in every money field.'; return; }
   if (expenses <= 0) { status.textContent='Enter monthly essential expenses greater than zero.'; document.getElementById('monthly-expenses').focus(); return; }
   if (!Number.isInteger(targetMonths) || targetMonths < 1 || targetMonths > 24) { status.textContent='Choose a whole number of coverage months from 1 to 24.'; document.getElementById('target-months').focus(); return; }
-  status.textContent='Emergency fund target calculated locally.';
   var country = document.getElementById('country').value;
   var cur = CURRENCIES[country] || 'USD';
   var t1 = expenses + oneOff;
   var target = expenses * targetMonths + oneOff;
   var t3 = expenses * 6 + oneOff;
   var gap = Math.max(0, target - currentSavings);
-  var monthsToGoal = gap === 0 ? 0 : (monthlyContribution > 0 ? Math.ceil(gap / monthlyContribution) : null);
+  var monthsToGoal = gap === 0 ? 0 : (monthlyContribution > 0 ? Math.max(1, Math.ceil(gap / monthlyContribution)) : null);
+  if ([t1,target,t3,gap].some(function(value){return !Number.isFinite(value);})) { status.textContent='These amounts exceed the supported numeric range. Reduce the amounts and try again.'; document.getElementById('monthly-expenses').focus(); return; }
+  if (monthsToGoal !== null && !Number.isFinite(monthsToGoal)) { status.textContent='The time to reach this target exceeds the supported numeric range. Increase the monthly contribution and try again.'; document.getElementById('monthly-contribution').focus(); return; }
+  status.textContent='Emergency fund target calculated locally.';
 
   document.getElementById('res-total').textContent = fmt(target, cur);
   document.getElementById('res-months').textContent = targetMonths + ' months of essentials + one-off costs';
@@ -310,8 +324,16 @@ function calculate() {
   var r = document.getElementById('results');
   r.classList.add('on');
   r.style.display = 'block';
+  r.setAttribute('aria-hidden', 'false');
   r.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+['country', 'monthly-expenses', 'target-months', 'one-off-costs', 'current-savings', 'monthly-contribution'].forEach(function (id) {
+  var field = document.getElementById(id);
+  field.addEventListener('input', clearFundResult);
+  field.addEventListener('change', clearFundResult);
+});
+clearFundResult();
 </script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
