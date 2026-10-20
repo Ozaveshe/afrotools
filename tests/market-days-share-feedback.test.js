@@ -4,7 +4,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const { test } = require('node:test');
 
-function fixture(navigator = {}) {
+function fixture(navigator = {}, options = {}) {
   const nodes = new Map();
   const listeners = new Map();
   const pageListeners = new Map();
@@ -42,14 +42,33 @@ function fixture(navigator = {}) {
   document.createElement = tag => new Element(tag);
   document.createDocumentFragment = () => new Element('fragment');
   document.addEventListener = (type, callback) => listeners.set(type, callback);
+  // Product-event assertions load the maintained wrapper; gtag captures local
+  // commands only and is not evidence that Google Analytics ingested an event.
+  const analyticsCalls = [];
+  const session = new Map();
+  let consent = Object.hasOwn(options, 'consent') ? options.consent : 'accepted';
   const window = {
     AfroTools: { engines: {} }, location: new URL('https://local.test/tools/market-days/?date=2026-10-01'),
-    addEventListener(type, callback) { pageListeners.set(type, callback); }
+    addEventListener(type, callback) { pageListeners.set(type, callback); },
+    localStorage: {
+      getItem(key) { return key === 'afrotools_cookie_consent' ? consent : null; },
+      removeItem() {}
+    },
+    sessionStorage: {
+      getItem(key) { return session.get(key) ?? null; },
+      setItem(key, value) { session.set(key, String(value)); }
+    },
+    gtag() { analyticsCalls.push(Array.from(arguments)); }
   };
   window.history = { replaceState(state, title, url) { window.location = new URL(url, window.location); } };
   const context = vm.createContext({ window, document, navigator, URLSearchParams, Intl, Date, Math, console });
   const root = path.resolve(__dirname, '..');
   vm.runInContext(fs.readFileSync(path.join(root, 'assets/js/engines/igbo-market-days.js'), 'utf8'), context);
+  if (options.analytics === 'library') {
+    vm.runInContext(fs.readFileSync(path.join(root, 'assets/js/lib/analytics.js'), 'utf8'), context);
+  } else if (options.analytics === 'throw') {
+    window.AfroTools.analytics = { trackShare() { throw new Error('synthetic analytics failure'); } };
+  }
   vm.runInContext(fs.readFileSync(path.join(root, 'assets/js/pages/market-days.js'), 'utf8'), context);
   listeners.get('DOMContentLoaded')();
   return {
@@ -59,6 +78,11 @@ function fixture(navigator = {}) {
     status: () => document.getElementById('shareStatus').textContent,
     hide: () => pageListeners.get('pagehide')(),
     location: () => window.location.href,
+    analyticsEvents: () => JSON.parse(JSON.stringify(analyticsCalls.filter(call => call[0] === 'event'))),
+    setConsent(value) {
+      consent = value;
+      pageListeners.get('afrotools:cookie-consent')?.({ detail: { status: value } });
+    },
     document
   };
 }
@@ -152,4 +176,95 @@ test('invalid or mismatched current field never starts an export', async () => {
   await f.date('', 'input'); await f.click('shareView');
   await f.date('2026-10-02', 'input'); await f.click('shareView');
   assert.equal(calls, 0); assert.equal(f.status(), '');
+});
+
+// These assertions prove page-to-wrapper behavior and accepted-only commands,
+// not GA4 network delivery, property counts, or conversion uplift.
+for (const method of ['native', 'clipboard']) {
+  function navigatorFor(operation) {
+    return method === 'native' ? { share: operation } : { clipboard: { writeText: operation } };
+  }
+
+  test(`${method} emits one metadata-only share_result after actual success`, async () => {
+    const pending = held();
+    const f = fixture(navigatorFor(() => pending.promise), { analytics: 'library', consent: 'accepted' });
+    const attempt = f.click('shareView');
+    assert.deepEqual(f.analyticsEvents(), [], 'choosing an action is not a successful share');
+    pending.resolve(); await attempt;
+    assert.deepEqual(f.analyticsEvents(), [['event', 'share_result', { tool_name: 'market-days', method }]]);
+    assert.equal(f.status(), method === 'native' ? 'Shared.' : 'Link copied to clipboard.');
+  });
+
+  for (const consent of [null, 'declined']) {
+    test(`${method} succeeds without product events when consent is ${consent ?? 'fresh'}`, async () => {
+      const f = fixture(navigatorFor(() => Promise.resolve()), { analytics: 'library', consent });
+      await f.click('shareView');
+      assert.deepEqual(f.analyticsEvents(), []);
+      assert.equal(f.status(), method === 'native' ? 'Shared.' : 'Link copied to clipboard.');
+    });
+  }
+
+  test(`${method} respects consent withdrawn while the operation is pending`, async () => {
+    const pending = held();
+    const f = fixture(navigatorFor(() => pending.promise), { analytics: 'library', consent: 'accepted' });
+    const attempt = f.click('shareView'); f.setConsent('declined');
+    pending.resolve(); await attempt;
+    assert.deepEqual(f.analyticsEvents(), []);
+    assert.equal(f.status(), method === 'native' ? 'Shared.' : 'Link copied to clipboard.');
+  });
+
+  for (const failure of ['throw', 'reject', 'cancel']) {
+    test(`${method} ${failure} never emits a successful-share event`, async () => {
+      const f = fixture(navigatorFor(() => {
+        const error = new Error('synthetic');
+        if (failure === 'cancel') error.name = 'AbortError';
+        if (failure === 'throw') throw error;
+        return Promise.reject(error);
+      }), { analytics: 'library', consent: 'accepted' });
+      await f.click('shareView');
+      assert.deepEqual(f.analyticsEvents(), []);
+      assert.match(f.status(), method === 'native' && failure === 'cancel' ? /^Share cancelled/ : /^Could not (share|copy) automatically/);
+    });
+  }
+
+  for (const invalidation of ['clear', 'away-back', 'pagehide']) {
+    test(`${method} suppresses stale success after ${invalidation}`, async () => {
+      const pending = held();
+      const f = fixture(navigatorFor(() => pending.promise), { analytics: 'library', consent: 'accepted' });
+      const attempt = f.click('shareView');
+      if (invalidation === 'clear') await f.date('', 'input');
+      else if (invalidation === 'away-back') { await f.date('2026-10-02'); await f.date('2026-10-01'); }
+      else f.hide();
+      pending.resolve(); await attempt;
+      assert.deepEqual(f.analyticsEvents(), []);
+      assert.equal(f.status(), '');
+    });
+  }
+
+  for (const analytics of ['missing', 'throw']) {
+    test(`${method} remains successful with ${analytics} analytics`, async () => {
+      const f = fixture(navigatorFor(() => Promise.resolve()), { analytics });
+      await f.click('shareView');
+      assert.equal(f.status(), method === 'native' ? 'Shared.' : 'Link copied to clipboard.');
+      assert.deepEqual(f.analyticsEvents(), []);
+    });
+  }
+}
+
+test('unavailable export and invalid date emit no product event with the actual wrapper', async () => {
+  const missing = fixture({}, { analytics: 'library', consent: 'accepted' });
+  await missing.click('shareView');
+  assert.deepEqual(missing.analyticsEvents(), []);
+  let exports = 0;
+  const invalid = fixture({ clipboard: { writeText() { exports++; return Promise.resolve(); } } }, { analytics: 'library', consent: 'accepted' });
+  await invalid.date('', 'input'); await invalid.click('shareView');
+  assert.equal(exports, 0); assert.deepEqual(invalid.analyticsEvents(), []);
+});
+
+test('new successful attempt is measured once while an older native success becomes stale', async () => {
+  const pending = held(); let operations = 0;
+  const f = fixture({ share: () => ++operations === 1 ? pending.promise : Promise.resolve() }, { analytics: 'library', consent: 'accepted' });
+  const first = f.click('shareView'); await f.click('shareView');
+  pending.resolve(); await first;
+  assert.deepEqual(f.analyticsEvents(), [['event', 'share_result', { tool_name: 'market-days', method: 'native' }]]);
 });

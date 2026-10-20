@@ -12,6 +12,15 @@
   var errorList = document.getElementById('error-list');
   var handoff = document.getElementById('handoff');
   var current = null;
+  var printButton = document.getElementById('print-button');
+  var downloadButton = document.getElementById('download-button');
+
+  function invalidateResult() {
+    current = null;
+    handoff.hidden = true;
+    printButton.disabled = true;
+    downloadButton.disabled = true;
+  }
 
   function clearErrors() {
     errorSummary.hidden = true;
@@ -73,6 +82,8 @@
       list.appendChild(item);
     });
     handoff.hidden = false;
+    printButton.disabled = false;
+    downloadButton.disabled = false;
     handoff.focus();
     handoff.scrollIntoView({ block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
@@ -136,8 +147,7 @@
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     clearErrors();
-    handoff.hidden = true;
-    current = null;
+    invalidateResult();
     var result = engine.prepare({
       country: country.value,
       ageBand: ageBand.value,
@@ -150,13 +160,13 @@
     }
     render(result);
   });
+  form.addEventListener('input', invalidateResult);
+  form.addEventListener('change', invalidateResult);
   form.addEventListener('reset', function () {
-    window.setTimeout(function () {
-      clearErrors();
-      handoff.hidden = true;
-      current = null;
-    }, 0);
+    invalidateResult();
+    window.setTimeout(clearErrors, 0);
   });
+  invalidateResult();
   document.getElementById('print-button').addEventListener('click', function () {
     if (current) window.print();
   });

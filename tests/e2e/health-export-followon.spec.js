@@ -35,6 +35,19 @@ for (const [name, probe] of Object.entries(probes)) {
       }
     }
     if (name === "antenatal") expect(result.snapshots).toHaveLength(1);
+    if (name === "vaccine") {
+      expect(result.lifecycle.map(row => row.lang)).toEqual(["en", "fr", "sw"]);
+      for (const row of result.lifecycle) {
+        expect(row.edits.map(edit => edit.id)).toEqual(["country", "age-band", "record-status", "record-product"]);
+        for (const edit of [...row.edits, row.reset, row.invalid]) {
+          expect(edit.hidden).toBe(true);
+          expect(edit.disabled).toBe(true);
+          expect(edit.printDisabled).toBe(true);
+        }
+        expect(row.invalid.errors).toBe(true);
+        expect(row.recovered).toEqual({ downloadEnabled: true, printEnabled: true, errorsHidden: true });
+      }
+    }
     expect(fs.readdirSync(directory).sort()).toEqual([
       ...Object.keys(expected.textFiles), ...Object.keys(expected.calendarFiles), ...Object.keys(expected.pdfTextFiles)
     ].sort());

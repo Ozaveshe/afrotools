@@ -409,3 +409,67 @@ const driftedProgressDefinitions = {
 assert.ok(evaluatePolicy(progressPolicy, driftedProgressDefinitions, queue, worktrees)
   .some(issue => issue.code === 'automation_definition_drift' && issue.automation_id === progressId));
 console.log('progress heartbeat registration and strict boundary tests passed');
+
+// An existing human-authorized local cleanup heartbeat is not a source producer.
+const cleanupId = 'clean-completed-codex-workspaces';
+const cleanupDefinition = { id: cleanupId, kind: 'heartbeat', status: 'ACTIVE',
+  target_thread_id: '01a12fc3-0fe5-7f81-abe8-9a8db12de438', rrule: 'FREQ=HOURLY;INTERVAL=6' };
+const cleanupDefinitions = { available: true, definitions: progressDefinitions.definitions
+  .filter(row => row.id !== cleanupId).concat(cleanupDefinition) };
+assert.deepStrictEqual(evaluatePolicy(progressPolicy, cleanupDefinitions, queue, worktrees), [],
+  'register only this exact authorized cleanup definition without changing fleet integrity');
+const cleanupLane = progressPolicy.active_automations.find(row => row.id === cleanupId);
+assert.strictEqual(progressPolicy.active_automation_budget, 31);
+assert.strictEqual(progressPolicy.active_automations.length, 31);
+assert.strictEqual(cleanupLane.role, 'observer');
+assert.strictEqual(cleanupLane.scope, 'external-workspace-maintenance');
+assert.strictEqual(cleanupLane.kind, cleanupDefinition.kind);
+assert.strictEqual(cleanupLane.expected_schedule, cleanupDefinition.rrule);
+assert.strictEqual(cleanupLane.target_thread_id, cleanupDefinition.target_thread_id);
+assert.strictEqual(cleanupLane.release_source_allowed, false);
+const cleanupRegistry = require('../data/automation/automation-registry.json').records;
+const cleanupRecords = cleanupRegistry.filter(row => row.codex_automation_id === cleanupId);
+assert.strictEqual(cleanupRecords.length, 1);
+const cleanupRecord = cleanupRecords[0];
+assert.strictEqual(cleanupRecord.production_required, false);
+assert.strictEqual(cleanupRecord.runner, 'codex');
+assert.strictEqual(cleanupRecord.codex_kind, 'heartbeat');
+assert.strictEqual(cleanupRecord.expected_schedule, cleanupDefinition.rrule);
+assert.strictEqual(cleanupRecord.netlify_function, null);
+assert.strictEqual(cleanupRecord.github_workflow, null);
+assert.deepStrictEqual(cleanupRecord.public_claims_supported, []);
+assert.deepStrictEqual(cleanupRecord.live_data_tables_or_blobs, []);
+for (const id of ['unapproved-cleanup-copy', 'clean-completed-codex-workspaces-extra', 'publisher-copy']) {
+  const defs = { ...cleanupDefinitions, definitions: cleanupDefinitions.definitions.concat({ ...cleanupDefinition, id }) };
+  const issue = evaluatePolicy(progressPolicy, defs, queue, worktrees).find(row => row.code === 'unexpected_active_automation' && row.automation_id === id);
+  assert.ok(issue, 'no wildcard registration for ' + id);
+  assert.strictEqual(releaseIssueBlocks(issue, 'publisher'), true);
+}
+const thirtyTwoPolicy = { ...progressPolicy, active_automations: progressPolicy.active_automations.concat({ ...cleanupLane, id: 'unapproved-lane32' }) };
+const thirtyTwoDefinitions = { ...cleanupDefinitions, definitions: cleanupDefinitions.definitions.concat({ ...cleanupDefinition, id: 'unapproved-lane32' }) };
+const overBudget = evaluatePolicy(thirtyTwoPolicy, thirtyTwoDefinitions, queue, worktrees);
+assert.ok(overBudget.some(row => row.code === 'policy_budget_exceeded'));
+assert.ok(overBudget.some(row => row.code === 'active_automation_budget_exceeded'));
+for (const [change, code] of [
+  [{ rrule: 'FREQ=MINUTELY;INTERVAL=1' }, 'automation_definition_drift'],
+  [{ kind: 'cron' }, 'automation_kind_mismatch'],
+  [{ target_thread_id: null }, 'automation_kind_mismatch'],
+  [{ status: 'PAUSED' }, 'expected_automation_inactive']
+]) {
+  const defs = { ...cleanupDefinitions, definitions: cleanupDefinitions.definitions.map(row => row.id === cleanupId ? { ...row, ...change } : row) };
+  assert.ok(evaluatePolicy(progressPolicy, defs, queue, worktrees).some(row => row.code === code && row.automation_id === cleanupId));
+}
+const cleanupReleasePolicy = { ...releasePolicy, active_automation_budget: 31,
+  active_automations: releasePolicy.active_automations.concat(cleanupLane) };
+const cleanupReleaseDefinitions = { available: true, definitions: releaseDefinitions.definitions.concat(cleanupDefinition) };
+const cleanupBranch = 'automation/' + cleanupId + '-good-run';
+const cleanupReceipt = { ...good, automation_id: cleanupId, branch: cleanupBranch,
+  producer: { ...good.producer, remote_ref: 'refs/heads/' + cleanupBranch } };
+assert.deepStrictEqual(validateHandoff(cleanupReceipt), [], 'the source-boundary negative must be schema-valid');
+const cleanupSourceAttempt = evaluateRelease(cleanupReleasePolicy, cleanupReleaseDefinitions,
+  releaseQueue([cleanupReceipt]), protectedWorktrees, releaseOptions);
+assert.strictEqual(cleanupSourceAttempt.ready, false);
+assert.deepStrictEqual(cleanupSourceAttempt.blockers.map(row => row.code), ['release_candidate_source_forbidden']);
+assert.strictEqual(evaluateRelease(cleanupReleasePolicy, cleanupReleaseDefinitions, originalQueue, protectedWorktrees,
+  { ...releaseOptions, publisherId: cleanupId }).ready, false, 'observer cannot become the release publisher');
+console.log('cleanup exact registration, unknown-ID/kind/schedule/target-presence and non-source/publisher boundary controls passed');
