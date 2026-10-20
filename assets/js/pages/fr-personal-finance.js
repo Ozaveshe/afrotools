@@ -183,16 +183,17 @@
     var currentSavings = Number(input.currentSavings);
     var contribution = Number(input.monthlyContribution);
     var target = expenses * targetMonths + oneOff;
+    var tier1 = expenses + oneOff, tier3 = expenses * 6 + oneOff;
     var gap = Math.max(0, target - currentSavings);
-    return {
-      ok: true,
-      target: target,
-      tier1: expenses + oneOff,
-      tier2: target,
-      tier3: expenses * 6 + oneOff,
-      gap: gap,
-      monthsToGoal: gap === 0 ? 0 : (contribution > 0 ? Math.ceil(gap / contribution) : null)
-    };
+    var monthsToGoal = gap === 0 ? 0 : (contribution > 0 ? Math.max(1, Math.ceil(gap / contribution)) : null);
+    if ([target,tier1,tier3,gap].some(function (value) { return !Number.isFinite(value); })) {
+      return fail('monthlyExpenses', 'Ces montants dépassent la plage numérique prise en charge. Réduisez les montants et réessayez.');
+    }
+    if (monthsToGoal !== null && !Number.isFinite(monthsToGoal)) {
+      return fail('monthlyContribution', 'Le délai dépasse la plage numérique prise en charge. Augmentez la contribution mensuelle et réessayez.');
+    }
+    return { ok: true, target: target, tier1: tier1, tier2: target, tier3: tier3,
+      gap: gap, monthsToGoal: monthsToGoal };
   }
 
   function capitalBandFor(hustle) {
@@ -563,6 +564,12 @@
     }
     if (!form || form.dataset.mounted === 'true') return;
     form.dataset.mounted = 'true';
+    function changedInputs() {
+      clearCalculation(form);
+      status(form, 'Les données ont changé. Recalculez pour afficher un résultat à jour.', 'info');
+    }
+    form.addEventListener('input', changedInputs);
+    form.addEventListener('change', changedInputs);
     form.addEventListener('submit', function submitted(event) {
       event.preventDefault();
       calculate(form);

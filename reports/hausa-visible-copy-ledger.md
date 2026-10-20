@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-10-07
+Generated: 2026-10-19
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -35,7 +35,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/allon-aiki/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/farashi/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/farashi/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/game-da-mu/` | 7 | English route label marked as fallback | Tsallake zuwa babban abun ciki Gida › Game da AfroTools Manufarmu Game da AfroTools Muna gina kayan aikin da ke taimaka wa mutane su yanke shawara cikin yanayin Afirka, tare da tushe, sirri da iyakokin da ake iya gani... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/game-da-mu/` | 9 | English route label marked as fallback | Tsallake zuwa babban abun ciki Gida › Game da AfroTools Manufarmu Game da AfroTools Muna gina kayan aikin da ke taimaka wa mutane su yanke shawara cikin yanayin Afirka, tare da tushe, sirri da iyakokin da ake iya gani... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/inshora/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/inshora/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/jamb/adabi/` | 100 | English route label marked as fallback | Jagorar Hausa don JAMB Adabi: wakoki, labari, wasan kwaikwayo, salo, jigo da fahimtar rubutu. Tambayoyin shekarun da suka gabata suna nan a shafin Turanci; wannan shafin yana taimaka maka fahimtar abin da za ka karant... | Batch 2 - Education and JAMB visible-copy cleanup |
@@ -51,7 +51,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/jamb/gwamnati/` | 125 | English route label marked as fallback | Darasi Kundin tsarin mulki Ka fara da maanar kalmomi, ka rubuta gajeren bayani, sannan ka yi atisaye daga tambayoyin da ke shafin Turanci. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/gwamnati/` | 134 | English route label marked as fallback | Karanta mahimman kalmomi a Hausa, sannan ka bude shafin Turanci domin tambayoyin asali. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/gwamnati/` | 136 | English route label marked as fallback | Kar ka dauka an kirkiri shafukan shekarun Hausa. Ajiyar shekaru tana kan asalin shafin Turanci. | Batch 2 - Education and JAMB visible-copy cleanup |
-| `/ha/jamb/` | 469 | English route label marked as fallback | Karanta jagorar Hausa kan yadda za a tambayi mai taimakon AI, sannan bude shafin Turanci idan kana bukatar amsa. | Batch 2 - Education and JAMB visible-copy cleanup |
+| `/ha/jamb/` | 471 | English route label marked as fallback | Karanta jagorar Hausa kan yadda za a tambayi mai taimakon AI, sannan bude shafin Turanci idan kana bukatar amsa. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/kasuwanci/` | 100 | English route label marked as fallback | Jagorar Hausa don JAMB Kasuwanci: ciniki, banki, inshora, sufuri, tallace-tallace da nauin kamfani. Tambayoyin shekarun da suka gabata suna nan a shafin Turanci; wannan shafin yana taimaka maka fahimtar abin da za ka ... | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/kasuwanci/` | 125 | English route label marked as fallback | Darasi Ciniki da kasuwa Ka fara da maanar kalmomi, ka rubuta gajeren bayani, sannan ka yi atisaye daga tambayoyin da ke shafin Turanci. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/kasuwanci/` | 134 | English route label marked as fallback | Karanta mahimman kalmomi a Hausa, sannan ka bude shafin Turanci domin tambayoyin asali. | Batch 2 - Education and JAMB visible-copy cleanup |

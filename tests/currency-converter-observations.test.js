@@ -93,3 +93,104 @@ for (const action of ['amount', 'manualRate', 'from', 'to', 'mode', 'swap', 'inv
     r.run('copy()'); assert.equal(r.context.copied, 0);
   });
 }
+
+// Execute the complete shipped init/load path. Select replacement resets its
+// value like a native single-select, and values must belong to its options.
+function pendingSnapshotRuntime(locale, search = '') {
+  const filename = path.join(__dirname, '../assets/js/pages', locale === 'en' ? 'currency-converter-vip.js' : 'currency-converter-locales-vip.js');
+  const nodes = new Map(), requests = [], copied = [], downloads = [];
+  function node(id) {
+    if (nodes.has(id)) return nodes.get(id);
+    let value = '', html = '', options = [];
+    const select = id === 'fxFrom' || id === 'fxTo';
+    const item = { hidden: id === 'fxResult' || id === 'fxManualGroup', textContent: '', events: {},
+      addEventListener(type, fn) { this.events[type] = fn; }, focus() {},
+      querySelector(selector) { const code = selector.match(/^option\[value="([A-Z]{3})"\]$/)?.[1]; return code && options.includes(code) ? {} : null; },
+      get value() { return value; }, set value(next) { value = select && !options.includes(String(next)) ? '' : String(next); },
+      get innerHTML() { return html; }, set innerHTML(next) { html = String(next); if (select) { options = [...html.matchAll(/<option value="([A-Z]{3})"/g)].map(match => match[1]); value = options[0] || ''; } }
+    };
+    nodes.set(id, item); return item;
+  }
+  const radio = node('radio'); radio.value = 'snapshot';
+  const shortcut = { events: {}, addEventListener(type, fn) { this.events[type] = fn; }, getAttribute(name) { return name === 'data-fx-from' ? 'EUR' : 'XOF'; } };
+  const context = { Date: FixedDate, Intl, URLSearchParams, location: { search },
+    navigator: { clipboard: { async writeText(text) { copied.push(text); } } },
+    URL: { createObjectURL() { downloads.push('unexpected download'); return 'blob:synthetic'; }, revokeObjectURL() {} }, Blob,
+    document: { readyState: 'complete', documentElement: { lang: locale }, getElementById: node,
+      querySelector() { return radio; }, querySelectorAll(selector) { return selector.includes('rateMode') ? [radio] : selector.includes('data-fx-from') ? [shortcut] : []; },
+      createElement() { return { click() {}, remove() {} }; }, body: { appendChild() {} } },
+    fetch(url) { let resolve, reject; const promise = new Promise((yes, no) => { resolve = yes; reject = no; }); requests.push({ url, resolve, reject, settled: false }); return promise; }
+  };
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8'), context, { filename });
+  const tick = () => new Promise(resolve => setImmediate(resolve));
+  async function reply(data) { const pending = requests.find(request => !request.settled); assert(pending); pending.settled = true; pending.resolve({ ok: true, json: async () => data }); await tick(); }
+  async function rejectAll() { for (let i = 0; i < 2; i++) { const pending = requests.find(request => !request.settled); assert(pending); pending.settled = true; pending.reject(new Error('synthetic unavailable snapshot')); await tick(); } }
+  function choose(from, to) { node('fxFrom').value = from; node('fxFrom').events.change(); node('fxTo').value = to; node('fxTo').events.change(); assert.equal(node('fxFrom').value, from); assert.equal(node('fxTo').value, to); }
+  function submit() { node('fxForm').events.submit({ preventDefault() {} }); }
+  function manual(from = 'KES', to = 'GHS') { radio.value = 'manual'; radio.events.change(); choose(from, to); node('fxAmount').value = '100'; node('fxManualRate').value = '0.1'; node('fxManualRate').events.input(); submit(); assert.equal(node('fxResult').hidden, false); }
+  return { node, radio, shortcut, requests, copied, downloads, reply, rejectAll, choose, submit, manual,
+    pair() { return [node('fxFrom').value, node('fxTo').value]; },
+    async copy() { await node('fxCopy').events.click(); }, csv() { node('fxCsv').events.click(); } };
+}
+function delayedSnapshot(rates = { NGN: 1500, KES: 130, GHS: 15, EUR: 0.9, XOF: 600 }) {
+  return { schemaVersion: 1, base: 'USD', source: 'fawazahmed', timestamp: '2026-10-09T00:00:00Z', rates, retained_rate_codes: [] };
+}
+async function assertQuoteCleared(h) {
+  assert.equal(h.node('fxManualRate').value, '');
+  assert.equal(h.node('fxResult').hidden, true);
+  assert.equal(h.node('fxEmpty').hidden, false);
+  assert.equal(h.node('fxActionStatus').textContent, '');
+  await h.copy(); h.csv(); assert.equal(h.copied.length, 0); assert.equal(h.downloads.length, 0);
+  h.submit(); assert.equal(h.node('fxResult').hidden, true); assert.notEqual(h.node('fxManualError').textContent, '');
+}
+for (const locale of ['en', 'fr', 'sw']) {
+  test(locale + ' complete owner preserves a manual pair, quote and result after delayed success', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); const before = h.node('fxResultValue').textContent;
+    await h.reply(delayedSnapshot()); assert.deepEqual(h.pair(), ['KES', 'GHS']);
+    assert.equal(h.node('fxManualRate').value, '0.1'); assert.equal(h.node('fxResult').hidden, false); assert.equal(h.node('fxResultValue').textContent, before);
+    assert.equal(h.node('fxManualPair').textContent, '1 KES = ? GHS'); await h.copy(); assert.match(h.copied[0], /100 KES = 10\.000000 GHS/);
+    h.submit(); assert.equal(h.node('fxResultValue').textContent, before); assert.equal(h.requests.length, 1);
+  });
+  test(locale + ' complete owner preserves manual work when both pending snapshot sources fail', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); const before = h.node('fxResultValue').textContent;
+    await h.rejectAll(); assert.deepEqual(h.pair(), ['KES', 'GHS']); assert.equal(h.node('fxManualRate').value, '0.1'); assert.equal(h.node('fxResultValue').textContent, before); assert.equal(h.node('fxResult').hidden, false);
+    assert.equal(h.node('fxConvert').disabled, false); assert.deepEqual(h.requests.map(r => r.url), ['/api/forex?base=USD', '/data/forex/latest.json']);
+    h.radio.value = 'snapshot'; h.radio.events.change(); assert.equal(h.node('fxConvert').disabled, true);
+  });
+  for (const missing of ['from', 'to', 'both']) test(locale + ' late snapshot missing ' + missing + ' changes only unsupported choices and clears the bound quote', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); h.node('fxActionStatus').textContent = 'old export status';
+    const rates = { NGN: 1500 }; if (missing !== 'from' && missing !== 'both') rates.KES = 130; if (missing !== 'to' && missing !== 'both') rates.GHS = 15;
+    await h.reply(delayedSnapshot(rates)); assert.deepEqual(h.pair(), missing === 'from' ? ['USD', 'GHS'] : missing === 'to' ? ['KES', 'NGN'] : ['USD', 'NGN']);
+    await assertQuoteCleared(h);
+  });
+  test(locale + ' untouched late URL currencies absent at bootstrap still become selected', async () => {
+    const h = pendingSnapshotRuntime(locale, '?from=AED&to=UGX'); assert.deepEqual(h.pair(), ['USD', 'NGN']);
+    await h.reply(delayedSnapshot({ NGN: 1500, AED: 3.67, UGX: 3700 })); assert.deepEqual(h.pair(), ['AED', 'UGX']); assert.equal(h.node('fxManualPair').textContent, '1 AED = ? UGX');
+    assert.equal(h.node('fxManualRate').value, ''); assert.equal(h.node('fxResult').hidden, true);
+  });
+  test(locale + ' supported URL intent survives untouched but yields to a real pending pair edit', async () => {
+    const untouched = pendingSnapshotRuntime(locale, '?from=EUR&to=KES'); assert.deepEqual(untouched.pair(), ['EUR', 'KES']); await untouched.reply(delayedSnapshot()); assert.deepEqual(untouched.pair(), ['EUR', 'KES']);
+    const edited = pendingSnapshotRuntime(locale, '?from=EUR&to=KES'); edited.choose('KES', 'GHS'); await edited.reply(delayedSnapshot()); assert.deepEqual(edited.pair(), ['KES', 'GHS']);
+  });
+  test(locale + ' a manual quote binds the visible bootstrap pair before late URL currencies arrive', async () => {
+    const h = pendingSnapshotRuntime(locale, '?from=AED&to=UGX'); h.radio.value = 'manual'; h.radio.events.change(); h.node('fxAmount').value = '100'; h.node('fxManualRate').value = '0.1'; h.node('fxManualRate').events.input(); h.submit();
+    await h.reply(delayedSnapshot({ NGN: 1500, AED: 3.67, UGX: 3700 })); assert.deepEqual(h.pair(), ['USD', 'NGN']); assert.equal(h.node('fxManualRate').value, '0.1'); assert.equal(h.node('fxResult').hidden, false); assert.match(h.node('fxRateUsed').textContent, /USD.*NGN/);
+  });
+  test(locale + ' genuine select changes clear a manual quote before later snapshot settlement', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); h.node('fxActionStatus').textContent = 'old export status'; h.node('fxFrom').value = 'USD'; h.node('fxFrom').events.change(); await assertQuoteCleared(h);
+    await h.reply(delayedSnapshot()); assert.deepEqual(h.pair(), ['USD', 'GHS']); assert.equal(h.node('fxManualRate').value, '');
+  });
+  test(locale + ' genuine swap changes clear the quote and remain selected after late settlement', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); h.node('fxActionStatus').textContent = 'old export status'; h.node('fxSwap').events.click(); assert.deepEqual(h.pair(), ['GHS', 'KES']); await assertQuoteCleared(h);
+    await h.reply(delayedSnapshot()); assert.deepEqual(h.pair(), ['GHS', 'KES']);
+  });
+  test(locale + ' expired pending snapshots stay unavailable without destroying the manual pair', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); const stale = { ...delayedSnapshot(), timestamp: '2026-09-01T00:00:00Z' }; await h.reply(stale); await h.reply(stale);
+    assert.deepEqual(h.pair(), ['KES', 'GHS']); assert.equal(h.node('fxManualRate').value, '0.1'); assert.equal(h.node('fxResult').hidden, false);
+    h.radio.value = 'snapshot'; h.radio.events.change(); assert.equal(h.node('fxConvert').disabled, true);
+  });
+  if (locale !== 'en') test(locale + ' supported localized shortcut clears its old quote and survives late options', async () => {
+    const h = pendingSnapshotRuntime(locale); h.manual(); h.shortcut.events.click(); assert.deepEqual(h.pair(), ['EUR', 'XOF']); await assertQuoteCleared(h);
+    await h.reply(delayedSnapshot()); assert.deepEqual(h.pair(), ['EUR', 'XOF']);
+  });
+}
