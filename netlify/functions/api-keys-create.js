@@ -110,34 +110,6 @@ exports.handler = async function(event) {
     return json(500, { error: 'Failed to create key. Try again.' });
   }
 
-  // Also track in email_leads if the capture-lead function exists
-  try {
-    var SUPABASE_URL = cleanEnvValue(process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL) || 'https://zpclagtgczsygrgztlts.supabase.co';
-    var SUPABASE_KEY = cleanEnvValue(
-      process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
-      process.env.SUPABASE_SERVICE_ROLE_KEY ||
-      process.env.SUPABASE_SERVICE_KEY
-    );
-    if (SUPABASE_KEY) {
-      await fetch(SUPABASE_URL + '/rest/v1/email_leads?on_conflict=email', {
-        method: 'POST',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal,resolution=merge-duplicates'
-        },
-        body: JSON.stringify({
-          email: email,
-          source: 'api_key_signup',
-          tool_slug: 'api',
-          opt_in_digest: true,
-          name: keyData.name
-        })
-      });
-    }
-  } catch(e) { /* non-critical */ }
-
   var freeLimits = getApiPlanLimit('free');
   return json(200, {
     ok: true,

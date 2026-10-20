@@ -54,4 +54,34 @@ function reconcileImageBatch({ batchBytes, library, proof, ledger, readAsset }) 
     unreconciledRequests: batch.images.length - deliveries.size };
 }
 
-module.exports = { reconcileImageBatch };
+
+// A current alias may suppress a NEW request only when its reviewed, same-recipe
+// inventory binding still matches physical bytes. This never delivers the old
+// canonical request: an alternate path/size is not that retained contract.
+function reviewedRecipeAlias({ slug, aliases, library, readAsset }) {
+  if (!Object.hasOwn(aliases, slug)) return null;
+  const canonical = aliases[slug];
+  assert.match(slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Invalid alias recipe slug');
+  assert.equal(typeof canonical, 'string', 'Invalid canonical image alias');
+  assert.match(canonical, /^(?:responsive\/)?[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Invalid canonical image alias');
+  assert.notEqual(canonical, slug, 'Alias must identify a different canonical image');
+  const imagePath = '/assets/img/kitchen/' + canonical + '.webp';
+  const matches = library.images.filter(row => row.path === imagePath);
+  assert.equal(matches.length, 1, 'Reviewed canonical alias image missing or duplicate: ' + slug);
+  const image = matches[0], owner = 'tools/afrokitchen/recipes/' + slug + '/index.html';
+  assert.equal(image.status, 'placed', 'Canonical alias image is not placed: ' + slug);
+  assert.equal(image.text_status, 'text-free-reviewed', 'Canonical alias image is unreviewed: ' + slug);
+  assert.equal(image.locale_reuse, true, 'Canonical alias image reuse is unreviewed: ' + slug);
+  assert.ok(image.placements.some(row => row.path === owner), 'Canonical alias lacks same-recipe placement: ' + slug);
+  assert.match(image.sha256, /^[a-f0-9]{64}$/, 'Invalid canonical alias hash');
+  for (const field of ['bytes', 'width', 'height']) assert.ok(Number.isSafeInteger(image[field]) && image[field] > 0, 'Invalid canonical alias ' + field);
+  const bytes = readAsset(imagePath);
+  assert.equal(bytes.length, image.bytes, 'Canonical alias physical byte-size drift: ' + slug);
+  assert.equal(sha256(bytes), image.sha256, 'Canonical alias physical hash drift: ' + slug);
+  return { slug, route: '/' + owner.replace(/index\.html$/, ''), path: imagePath,
+    canonicalRequestPath: '/assets/img/kitchen/' + slug + '.webp',
+    sha256: image.sha256, bytes: image.bytes, width: image.width, height: image.height,
+    originalRequestFulfilled: false };
+}
+
+module.exports = { reconcileImageBatch, reviewedRecipeAlias };
