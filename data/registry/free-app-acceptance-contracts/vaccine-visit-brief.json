@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "contractId": "vaccine-visit-brief-v1",
+  "familyId": "vaccine-programme-visit-brief",
+  "identityStatus": "proposed",
+  "scope": "EN/FR/SW declared free workflow only; no global family adoption or completed-app count",
+  "primaryJob": "Prepare a local vaccination programme visit brief without dose scheduling or completion verdict.",
+  "roster": [
+    {
+      "memberKey": "vaccine-en",
+      "catalogueId": "vaccine-schedule",
+      "route": "/tools/vaccine-schedule/",
+      "locale": "en",
+      "pageOwner": "tools/vaccine-schedule/index.html"
+    },
+    {
+      "memberKey": "vaccine-fr",
+      "catalogueId": "calendrier-vaccinal-fr",
+      "route": "/fr/tools/calendrier-vaccinal/",
+      "locale": "fr",
+      "pageOwner": "fr/tools/calendrier-vaccinal/index.html"
+    },
+    {
+      "memberKey": "vaccine-sw",
+      "catalogueId": "zana-ratiba-ya-chanjo-sw",
+      "route": "/sw/zana/ratiba-ya-chanjo/",
+      "locale": "sw",
+      "pageOwner": "sw/zana/ratiba-ya-chanjo/index.html"
+    }
+  ],
+  "sharedOwners": [
+    "tools/vaccine-schedule/vaccine-schedule-vip.js",
+    "tools/vaccine-schedule/vaccine-schedule-engine.js"
+  ],
+  "requiredKinds": [
+    "happy",
+    "error",
+    "export",
+    "recovery",
+    "accessibility",
+    "privacy"
+  ],
+  "scenarios": [
+    {
+      "id": "valid-render",
+      "kind": "happy",
+      "checks": [
+        "selected-inputs-rendered",
+        "engine-expected",
+        "source-limits-visible"
+      ],
+      "evidenceKinds": [
+        "native-log",
+        "screenshot"
+      ],
+      "requiredVariants": [
+        "country:NG",
+        "country:KE",
+        "country:GH",
+        "country:ZA",
+        "country:ET",
+        "country:OTHER",
+        "age:newborn",
+        "age:infant",
+        "age:early-childhood",
+        "age:school-age",
+        "age:adolescent",
+        "age:adult",
+        "reason:routine",
+        "reason:missed",
+        "reason:unclear",
+        "reason:no-record",
+        "reason:reaction",
+        "product:empty",
+        "product:unicode-synthetic"
+      ]
+    },
+    {
+      "id": "invalid-selection",
+      "kind": "error",
+      "checks": [
+        "missing-invalid-honest",
+        "focus-announcement",
+        "prior-export-blocked"
+      ],
+      "evidenceKinds": [
+        "native-log",
+        "screenshot"
+      ],
+      "requiredVariants": [
+        "missing:country",
+        "missing:age-band",
+        "missing:record-status",
+        "unsupported:country",
+        "stale-result:blocked"
+      ]
+    },
+    {
+      "id": "txt-exact",
+      "kind": "export",
+      "checks": [
+        "native-download",
+        "exact-expected-text",
+        "fresh-state-only"
+      ],
+      "evidenceKinds": [
+        "native-log",
+        "export"
+      ],
+      "requiredVariants": [
+        "country:NG",
+        "country:KE",
+        "country:GH",
+        "country:ZA",
+        "country:ET",
+        "country:OTHER",
+        "age:newborn",
+        "age:infant",
+        "age:early-childhood",
+        "age:school-age",
+        "age:adolescent",
+        "age:adult",
+        "reason:routine",
+        "reason:missed",
+        "reason:unclear",
+        "reason:no-record",
+        "reason:reaction",
+        "product:empty",
+        "product:unicode-synthetic"
+      ]
+    },
+    {
+      "id": "print-pdf",
+      "kind": "export",
+      "checks": [
+        "actual-print-or-save-pdf",
+        "parsed-content-matches",
+        "readable-layout",
+        "local-no-gate"
+      ],
+      "evidenceKinds": [
+        "native-log",
+        "export",
+        "screenshot"
+      ],
+      "requiredVariants": [
+        "country:NG",
+        "country:KE",
+        "country:GH",
+        "country:ZA",
+        "country:ET",
+        "country:OTHER",
+        "age:newborn",
+        "age:infant",
+        "age:early-childhood",
+        "age:school-age",
+        "age:adolescent",
+        "age:adult",
+        "reason:routine",
+        "reason:missed",
+        "reason:unclear",
+        "reason:no-record",
+        "reason:reaction",
+        "product:empty",
+        "product:unicode-synthetic"
+      ]
+    },
+    {
+      "id": "edit-invalidate",
+      "kind": "recovery",
+      "checks": [
+        "all-four-controls-both-events",
+        "prior-result-hidden",
+        "prior-actions-blocked",
+        "fresh-recalculate-output"
+      ],
+      "evidenceKinds": [
+        "native-log"
+      ],
+      "requiredVariants": [
+        "input:country",
+        "change:country",
+        "input:age-band",
+        "change:age-band",
+        "input:record-status",
+        "change:record-status",
+        "input:record-product",
+        "change:record-product"
+      ]
+    },
+    {
+      "id": "reset-invalid-retry",
+      "kind": "recovery",
+      "checks": [
+        "sync-reset",
+        "invalid-submit-blocked",
+        "valid-retry"
+      ],
+      "evidenceKinds": [
+        "native-log"
+      ],
+      "requiredVariants": [
+        "reset:sync",
+        "submit:invalid",
+        "retry:valid"
+      ]
+    },
+    {
+      "id": "keyboard-errors",
+      "kind": "accessibility",
+      "checks": [
+        "visible-labels",
+        "keyboard-order-focus",
+        "error-status-announcements"
+      ],
+      "evidenceKinds": [
+        "native-log",
+        "screenshot"
+      ],
+      "requiredVariants": [
+        "keyboard:tab",
+        "keyboard:submit",
+        "keyboard:error-focus",
+        "announcement:status"
+      ]
+    },
+    {
+      "id": "reflow-contrast",
+      "kind": "accessibility",
+      "checks": [
+        "390-and-desktop",
+        "zoom-reflow",
+        "contrast",
+        "controls-not-clipped"
+      ],
+      "evidenceKinds": [
+        "native-log",
+        "screenshot"
+      ],
+      "requiredVariants": [
+        "viewport:390",
+        "viewport:desktop",
+        "zoom:200",
+        "contrast:controls"
+      ]
+    },
+    {
+      "id": "guest-network-storage",
+      "kind": "privacy",
+      "checks": [
+        "guest-no-account-gate",
+        "no-sensitive-network",
+        "storage-retention-reset",
+        "consent-boundaries"
+      ],
+      "evidenceKinds": [
+        "network",
+        "storage",
+        "native-log"
+      ],
+      "requiredVariants": [
+        "guest:declined",
+        "network:observed",
+        "storage:observed",
+        "reset:retention"
+      ]
+    }
+  ],
+  "limitations": [
+    "Country, age-band and clarification variants must be enumerated in each actual scenario dossier; this contract does not certify a full Cartesian product.",
+    "Swahili has no registry sourceId; this proposed scoped roster is explicit and is not inferred from the pointer.",
+    "Historical V8 proves original TXT and engine assertions only; SW TXT remains English in that historical payload.",
+    "A scenario checker validates pinned dossiers and reviewer scope; it does not execute a browser or independently certify their clinical, accessibility or privacy conclusions."
+  ]
+}

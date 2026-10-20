@@ -1,0 +1,411 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scoped free workflow evidence; qualified observations are not verified acceptance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "contractPin",
+    "contractId",
+    "memberKey",
+    "route",
+    "locale",
+    "kind",
+    "scenarioId",
+    "state",
+    "source",
+    "artifact",
+    "execution",
+    "assertionPin",
+    "payloads",
+    "evidence",
+    "reviewPin",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "caseId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contractPin": {
+      "$ref": "#/$defs/pin"
+    },
+    "contractId": {
+      "const": "vaccine-visit-brief-v1"
+    },
+    "memberKey": {
+      "enum": [
+        "vaccine-en",
+        "vaccine-fr",
+        "vaccine-sw"
+      ]
+    },
+    "route": {
+      "type": "string",
+      "pattern": "^/[^?#\\\\]*$"
+    },
+    "locale": {
+      "enum": [
+        "en",
+        "fr",
+        "sw"
+      ]
+    },
+    "kind": {
+      "enum": [
+        "happy",
+        "error",
+        "export",
+        "recovery",
+        "accessibility",
+        "privacy"
+      ]
+    },
+    "scenarioId": {
+      "enum": [
+        "valid-render",
+        "invalid-selection",
+        "txt-exact",
+        "print-pdf",
+        "edit-invalidate",
+        "reset-invalid-retry",
+        "keyboard-errors",
+        "reflow-contrast",
+        "guest-network-storage"
+      ]
+    },
+    "state": {
+      "enum": [
+        "draft",
+        "qualified",
+        "verified",
+        "failed",
+        "invalidated"
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "artifact": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "manifestPin"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "optimized",
+            "production"
+          ]
+        },
+        "manifestPin": {
+          "$ref": "#/$defs/pin"
+        }
+      }
+    },
+    "execution": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "reportPin",
+        "caseTitle",
+        "runId",
+        "startedAt",
+        "finishedAt",
+        "platform",
+        "browser",
+        "viewport",
+        "syntheticInputs",
+        "native",
+        "attempt",
+        "retries",
+        "skipped",
+        "harnessAccepted",
+        "ownerExit"
+      ],
+      "properties": {
+        "reportPin": {
+          "$ref": "#/$defs/pin"
+        },
+        "caseTitle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startedAt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "finishedAt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "platform": {
+          "type": "string",
+          "minLength": 1
+        },
+        "browser": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewport": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "width",
+            "height"
+          ],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "syntheticInputs": {
+          "const": true
+        },
+        "native": {
+          "type": "boolean"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "retries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skipped": {
+          "type": "boolean"
+        },
+        "harnessAccepted": {
+          "type": "boolean"
+        },
+        "ownerExit": {
+          "type": "integer"
+        }
+      }
+    },
+    "assertionPin": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "payloads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "format",
+          "observedPin",
+          "expectedPin",
+          "comparison",
+          "witnessPin"
+        ],
+        "properties": {
+          "format": {
+            "enum": [
+              "txt",
+              "print-pdf"
+            ]
+          },
+          "observedPin": {
+            "$ref": "#/$defs/pin"
+          },
+          "expectedPin": {
+            "$ref": "#/$defs/pin"
+          },
+          "comparison": {
+            "enum": [
+              "bytes-exact",
+              "parsed-json"
+            ]
+          },
+          "witnessPin": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "bytes",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "pin"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "native-log",
+              "screenshot",
+              "export",
+              "network",
+              "storage"
+            ]
+          },
+          "pin": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      }
+    },
+    "reviewPin": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "tree",
+        "owners"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "owners": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "$ref": "#/$defs/pin"
+          }
+        }
+      }
+    }
+  }
+}

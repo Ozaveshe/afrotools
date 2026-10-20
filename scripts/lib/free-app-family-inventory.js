@@ -9,10 +9,10 @@ const same = require('node:util').isDeepStrictEqual;
 
 // This dependency-free interpreter deliberately supports only the keywords used
 // by this maintained schema. It is not a general JSON Schema implementation.
-function checkShape(value, rule, at = '$') {
+function checkShape(value, rule, at = '$', definitions = schema.$defs) {
   if (rule.$ref) {
     requireThat(rule.$ref.startsWith('#/$defs/'), 'SCHEMA', 'local definitions only');
-    return checkShape(value, schema.$defs[rule.$ref.slice(8)], at);
+    return checkShape(value, definitions[rule.$ref.slice(8)], at, definitions);
   }
   if (Object.hasOwn(rule, 'const')) requireThat(same(value, rule.const), 'SHAPE', at + ' constant');
   if (rule.enum) requireThat(rule.enum.some(item => same(item, value)), 'SHAPE', at + ' enum');
@@ -26,12 +26,12 @@ function checkShape(value, rule, at = '$') {
   if (Array.isArray(value)) {
     if (rule.minItems !== undefined) requireThat(value.length >= rule.minItems, 'SHAPE', at + ' minimum items');
     if (rule.uniqueItems) requireThat(new Set(value.map(item => JSON.stringify(item))).size === value.length, 'SHAPE', at + ' duplicate items');
-    if (rule.items) value.forEach((item, index) => checkShape(item, rule.items, at + '/' + index));
+    if (rule.items) value.forEach((item, index) => checkShape(item, rule.items, at + '/' + index, definitions));
   } else if (value && typeof value === 'object') {
     for (const key of rule.required || []) requireThat(Object.hasOwn(value, key), 'SHAPE', at + ' missing ' + key);
     for (const key of Object.keys(value)) {
       if (rule.additionalProperties === false) requireThat(Object.hasOwn(rule.properties || {}, key), 'SHAPE', at + ' unknown ' + key);
-      if (rule.properties && rule.properties[key]) checkShape(value[key], rule.properties[key], at + '/' + key);
+      if (rule.properties && rule.properties[key]) checkShape(value[key], rule.properties[key], at + '/' + key, definitions);
     }
   }
 }
@@ -146,4 +146,4 @@ function validateInventory(inventory, context) {
   };
 }
 
-module.exports = { validateInventory };
+module.exports = { validateInventory, checkShape };
