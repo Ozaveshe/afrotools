@@ -8,6 +8,7 @@
     pathway: 'science',
     subjects: []
   };
+  var lastReadySignature = '';
 
   var SYSTEMS = {
     'ng-waec-neco': {
@@ -202,6 +203,35 @@
     return window.WAECPlannerEngine.calculateNigeria(state.subjects);
   }
 
+  function trackResultReady(result) {
+    if (result.complete !== true) {
+      lastReadySignature = '';
+      return;
+    }
+    // Derived output only: this signature stays in memory and never enters analytics.
+    var signature = JSON.stringify([
+      state.system,
+      state.system === 'gh-wassce' ? state.pathway : null,
+      result.value,
+      result.selected.length,
+      result.credits,
+      result.checks.map(function (check) { return Boolean(check.pass); })
+    ]);
+    if (signature === lastReadySignature) return;
+    var analytics = window.AfroTools && window.AfroTools.analytics;
+    if (!analytics || typeof analytics.track !== 'function') return;
+    try {
+      if (analytics.track('waec_result_ready', {
+        tool_id: 'waec-calculator',
+        system: state.system,
+        planning_only: true,
+        counted_subject_count: result.selected.length
+      }) === true) lastReadySignature = signature;
+    } catch (_) {
+      // Measurement must not interrupt the local planning result.
+    }
+  }
+
   function setResultText(id, value) {
     var element = byId(id);
     if (element) element.textContent = value;
@@ -265,6 +295,7 @@
       entered_subject_count: result.entered,
       credit_count: result.credits
     });
+    trackResultReady(result);
   }
 
   function renderReference() {
