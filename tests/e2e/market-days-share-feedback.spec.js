@@ -111,6 +111,30 @@ async function mode(page, value, share = false) {
 async function finish(page, evidence, testInfo) {
   evidence.fixture = await page.evaluate(() => ({ calls: window.shareFixture.calls, events: window.shareFixture.events }));
   evidence.status = await page.locator('#shareStatus').textContent();
+  if (evidence.status) {
+    evidence.statusContrast = await page.locator('#shareStatus').evaluate(node => {
+      const channels = value => value.match(/[\d.]+/g).map(Number);
+      const foreground = channels(getComputedStyle(node).color);
+      let parent = node;
+      let background;
+      while (parent) {
+        const color = channels(getComputedStyle(parent).backgroundColor);
+        if (color.length === 3 || color[3] === 1) { background = color; break; }
+        if (color[3] !== 0) throw new Error('Composite background needs explicit contrast review');
+        parent = parent.parentElement;
+      }
+      background ||= [255, 255, 255];
+      if (foreground.length > 3 && foreground[3] !== 1) throw new Error('Translucent text needs explicit contrast review');
+      const luminance = color => color.slice(0, 3).map(channel => {
+        const value = channel / 255;
+        return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+      }).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+      const light = Math.max(luminance(foreground), luminance(background));
+      const dark = Math.min(luminance(foreground), luminance(background));
+      return { foreground, background, ratio: (light + 0.05) / (dark + 0.05) };
+    });
+    expect(evidence.statusContrast.ratio).toBeGreaterThanOrEqual(4.5);
+  }
   evidence.widths = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth, innerWidth }));
   evidence.overflow = evidence.widths.scrollWidth - evidence.widths.clientWidth;
   await testInfo.attach('local-observations', { body: JSON.stringify(evidence, null, 2), contentType: 'application/json' });
