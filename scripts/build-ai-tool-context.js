@@ -1439,7 +1439,7 @@ function paystackFeePlannerSourceRecord(binding) {
   return { text, facts };
 }
 
-function fuelSourceRecord() {
+function fuelSourceRecord(freshnessCheckedAt = new Date().toISOString()) {
   const meta = readJson(META_PATH).fuel;
   const snapshot = readJson(FUEL_PATH);
   const engine = require(path.join(ROOT, 'assets', 'js', 'engines', 'fuel-tracker-engine.js'));
@@ -1449,7 +1449,7 @@ function fuelSourceRecord() {
       return country.code === code;
     });
     if (!row) throw new Error('Fuel snapshot missing ' + code);
-    const gate = engine.rowUsability(row, 'petrol', reviewedOn, 45);
+    const gate = engine.rowUsability(row, 'petrol', freshnessCheckedAt, 45);
     return { row, gate };
   });
   const selected = reviewed.filter(function (item) { return item.gate.usable; }).map(function (item) {
@@ -1457,13 +1457,13 @@ function fuelSourceRecord() {
     return { code: row.code, name: row.name, currency: row.currency, petrol: row.petrol.price, asOf: row.last_updated, sourceUrl: item.gate.sourceUrl };
   });
   const excluded = reviewed.filter(function (item) { return !item.gate.usable; }).map(function (item) { return { code: item.row.code, reason: item.gate.reason }; });
-  const facts = { dataset: 'fuel', sourceLabel: meta.source || snapshot.source, sourceState: meta.source_state || 'third_party_snapshot', asOf: meta.as_of || meta.last_fetch, reviewedOn: reviewedOn.slice(0, 10), maxAgeDays: 45, officialVerifiedCount: snapshot.official_verified_count || 0, countries: selected, excluded };
+  const facts = { dataset: 'fuel', sourceLabel: meta.source || snapshot.source, sourceState: meta.source_state || 'third_party_snapshot', asOf: meta.as_of || meta.last_fetch, reviewedOn: reviewedOn.slice(0, 10), freshnessCheckedOn: freshnessCheckedAt.slice(0, 10), maxAgeDays: 45, officialVerifiedCount: snapshot.official_verified_count || 0, countries: selected, excluded };
   const rates = selected
     .map(function (row) {
       return row.name + ': petrol ' + row.currency + ' ' + formatNumber(row.petrol) + '/litre, row dated ' + row.asOf;
     })
     .join('; ');
-  const text = 'Dated, row-gated fuel snapshot facts: ' + (rates || 'no reviewed sample row passed the source and freshness gates') + '. Rows require a positive numeric value, a row-level source URL, and an age no greater than ' + facts.maxAgeDays + ' days. The package contains ' + facts.officialVerifiedCount + ' officially verified rows. Source: ' + facts.sourceLabel + ' (' + facts.sourceState + ', not official verification). As of: ' + facts.asOf + '. Reviewed: ' + facts.reviewedOn + '.';
+  const text = 'Dated, row-gated fuel snapshot facts: ' + (rates || 'no reviewed sample row passed the source and freshness gates') + '. Rows require a positive numeric value, a row-level source URL, a date no later than the build clock, and an age no greater than ' + facts.maxAgeDays + ' days. The package contains ' + facts.officialVerifiedCount + ' officially verified rows. Source: ' + facts.sourceLabel + ' (' + facts.sourceState + ', not official verification). As of: ' + facts.asOf + '. Source reviewed: ' + facts.reviewedOn + '. Filtering is performed at generation time; this is not runtime or live verification.';
   return { text, facts };
 }
 
@@ -1656,10 +1656,10 @@ function cryptoHistoryFunctionSourceRecord(binding) {
   return { text, facts };
 }
 
-function buildSourceRecord(binding) {
+function buildSourceRecord(binding, freshnessCheckedAt) {
   if (binding.kind === 'paye-engine') return payeSourceRecord(binding);
   if (binding.kind === 'vat-formula') return vatSourceRecord(binding);
-  if (binding.kind === 'fuel-snapshot') return fuelSourceRecord();
+  if (binding.kind === 'fuel-snapshot') return fuelSourceRecord(freshnessCheckedAt);
   if (binding.kind === 'remittance-snapshot') return remittanceSourceRecord();
   if (binding.kind === 'forex-snapshot') return forexSourceRecord();
   if (binding.kind === 'policy-rate-snapshot') return policyRateSourceRecord();
@@ -1698,12 +1698,12 @@ function buildSourceRecord(binding) {
   throw new Error('Unknown source binding: ' + binding.kind);
 }
 
-function buildContext(definition) {
+function buildContext(definition, freshnessCheckedAt) {
   const pieces = [];
   if (definition.staticText) pieces.push(definition.staticText.trim());
   let sourceRecord = null;
   if (definition.status === 'source-coupled') {
-    sourceRecord = buildSourceRecord(definition.sourceBindings[0]);
+    sourceRecord = buildSourceRecord(definition.sourceBindings[0], freshnessCheckedAt);
     pieces.push(sourceRecord.text);
   }
   for (const block of definition.unverifiedStaticBlocks || []) {
@@ -1713,13 +1713,14 @@ function buildContext(definition) {
 }
 
 function buildAll() {
+  const freshnessCheckedAt = new Date().toISOString();
   const definitions = loadDefinitions();
   const contexts = {};
   const records = {};
   let coupled = 0;
   let unverified = 0;
   for (const definition of definitions) {
-    const built = buildContext(definition);
+    const built = buildContext(definition, freshnessCheckedAt);
     contexts[definition.toolKey] = built.text;
     records[definition.toolKey] = { definition, sourceRecord: built.sourceRecord };
     if (definition.status === 'source-coupled') coupled += 1;

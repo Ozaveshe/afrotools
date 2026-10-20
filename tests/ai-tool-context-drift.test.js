@@ -98,7 +98,9 @@ function diffToolKeys(expectedKeys, actualKeys) {
 
 function run() {
   const sourceInventory = summarizeSourceDefinitions(loadSourceDefinitions(builder.CONTEXT_DIR));
+  const fuelBuildStartedOn = new Date().toISOString().slice(0, 10);
   const freshlyBuilt = builder.buildAll();
+  const fuelBuildFinishedOn = new Date().toISOString().slice(0, 10);
   assert.deepStrictEqual(
     freshlyBuilt.summary,
     sourceInventory.summary,
@@ -194,12 +196,38 @@ function run() {
   // than the legacy numbers that used to live in ai-advisor.js.
   {
     const facts = freshlyBuilt.records['fuel-cost'].sourceRecord.facts;
-    const nigeria = fuelSnapshot.countries.find(function (country) { return country.code === 'NG'; });
-    const generatedNigeria = facts.countries.find(function (country) { return country.code === 'NG'; });
-    assert.strictEqual(generatedNigeria.petrol, nigeria.petrol.price);
-    assert.ok(generatedNigeria.sourceUrl);
-    assert.strictEqual(facts.officialVerifiedCount, 0);
-    assert.deepStrictEqual(facts.excluded.map(function (row) { return row.code; }), ['KE', 'ZA', 'GH']);
+    const fuelEngine = require('../assets/js/engines/fuel-tracker-engine.js');
+    const checkedAt = new Date().toISOString();
+    const expectedRows = ['NG', 'KE', 'ZA', 'GH'].map(function (code) {
+      const row = fuelSnapshot.countries.find(function (country) { return country.code === code; });
+      assert.ok(row, 'Fuel source row missing: ' + code);
+      return { row, gate: fuelEngine.rowUsability(row, 'petrol', checkedAt, facts.maxAgeDays) };
+    });
+    assert.strictEqual(facts.reviewedOn, '2026-07-22');
+    assert.match(facts.freshnessCheckedOn, /^\d{4}-\d{2}-\d{2}$/);
+    const checkedDay = new Date(facts.freshnessCheckedOn + 'T00:00:00.000Z');
+    assert.ok(Number.isFinite(checkedDay.getTime()), 'Fuel freshness check day must be a valid ISO date');
+    assert.strictEqual(checkedDay.toISOString().slice(0, 10), facts.freshnessCheckedOn);
+    assert.ok(facts.freshnessCheckedOn >= fuelBuildStartedOn && facts.freshnessCheckedOn <= fuelBuildFinishedOn,
+      'Fuel freshness check day must fall within the observed real UTC build interval');
+    assert.strictEqual(facts.maxAgeDays, 45);
+    assert.match(freshlyBuilt.contexts['fuel-cost'], /Filtering is performed at generation time; this is not runtime or live verification\./);
+    assert.doesNotMatch(freshlyBuilt.contexts['fuel-cost'], /Freshness checked against the build clock/);
+    assert.deepStrictEqual(facts.countries.map(function (row) { return row.code; }),
+      expectedRows.filter(function (item) { return item.gate.usable; }).map(function (item) { return item.row.code; }));
+    expectedRows.forEach(function (item) {
+      const selected = facts.countries.find(function (row) { return row.code === item.row.code; });
+      if (item.gate.usable) {
+        assert.strictEqual(selected.petrol, item.row.petrol.price);
+        assert.strictEqual(selected.asOf, item.row.last_updated);
+        assert.strictEqual(selected.sourceUrl, item.gate.sourceUrl);
+      } else {
+        assert.strictEqual(selected, undefined, item.row.code + ' must be withheld');
+      }
+    });
+    assert.strictEqual(facts.officialVerifiedCount, fuelSnapshot.official_verified_count || 0);
+    assert.deepStrictEqual(facts.excluded, expectedRows.filter(function (item) { return !item.gate.usable; })
+      .map(function (item) { return { code: item.row.code, reason: item.gate.reason }; }));
     ['fuel-tracker', 'suivi-carburant-fr'].forEach(function (key) {
       assertGeneratedContextIsCurrent(key, generated[key], freshlyBuilt);
       assert.ok(generated[key].includes('not official verification'));
