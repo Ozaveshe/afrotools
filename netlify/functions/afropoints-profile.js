@@ -1,6 +1,7 @@
 const { getAllowedOrigin } = require('./utils/cors');
 const { getUserFromEvent } = require('./_shared/browser-session-auth');
-const { SUPABASE_URL, SUPABASE_KEY, sbRequest, cleanText } = require('./_shared/market-data');
+const { withProfileRequestBudget } = require('./_shared/profile-request-budget');
+const { SUPABASE_URL, SUPABASE_KEY, sbRequest: sharedSbRequest, cleanText } = require('./_shared/market-data');
 
 const PAYOUT_METHODS = ['mobile_money', 'bank_transfer', 'crypto_wallet', 'pro_credit'];
 const CRYPTO_ASSETS = ['USDT', 'USDC', 'BTC', 'ETH'];
@@ -85,8 +86,8 @@ function normalizePayoutDetails(method, details) {
   return { error: 'Unsupported payout preference' };
 }
 
-async function getProfile(userId) {
-  const rows = await sbRequest('GET', 'points_profiles?user_id=eq.' + userId);
+async function getProfile(userId, request) {
+  const rows = await request('GET', 'points_profiles?user_id=eq.' + userId);
   if (Array.isArray(rows) && rows[0]) return rows[0];
   return {
     user_id: userId,
@@ -119,6 +120,9 @@ async function getProfile(userId) {
 
 exports.handler = async function (event) {
   const headers = corsHeaders(event);
+  let sessionResponse = null;
+  return withProfileRequestBudget(async (budget) => {
+  const request = (method, target, body, extraHeaders) => budget.wait(() => sharedSbRequest(method, target, body, extraHeaders, { signal: budget.controller.signal, rejectHttpErrors: true }));
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
   if (!SUPABASE_KEY) return reply(500, { error: 'Server not configured' }, headers);
 
@@ -126,24 +130,27 @@ exports.handler = async function (event) {
   const action = params.action || 'profile';
 
   if (event.httpMethod === 'GET' && action === 'badges') {
-    const badges = await sbRequest('GET', 'badges?select=*&order=category,name');
+    const badges = await request('GET', 'badges?select=*&order=category,name');
     return reply(200, badges, headers);
   }
 
-  const authResult = await getUserFromEvent(event);
+  const authResult = await getUserFromEvent(event, { requestBudget: budget });
+  if (authResult && authResult.providerUnavailable) {
+    return reply(503, { error: 'Authentication temporarily unavailable' }, headers);
+  }
   const user = authResult && authResult.user ? authResult.user : null;
-  const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
+  sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
   if (!user) return reply(401, { error: 'Authentication required' }, headers, sessionResponse);
 
   try {
     if (event.httpMethod === 'GET') {
       if (action === 'profile' || action === 'onboarding') {
-        return reply(200, await getProfile(user.id), headers, sessionResponse);
+        return reply(200, await getProfile(user.id, request), headers, sessionResponse);
       }
 
       if (action === 'activity') {
         const limit = Math.min(parseInt(params.limit, 10) || 10, 50);
-        const ledger = await sbRequest('GET', 'points_ledger?user_id=eq.' + user.id + '&order=created_at.desc&limit=' + limit);
+        const ledger = await request('GET', 'points_ledger?user_id=eq.' + user.id + '&order=created_at.desc&limit=' + limit);
         return reply(200, ledger, headers, sessionResponse);
       }
 
@@ -152,7 +159,7 @@ exports.handler = async function (event) {
         const subtype = cleanText(params.subtype);
         let path = 'contributions?user_id=eq.' + user.id + '&order=submitted_at.desc&limit=' + limit;
         if (subtype) path += '&data_category=eq.' + encodeURIComponent(subtype);
-        const contribs = await sbRequest('GET', path);
+        const contribs = await request('GET', path);
         return reply(200, contribs, headers, sessionResponse);
       }
 
@@ -174,7 +181,7 @@ exports.handler = async function (event) {
       return reply(400, { error: 'Unknown action' }, headers, sessionResponse);
     }
 
-    const existingProfile = await getProfile(user.id);
+    const existingProfile = await getProfile(user.id, request);
     const payoutPreference = cleanText(body.payout_preference);
     const payoutValidation = normalizePayoutDetails(payoutPreference, body.payout_details);
     if (payoutValidation.error) {
@@ -198,11 +205,11 @@ exports.handler = async function (event) {
     };
 
     if (existingProfile && existingProfile.created_at) {
-      await sbRequest('PATCH', 'points_profiles?user_id=eq.' + user.id, payload, {
+      await request('PATCH', 'points_profiles?user_id=eq.' + user.id, payload, {
         Prefer: 'return=minimal'
       });
     } else {
-      await sbRequest('POST', 'points_profiles', {
+      await request('POST', 'points_profiles', {
         user_id: user.id,
         total_earned: 0,
         total_spent: 0,
@@ -230,7 +237,9 @@ exports.handler = async function (event) {
       }
     }, headers, sessionResponse);
   } catch (error) {
+    if (error && error.name === 'ProfileRequestUnavailable') throw error;
     console.error('AfroPoints profile error:', error);
     return reply(500, { error: 'Internal server error' }, headers, sessionResponse);
   }
+  }, () => reply(503, { error: 'Profile temporarily unavailable' }, headers, sessionResponse));
 };

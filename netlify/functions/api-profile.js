@@ -11,6 +11,7 @@
 const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const { getAllowedOrigin } = require('./utils/cors');
 const { getUserFromEvent } = require('./_shared/browser-session-auth');
+const { withProfileRequestBudget } = require('./_shared/profile-request-budget');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -37,6 +38,8 @@ function jsonResponse(statusCode, body, responseMeta) {
 }
 
 exports.handler = async function (event) {
+  let sessionResponse = null;
+  return withProfileRequestBudget(async (budget) => {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
@@ -57,9 +60,12 @@ exports.handler = async function (event) {
   }
 
   // Auth check. Supports both bearer tokens and secure session cookies.
-  const authResult = await getUserFromEvent(event);
+  const authResult = await getUserFromEvent(event, { requestBudget: budget });
+  if (authResult && authResult.providerUnavailable) {
+    return jsonResponse(503, { error: 'Authentication temporarily unavailable', synced: false });
+  }
   const user = authResult && authResult.user ? authResult.user : null;
-  const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
+  sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
   if (!user) {
     return jsonResponse(401, { error: 'Unauthorized', synced: false }, sessionResponse);
   }
@@ -71,7 +77,7 @@ exports.handler = async function (event) {
 
   // GET: fetch profile
   if (event.httpMethod === 'GET') {
-    const res = await fetch(
+    const res = await budget.fetch(
       `${SUPABASE_AUTH_URL}/rest/v1/profiles?id=eq.${user.id}&select=*`,
       {
         headers: {
@@ -80,7 +86,7 @@ exports.handler = async function (event) {
         },
       }
     );
-    const data = await res.json();
+    const data = await budget.json(res);
     return jsonResponse(200, { profile: Array.isArray(data) && data[0] ? data[0] : null }, sessionResponse);
   }
 
@@ -122,7 +128,7 @@ exports.handler = async function (event) {
 
     // Use UPSERT (POST with on_conflict) so it works whether the row exists or not
     profileData.id = user.id;
-    const res = await fetch(
+    const res = await budget.fetch(
       `${SUPABASE_AUTH_URL}/rest/v1/profiles`,
       {
         method: 'POST',
@@ -137,7 +143,7 @@ exports.handler = async function (event) {
     );
 
     if (res.ok) {
-      const updated = await res.json();
+      const updated = await budget.json(res);
       return jsonResponse(200, { ok: true, synced: true, profile: updated[0] || null }, sessionResponse);
     }
 
@@ -147,7 +153,7 @@ exports.handler = async function (event) {
     if (profileData.country) basic.country = profileData.country;
 
     if (Object.keys(basic).length > 1) {
-      const fallback = await fetch(
+      const fallback = await budget.fetch(
         `${SUPABASE_AUTH_URL}/rest/v1/profiles`,
         {
           method: 'POST',
@@ -165,9 +171,10 @@ exports.handler = async function (event) {
       }
     }
 
-    const errText = await res.text();
+    const errText = await budget.text(res);
     return jsonResponse(200, { ok: false, synced: false, error: errText }, sessionResponse);
   }
 
   return jsonResponse(405, { error: 'Method not allowed' }, sessionResponse);
+  }, () => jsonResponse(503, { error: 'Profile temporarily unavailable', synced: false }, sessionResponse));
 };

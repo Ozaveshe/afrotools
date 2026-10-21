@@ -422,7 +422,7 @@ function median(values) {
   return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
 }
 
-async function sbRequest(method, path, body, extraHeaders) {
+async function sbRequest(method, path, body, extraHeaders, requestOptions) {
   const headers = {
     apikey: SUPABASE_KEY,
     Authorization: 'Bearer ' + SUPABASE_KEY,
@@ -432,8 +432,10 @@ async function sbRequest(method, path, body, extraHeaders) {
   const response = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined
+    body: body ? JSON.stringify(body) : undefined,
+    ...(requestOptions && requestOptions.signal ? { signal: requestOptions.signal } : {})
   });
+  if (requestOptions && requestOptions.rejectHttpErrors && !response.ok) throw new Error('Profile REST provider unavailable');
   const text = await response.text();
   try {
     return JSON.parse(text);

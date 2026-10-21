@@ -21,6 +21,13 @@ function owner(relative, { profile, lookupStatus = 200, lookupThrows = false, ki
       if (name === './_shared/email-marketing-config') return { getMarketingSupabaseConfig: () => ({ url: 'https://synthetic.example.invalid', serviceKey: 'synthetic-service' }) };
       if (name === './_shared/lifecycle-email') return { sendLifecycleEmail: async (...args) => { sends.push(args); return { ok: true, provider: 'synthetic', providerStatus: 'recorded' }; } };
       if (name === './_shared/rate-limit') return { checkRateLimit: () => true };
+      if (name === './_shared/profile-request-budget') {
+        const budgetModule = { exports: {} };
+        vm.runInNewContext(fs.readFileSync(path.join(base, 'netlify/functions/_shared/profile-request-budget.js'), 'utf8'), {
+          module: budgetModule, fetch: sandbox.fetch.bind(sandbox), AbortController, setTimeout, clearTimeout,
+        }, { filename: 'netlify/functions/_shared/profile-request-budget.js' });
+        return budgetModule.exports;
+      }
       if (name === './_shared/browser-session-auth') return { getUserFromEvent: async () => { authChecks += 1; return { user: authenticated ? account : null }; } };
       throw new Error('Unexpected owner dependency: ' + name);
     },
