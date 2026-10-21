@@ -162,14 +162,14 @@
     if (minimumWords) {
       var remaining = minimumWords - stats.words;
       messages.push(remaining > 0
-        ? remaining + ' words needed to reach the minimum.'
+        ? remaining + (remaining === 1 ? ' word' : ' words') + ' needed to reach the minimum.'
         : 'Minimum word target reached.');
     }
     if (maximumWords) {
       var wordRoom = maximumWords - stats.words;
       messages.push(wordRoom >= 0
         ? wordRoom + ' words available before the maximum.'
-        : Math.abs(wordRoom) + ' words over the maximum.');
+        : Math.abs(wordRoom) + (Math.abs(wordRoom) === 1 ? ' word' : ' words') + ' over the maximum.');
     }
     if (maximumCharacters) {
       var characterRoom = maximumCharacters - stats.characters;

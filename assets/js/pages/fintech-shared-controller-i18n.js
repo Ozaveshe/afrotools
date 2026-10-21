@@ -117,6 +117,7 @@
     },
     'emergency-fund': {
       invalid: 'Saisissez des dépenses essentielles positives, de 1 à 24 mois entiers de couverture, une épargne positive ou nulle, une inflation de 0 % à 100 % et un horizon entier de 0 à 10 ans.',
+      unrepresentable: 'Ces valeurs donnent un résultat trop grand pour être calculé. Réduisez les montants ou augmentez l’épargne mensuelle.',
       goalReached: 'Objectif atteint',
       months: 'mois',
       addSaving: 'Ajoutez une épargne mensuelle',
@@ -509,6 +510,7 @@
     },
     'emergency-fund': {
       invalid: 'Weka gharama muhimu zilizo zaidi ya sifuri, miezi kamili 1 hadi 24, akiba isiyo hasi, mfumuko wa bei wa 0% hadi 100%, na miaka kamili 0 hadi 10.',
+      unrepresentable: 'Thamani hizi zinatoa jibu kubwa mno kukokotolewa. Punguza kiasi au ongeza akiba ya kila mwezi.',
       goalReached: 'Lengo limefikiwa',
       months: 'miezi',
       addSaving: 'Ongeza akiba ya kila mwezi',

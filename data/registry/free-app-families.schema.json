@@ -79,7 +79,7 @@
     "key": { "type": "string", "pattern": "^[a-z0-9]+(?:[a-z0-9:-]*[a-z0-9])?$" },
     "gitId": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
     "count": { "type": "integer", "minimum": 0 },
-    "route": { "type": "string", "pattern": "^/(?:[a-z0-9-]+/)*(?:[a-z0-9-]+\\.html)?$" },
+    "route": { "type": "string", "pattern": "^/(?:[a-z0-9-]+/)*(?:[a-z0-9-]+(?:\\.html)?)?(?:\\?[^#\\s]+)?$" },
     "pin": {
       "type": "object", "additionalProperties": false, "required": ["path", "gitBlob", "bytes", "sha256"],
       "properties": {
@@ -95,6 +95,143 @@
         "kind": { "enum": ["page-owner", "engine-entrypoint"] },
         "literal": { "type": "string", "minLength": 6 }, "scope": { "$ref": "#/$defs/text" }
       }
-    } }
+    } },
+  "sourceRoleSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "status",
+        "acceptance",
+        "cohorts",
+        "qualification"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "status": {
+          "const": "accepted-historical-source-role-snapshot"
+        },
+        "qualification": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acceptance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pin",
+            "expectedRows",
+            "cohortRows",
+            "recordText"
+          ],
+          "properties": {
+            "pin": {
+              "type": "object"
+            },
+            "expectedRows": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "cohortRows": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "recordText": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "cohorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRoleDocument"
+          }
+        }
+      }
+    },
+    "sourceRoleDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source",
+        "raw",
+        "payloadText",
+        "evidenceIndexes"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "object"
+        },
+        "raw": {
+          "$ref": "#/$defs/sourceRoleRaw"
+        },
+        "payloadText": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIndexes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRoleEvidenceDocument"
+          }
+        }
+      }
+    },
+    "sourceRoleEvidenceDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source",
+        "raw",
+        "payloadText"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "object"
+        },
+        "raw": {
+          "$ref": "#/$defs/sourceRoleRaw"
+        },
+        "payloadText": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sourceRoleRaw": {
+      "type": "object",
+      "required": [
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
   }
 }
