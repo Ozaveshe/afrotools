@@ -13,7 +13,7 @@
   var defaults = ['Èdè Gẹẹsi', 'Ìṣirò', 'Biology', 'Chemistry', 'Physics', 'Economics', 'Government', 'Literature', 'Agric'];
   var gpaKeys = ['points', 'units', 'oldPoints', 'oldUnits'];
   function validateGpa(values) {
-    return gpaKeys.reduce(function (errors, key) {
+    var errors = gpaKeys.reduce(function (errors, key) {
       var raw = values[key], number = Number(raw), unit = key === 'units' || key === 'oldUnits';
       if (raw == null || String(raw).trim() === '' || !Number.isFinite(number) || number < 0 ||
           (unit && !Number.isInteger(number)) || (key === 'units' && number === 0)) {
@@ -21,6 +21,11 @@
       }
       return errors;
     }, []);
+    if (!errors.some(function (error) { return error.field === 'oldPoints' || error.field === 'oldUnits'; }) &&
+        Number(values.oldPoints) > 0 && Number(values.oldUnits) === 0) {
+      errors.push({ field: 'oldUnits', message: 'Saka raka’o’i don makin baya.' });
+    }
+    return errors;
   }
   function gpa(values) {
     if (validateGpa(values).length) throw new RangeError('Invalid totals');
@@ -33,7 +38,9 @@
   function validateWaec(entries) {
     if (!Array.isArray(entries) || entries.length !== 9) throw new RangeError('Nine subjects required');
     return entries.reduce(function (errors, entry, index) {
-      if (!entry || !String(entry.name || '').trim()) errors.push({ field: 'subject-' + index, message: 'Tẹ orúkọ kókó.' });
+      var name = entry && String(entry.name || '').trim();
+      if (index < 2 && name !== defaults[index]) errors.push({ field: 'subject-' + index, message: 'Kókó yìí jẹ́ ' + defaults[index] + '.' });
+      else if (!name) errors.push({ field: 'subject-' + index, message: 'Tẹ orúkọ kókó.' });
       if (!entry || !Object.prototype.hasOwnProperty.call(grades, entry.grade)) errors.push({ field: 'grade-' + index, message: 'Yan A1 sí F9.' });
       return errors;
     }, []);
@@ -48,6 +55,7 @@
       tone: total <= 15 ? 'Dára gan' : total <= 25 ? 'Ó dára' : 'Ṣàyẹ̀wò lẹ́ẹ̀kansi' };
   }
   function report(entries, result) {
+    if (validateWaec(entries).length) throw new RangeError('Invalid subjects');
     return ['AfroTools — WAEC/NECO', 'Àpapọ̀ márùn-ún: ' + result.total, 'Kírẹ́dítì C6+: ' + result.credits + '/9',
       'Gẹẹsi/Ìṣirò: ' + (result.coreOk ? 'Wọ́n ní kírẹ́dítì' : 'Ṣàyẹ̀wò wọn'), 'Ìpele: ' + result.tone,
       'Àwọn kókó márùn-ún: ' + result.best.map(function (row) { return row.name + ' ' + row.grade; }).join(', '), '',
@@ -69,9 +77,10 @@
         [['subject-', 'Orúkọ kókó ', 'input'], ['grade-', 'Grẹ́ẹ̀dì kókó ', 'select']].forEach(function (part) {
           var field = node('div', ''), id = part[0] + index, label = node('label', part[1] + (index + 1));
           label.htmlFor = id;
+          if (index < 2) label.textContent = part[2] === 'input' ? name + ' (kókó ' + (index + 1) + ')' : 'Grẹ́ẹ̀dì — ' + name;
           var input = doc.createElement(part[2]); input.id = id; input.name = id;
           input.setAttribute('aria-describedby', id + '-error');
-          if (part[2] === 'input') { input.type = 'text'; input.value = name; input.defaultValue = name; input.autocomplete = 'off'; }
+          if (part[2] === 'input') { input.type = 'text'; input.value = name; input.defaultValue = name; input.autocomplete = 'off'; input.readOnly = index < 2; }
           else Object.keys(grades).forEach(function (grade, i) { var option = node('option', grade + ' (' + grades[grade] + ')'); option.value = grade; option.defaultSelected = i === 0; input.appendChild(option); });
           var error = node('p', ''); error.id = id + '-error'; error.dataset.studyError = id; error.className = 'study-error'; error.setAttribute('aria-live', 'polite');
           field.append(label, input, error); row.appendChild(field);
@@ -95,6 +104,13 @@
         form.querySelectorAll('[data-study-error]').forEach(function (error) { error.textContent = ''; });
       }
       function clearResult() { hasResult = false; lastReport = ''; result.hidden = true; result.textContent = ''; if (detail) { detail.hidden = true; detail.textContent = ''; } }
+      if (!isGpa) form.addEventListener('focusin', function (event) {
+        var control = event.target;
+        if (!/^(subject|grade)-[01]$/.test(control.id)) return;
+        view.requestAnimationFrame(function () {
+          if (doc.activeElement === control) reveal(control.parentElement);
+        });
+      });
       function calculate() {
         clearErrors(); clearResult(); status.textContent = '';
         var values = {}, entries;
