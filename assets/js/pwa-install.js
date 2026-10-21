@@ -3,6 +3,49 @@
 
   let installPrompt = null;
 
+  const INSTALL_COPY = {
+    en: {
+      title: 'Install AfroTools',
+      body: 'Add AfroTools to your device for easy access.',
+      install: 'Install',
+      dismiss: 'Dismiss'
+    },
+    fr: {
+      title: 'Installer AfroTools',
+      body: 'Ajoutez AfroTools à votre appareil pour y accéder facilement.',
+      install: 'Installer',
+      dismiss: 'Fermer'
+    },
+    sw: {
+      title: 'Sakinisha AfroTools',
+      body: 'Ongeza AfroTools kwenye kifaa chako ili uifikie kwa urahisi.',
+      install: 'Sakinisha',
+      dismiss: 'Funga'
+    },
+    ha: {
+      title: 'Shigar da AfroTools',
+      body: "Ƙara AfroTools a na'urarka don buɗe shi cikin sauƙi.",
+      install: 'Shigar',
+      dismiss: 'Rufe'
+    },
+    yo: {
+      title: 'Fi AfroTools sí ẹ̀rọ',
+      body: 'Fi AfroTools sí ẹ̀rọ rẹ fún lílò tó rọrùn.',
+      install: 'Fi sí ẹ̀rọ',
+      dismiss: 'Pa Dé'
+    }
+  };
+
+  function installLocale() {
+    // Match the navbar's routed-locale contract; browser preference must not
+    // replace the language of the page the visitor has chosen.
+    const routeLocale = window.location.pathname.split('/')[1];
+    if (routeLocale !== 'en' && Object.prototype.hasOwnProperty.call(INSTALL_COPY, routeLocale)) return routeLocale;
+    const pageLocale = String(document.documentElement.lang || 'en').trim().toLowerCase().replace(/_/g, '-').split('-')[0];
+    return Object.prototype.hasOwnProperty.call(INSTALL_COPY, pageLocale) ? pageLocale : 'en';
+  }
+
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js').then(registration => {
@@ -28,7 +71,10 @@
   function showInstallBanner() {
     if (document.getElementById('afro-pwa-banner')) return;
 
+    const locale = installLocale();
+    const copy = INSTALL_COPY[locale];
     const banner = document.createElement('div');
+    banner.lang = locale;
     banner.id = 'afro-pwa-banner';
     banner.innerHTML = `
       <style>
@@ -45,11 +91,11 @@
       </style>
       <span class="pwa-icon">📱</span>
       <div class="pwa-text">
-        <strong>Install AfroTools</strong>
-        Quick access to all tools, even offline.
+        <strong>${copy.title}</strong>
+        ${copy.body}
       </div>
-      <button class="pwa-btn pwa-install" id="afro-pwa-install">Install</button>
-      <button class="pwa-btn pwa-close" id="afro-pwa-close" aria-label="Dismiss">&times;</button>
+      <button class="pwa-btn pwa-install" id="afro-pwa-install">${copy.install}</button>
+      <button class="pwa-btn pwa-close" id="afro-pwa-close" aria-label="${copy.dismiss}">&times;</button>
     `;
     document.body.appendChild(banner);
 
