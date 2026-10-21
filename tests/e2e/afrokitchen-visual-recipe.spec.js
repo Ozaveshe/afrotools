@@ -1,5 +1,9 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const recipePolicy = require('../../engines/src/afrokitchen-engine');
+const { inspectPendingMethodPage } = require('../../scripts/audit-afrokitchen-indexability');
+const { LEGACY_RECIPE_ALIASES } = require('../../scripts/generate-afrokitchen-static-pages');
 const manifest = JSON.parse(fs.readFileSync('tools/afrokitchen/seo-manifest.json', 'utf8'));
 
 // All nine cases use the real static server and its HTTP policy. Never reach a
@@ -78,18 +82,90 @@ test('old query recipe links reach the published canvas and retain planned servi
   await expect(page.locator('.ak-visual-recipe')).toBeVisible();
   await expect(page.locator('#ak-static-servings')).toHaveText('4');
 });
-test('all published recipe pages contain the visual canvas and retain recipe data', async () => {
-  for (const recipe of manifest.recipes.filter(recipe => recipe.generated_in_wave)) {
-    const html = fs.readFileSync(`tools/afrokitchen/recipes/${recipe.slug}/index.html`, 'utf8');
-    expect(html).toContain('ak-visual-recipe');
-    expect(html).toContain('/tools/afrokitchen/visual-recipe.js');
-    expect(html).not.toContain('<section class="ak-hero" style="background-image:');
-    const payload = JSON.parse(html.match(/window\.__AK_STATIC_RECIPE = (.*?);<\/script>/)[1]);
-    expect(payload.slug).toBe(recipe.slug);
-    expect((html.match(/class="ak-ing-art"/g)||[]).length).toBe(payload.ingredients.length);
-    expect((html.match(/class="ak-step"/g)||[]).length).toBe(payload.steps.length);
+
+function assertPublishedRecipeInventory(value, readHtml, aliases = LEGACY_RECIPE_ALIASES) {
+  const generated = value.recipes.filter(recipe => recipe.generated_in_wave);
+  const declared = value.routes.generated_recipe_slugs;
+  assert.equal(new Set(declared).size, declared.length, 'duplicate declared generated slug');
+  assert.deepEqual(generated.map(recipe => recipe.slug).sort(), [...declared].sort(), 'every declared generated recipe is classified exactly once');
+  const ids = new Set(), slugs = new Set(), counts = { total: 0, canvas: 0, pending: 0, aliases: 0 };
+  function exactCanonical(html, expected) {
+    const canonical = [];
+    for (const match of html.matchAll(/<link\b(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi)) {
+      const attributes = new Map();
+      let rest = match[0].replace(/^<link\b/i, '').replace(/\/?>(?:\s*)$/, '');
+      while (rest.trim()) {
+        const attribute = /^\s+([^\s=<>"'\/]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s<>"'=]+)))?/.exec(rest);
+        assert(attribute, 'malformed link attributes');
+        const name = attribute[1].toLowerCase();
+        assert(!attributes.has(name), 'duplicate link attribute');
+        attributes.set(name, attribute[2] ?? attribute[3] ?? attribute[4] ?? '');
+        rest = rest.slice(attribute[0].length);
+      }
+      if ((attributes.get('rel') || '').toLowerCase().split(/\s+/).includes('canonical')) canonical.push(attributes);
+    }
+    assert.equal(canonical.length, 1, 'one canonical link');
+    assert.equal(canonical[0].get('href'), expected, 'canonical target');
   }
+  for (const recipe of generated) {
+    assert.equal(recipe.is_published, true); assert.equal(recipe.is_verified, true);
+    assert(/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(recipe.slug), 'safe canonical slug');
+    assert(/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(recipe.id), 'canonical UUID');
+    assert(!ids.has(recipe.id) && !slugs.has(recipe.slug), 'duplicate recipe identity'); ids.add(recipe.id); slugs.add(recipe.slug);
+    const html = readHtml(recipe.slug);
+    const payloads = [...html.matchAll(/window\.__AK_STATIC_RECIPE\s*=\s*([\s\S]*?);\s*<\/script>/g)];
+    assert.equal(payloads.length, 1, 'one recipe payload: ' + recipe.slug);
+    const payload = JSON.parse(payloads[0][1]);
+    assert.equal(payload.id, recipe.id); assert.equal(payload.slug, recipe.slug);
+    assert.equal(recipe.route_url, 'https://afrotools.com/tools/afrokitchen/recipes/' + recipe.slug + '/');
+    exactCanonical(html, recipe.route_url);
+    if (recipePolicy.isPendingRecipeMethod(recipe)) {
+      const inspected = inspectPendingMethodPage(recipe, html);
+      assert.deepEqual(inspected, { state: 'pending-source-method', errors: [] }, recipe.slug);
+      const projected = recipePolicy.projectPendingRecipeMethod(recipe);
+      for (const key of ['method_review_status','yield_status','default_servings','prep_time_minutes','cook_time_minutes','total_time_minutes','calories','protein_g','carbs_g','fat_g','fiber_g','ingredients','steps']) assert.deepEqual(recipe[key], projected[key], 'pending manifest field: ' + key);
+      const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+      assert(!/data-ak-(?:cook-mode|copy-recipe|download-recipe|print-recipe|add-meal-plan)|ak-static-serving-bar|class=["'][^"']*\bak-(?:step|ing-item)\b/.test(markup), 'pending method exposes cooking/planning/export controls');
+      assert(!html.includes('ak-visual-recipe'), 'pending page must not claim a cooking canvas');
+      counts.pending++;
+    } else {
+      // Unknown person-yield does not mean a missing preparation method.
+      assert(Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0, 'missing maintained ingredients');
+      assert(Array.isArray(recipe.steps) && recipe.steps.length > 0, 'missing maintained method');
+      assert(html.includes('ak-visual-recipe'));
+      assert(html.includes('/tools/afrokitchen/visual-recipe.js'));
+      assert(!html.includes('<section class="ak-hero" style="background-image:'));
+      assert(Array.isArray(payload.ingredients) && Array.isArray(payload.steps));
+      assert.equal((html.match(/class="ak-ing-art"/g) || []).length, payload.ingredients.length);
+      assert.equal((html.match(/class="ak-step"/g) || []).length, payload.steps.length);
+      assert(payload.ingredients.length > 0 && payload.steps.length > 0, 'empty rendered method');
+      counts.canvas++;
+    }
+    counts.total++;
+  }
+  const aliasSlugs = new Set();
+  for (const alias of aliases) {
+    assert(!slugs.has(alias.legacySlug) && !aliasSlugs.has(alias.legacySlug), 'duplicate/canonical legacy alias');
+    assert(slugs.has(alias.targetRecipeSlug), 'legacy alias target missing from classified inventory');
+    aliasSlugs.add(alias.legacySlug);
+    const html = readHtml(alias.legacySlug), target = 'https://afrotools.com/tools/afrokitchen/recipes/' + alias.targetRecipeSlug + '/';
+    assert(/<meta\b[^>]*name="robots"[^>]*content="noindex,\s*follow"/.test(html), 'legacy alias must remain noindex');
+    exactCanonical(html, target);
+    assert(html.includes('<meta http-equiv="refresh" content="0;url=' + target.replace('https://afrotools.com', '') + '">'), 'legacy refresh target');
+    counts.aliases++;
+  }
+  return counts;
+}
+async function kitchenMain(page) {
+  const content = page.getByRole('main');
+  await expect(content).toHaveCount(1);
+  await expect(content).toBeVisible();
+  return content;
+}
+test('all generated public recipe pages retain classified method and recipe-data boundaries', async () => {
+  assertPublishedRecipeInventory(manifest, slug => fs.readFileSync(path.join(staticRoot, 'tools/afrokitchen/recipes', slug, 'index.html'), 'utf8'));
 });
+
 for (const variant of [{width:320,theme:'light'},{width:390,theme:'dark'},{width:1280,theme:'light'}]) {
   test.describe(`${variant.width} ${variant.theme}`, () => {
     test.use({ viewport:{width:variant.width,height:900},colorScheme:variant.theme });
@@ -146,8 +222,8 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
   });
   test.beforeEach(async ({ context }) => { await context.addInitScript(() => { window.__AK_TEST_INITIAL_CONSENT = localStorage.getItem('afrotools_cookie_consent'); }); });
   const artwork = [
-    { slug:'mchemsho-tz', primary:'/assets/img/kitchen/mchemsho-tz.webp', width:1200, height:800, hash:'b2ec5ce348680aa0fa54216ac60c0d44afcc5a40bec9550a5e35fdff44b9a26a', smallHash:'f1cf3b741d44c8e64ae26797bf5c75d0f725194470a760bebf53cef42d02aa9a' },
-    { slug:'octopus-curry-sc', primary:'/assets/img/kitchen/responsive/octopus-curry-sc-1280.webp', width:1280, height:853, hash:'e34b9e31285fe6467bf1ddc1d9e0b673cb657bf92b297615a45cc2d38246031e', smallHash:'9bb8004a5022e9c5c4b34a15e7c50506c2c2202a65357260c1fa8686aef16849' },
+    { slug:'mchemsho-tz', source:'https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf', primary:'/assets/img/kitchen/mchemsho-tz.webp', width:1200, height:800, hash:'b2ec5ce348680aa0fa54216ac60c0d44afcc5a40bec9550a5e35fdff44b9a26a', smallHash:'f1cf3b741d44c8e64ae26797bf5c75d0f725194470a760bebf53cef42d02aa9a' },
+    { slug:'octopus-curry-sc', source:'https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles', primary:'/assets/img/kitchen/responsive/octopus-curry-sc-1280.webp', width:1280, height:853, hash:'e34b9e31285fe6467bf1ddc1d9e0b673cb657bf92b297615a45cc2d38246031e', smallHash:'9bb8004a5022e9c5c4b34a15e7c50506c2c2202a65357260c1fa8686aef16849' },
     { slug:'kisra-south-sudan-ss', primary:'/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp', width:1280, height:853, hash:'2c30c6b981b17c7973f1fc2aa59a4d8f128d23f7be9d9b1602e1a107cbad0f15', smallHash:'51f74361031aad696816f17e098f0bd784c0f57b6d0017d62d3360918b02ab78', id:'c0aced74-68d6-437d-b00b-abd1895605f0', pending:true },
     { slug:'maheu-zm', primary:'/assets/img/kitchen/responsive/maheu-zm-1280.webp', width:1280, height:853, hash:'e6c2738ac7bdb8852317906576815d24888cb685c0bf1433b64a5eb616991f8a', smallHash:'a78433b2ac2f6e15ae365a374b3997f4395165eda870f3221cab5ededb5aebfb', id:'626fd465-87e1-4f93-bca7-747decbf63d0', pending:true }
   ];
@@ -170,6 +246,7 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
     return response;
   }
   async function pendingBoundary(page, item) {
+    const content = await kitchenMain(page);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
     await expect.poll(() => page.evaluate(() => ({
       id:window.__AK_STATIC_RECIPE.id, slug:window.__AK_STATIC_RECIPE.slug, ingredients: window.__AK_STATIC_RECIPE.ingredients.length, steps: window.__AK_STATIC_RECIPE.steps.length,
@@ -179,7 +256,7 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
         const value = JSON.parse(node.textContent); return [value, ...(value['@graph'] || [])].flatMap(item => [].concat(item['@type'] || []));
       }).filter(type => type === 'Recipe' || type === 'HowTo')
     }))).toEqual({ id:item.id, slug:item.slug, ingredients:0, steps:0, servings:null, yield:'not-recorded', method:'pending-source-method', schemas:[] });
-    await expect(page.locator('main .ak-step, main .ak-ing-item, main [data-ak-cook-mode], main [data-ak-print-recipe], main [data-ak-add-meal-plan], main .ak-static-serving-bar')).toHaveCount(0);
+    await expect(content.locator('.ak-step, .ak-ing-item, [data-ak-cook-mode], [data-ak-print-recipe], [data-ak-add-meal-plan], .ak-static-serving-bar')).toHaveCount(0);
   }
   async function keyboardSave(page) {
     const save = page.locator('[data-ak-save-recipe]');
@@ -202,7 +279,7 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
         expect(digest(fs.readFileSync(path.join(staticRoot,small)))).toBe(item.smallHash);
         const imageResponses=new Map(); page.on('response', response => { const pathname=new URL(response.url()).pathname; if (pathname===item.primary || pathname===small) imageResponses.set(pathname,response); });
         await visitCurrent(page,item.slug);
-        const hero=item.pending ? page.locator('main figure img').first() : page.locator('.ak-cookbook-cover-photo');
+        const hero=item.pending ? (await kitchenMain(page)).locator('figure img').first() : page.locator('.ak-cookbook-cover-photo');
         await hero.scrollIntoViewIfNeeded(); await expect(hero).toBeVisible();
         await expect(hero).toHaveAttribute('src',item.primary); await expect(hero).toHaveAttribute('alt',/AI-generated.*illustration/);
         await expect.poll(() => hero.evaluate(node => node.complete && node.naturalWidth>0 && node.naturalHeight>0)).toBe(true);
@@ -215,12 +292,20 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
         const encoded=await emitted.body(); expect(digest(encoded)).toBe(actual.path===small?item.smallHash:item.hash);
         const raw=await page.evaluate(async bytes => { const bitmap=await createImageBitmap(new Blob([Uint8Array.from(bytes)],{type:'image/webp'})); const dimensions={width:bitmap.width,height:bitmap.height}; bitmap.close(); return dimensions; },Array.from(encoded));
         expect(raw).toEqual({width:actual.path===small?640:item.width,height:actual.path===small?427:item.height});
-        const caption=item.pending ? page.locator('main figcaption').first() : page.locator('.ak-static-credit').first();
+        const caption=item.pending ? (await kitchenMain(page)).locator('figcaption').first() : page.locator('.ak-static-credit').first();
         await expect(caption).toBeVisible(); await expect(caption).toContainText('AI-generated'); await expect(caption).toContainText('not a');
         await expect(page.locator('nav').first()).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.scrollWidth-document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
         if(item.pending) await pendingBoundary(page,item);
-        else await expect(page.locator('main a[href^="https://"]').first()).toBeVisible();
+        else {
+          expect(manifest.recipes.find(recipe => recipe.slug === item.slug).source).toBe(item.source);
+          const reference = (await kitchenMain(page)).locator('[data-ak-method-source]');
+          await expect(reference).toHaveCount(1); await expect(reference).toBeVisible();
+          await expect(reference).toHaveAttribute('href', item.source);
+          await expect(reference).toHaveAttribute('target', '_blank');
+          await expect(reference).toHaveAttribute('rel', 'noopener noreferrer');
+          await expect(reference).toHaveText('Source reference (opens in a new tab)');
+        }
         decoded.push({slug:item.slug,viewport:width,densityCorrectedNatural:actual,encodedResponse:raw});
         await page.screenshot({path:testInfo.outputPath(item.slug+'-'+width+'.png'),fullPage:false});
       }
@@ -255,8 +340,8 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
         unavailable:recipe.publicationUnavailable,method:recipe.method_review_status,ingredients:recipe.ingredients,steps:recipe.steps
       }; })).toEqual({idPresent:false,servingsPresent:false,yieldPresent:false,unavailable:true,method:'pending-source-method',ingredients:[],steps:[]});
       await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(0);
-      await expect(page.locator('main .ak-step, main .ak-ing-item, main input, main select, main [data-ak-save-recipe], main [data-ak-cook-mode], main [data-ak-print-recipe], main [data-ak-add-meal-plan], main .ak-static-serving-bar')).toHaveCount(0);
-      await expect(page.locator('main')).toContainText('no verifiable recipe identity');
+      await expect((await kitchenMain(page)).locator('.ak-step, .ak-ing-item, input, select, [data-ak-save-recipe], [data-ak-cook-mode], [data-ak-print-recipe], [data-ak-add-meal-plan], .ak-static-serving-bar')).toHaveCount(0);
+      await expect((await kitchenMain(page))).toContainText('no verifiable recipe identity');
       await expect(page.getByRole('link',{name:'Open the current dish page'})).toBeVisible();
       await expect(page.getByRole('button',{name:'Retry recipe availability'})).toBeVisible();
       expect(await page.evaluate(() => localStorage.getItem('ak_cookbook_v1'))).toBe(saved);
@@ -280,7 +365,7 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
     await expect(page.locator('[data-ak-add-meal-plan]')).toBeDisabled();
     await expect(page.locator('[data-ak-add-meal-plan]:enabled')).toHaveCount(0);
     await expect(page.locator('#cost-panel, #cost-per-serving')).toHaveCount(0);
-    expect(await page.locator('main').innerText()).not.toMatch(/(?:cost|price)[^\n]*per serving|per serving[^\n]*(?:cost|price)/i);
+    expect(await (await kitchenMain(page)).innerText()).not.toMatch(/(?:cost|price)[^\n]*per serving|per serving[^\n]*(?:cost|price)/i);
     await expect(page.locator('.ak-nutrition-card')).toHaveCount(0);
     expect(await page.evaluate(() => ['calories','protein_g','carbs_g','fat_g','fiber_g'].map(key=>window.__AK_STATIC_RECIPE[key]))).toEqual([null,null,null,null,null]);
     const quantities=await page.locator('#ak-static-ingredients .ak-ing-amount').allTextContents();
@@ -312,3 +397,6 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
     expect(proof.blocked.filter(row=>/\/(?:api|\.netlify\/functions)\/[^?]*(?:cost|price)|\/rest\/v1\/ingredient/i.test(row.url))).toEqual([]);
   });
 });
+
+// Pure inventory contract shared with maintained source regressions; no browser launch.
+module.exports = { assertPublishedRecipeInventory };

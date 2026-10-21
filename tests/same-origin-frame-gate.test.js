@@ -8,7 +8,12 @@ const command='playwright test --config=playwright.same-origin-frames.config.cjs
 const expectedStep={name:'Verify same-origin fallback frames under actual artifact HTTP CSP',env:{AFROTOOLS_TEST_PUBLISH_ARTIFACT:'1',AFROTOOLS_TEST_SECURITY_HEADERS:'1',PORT:'4269'},run:'npm run test:same-origin-frames:browser'};
 function predecessorIsExact(value){
  assert.equal(c.sha(priorBytes),OLD_RAW_SHA);assert.equal(c.jsonHash(prior),OLD_JSON_SHA);assert.equal(prior.browser.length,45);
- assert.ok(value.browser.length>=46);assert.deepEqual(value.browser.slice(0,45),prior.browser);
+ assert.ok(value.browser.length>=46);
+ // One reviewed schedule change; immutable original records and all step bytes stay protected.
+ const expectedSchedule=structuredClone(prior.browser);
+ assert.equal(expectedSchedule[2].id,'browser-03');assert.equal(expectedSchedule[2].group,1);
+ expectedSchedule[2].group=2;
+ assert.deepEqual(value.browser.slice(0,45),expectedSchedule);
  assert.deepEqual(value.browser[45],{id:'browser-46',group:2,step:expectedStep,stepSha256:c.jsonHash(expectedStep)});
  const prefix=[...prior.additiveGateIds,'browser-46'];assert.deepEqual(value.additiveGateIds.slice(0,prefix.length),prefix);
  assert.deepEqual(value.additiveGateIds.slice(prefix.length),value.browser.slice(46).map(g=>g.id));c.inventoryCheck(value);
@@ -96,3 +101,18 @@ for(const [name,change]of [
  ['non-extension deadline',v=>{v.originalBuildTimeoutMinutes=76;}],
  ['non-extension producer command',v=>{v.producer[2].step.run+=' --skip';}]
 ])test('protected46 append-safe contract rejects '+name,()=>{const value=futureInventory();change(value);assert.throws(()=>predecessorIsExact(value));});
+
+// Scheduling-only successor: every command/record/order is original except this group assignment.
+test('reviewed education gate moves once to group2 without changing command, order or the immutable baseline',()=>{
+ assert.equal(prior.browser[2].id,'browser-03');assert.equal(prior.browser[2].group,1);
+ assert.equal(live.browser[2].id,'browser-03');assert.equal(live.browser[2].group,2);
+ const expected=structuredClone(prior.browser);expected[2].group=2;
+ for(const group of [1,2])assert.deepEqual(live.browser.slice(0,45).filter(g=>g.group===group),expected.filter(g=>g.group===group));
+ predecessorIsExact(live);
+});
+for(const [label,change]of [
+ ['reverted education group',v=>{v.browser[2].group=1;}],
+ ['invalid education group',v=>{v.browser[2].group=0;}],
+ ['another historical gate moved',v=>{v.browser[3].group=2;}],
+ ['owned CSP moved',v=>{v.browser[45].group=1;}]
+])test('reviewed scheduling rejects '+label,()=>{const value=structuredClone(live);change(value);assert.throws(()=>predecessorIsExact(value));});
