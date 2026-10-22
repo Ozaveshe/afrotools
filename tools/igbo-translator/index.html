@@ -7,9 +7,9 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Igbo Translator & Phrasebook — Learn Igbo | AfroTools</title>
-<meta name="description" content="Search 129 local English–Igbo app draft records with tone and dialect limits, local exports, and optional consent-gated cloud translation.">
+<meta name="description" content="Translate English and Igbo sentences with an optional online service, or look up 129 local phrases on your device. Important wording needs qualified review.">
 <meta name="keywords" content="Igbo translator, learn Igbo, English to Igbo, Igbo phrases, southeastern Nigeria, Igbo language greetings">
-<meta property="og:title" content="Igbo Draft Phrasebook"><meta property="og:description" content="129 app-local English–Igbo draft records with explicit tone, dialect, and provenance limits.">
+<meta property="og:title" content="English–Igbo Translator & Phrasebook"><meta property="og:description" content="Translate a sentence with an optional online service, or search 129 local English and Igbo phrases. Important wording needs qualified review.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/igbo-translator.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/igbo-translator/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
@@ -41,6 +41,7 @@
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:.55rem 1.15rem;border-radius:8px;font-size:.8rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
+.hero h1,.hero p{color:var(--color-text,#1e293b)}#liveTranslateCard [data-external-translation-consent-host]{background:var(--color-surface,#fff)!important;border-color:var(--color-border,#cbd5e1)}#liveTranslateCard .external-translation-status,#liveTranslateCard .vip-cloud-label{color:var(--color-text,#1e293b)!important}#liveTranslateCard #translateOutput{background:var(--color-surface,#fff);color:var(--color-text,#1e293b);border-color:var(--color-border,#cbd5e1)}.translator-tasks{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}.translator-tasks a,.phrase-recovery button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.55rem .9rem;border:1px solid var(--color-border,#cbd5e1);border-radius:8px;background:var(--color-surface,#fff);color:var(--color-text,#1e293b);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}.translator-tasks a:focus-visible,.phrase-recovery button:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}.phrase-recovery p{margin-bottom:.65rem}.phrase-recovery button{margin-bottom:.4rem}
 </style>
 <script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -48,8 +49,8 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Igbo Translator & Phrasebook">
-<meta name="twitter:description" content="129 app-local English–Igbo draft records with explicit tone, dialect, and provenance limits.">
+<meta name="twitter:title" content="English–Igbo Translator & Phrasebook">
+<meta name="twitter:description" content="Translate a sentence with an optional online service, or search 129 local English and Igbo phrases. Important wording needs qualified review.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/igbo-translator.webp">
 <script type="application/ld+json">
 {
@@ -118,13 +119,16 @@
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 <main id="main">
-<section class="hero"><h1>Igbo Draft Phrasebook</h1><p>Search 129 app-local English–Igbo draft records first. Tone, dialect, and provenance limits are explicit; cloud translation is optional.</p></section>
+<section class="hero"><h1>English–Igbo Translator</h1><p>Translate a sentence or look up everyday English and Igbo phrases. Phrase lookup stays on your device; sentence translation uses an optional online service.</p></section>
 <div class="container">
+<nav class="translator-tasks" aria-label="Choose a language task"><a href="#liveTranslateCard">Translate a sentence</a><a href="#phraseSearchTitle">Browse local phrases</a></nav>
 <div class="wotd" id="wotd"></div>
 <div class="card">
-<h2>Search Phrases <span class="count-badge" id="countBadge" aria-live="polite">0</span></h2>
-<div class="search-box"><label for="search">Search English or Igbo phrases</label><input type="search" id="search" placeholder="Example: What is the price?" autocomplete="off" oninput="filter()"></div>
+<p>Igbo Draft Phrasebook: 129 app-local draft records. Tone and dialect coverage is limited; important wording needs qualified review.</p>
+<h2 id="phraseSearchTitle" tabindex="-1">Search Phrases <span class="count-badge" id="countBadge" aria-live="polite">0</span></h2>
+<div class="search-box"><label for="search">Search English or Igbo phrases</label><input type="search" id="search" placeholder="Example: What is the price?" autocomplete="off" maxlength="2000" oninput="filter()"></div>
 <div class="cats" id="cats"></div>
+<div id="phraseRecovery" class="phrase-recovery" hidden><p role="status">No local phrase matches this search. Try another phrase or send this text through the optional translator.</p><button type="button" id="translateSearch">Use this text in the translator</button> <button type="button" onclick="resetPhraseSearch()">Clear search and show all phrases</button></div>
 </div>
 <div class="card"><div class="phrase-list" id="phrases"></div></div>
 <section class="vip-boundary" aria-labelledby="igboCoverageTitle">
@@ -318,7 +322,8 @@ let activeCat='All';
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,function(char){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[char];});}
 function init(){const cats=[...new Set(PHRASES.map(p=>p.cat))];document.getElementById('cats').innerHTML='<button type="button" class="cat-btn active" aria-pressed="true" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button type="button" class="cat-btn" aria-pressed="false" onclick="setCat('${escapeHtml(c)}')">${escapeHtml(c)}</button>`).join('');filter();}
 function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>{const selected=b.textContent===c;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});filter();}
-function filter(){const q=document.getElementById('search').value.toLowerCase();const list=PHRASES.filter(p=>{if(activeCat!=='All'&&p.cat!==activeCat)return false;if(!q)return true;return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);});document.getElementById('countBadge').textContent=list.length+' phrases';document.getElementById('phrases').innerHTML=list.map((p,index)=>`<div class="phrase"><span class="en">${escapeHtml(p.en)}</span><span><span class="lang" lang="ig">${escapeHtml(p.lang)}</span><br><span class="pron">${escapeHtml(p.pron)}</span>${p.note?`<span class="verification-note">${escapeHtml(p.note)}</span>`:''}</span><button type="button" class="speak-btn" data-phrase-index="${PHRASES.indexOf(p)}" aria-label="Listen to ${escapeHtml(p.en)} in Igbo">&#128266;</button></div>`).join('');document.querySelectorAll('.speak-btn[data-phrase-index]').forEach(button=>button.addEventListener('click',()=>speak(PHRASES[Number(button.dataset.phraseIndex)].lang)));}
+function filter(){const q=document.getElementById('search').value.trim().toLowerCase();const list=PHRASES.filter(p=>{if(activeCat!=='All'&&p.cat!==activeCat)return false;if(!q)return true;return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);});document.getElementById('countBadge').textContent=list.length+(list.length===1?' phrase':' phrases');document.getElementById('phraseRecovery').hidden=list.length>0;document.getElementById('phrases').innerHTML=list.map((p,index)=>`<div class="phrase"><span class="en">${escapeHtml(p.en)}</span><span><span class="lang" lang="ig">${escapeHtml(p.lang)}</span><br><span class="pron">${escapeHtml(p.pron)}</span>${p.note?`<span class="verification-note">${escapeHtml(p.note)}</span>`:''}</span><button type="button" class="speak-btn" data-phrase-index="${PHRASES.indexOf(p)}" aria-label="Listen to ${escapeHtml(p.en)} in Igbo">&#128266;</button></div>`).join('');document.querySelectorAll('.speak-btn[data-phrase-index]').forEach(button=>button.addEventListener('click',()=>speak(PHRASES[Number(button.dataset.phraseIndex)].lang)));}
+function resetPhraseSearch(){document.getElementById('search').value='';setCat('All');document.getElementById('search').focus();}
 function speak(t){const u=new SpeechSynthesisUtterance(t);u.lang='ig';u.rate=0.8;speechSynthesis.speak(u);}
 init();
 </script>
