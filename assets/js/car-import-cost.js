@@ -58,6 +58,7 @@
     }
     function u() {
         var t = r("#carImportCountry").value, n = a.data.countryRulePacks[t], c = r("#carImportPort"), s = r("#carImportDestinationCity");
+        syncNigeriaControls();
         n && (c && (c.innerHTML = "", (n.ports || []).forEach(function(t, a) {
             c.appendChild(l(t.code, t.label, 0 === a));
         })), s && (s.innerHTML = "", (n.cities || []).forEach(function(t, a) {
@@ -157,6 +158,61 @@
             }
         });
     }
+    function nigeriaControlsMarkup() {
+        return '<fieldset id="carImportNigeriaControls" class="car-import-advanced" hidden><legend>Nigeria customs estimate</legend><p class="car-import-help">Use the checked reference for used petrol passenger cars above 1500cc, or enter a full assessment for any vehicle class.</p><div class="car-import-form-grid">' +
+            w("Charge basis", "carImportNgMode", [["ntip-reference", "NTIP reference checked 22 Oct 2026"], ["quoted-total", "Use my full customs assessment"]]) +
+            w("HS classification", "carImportNgHs", [["", "From entered engine size (verify)"], ["8703232000", "8703232000: over 1500 to 3000cc"], ["8703242000", "8703242000: over 3000cc"]]) +
+            '<label class="car-import-field full"><span><input id="carImportNgExactCc" type="checkbox"> Engine cc checked against vehicle documents</span></label></div>' +
+            '<div id="carImportNgQuoteFields" class="car-import-form-grid" hidden>' + M("Full customs assessment total NGN", "carImportNgAssessmentNgn", "Enter taxes, levies and fees together") +
+            '<label class="car-import-field" for="carImportNgAssessmentDate"><span>Assessment date</span><input type="date" id="carImportNgAssessmentDate"></label>' +
+            T("Assessment supplied by / reference", "carImportNgAssessmentSource", "Broker or Customs quote reference") + '</div><p class="car-import-help" id="carImportNgHelp">Reference includes portal duty, levy, ETLS, surcharge, FCS and VAT. Green Tax is unassessed; official notices conflict. A quoted total replaces all reference charges without double-counting.</p><p id="carImportNgError" role="alert" hidden></p></fieldset>';
+    }
+    function syncNigeriaControls() {
+        var block = r("#carImportNigeriaControls");
+        if (!block) return;
+        var ng = p("#carImportCountry") === "NG", quoted = ng && p("#carImportNgMode") === "quoted-total";
+        block.hidden = !ng; r("#carImportNgQuoteFields").hidden = !quoted;
+        ["#carImportNgAssessmentNgn", "#carImportNgAssessmentDate", "#carImportNgAssessmentSource"].forEach(function(id) { r(id).required = quoted; });
+        r("#carImportNgAssessmentNgn").min = "0"; r("#carImportNgAssessmentNgn").step = "0.01";
+        r("#carImportNgAssessmentDate").max = new Date().toISOString().slice(0, 10);
+    }
+    function bindNigeriaRecovery() {
+        ["input","change"].forEach(function(eventName) {
+            r("#carImportForm").addEventListener(eventName, function() {
+                syncNigeriaControls();
+                if (p("#carImportCountry") === "NG" || a.lastResult && a.lastResult.country.code === "NG") {
+                    a.lastResult = null; r("#carImportResults").hidden = true;
+                    r("#carImportNgError").hidden = true;
+                }
+            });
+        });
+    }
+    function ngMoney(value) { return new Intl.NumberFormat("en-NG", {style:"currency",currency:"NGN",minimumFractionDigits:2,maximumFractionDigits:2}).format(value); }
+    function nigeriaReportRows(result) {
+        var ng = result.nigeriaAssessment;
+        if (!ng) return [];
+        return [["scenario", ng.mode], ["vehicle", [result.input.make,result.input.model,result.input.trim].filter(Boolean).join(" ") || "Not entered"],
+            ["year",result.input.year], ["fuel type",result.input.fuelType], ["body class",result.input.vehicleClass], ["condition",result.input.condition],
+            ["source market",result.input.sourceMarket], ["input mode",result.input.inputMode], ["output mode",result.input.outputMode],
+            ["classification", ng.hsCode || "Not assessed"], ["reference checked", ng.mode === "quoted-total" ? "Not used for this entered assessment" : ng.observedAt || "Unknown"],
+            ["reference source", ng.mode === "quoted-total" ? "Not used for this entered assessment" : ng.sourceUrl || "Unknown"], ["engine cc", result.input.engineCc], ["exact cc confirmed", result.input.ngExactCcConfirmed ? "Yes" : "No"],
+            ["Green Tax status", ng.greenTax.status], ["Green Tax rate (amount not inferred)", ng.greenTax.rate === null ? "Unknown" : ng.greenTax.rate * 100 + "%"],
+            ["assessment date", ng.assessmentDate || "Not entered"], ["assessment supplied by", ng.assessmentSource || "Not entered"],
+            ["tax/assessment total NGN", ng.totalNgn === null ? "Not assessed" : ng.totalNgn], ["FX NGN per USD", result.fx.usdToLocal],
+            ["FX observation", result.fx.observedAt || "Date unknown / configured fallback"], ["FX source", result.fx.source || "Unknown"], ["scope", ng.note]].concat(ng.rows.map(function(row) { return [row.label + " basis", "USD " + row.baseUsd + "; rate " + (row.rate === null ? "entered total" : row.rate * 100 + "%") + "; NGN " + row.amountLocal]; }));
+    }
+    function exportNigeriaCsv(result) {
+        var metadata = {}; nigeriaReportRows(result).forEach(function(row) { metadata[row[0].replace(/[^a-z0-9]+/gi, "_").toLowerCase()] = row[1]; });
+        var rows = [];
+        ["customsValueBasis", "officialTaxes", "officialFees", "practicalCosts", "inlandDelivery", "registration"].forEach(function(section) {
+            result.breakdowns[section].forEach(function(row) { rows.push(Object.assign({section:section,label:row.label,amount_usd:row.amountUsd,base_usd:row.baseUsd == null ? "" : row.baseUsd,rate:row.rate == null ? "" : row.rate,amount_ngn:row.amountLocal == null ? row.amountUsd * result.fx.usdToLocal : row.amountLocal}, metadata)); });
+        });
+        rows.push(Object.assign({section:"total",label:"Planning budget (see charge basis)",amount_usd:result.totals.onRoadUsd,base_usd:"",rate:"",amount_ngn:result.totals.onRoadLocal},metadata));
+        if (window.AfroExport && window.AfroExport.csv) { window.AfroExport.csv(rows,"afrotools-car-import-cost.csv"); return; }
+        var keys = Object.keys(rows[0]), quote = function(value) { return '"' + String(value).replace(/"/g,'""') + '"'; };
+        var blob = new Blob([keys.map(quote).join(",") + "\n" + rows.map(function(row) { return keys.map(function(key) { return quote(row[key]); }).join(","); }).join("\n")],{type:"text/csv;charset=utf-8"});
+        var link = document.createElement("a"), url = URL.createObjectURL(blob); link.href=url; link.download="afrotools-car-import-cost.csv"; link.click(); URL.revokeObjectURL(url);
+    }
     function m() {
         if (a.data) {
             if (!supportsCountry(p("#carImportCountry"))) {
@@ -176,6 +232,9 @@
                 firstRegistrationMonth: d("#carImportFirstRegistrationMonth"),
                 fuelType: p("#carImportFuelType"),
                 engineCc: d("#carImportEngineCc"),
+                ngAssessmentMode: p("#carImportNgMode"), ngHsCode: p("#carImportNgHs"),
+                ngExactCcConfirmed: !!r("#carImportNgExactCc") && r("#carImportNgExactCc").checked,
+                ngAssessmentNgn: p("#carImportNgAssessmentNgn"), ngAssessmentDate: p("#carImportNgAssessmentDate"), ngAssessmentSource: p("#carImportNgAssessmentSource"),
                 transmission: p("#carImportTransmission"),
                 bodyType: p("#carImportBodyType"),
                 vehicleClass: p("#carImportBodyType"),
@@ -199,11 +258,26 @@
                 localDealerPriceUsd: d("#carImportLocalDealerPrice"),
                 extraAgencyChargesUsd: d("#carImportExtraAgencyCharges")
             }, s = t.calculate(e, a.data);
+            var ngError = r("#carImportNgError");
+            if (ngError) ngError.hidden = true;
+            if (s.nigeriaAssessment && /^invalid-/.test(s.nigeriaAssessment.status)) {
+                a.lastResult = null; r("#carImportResults").hidden = true;
+                ngError.textContent = s.nigeriaAssessment.note; ngError.hidden = false; return;
+            }
             a.lastResult = s, function(t) {
                 var a = t.country.currency;
                 r("#carImportResults").hidden = !1, r("#carImportTotal").textContent = n(t.totals.onRoadUsd, "USD"),
                 r("#carImportTotalLocal").textContent = n(t.totals.onRoadLocal, a), r("#carImportSummaryLine").textContent = t.country.name + " estimate using " + t.rulePack.status + " and " + t.valueBasis.valuationStatus + " customs value. " + localQuoteSummary(t.localComparator),
-                r("#carImportRulePackLine").textContent = "Rule pack effective " + t.rulePack.effectiveFrom + (t.rulePack.effectiveTo ? " to " + t.rulePack.effectiveTo : "") + ". FX: 1 USD = " + t.fx.usdToLocal + " " + a + ".",
+                r("#carImportRulePackLine").textContent = "Rule pack effective " + t.rulePack.effectiveFrom + (t.rulePack.effectiveTo ? " to " + t.rulePack.effectiveTo : "") + ". FX: 1 USD = " + t.fx.usdToLocal + " " + a + ".";
+                var ng = t.nigeriaAssessment;
+                r(".car-import-total-label").textContent = ng ? (ng.totalNgn === null ? "Pre-tax planning budget" : "Planning budget - see charge basis") : "Estimated on-road cost";
+                r("[aria-controls='carImportTabOfficial']").textContent = ng ? "Charge basis" : "Official Charges";
+                r("#carImportTabOfficial h2").textContent = ng ? "Selected reference or assessment charges" : "Official charges";
+                r("#carImportShare").textContent = ng ? "Share calculator" : "Share quote";
+                if (ng) {
+                    r("#carImportSummaryLine").textContent = ng.label + (ng.hsCode ? " | HS " + ng.hsCode : "") + (ng.totalNgn === null ? " | Customs charges not included" : " | Charges: " + ngMoney(ng.totalNgn));
+                    r("#carImportRulePackLine").textContent = (ng.status === "user-assessment" ? "Assessment dated " + ng.assessmentDate + ", supplied by " + ng.assessmentSource + ". " : ng.observedAt ? "Reference checked " + ng.observedAt + ". " : "") + "FX:1 USD=" + t.fx.usdToLocal + " NGN (" + (t.fx.observedAt || "date unknown / configured fallback") + "). " + (t.input.ngExactCcConfirmed ? "Exact cc confirmed. " : "Exact cc unconfirmed. ") + "Green Tax: " + ng.greenTax.status.replace(/-/g," ") + (ng.greenTax.rate === null ? "" : " (" + ng.greenTax.rate * 100 + "%; no amount inferred)");
+                }
                 r("#carImportBadgeStack").innerHTML = t.badges.map(function(t) {
                     return '<span class="car-import-badge">' + o(t.label) + "</span>";
                 }).join(""), function(t) {
@@ -211,7 +285,7 @@
                         return '<div class="car-import-warning ' + o(t.severity) + '"><strong>' + o(t.severity.toUpperCase()) + ":</strong> " + o(t.message) + "</div>";
                     }).join("");
                 }(t), function(t) {
-                    var a = [ [ "Customs value", t.totals.cifUsd, "USD" ], [ "Official charges", t.totals.officialTaxesUsd + t.totals.officialFeesUsd, "USD" ], [ "Practical extras", t.totals.practicalCostsUsd + t.totals.inlandDeliveryUsd, "USD" ], [ "Registration", t.totals.registrationUsd, "USD" ], [ "Monthly finance", t.finance.monthlyPaymentUsd, "USD" ] ];
+                    var a = [ [ "Customs value", t.totals.cifUsd, "USD" ], [ t.nigeriaAssessment ? "Selected charge basis" : "Official charges", t.totals.officialTaxesUsd + t.totals.officialFeesUsd, "USD" ], [ "Practical extras", t.totals.practicalCostsUsd + t.totals.inlandDeliveryUsd, "USD" ], [ "Registration", t.totals.registrationUsd, "USD" ], [ "Monthly finance", t.finance.monthlyPaymentUsd, "USD" ] ];
                     if (t.localComparator.localDealerEstimateUsd !== null) a.push(["Local on-road quote", t.localComparator.localDealerEstimateUsd, "USD"]);
                     r("#carImportMetrics").innerHTML = a.map(function(a) {
                         return '<div class="car-import-metric"><span>' + o(a[0]) + "</span><strong>" + n(a[1], a[2]) + "</strong></div>";
@@ -232,7 +306,7 @@
                         return "<tr><td>" + t.days + " delay days</td><td>" + n(t.extraUsd, "USD") + '</td><td colspan="2">' + n(t.onRoadUsd, "USD") + "</td></tr>";
                     }).join("");
                 }(t), function(t) {
-                    var a = [ [ "Vehicle + freight + insurance", t.totals.cifUsd ], [ "Official taxes", t.totals.officialTaxesUsd ], [ "Official fees", t.totals.officialFeesUsd ], [ "Practical port costs", t.totals.practicalCostsUsd ], [ "Inland delivery", t.totals.inlandDeliveryUsd ], [ "Registration", t.totals.registrationUsd ] ], e = Math.max.apply(null, a.map(function(t) {
+                    var a = [ [ "Vehicle + freight + insurance", t.totals.cifUsd ], [ t.nigeriaAssessment ? "Selected reference / assessment" : "Official taxes", t.totals.officialTaxesUsd ], [ "Official fees", t.totals.officialFeesUsd ], [ "Practical port costs", t.totals.practicalCostsUsd ], [ "Inland delivery", t.totals.inlandDeliveryUsd ], [ "Registration", t.totals.registrationUsd ] ], e = Math.max.apply(null, a.map(function(t) {
                         return t[1];
                     })) || 1;
                     r("#carImportWaterfall").innerHTML = a.map(function(t) {
@@ -244,7 +318,7 @@
                         return "<tr><td>" + o(t.label) + "<br><small>" + o(t.assumption) + '</small></td><td colspan="3">' + n(t.totalUsd, "USD") + "</td></tr>";
                     }).join("");
                     var comparisonText = localQuoteSummary(t.localComparator);
-                    r("#carImportFinanceBlock").textContent = "Finance estimate: " + n(t.finance.monthlyPaymentUsd, "USD") + " per month for " + t.finance.months + " months after " + n(t.finance.downPaymentUsd, "USD") + " down. " + comparisonText;
+                    r("#carImportFinanceBlock").textContent = (t.nigeriaAssessment && t.nigeriaAssessment.status === "user-assessment" ? "FX sensitivity holds your NGN assessment fixed and varies only USD costs. Other-source comparisons are not inferred from this quote. " : "") + "Finance estimate: " + n(t.finance.monthlyPaymentUsd, "USD") + " per month for " + t.finance.months + " months after " + n(t.finance.downPaymentUsd, "USD") + " down. " + comparisonText;
                 }(t), function(t) {
                     r("#carImportCompareTable").innerHTML = (t.sourceMarketCompare || []).map(function(t) {
                         return "<tr><td>" + o(t.label) + "</td><td>" + n(t.freightUsd, "USD") + "</td><td>" + n(t.totalLandedUsd, "USD") + "</td><td>" + n(t.onRoadUsd, "USD") + "</td></tr>";
@@ -309,6 +383,9 @@
             "#carImportFirstRegistrationMonth": t.firstRegistrationMonth,
             "#carImportFuelType": t.fuelType,
             "#carImportEngineCc": t.engineCc,
+            "#carImportNgMode": t.ngAssessmentMode, "#carImportNgHs": t.ngHsCode,
+            "#carImportNgAssessmentNgn": t.ngAssessmentNgn, "#carImportNgAssessmentDate": t.ngAssessmentDate,
+            "#carImportNgAssessmentSource": t.ngAssessmentSource,
             "#carImportTransmission": t.transmission,
             "#carImportBodyType": t.bodyType || t.vehicleClass,
             "#carImportDriveSide": t.driveSide,
@@ -332,7 +409,7 @@
         Object.keys(e).forEach(function(t) {
             var a = r(t);
             a && null != e[t] && "" !== e[t] && (a.value = e[t]);
-        }), a.data && t.countryCode && u(), r("#carImportDestinationCity") && t.destinationCity && (r("#carImportDestinationCity").value = t.destinationCity),
+        }), r("#carImportNgExactCc") && (r("#carImportNgExactCc").checked = t.ngExactCcConfirmed === true), syncNigeriaControls(), a.data && t.countryCode && u(), r("#carImportDestinationCity") && t.destinationCity && (r("#carImportDestinationCity").value = t.destinationCity),
         r("#carImportPort") && t.portCode && (r("#carImportPort").value = t.portCode);
     }
     function y(t, r) {
@@ -350,7 +427,10 @@
     }
     function I() {
         a.lastResult || m();
-        var t = a.lastResult, r = [ [ "section", "label", "amount_usd" ] ];
+        var t = a.lastResult;
+        if (!t) return;
+        if (t.nigeriaAssessment) { exportNigeriaCsv(t); return; }
+        var r = [ [ "section", "label", "amount_usd" ] ];
         if ([ "officialTaxes", "officialFees", "practicalCosts", "inlandDelivery", "registration" ].forEach(function(a) {
             t.breakdowns[a].forEach(function(t) {
                 r.push([ a, t.label, t.amountUsd ]);
@@ -379,20 +459,21 @@
     function g() {
         a.lastResult || m();
         var t = a.lastResult;
+        if (!t) return;
         i("car_import_export_pdf", {
             country: t.country.code
         }), window.AfroTools && window.AfroTools.pdf && window.AfroTools.pdf.generate ? window.AfroTools.pdf.generate({
             title: "African Car Landed Cost Report",
             subtitle: t.country.name + " - " + t.input.make + " " + t.input.model + " " + t.input.year,
             heroStats: [ {
-                label: "On-road estimate",
+                label: t.nigeriaAssessment ? "Planning budget (see charge basis)" : "On-road estimate",
                 value: n(t.totals.onRoadUsd, "USD")
             }, {
                 label: "Local currency",
                 value: n(t.totals.onRoadLocal, t.country.currency)
             }, {
-                label: "Rule pack",
-                value: t.rulePack.effectiveFrom
+                label: t.nigeriaAssessment ? "Charge basis" : "Rule pack",
+                value: t.nigeriaAssessment ? t.nigeriaAssessment.label + (t.nigeriaAssessment.assessmentDate ? " dated " + t.nigeriaAssessment.assessmentDate : t.nigeriaAssessment.observedAt ? " (" + t.nigeriaAssessment.observedAt + ")" : "") : t.rulePack.effectiveFrom
             } ],
             sections: [ {
                 heading: "Vehicle and customs basis",
@@ -400,7 +481,7 @@
                     return [ t.label, n(t.amountUsd, "USD") ];
                 })
             }, {
-                heading: "Official charges",
+                heading: t.nigeriaAssessment ? "Selected reference or assessment charges" : "Official charges",
                 rows: t.breakdowns.officialTaxes.concat(t.breakdowns.officialFees).map(function(t) {
                     return [ t.label, n(t.amountUsd, "USD") ];
                 })
@@ -409,8 +490,8 @@
                 rows: t.breakdowns.practicalCosts.concat(t.breakdowns.inlandDelivery, t.breakdowns.registration).map(function(t) {
                     return [ t.label, n(t.amountUsd, "USD") ];
                 })
-            } ],
-            disclaimer: t.disclaimers.join(" "),
+            } ].concat(t.nigeriaAssessment ? [{ heading:"Calculation basis and source dates", rows:nigeriaReportRows(t).map(function(row) { return [row[0],String(row[1])]; }) }] : []),
+            disclaimer: (t.nigeriaAssessment ? t.nigeriaAssessment.note + " " : "") + t.disclaimers.join(" "),
             source: t.sourceMetadata.map(function(t) {
                 return t.name + " (" + t.lastVerified + ")";
             }).join("; ")
@@ -418,18 +499,22 @@
     }
     function v() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = "On-road estimate: " + n(a.lastResult.totals.onRoadUsd, "USD") + " for " + a.lastResult.country.name + ".";
+        var shareUrl = a.lastResult.nigeriaAssessment ? new URL(location.pathname, location.href).href : location.href;
+        if (a.lastResult.nigeriaAssessment) t = "Build a Nigeria car import planning budget using a dated reference or your own assessment. Export or save locally to keep a specific assessment.";
         navigator.share ? navigator.share({
             title: "AfroTools car import estimate",
             text: t,
-            url: location.href
-        }).catch(function() {}) : navigator.clipboard && navigator.clipboard.writeText(location.href),
+            url: shareUrl
+        }).catch(function() {}) : navigator.clipboard && navigator.clipboard.writeText(shareUrl),
         i("car_import_share_quote", {
             country: a.lastResult.country.code
         });
     }
     function b() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = [];
         try {
             t = JSON.parse(localStorage.getItem("carImportCostQuotes") || "[]");
@@ -530,7 +615,7 @@
     }
     document.addEventListener("DOMContentLoaded", function() {
         var o;
-        t && ((o = r("#carImportApp")) && !r("#carImportForm") && (o.innerHTML = '<div class="car-import-layout"><form class="car-import-panel" id="carImportForm"><h2>Build your landed-cost quote</h2><p class="car-import-help">Start with the car details you know. The engine can work from purchase price, FOB, CIF, or make/model/year valuation seeds.</p><div class="car-import-form-grid">' + S("Import country", "select", "carImportCountry", "full") + S("Source market", "select", "carImportSourceMarket", "") + w("Input mode", "carImportInputMode", [ [ "purchase", "I know the purchase price" ], [ "fob", "I know FOB" ], [ "cif", "I know CIF" ], [ "make-model-year", "I only know make/model/year" ], [ "compare", "I want to compare source markets" ] ]) + w("Output mode", "carImportOutputMode", [ [ "practical", "Official + practical port costs" ], [ "official", "Official mode" ], [ "stress", "Stress test" ] ]) + T("Make", "carImportMake", "Toyota") + T("Model", "carImportModel", "Corolla") + T("Trim optional", "carImportTrim", "GLi") + U("Year", "carImportYear", "2018") + w("First registration month", "carImportFirstRegistrationMonth", [ [ "1", "January" ], [ "2", "February" ], [ "3", "March" ], [ "4", "April" ], [ "5", "May" ], [ "6", "June" ], [ "7", "July" ], [ "8", "August" ], [ "9", "September" ], [ "10", "October" ], [ "11", "November" ], [ "12", "December" ] ]) + w("Fuel type", "carImportFuelType", [ [ "petrol", "Petrol" ], [ "diesel", "Diesel" ], [ "hybrid", "Hybrid" ], [ "phev", "PHEV" ], [ "ev", "EV" ] ]) + U("Engine cc", "carImportEngineCc", "1800") + w("Body type", "carImportBodyType", [ [ "sedan", "Sedan" ], [ "hatchback", "Hatchback" ], [ "suv", "SUV" ], [ "mpv", "MPV / Van" ], [ "pickup", "Pickup" ], [ "truck", "Truck" ], [ "motorcycle", "Motorcycle" ] ]) + w("Drive side", "carImportDriveSide", [ [ "right", "Right-hand drive" ], [ "left", "Left-hand drive" ] ]) + w("Transmission", "carImportTransmission", [ [ "automatic", "Automatic" ], [ "manual", "Manual" ] ]) + w("Condition", "carImportCondition", [ [ "used", "Used" ], [ "new", "New" ] ]) + U("Mileage", "carImportMileage", "65000") + M("Purchase price USD", "carImportPurchasePrice", "8200") + M("FOB USD", "carImportFob", "") + M("CIF USD", "carImportCif", "") + '<details class="car-import-advanced"><summary>Advanced costs and finance</summary><div class="car-import-form-grid">' + M("Freight USD", "carImportFreight", "") + M("Insurance USD", "carImportInsurance", "") + M("Official customs value USD", "carImportCustomsValue", "") + S("Port", "select", "carImportPort", "") + S("Destination city", "select", "carImportDestinationCity", "") + U("Delay days", "carImportDelayDays", "0") + U("Storage days", "carImportStorageDays", "0") + w("Clearing mode", "carImportClearingMode", [ [ "agent", "Agent estimate" ], [ "diy", "DIY estimate" ] ]) + U("Down payment %", "carImportDownPayment", "25") + U("APR %", "carImportApr", "24") + U("Finance months", "carImportFinanceMonths", "36") + M("Local on-road quote USD", "carImportLocalDealerPrice", "") + M("Extra agency charges USD", "carImportExtraAgencyCharges", "") + '</div></details></div><div class="car-import-actions"><button class="car-import-button" type="submit">Calculate landed cost</button><button class="car-import-button secondary" type="button" id="carImportCompareMode">Compare source markets</button></div></form><section class="car-import-result-panel" id="carImportResults" hidden><div class="car-import-result-head"><div><div class="car-import-total-label">Estimated on-road cost</div><div class="car-import-total" id="carImportTotal">USD 0</div><div class="car-import-total-sub"><span id="carImportTotalLocal"></span><br><span id="carImportSummaryLine"></span><br><span id="carImportRulePackLine"></span></div></div><div class="car-import-badges" id="carImportBadgeStack"></div></div><div class="car-import-tablist"><div class="car-import-tabs" role="tablist">' + D("Summary", "carImportTabSummary", !0) + D("Official Charges", "carImportTabOfficial", !1) + D("Practical Costs", "carImportTabPractical", !1) + D("Registration", "carImportTabRegistration", !1) + D("Scenarios", "carImportTabScenarios", !1) + D("Compare", "carImportTabCompare", !1) + D("Documents", "carImportTabDocuments", !1) + D("FAQ", "carImportTabFaq", !1) + "</div></div>" + L("carImportTabSummary", !0, '<div id="carImportWarnings" class="car-import-warning-stack"></div><div class="car-import-metrics" id="carImportMetrics"></div><div class="car-import-waterfall" id="carImportWaterfall"></div><h2>Customs value basis</h2>' + P("carImportBasisTable")) + L("carImportTabOfficial", !1, "<h2>Official charges</h2>" + P("carImportOfficialTable")) + L("carImportTabPractical", !1, "<h2>Third-party, port, and delivery costs</h2>" + P("carImportPracticalTable")) + L("carImportTabRegistration", !1, "<h2>Registration and plates</h2>" + P("carImportRegistrationTable")) + L("carImportTabScenarios", !1, "<h2>Scenarios and sensitivity</h2>" + P("carImportScenarioTable") + "<h2>Exchange-rate and delay sensitivity</h2>" + P("carImportSensitivityTable") + '<p class="car-import-help" id="carImportFinanceBlock"></p>') + L("carImportTabCompare", !1, "<h2>Modeled source scenarios</h2><p>Source scenarios use stored price multipliers and freight estimates. Get written seller and freight quotes before choosing a route.</p>" + P("carImportCompareTable", [ "Source", "Freight", "Landed", "On-road" ])) + L("carImportTabDocuments", !1, '<h2>Document checklist</h2><ul class="car-import-checklist" id="carImportDocuments"></ul><h2>Sources used</h2><ul id="carImportResultSources"></ul><h2>Trust notes</h2><ul id="carImportResultDisclaimer"></ul>') + L("carImportTabFaq", !1, '<div class="car-import-ai"><h2>Ask the AfroTools car import advisor</h2><div class="car-import-ai-log" id="carImportAiLog"></div><textarea id="carImportAiQuestion" placeholder="Ask why this country is expensive, what hidden costs to expect, or whether to import or buy locally."></textarea><button class="car-import-button" id="carImportAskAi" type="button">Ask AI with this quote</button></div><h2>Country FAQ</h2><div class="car-import-faq" id="carImportFaqList"></div>') + '<div class="car-import-tab-actions"><div class="car-import-actions"><button type="button" class="car-import-button" id="carImportPdf">Export PDF</button><button type="button" class="car-import-button secondary" id="carImportCsv">Export CSV</button><button type="button" class="car-import-button secondary" id="carImportPrint">Print</button><button type="button" class="car-import-button secondary" id="carImportShare">Share quote</button><button type="button" class="car-import-button tertiary" id="carImportSaveLocal">Save locally</button><save-result-button id="carImportCloudSave" tool-slug="car-import-cost" tool-name="African Car Landed Cost Calculator"></save-result-button></div></div></section></div>'),
+        t && ((o = r("#carImportApp")) && !r("#carImportForm") && (o.innerHTML = '<div class="car-import-layout"><form class="car-import-panel" id="carImportForm"><h2>Build your landed-cost quote</h2><p class="car-import-help">Start with the car details you know. The engine can work from purchase price, FOB, CIF, or make/model/year valuation seeds.</p><div class="car-import-form-grid">' + S("Import country", "select", "carImportCountry", "full") + S("Source market", "select", "carImportSourceMarket", "") + w("Input mode", "carImportInputMode", [ [ "purchase", "I know the purchase price" ], [ "fob", "I know FOB" ], [ "cif", "I know CIF" ], [ "make-model-year", "I only know make/model/year" ], [ "compare", "I want to compare source markets" ] ]) + w("Output mode", "carImportOutputMode", [ [ "practical", "Official + practical port costs" ], [ "official", "Official mode" ], [ "stress", "Stress test" ] ]) + T("Make", "carImportMake", "Toyota") + T("Model", "carImportModel", "Corolla") + T("Trim optional", "carImportTrim", "GLi") + U("Year", "carImportYear", "2018") + w("First registration month", "carImportFirstRegistrationMonth", [ [ "1", "January" ], [ "2", "February" ], [ "3", "March" ], [ "4", "April" ], [ "5", "May" ], [ "6", "June" ], [ "7", "July" ], [ "8", "August" ], [ "9", "September" ], [ "10", "October" ], [ "11", "November" ], [ "12", "December" ] ]) + w("Fuel type", "carImportFuelType", [ [ "petrol", "Petrol" ], [ "diesel", "Diesel" ], [ "hybrid", "Hybrid" ], [ "phev", "PHEV" ], [ "ev", "EV" ] ]) + U("Engine cc", "carImportEngineCc", "1800") + w("Body type", "carImportBodyType", [ [ "sedan", "Sedan" ], [ "hatchback", "Hatchback" ], [ "suv", "SUV" ], [ "mpv", "MPV / Van" ], [ "pickup", "Pickup" ], [ "truck", "Truck" ], [ "motorcycle", "Motorcycle" ] ]) + w("Drive side", "carImportDriveSide", [ [ "right", "Right-hand drive" ], [ "left", "Left-hand drive" ] ]) + w("Transmission", "carImportTransmission", [ [ "automatic", "Automatic" ], [ "manual", "Manual" ] ]) + w("Condition", "carImportCondition", [ [ "used", "Used" ], [ "new", "New" ] ]) + nigeriaControlsMarkup() + U("Mileage", "carImportMileage", "65000") + M("Purchase price USD", "carImportPurchasePrice", "8200") + M("FOB USD", "carImportFob", "") + M("CIF USD", "carImportCif", "") + '<details class="car-import-advanced"><summary>Advanced costs and finance</summary><div class="car-import-form-grid">' + M("Freight USD", "carImportFreight", "") + M("Insurance USD", "carImportInsurance", "") + M("Official customs value USD", "carImportCustomsValue", "") + S("Port", "select", "carImportPort", "") + S("Destination city", "select", "carImportDestinationCity", "") + U("Delay days", "carImportDelayDays", "0") + U("Storage days", "carImportStorageDays", "0") + w("Clearing mode", "carImportClearingMode", [ [ "agent", "Agent estimate" ], [ "diy", "DIY estimate" ] ]) + U("Down payment %", "carImportDownPayment", "25") + U("APR %", "carImportApr", "24") + U("Finance months", "carImportFinanceMonths", "36") + M("Local on-road quote USD", "carImportLocalDealerPrice", "") + M("Extra agency charges USD", "carImportExtraAgencyCharges", "") + '</div></details></div><div class="car-import-actions"><button class="car-import-button" type="submit">Calculate landed cost</button><button class="car-import-button secondary" type="button" id="carImportCompareMode">Compare source markets</button></div></form><section class="car-import-result-panel" id="carImportResults" hidden><div class="car-import-result-head"><div><div class="car-import-total-label">Estimated on-road cost</div><div class="car-import-total" id="carImportTotal">USD 0</div><div class="car-import-total-sub"><span id="carImportTotalLocal"></span><br><span id="carImportSummaryLine"></span><br><span id="carImportRulePackLine"></span></div></div><div class="car-import-badges" id="carImportBadgeStack"></div></div><div class="car-import-tablist"><div class="car-import-tabs" role="tablist">' + D("Summary", "carImportTabSummary", !0) + D("Official Charges", "carImportTabOfficial", !1) + D("Practical Costs", "carImportTabPractical", !1) + D("Registration", "carImportTabRegistration", !1) + D("Scenarios", "carImportTabScenarios", !1) + D("Compare", "carImportTabCompare", !1) + D("Documents", "carImportTabDocuments", !1) + D("FAQ", "carImportTabFaq", !1) + "</div></div>" + L("carImportTabSummary", !0, '<div id="carImportWarnings" class="car-import-warning-stack"></div><div class="car-import-metrics" id="carImportMetrics"></div><div class="car-import-waterfall" id="carImportWaterfall"></div><h2>Customs value basis</h2>' + P("carImportBasisTable")) + L("carImportTabOfficial", !1, "<h2>Official charges</h2>" + P("carImportOfficialTable")) + L("carImportTabPractical", !1, "<h2>Third-party, port, and delivery costs</h2>" + P("carImportPracticalTable")) + L("carImportTabRegistration", !1, "<h2>Registration and plates</h2>" + P("carImportRegistrationTable")) + L("carImportTabScenarios", !1, "<h2>Scenarios and sensitivity</h2>" + P("carImportScenarioTable") + "<h2>Exchange-rate and delay sensitivity</h2>" + P("carImportSensitivityTable") + '<p class="car-import-help" id="carImportFinanceBlock"></p>') + L("carImportTabCompare", !1, "<h2>Modeled source scenarios</h2><p>Source scenarios use stored price multipliers and freight estimates. Get written seller and freight quotes before choosing a route.</p>" + P("carImportCompareTable", [ "Source", "Freight", "Landed", "On-road" ])) + L("carImportTabDocuments", !1, '<h2>Document checklist</h2><ul class="car-import-checklist" id="carImportDocuments"></ul><h2>Sources used</h2><ul id="carImportResultSources"></ul><h2>Trust notes</h2><ul id="carImportResultDisclaimer"></ul>') + L("carImportTabFaq", !1, '<div class="car-import-ai"><h2>Ask the AfroTools car import advisor</h2><div class="car-import-ai-log" id="carImportAiLog"></div><textarea id="carImportAiQuestion" placeholder="Ask why this country is expensive, what hidden costs to expect, or whether to import or buy locally."></textarea><button class="car-import-button" id="carImportAskAi" type="button">Ask AI with this quote</button></div><h2>Country FAQ</h2><div class="car-import-faq" id="carImportFaqList"></div>') + '<div class="car-import-tab-actions"><div class="car-import-actions"><button type="button" class="car-import-button" id="carImportPdf">Export PDF</button><button type="button" class="car-import-button secondary" id="carImportCsv">Export CSV</button><button type="button" class="car-import-button secondary" id="carImportPrint">Print</button><button type="button" class="car-import-button secondary" id="carImportShare">Share quote</button><button type="button" class="car-import-button tertiary" id="carImportSaveLocal">Save locally</button><save-result-button id="carImportCloudSave" tool-slug="car-import-cost" tool-name="African Car Landed Cost Calculator"></save-result-button></div></div></section></div>'),
         r("#carImportForm") && s("/data/trade/car-import-cost-core.json").then(function(a) {
             var r = Object.keys(a.countryPackFiles || {}).map(function(t) {
                 return s(a.countryPackFiles[t]);
@@ -549,7 +634,7 @@
                 }();
                 return n && n.countryRulePacks && (o = o.map(function(t) {
                     return n.countryRulePacks[t.countryCode] || t;
-                })), t.mergeData(a, o, e && e.rates || {});
+                })), (function() { var merged = t.mergeData(a, o, e && e.rates || {}); merged.fxObservations = e && e.rate_observations || {}; return merged; })();
             });
         }).then(function(t) {
             var o, n, s, d;
@@ -666,7 +751,7 @@
                 h(r("[aria-controls='carImportTabCompare']")), i("car_import_compare_mode_used", {
                     country: r("#carImportCountry").value
                 });
-            }), e("[data-partner-zone]").forEach(function(t) {
+            }), bindNigeriaRecovery(), e("[data-partner-zone]").forEach(function(t) {
                 t.addEventListener("click", function() {
                     i("car_import_outbound_partner_click", {
                         zone: t.getAttribute("data-partner-zone")

@@ -8,8 +8,8 @@
   "effectiveTo": null,
   "status": "policy-review-required",
   "confidence": "low",
-  "policyReviewRequired": "Nigeria's 2026 tariff amendments are not reflected in this saved rate scenario. Its duty, levy, VAT, and green-tax treatment must be checked against the current official HS-code calculator and confirmed by a licensed clearing agent before relying on the total.",
-  "valuationMethod": "CIF with configurable vehicle duty and levy pack; user FOB, CIF, purchase price, and valuation seeds are supported.",
+  "policyReviewRequired": "The dated NTIP reference is useful for planning, but official levy/FOB notices conflict and Green Tax is not included. You can replace it with your full customs assessment.",
+  "valuationMethod": "CIF with dated code-specific NTIP reference or entered full NGN assessment; practical budgets remain separate.",
   "ageRules": {
     "basis": "manufactureYear",
     "maxYearsExclusive": 13,
@@ -32,14 +32,48 @@
     "valuationPackRequired": false
   },
   "ports": [
-    { "code": "NGAPP", "label": "Apapa Port, Lagos", "city": "Lagos", "terminalHandlingUsd": 260, "shippingLineChargesUsd": 180, "freeStorageDays": 5, "dailyStorageUsd": 35, "dailyDemurrageUsd": 55 },
-    { "code": "NGTCN", "label": "Tin Can Island, Lagos", "city": "Lagos", "terminalHandlingUsd": 240, "shippingLineChargesUsd": 170, "freeStorageDays": 5, "dailyStorageUsd": 32, "dailyDemurrageUsd": 52 }
+    {
+      "code": "NGAPP",
+      "label": "Apapa Port, Lagos",
+      "city": "Lagos",
+      "terminalHandlingUsd": 260,
+      "shippingLineChargesUsd": 180,
+      "freeStorageDays": 5,
+      "dailyStorageUsd": 35,
+      "dailyDemurrageUsd": 55
+    },
+    {
+      "code": "NGTCN",
+      "label": "Tin Can Island, Lagos",
+      "city": "Lagos",
+      "terminalHandlingUsd": 240,
+      "shippingLineChargesUsd": 170,
+      "freeStorageDays": 5,
+      "dailyStorageUsd": 32,
+      "dailyDemurrageUsd": 52
+    }
   ],
   "cities": [
-    { "id": "lagos", "label": "Lagos", "inlandUsd": 90 },
-    { "id": "abuja", "label": "Abuja", "inlandUsd": 420 },
-    { "id": "port-harcourt", "label": "Port Harcourt", "inlandUsd": 520 },
-    { "id": "kano", "label": "Kano", "inlandUsd": 760 }
+    {
+      "id": "lagos",
+      "label": "Lagos",
+      "inlandUsd": 90
+    },
+    {
+      "id": "abuja",
+      "label": "Abuja",
+      "inlandUsd": 420
+    },
+    {
+      "id": "port-harcourt",
+      "label": "Port Harcourt",
+      "inlandUsd": 520
+    },
+    {
+      "id": "kano",
+      "label": "Kano",
+      "inlandUsd": 760
+    }
   ],
   "practicalCostPresets": {
     "terminalHandlingUsd": 260,
@@ -52,17 +86,93 @@
     "bufferRate": 0.08
   },
   "taxComponents": [
-    { "id": "ng-import-duty", "label": "Passenger vehicle import duty", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.35, "displayOrder": 10, "official": true, "group": "officialTaxes", "notes": "Seeded as configurable car-duty pack, not a permanent hardcoded assumption." },
-    { "id": "ng-vehicle-levy", "label": "Configurable vehicle levy", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.35, "displayOrder": 20, "official": true, "group": "officialTaxes", "notes": "Keep this component editable because vehicle levy treatment can change by policy pack." },
-    { "id": "ng-admin-charge", "label": "Administrative charge on FOB", "type": "percentage", "base": "FOB", "rateOrFormula": 0.01, "displayOrder": 30, "official": true, "group": "officialFees" },
-    { "id": "ng-fob-implementation-2025", "label": "Configurable 4% FOB implementation component", "type": "percentage", "base": "FOB", "rateOrFormula": 0.04, "enabled": false, "displayOrder": 31, "official": true, "group": "officialFees", "notes": "Disabled by default so the applicable Nigerian rate pack can be published without a code change." },
-    { "id": "ng-port-surcharge", "label": "Port and documentation estimate", "type": "fixed", "amountUsd": 90, "displayOrder": 40, "official": false, "group": "officialFees" }
+    {
+      "id": "ng-import-duty",
+      "label": "Import duty reference",
+      "type": "percentage",
+      "base": "customsValue",
+      "rateOrFormula": 0.2,
+      "displayOrder": 10,
+      "official": false,
+      "group": "officialTaxes",
+      "notes": "NTIP reference checked22Oct2026; exact two codes only; not settled current policy."
+    },
+    {
+      "id": "ng-etls",
+      "label": "ETLS reference",
+      "type": "percentage",
+      "base": "customsValue",
+      "rateOrFormula": 0.005,
+      "displayOrder": 20,
+      "official": false,
+      "group": "officialTaxes",
+      "notes": "NTIP reference checked22Oct2026; exact two codes only; not settled current policy."
+    },
+    {
+      "id": "ng-surcharge",
+      "label": "Surcharge on duty reference",
+      "type": "percentage",
+      "base": "importDuty",
+      "rateOrFormula": 0.07,
+      "displayOrder": 30,
+      "official": false,
+      "group": "officialTaxes",
+      "notes": "NTIP reference checked22Oct2026; exact two codes only; not settled current policy."
+    },
+    {
+      "id": "ng-fcs",
+      "label": "FCS reference",
+      "type": "percentage",
+      "base": "FOB",
+      "rateOrFormula": 0.04,
+      "displayOrder": 40,
+      "official": false,
+      "group": "officialTaxes",
+      "notes": "NTIP reference checked22Oct2026; exact two codes only; not settled current policy."
+    },
+    {
+      "id": "ng-vat",
+      "label": "VAT reference excluding vehicle levy",
+      "type": "percentage",
+      "base": "ntipVatBase",
+      "rateOrFormula": 0.075,
+      "displayOrder": 50,
+      "official": false,
+      "group": "officialTaxes",
+      "notes": "NTIP reference checked22Oct2026; exact two codes only; not settled current policy."
+    },
+    {
+      "id": "ng-vehicle-levy",
+      "label": "Vehicle levy reference",
+      "type": "percentage",
+      "base": "customsValue",
+      "rateOrFormula": 0.15,
+      "displayOrder": 60,
+      "official": false,
+      "group": "officialTaxes",
+      "notes": "NTIP reference checked22Oct2026; exact two codes only; not settled current policy."
+    }
   ],
   "registrationComponents": [
-    { "id": "ng-registration-plates", "label": "Registration, plate, and roadworthiness estimate", "type": "fixed", "amountUsd": 280, "displayOrder": 10, "official": false, "group": "registration" }
+    {
+      "id": "ng-registration-plates",
+      "label": "Registration, plate, and roadworthiness estimate",
+      "type": "fixed",
+      "amountUsd": 280,
+      "displayOrder": 10,
+      "official": false,
+      "group": "registration"
+    }
   ],
   "optionalComponents": [
-    { "id": "ng-extra-agent-buffer", "label": "Extra clearing buffer", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.03, "official": false }
+    {
+      "id": "ng-extra-agent-buffer",
+      "label": "Extra clearing buffer",
+      "type": "percentage",
+      "base": "customsValue",
+      "rateOrFormula": 0.03,
+      "official": false
+    }
   ],
   "documents": [
     "Commercial invoice",
@@ -74,26 +184,110 @@
     "Vehicle title or export certificate"
   ],
   "sourceNotes": [
-    { "name": "Nigeria Trade Information Portal - importing motor vehicles", "url": "https://tip.nsw.gov.ng/trade-information/importing-motor-vehicles", "lastVerified": "2026-10-01", "confidence": "official", "note": "The portal guide says only vehicles less than 15 years from manufacture are permitted. This conflicts with the portal's own prohibited-items list; do not use the guide alone to clear older used vehicles." },
-    { "name": "Nigeria Trade Information Portal - prohibited items", "url": "https://tip.nsw.gov.ng/trade-information/prohibited-items", "lastVerified": "2026-10-01", "confidence": "official", "note": "The official prohibition list says used HS 8703 vehicles above twelve years from manufacture are prohibited. This stricter line is the conservative planning gate pending a Customs clarification of the conflicting guide." },
-    { "name": "Nigeria Trade Information Portal - duty calculator", "url": "https://tip.nsw.gov.ng/trade-tools/duty-calculator", "lastVerified": "2026-09-27", "confidence": "official", "note": "A synthetic USD 10,000 CIF check for used petrol passenger vehicle HS 8703232000 returned 20% import duty, 15% levy, 7.5% VAT, 0.5% ETLS, 7% surcharge on duty, and 4% FOB FCS. The portal result is code-specific and does not validate this generic rate pack." },
-    { "name": "Nigeria Customs Service - 2026 Fiscal Policy Measures announcement", "url": "https://fmino.gov.ng/nigeria-customs-service-implements-2026-fiscal-policy-measures-and-tariff-amendments/", "lastVerified": "2026-09-27", "confidence": "official", "note": "Announces revised tariff schedules and a Green Tax Surcharge for vehicles with engine capacities of 2000cc and above. The linked full order was a placeholder at review time, so no 2026 schedule has been promoted into this pack." },
-    { "name": "Nigeria Customs Service - vehicle imports", "url": "https://customs.gov.ng/?page_id=3161", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for customs-import workflow metadata." },
-    { "name": "Nigeria Customs Service - import guidelines", "url": "https://customs.gov.ng/?page_id=3075", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for documentation and compliance framing." },
-    { "name": "Nigeria Customs Service FOB implementation press release", "url": "https://customs.gov.ng/wp-content/uploads/2025/02/PRESS-RELEASE-FOB-IMPLEMENTATION-PDF.pdf", "lastVerified": "2026-04-10", "confidence": "official", "note": "Tracks 2025 FOB charge discussions so the rule pack remains versionable." }
+    {
+      "name": "Nigeria Trade Information Portal - importing motor vehicles",
+      "url": "https://tip.nsw.gov.ng/trade-information/importing-motor-vehicles",
+      "lastVerified": "2026-10-01",
+      "confidence": "official",
+      "note": "The portal guide says only vehicles less than 15 years from manufacture are permitted. This conflicts with the portal's own prohibited-items list; do not use the guide alone to clear older used vehicles."
+    },
+    {
+      "name": "Nigeria Trade Information Portal - prohibited items",
+      "url": "https://tip.nsw.gov.ng/trade-information/prohibited-items",
+      "lastVerified": "2026-10-01",
+      "confidence": "official",
+      "note": "The official prohibition list says used HS 8703 vehicles above twelve years from manufacture are prohibited. This stricter line is the conservative planning gate pending a Customs clarification of the conflicting guide."
+    },
+    {
+      "name": "Nigeria Trade Information Portal - duty calculator",
+      "url": "https://tip.nsw.gov.ng/trade-tools/duty-calculator",
+      "lastVerified": "2026-10-22",
+      "confidence": "official",
+      "note": "Actual synthetic USD10000FOB+1000freight+100insurance for used petrol HS8703232000 and8703242000 returned20%duty,15%levy,0.5%ETLS,7%surcharge on duty,4%FOBFCS and7.5%VAT excluding the separate levy. No GreenTax line. A dated reference, not a current assessment."
+    },
+    {
+      "name": "Nigeria Customs Service - 2026 Fiscal Policy Measures announcement",
+      "url": "https://fmino.gov.ng/nigeria-customs-service-implements-2026-fiscal-policy-measures-and-tariff-amendments/",
+      "lastVerified": "2026-10-22",
+      "confidence": "official",
+      "note": "July29announcement links the now-recovered full2026VariationOrder. Its FifthSchedule/B281 gives GreenTax2%2000-3999cc and4%4000+ with exclusions. Base/VATstacking remain unconfirmed. GazetteIAT10, JulyCustomsnews5 and NTIP15 conflict."
+    },
+    {
+      "name": "Nigeria Customs Service - vehicle imports",
+      "url": "https://customs.gov.ng/?page_id=3161",
+      "lastVerified": "2026-04-10",
+      "confidence": "official",
+      "note": "Used for customs-import workflow metadata."
+    },
+    {
+      "name": "Nigeria Customs Service - import guidelines",
+      "url": "https://customs.gov.ng/?page_id=3075",
+      "lastVerified": "2026-04-10",
+      "confidence": "official",
+      "note": "Used for documentation and compliance framing."
+    },
+    {
+      "name": "Nigeria Customs Service FOB implementation press release",
+      "url": "https://customs.gov.ng/wp-content/uploads/2025/02/PRESS-RELEASE-FOB-IMPLEMENTATION-PDF.pdf",
+      "lastVerified": "2026-04-10",
+      "confidence": "official",
+      "note": "Tracks 2025 FOB charge discussions so the rule pack remains versionable."
+    },
+    {
+      "name": "Nigeria Customs2026VariationOrder, FifthSchedule B281",
+      "url": "https://cms.customs.gov.ng/wp-content/uploads/2026/07/TT-2026-CIRCULAR-NO-10-APPROVAL-FOR-THE-IMPLEMENT-OF-THE-2026-FISCAL-POLICY-MEASURES-AND-TARIFF-AMENDMENTS_0001-3-25.pdf",
+      "lastVerified": "2026-10-22",
+      "confidence": "official",
+      "note": "Actual scannedPDF visually reviewed; GreenTax effective1July2026. Exact displacement matters; do not round4.0L to4000cc."
+    },
+    {
+      "name": "Nigeria Customs July2026 levy announcement",
+      "url": "https://customs.gov.ng/news/customs-continues-nationwide-sensitisation-on-green-tax-ahead-of-july-1-implementation",
+      "lastVerified": "2026-10-22",
+      "confidence": "official",
+      "note": "July1notice says used levy5%, unlike NTIP15 and gazette row18510. No definitive current rate selected."
+    },
+    {
+      "name": "NCS acknowledges FOB suspension,16September2025",
+      "url": "https://fmino.gov.ng/nigeria-customs-service-acknowledges-federal-ministry-of-finance-directive-on-4-fob-implementation/",
+      "lastVerified": "2026-10-22",
+      "confidence": "official",
+      "note": "The dated suspension conflicts with actual NTIP4%FOB output; reference retains observed behavior without claiming current legal applicability."
+    }
   ],
   "disclaimers": [
     "This is an estimate, not an official customs assessment.",
-    "Nigeria's saved 35% duty plus 35% levy scenario is under policy review and omits charges shown by the official HS-code calculator. Do not use this total as a current customs quote.",
+    "The NTIP reference was checked22October2026 for two used-petrol HS codes. Levy/FOB notices disagree; GreenTax is not automatically valued. A full entered assessment replaces all reference charges.",
     "Vehicle duty and levy components are intentionally stored in editable rule data because Nigeria vehicle policy packs can change.",
     "The official trade portal conflicts on used-vehicle age: its prohibition list says above 12 years is prohibited, while its import guide says less than 15 years is permitted. The stricter 12-year line is used as a conservative planning gate; confirm the specific vehicle with Customs or a licensed clearing agent before purchase."
   ],
   "faqs": [
-    { "question": "Can I calculate Nigeria if I only know the car price?", "answer": "Yes. The calculator treats purchase price as a FOB-style estimate, adds freight and marine insurance, then calculates on CIF. You can switch to FOB or CIF mode when you have cleaner shipping documents." },
-    { "question": "Why is there a Nigeria rule-pack warning?", "answer": "The saved rate scenario predates Nigeria's 2026 tariff amendments and does not reproduce the current public HS-code calculator for a used petrol car. Check the exact HS code, customs valuation and current charges with the Nigeria Trade Information Portal and a licensed clearing agent before buying." }
+    {
+      "question": "Can I calculate Nigeria if I only know the car price?",
+      "answer": "Yes. The calculator treats purchase price as a FOB-style estimate, adds freight and marine insurance, then calculates on CIF. You can switch to FOB or CIF mode when you have cleaner shipping documents."
+    },
+    {
+      "question": "Why is there a Nigeria rule-pack warning?",
+      "answer": "Choose the dated NTIP reference for used petrol passenger cars above1500cc, or enter your full Customs/broker assessment total and its source/date. The reference is not a current Customs bill and does not calculate GreenTax from an unconfirmed base."
+    }
   ],
   "copy": {
-    "intro": "Build a Nigeria landed-cost planning scenario through Lagos ports. The saved duty and levy rates are under 2026 policy review; verify your exact HS code, valuation, and current charges with the official trade portal before relying on the total.",
+    "intro": "Estimate a used petrol car import with the checked NTIP reference or your full Customs/broker assessment. Vehicle, freight, port, delivery and registration budgets are shown separately.",
     "hiddenCosts": "Users often miss terminal delivery orders, scanning or examination fees, local registration, demurrage after free days, and FX spread between the quote date and clearing date."
+  },
+  "nigeriaReference": {
+    "id": "ntip-observed-2026-10-22",
+    "label": "NTIP calculator reference checked 22 October 2026",
+    "observedAt": "2026-10-22",
+    "sourceUrl": "https://tip.nsw.gov.ng/trade-tools/duty-calculator",
+    "supportedCodes": [
+      "8703232000",
+      "8703242000"
+    ],
+    "scope": "Used petrol passenger vehicles only; above1500cc. Not a current assessment or all-Nigeria rate pack.",
+    "greenTaxScheduleUrl": "https://cms.customs.gov.ng/wp-content/uploads/2026/07/TT-2026-CIRCULAR-NO-10-APPROVAL-FOR-THE-IMPLEMENT-OF-THE-2026-FISCAL-POLICY-MEASURES-AND-TARIFF-AMENDMENTS_0001-3-25.pdf",
+    "greenTaxEffectiveFrom": "2026-07-01",
+    "greenTaxValuationBase": null,
+    "greenTaxVatTreatment": null
   }
 }

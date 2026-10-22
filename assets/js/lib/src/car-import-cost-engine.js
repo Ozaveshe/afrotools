@@ -60,7 +60,7 @@
     }(e, t), f = c(t, u), p = n(e.ev || e.isEv ? "ev" : e.fuelType || "petrol");
     "electric" === p && (p = "ev");
     var g = n(e.vehicleClass || e.bodyType || d && d.vehicleClass || "sedan"), m = d && d.sourcePricesUsd && d.sourcePricesUsd[u] || d && d.fobUsd ? a(d.sourcePricesUsd && d.sourcePricesUsd[u] || d.fobUsd) * a(f.vehiclePriceMultiplier, 1) : 0, U = n(e.inputMode || e.valueMode || (e.cifUsd ? "cif" : e.fobUsd ? "fob" : m ? "make-model-year" : "purchase"));
-    return {
+    var normalized = {
       countryCode: s,
       sourceMarket: u,
       sourceMarketLabel: f.label || u,
@@ -99,6 +99,15 @@
       fxRates: e.fxRates || null,
       valuationSeedId: d && d.id || null
     };
+    if (s === "NG") {
+      normalized.ngAssessmentMode = String(e.ngAssessmentMode || "ntip-reference");
+      normalized.ngHsCode = String(e.ngHsCode || "").trim();
+      normalized.ngExactCcConfirmed = e.ngExactCcConfirmed === true;
+      normalized.ngAssessmentNgn = e.ngAssessmentNgn == null ? "" : String(e.ngAssessmentNgn).trim();
+      normalized.ngAssessmentDate = String(e.ngAssessmentDate || "").trim();
+      normalized.ngAssessmentSource = String(e.ngAssessmentSource || "").trim().slice(0, 200);
+    }
+    return normalized;
   }
   function d(e, s, n) {
     var r = s.customsBasisRules || {}, i = function(e, t, s) {
@@ -209,6 +218,85 @@
       return e + a(t.amountUsd, 0);
     }, 0));
   }
+  // Dated NTIP calculator reference, not a representation of settled current law.
+  // The portal's VAT excludes its separately displayed vehicle levy.
+  function nigeriaAssessment(input, basis, fx, pack) {
+    var reference = pack.nigeriaReference;
+    var cc = input.engineCc;
+    var inferredCode = cc > 3000 ? "8703242000" : cc > 1500 ? "8703232000" : "";
+    var referenceClass = input.condition === "used" && input.fuelType === "petrol" &&
+      ["sedan", "hatchback", "suv", "wagon", "coupe"].indexOf(input.vehicleClass) !== -1;
+    var code = input.ngHsCode || (referenceClass ? inferredCode : "");
+    var supported = reference && reference.id === "ntip-observed-2026-10-22" &&
+      input.condition === "used" && input.fuelType === "petrol" &&
+      ["sedan", "hatchback", "suv", "wagon", "coupe"].indexOf(input.vehicleClass) !== -1 &&
+      code === inferredCode && reference.supportedCodes.indexOf(code) !== -1;
+    var output = { status: "unsupported", mode: input.ngAssessmentMode, hsCode: code,
+      label: "Customs charges not assessed", observedAt: reference && reference.observedAt || null,
+      sourceUrl: reference && reference.sourceUrl || null, rows: [], totalUsd: null, totalNgn: null,
+      greenTax: { status: "not-assessed", rate: null, amount: null },
+      note: "The dated reference covers used petrol passenger cars above 1500cc only. For another class, use your full Customs or broker assessment total." };
+    function line(id, label, base, rate, amount) {
+      return { id: id, label: label, baseUsd: base, rate: rate, amountUsd: amount,
+        amountLocal: t(amount * fx), group: "officialTaxes", official: false,
+        notes: "Dated reference; not a current Customs assessment." };
+    }
+    if (input.ngAssessmentMode === "quoted-total") {
+      var amountText = input.ngAssessmentNgn;
+      var amount = Number(amountText);
+      var date = input.ngAssessmentDate;
+      var parsedDate = Date.parse(date + "T00:00:00Z");
+      var today = o(null, input).toISOString().slice(0, 10);
+      if (!/^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/.test(amountText) || !Number.isFinite(amount) || amount < 0 ||
+          !/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(parsedDate) ||
+          new Date(parsedDate).toISOString().slice(0, 10) !== date || date > today || !input.ngAssessmentSource.trim()) {
+        output.status = "invalid-quote";
+        output.note = "Enter a non-negative assessment total in NGN, its date (not in the future), and who supplied it.";
+        return output;
+      }
+      output.status = "user-assessment";
+      output.label = "Your entered customs assessment";
+      output.observedAt = null; output.sourceUrl = null;
+      output.totalNgn = amount; output.totalUsd = amount / fx;
+      output.rows = [line("ng-entered-assessment", output.label, amount / fx, null, amount / fx)];
+      output.assessmentDate = date; output.assessmentSource = input.ngAssessmentSource;
+      output.greenTax.status = "coverage-to-check-with-quote";
+      output.note = "Uses your entered full tax/levy/fee total instead of the portal rates. Check that your assessment matches this vehicle/value and includes every applicable charge, including Green Tax; port and registration budgets stay separate.";
+      return output;
+    }
+    if (!supported) return output;
+    if (input.ngExactCcConfirmed) {
+      output.greenTax.rate = cc < 2000 ? 0 : cc < 4000 ? .02 : .04;
+      output.greenTax.status = cc < 2000 ? "excluded-by-engine-size" : "rate-known-base-unconfirmed";
+    } else output.greenTax.status = "exact-displacement-unconfirmed";
+    if (input.ngAssessmentMode !== "ntip-reference") {
+      output.status = "invalid-scenario"; output.note = "Choose the dated NTIP reference or enter an assessment total."; return output;
+    }
+    var components = pack.taxComponents || [];
+    function rate(id) {
+      var item = components.find(function(row) { return row.id === id; });
+      return item && item.enabled !== false && Number.isFinite(item.rateOrFormula) && item.rateOrFormula >= 0 && item.rateOrFormula <= 1 ? item.rateOrFormula : null;
+    }
+    var rates = ["ng-import-duty", "ng-vehicle-levy", "ng-etls", "ng-surcharge", "ng-fcs", "ng-vat"].map(rate);
+    if (rates.some(function(value) { return value === null; })) {
+      output.status = "invalid-reference"; output.note = "This reference pack is incomplete; use your full assessment total."; return output;
+    }
+    var cif = basis.customsValueUsd, duty = cif * rates[0], levy = cif * rates[1], etls = cif * rates[2],
+      surcharge = duty * rates[3], fcs = basis.fobUsd * rates[4],
+      vatBase = cif + duty + etls + surcharge + fcs, vat = vatBase * rates[5];
+    output.rows = [line("ng-import-duty", "Import duty (NTIP reference)", cif, rates[0], duty),
+      line("ng-etls", "ETLS (NTIP reference)", cif, rates[2], etls),
+      line("ng-surcharge", "Surcharge on import duty", duty, rates[3], surcharge),
+      line("ng-fcs", "FCS on FOB (NTIP reference)", basis.fobUsd, rates[4], fcs),
+      line("ng-vat", "VAT excluding the separate vehicle levy (NTIP reference)", vatBase, rates[5], vat),
+      line("ng-vehicle-levy", "Vehicle levy (NTIP reference)", cif, rates[1], levy)];
+    output.status = "dated-reference"; output.label = reference.label;
+    output.totalUsd = duty + levy + etls + surcharge + fcs + vat;
+    output.totalNgn = t(output.totalUsd * fx);
+    output.vatBaseUsd = vatBase;
+    output.note = "Reproduces the two checked NTIP codes, not a current Customs bill. The portal shows 15% levy and 4% FOB; other official notices disagree. Green Tax is not included unless your confirmed engine size is below 2000cc (excluded). Use a full quoted assessment to replace these charges.";
+    return output;
+  }
   function compareLocalQuote(result, input) {
     var quote = a(input.localDealerPriceUsd, 0);
     var comparison = {
@@ -247,7 +335,7 @@
         ageYears: l(p, c),
         priorOfficialTaxesUsd: 0,
         officialSubtotalUsd: 0
-      }, M = U(g.taxComponents, C), x = U(g.registrationComponents, C), R = function(e, s, n) {
+      }, assessment = g.countryCode === "NG" ? nigeriaAssessment(p, b, m, g) : null, M = assessment ? assessment.rows : U(g.taxComponents, C), x = U(g.registrationComponents, C), R = function(e, s, n) {
         if ("official" === s.outputMode) return [];
         var r = e.practicalCostPresets || {}, i = h(e, s), o = function(e, a) {
           return (e.cities || []).find(function(e) {
@@ -309,7 +397,7 @@
       }), g.policyReviewRequired && T.unshift({
         code: "policy-review-required",
         severity: "critical",
-        message: g.policyReviewRequired
+        message: assessment ? assessment.note : g.policyReviewRequired
       }), b.freightUsd || T.push({
         code: "missing-shipping",
         severity: "warning",
@@ -409,7 +497,23 @@
           trust: "Use this as a planning estimate. Final customs, port, clearing, registration, and FX outcomes can differ."
         }
       };
-      return O.sensitivity = function(e, s) {
+      if (assessment) {
+        var fxObservation = c.fxObservations && c.fxObservations.NGN;
+        O.fx.observedAt = fxObservation && fxObservation.rate === m ? fxObservation.observed_at || null : null;
+        O.fx.source = fxObservation && fxObservation.rate === m ? fxObservation.source || null : "configured/fallback";
+        O.nigeriaAssessment = assessment;
+        O.badges = [{ label: assessment.status === "user-assessment" ? "entered assessment" : assessment.status === "dated-reference" ? "dated reference" : "unassessed taxes", type: "estimate" }];
+        if (assessment.status !== "dated-reference") f = Object.assign({}, f, {skipCompare:true});
+        if (assessment.totalNgn !== null) {
+          O.totals.officialTaxesLocal = assessment.totalNgn;
+          O.totals.totalLandedLocal = t((O.totals.totalLandedUsd - O.totals.officialTaxesUsd) * m + assessment.totalNgn, 0);
+          O.totals.onRoadLocal = t((O.totals.onRoadUsd - O.totals.officialTaxesUsd) * m + assessment.totalNgn, 0);
+        }
+        O.rulePack.referenceObservedAt = assessment.observedAt;
+        O.rulePack.referenceScenario = assessment.mode;
+        O.explanation.summary = assessment.note;
+      }
+      O.sensitivity = function(e, s) {
         var n = e.totals.onRoadUsd, r = s.fxRate, i = h(s.pack, s.input), o = a(i.dailyStorageUsd, 0) + a(i.dailyDemurrageUsd, 0);
         return {
           exchangeRate: [ {
@@ -433,7 +537,14 @@
             };
           })
         };
-      }(O, C), O.finance = function(e, s) {
+      }(O, C);
+      if (assessment && assessment.status === "user-assessment") {
+        O.sensitivity.exchangeRate.forEach(function(row) {
+          row.totalLocal = t((O.totals.onRoadUsd - O.totals.officialTaxesUsd) * row.fxRate + assessment.totalNgn, 0);
+          row.assumption = "Entered NGN assessment stays fixed; only USD budget portions change.";
+        });
+      }
+      O.finance = function(e, s) {
         var n = Math.min(.95, Math.max(0, a(s.downPaymentPct, .25))), r = Math.max(1, a(s.financeMonths, 36)), i = a(s.financeAprPct, .24) / 12, o = e * (1 - n), l = i ? o * i / (1 - Math.pow(1 + i, -r)) : o / r;
         return {
           downPaymentUsd: t(e * n),
@@ -460,7 +571,9 @@
           totalUsd: t(r * (1 + i) + 250),
           assumption: "FX slip, slower clearing, extra storage, and agent buffer."
         } ];
-      }(O, C), f.skipCompare || (O.sourceMarketCompare = function(e, n) {
+      }(O, C);
+      if (assessment && assessment.status === "user-assessment") O.scenarios = [{id:"entered-assessment",label:"Entered assessment budget",totalUsd:O.totals.onRoadUsd,assumption:"Your NGN assessment is held fixed. Get a revised quote before applying it to a different vehicle, value or source."}];
+      f.skipCompare || (O.sourceMarketCompare = function(e, n) {
         var r = n && n.sourceMarkets || {};
         return Object.keys(r).map(function(i) {
           var o = r[i], l = {};
@@ -501,7 +614,8 @@
         }).filter(Boolean).sort(function(e, a) {
           return e.onRoadUsd - a.onRoadUsd;
         });
-      }(p, c)), O;
+      }(p, c));
+      return O;
     },
     mergeData: function(e, a, t) {
       var s = {};
