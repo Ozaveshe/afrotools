@@ -279,3 +279,119 @@ test('public health stock status qualifies payload provider days instead of meta
     assert.notEqual(value.age_minutes,0);
   }
 });
+
+// Complete request/collector/orchestrator owners with synthetic transport and
+// persistence boundaries. No credential or real provider/DB request is used.
+const PRIVATE_DIAGNOSTIC_MARKER = 'SYNTHETIC_PRIVATE_ACCOUNT_MARKER';
+function diagnosticRuntime(name, mocks, { env = {}, fetch, logs }) {
+  const file = path.join(ROOT, 'netlify/functions', name), module = { exports: {} };
+  class Clock extends Date { constructor(...args) { super(...(args.length ? args : [NOW])); } static now() { return Date.parse(NOW); } }
+  vm.runInNewContext(fs.readFileSync(file, 'utf8'), {
+    module, exports: module.exports, Date: Clock, URL, Set, Map, Buffer, Response, AbortController,
+    setTimeout, clearTimeout, process: { env }, fetch,
+    console: Object.fromEntries(['log', 'warn', 'error'].map(key => [key, (...x) => logs.push(x.join(' '))])),
+    require(id) { if (Object.hasOwn(mocks, id)) return mocks[id]; throw new Error('Unexpected dependency ' + id); }
+  }, { filename: file });
+  return module.exports;
+}
+function diagnosticCollector({ missingKeys = false, respond } = {}) {
+  const writes = [], metadata = [], runs = [], requests = [], logs = [];
+  const original = snapshot(), before = JSON.stringify(original);
+  const upstream = diagnosticRuntime('_shared/scraper-request.js', {}, { logs, fetch: async (url, opts) => {
+    requests.push({ url, opts });
+    if (respond) return respond(url, opts);
+    return new Response(JSON.stringify(url.includes('alphavantage') ? { 'Global Quote': { '05. price': '120', '07. latest trading day': '2026-10-15' } } : { data: [
+      { symbol: 'NGXASI.NGA', close: 120, open: 100, date: '2026-10-15' },
+      { symbol: 'J200.JSE', close: 140, open: 100, date: '2026-10-15' }
+    ] }));
+  } });
+  const base = diagnosticRuntime('_shared/scraper-base.js', {
+    './data-store': { getData: async () => original, setData: async (key, value) => { writes.push({ key, value }); return true; },
+      updateMeta: async (key, value) => metadata.push({ key, value }) },
+    './storage-diagnostics': { storageDiagnostic: () => 'Synthetic storage unavailable' },
+    './scraper-request': upstream
+  }, { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic-test-only' }, logs,
+    fetch: async (url, opts) => { if (url.endsWith('/scraper_runs')) runs.push(JSON.parse(opts.body)); return { ok: true }; } });
+  const owner = diagnosticRuntime('scheduled-fetch-stocks.js', {
+    './_shared/scraper-base': base, './_shared/stock-observations': qualified
+  }, { env: missingKeys ? {} : { ALPHA_VANTAGE_KEY: PRIVATE_DIAGNOSTIC_MARKER, MARKETSTACK_KEY: PRIVATE_DIAGNOSTIC_MARKER }, logs });
+  return { owner, base, writes, metadata, runs, requests, logs, original, before };
+}
+function diagnosticsStayPrivate(c) {
+  const exposed = JSON.stringify({ logs: c.logs, metadata: c.metadata, runs: c.runs });
+  for (const forbidden of [PRIVATE_DIAGNOSTIC_MARKER, 'apikey=', 'access_key=', 'Authorization', 'https://']) assert.ok(!exposed.includes(forbidden), forbidden);
+}
+async function failedDiagnostic(c) {
+  const result = await c.owner.handler({});
+  assert.equal(result.statusCode, 500); assert.equal(c.writes.length, 0);
+  assert.equal(JSON.stringify(c.original), c.before);
+  assert.equal(c.metadata.at(-1).value.status, 'stale');
+  assert.equal(c.metadata.at(-1).value.error, 'All sources failed');
+  const run = c.runs.at(-1); assert.equal(run.status, 'error'); assert.equal(run.records_count, 0);
+  diagnosticsStayPrivate(c); return run.error_message;
+}
+test('actual collector persists distinct missing-configuration labels without attempting upstream requests', async () => {
+  const c = diagnosticCollector({ missingKeys: true }), message = await failedDiagnostic(c);
+  assert.equal(c.requests.length, 0);
+  assert.equal(message, 'All sources failed; AlphaVantage:MISSING_CONFIG; MarketStack:MISSING_CONFIG');
+});
+for (const status of [401, 429, 503]) test('actual request and collector retain sanitized HTTP ' + status + ' without reading rejected bodies', async () => {
+  let reads = 0;
+  const c = diagnosticCollector({ respond: async () => {
+    const response = new Response(PRIVATE_DIAGNOSTIC_MARKER, { status, headers: { 'X-Synthetic-Account': PRIVATE_DIAGNOSTIC_MARKER } });
+    response.arrayBuffer = async () => { reads++; throw Error('Rejected body must never be read'); }; return response;
+  } });
+  const message = await failedDiagnostic(c);
+  assert.equal(reads, 0); assert.match(message, new RegExp('UPSTREAM_HTTP_ERROR\\(' + status + '\\)'));
+  assert.match(message, /AlphaVantage:INSUFFICIENT_DATED_OBSERVATIONS requested=5 qualified=0/);
+  assert.match(message, /causes=UPSTREAM_HTTP_ERROR/); assert.match(message, /MarketStack:UPSTREAM_HTTP_ERROR/);
+  assert.equal(c.requests.length, status === 401 ? 6 : 8, 'original retry policy is preserved');
+});
+test('actual response decoding reports its fixed type without raw malformed JSON', async () => {
+  const c = diagnosticCollector({ respond: async () => new Response(PRIVATE_DIAGNOSTIC_MARKER) });
+  const message = await failedDiagnostic(c); assert.match(message, /UPSTREAM_BODY_ERROR/); assert.ok(!message.includes(PRIVATE_DIAGNOSTIC_MARKER));
+});
+test('actual request network failures remain typed without transport message or URL disclosure', async () => {
+  const c = diagnosticCollector({ respond: async () => { throw Error(PRIVATE_DIAGNOSTIC_MARKER + ' https://private.example/?access_key=secret'); } });
+  assert.match(await failedDiagnostic(c), /UPSTREAM_NETWORK_ERROR/);
+});
+test('provider error envelopes are distinguished without claiming an unobserved account/quota cause', async () => {
+  const c = diagnosticCollector({ respond: async url => new Response(JSON.stringify(url.includes('alphavantage')
+    ? { Information: PRIVATE_DIAGNOSTIC_MARKER } : { error: { code: PRIVATE_DIAGNOSTIC_MARKER, message: PRIVATE_DIAGNOSTIC_MARKER } })) });
+  assert.match(await failedDiagnostic(c), /PROVIDER_ERROR_RESPONSE/);
+});
+test('empty successful responses retain no-data diagnostics and last-known-good state', async () => {
+  const c = diagnosticCollector({ respond: async url => new Response(JSON.stringify(url.includes('alphavantage') ? {} : { data: [] })) });
+  assert.match(await failedDiagnostic(c), /PROVIDER_NO_DATA/);
+});
+test('undated quotes report insufficient qualified counts without becoming fresh observations', async () => {
+  const c = diagnosticCollector({ respond: async url => new Response(JSON.stringify(url.includes('alphavantage')
+    ? { 'Global Quote': { '05. price': '120' } } : { data: [
+      { symbol: 'NGXASI.NGA', close: 120, open: 100 }, { symbol: 'J200.JSE', close: 140, open: 100 }
+    ] })) });
+  const message = await failedDiagnostic(c);
+  assert.match(message, /AlphaVantage:INSUFFICIENT_DATED_OBSERVATIONS requested=5 qualified=0/);
+  assert.match(message, /MarketStack:INSUFFICIENT_DATED_OBSERVATIONS requested=6 qualified=0/);
+});
+test('successful dated fallback remains successful while the primary HTTP diagnostic stays secret-free', async () => {
+  const c = diagnosticCollector({ respond: async url => url.includes('alphavantage') ? new Response(PRIVATE_DIAGNOSTIC_MARKER, { status: 401 }) : new Response(JSON.stringify({ data: [
+    { symbol: 'NGXASI.NGA', close: 120, open: 100, date: '2026-10-15' },
+    { symbol: 'J200.JSE', close: 140, open: 100, date: '2026-10-15' }
+  ] })) });
+  assert.equal((await c.owner.handler({})).statusCode, 200); assert.equal(c.writes.length, 1);
+  assert.equal(c.writes[0].value.count, 2); assert.equal(c.writes[0].value.current_prices, false);
+  assert.equal(c.runs.at(-1).source, 'MarketStack'); assert.equal(c.runs.at(-1).error_message, null);
+  assert.ok(c.logs.some(line => line.includes('UPSTREAM_HTTP_ERROR(401)'))); diagnosticsStayPrivate(c);
+});
+test('stock diagnostic labels are finite and never serialize arbitrary error/provider/detail values', () => {
+  const c = diagnosticCollector(), unsafe = { code: PRIVATE_DIAGNOSTIC_MARKER, message: PRIVATE_DIAGNOSTIC_MARKER,
+    url: PRIVATE_DIAGNOSTIC_MARKER, status: 999999, stockCollection: { requested_count: Infinity, qualified_count: PRIVATE_DIAGNOSTIC_MARKER, causes: Array.from({ length: 100 }, () => ({ code: PRIVATE_DIAGNOSTIC_MARKER })) } };
+  assert.equal(c.base.stockProviderDiagnostic(PRIVATE_DIAGNOSTIC_MARKER, unsafe), 'unlisted:UNKNOWN causes=UNKNOWNx10');
+});
+test('non-opted-in shared collectors preserve their exact generic failure and metadata contract', async () => {
+  const c = diagnosticCollector();
+  const response = await c.base.runScraper({ id: 'synthetic-other', blobKey: 'synthetic-other-latest', metaKey: 'synthetic-other',
+    sources: [{ name: 'Synthetic', fn: async () => { const error = Error(PRIVATE_DIAGNOSTIC_MARKER); error.code = 'UPSTREAM_HTTP_ERROR'; error.status = 401; throw error; } }] });
+  assert.equal(response.statusCode, 500); assert.equal(c.runs.at(-1).error_message, 'All sources failed');
+  assert.equal(c.metadata.at(-1).value.error, 'All sources failed'); assert.equal(c.writes.length, 0); diagnosticsStayPrivate(c);
+});
