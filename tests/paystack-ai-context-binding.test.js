@@ -18,8 +18,14 @@ test("Paystack AI source binding derives dates, rates and digests from exact own
   assert.equal(record.facts.countries.find(country=>country.countryCode==="ZA").taxRate,.15);
   assert.match(record.facts.artifactDigest,/^sha256:[a-f0-9]{64}$/);
   assert.match(record.facts.engineDigest,/^sha256:[a-f0-9]{64}$/);
-  assert.equal(Object.keys(record.facts.localeArtifactDigests).length,2);
+  assert.equal(Object.keys(record.facts.localeArtifactDigests).length,3);
   assert.match(record.text,/Effective date: not published/);
+  assert.equal(record.facts.mode,"reviewed_static_fee_reference");
+  assert.equal(record.facts.overdueBehavior,"dated-reference");
+  assert.equal(record.facts.currentProviderFeesVerified,false);
+  assert.ok(record.facts.localeArtifactDigests["sw/zana/mpangaji-ada-za-paystack/index.html"]);
+  assert.match(record.text,/confirm current Paystack fees/);
+  assert.doesNotMatch(record.text,/Current structured Paystack/);
 });
 
 test("Paystack AI source binding rejects any owner substitution",()=>{

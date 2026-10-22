@@ -42,3 +42,15 @@ function calcBond(){
   document.getElementById('by-market-price').textContent=fmt(price);
   output.classList.add('on');output.focus();
 }
+
+// A displayed calculation belongs only to the inputs that produced it.
+(function(){
+  function invalidate(){
+    document.getElementById('by-results').classList.remove('on');
+    document.getElementById('by-error').textContent='';
+  }
+  ['by-currency','by-face','by-coupon','by-price','by-years','by-freq'].forEach(function(id){
+    var field=document.getElementById(id);
+    if(field){field.addEventListener('input',invalidate);field.addEventListener('change',invalidate);}
+  });
+})();

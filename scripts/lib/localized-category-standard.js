@@ -5,7 +5,7 @@ const MARKER_END = "<!-- LOCALIZED-CATEGORY-STANDARD:END -->";
 
 const ROUTES = {
   fr: ["agriculture", "climat-environnement", "creative", "crypto", "lifestyle", "developer-tools", "document-pdf", "ecommerce", "education", "energy", "ingenierie", "fintech", "gouvernement", "health", "hr-payroll", "image-design", "insurance", "language", "legal", "mining", "mortgage-property", "personal-finance", "salary-tax", "small-business", "sports", "telecom", "trade", "transport", "travel", "vat-business-tax"].map((slug) => `fr/${slug}/index.html`),
-  sw: ["kilimo", "kazi-na-ajira", "hali-ya-hewa-na-mazingira", "ubunifu-na-watayarishi", "data-na-tija", "zana-za-developer", "hati-na-pdf", "elimu", "nishati-na-huduma", "ujenzi-na-uhandisi", "fintech", "serikali-na-nyaraka", "afya", "picha-na-design", "bima", "lugha-na-tafsiri", "biashara-na-uzingatiaji", "nyumba-na-ardhi", "dini-na-utamaduni", "mshahara-na-kodi", "biashara-ndogo", "michezo", "mawasiliano-na-mtandao", "biashara-ya-nje", "usafiri-na-magari", "usafiri-utalii", "vat-na-kodi"].map((slug) => `sw/${slug}/index.html`)
+  sw: ["kilimo", "kazi-na-ajira", "hali-ya-hewa-na-mazingira", "ubunifu-na-watayarishi", "data-na-tija", "zana-za-developer", "hati-na-pdf", "elimu", "nishati-na-huduma", "ujenzi-na-uhandisi", "fintech", "serikali-na-nyaraka", "afya", "picha-na-design", "bima", "lugha-na-tafsiri", "biashara-na-uzingatiaji", "nyumba-na-ardhi", "personal-finance", "dini-na-utamaduni", "mshahara-na-kodi", "biashara-ndogo", "michezo", "mawasiliano-na-mtandao", "biashara-ya-nje", "usafiri-na-magari", "usafiri-utalii", "vat-na-kodi"].map((slug) => `sw/${slug}/index.html`)
 };
 
 function visible(value) {

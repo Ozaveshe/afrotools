@@ -40,10 +40,10 @@
   function freshness(now){
     var date=now instanceof Date?now:new Date(now||Date.now());
     var due=new Date(REVIEW_DUE_AT+"T23:59:59Z");
-    return {fresh:date.getTime()<=due.getTime(),reviewedAt:REVIEWED_AT,sourceUpdatedAt:SOURCE_UPDATED_AT,reviewDueAt:REVIEW_DUE_AT,effectiveDate:null};
+    var fresh=date.getTime()<=due.getTime();
+    return {fresh:fresh,mode:fresh?"reviewed-estimate":"dated-reference",reviewedAt:REVIEWED_AT,sourceUpdatedAt:SOURCE_UPDATED_AT,reviewDueAt:REVIEW_DUE_AT,effectiveDate:null};
   }
   function validate(input,now){
-    if(!freshness(now).fresh)return {valid:false,code:"stale"};
     var country=COUNTRIES[input&&input.country];
     if(!country)return {valid:false,code:"country"};
     var rule=country.channels[input&&input.channel];

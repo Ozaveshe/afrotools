@@ -15,6 +15,7 @@ const data = JSON.parse(fs.readFileSync(path.join(root, "data/cars/price-intelli
 const marketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/market-observations.json"), "utf8")).observations;
 const sourceMarketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/source-market-observations.json"), "utf8")).observations;
 const nigeriaAgeRules = JSON.parse(fs.readFileSync(path.join(root, "data/trade/car-import-cost-ng.json"), "utf8")).ageRules;
+const askingPriceExamples = JSON.parse(fs.readFileSync(path.join(root, "data/cars/asking-price-examples.json"), "utf8")).examples;
 const contentRevisionDate = "2026-09-27";
 function parseCsvRows(text) {
   const rows = [];
@@ -149,6 +150,32 @@ function marketEvidenceHTML(country, vehicle) {
 ${corroboration ? `<h3>Other market check</h3><ul>${corroboration}</ul>` : ""}
 <p>${comparisonCopy}</p>
 <div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a>${calculatorUrl ? `<a href="${escapeHtml(calculatorUrl)}">Estimate import cost for this car</a>` : ""}</div>
+</section>`;
+}
+
+function askingExamplesHTML(country, vehicle) {
+  const examples = askingPriceExamples.filter((entry) => entry.countryCode === country.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
+  if (!examples.length) return "";
+  const rows = examples.map((entry) => {
+    const source = new URL(entry.sourceUrl);
+    if (source.protocol !== "https:" || source.hostname !== "jiji.ng" || source.username || source.password
+      || !/^\/[a-z0-9-]+\/cars\/[A-Za-z0-9-]+\.html$/.test(source.pathname) || source.search || source.hash
+      || entry.variant !== "Mercedes-AMG G 63" || entry.condition !== "Foreign Used" || entry.currency !== "NGN"
+      || !Number.isSafeInteger(entry.askingPrice) || entry.askingPrice <= 0
+      || !/^\d{4}-\d{2}-\d{2}$/.test(entry.observedDate)
+      || entry.sourcePublishedAt !== null || entry.sellerClaimsVerified !== false || entry.availabilityConfirmed !== false) {
+      throw new Error("Invalid G63 asking-price example");
+    }
+    return `<li><h3>${escapeHtml(`${entry.modelYear} ${entry.variant} — ${entry.area}, ${entry.city}`)}</h3>
+<p><strong>${escapeHtml(formatObservedMoney(entry.askingPrice, entry.currency))} asking</strong> · ${escapeHtml(entry.condition)} · ${escapeHtml(entry.color)}</p>
+<p>Observed <time datetime="${escapeHtml(entry.observedDate)}">${escapeHtml(entry.observedDate)}</time>.</p>
+<div class="cars-evidence-links"><a href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open ${escapeHtml(entry.area)} listing on Jiji</a></div></li>`;
+  }).join("\n");
+  return `<section id="asking-examples" class="cars-panel cars-static-summary cars-market-evidence" aria-labelledby="asking-examples-title">
+<h2 id="asking-examples-title">Dated 2022 Mercedes-AMG G63 asking examples</h2>
+<p>Selected foreign-used ads in Abuja and Lagos. These are asking prices, not completed sales or a market valuation. G550 listings are not included.</p>
+<ol>${rows}</ol>
+<p>Seller-stated year, trim and condition. Check the listing for its current price and availability.</p>
 </section>`;
 }
 
@@ -359,6 +386,10 @@ function schema(meta, routePath) {
 
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
+  const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
+  const askingVehicle = meta.pageType === "model"
+    ? meta.listVehicles.find(hasExamples)
+    : ["vehicle", "import-vs-local"].includes(meta.pageType) && hasExamples(meta.vehicleObj) ? meta.vehicleObj : null;
   return `<!DOCTYPE html>
 <html lang="en" data-chat-bundle="${chatBundlePath}">
 <head>
@@ -391,7 +422,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
 </head>
 <body class="cars-page">
   <afro-navbar active="transport"></afro-navbar>
-  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript><div id="carsApp"></div>${staticContentHTML(meta)}</main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>

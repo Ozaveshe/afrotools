@@ -15,6 +15,7 @@
 <style>
 :root{--color-primary:#0062CC;--color-primary-dark:#0059B3;--blue-light:#EFF6FF;--green:#008751;--bg:#f1f5f9;--card:#fff;--border:#e5e7eb;--text:#1e293b;--text-muted:#6b7280;--text-light:#94a3b8;--radius:14px;--radius-sm:8px}
 @media(prefers-color-scheme:dark){:root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#e2e8f0;--text-muted:#94a3b8;--text-light:#64748b}}
+:root[data-theme="dark"]{--bg:var(--dm-bg-soft,#101b2e);--card:var(--dm-surface,#121f33);--border:var(--dm-border,#26364e);--text:var(--dm-text,#eef5ff);--text-muted:var(--dm-muted,#b8c7dc);--text-light:var(--dm-subtle,#8fa1ba);--blue-light:var(--dm-surface-raised,#17263d);--color-primary:var(--dm-blue,#93c5fd)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 
@@ -77,8 +78,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .items-table{width:100%;border-collapse:collapse;font-size:12px}
 .items-table th{text-align:left;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;padding:6px 8px;border-bottom:1px solid var(--border)}
 .items-table td{padding:4px 6px;border-bottom:1px solid var(--bg)}
-.items-table input,.items-table select{width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
-.items-table input:focus,.items-table select:focus{border-color:var(--color-primary)}
+.items-table input,.items-table select,.items-table textarea{width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
+.items-table input:focus,.items-table select:focus,.items-table textarea:focus{border-color:var(--color-primary)}
+.items-table textarea{resize:vertical;min-height:30px;line-height:1.4}
+.boq-error{padding:12px;margin-bottom:16px;border:1px solid #b91c1c;border-radius:var(--radius-sm);color:#991b1b;background:#fef2f2;line-height:1.5}
+:root[data-theme="dark"] .boq-error{color:#fecaca;background:#450a0a;border-color:#f87171}
+.boq-status{color:var(--text);margin-bottom:12px;font-size:13px;line-height:1.5}
+.topbar-btn:disabled{opacity:.55;cursor:not-allowed}
 .items-table .num{text-align:right}
 .items-table .amount{font-weight:700;color:var(--text);text-align:right;font-size:12px;white-space:nowrap}
 .row-actions{display:flex;gap:2px}
@@ -150,11 +156,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <span class="topbar-title" id="projTitle">Untitled BOQ</span>
   <button type="button" class="topbar-btn topbar-btn-ghost" onclick="showTemplates()">Templates</button>
   <button type="button" class="topbar-btn topbar-btn-ghost" onclick="resetBOQ()">Reset</button>
-  <button type="button" class="topbar-btn topbar-btn-ghost" onclick="showTenderQA()">Tender QA</button>
-  <button type="button" class="topbar-btn topbar-btn-ghost" onclick="exportCSV()" data-no-gate="true" data-no-pdf-gate="true">CSV</button>
+  <button type="button" class="topbar-btn topbar-btn-ghost" onclick="showTenderQA()" data-boq-output>Tender QA</button>
+  <button type="button" class="topbar-btn topbar-btn-ghost" onclick="exportCSV()" data-no-gate="true" data-no-pdf-gate="true" data-boq-output>CSV</button>
   <button type="button" class="topbar-btn topbar-btn-ghost" onclick="importCSV()">Import</button>
-  <button type="button" class="topbar-btn topbar-btn-ghost" onclick="shareBOQ()">Share</button>
-  <button type="button" class="topbar-btn topbar-btn-primary" onclick="exportPDF()" data-no-gate="true" data-no-pdf-gate="true">PDF</button>
+  <button type="button" class="topbar-btn topbar-btn-ghost" onclick="shareBOQ()" data-boq-output>Share</button>
+  <button type="button" class="topbar-btn topbar-btn-primary" onclick="exportPDF()" data-no-gate="true" data-no-pdf-gate="true" data-boq-output>PDF</button>
   <button type="button" class="topbar-btn topbar-btn-green" onclick="saveBOQ()">Save</button>
 </div>
 
@@ -225,6 +231,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   </div>
 
   <!-- Categories -->
+  <p id="boqError" class="boq-error" role="alert" hidden></p>
+  <p id="boqStatus" class="boq-status" role="status"></p>
   <div id="categories"></div>
 
   <!-- Summary -->
@@ -407,6 +415,34 @@ function getFinancialTotals(){
   });
 }
 
+function showCalculationError(error){
+  var message=error.message;
+  CATEGORIES.some(function(cat){return cat.items.some(function(item,i){
+    try{BOQBuilderEngine.calculateLine(item.qty||0,item.rate||0);return false;}
+    catch(lineError){message=cat.name+', item '+(i+1)+': '+lineError.message;return true;}
+  });});
+  var notice=document.getElementById('boqError');
+  notice.textContent=message+' Correct the entry to restore totals. Your inputs and saved BOQs are kept.';
+  notice.hidden=false;
+  document.getElementById('summaryRows').innerHTML='';
+  document.getElementById('summaryTotals').innerHTML='';
+  document.getElementById('rtSubtotal').textContent='—';
+  document.getElementById('rtGrand').textContent='—';
+  document.getElementById('rtItems').textContent=activeItems().length;
+  CATEGORIES.forEach(function(cat){
+    cat._total=null;
+    document.getElementById('total-'+cat.id).textContent='—';
+    cat.items.forEach(function(item,i){
+      item._amount=null;
+      document.getElementById('amt-'+cat.id+'-'+i).textContent='—';
+    });
+  });
+  document.querySelectorAll('[data-boq-output]').forEach(function(button){button.disabled=true;});
+  if(document.getElementById('qaModal').classList.contains('active')){
+    document.getElementById('qaContent').textContent=notice.textContent;
+  }
+}
+
 function qaCheck(type,title,body){return{type:type,title:title,body:body};}
 
 function buildTenderQA(){
@@ -480,9 +516,10 @@ function tenderQAText(){
   return lines.join('\n');
 }
 
-function showTenderQA(){renderTenderQA();document.getElementById('qaModal').classList.add('active');}
+function showTenderQA(){if(!recalcAll())return;renderTenderQA();document.getElementById('qaModal').classList.add('active');}
 function closeTenderQA(){document.getElementById('qaModal').classList.remove('active');}
 function copyTenderQA(){
+  if(!recalcAll())return;
   var text=tenderQAText();
   if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){alert('Tender QA handoff copied.');}).catch(function(){prompt('Copy tender QA handoff:',text);});}
   else prompt('Copy tender QA handoff:',text);
@@ -556,7 +593,7 @@ function renderAll(){
 function itemRow(catId,idx,item){
   var unitOpts=UNITS.map(function(u){return '<option'+(u===item.unit?' selected':'')+'>'+u+'</option>';}).join('');
   return '<tr id="row-'+catId+'-'+idx+'">'+
-    '<td><input aria-label="Item description" type="text" value="'+esc(item.desc)+'" placeholder="Item description" oninput="updItem(\''+catId+'\','+idx+',\'desc\',this.value)"></td>'+
+    '<td><textarea aria-label="Item description" rows="'+Math.min(5,String(item.desc||'').split(/\r\n|\r|\n/).length)+'" placeholder="Item description" oninput="updItem(\''+catId+'\','+idx+',\'desc\',this.value)">'+esc(item.desc)+'</textarea></td>'+
     '<td><select onchange="updItem(\''+catId+'\','+idx+',\'unit\',this.value)" style="font-size:11px" aria-label="Select option">'+unitOpts+'</select></td>'+
     '<td><input aria-label="Num" type="number" class="num" value="'+esc(item.qty)+'" placeholder="0" min="0" step="any" oninput="updItem(\''+catId+'\','+idx+',\'qty\',this.value)"></td>'+
     '<td><input aria-label="Num" type="number" class="num" value="'+esc(item.rate)+'" placeholder="0.00" min="0" step="any" oninput="updItem(\''+catId+'\','+idx+',\'rate\',this.value)"></td>'+
@@ -578,7 +615,7 @@ function addItem(catId){
   // Focus the new row's description input
   setTimeout(function(){
     var tbody=document.getElementById('items-'+catId);
-    if(tbody){var inputs=tbody.querySelectorAll('input[type="text"]');if(inputs.length)inputs[inputs.length-1].focus();}
+    if(tbody){var inputs=tbody.querySelectorAll('textarea');if(inputs.length)inputs[inputs.length-1].focus();}
   },50);
 }
 
@@ -609,6 +646,12 @@ function toggleCat(catId){
 
 /* -- Calculations -- */
 function recalcAll(){
+  var totalsData;
+  try{totalsData=getFinancialTotals();}
+  catch(error){showCalculationError(error);return false;}
+  document.getElementById('boqError').hidden=true;
+  document.getElementById('boqError').textContent='';
+  document.querySelectorAll('[data-boq-output]').forEach(function(button){button.disabled=false;});
   var totalItems=0;
   CATEGORIES.forEach(function(cat){
     var catTotal=0;
@@ -626,12 +669,17 @@ function recalcAll(){
     var totalEl=document.getElementById('total-'+cat.id);
     if(totalEl)totalEl.textContent=getSymbol()+fmt(catTotal);
   });
-  recalcSummary();
+  renderSummary(totalsData);
   // Update running total
   document.getElementById('rtItems').textContent=totalItems;
+  return true;
 }
 
 function recalcSummary(){
+  return recalcAll();
+}
+
+function renderSummary(totalsData){
   var sym=getSymbol();
   var rows=document.getElementById('summaryRows');
   var totals=document.getElementById('summaryTotals');
@@ -644,8 +692,6 @@ function recalcSummary(){
     subtotal+=(cat._total||0);
   });
   rows.innerHTML=html;
-
-  var totalsData=getFinancialTotals();
 
   totals.innerHTML=
     '<div class="sum-row"><span class="sum-label">Subtotal</span><span class="sum-value">'+sym+fmt(subtotal)+'</span></div>'+
@@ -763,6 +809,7 @@ function resetBOQ(){
 
 /* -- Share -- */
 function shareBOQ(){
+  if(!recalcAll())return;
   var name=document.getElementById('projName').value||'BOQ';
   var sym=getSymbol();
   var totals=getFinancialTotals();
@@ -777,6 +824,7 @@ function shareBOQ(){
 
 /* -- CSV Export -- */
 function exportCSV(){
+  if(!recalcAll())return;
   var rows=[['Category','Description','Unit','Quantity','Rate','Amount']];
   CATEGORIES.forEach(function(cat){
     cat.items.forEach(function(it){
@@ -795,29 +843,68 @@ function exportCSV(){
 /* -- CSV Import -- */
 function importCSV(){document.getElementById('csvFileInput').click();}
 
+// Quoted-field state machine follows the existing seo-studio-projects CSV reader.
+// Keep commas, embedded line breaks and escaped quotes inside the same cell.
+function parseBoqCSV(raw){
+  raw=String(raw||'').replace(/^\uFEFF/,'');
+  var rows=[],row=[],cell='',quoted=false,closed=false;
+  function pushCell(){row.push(cell);cell='';closed=false;}
+  function pushRow(){pushCell();if(row.some(function(c){return c.trim();}))rows.push(row);row=[];}
+  for(var i=0;i<raw.length;i++){
+    var c=raw[i];
+    if(quoted){
+      if(c==='"'){if(raw[i+1]==='"'){cell+='"';i++;}else{quoted=false;closed=true;}}
+      else cell+=c;
+    }else if(c===',')pushCell();
+    else if(c==='\r'||c==='\n'){if(c==='\r'&&raw[i+1]==='\n')i++;pushRow();}
+    else if(c==='"'&&!cell&&!closed)quoted=true;
+    else if(closed||c==='"')throw new Error('Malformed CSV quoting. Use the exported CSV format.');
+    else cell+=c;
+  }
+  if(quoted)throw new Error('Unclosed quote in CSV.');
+  if(cell||row.length||closed)pushRow();
+  return rows;
+}
+
 function handleCSVImport(e){
   var file=e.target.files[0];
   if(!file)return;
   var reader=new FileReader();
   reader.onload=function(ev){
-    var lines=ev.target.result.split('\n').filter(function(l){return l.trim();});
-    for(var i=1;i<lines.length;i++){
-      var cols=lines[i].split(',').map(function(c){return c.replace(/^"|"$/g,'').trim();});
-      if(cols.length<4)continue;
-      var catName=cols[0].toLowerCase();
-      var cat=CATEGORIES.find(function(c){return c.name.toLowerCase().includes(catName);});
-      if(!cat)cat=CATEGORIES[0];
-      if(cat.items.length===1&&!cat.items[0].desc)cat.items=[];
-      cat.items.push({desc:cols[1]||'',unit:cols[2]||'m\u00B2',qty:cols[3]||'',rate:cols[4]||''});
-    }
+    try{
+      var rows=parseBoqCSV(ev.target.result),expected=['category','description','unit','quantity','rate'];
+      if(!rows.length||expected.some(function(name,i){return String(rows[0][i]||'').trim().toLowerCase()!==name;}))throw new Error('Expected Category, Description, Unit, Quantity and Rate columns.');
+      var pending=[];
+      rows.slice(1).forEach(function(cols,i){
+        if(cols.length<5||cols.length>6)throw new Error('CSV row '+(i+2)+' must have five or six columns.');
+        var name=cols[0].trim().toLowerCase();
+        var matches=CATEGORIES.filter(function(c){return c.name.toLowerCase()===name;});
+        if(!matches.length&&name)matches=CATEGORIES.filter(function(c){return c.name.toLowerCase().includes(name);});
+        if(matches.length!==1)throw new Error('CSV row '+(i+2)+' has an unknown or ambiguous category.');
+        var unit=cols[2]||'m\u00B2';
+        if(UNITS.indexOf(unit)<0)throw new Error('CSV row '+(i+2)+' has an unsupported unit.');
+        try{BOQBuilderEngine.calculateLine(cols[3]||0,cols[4]||0);}
+        catch(error){throw new Error('CSV row '+(i+2)+': '+error.message);}
+        pending.push({cat:matches[0],item:{desc:cols[1],unit:unit,qty:cols[3],rate:cols[4]}});
+      });
+      if(!pending.length)throw new Error('The CSV has no line items.');
+    }catch(error){document.getElementById('boqStatus').textContent='CSV not imported: '+error.message+' Current items are unchanged.';return;}
+    pending.forEach(function(row){
+      var cat=row.cat;
+      if(cat.items.length===1&&!cat.items[0].desc&&!cat.items[0].qty&&!cat.items[0].rate)cat.items=[];
+      cat.items.push(row.item);
+    });
     renderAll();
+    document.getElementById('boqStatus').textContent=pending.length+' CSV line items imported. Totals are recalculated from quantities and rates.';
   };
+  reader.onerror=function(){document.getElementById('boqStatus').textContent='CSV could not be read. Current items are unchanged.';};
   reader.readAsText(file);
   e.target.value='';
 }
 
 /* -- PDF Export -- */
 function exportPDF(){
+  if(!recalcAll())return;
   if(window.afroEmailGate&&!window.afroEmailGate.check())return;
 
   var w=window.open('','_blank');

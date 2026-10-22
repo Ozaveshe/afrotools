@@ -1,0 +1,118 @@
+{
+  "name": "Publisher successor50 engine-aligned generation",
+  "on": {
+    "create": null
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "concurrency": {
+    "group": "publisher-successor50-generation-engine2-01a15fbb",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "prepare": {
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'automation/daily-5pm-publish-deploy-gate-2026-10-22-successor-prep-01a15fbb-engine2'",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 75,
+      "env": {
+        "CONTEXT": "local",
+        "NETLIFY": "false",
+        "COMMIT_REF": "${{ github.sha }}"
+      },
+      "steps": [
+        {
+          "name": "Checkout exact frozen preparation head",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 0,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Set up Node",
+          "uses": "actions/setup-node@v5",
+          "with": {
+            "node-version": "22",
+            "cache": "npm"
+          }
+        },
+        {
+          "name": "Verify immutable source inputs",
+          "run": "node .github/publisher-successor/prep.cjs verify"
+        },
+        {
+          "name": "Install dependencies",
+          "run": "npm ci"
+        },
+        {
+          "name": "Verify current source fallback freshness",
+          "id": "fallback",
+          "run": "npm run data:fallbacks:check"
+        },
+        {
+          "name": "Generate touched owner outputs once before shared build",
+          "id": "preflight",
+          "run": "node scripts/car-catalog-manager.js sync-seed-json\nnode scripts/generate-car-price-pages.js\nnode scripts/build-hausa-whatsapp-link.js --all\nnode scripts/build-sw-fintech-debt-resilience.js --write\nnode scripts/build-sw-fintech-sme-terms.js --write\nnode scripts/build-sw-fintech-wealth-family.js --write\nnode scripts/build-ai-tool-context.js --write\nnode scripts/generate-afrokitchen-static-pages.js --refresh-cookbook"
+        },
+        {
+          "name": "Build cumulative current-main successor deploy artifact once",
+          "id": "build",
+          "run": "npm run build:deploy"
+        },
+        {
+          "name": "Combined current build checks",
+          "id": "checks",
+          "run": "npm run build:checks"
+        },
+        {
+          "name": "All selected changed Node test files",
+          "id": "targeted",
+          "run": "node .github/publisher-successor/prep.cjs targeted"
+        },
+        {
+          "name": "Security scan",
+          "id": "security",
+          "run": "npm run security:scan"
+        },
+        {
+          "name": "Audit complete deploy artifact",
+          "id": "dist",
+          "run": "npm run audit:dist"
+        },
+        {
+          "name": "Direct forbidden-root and honest marker verification",
+          "id": "direct",
+          "run": "node .github/publisher-successor/prep.cjs dist"
+        },
+        {
+          "name": "Export complete regenerated postimages",
+          "if": "always()",
+          "env": {
+            "BUILD_RESULT": "${{ steps.build.outcome }}",
+            "CHECK_RESULT": "${{ steps.checks.outcome }}",
+            "SECURITY_RESULT": "${{ steps.security.outcome }}",
+            "DIST_RESULT": "${{ steps.dist.outcome }}",
+            "DIRECT_RESULT": "${{ steps.direct.outcome }}",
+            "FALLBACK_RESULT": "${{ steps.fallback.outcome }}",
+            "TARGETED_RESULT": "${{ steps.targeted.outcome }}",
+            "PREFLIGHT_RESULT": "${{ steps.preflight.outcome }}"
+          },
+          "run": "node .github/publisher-successor/prep.cjs export"
+        },
+        {
+          "name": "Preserve reviewable preparation evidence",
+          "if": "always()",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "publisher-successor50-engine2-${{ github.run_id }}-${{ github.run_attempt }}",
+            "path": "${{ runner.temp }}/publisher-prep/",
+            "if-no-files-found": "warn",
+            "compression-level": 0
+          }
+        }
+      ]
+    }
+  }
+}
