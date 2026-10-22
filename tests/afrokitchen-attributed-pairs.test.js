@@ -91,9 +91,9 @@ test('all other406 recipe projections, index summaries and source identities rem
   const result=indexOwner.buildRecipeIndex({...manifest,recipes:allowed});
   assert.equal(result.recipes.length,410);
   for(const row of allowed.filter(r=>!IDS[r.slug] && !(r.id==='d7d7e305-3c5d-40db-9033-36843e102176' && r.slug==='ibihaza-rw') && !(r.id==='feabebb3-cd55-48c6-be9a-17f118dddfcc' && r.slug==='kat-kat-banane-sc'))) {
-    const additional=[['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
+    const additional=[['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1'],['mchemsho-tz','4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1'],['octopus-curry-sc','8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
     if(additional){const projected=api.projectAttributedRecipe(row);assert.ok(api.isAttributedRecipe(projected));assert.equal(projected.method_revision,additional[2]);}
-    else if ((row.id==='8a2bb743-87d9-462e-bc09-335e78f9584a'&&row.slug==='kunu-zaki-ng')||(row.id==='f2850789-0ffd-41b3-bbaf-e3229132c9e6'&&row.slug==='ikivuguto-rw')) {
+    else if ((row.id==='8a2bb743-87d9-462e-bc09-335e78f9584a'&&row.slug==='kunu-zaki-ng')||(row.id==='f2850789-0ffd-41b3-bbaf-e3229132c9e6'&&row.slug==='ikivuguto-rw')||(row.id==='c0aced74-68d6-437d-b00b-abd1895605f0'&&row.slug==='kisra-south-sudan-ss')||(row.id==='626fd465-87e1-4f93-bca7-747decbf63d0'&&row.slug==='maheu-zm')) {
       const pending=api.projectAttributedRecipe(row);assert.equal(pending.method_review_status,'pending-source-method');assert.deepEqual(pending.steps,[]);assert.equal(pending.total_time_minutes,null);
     } else assert.strictEqual(api.projectAttributedRecipe(row),row);
     const singleton=indexOwner.buildRecipeIndex({...manifest,recipes:[row]}).recipes[0];
@@ -145,4 +145,67 @@ test('actual dynamic timer completion marks the Koba checkpoint without declarin
     assert.equal(ctx.p(name==='toggleTimer'?'timer-start-4':'cooking-timer-btn').textContent,slug==='koba-mg'?'Start checking':'Done!');
     ctx.i={...recipe,method_revision:'not-reviewed'};vm.runInNewContext(helper+';label=recipeTimerCompletion(4)',ctx);assert.equal(ctx.label,'Done!');
   }
+});
+
+
+// Four-image recovery source scope: two exact adaptations, two method holds.
+const RECOVERY_METHODS = {
+ 'mchemsho-tz': ['4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1','https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf'],
+ 'octopus-curry-sc': ['8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1','https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles']
+};
+for(const [slug,[id,revision,source]] of Object.entries(RECOVERY_METHODS)) {
+ test(slug+': exact source identity, approval, revision and immutable source facts',()=>{
+  const input=fixture(slug),before=structuredClone(input),recipe=api.projectAttributedRecipe(input);
+  assert.deepEqual(input,before);assert.equal(recipe.id,id);assert.equal(recipe.method_revision,revision);assert.equal(recipe.source,source);assert.equal(api.isAttributedRecipe(recipe),true);
+  for(const k of ['id','slug','is_verified','is_published','view_count','created_at','updated_at'])assert.deepEqual(recipe[k],before[k]);
+  for(const mutation of [{id:'wrong'},{is_verified:false},{is_published:false},{is_verified:undefined},{is_published:null}])assert.equal(api.projectAttributedRecipe({...input,...mutation}),null);
+  assert.equal(api.isAttributedRecipe({...recipe,method_revision:'stale-method'}),false);
+  const wrongSlug={...recipe,slug:'ordinary-dish'};assert.equal(api.isAttributedRecipe(wrongSlug),false);
+  assert.equal(audit[slug].expected_recipe_id,id);assert.equal(audit[slug].method_revision,revision);assert.equal(audit[slug].sources[0].url,source);
+  assert.deepEqual(recipe.diet_tags,[]);for(const k of ['calories','protein_g','carbs_g','fat_g','fiber_g','nutrition_basis','chef_notes','total_time_minutes'])assert.equal(recipe[k],null,k);
+  assert.equal(recipe.avg_rating,null);assert.equal(recipe.review_count,0);assert.deepEqual(recipe.reviews,[]);
+  for(const child of [...recipe.ingredients,...recipe.steps,...recipe.media])assert.equal(child.recipe_id,id);
+  assert.deepEqual(owner.applyRecipeResearchPatch(input,audit),recipe);
+ });
+ test(slug+': genuine static/schema/index source owners preserve the projected source',()=>{
+  const input=fixture(slug),recipe=api.projectAttributedRecipe(input),html=owner.buildRecipePageHtml(input,{...manifest,recipes:[input]},api,{},audit,null);
+  assert.ok(html.includes(recipe.steps[0].instruction));assert.ok(html.includes(recipe.image_alt));assert.match(html,/AI-generated/);assert.doesNotMatch(html,/PTnullM|PTNaNM|PTundefinedM|Dairy.free/);
+  const schema=plain(api.getStructuredData(recipe,recipe.default_servings));assert.equal(Object.hasOwn(schema,'totalTime'),false);assert.equal(Object.hasOwn(schema,'nutrition'),false);assert.equal(Object.hasOwn(schema,'aggregateRating'),false);
+  const idx=indexOwner.buildRecipeIndex({...manifest,recipes:[{...input,generated_in_wave:true}]}).recipes[0];assert.equal(idx.method_revision,revision);assert.deepEqual(idx.curated_detail.fields.ingredients,recipe.ingredients);
+ });
+}
+test('Mchemsho keeps exact institutional batch quantities, unknown yield/duration and written pressure checkpoints',()=>{
+ const r=api.projectAttributedRecipe(fixture('mchemsho-tz'));
+ assert.equal(r.default_servings,null);assert.equal(r.serving_unit,null);assert.equal(r.yield_status,'not-recorded');assert.equal(api.hasRecordedRecipeYield(r),false);assert.deepEqual(api.getRecipeTiming(r),{prep:null,cook:null,total:null});
+ assert.deepEqual(r.ingredients.map(x=>[x.name,x.amount,x.unit]),[['beef',1,'kg'],['carrot',1,'whole'],['bell pepper',1,'whole'],['onion',1,'large'],['potatoes',5,'whole'],['broccoli',2,'heads'],['water',8,'cups'],['salt',null,'to taste']]);
+ assert.ok(r.steps.every(x=>x.timer_seconds===null));assert.match(r.steps[1].instruction,/20-minute phase/);assert.match(r.steps[3].instruction,/7-minute phase/);assert.match(r.story,/not a 27-minute total/);assert.match(r.story,/fill, liquid and release/);assert.match(r.story,/indexed printed pages 38–39/);assert.match(r.story,/full PDF and page images were not inspected/);assert.match(r.story,/spaghetti, beans and peas are omitted/);
+ const html=owner.buildRecipePageHtml(fixture('mchemsho-tz'),{...manifest,recipes:[fixture('mchemsho-tz')]},api,{},audit,null);assert.match(html,/Source quantities; portions not recorded/);assert.doesNotMatch(html,/6 servings|6 people|27 minutes total/);
+});
+test('Octopus retains four author servings and approximate 20/90 estimates without inventing total or ingredients',()=>{
+ const r=api.projectAttributedRecipe(fixture('octopus-curry-sc'));
+ assert.equal(r.default_servings,4);assert.equal(r.serving_unit,'servings');assert.deepEqual(api.getRecipeTiming(r),{prep:20,cook:90,total:null});
+ assert.equal(r.ingredients[0].name,'cleaned raw octopus');assert.match(r.ingredients[0].prep_note,/2–3 lb/);assert.match(r.story,/ingredient list describes boiled octopus/);assert.match(r.story,/includes that preboil/);assert.match(r.story,/cilantro garnish is omitted/);assert.match(r.story,/Water is selected instead of fish stock/);
+ assert.equal(r.ingredients.find(x=>x.name==='water').amount,.5);assert.equal(r.ingredients.find(x=>x.name==='coconut milk').prep_note,'13.5 oz source can');assert.equal(r.ingredients.some(x=>/aubergine|eggplant|cilantro|fish stock/.test(x.name)),false);
+ assert.deepEqual(r.steps.filter(x=>x.timer_seconds).map(x=>x.timer_seconds),[1800,1200,300]);assert.ok(r.steps.filter(x=>x.timer_seconds).every(x=>/Check/.test(x.timer_label)));
+});
+test('gap-fill source rows cannot regenerate the four superseded generic methods or manufacture publication',()=>{
+ const source=fs.readFileSync(path.join(ROOT,'scripts/build-afrokitchen-gap-fill-wave-1.js'),'utf8');let generated;
+ vm.runInNewContext(source,{require:name=>name==='fs'?{mkdirSync(){},writeFileSync(file,text){assert.equal(generated,undefined);generated=JSON.parse(text)}}:name==='path'?path:(()=>{throw new Error('Unexpected dependency '+name)})(),__dirname:path.join(ROOT,'scripts'),console:{log(){}}});
+ assert.equal(generated.recipes.length,100);
+ for(const slug of Object.keys(RECOVERY_METHODS)) {
+  const sourceRow=generated.recipes.find(x=>x.slug===slug),projected=api.projectAttributedRecipe(fixture(slug));
+  for(const k of ['name','description','story','source','image_url','image_alt','diet_tags','prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','yield_status','calories','protein_g','carbs_g','fat_g','fiber_g','method_revision'])assert.deepEqual(sourceRow[k],projected[k],slug+':'+k);
+  const plainChildren=rows=>rows.map(({id,recipe_id,created_at,...rest})=>rest);for(const k of ['ingredients','steps'])assert.deepEqual(sourceRow[k],plainChildren(projected[k]));
+  for(const k of ['id','is_published','is_verified'])assert.equal(Object.hasOwn(sourceRow,k),false);
+ }
+ for(const slug of ['kisra-south-sudan-ss','maheu-zm']) {const r=generated.recipes.find(x=>x.slug===slug);assert.equal(r.method_review_status,'pending-source-method');assert.deepEqual(r.ingredients,[]);assert.deepEqual(r.steps,[]);assert.deepEqual(r.diet_tags,[]);for(const k of ['prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','calories'])assert.equal(r[k],null);for(const k of ['id','is_published','is_verified'])assert.equal(Object.hasOwn(r,k),false);}
+});
+
+test('the actual cuisine-source audit guard rejects missing, wrong-ID or stale method evidence for both recoveries',()=>{
+ const source=actualFunction('scripts/lib/afrokitchen-cuisine-intelligence.js','curatedMethodProfile');
+ for(const slug of Object.keys(RECOVERY_METHODS)) {
+  const recipe=api.projectAttributedRecipe(fixture(slug)),context={recipeMethods:api};vm.runInNewContext(source+';invoke=curatedMethodProfile',context);
+  assert.deepEqual(plain(context.invoke(recipe,audit)).chefNotes,{common_mistakes:[],readiness_cues:[],pantry_notes:[],technique_notes:[],serve_with:''});
+  for(const bad of [{},{[slug]:{...audit[slug],expected_recipe_id:'wrong'}},{[slug]:{...audit[slug],method_revision:'stale'}},{[slug]:{...audit[slug],curated_method:false}}])assert.throws(()=>context.invoke(recipe,bad),/identity\/revision\/audit mismatch/);
+ }
 });

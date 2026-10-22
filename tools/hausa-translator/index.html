@@ -41,6 +41,8 @@
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:.55rem 1.15rem;border-radius:8px;font-size:.8rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
+
+.hero h1,.hero p{color:var(--color-text,#0f172a)}.hero .vip-actions{justify-content:center}.hero .vip-action{text-decoration:none;background:var(--color-surface,#fff)}.hero a.vip-action{color:var(--color-text,#0f172a)!important}#liveTranslateCard [data-external-translation-consent-host]{background:var(--color-surface,#fff)!important;border-color:var(--color-border,#cbd5e1)}#liveTranslateCard .external-translation-status{color:var(--color-text,#0f172a)!important}#liveTranslateCard,#phrase-search{scroll-margin-top:90px}#phraseEmpty p{margin:.65rem 0;line-height:1.6}
 </style>
 <script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -119,15 +121,15 @@
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 <main id="main">
-<section class="hero"><h1>Hausa Translator & Phrasebook</h1><p>Search 131 app-local starter records and check gender, hooked-letter, script, and regional boundaries before use. Cloud translation is optional.</p></section>
+<section class="hero"><h1>Hausa Translator & Phrasebook</h1><p>Translate English and Hausa text, or find everyday phrases with pronunciation guides. Phrase lookup works on your device; text translation uses an optional external service.</p><nav class="vip-actions" aria-label="Choose a Hausa language task"><a class="vip-action" href="#liveTranslateCard">Translate text</a><a class="vip-action" href="#phrase-search">Browse phrases</a></nav></section>
 <div class="container">
 <div class="wotd" id="wotd"></div>
 <div class="card">
-<h2>Search Phrases <span class="count-badge" id="countBadge" aria-live="polite">0</span></h2>
+<h2 id="phrase-search">Search Phrases <span class="count-badge" id="countBadge" aria-live="polite">0</span></h2>
 <div class="search-box"><label for="search">Search English or Hausa phrases</label><input type="search" id="search" placeholder="Example: What is the price?" autocomplete="off" oninput="filter()"></div>
 <div class="cats" id="cats"></div>
 </div>
-<div class="card"><div class="phrase-list" id="phrases"></div></div>
+<div class="card"><div class="phrase-list" id="phrases"></div><div id="phraseEmpty" hidden><h3>No matching phrase in this phrasebook</h3><p>Try fewer words, choose another category, or use the translator for your own text.</p><div class="vip-actions"><button type="button" class="vip-action" id="usePhraseQuery">Use this text in the translator</button></div><p>Filling the translator does not send your text.</p></div></div>
 <section class="vip-boundary" aria-labelledby="hausaCoverageTitle">
 <h2 id="hausaCoverageTitle">Coverage and orthography boundary</h2>
 <p><strong><span data-vip-inventory>131</span> app-local starter records; product boundaries checked 26 July 2026.</strong> Every record has English, Hausa, pronunciation-guide, and category fields. Duplicate “no problem” rows were separated by meaning. This is an unreviewed learning draft, not exhaustive vocabulary or human-quality translation.</p>
@@ -180,7 +182,7 @@
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=b4d8029c" defer></script><script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script><script src="/assets/js/components/related-tools.js?v=ebcb4c9a" defer></script><script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script><script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script><script src="/assets/js/components/related-tools.js?v=ebcb4c9a" defer></script><script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
 <script>
 const PHRASES=[
 {en:'Hello / Peace be upon you',lang:'Sannu / Salamu alaikum',pron:'SAHN-noo / sah-LAH-moo ah-LAY-koom',cat:'Greetings'},
@@ -325,7 +327,7 @@ let activeCat='All';
 function init(){const cats=[...new Set(PHRASES.map(p=>p.cat))];document.getElementById('cats').innerHTML='<button type="button" class="cat-btn active" aria-pressed="true" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button type="button" class="cat-btn" aria-pressed="false" onclick="setCat('${c}')">${c}</button>`).join('');filter();}
 function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>{const selected=b.textContent===c;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});filter();}
 function escapeMarkup(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function filter(){const q=document.getElementById('search').value.toLowerCase();const list=PHRASES.filter(p=>{if(activeCat!=='All'&&p.cat!==activeCat)return false;if(!q)return true;return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);});document.getElementById('countBadge').textContent=list.length+' phrases';document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${escapeMarkup(p.en)}</span><span><span class="lang" lang="ha">${escapeMarkup(p.lang)}</span><br><span class="pron">${escapeMarkup(p.pron)}</span>${p.note?`<span class="verification-note">${escapeMarkup(p.note)}</span>`:''}</span><button type="button" class="speak-btn" onclick="speak('${p.lang.replace(/'/g,"\\'")}')" aria-label="Listen to ${escapeMarkup(p.lang)} in Hausa">&#128266;</button></div>`).join('');}
+function filter(){const q=document.getElementById('search').value.trim().toLowerCase();const list=PHRASES.filter(p=>{if(activeCat!=='All'&&p.cat!==activeCat)return false;if(!q)return true;return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);});document.getElementById('countBadge').textContent=list.length+(list.length===1?' phrase':' phrases');document.getElementById('phraseEmpty').hidden=list.length>0;document.getElementById('usePhraseQuery').hidden=!q;document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${escapeMarkup(p.en)}</span><span><span class="lang" lang="ha">${escapeMarkup(p.lang)}</span><br><span class="pron">${escapeMarkup(p.pron)}</span>${p.note?`<span class="verification-note">${escapeMarkup(p.note)}</span>`:''}</span><button type="button" class="speak-btn" onclick="speak('${p.lang.replace(/'/g,"\\'")}')" aria-label="Listen to ${escapeMarkup(p.lang)} in Hausa">&#128266;</button></div>`).join('');}
 function speak(t){const u=new SpeechSynthesisUtterance(t);u.lang='ha';u.rate=0.8;speechSynthesis.speak(u);}
 init();
 </script>

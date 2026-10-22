@@ -76,7 +76,9 @@ test("local TXT, CSV, full JSON and parser-readable PDF exports work",async({pag
 });
 
 test("stale reviewed rates hard-block calculation",async({page})=>{
-  await page.addInitScript(()=>{const NativeDate=Date,stamp=new NativeDate("2026-10-22T00:00:00Z").getTime();class MockDate extends NativeDate{constructor(...args){super(...(args.length?args:[stamp]))}static now(){return stamp}}window.Date=MockDate});
+  const engine=require("../../assets/js/engines/paystack-fee-planner.js");
+  const staleAt=new Date(engine.freshness(new Date()).reviewDueAt+"T23:59:59Z").getTime()+1000;
+  await page.addInitScript(stamp=>{const NativeDate=Date;class MockDate extends NativeDate{constructor(...args){super(...(args.length?args:[stamp]))}static now(){return stamp}}window.Date=MockDate},staleAt);
   await open(page,"/tools/paystack-calculator/");
   await expect(page.locator("[data-form] [type=submit]")).toBeDisabled();
   await expect(page.locator("[data-status]")).toContainText(/review is overdue/i);
