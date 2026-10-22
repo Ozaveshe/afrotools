@@ -1,7 +1,7 @@
 const test=require("node:test");
 const assert=require("node:assert/strict");
 const engine=require("../assets/js/engines/paystack-fee-planner.js");
-const fresh=new Date("2026-07-23T12:00:00Z");
+const fresh=new Date("2026-10-22T12:00:00Z");
 
 function calculate(country,channel,amount,count=1,targetNet=0){
   const result=engine.calculate({country,channel,amount,count,targetNet},fresh);
@@ -84,11 +84,11 @@ test("unsupported combinations, unsafe bounds and stale rules fail closed",()=>{
   assert.deepEqual(engine.calculate({country:"GH",channel:"amex",amount:1000,count:1},fresh).error,"channel");
   assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:0,count:1},fresh).error,"amount");
   assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:1000,count:1.5},fresh).error,"count");
-  assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:1000,count:1},new Date("2026-10-22T00:00:00Z")).error,"stale");
+  assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:1000,count:1},new Date("2026-10-30T00:00:00Z")).error,"stale");
 });
 
 test("freshness distinguishes review and source dates from an unpublished effective date",()=>{
-  assert.deepEqual(engine.freshness(fresh),{fresh:true,reviewedAt:"2026-10-09",sourceUpdatedAt:"2026-09-15",reviewDueAt:"2026-10-21",effectiveDate:null});
+  assert.deepEqual(engine.freshness(fresh),{fresh:true,reviewedAt:"2026-10-22",sourceUpdatedAt:"2026-09-15",reviewDueAt:"2026-10-29",effectiveDate:null});
 });
 
 // Official country pricing: https://paystack.com/za/pricing, observed 2026-10-09.
@@ -116,5 +116,20 @@ test("South African target-net search finds the global minimum across the R10 fe
     const result=calculate("ZA","local",10,1,target/100).grossUp;
     assert.equal(Math.round(result.charge*100),charge,"target cents "+target);
     assert.equal(Math.round(result.net*100),charge-feeCents(charge));
+  }
+});
+
+test("visible Paystack review dates and FAQ facts stay aligned with the reviewed engine",()=>{
+  const fs=require("node:fs"),path=require("node:path");
+  for(const route of ["tools/paystack-calculator/index.html","fr/tools/calculateur-paystack/index.html","ha/kayan-aiki/kalkuletan-paystack/index.html","sw/zana/mpangaji-ada-za-paystack/index.html"]){
+    const html=fs.readFileSync(path.join(__dirname,"..",route),"utf8");
+    const labels=[...html.matchAll(/<div><span>[^<]+<\/span><strong>([^<]+)<\/strong><\/div>/g)].map(match=>match[1]);
+    assert.equal(labels[0],engine.SOURCE_UPDATED_AT,route+" source date");
+    assert.equal(labels[1],engine.REVIEWED_AT,route+" review date");
+    assert.ok(labels[2].startsWith(engine.REVIEW_DUE_AT),route+" review due");
+    const blocks=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match=>JSON.parse(match[1]));
+    const faq=blocks.find(block=>block["@type"]==="FAQPage");
+    const answer=faq.mainEntity[faq.mainEntity.length-1].acceptedAnswer.text;
+    for(const date of [engine.SOURCE_UPDATED_AT,engine.REVIEWED_AT,engine.REVIEW_DUE_AT])assert.ok(answer.includes(date),route+" FAQ date "+date);
   }
 });

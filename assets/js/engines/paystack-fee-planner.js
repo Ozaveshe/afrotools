@@ -5,10 +5,10 @@
 })(typeof window!=="undefined"?window:null,function(){
   "use strict";
 
-  var VERSION="paystack-fee-planner-2026-10-09";
+  var VERSION="paystack-fee-planner-2026-10-22";
   var SOURCE_UPDATED_AT="2026-09-15";
-  var REVIEWED_AT="2026-10-09";
-  var REVIEW_DUE_AT="2026-10-21";
+  var REVIEWED_AT="2026-10-22";
+  var REVIEW_DUE_AT="2026-10-29";
   var MAX_AMOUNT=1000000000000;
   var MAX_COUNT=1000000;
   var SOURCE_URL="https://support.paystack.com/en/articles/2130306";
