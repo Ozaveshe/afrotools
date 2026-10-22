@@ -1,6 +1,6 @@
 # Calculation Quality Report
 
-As of: 2026-10-15
+As of: 2026-10-22
 
 ## Inventory
 
@@ -27,6 +27,9 @@ As of: 2026-10-15
 ## Golden fixtures
 
 - Passed: 437/437
+- Public PAYE numeric assertions: 169
+- Withheld availability assertions (no numeric acceptance): 3
+- Other operation assertions: 265
 - Documented result changes: 20
 
 ## External data

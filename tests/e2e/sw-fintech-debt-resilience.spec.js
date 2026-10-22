@@ -1,4 +1,10 @@
 const { test, expect } = require('@playwright/test');
+const inventory = require('../../reports/swahili-free-app-parity-inventory.json');
+const acceptance = require('../../data/audits/swahili-free-app-acceptance.json');
+const routeMap = require('../../assets/js/ai/swahili-route-map.generated');
+const routeEntry = require('../../assets/js/pages/sw-ai-route-entry');
+const { assertLifecycle } = require('../../tests/support/swahili-acceptance-lifecycle');
+const acceptedIds = new Set(acceptance.entries.filter((entry) => entry.status === 'accepted').map((entry) => entry.englishId));
 
 const apps = [
   {
@@ -17,6 +23,9 @@ const apps = [
     metrics: ['#lc-current-monthly','#lc-new-monthly','#lc-monthly-savings','#lc-total-savings','#lc-total-balance'], dirty: '#lc-new-rate', invalid: '#loan-balance-1', englishInvalid: '.lc-balance:first'
   }
 ];
+
+assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: apps.map((app) => ({ id: app.id, swahiliRoute: app.swahili })) });
+for (const app of apps) { if (!acceptedIds.has(app.id) || routeEntry.resolveToolRoute(app.id, routeMap) !== app.swahili) throw Error('Current frozen accepted route contract differs: ' + app.id); }
 
 async function fill(page, values) {
   for (const [selector, value] of Object.entries(values)) {
@@ -140,9 +149,30 @@ test('three debt-resilience routes pass mobile, zoom, theme, a11y, metadata, pri
     expect(external).toEqual([]); expect(writes).toEqual([]); expect(badResources).toEqual([]);
     const ai = await page.context().newPage();
     await ai.goto(`/sw/ai/?tool=${app.id}`);
-    await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
-    await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status','not-accepted');
+    const origin = new URL(page.url()).origin;
+    if (acceptedIds.has(app.id)) {
+      await expect(ai).toHaveURL(origin + app.swahili + '?source=sw-ai-tool');
+      await expect(ai.locator('html')).toHaveAttribute('lang', 'sw');
+      await expect(ai.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://afrotools.com' + app.swahili);
+      await expect(ai.locator(app.result)).toHaveCount(1);
+    } else {
+      await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
+      await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status','not-accepted');
+    }
     await ai.close();
   }
   expect(failed).toEqual([]); expect(errors).toEqual([]); expect((await request.get('/sw/ai/')).ok()).toBe(true);
+});
+
+test('an unmapped debt-resilience AI request retains the unaccepted fallback', async ({ page }) => {
+  const id = 'unaccepted-debt-resilience-fixture';
+  expect(acceptedIds.has(id)).toBe(false);
+  expect(routeEntry.resolveToolRoute(id, routeMap)).toBeNull();
+  const writes = [];
+  page.on('request', (request) => { if (!['GET', 'HEAD'].includes(request.method())) writes.push(request.method() + ' ' + request.url()); });
+  await page.goto('/sw/ai/?tool=' + id);
+  await expect(page).toHaveURL((url) => url.pathname === '/sw/ai/' && url.search === '?tool=' + id);
+  await expect(page.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+  await expect(page.locator('#aiSwQuery')).toHaveValue('unaccepted debt resilience fixture');
+  expect(writes).toEqual([]);
 });

@@ -26,7 +26,7 @@ const SWAHILI_CATEGORIES = [
   ['small-business','Biashara ndogo','/sw/biashara-ndogo/','SME','Bei, margin, stock, gharama, ankara, cash flow na shughuli za kila siku za biashara ndogo.'],
   ['transport','Usafiri na magari','/sw/usafiri-na-magari/','GAR','Magari, mafuta, safari, delivery, uagizaji, matengenezo na gharama za usafirishaji.'],
   ['travel-tourism','Usafiri na utalii','/sw/usafiri-utalii/','UTA','Bajeti, visa, afya ya safari, ratiba, mizigo na maandalizi ya utalii ndani ya Afrika.'],
-  ['personal-finance','Fedha binafsi','/sw/zana-zote/?category=personal-finance','FB','Bajeti, deni, akiba, malengo, gharama za kaya na maamuzi ya fedha ya muda mrefu.'],
+  ['personal-finance','Fedha binafsi','/sw/personal-finance/','FB','Bajeti, deni, akiba, malengo, gharama za kaya na maamuzi ya fedha ya muda mrefu.'],
   ['diaspora','Diaspora','/sw/zana-zote/?category=diaspora','DIA','Kutuma fedha, uhamaji, kodi, mali na miradi inayovuka mipaka kwa Waafrika wa diaspora.'],
   ['career','Kazi na ajira','/sw/kazi-na-ajira/','AJ','CV, barua za kazi, mahojiano, LinkedIn, mshahara na mipango ya maendeleo ya taaluma.'],
   ['religious-cultural','Dini na utamaduni','/sw/dini-na-utamaduni/','DU','Bajeti, kalenda na maandalizi yanayoheshimu dini, mila na mamlaka ya jamii mbalimbali.'],

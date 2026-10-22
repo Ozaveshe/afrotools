@@ -153,6 +153,47 @@ var CURR_SYM = {
 var PAINT_ENGINE = window.EngineeringMaterialsEngine;
 var SURFACE_FACTOR = PAINT_ENGINE.PAINT_SURFACE_FACTOR;
 var rooms = [];
+var estimateCurrent = false;
+
+function estimateStatus(message) {
+  var status = document.getElementById("paintEstimateStatus");
+  if (!status) {
+    status = document.createElement("p");
+    status.id = "paintEstimateStatus";
+    status.setAttribute("role", "status");
+    status.style.margin = "12px 0";
+    var results = document.getElementById("results");
+    results.parentNode.insertBefore(status, results);
+  }
+  status.textContent = message || "";
+  status.hidden = !message;
+}
+
+function invalidateEstimate(message) {
+  estimateCurrent = false;
+  document.getElementById("results").style.display = "none";
+  estimateStatus(message);
+}
+
+function roomDraftFields() {
+  var shape = document.getElementById("roomShape").value;
+  return shape === "lshape" ? ["lLen1", "lWid1", "lLen2", "lWid2"] :
+    shape === "custom" ? ["customWallArea", "customCeilArea"] : ["length", "width"];
+}
+
+function clearRoomDraft() {
+  roomDraftFields().forEach(function (id) { document.getElementById(id).value = ""; });
+}
+
+["unit", "roomShape", "length", "width", "height", "lLen1", "lWid1", "lLen2", "lWid2", "lHeight",
+  "customWallArea", "customCeilArea", "doors", "windows", "doorSize", "windowSize", "ceiling",
+  "paintType", "surfaceType", "coats", "brandCountry", "brand", "pricePerLitre", "priceCurrency"].forEach(function (id) {
+  ["input", "change"].forEach(function (event) {
+    document.getElementById(id).addEventListener(event, function () {
+      if (estimateCurrent) invalidateEstimate("Room or paint inputs changed. Calculate again to update your estimate.");
+    });
+  });
+});
 
 /* ── Init ── */
 updateBrandOptions();
@@ -234,14 +275,15 @@ function addRoom() {
   }
   rooms.push(data);
   renderRoomTags();
-  // Clear rect inputs
-  document.getElementById("length").value = "";
-  document.getElementById("width").value = "";
+  clearRoomDraft();
+  invalidateEstimate("Room added. Calculate again to update your estimate.");
 }
 
 function removeRoom(i) {
   rooms.splice(i, 1);
   renderRoomTags();
+  invalidateEstimate(rooms.length ? "Room removed. Calculate again to update your estimate." :
+    "No rooms remain. Enter a room and calculate a new estimate.");
 }
 
 function renderRoomTags() {
@@ -262,20 +304,23 @@ function renderRoomTags() {
 
 /* ── Calculate ── */
 function calculate() {
-  // Add current room if fields are filled
+  invalidateEstimate("");
+  var hasDraft = roomDraftFields().some(function (id) {
+    return document.getElementById(id).value.trim() !== "";
+  });
   var current = getRoomData();
-  if (
-    current &&
-    (parseFloat(document.getElementById("length").value) > 0 ||
-      document.getElementById("roomShape").value === "custom")
-  ) {
+  if (hasDraft && !current) {
+    estimateStatus("Please enter valid positive dimensions for the current room, or clear its dimensions to use only the saved rooms.");
+    return;
+  }
+  if (hasDraft && current) {
     rooms.push(current);
     renderRoomTags();
-    document.getElementById("length").value = "";
-    document.getElementById("width").value = "";
+    clearRoomDraft();
   }
 
   if (rooms.length === 0) {
+    estimateStatus("Please enter at least one room.");
     alert("Please enter at least one room.");
     return;
   }
@@ -303,6 +348,7 @@ function calculate() {
     pricePerLitre: pricePerL,
   });
   if (paintResult.error) {
+    estimateStatus("Please check the room and paint assumptions.");
     alert("Please check the room and paint assumptions.");
     return;
   }
@@ -404,6 +450,8 @@ function calculate() {
     " | 10% wastage included";
   document.getElementById("summary").innerHTML = sumHtml;
 
+  estimateCurrent = true;
+  estimateStatus("");
   document.getElementById("results").style.display = "block";
   document
     .getElementById("results")
@@ -482,7 +530,7 @@ function drawRoomPreview(roomList) {
 function resetCalc() {
   rooms = [];
   document.getElementById("roomTags").innerHTML = "";
-  document.getElementById("results").style.display = "none";
+  invalidateEstimate("");
   document.getElementById("length").value = "";
   document.getElementById("width").value = "";
   document.getElementById("height").value = "3";
@@ -493,11 +541,13 @@ function resetCalc() {
 
 /* ── Print ── */
 function printResults() {
+  if (!estimateCurrent) { estimateStatus("Calculate a current estimate before printing or sharing."); return; }
   window.print();
 }
 
 /* ── Share ── */
 function shareResults() {
+  if (!estimateCurrent) { estimateStatus("Calculate a current estimate before printing or sharing."); return; }
   var litres = document.getElementById("rLitres").textContent;
   var area = document.getElementById("rPaintable").textContent;
   var text =

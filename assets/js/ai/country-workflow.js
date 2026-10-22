@@ -508,12 +508,15 @@
     if (kind === "business" || kind === "market" || kind === "compare") ids.push("paye-tax-engine-country-packs", "vat-country-rate-packs");
     if (kind === "relocation" || kind === "remote_worker" || kind === "compare") ids.push("afrofuel-static-snapshot", "unknown-source");
     return unique(ids).map(sourceById).map(function (source) {
-      var normalized = normalizeSource(source);
+      var confidenceHelper = getSourceConfidence();
+      var normalized = normalizeSource(source, confidenceHelper);
       return {
         id: normalized.id || source.id,
         sourceName: normalized.sourceName || source.sourceName,
         sourceType: normalized.sourceType || source.sourceType,
-        freshnessStatus: normalized.freshnessStatus || source.freshnessStatus || "unknown",
+        freshnessStatus: confidenceHelper && typeof confidenceHelper.calculateFreshnessStatus === "function"
+          ? confidenceHelper.calculateFreshnessStatus(normalized)
+          : normalized.freshnessStatus === "unavailable" ? "unavailable" : "unknown",
         confidence: normalized.confidence || source.confidence || "low_confidence",
         lastCheckedAt: normalized.lastCheckedAt || source.lastCheckedAt || "",
         lastReviewedAt: normalized.lastReviewedAt || source.lastReviewedAt || "",
@@ -536,9 +539,14 @@
     return FALLBACK_SOURCES.filter(function (source) { return source.id === id; })[0] || FALLBACK_SOURCES[FALLBACK_SOURCES.length - 1];
   }
 
-  function normalizeSource(source) {
-    if (sourceConfidence && typeof sourceConfidence.normalizeSourceMeta === "function") {
-      return sourceConfidence.normalizeSourceMeta(source || {});
+  function getSourceConfidence() {
+    // /ai/ loads the shared browser helper after this module. Resolve it at use time.
+    return root && (root.AfroToolsSourceConfidence || root.AfroTools && root.AfroTools.sourceConfidence) || sourceConfidence;
+  }
+
+  function normalizeSource(source, confidenceHelper) {
+    if (confidenceHelper && typeof confidenceHelper.normalizeSourceMeta === "function") {
+      return confidenceHelper.normalizeSourceMeta(source || {});
     }
     return Object.assign({}, source || {});
   }

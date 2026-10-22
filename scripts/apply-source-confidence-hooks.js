@@ -71,7 +71,13 @@ function lastSafeClosingTag(html, tagName) {
   return index;
 }
 
+function hasRuntimeCurrencySource(html, sourceId, relativePath) {
+  if (String(relativePath).replace(/\\/g, '/') !== 'tools/currency-converter/index.html' || sourceId !== 'forex-third-party-snapshot') return false;
+  return ['id="fxSourcePanel" data-fx-runtime-source="accepted-pair"', 'id="fxSourceLabel"', 'id="fxSourceDate"', 'id="fxSourceMethodology"', 'id="fxSourceMethodologySecondary"', '/assets/js/pages/currency-converter-vip.js'].every(function (marker) { return html.includes(marker); });
+}
+
 function addSourceHook(html, sourceId, relativePath) {
+  if (hasRuntimeCurrencySource(html, sourceId, relativePath)) return { html, action: 'already-present', message: 'Accepted pair runtime source disclosure retained.' };
   const matchingId = 'data-source-meta-id="' + sourceId + '"';
   if (html.includes(matchingId)) return { html, action: 'already-present' };
 
@@ -130,6 +136,7 @@ function primaryRouteTargets(registry) {
     (source.routes || []).forEach(function (route) {
       const file = routeToFile(route);
       if (!file || !isIndexableContentFile(file)) return;
+      if (hasRuntimeCurrencySource(fs.readFileSync(path.join(ROOT, file), 'utf8'), source.id, file)) return;
       const current = byFile.get(file);
       if (!current || weight > current.weight) byFile.set(file, { file, sourceId: source.id, weight });
     });
@@ -188,6 +195,7 @@ module.exports = {
   SAMPLE_TARGETS,
   addHelperScript,
   addSourceHook,
+  hasRuntimeCurrencySource,
   applyTargets,
   isInsideScript,
   isIndexableContentFile,

@@ -77,10 +77,12 @@ function validateReviewFile(changedIds) {
 function preserveFixtureExpectations(previousFixtures, nextFixtures, allowChanges) {
   if (!previousFixtures || allowChanges) return nextFixtures;
   const before = new Map(previousFixtures.fixtures.map((fixture) => [fixture.id, fixture]));
+  const availability = quality.readPayeAvailability(ROOT);
   return {
     ...nextFixtures,
     fixtures: nextFixtures.fixtures.map((fixture) => {
       const previous = before.get(fixture.id);
+      if (quality.isExplicitBFWithheldMigration(previous, fixture, availability)) return fixture;
       return previous ? { ...fixture, expected: previous.expected, formulaVersion: previous.formulaVersion, changeNote: previous.changeNote } : fixture;
     })
   };
@@ -251,4 +253,5 @@ function main() {
   console.log('Calculation-quality check passed: ' + report.inventory.total + ' artifacts, ' + report.fixtures.passed + '/' + report.fixtures.total + ' fixtures, ' + report.externalData.stale.length + ' stale dataset warning(s).');
 }
 
-main();
+if (require.main === module) main();
+module.exports = { preserveFixtureExpectations };

@@ -13,6 +13,23 @@
   var currentResult = null;
   var optionalKeys = ['clearingAgent', 'portTerminal', 'storage', 'inlandHaulage', 'inspection', 'documentation', 'bankRemittance', 'miscellaneous'];
 
+  function invalidateEstimate(message) {
+    currentInput = null;
+    currentResult = null;
+    resultNode.hidden = true;
+    resultNode.innerHTML = '';
+    el('scenarioSection').hidden = true;
+    el('scenarioResult').innerHTML = '';
+    el('exportActions').hidden = true;
+    // The shared action layout sets display:flex, so hidden alone is insufficient.
+    el('exportActions').style.display = 'none';
+    statusNode.textContent = message || '';
+  }
+  function invalidateForEdit() {
+    if (currentInput || currentResult || !resultNode.hidden) {
+      invalidateEstimate('Shipment inputs changed. Calculate again to update the estimate and exports.');
+    }
+  }
   function el(id) { return document.getElementById(id); }
   function value(id) { var node = el(id); return node ? node.value : ''; }
   function esc(text) { return String(text == null ? '' : text).replace(/[&<>"']/g, function (char) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]; }); }
@@ -92,6 +109,7 @@
     resultNode.hidden = false;
     el('scenarioSection').hidden = false;
     el('exportActions').hidden = false;
+    el('exportActions').style.display = '';
     statusNode.textContent = 'Estimate calculated locally. No shipment amounts were sent or stored.';
   }
   function calculate() {
@@ -123,7 +141,16 @@
     return ['AfroTools Import & Landed Cost Estimate', 'Destination: ' + r.country, 'Origin: ' + r.origin, 'Supplier cost: ' + money(r.purchaseValueLocal), 'Freight: ' + money(r.freightLocal), 'Insurance: ' + money(r.insuranceLocal), 'Customs value: ' + money(r.customsValue), 'Duty: ' + money(r.duty), 'Excise: ' + money(r.excise), 'Levies: ' + money(r.totalLevies), 'VAT: ' + money(r.vat), 'Other government charges: ' + money(r.otherStatutory), 'Optional local costs: ' + money(r.optionalCostsTotal), 'Estimated landed cost: ' + money(r.landedCostLocal), 'Per unit: ' + money(r.landedCostPerUnit), 'FX rate: ' + r.fxRate + ' ' + r.destinationCurrency + ' per ' + r.sourceCurrency, 'FX reference: ' + r.fxReferenceSource + ', snapshot ' + r.fxReferenceTimestamp + ', ' + r.fxFreshness, 'Customs authority: ' + r.authority, 'Rule: ' + r.ruleVersion + ', effective ' + r.effectiveDate + ', verified ' + r.lastVerified].concat(sourceLines, ['Planning estimate only; confirm the declaration with the destination authority.']).join('\n');
   }
 
-  form.addEventListener('submit', function (event) { event.preventDefault(); if (form.reportValidity()) calculate(); });
+  // Invalidate before target-specific handlers show an unsupported-market/vehicle notice.
+  form.addEventListener('input', invalidateForEdit, true);
+  form.addEventListener('change', invalidateForEdit, true);
+  invalidateEstimate(statusNode.textContent);
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    invalidateEstimate('');
+    if (form.reportValidity()) calculate();
+    else statusNode.textContent = 'Review the highlighted shipment inputs before calculating.';
+  });
   el('destination').addEventListener('change', function () {
     var destination = value('destination');
     analytics('import_destination_selected', { destination: destination });
@@ -138,7 +165,7 @@
   el('goodsType').addEventListener('change', function () { analytics('import_goods_type_selected', { goods_type: value('goodsType') }); if (value('goodsType') === 'vehicle') showUnsupported(rules.goodsTypes.vehicle.notes, rules.goodsTypes.vehicle.route); });
   el('sourceCurrency').addEventListener('change', updateFxHelp);
   el('dutyRate').addEventListener('change', function () { el('customDutyField').hidden = value('dutyRate') !== 'custom'; if (!el('customDutyField').hidden) el('customDutyRate').focus(); });
-  el('resetImport').addEventListener('click', function () { form.reset(); updateDutyBands(); updateFxHelp(); currentInput = null; currentResult = null; resultNode.hidden = true; el('scenarioSection').hidden = true; el('exportActions').hidden = true; statusNode.textContent = 'Reset. Nothing was stored or sent.'; });
+  el('resetImport').addEventListener('click', function () { form.reset(); updateDutyBands(); updateFxHelp(); invalidateEstimate('Reset. Nothing was stored or sent.'); });
   el('compareScenario').addEventListener('click', function () {
     if (!currentInput || !currentResult) return;
     var other = Object.assign({}, currentInput, { purchaseValue: value('scenarioPurchase') || currentInput.purchaseValue, freight: value('scenarioFreight') || currentInput.freight, fxRate: value('scenarioFx') || currentInput.fxRate });

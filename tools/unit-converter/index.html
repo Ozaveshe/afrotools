@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Comprehensive unit converter for Africa: length, weight, temperature, area (acres/plots/morgen), volume, speed, fuel, cooking, data, energy, pressure, time. Free.">
 <title>Unit Converter — 20 Categories · African Units · Free</title>
-<meta property="og:title" content="Unit Converter — 15 Categories | AfroTools">
+<meta property="og:title" content="Unit Converter — 20 Categories | AfroTools">
 <meta property="og:description" content="Convert length, weight, area (Nigerian plots, SA morgen), temperature, cooking, fuel, data and more. Built for Africa.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/unit-converter.webp">
 <meta property="og:url" content="https://afrotools.com/tools/unit-converter/">
@@ -273,7 +273,7 @@ html[data-theme="dark"] .african-callout{color:#d1d9e8}
 <!-- HERO -->
 <div class="hero">
   <nav style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;"><a href="/" style="color:rgba(255,255,255,0.5);text-decoration:none;">Home</a> / <a href="/education/" style="color:rgba(255,255,255,0.5);text-decoration:none;">Education</a> / <span style="color:#fff;">Unit Converter</span></nav>
-  <div class="hero-eyebrow">15 Categories · African Units Included</div>
+  <div class="hero-eyebrow">20 Categories · African Units Included</div>
   <h1>Unit Converter<br><em>for Africa</em></h1>
   <p class="hero-sub">20 categories — length, weight, area, force, torque, flow rate, density, electrical, cooking, fuel, and more. Includes Nigerian plots, SA morgen, Egyptian feddan, Kenyan eighth-acres. Click any result to copy.</p>
   <div class="cat-strip" id="heroStrip">
@@ -593,7 +593,7 @@ html[data-theme="dark"] .african-callout{color:#d1d9e8}
         </div>
         <div class="african-callout">
           <span class="ac-icon">🚗</span>
-          <div>Typical African fuel efficiency: <strong>Kia Picanto: 14–16 km/L</strong>, Toyota Corolla: <strong>12–14 km/L</strong>, Toyota HiLux: <strong>8–10 km/L</strong>. With petrol at ₦850–₦900/L in Nigeria, tracking km/L saves money.</div>
+          <div>Typical African fuel efficiency: <strong>Kia Picanto: 14–16 km/L</strong>, Toyota Corolla: <strong>12–14 km/L</strong>, Toyota HiLux: <strong>8–10 km/L</strong>. Use your current local fuel price separately when planning journey costs.</div>
         </div>
       </div>
     </div>
@@ -1207,7 +1207,7 @@ html[data-theme="dark"] .african-callout{color:#d1d9e8}
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Unit Converter: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Unit Converter is a comprehensive measurement conversion tool spanning 15 categories with special support for African units. Convert between length, weight, temperature, area, volume, speed, fuel economy, cooking measurements, data storage, energy, pressure, and time units. What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), and other region-specific measurements that standard converters typically ignore. Simply select a category, choose your "from" and "to" units, enter a value, and get instant results. The tool handles both metric and imperial systems, making it useful for international trade, academic work, cooking, construction, and everyday calculations. The cooking category includes conversions between cups, tablespoons, millilitres, and grams for common ingredients — perfect for following recipes from different countries. All conversions are calculated instantly in your browser with no internet connection required after the page loads. This is a daily-use tool for students, professionals, traders, and anyone working across measurement systems.</p>
+    <p>The AfroTools Unit Converter is a comprehensive measurement conversion tool spanning 20 categories with special support for African units. Convert between length, weight, temperature, area, volume, speed, fuel economy, cooking measurements, data storage, energy, pressure, and time units. What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), and other region-specific measurements that standard converters typically ignore. Simply select a category, choose your "from" and "to" units, enter a value, and get instant results. The tool handles both metric and imperial systems, making it useful for international trade, academic work, cooking, construction, and everyday calculations. The cooking category includes conversions between cups, tablespoons, millilitres, and grams for common ingredients — perfect for following recipes from different countries. All conversions are calculated instantly in your browser with no internet connection required after the page loads. This is a daily-use tool for students, professionals, traders, and anyone working across measurement systems.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
@@ -1280,8 +1280,75 @@ obs.observe(hero);
 // ═══════════════════════════════════════════
 // CONVERSION LOGIC
 // ═══════════════════════════════════════════
+const conversionPrefixes = {
+  length:'len', weight:'wgt', area:'area', volume:'vol',
+  speed:'spd', data:'data', energy:'engy', power:'pwr',
+  pressure:'pres', time:'time', angle:'ang', frequency:'freq',
+  cooking:'cook', force:'force', torque:'torque', flow:'flow',
+  density:'dens', electric:'elec', temp:'tmp', fuel:'fuel'
+};
+const conversionSnapshots = Object.create(null);
+
+function readAmount(prefix) {
+  const input = document.getElementById(prefix + 'From');
+  return input.value.trim() && !input.validity?.badInput ? Number(input.value) : NaN;
+}
+
+function conversionSignature(prefix) {
+  return ['From', 'FromU', 'ToU', 'To'].map(suffix => document.getElementById(prefix + suffix).value).join('|');
+}
+
+function hasCurrentConversion() {
+  const prefix = conversionPrefixes[activeTab];
+  return !!prefix && conversionSnapshots[prefix] === conversionSignature(prefix);
+}
+
+function invalidateBrief(valid) {
+  const panel = document.querySelector('[data-productivity-handoff="unit-converter"]');
+  if (!panel) return;
+  panel.querySelector('[data-prod-output]').textContent = valid
+    ? 'Conversion changed. Refresh the brief to capture this result.'
+    : 'Enter a valid amount to prepare a conversion brief.';
+  panel.querySelectorAll('[data-prod-action]').forEach(button => {
+    button.disabled = button.dataset.prodAction !== 'refresh' || !valid;
+  });
+  panel.querySelector('[data-prod-status]').textContent = valid ? 'Refresh before sharing this conversion.' : 'No current conversion to share.';
+}
+
+function clearConversion(prefix, message) {
+  document.getElementById(prefix + 'To').value = '';
+  const formula = document.getElementById(prefix + 'Formula');
+  formula.textContent = message;
+  formula.setAttribute('role', 'status');
+  formula.setAttribute('aria-live', 'polite');
+  document.getElementById(prefix + 'From').setAttribute('aria-invalid', 'true');
+  delete conversionSnapshots[prefix];
+  invalidateBrief(false);
+}
+
+function completeConversion(prefix) {
+  document.getElementById(prefix + 'From').removeAttribute('aria-invalid');
+  conversionSnapshots[prefix] = conversionSignature(prefix);
+  invalidateBrief(true);
+}
+
+// Guard the shared brief at the visitor's action, including an edited-but-unrefreshed result.
+document.addEventListener('click', function(event) {
+  const button = event.target.closest('[data-productivity-handoff="unit-converter"] [data-prod-action]');
+  if (!button) return;
+  if (!hasCurrentConversion() || (button.dataset.prodAction !== 'refresh' && button.disabled)) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    invalidateBrief(hasCurrentConversion());
+    return;
+  }
+  if (button.dataset.prodAction === 'refresh') {
+    button.closest('[data-productivity-handoff]').querySelectorAll('[data-prod-action]').forEach(action => { action.disabled = false; });
+  }
+}, true);
+
 function getVals(prefix) {
-  const from  = parseFloat(document.getElementById(prefix + 'From').value);
+  const from  = readAmount(prefix);
   const fromU = parseFloat(document.getElementById(prefix + 'FromU').value);
   const toU   = parseFloat(document.getElementById(prefix + 'ToU').value);
   return { from, fromU, toU };
@@ -1289,14 +1356,19 @@ function getVals(prefix) {
 
 function setResult(prefix, result, label) {
   const el = document.getElementById(prefix + 'To');
-  if (el) el.value = isNaN(result) ? '' : +result.toPrecision(8);
+  if (!Number.isFinite(result)) { clearConversion(prefix, 'Enter an amount that gives a finite result.'); return; }
+  if (el) el.value = +result.toPrecision(8);
   const fEl = document.getElementById(prefix + 'Formula');
-  if (fEl && label) fEl.textContent = label;
+  if (fEl) fEl.textContent = label || '';
+  completeConversion(prefix);
 }
 
 // Generic linear conversion
 function cvt(prefix) {
   const { from, fromU, toU } = getVals(prefix);
+  if (!Number.isFinite(from) || !Number.isFinite(fromU) || fromU <= 0 || !Number.isFinite(toU) || toU <= 0) {
+    clearConversion(prefix, 'Enter a finite amount and choose valid units.'); return;
+  }
   const result = window.BusinessRoiEngine.linearConversion({value:from,fromFactor:fromU,toFactor:toU});
   const ratio  = (fromU / toU);
   const fromName = document.getElementById(prefix + 'FromU').options[document.getElementById(prefix + 'FromU').selectedIndex].text;
@@ -1306,17 +1378,10 @@ function cvt(prefix) {
 // Alias with proper IDs
 function cvtAll() {
   // Trigger current tab conversion
-  const triggers = {
-    length:'len', weight:'wgt', area:'area', volume:'vol',
-    speed:'spd', data:'data', energy:'engy', power:'pwr',
-    pressure:'pres', time:'time', angle:'ang', frequency:'freq',
-    cooking:'cook', force:'force', torque:'torque', flow:'flow',
-    density:'dens', electric:'elec',
-  };
-  const t = triggers[activeTab];
-  if (t) cvt(t);
-  else if (activeTab === 'temp') cvtTemp();
+  const t = conversionPrefixes[activeTab];
+  if (activeTab === 'temp') cvtTemp();
   else if (activeTab === 'fuel') cvtFuel();
+  else if (t) cvt(t);
 }
 
 // Swap
@@ -1354,12 +1419,25 @@ function fromKelvin(k, unit) {
   if (unit === 'R') return k * 9/5;
 }
 function cvtTemp() {
-  const v = parseFloat(document.getElementById('tmpFrom').value);
+  const v = readAmount('tmp');
   const fu = document.getElementById('tmpFromU').value;
   const tu = document.getElementById('tmpToU').value;
-  const result = window.BusinessRoiEngine.convertTemperature({value:v,from:fu,to:tu});
+  if (!Number.isFinite(v) || !['C','F','K','R'].includes(fu) || !['C','F','K','R'].includes(tu)) {
+    clearConversion('tmp', 'Enter a finite temperature and choose valid units.'); return;
+  }
+  const absoluteZero = {C:-273.15, F:-459.67, K:0, R:0};
+  if (v < absoluteZero[fu]) {
+    clearConversion('tmp', `Temperature must be at or above ${absoluteZero[fu]}°${fu} (absolute zero).`); return;
+  }
+  // The shared engine handles C/F/K; use the existing page helpers for Rankine.
+  // Clamp only an exact input boundary, never a rounded value below it.
+  const result = fu === 'R' || tu === 'R' || v === absoluteZero[fu]
+    ? fromKelvin(v === absoluteZero[fu] ? 0 : toKelvin(v, fu), tu)
+    : window.BusinessRoiEngine.convertTemperature({value:v,from:fu,to:tu});
+  if (!Number.isFinite(result)) { clearConversion('tmp', 'Enter a temperature that gives a finite result.'); return; }
   document.getElementById('tmpTo').value = +result.toPrecision(8);
   document.getElementById('tmpFormula').textContent = `${v}°${fu} = ${+result.toPrecision(7)}°${tu}`;
+  completeConversion('tmp');
 }
 function swpTemp() {
   const fU = document.getElementById('tmpFromU'), tU = document.getElementById('tmpToU');
@@ -1377,10 +1455,12 @@ function preTmp(val, from, to) {
 
 // ─── Fuel efficiency (non-linear: reciprocal) ───
 function cvtFuel() {
-  const v = parseFloat(document.getElementById('fuelFrom').value);
+  const v = readAmount('fuel');
   const fu = document.getElementById('fuelFromU').value;
   const tu = document.getElementById('fuelToU').value;
-  if (!v) return;
+  if (!Number.isFinite(v) || v <= 0 || !['kml','l100','mpg_us','mpg_uk'].includes(fu) || !['kml','l100','mpg_us','mpg_uk'].includes(tu)) {
+    clearConversion('fuel', 'Enter a fuel efficiency greater than zero.'); return;
+  }
 
   // Convert everything to km/L as base
   let kml;
@@ -1395,9 +1475,11 @@ function cvtFuel() {
   else if (tu === 'mpg_us') result = kml / 0.425144;
   else if (tu === 'mpg_uk') result = kml / 0.354006;
 
+  if (!Number.isFinite(result)) { clearConversion('fuel', 'Enter a fuel efficiency that gives a finite result.'); return; }
   document.getElementById('fuelTo').value = +result.toPrecision(6);
   const labels = {kml:'km/L', l100:'L/100km', mpg_us:'MPG (US)', mpg_uk:'MPG (UK)'};
   document.getElementById('fuelFormula').textContent = `${v} ${labels[fu]} = ${+result.toPrecision(6)} ${labels[tu]}`;
+  completeConversion('fuel');
 }
 function swpFuel() {
   const fU = document.getElementById('fuelFromU'), tU = document.getElementById('fuelToU');
@@ -1452,7 +1534,7 @@ renderHistory();
 var _origSetResult = setResult;
 setResult = function(prefix, result, label) {
   _origSetResult(prefix, result, label);
-  if (label && !isNaN(result)) addToHistory(label);
+  if (label && Number.isFinite(result)) addToHistory(label);
 };
 
 // ═══════════════════════════════════════════

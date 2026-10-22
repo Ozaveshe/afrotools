@@ -7,16 +7,29 @@ function dlText(key,fallback){
     ? window.AfroToolsFintechI18n.text('digital-lending',key,fallback)
     : fallback;
 }
+function clearDlResults(){
+  var output=document.getElementById('dl-results');if(output)output.classList.remove('on');
+  [].forEach(function(id){var node=document.getElementById(id);if(node)node.textContent='';});
+  var body=document.getElementById('dl-tbody');if(body)body.innerHTML='';
+}
+function dlFail(key,message){
+  var error=document.getElementById('dl-error');error.textContent=dlText(key,message);error.classList.add('on');error.setAttribute('tabindex','-1');error.focus();
+}
+(function(){
+  function invalidate(event){if(["dl-currency","dl-amount","dl-days","dl-name-a","dl-name-b","dl-name-c","dl-total-a","dl-total-b","dl-total-c"].indexOf(event.target&&event.target.id)<0)return;clearDlResults();var error=document.getElementById('dl-error');if(error){error.textContent='';error.classList.remove('on');}}
+  document.addEventListener('input',invalidate);document.addEventListener('change',invalidate);
+}());
 function calcDigitalLending(){
+  clearDlResults();
   var currency=document.getElementById('dl-currency').value;
   var amount=parseFloat(document.getElementById('dl-amount').value);
-  var days=parseInt(document.getElementById('dl-days').value,10);
+  var days=Number(document.getElementById('dl-days').value);
   var error=document.getElementById('dl-error');
   var offers=['a','b','c'].map(function(id,index){
     return {name:document.getElementById('dl-name-'+id).value.trim()||dlText('offer','Offer')+' '+String.fromCharCode(65+index),total:parseFloat(document.getElementById('dl-total-'+id).value)};
   });
-  if(!Number.isFinite(amount)||amount<=0||!Number.isFinite(days)||days<=0||days>3650||offers.some(function(offer){return !Number.isFinite(offer.total)||offer.total<amount;})){
-    error.textContent=dlText('invalid','Enter an amount above zero, a term from 1 to 3,650 days, and total repayments at least equal to the amount received.');
+  if(!Number.isFinite(amount)||amount<=0||!Number.isInteger(days)||days<1||days>3650||offers.some(function(offer){return !Number.isFinite(offer.total)||offer.total<amount;})){
+    dlFail('invalid','Enter an amount above zero, a whole-number term from 1 to 3,650 days, and total repayments at least equal to the amount received.');
     error.classList.add('on');
     document.getElementById('dl-results').classList.remove('on');
     return;
@@ -31,6 +44,9 @@ function calcDigitalLending(){
     var annualRate=(Math.pow(offer.total/amount,365/days)-1)*100;
     return {name:offer.name,total:offer.total,financeCost:financeCost,termCost:termCost,annualRate:annualRate};
   });
+  if(results.some(function(result){return !Number.isFinite(result.financeCost)||!Number.isFinite(result.termCost)||!Number.isFinite(result.termCost*100)||!Number.isFinite(result.annualRate);})){
+    dlFail('outOfRange','These amounts and term produce a cost or annualized estimate outside the supported numeric range. Check the term and repayments.');return;
+  }
   results.sort(function(a,b){return a.total-b.total;});
   var minTotal=results[0].total;
   function fmt(value){return currency+' '+value.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
