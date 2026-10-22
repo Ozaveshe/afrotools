@@ -222,7 +222,7 @@
     }
     function f(e, t, i) {
         i = i || {};
-        return l(t) ? [ '<section class="prod-section" data-cv-section="' + (i.sectionKind || sectionKind(e)) + '" style="margin:0 0 ' + (i.tight ? "6px" : "8px") + ';break-inside:avoid;page-break-inside:avoid">', '<h2 style="margin:0 0 3px;color:' + (i.color || "#111827") + ";font-size:" + (i.size || "8px") + ";font-weight:900;letter-spacing:" + (i.letter || ".08em") + ";text-transform:uppercase;" + (i.rule ? "padding-bottom:3px;border-bottom:" + i.rule : "") + '">' + c(e) + "</h2>", '<div style="color:' + (i.bodyColor || "#334155") + '">' + t + "</div>", "</section>" ].join("") : "";
+        return l(t) ? [ '<section class="prod-section" data-cv-section="' + (i.sectionKind || sectionKind(e)) + '" style="margin:0 0 ' + (i.tight ? "6px" : "8px") + ';break-inside:avoid;page-break-inside:avoid">', '<h2 style="margin:0 0 3px;color:' + (i.color || "#111827") + "!important;font-size:" + (i.size || "8px") + ";font-weight:900;letter-spacing:" + (i.letter || ".08em") + ";text-transform:uppercase;" + (i.rule ? "padding-bottom:3px;border-bottom:" + i.rule : "") + '">' + c(e) + "</h2>", '<div style="color:' + (i.bodyColor || "#334155") + '">' + t + "</div>", "</section>" ].join("") : "";
     }
     function h(e, t) {
         return e ? '<div style="font-size:' + (t || "9.2px") + ';line-height:1.42;color:#263244">' + c(e) + "</div>" : "";
@@ -288,7 +288,7 @@
         return [
             '<article class="cv-prod cv-prod-pan-african-minimal" data-layout="text-first" style="' + g("padding:30px 36px;overflow-wrap:anywhere") + '">',
             '<header style="margin-bottom:14px;padding-bottom:10px;border-bottom:3px solid ' + c(accent || "#087f5b") + '">',
-            '<h1 style="margin:0;color:#111827;font-size:25px;line-height:1.15;font-weight:900">' + model.name + '</h1>',
+            '<h1 style="margin:0;color:#111827!important;font-size:25px;line-height:1.15;font-weight:900">' + model.name + '</h1>',
             '<div style="margin-top:5px;color:#334155;font-size:11px;font-weight:800">' + model.title + '</div>',
             model.contact.length ? '<div style="margin-top:8px;color:#475569;font-size:8.8px;line-height:1.5">' + model.contact.join(" | ") + '</div>' : '',
             '</header>',
@@ -315,7 +315,7 @@
             showPhoto: !1,
             sp: !1
         })), n = "1px solid #111827";
-        return [ '<div class="cv-prod cv-prod-ats-classic" style="' + g("padding:28px 38px") + '">', '<header style="text-align:center;margin-bottom:12px;padding-bottom:9px;border-bottom:1.5px solid #111827">', '<h1 style="color:inherit;margin:0;color:#111827;font-size:24px;line-height:1.05;font-weight:900;letter-spacing:.02em;text-transform:uppercase">' + o.name + "</h1>", '<div style="margin-top:4px;color:#334155;font-size:10.5px;font-weight:850">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:7px;color:#475569;font-size:8.8px">' + o.contact.join(" | ") + "</div>" : "", "</header>", f(copy.section5, h(e.summary), {
+        return [ '<div class="cv-prod cv-prod-ats-classic" style="' + g("padding:28px 38px") + '">', '<header style="text-align:center;margin-bottom:12px;padding-bottom:9px;border-bottom:1.5px solid #111827">', '<h1 style="color:inherit!important;margin:0;color:#111827!important;font-size:24px;line-height:1.05;font-weight:900;letter-spacing:.02em;text-transform:uppercase">' + o.name + "</h1>", '<div style="margin-top:4px;color:#334155;font-size:10.5px;font-weight:850">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:7px;color:#475569;font-size:8.8px">' + o.contact.join(" | ") + "</div>" : "", "</header>", f(copy.section5, h(e.summary), {
             rule: n,
             tight: !0
         }), f(copy.section6, x(o.experience, {
@@ -349,7 +349,7 @@
         }) : "", "</div>" ].join("");
     }, t.lagosCorporate = function(e, t, i) {
         var o = p(e), n = "#0b1f3a", r = i || "#d89b18";
-        return [ '<div class="cv-prod cv-prod-lagos" style="' + g("padding:0") + '">', '<header style="background:' + n + ";color:#fff;padding:31px 36px 22px;border-bottom:5px solid " + r + '">', (e.showPhoto && e.photo ? '<img src="'+c(e.photo)+'" alt="" style="float:right;width:64px;height:64px;object-fit:cover;border-radius:8px;margin:0 0 10px 14px">' : '') + '<h1 style="color:inherit;margin:0;font-size:28px;line-height:1.02;font-weight:950;letter-spacing:.01em">' + o.name + "</h1>", '<div style="margin-top:5px;color:#dbeafe;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:12px;color:#dbeafe;font-size:8.7px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="padding:24px 34px 30px">', f(copy.section13, h(e.summary), {
+        return [ '<div class="cv-prod cv-prod-lagos" style="' + g("padding:0") + '">', '<header style="background:' + n + ";color:#fff;padding:31px 36px 22px;border-bottom:5px solid " + r + '">', (e.showPhoto && e.photo ? '<img src="'+c(e.photo)+'" alt="" style="float:right;width:64px;height:64px;object-fit:cover;border-radius:8px;margin:0 0 10px 14px">' : '') + '<h1 style="color:inherit!important;margin:0;font-size:28px;line-height:1.02;font-weight:950;letter-spacing:.01em">' + o.name + "</h1>", '<div style="margin-top:5px;color:#dbeafe;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:12px;color:#dbeafe;font-size:8.7px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="padding:24px 34px 30px">', f(copy.section13, h(e.summary), {
             color: n,
             rule: "2px solid " + r
         }), '<div style="display:grid;grid-template-columns:1.55fr .85fr;gap:22px">', "<div>", f(copy.section14, x(o.experience, {
@@ -390,7 +390,7 @@
         }), "</aside>", "</div>", "</main>", "</div>" ].join("");
     }, t.nairobiTech = function(e, t, i) {
         var o = p(e), n = i || "#2563eb";
-        return [ '<div class="cv-prod cv-prod-nairobi-tech" style="' + g("padding:25px 28px;background:#f8fafc") + '">', '<header style="background:#0f172a;color:#fff;border-radius:13px;padding:18px 20px;margin-bottom:14px">', '<div style="font-family:Consolas,monospace;color:#93c5fd;font-size:7.6px;font-weight:800;text-transform:uppercase;letter-spacing:.12em">' + c(copy.candidateProfile) + '</div>', '<h1 style="color:inherit;margin:4px 0 0;font-size:24px;line-height:1.02;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:4px;color:#bfdbfe;font-size:10px;font-weight:900">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:9px;color:#cbd5e1;font-size:8px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:1.35fr .78fr;gap:12px">', "<div>", f(copy.section18, h(e.summary, "9.5px"), {
+        return [ '<div class="cv-prod cv-prod-nairobi-tech" style="' + g("padding:25px 28px;background:#f8fafc") + '">', '<header style="background:#0f172a;color:#fff;border-radius:13px;padding:18px 20px;margin-bottom:14px">', '<div style="font-family:Consolas,monospace;color:#93c5fd;font-size:7.6px;font-weight:800;text-transform:uppercase;letter-spacing:.12em">' + c(copy.candidateProfile) + '</div>', '<h1 style="color:inherit!important;margin:4px 0 0;font-size:24px;line-height:1.02;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:4px;color:#bfdbfe;font-size:10px;font-weight:900">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:9px;color:#cbd5e1;font-size:8px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:1.35fr .78fr;gap:12px">', "<div>", f(copy.section18, h(e.summary, "9.5px"), {
             color: n,
             tight: !0
         }), f(copy.section9, m(o.projects, {
@@ -444,7 +444,7 @@
         }), "</aside>", "</main>", "</div>" ].join("");
     }, t.accraGraduate = function(e, t, i) {
         var o = p(e), n = i || "#b45309";
-        return [ '<div class="cv-prod cv-prod-accra-graduate" style="' + g("padding:30px 34px;background:#fffdf7") + '">', '<header style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:16px;padding-bottom:13px;border-bottom:3px solid ' + n + '">', '<div>' + (e.showPhoto && e.photo ? '<img src="'+c(e.photo)+'" alt="" style="float:right;width:64px;height:64px;object-fit:cover;border-radius:8px;margin-left:12px">' : '') + '<h1 style="color:inherit;margin:0;font-size:26px;line-height:1.02;font-weight:950;color:#1c1007">' + o.name + '</h1><div style="margin-top:5px;color:' + n + ';font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div></div>", o.contact.length ? '<div style="font-size:8.2px;color:#57402a;text-align:right;max-width:220px">' + o.contact.join("<br>") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:.9fr 1.15fr;gap:18px">', "<aside>", f(copy.section7, u(o.education), {
+        return [ '<div class="cv-prod cv-prod-accra-graduate" style="' + g("padding:30px 34px;background:#fffdf7") + '">', '<header style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:16px;padding-bottom:13px;border-bottom:3px solid ' + n + '">', '<div>' + (e.showPhoto && e.photo ? '<img src="'+c(e.photo)+'" alt="" style="float:right;width:64px;height:64px;object-fit:cover;border-radius:8px;margin-left:12px">' : '') + '<h1 style="color:inherit!important;margin:0;font-size:26px;line-height:1.02;font-weight:950;color:#1c1007!important">' + o.name + '</h1><div style="margin-top:5px;color:' + n + ';font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div></div>", o.contact.length ? '<div style="font-size:8.2px;color:#57402a;text-align:right;max-width:220px">' + o.contact.join("<br>") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:.9fr 1.15fr;gap:18px">', "<aside>", f(copy.section7, u(o.education), {
             color: n,
             tight: !0
         }), f(copy.section8, j(o.hard.concat(o.soft).concat(o.tools), {
@@ -485,7 +485,7 @@
         var o = p(Object.assign({}, e, {
             showPhoto: !1
         })), n = "#111827", r = i || "#0f766e";
-        return [ '<div class="cv-prod cv-prod-cape-executive" style="' + g("padding:34px 36px") + '">', '<header style="display:grid;grid-template-columns:1.25fr .75fr;gap:24px;align-items:end;margin-bottom:20px">', '<div><h1 style="color:inherit;margin:0;color:' + n + ';font-size:30px;line-height:.98;font-weight:950">' + o.name + '</h1><div style="margin-top:7px;color:' + r + ';font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.12em">' + o.title + "</div></div>", o.contact.length ? '<div style="font-size:8.5px;color:#475569;text-align:right;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", "</header>", '<section style="border-top:4px solid ' + n + ';border-bottom:1px solid #d1d5db;padding:14px 0;margin-bottom:17px">', h(e.summary, "12px"), "</section>", '<main style="display:grid;grid-template-columns:1.5fr .82fr;gap:22px">', "<div>", f(copy.section23, x(o.experience, {
+        return [ '<div class="cv-prod cv-prod-cape-executive" style="' + g("padding:34px 36px") + '">', '<header style="display:grid;grid-template-columns:1.25fr .75fr;gap:24px;align-items:end;margin-bottom:20px">', '<div><h1 style="color:inherit!important;margin:0;color:' + n + '!important;font-size:30px;line-height:.98;font-weight:950">' + o.name + '</h1><div style="margin-top:7px;color:' + r + ';font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.12em">' + o.title + "</div></div>", o.contact.length ? '<div style="font-size:8.5px;color:#475569;text-align:right;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", "</header>", '<section style="border-top:4px solid ' + n + ';border-bottom:1px solid #d1d5db;padding:14px 0;margin-bottom:17px">', h(e.summary, "12px"), "</section>", '<main style="display:grid;grid-template-columns:1.5fr .82fr;gap:22px">', "<div>", f(copy.section23, x(o.experience, {
             titleSize: "10.6px",
             accent: r
         }), {
@@ -521,7 +521,7 @@
         for (var o = p(e), n = i || "#15803d", r = (o.experience.map(function(e) {
             return e.d;
         }).join("\n").match(/\b(?:\d+[%+]?\+?|[0-9,.]+\s?(?:people|students|farmers|households|communities|projects|sites|countries|grants|partners))\b/gi) || []).slice(0, 3); r.length < 3; ) r.push([ "Field delivery", "Stakeholder coordination", "Evidence reporting" ][r.length]);
-        return [ '<div class="cv-prod cv-prod-ngo" style="' + g("padding:0;background:#ffffff") + '">', '<header style="background:#0b2e1c;color:#ecfdf5;padding:28px 34px 20px">', '<h1 style="color:inherit;margin:0;font-size:27px;line-height:1.02;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:5px;color:#bbf7d0;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.09em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:10px;color:#d1fae5;font-size:8.5px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="padding:20px 32px 28px">', '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:15px">' + r.map(function(e) {
+        return [ '<div class="cv-prod cv-prod-ngo" style="' + g("padding:0;background:#ffffff") + '">', '<header style="background:#0b2e1c;color:#ecfdf5;padding:28px 34px 20px">', '<h1 style="color:inherit!important;margin:0;font-size:27px;line-height:1.02;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:5px;color:#bbf7d0;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.09em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:10px;color:#d1fae5;font-size:8.5px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="padding:20px 32px 28px">', '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:15px">' + r.map(function(e) {
             return '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;color:#14532d;font-size:8px;font-weight:900;min-height:42px;padding:8px">' + c(e) + "</div>";
         }).join("") + "</div>", '<div style="display:grid;grid-template-columns:1.25fr .78fr;gap:18px">', "<div>", f(copy.section26, h(e.summary), {
             color: n,
@@ -565,7 +565,7 @@
             showPhoto: !1,
             sp: !1
         })), n = i || "#2563eb";
-        return [ '<div class="cv-prod cv-prod-diaspora" style="' + g("padding:28px 36px") + '">', '<header style="margin-bottom:12px;padding-bottom:9px;border-bottom:2px solid #111827">', '<h1 style="color:inherit;margin:0;font-size:25px;line-height:1.05;font-weight:950;color:#111827">' + o.name + "</h1>", '<div style="margin-top:4px;color:#111827;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:8px;color:#475569;font-size:8.6px">' + o.contact.join(" | ") + "</div>" : "", "</header>", f(copy.section5, h(e.summary), {
+        return [ '<div class="cv-prod cv-prod-diaspora" style="' + g("padding:28px 36px") + '">', '<header style="margin-bottom:12px;padding-bottom:9px;border-bottom:2px solid #111827">', '<h1 style="color:inherit!important;margin:0;font-size:25px;line-height:1.05;font-weight:950;color:#111827!important">' + o.name + "</h1>", '<div style="margin-top:4px;color:#111827;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:8px;color:#475569;font-size:8.6px">' + o.contact.join(" | ") + "</div>" : "", "</header>", f(copy.section5, h(e.summary), {
             color: n,
             tight: !0
         }), f(copy.section14, x(o.experience, {
@@ -605,7 +605,7 @@
         }) : "", "</div>" ].join("");
     }, t.creativePortfolio = function(e, t, i) {
         var o = p(e), n = i || "#1d4ed8", r = e.showPhoto && e.photo ? '<img src="' + c(e.photo) + '" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:18px;border:3px solid rgba(255,255,255,.2);margin-bottom:14px">' : "";
-        return [ '<div class="cv-prod cv-prod-creative" style="' + g("padding:0;display:grid;grid-template-columns:34% 66%") + '">', '<aside style="background:#102033;color:#e2e8f0;min-height:841px;padding:30px 18px">', r, '<h1 style="color:inherit;margin:0;color:#fff;font-size:25px;line-height:1;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:6px;color:#bfdbfe;font-size:9.4px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:14px;color:#cbd5e1;font-size:8px;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", f(copy.section32, j(o.hard.concat(o.soft).concat(o.tools), {
+        return [ '<div class="cv-prod cv-prod-creative" style="' + g("padding:0;display:grid;grid-template-columns:34% 66%") + '">', '<aside style="background:#102033;color:#e2e8f0;min-height:841px;padding:30px 18px">', r, '<h1 style="color:inherit!important;margin:0;color:#fff!important;font-size:25px;line-height:1;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:6px;color:#bfdbfe;font-size:9.4px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:14px;color:#cbd5e1;font-size:8px;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", f(copy.section32, j(o.hard.concat(o.soft).concat(o.tools), {
             bg: "rgba(255,255,255,.1)",
             color: "#fff",
             limit: 16,
