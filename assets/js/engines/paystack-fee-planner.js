@@ -5,10 +5,10 @@
 })(typeof window!=="undefined"?window:null,function(){
   "use strict";
 
-  var VERSION="paystack-fee-planner-2026-10-09";
+  var VERSION="paystack-fee-planner-2026-10-22";
   var SOURCE_UPDATED_AT="2026-09-15";
-  var REVIEWED_AT="2026-10-09";
-  var REVIEW_DUE_AT="2026-10-21";
+  var REVIEWED_AT="2026-10-22";
+  var REVIEW_DUE_AT="2026-10-29";
   var MAX_AMOUNT=1000000000000;
   var MAX_COUNT=1000000;
   var SOURCE_URL="https://support.paystack.com/en/articles/2130306";
@@ -40,10 +40,10 @@
   function freshness(now){
     var date=now instanceof Date?now:new Date(now||Date.now());
     var due=new Date(REVIEW_DUE_AT+"T23:59:59Z");
-    return {fresh:date.getTime()<=due.getTime(),reviewedAt:REVIEWED_AT,sourceUpdatedAt:SOURCE_UPDATED_AT,reviewDueAt:REVIEW_DUE_AT,effectiveDate:null};
+    var fresh=date.getTime()<=due.getTime();
+    return {fresh:fresh,mode:fresh?"reviewed-estimate":"dated-reference",reviewedAt:REVIEWED_AT,sourceUpdatedAt:SOURCE_UPDATED_AT,reviewDueAt:REVIEW_DUE_AT,effectiveDate:null};
   }
   function validate(input,now){
-    if(!freshness(now).fresh)return {valid:false,code:"stale"};
     var country=COUNTRIES[input&&input.country];
     if(!country)return {valid:false,code:"country"};
     var rule=country.channels[input&&input.channel];

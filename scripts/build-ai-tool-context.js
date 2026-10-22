@@ -1381,6 +1381,7 @@ function paystackFeePlannerSourceRecord(binding) {
   const localeArtifacts = [
     'fr/tools/calculateur-paystack/index.html',
     'ha/kayan-aiki/kalkuletan-paystack/index.html',
+    'sw/zana/mpangaji-ada-za-paystack/index.html',
   ];
   const artifact = fs.readFileSync(path.join(ROOT, binding.artifactPath), 'utf8');
   const enginePath = path.join(ROOT, binding.enginePath);
@@ -1412,7 +1413,9 @@ function paystackFeePlannerSourceRecord(binding) {
     localeArtifactDigests[artifactPath] = sha256(source);
   });
   const facts = {
-    mode: 'reviewed_static_fee_contract',
+    mode: 'reviewed_static_fee_reference',
+    overdueBehavior: 'dated-reference',
+    currentProviderFeesVerified: false,
     networkData: false,
     aiPrefill: false,
     toolId: binding.toolId,
@@ -1435,7 +1438,7 @@ function paystackFeePlannerSourceRecord(binding) {
       return rule.channel + ' rate ' + formatPercent(rule.rate) + ', fixed ' + formatNumber(rule.fixed) + ', waiver boundary ' + (rule.waiveFixedBelow == null ? 'none' : formatNumber(rule.waiveFixedBelow)) + ', cap ' + (rule.cap == null ? 'none' : formatNumber(rule.cap));
     }).join('; ') + '; fee-tax rate ' + formatPercent(country.taxRate);
   }).join('. ');
-  const text = 'Current structured Paystack merchant-fee contract: ' + countryText + '. Currency is locked to merchant country. Effective date: not published. Source updated: ' + facts.sourceUpdatedAt + '. Reviewed: ' + facts.reviewedAt + '. Review due: ' + facts.reviewDueAt + '. Version: ' + facts.version + '. Payout transfers, stamp duty, refunds, chargebacks, foreign exchange, custom pricing, settlement timing, widget and fee API are excluded.';
+  const text = 'Dated structured Paystack merchant-fee reference: ' + countryText + '. Currency is locked to merchant country. Effective date: not published. Source updated: ' + facts.sourceUpdatedAt + '. Reviewed: ' + facts.reviewedAt + '. Review due: ' + facts.reviewDueAt + '. Estimates remain available after the review deadline as dated references; confirm current Paystack fees before setting live prices. This record does not verify current provider fees. Version: ' + facts.version + '. Payout transfers, stamp duty, refunds, chargebacks, foreign exchange, custom pricing, settlement timing, widget and fee API are excluded.';
   return { text, facts };
 }
 

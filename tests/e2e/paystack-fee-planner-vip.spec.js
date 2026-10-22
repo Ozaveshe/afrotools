@@ -1,6 +1,7 @@
 const {test,expect}=require("@playwright/test");
 const fs=require("node:fs");
 const pdfParse=require("pdf-parse");
+const {REVIEW_DUE_AT}=require("../../assets/js/engines/paystack-fee-planner.js");
 
 async function open(page,url,width=375){
   await page.setViewportSize({width,height:900});
@@ -9,7 +10,7 @@ async function open(page,url,width=375){
 }
 async function calculate(page,amount="2000"){
   await page.locator("[name=amount]").fill(amount);
-  await page.locator("[data-form]").getByRole("button",{name:/Calculate planning estimate|Calculer l'estimation|Lissafa kiyasin shiri/i}).click();
+  await page.locator("[data-form]").getByRole("button",{name:/Calculate planning estimate|Calculer l'estimation|Lissafa kiyasin shiri|Kokotoa makadirio ya mpango/i}).click();
   await expect(page.locator("[data-results]")).toBeVisible();
 }
 
@@ -25,7 +26,8 @@ test("does not calculate, store or contact Paystack before explicit action",asyn
 for(const route of [
   {url:"/tools/paystack-calculator/",lang:"en"},
   {url:"/fr/tools/calculateur-paystack/",lang:"fr"},
-  {url:"/ha/kayan-aiki/kalkuletan-paystack/",lang:"ha"}
+  {url:"/ha/kayan-aiki/kalkuletan-paystack/",lang:"ha"},
+  {url:"/sw/zana/mpangaji-ada-za-paystack/",lang:"sw"}
 ]){
   test(`${route.lang} is a native functional route at 320px`,async({page})=>{
     const errors=[];page.on("pageerror",error=>errors.push(error.message));
@@ -75,13 +77,35 @@ test("local TXT, CSV, full JSON and parser-readable PDF exports work",async({pag
   pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download PDF"}).click();file=await pending;const parsed=await pdfParse(fs.readFileSync(await file.path()));expect(parsed.text).toContain("Paystack merchant fee planning report");expect(parsed.text).toContain("Effective date: Not published");
 });
 
-test("stale reviewed rates hard-block calculation",async({page})=>{
-  await page.addInitScript(()=>{const NativeDate=Date,stamp=new NativeDate("2026-10-22T00:00:00Z").getTime();class MockDate extends NativeDate{constructor(...args){super(...(args.length?args:[stamp]))}static now(){return stamp}}window.Date=MockDate});
-  await open(page,"/tools/paystack-calculator/");
-  await expect(page.locator("[data-form] [type=submit]")).toBeDisabled();
-  await expect(page.locator("[data-status]")).toContainText(/review is overdue/i);
-  await expect(page.locator("[data-results]")).toBeHidden();
-});
+for(const reference of [
+  {url:"/tools/paystack-calculator/",warning:"Confirm current Paystack fees",txt:"Download TXT",csv:"Download CSV",json:"Download full JSON",pdf:"Download PDF",print:"Print"},
+  {url:"/fr/tools/calculateur-paystack/",warning:"Vérifiez les frais Paystack actuels",txt:"Télécharger TXT",csv:"Télécharger CSV",json:"Télécharger JSON complet",pdf:"Télécharger PDF",print:"Imprimer"},
+  {url:"/ha/kayan-aiki/kalkuletan-paystack/",warning:"Tabbatar da kuɗin Paystack na yanzu",txt:"Sauke TXT",csv:"Sauke CSV",json:"Sauke cikakken JSON",pdf:"Sauke PDF",print:"Buga"},
+  {url:"/sw/zana/mpangaji-ada-za-paystack/",warning:"Thibitisha ada za sasa za Paystack",txt:"Pakua TXT",csv:"Pakua CSV",json:"Pakua JSON kamili",pdf:"Pakua PDF",print:"Chapisha"}
+]){
+  test(`overdue dated reference remains useful and labelled: ${reference.url}`,async({page})=>{
+    const contacts=[];page.on("request",request=>{if(/paystack\.com/i.test(request.url()))contacts.push(request.url())});
+    const overdueStamp=new Date(REVIEW_DUE_AT+"T23:59:59Z").getTime()+1000;
+    await page.addInitScript(stamp=>{const NativeDate=Date;class MockDate extends NativeDate{constructor(...args){super(...(args.length?args:[stamp]))}static now(){return stamp}}window.Date=MockDate},overdueStamp);
+    await open(page,reference.url,320);
+    const note=page.locator("[data-reference-note]");
+    await expect(note).toBeVisible();await expect(note).toContainText(reference.warning);
+    await expect(page.locator("[data-form] [type=submit]")).toBeEnabled();
+    await calculate(page,"2000");
+    await expect(page.locator("[data-report]")).toContainText(reference.warning);
+    for(const [label,format] of [[reference.txt,"txt"],[reference.csv,"csv"],[reference.json,"json"],[reference.pdf,"pdf"]]){
+      const pending=page.waitForEvent("download");await page.getByRole("button",{name:label,exact:true}).click();
+      const file=await pending,bytes=fs.readFileSync(await file.path());
+      if(format==="pdf")expect((await pdfParse(bytes)).text.replace(/\s+/g," ")).toContain(reference.warning);
+      else{const text=bytes.toString("utf8");if(format==="json"){const data=JSON.parse(text);expect(data.result.freshness.mode).toBe("dated-reference");expect(data.result.freshness.fresh).toBe(false)}else expect(text).toContain(reference.warning);if(format==="csv"){expect(text).toContain("source_url");expect(text).toContain("https://support.paystack.com/");expect(text).toContain("dated-reference")}}
+      await expect(note).toBeVisible();await expect(note).toContainText(reference.warning);
+    }
+    await page.emulateMedia({media:"print"});await expect(note).toBeVisible();await expect(page.locator("[data-report]")).toContainText(reference.warning);await page.emulateMedia({media:"screen"});
+    await page.locator("[name=amount]").fill("-1");await expect(page.locator("[data-results]")).toBeHidden();
+    await page.locator("[data-form] [type=submit]").click();await expect(page.locator("[data-results]")).toBeHidden();await expect(note).toBeVisible();
+    await calculate(page,"2000");expect(contacts).toEqual([]);
+  });
+}
 
 for(const config of [
   {url:"/tools/paystack-calculator/",width:375,theme:"dark"},
