@@ -7,6 +7,7 @@ const path = require('path');
 const vm = require('vm');
 const { createRequire } = require('module');
 const ratesEvidence = require('../assets/js/engines/afrorates-verified');
+const payeAvailability = require('../data/calculation-quality/paye-availability.json');
 
 const ROOT = path.resolve(__dirname, '..');
 const ADVISOR_PATH = path.join(ROOT, 'netlify', 'functions', 'ai-advisor.js');
@@ -602,6 +603,21 @@ function sourceLabel(formula, fallback) {
 }
 
 function payeSourceRecord(binding) {
+  const hold = payeAvailability.countries[binding.countryCode];
+  if (hold && hold.status === 'withheld') {
+    const webHold = fs.readFileSync(path.join(ROOT, hold.webHoldController), 'utf8');
+    if (!webHold.includes('global.RESULT = null;') || !webHold.includes('calculation or storage mutation')) {
+      throw new Error('PAYE availability must retain its existing web hold: ' + binding.countryCode);
+    }
+    const facts = {
+      countryCode: binding.countryCode, availability: 'withheld', calculable: false,
+      reasonCode: hold.reasonCode, sourceLabel: hold.sourceLabel,
+      policyPath: 'data/calculation-quality/paye-availability.json',
+      policyDigest: sha256(stableJson(payeAvailability)), webHoldDigest: sha256(webHold)
+    };
+    const text = hold.message + ' Do not calculate or estimate net pay, tax, deductions, employer costs or reverse salary. Do not quote historical rates or thresholds as current facts. Source: ' + hold.sourceLabel + '. This availability record establishes no current payroll rules or new source review date.';
+    return { text, facts };
+  }
   const filePath = enginePath(binding.countryCode);
   const source = fs.readFileSync(filePath, 'utf8');
   const engine = require(filePath);

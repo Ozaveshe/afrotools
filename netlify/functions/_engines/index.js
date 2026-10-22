@@ -1,6 +1,12 @@
 // Engine Registry — maps ISO country codes to PAYE calculation engines
 const engines = {};
 const formulasByCountry = {};
+const payeAvailability = require('../../../data/calculation-quality/paye-availability.json');
+
+function withheld(code) {
+  const policy = payeAvailability.countries[code];
+  return policy && policy.status === 'withheld' ? policy : null;
+}
 
 try {
   // Keep this a static require so Netlify's function bundler includes the
@@ -27,6 +33,9 @@ const engineFiles = [
 ];
 
 for (const file of engineFiles) {
+  // Only an explicit availability decision withholds an engine. Historical
+  // review-required formula dates alone do not change the other countries.
+  if (withheld(file.slice(0, 2).toUpperCase())) continue;
   try {
     const engine = require(`./${file}`);
     const formula = formulasByCountry[engine.country] || null;
@@ -60,6 +69,9 @@ module.exports = {
   },
   resolve(code, effectiveOn) {
     const upper = String(code || '').toUpperCase();
+    const hold = withheld(upper);
+    if (hold) return { ok: false, error: 'PAYROLL_WITHHELD', jurisdiction: upper,
+      effectiveOn: effectiveOn || null, reasonCode: hold.reasonCode };
     const engine = engines[upper] || null;
     if (!engine) return { ok: false, error: 'UNSUPPORTED_JURISDICTION', jurisdiction: upper, effectiveOn: effectiveOn || null };
     const formula = engine.formulaMetadata;
