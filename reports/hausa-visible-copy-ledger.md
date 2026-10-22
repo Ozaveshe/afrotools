@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-10-07
+Generated: 2026-10-22
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -72,8 +72,8 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kasashe/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kasuwanci-da-haraji/` | 149 | English route label marked as fallback | Karin hanyoyin kasuwanci Wadannan hanyoyin suna taimaka wa mai kasuwanci ya shirya takardu, rajista da bincike. Inda shafin Hausa bai fito ba tukuna, mun nuna shafin Turanci a fili. | Batch 2 - Salary/tax and VAT visible-copy cleanup |
 | `/ha/kayan-aiki/abincin-dabbobi/` | 25 | English route label marked as fallback | Bayanan kiwo Yawan dabbobi Nauyin kowace dabba, kg Abinci bisa nauyi, kashi Farashin kg daya Lissafa abinci Abin da wannan kiyasi yake nufi Adadin abinci ya dogara da nauyi, shekarun dabba, yanayin kiwo, ciyawa da ake... | Batch 2 - Health and family visible-copy cleanup |
-| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 24 | brand or platform name | Tsallake zuwa babban abun ciki Hausa / Sadarwa / Intanet Kiyasin amfani da intanet Kiyasta GB da kake bukata a wata daga lilo, bidiyo, sautin kira, karatu, aiki da WhatsApp. Sakamako kiyasi ne; tsare-tsaren kamfanin s... | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 25 | English route label marked as fallback | Amfani na yau da kullum Lilo a rana, sa'o'i Bidiyo a rana, sa'o'i Kiran bidiyo a mako, sa'o'i Karatu ko aiki a rana, sa'o'i Lissafa GB Kwafi sakamako Sauke TXT Yadda aka yi kiyasi Kayan aikin yana amfani da matsakaici... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 25 | brand or platform name | Tsallake zuwa babban abun ciki Hausa / Sadarwa / Intanet Kiyasin amfani da intanet Kiyasta GB da kake bukata a wata daga lilo, bidiyo, sautin kira, karatu, aiki da WhatsApp. Sakamako kiyasi ne; tsare-tsaren kamfanin s... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 26 | English route label marked as fallback | Amfani na yau da kullum Saka sa’o’in amfani. Idan babu amfani, saka 0. Lilo a rana, sa’o’i Daga 0 zuwa 24; karin rabin awa (0.5). Bidiyo a rana, sa’o’i Daga 0 zuwa 24; karin rabin awa (0.5). Kiran bidiyo a mako, sa’o’... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/farashin-kayayyakin-gona/` | 25 | English route label marked as fallback | Kiyasin kudin shiga Adadi Farashi a kan daya Kudin sufuri da ajiya Ragin lalacewa, kashi Kiyasta kudin shiga Abin lura ga manomi da dan kasuwa Ka duba farashi fiye da kasuwa daya idan zai yiwu. Kudin sufuri, ajiya, na... | Batch 2 - Agriculture visible-copy cleanup |
 | `/ha/kayan-aiki/gwajin-ussd/` | 31 | brand or platform name | Samfurin sabis Waɗannan misalan menu ne kawai, ba tabbacin lambar yanzu ba. Tabbatar da mai bayarwa kafin kaddamarwa. M-Pesa (Kenya) GTBank (Nigeria) MTN MoMo (Ghana) FNB (South Africa) Lambar gwaji | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 86 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - Document, PDF, invoice, and Naira cleanup |
