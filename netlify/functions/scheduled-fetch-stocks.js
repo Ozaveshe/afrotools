@@ -14,7 +14,7 @@
  * Writes to Netlify Blobs 'live-data' → key 'stock-indices-latest'.
  */
 
-const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const { runScraper, fetchWithRetry, stockProviderFailure, stockProviderDiagnostic } = require('./_shared/scraper-base');
 const stockObservations = require('./_shared/stock-observations');
 
 // African stock exchanges and their index symbols
@@ -36,9 +36,10 @@ var EXCHANGES = [
  */
 async function fetchFromAlphaVantage() {
   var key = process.env.ALPHA_VANTAGE_KEY;
-  if (!key) throw new Error('ALPHA_VANTAGE_KEY not set');
+  if (!key) throw stockProviderFailure('MISSING_CONFIG');
 
   var results = [];
+  var failures = [];
   var fetchable = EXCHANGES.filter(function(e) { return e.yahoo; });
 
   // Fetch all in parallel — each call is independent and fast.
@@ -49,7 +50,8 @@ async function fetchFromAlphaVantage() {
     return fetchWithRetry(url, { retries: 1 })
       .then(function(res) { return res.json(); })
       .then(function(json) {
-        var quote = json['Global Quote'];
+        if (json && (json['Error Message'] || json.Note || json.Information)) throw stockProviderFailure('PROVIDER_ERROR_RESPONSE');
+        var quote = json && json['Global Quote'];
         if (quote && quote['05. price']) {
           return {
             exchange: ex.code,
@@ -64,10 +66,11 @@ async function fetchFromAlphaVantage() {
             source: 'alphavantage',
           };
         }
-        return null;
+        throw stockProviderFailure('PROVIDER_NO_DATA');
       })
       .catch(function(e) {
-        console.log('[stocks] AlphaVantage request failed for ' + ex.code);
+        failures.push(e);
+        console.log('[stocks] ' + stockProviderDiagnostic('AlphaVantage', e) + ' exchange=' + ex.code);
         return null;
       });
   });
@@ -76,7 +79,8 @@ async function fetchFromAlphaVantage() {
   var payload = { indices: settled, collection_coverage: {
     requested_exchanges: fetchable.slice(0, 5).map(function(ex) { return ex.code; }) } };
   var count = stockObservations.normalizeSnapshot(payload, Date.now()).count;
-  if (count < 2) throw new Error('Alpha Vantage: only ' + count + ' dated indices');
+  if (count < 2) throw stockProviderFailure('INSUFFICIENT_DATED_OBSERVATIONS', {
+    requested_count: fetchable.slice(0, 5).length, qualified_count: count, causes: failures });
   return payload;
 }
 
@@ -85,7 +89,7 @@ async function fetchFromAlphaVantage() {
  */
 async function fetchFromMarketStack() {
   var key = process.env.MARKETSTACK_KEY;
-  if (!key) throw new Error('MARKETSTACK_KEY not set');
+  if (!key) throw stockProviderFailure('MISSING_CONFIG');
 
   var symbols = EXCHANGES.filter(function(e) { return e.marketstack; }).map(function(e) { return e.marketstack; });
 
@@ -95,7 +99,8 @@ async function fetchFromMarketStack() {
   var res = await fetchWithRetry(url, { redirect: 'error' });
   var json = await res.json();
 
-  if (!json.data || json.data.length === 0) throw new Error('MarketStack returned no data');
+  if (json && json.error) throw stockProviderFailure('PROVIDER_ERROR_RESPONSE');
+  if (!json || !Array.isArray(json.data) || json.data.length === 0) throw stockProviderFailure('PROVIDER_NO_DATA');
 
   var symbolMap = {};
   EXCHANGES.forEach(function(e) { if (e.marketstack) symbolMap[e.marketstack] = e; });
@@ -120,7 +125,8 @@ async function fetchFromMarketStack() {
   var payload = { indices: results, collection_coverage: {
     requested_exchanges: EXCHANGES.filter(function(ex) { return ex.marketstack; }).map(function(ex) { return ex.code; }) } };
   var count = stockObservations.normalizeSnapshot(payload, Date.now()).count;
-  if (count < 2) throw new Error('MarketStack: only ' + count + ' dated indices');
+  if (count < 2) throw stockProviderFailure('INSUFFICIENT_DATED_OBSERVATIONS', {
+    requested_count: symbols.length, qualified_count: count });
   return payload;
 }
 
@@ -131,6 +137,7 @@ function transformStockData(indices) {
 exports.handler = async function(event) {
   return runScraper({
     id: 'stock-indices',
+    sourceDiagnostics: 'stock-indices-v1',
     blobKey: 'stock-indices-latest',
     metaKey: 'stocks',
     sources: [
