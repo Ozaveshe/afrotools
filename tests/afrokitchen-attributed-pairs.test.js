@@ -178,7 +178,7 @@ test('Mchemsho keeps exact institutional batch quantities, unknown yield/duratio
  const r=api.projectAttributedRecipe(fixture('mchemsho-tz'));
  assert.equal(r.default_servings,null);assert.equal(r.serving_unit,null);assert.equal(r.yield_status,'not-recorded');assert.equal(api.hasRecordedRecipeYield(r),false);assert.deepEqual(api.getRecipeTiming(r),{prep:null,cook:null,total:null});
  assert.deepEqual(r.ingredients.map(x=>[x.name,x.amount,x.unit]),[['beef',1,'kg'],['carrot',1,'whole'],['bell pepper',1,'whole'],['onion',1,'large'],['potatoes',5,'whole'],['broccoli',2,'heads'],['water',8,'cups'],['salt',null,'to taste']]);
- assert.ok(r.steps.every(x=>x.timer_seconds===null));assert.match(r.steps[1].instruction,/20-minute phase/);assert.match(r.steps[3].instruction,/7-minute phase/);assert.match(r.story,/not a 27-minute total/);assert.match(r.story,/fill, liquid and release/);assert.match(r.story,/indexed printed pages 38–39/);assert.match(r.story,/full PDF and page images were not inspected/);assert.match(r.story,/spaghetti, beans and peas are omitted/);
+ assert.deepEqual(r.steps.filter(x=>x.timer_seconds).map(x=>x.timer_seconds),[1200,420]);assert.match(r.steps[1].instruction,/20 minutes/);assert.match(r.steps[3].instruction,/7 minutes/);assert.match(r.story,/fill, liquid and pressure-release/);assert.match(r.story,/extra time for heat-up and pressure release/);assert.doesNotMatch(r.story,/not inspected|not a 27-minute|source stage checkpoint|not kitchen-tested/);assert.match(audit['mchemsho-tz'].research_history[0].visitor_story,/full PDF and page images were not inspected/);
  const html=owner.buildRecipePageHtml(fixture('mchemsho-tz'),{...manifest,recipes:[fixture('mchemsho-tz')]},api,{},audit,null);assert.match(html,/Source quantities; portions not recorded/);assert.doesNotMatch(html,/6 servings|6 people|27 minutes total/);
 });
 test('Octopus retains four author servings and approximate 20/90 estimates without inventing total or ingredients',()=>{
@@ -208,4 +208,34 @@ test('the actual cuisine-source audit guard rejects missing, wrong-ID or stale m
   assert.deepEqual(plain(context.invoke(recipe,audit)).chefNotes,{common_mistakes:[],readiness_cues:[],pantry_notes:[],technique_notes:[],serve_with:''});
   for(const bad of [{},{[slug]:{...audit[slug],expected_recipe_id:'wrong'}},{[slug]:{...audit[slug],method_revision:'stale'}},{[slug]:{...audit[slug],curated_method:false}}])assert.throws(()=>context.invoke(recipe,bad),/identity\/revision\/audit mismatch/);
  }
+});
+
+
+test('Mchemsho pressure timing is exact-identity stage metadata, never a total or a general recipe override',()=>{
+ const r=api.projectAttributedRecipe(fixture('mchemsho-tz'));
+ assert.deepEqual(api.getRecipePressureStages(r),[20,7]);
+ for(const mutation of [{id:'wrong'},{method_revision:'stale'},{is_published:false},{is_verified:false},{steps:r.steps.map((x,i)=>i===1?{...x,timer_seconds:27}:x)}]) assert.equal(api.getRecipePressureStages({...r,...mutation}),null);
+ for(const slug of ['mandazi-tanzania-tz','koba-mg','octopus-curry-sc']) assert.equal(api.getRecipePressureStages(api.projectAttributedRecipe(fixture(slug))),null);
+ assert.deepEqual(api.getRecipeTiming(r),{prep:null,cook:null,total:null});
+});
+test('Mchemsho generated page exposes useful stage timing and the unchanged complete ingredient batch',()=>{
+ const input=fixture('mchemsho-tz'),r=api.projectAttributedRecipe(input);
+ const render=()=>owner.buildRecipePageHtml(input,{...manifest,recipes:[input]},api,{},audit,null);
+ const html=render();assert.equal(render(),html);
+ assert.match(html,/Batch/);assert.match(html,/1 kg beef \+ vegetables/);assert.match(html,/Pressure stages/);assert.match(html,/20 \+ 7 min/);assert.doesNotMatch(html,/Not recorded prep|Not recorded cook|Not recorded total|full PDF and page images were not inspected/);
+ assert.ok(html.includes(r.source));assert.ok(html.includes(r.steps[4].instruction));assert.match(html,/timer-start-2|toggleTimer\(2,\s*1200\)/);assert.match(html,/toggleTimer\(4,\s*420\)/);
+ assert.equal(r.default_servings,null);assert.equal(r.calories,null);assert.equal(r.total_time_minutes,null);
+});
+test('Mchemsho real TXT renderer leads with cooking content and retains the institutional source',()=>{
+ const n=api.projectAttributedRecipe(fixture('mchemsho-tz'));
+ const context={n,i:api,s:{servings:1},e:{location:{href:'http://localhost/recipe'}},f:()=>api.scaleIngredients(n.ingredients,1,1)};
+ vm.runInNewContext(actualFunction('tools/afrokitchen/static-recipe-runtime.js','recipeExportText')+';result=recipeExportText();',context);
+ const txt=context.result;assert.match(txt,/Batch: 1 kg beef \+ vegetables/);assert.doesNotMatch(txt,/Yield: Not recorded/);assert.match(txt,/Pressure stages: 20 \+ 7 minutes/);assert.ok(txt.includes('Source: '+n.source));assert.ok(txt.includes('Recipe: http://localhost/recipe'));
+ assert.doesNotMatch(txt,/Time: Not recorded|Prep: Not recorded|Cook: Not recorded|not inspected|not a 27-minute|stage checkpoint|6 servings|NaN|undefined/);
+ for(const row of n.ingredients) assert.ok(txt.includes(row.name));for(const row of n.steps) assert.ok(txt.includes(row.instruction));
+ assert.equal((txt.match(/Allow extra time for heat-up and pressure release/g)||[]).length,1);
+});
+test('Mchemsho internal source history survives while current evidence records actual inspected pages',()=>{
+ const a=audit['mchemsho-tz'];assert.equal(a.method_revision,RECOVERY_METHODS['mchemsho-tz'][1]);assert.equal(a.research_history[0].reviewed_at,'2026-10-18');
+ assert.match(a.sources[0].access_basis,/Actual PDF text and rendered printed pages/);assert.match(a.sources[0].access_basis,/1661796a1803cbe146c311d990136d3adeafa9d3d48180250bf9a0f3a02a9f57/);
 });

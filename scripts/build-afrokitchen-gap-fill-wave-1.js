@@ -462,8 +462,8 @@ function recipe(row) {
   const attributed = {
   "mchemsho-tz": {
     "name": "Mchemsho — TaTEDO beef version",
-    "description": "Beef, potatoes and vegetables in broth, adapted from TaTEDO’s Tanzania eCookbook. Source batch quantities are shown; person yield and full duration are unrecorded.",
-    "story": "Adapted from the 2020 TaTEDO Tanzania eCookbook, hosted by MECS, using indexed printed pages 38–39. Beef is selected from the source’s beef/chicken option; optional spaghetti, beans and peas are omitted. The full PDF and page images were not inspected in this review. The source describes 20-minute and 7-minute pressure phases, not a 27-minute total. Heat-up and pressure release are additional, unrecorded stages. Use a pressure cooker of suitable capacity and follow its manufacturer’s fill, liquid and release instructions. The quantity is a source batch, not six person portions. AfroTools has not kitchen-tested this adaptation.",
+    "description": "Beef, potatoes and vegetables in broth, made in two pressure-cooking stages.",
+    "story": "Use a pressure cooker large enough for this batch and follow its fill, liquid and pressure-release instructions. Allow extra time for heat-up and pressure release.",
     "author": "AfroKitchen adaptation of TaTEDO Tanzania eCookbook (2020)",
     "default_servings": null,
     "serving_unit": null,
@@ -587,8 +587,8 @@ function recipe(row) {
         "tip": null,
         "image_url": null,
         "step_number": 1,
-        "title": "Prepare the source batch",
-        "instruction": "Prepare and cut the beef. Put the beef and source water quantity into a suitably sized pressure cooker, staying within the appliance’s fill and liquid requirements.",
+        "title": "Prepare the beef",
+        "instruction": "Cut the beef into pieces. Put it in the pressure cooker with 8 cups water.",
         "timer_seconds": null,
         "timer_label": null
       },
@@ -596,17 +596,17 @@ function recipe(row) {
         "tip": null,
         "image_url": null,
         "step_number": 2,
-        "title": "First source pressure phase",
-        "instruction": "Following the appliance instructions, pressure-cook the beef for the source’s 20-minute phase. Prepare and cut the vegetables while it cooks. This is a source stage checkpoint, not the full cooking time or a guarantee that the meat is done.",
-        "timer_seconds": null,
-        "timer_label": null
+        "title": "Pressure-cook the beef",
+        "instruction": "Bring to pressure following your appliance instructions, then pressure-cook for 20 minutes. Meanwhile, chop the carrot, bell pepper, onion and potatoes, and cut the broccoli into florets.",
+        "timer_seconds": 1200,
+        "timer_label": "First pressure stage"
       },
       {
         "tip": null,
         "image_url": null,
         "step_number": 3,
-        "title": "Release pressure and add vegetables",
-        "instruction": "Release pressure and open only as directed by the appliance manufacturer. Add carrot, bell pepper, onion, potatoes, broccoli and salt. Check the water before proceeding; the source gives no replacement-water quantity.",
+        "title": "Add the vegetables",
+        "instruction": "Release pressure as your appliance directs. Open only when safe, then add the vegetables and salt. Check the liquid against your cooker requirements.",
         "timer_seconds": null,
         "timer_label": null
       },
@@ -614,32 +614,32 @@ function recipe(row) {
         "tip": null,
         "image_url": null,
         "step_number": 4,
-        "title": "Second source pressure phase",
-        "instruction": "Pressure-cook the remaining ingredients for the source’s further 7-minute phase, following the appliance instructions. Release pressure safely before opening and inspect the meat and vegetables; continue cooking as needed. The two timed phases exclude heat-up and pressure release and do not establish total elapsed time.",
-        "timer_seconds": null,
-        "timer_label": null
+        "title": "Pressure-cook the vegetables",
+        "instruction": "Return to pressure, then cook for 7 minutes. Release pressure as directed before opening.",
+        "timer_seconds": 420,
+        "timer_label": "Second pressure stage"
       },
       {
         "tip": null,
         "image_url": null,
         "step_number": 5,
-        "title": "Serve the batch",
-        "instruction": "Serve hot once the meat and vegetables are cooked. This adaptation uses beef and omits the source’s optional spaghetti, beans and peas. Person yield is not recorded; keep these quantities as a batch.",
+        "title": "Check and serve",
+        "instruction": "Check that the beef is tender and the vegetables are cooked; cook a little longer if needed. Adjust salt and serve hot with the broth.",
         "timer_seconds": null,
         "timer_label": null
       }
     ],
     "method_revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1",
     "confidence": "Source-attributed adaptation, not kitchen-tested",
-    "review_summary": "Exact source quantities and adaptation choices; unknown total and nutrition remain unknown. Person yield is not recorded; no person scaling or pressure timer completion claim.",
-    "official_source_status": "TaTEDO institutional eCookbook; indexed printed pages 38–39 only, not full PDF or safety certification",
+    "review_summary": "Institutional batch ingredients and two pressure stages verified against the actual PDF. Action-focused method retains the source batch, unknown person yield and unknown full elapsed time.",
+    "official_source_status": "TaTEDO institutional eCookbook; actual printed pages 38–39 inspected, not kitchen testing or safety certification",
     "recommended_changes": [],
     "sources": [
       {
         "url": "https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf",
         "title": "TaTEDO Tanzania eCookbook (2020), printed pages 38–39",
-        "accessed_at": "2026-10-18",
-        "access_basis": "Prior official indexed ingredient/method text only; full PDF open failed and no page screenshots",
+        "accessed_at": "2026-10-22",
+        "access_basis": "Actual PDF text and rendered printed pages 38–39 (PDF pages 46–47) inspected; title/copyright checked. Full PDF SHA2561661796a1803cbe146c311d990136d3adeafa9d3d48180250bf9a0f3a02a9f57; all68pages not claimed inspected.",
         "supports": [
           "Source ingredients and explicit adaptation choices",
           "Specific attributed method",
