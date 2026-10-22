@@ -1,0 +1,72 @@
+{
+  "name": "Publisher current da99 sealed artifact32case proof",
+  "on": {
+    "create": {}
+  },
+  "permissions": {
+    "contents": "read",
+    "actions": "read"
+  },
+  "jobs": {
+    "selected": {
+      "if": "github.event.ref_type == 'branch' && github.event.ref == 'automation/daily-5pm-publish-deploy-gate-2026-10-22-current-sealed-da99-01a15fbb'",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 30,
+      "steps": [
+        {
+          "name": "Read operator proof harness",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Preserve harness outside candidate source",
+          "run": "mkdir -p \"$RUNNER_TEMP/publisher-selected-proof\"\ncp .github/publisher-selected-proof/* \"$RUNNER_TEMP/publisher-selected-proof/\""
+        },
+        {
+          "name": "Checkout exact original release candidate",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "ref": "da99c4169857cd5c83f8565a5432f28aefe21a42",
+            "fetch-depth": 0,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Set up Node.js",
+          "uses": "actions/setup-node@v5",
+          "with": {
+            "node-version": "22",
+            "cache": "npm"
+          }
+        },
+        {
+          "name": "Install dependencies",
+          "run": "npm ci"
+        },
+        {
+          "name": "Install existing Chromium prerequisite",
+          "run": "npx playwright install chromium --with-deps"
+        },
+        {
+          "name": "Verify complete9files+French1 exactoriginalartifact anddist boundaries",
+          "env": {
+            "GITHUB_TOKEN": "${{ github.token }}"
+          },
+          "run": "node \"$RUNNER_TEMP/publisher-selected-proof/run.cjs\""
+        },
+        {
+          "name": "Preserve exact proof and all raw failures",
+          "if": "always()",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "current-sealed-proof-${{ github.run_id }}-${{ github.run_attempt }}",
+            "path": "${{ runner.temp }}/publisher-selected-proof/summary.json\n${{ runner.temp }}/publisher-selected-proof/failure.json\n${{ runner.temp }}/publisher-selected-proof/zip-proof.json\n${{ runner.temp }}/publisher-selected-proof/manifest.json\n${{ runner.temp }}/publisher-selected-proof/input.json\n${{ runner.temp }}/publisher-selected-proof/source-list.json\n${{ runner.temp }}/publisher-selected-proof/source-list.stderr.log\n${{ runner.temp }}/publisher-selected-proof/source-browser.report.json\n${{ runner.temp }}/publisher-selected-proof/source-browser.stderr.log\n${{ runner.temp }}/publisher-selected-proof/browser.report.json\n${{ runner.temp }}/publisher-selected-proof/browser.stderr.log\n${{ runner.temp }}/publisher-selected-proof/direct-dist-inspection.json\n${{ runner.temp }}/publisher-selected-proof/audit-dist.stdout.log\n${{ runner.temp }}/publisher-selected-proof/audit-dist.stderr.log\n${{ runner.temp }}/publisher-selected-proof/hosted-sealed-candidate/\n${{ runner.temp }}/publisher-selected-proof/hosted-sealed-candidate-browser-output/\n${{ runner.temp }}/publisher-selected-proof/changed-source-browser-output/",
+            "if-no-files-found": "warn"
+          }
+        }
+      ]
+    }
+  }
+}
