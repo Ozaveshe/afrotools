@@ -131,3 +131,83 @@ test('root module fixture leaves unrelated public pages metadata and assets elig
   assert.equal(isForbiddenFile(relative), false, relative);
  }
 });
+
+
+// A returning document must request changed lazy children even when their
+// previous unversioned URLs remain immutable in the browser HTTP cache.
+const { readLazyAssetVersions, stampLazyAssetVersions } = require('../scripts/build-dist');
+
+test('publish lazy asset keys follow each readable child and normalize only line endings', t => {
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'afrotools-lazy-versions-'));
+  t.after(() => {
+    const resolved = fs.realpathSync(fixtureRoot);
+    assert.equal(path.dirname(resolved).toLowerCase(), fs.realpathSync(os.tmpdir()).toLowerCase());
+    assert.ok(path.basename(resolved).startsWith('afrotools-lazy-versions-'));
+    fs.rmSync(resolved, { recursive: true, force: true });
+  });
+  const sources = {
+    'assets/js/components/analytics-consent-v2.js': 'window.fixtureConsent = 1;\n',
+    'assets/js/pwa-install.js': 'window.fixtureInstall = 1;\n',
+    'assets/js/lazy-analytics.js': 'window.fixtureAnalytics = 1;\n'
+  };
+  for (const [file, body] of Object.entries(sources)) {
+    fs.mkdirSync(path.dirname(path.join(fixtureRoot, file)), { recursive: true });
+    fs.writeFileSync(path.join(fixtureRoot, file), body);
+  }
+  const first = readLazyAssetVersions(fixtureRoot);
+  assert.equal(Object.keys(first).length, 3);
+  Object.values(first).forEach(version => assert.match(version, /^[a-f0-9]{8}$/));
+  const install = path.join(fixtureRoot, 'assets/js/pwa-install.js');
+  fs.writeFileSync(install, sources['assets/js/pwa-install.js'].replace(/\n/g, '\r\n'));
+  assert.deepEqual(readLazyAssetVersions(fixtureRoot), first, 'CRLF is the existing source-version contract');
+  fs.writeFileSync(install, 'window.fixtureInstall = 2;\n');
+  const next = readLazyAssetVersions(fixtureRoot);
+  assert.notEqual(next['data-afro-pwa-version'], first['data-afro-pwa-version']);
+  assert.equal(next['data-afro-consent-version'], first['data-afro-consent-version']);
+  assert.equal(next['data-afro-analytics-version'], first['data-afro-analytics-version']);
+  fs.unlinkSync(install);
+  assert.throws(() => readLazyAssetVersions(fixtureRoot), /pwa-install\.js/, 'a missing required child fails preflight');
+});
+
+test('publish-only lazy metadata is idempotent and preserves all product/source HTML bytes', () => {
+  const versions = { 'data-afro-consent-version': '1234abcd', 'data-afro-pwa-version': 'abcdef12', 'data-afro-analytics-version': 'abcdef34' };
+  const source = '<!doctype html>\n<html lang="sw" data-product="unchanged"><head></head><body><main>Hesabu</main><script>window.example = "keep every byte";</script></body></html>';
+  const published = stampLazyAssetVersions(source, versions);
+  assert.equal(stampLazyAssetVersions(published, versions), published);
+  assert.equal(published.replace(/ data-afro-(?:consent|pwa|analytics)-version="[a-f0-9]{8}"/g, ''), source);
+  for (const attribute of Object.keys(versions)) assert.equal((published.match(new RegExp(attribute + '=', 'g')) || []).length, 1);
+  const changed = { ...versions, 'data-afro-consent-version': '55667788' };
+  assert.equal(stampLazyAssetVersions(published, changed), stampLazyAssetVersions(source, changed));
+  const stale = source.replace('<html ', '<html data-afro-consent-version=stale data-afro-pwa-version=\'stale\' data-afro-analytics-version="stale" ');
+  assert.equal(stampLazyAssetVersions(stale, versions), stampLazyAssetVersions(source.replace('<html ', '<html '), versions));
+  assert.throws(() => stampLazyAssetVersions(source, { ...versions, 'data-afro-consent-version': '1234abcd" onload="bad' }), /invalid publish asset version/);
+  assert.throws(() => stampLazyAssetVersions(source, null), /invalid publish asset version/);
+  assert.equal(stampLazyAssetVersions('<p>Unrelated fragment</p>', versions), '<p>Unrelated fragment</p>');
+});
+
+test('publish lazy metadata preserves quoted root attributes and ignores prolog examples', () => {
+  const versions = { 'data-afro-consent-version': '1234abcd', 'data-afro-pwa-version': 'abcdef12', 'data-afro-analytics-version': 'abcdef34' };
+  const attributes = ' data-afro-consent-version="1234abcd" data-afro-pwa-version="abcdef12" data-afro-analytics-version="abcdef34"';
+  const sources = [
+    ['<!-- example <html lang="fake"> -->\n<!doctype html>\n<HTML lang="sw"><head></head><body>Real document</body></HTML>', '<HTML lang="sw">', '<HTML lang="sw"' + attributes + '>'],
+    ['<!DOCTYPE html PUBLIC "quoted > <html> example">\n<html data-note="a > b" lang="sw"><body>Keep</body></html>', '<html data-note="a > b" lang="sw">', '<html data-note="a > b" lang="sw"' + attributes + '>'],
+    ["<html data-note='a > b' lang='sw'><body>Keep</body></html>", "<html data-note='a > b' lang='sw'>", "<html data-note='a > b' lang='sw'" + attributes + '>'],
+    ['<html data-afro-pwa-version-extra="keep" title="keep data-afro-pwa-version=example"><body>Keep</body></html>', '<html data-afro-pwa-version-extra="keep" title="keep data-afro-pwa-version=example">', '<html data-afro-pwa-version-extra="keep" title="keep data-afro-pwa-version=example"' + attributes + '>'],
+    ['<html title=unquoted data-afro-consent-version-extra="keep"><body>Keep</body></html>', '<html title=unquoted data-afro-consent-version-extra="keep">', '<html title=unquoted data-afro-consent-version-extra="keep"' + attributes + '>'],
+    ['<html lang="sw" /><body>Keep</body>', '<html lang="sw" />', '<html lang="sw"' + attributes + ' />'],
+    ['\ufeff <!-- first -->\n<!-- second <html> -->\n<html disabled \tlang=sw   ><body>Keep</body></html>', '<html disabled \tlang=sw   >', '<html disabled \tlang=sw' + attributes + '   >']
+  ];
+  for (const [source, originalRoot, expectedRoot] of sources) {
+    const published = stampLazyAssetVersions(source, versions);
+    assert.equal(published, source.replace(originalRoot, expectedRoot), 'metadata belongs on the genuine root outside all original values');
+    const restored = published.replace(/ data-afro-(?:consent|pwa|analytics)-version="[a-f0-9]{8}"/g, '');
+    assert.equal(restored, source, 'only exact owned attributes may change');
+    assert.equal(stampLazyAssetVersions(published, versions), published, 'repeated stamping is stable');
+    if (source.startsWith('<!--')) assert.ok(published.startsWith('<!-- example <html lang="fake"> -->'), 'comments stay byte-exact');
+  }
+  const duplicates = '<html lang="sw" DATA-AFRO-PWA-VERSION="old" data-afro-pwa-version=older data-afro-pwa-version-extra="keep"><body>Keep</body></html>';
+  assert.equal(stampLazyAssetVersions(duplicates, versions), stampLazyAssetVersions('<html lang="sw" data-afro-pwa-version-extra="keep"><body>Keep</body></html>', versions));
+  for (const fragment of ['<script>const example = "<html>";</script>', '<p title="<html>">Fragment</p>', '<html-example><html></html></html-example>', '<!-- <html> -->', '<!-- unfinished <html>', '<html title="unfinished >']) {
+    assert.equal(stampLazyAssetVersions(fragment, versions), fragment, 'fragments and incomplete tags stay unchanged');
+  }
+});

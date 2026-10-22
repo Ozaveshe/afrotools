@@ -302,3 +302,63 @@ for (const root of [...currencyConsentRoots, ...privateConsentRoots]) {
   }
 }
 console.log(`Currency consent regression: ${currencyInitialCases} initial states and ${currencyTransitionCases} withdrawal/reacceptance cases passed.`);
+
+
+// Publish metadata controls only the known same-origin child request. Consent
+// choices, strict-route opt-in, analytics commands and sanitization above remain.
+for (const version of ['1234abcd', null, 'INVALID', '1234abcd?other=1', 'https://example.test/child.js']) {
+  const context = createSandbox(null);
+  context.sandbox.document.documentElement = { getAttribute(name) { return name === 'data-afro-consent-version' ? version : null; } };
+  vm.runInNewContext(lazySource, context.sandbox, { filename: 'lazy-analytics.js' });
+  const expected = '/assets/js/components/analytics-consent-v2.js' + (version === '1234abcd' ? '?v=1234abcd' : '');
+  assert.strictEqual(context.inserted.filter(node => node.src === expected).length, 1, 'one explicit consent child, safe version fallback: ' + version);
+  assert.strictEqual(commandRows(context, 'config', 'G-D859CGF391').length, 1, 'asset versioning leaves ordinary analytics policy unchanged');
+}
+const creativeConsentSource = fs.readFileSync(path.join(ROOT, 'assets/js/pages/creative/fr-creative-consent-analytics.js'), 'utf8');
+for (const consent of [null, 'declined', 'accepted']) {
+  const context = createSandbox(consent);
+  const keys = { 'data-afro-consent-version': '1234abcd', 'data-afro-analytics-version': 'abcdef12' };
+  context.sandbox.document.documentElement = { getAttribute(name) { return keys[name] || null; } };
+  vm.runInNewContext(creativeConsentSource, context.sandbox, { filename: 'fr-creative-consent-analytics.js' });
+  assert.strictEqual(context.inserted.filter(node => node.src === '/assets/js/components/analytics-consent-v2.js?v=1234abcd').length, 1);
+  assert.strictEqual(context.inserted.filter(node => node.src === '/assets/js/lazy-analytics.js?v=abcdef12').length, consent === 'accepted' ? 1 : 0, 'French creative analytics still requires explicit acceptance');
+  if (consent !== 'accepted') {
+    context.listeners['afrotools:cookie-consent']({ detail: { status: 'declined' } });
+    assert.strictEqual(context.inserted.length, 1);
+    context.setConsent('accepted');
+    context.listeners['afrotools:cookie-consent']({ detail: { status: 'accepted' } });
+    context.listeners['afrotools:cookie-consent']({ detail: { status: 'accepted' } });
+    assert.strictEqual(context.inserted.filter(node => node.src === '/assets/js/lazy-analytics.js?v=abcdef12').length, 1, 'repeated acceptance cannot duplicate a versioned loader');
+  }
+}
+
+// Execute the actual navbar initializer, including its fixed child URL, rather
+// than duplicating its version-selection expression in a synthetic loader.
+const navbarSource = fs.readFileSync(path.join(ROOT, 'assets/js/components/navbar.js'), 'utf8');
+const pwaInitializers = navbarSource.match(/\(function _pwa\(\) \{[\s\S]*?\}\)\(\);/g) || [];
+assert.strictEqual(pwaInitializers.length, 1, 'one real navbar PWA initializer');
+for (const version of ['1234abcd', '00000000', null, 'INVALID', '1234ABCD', '1234abcd?other=1', 'https://example.test/child.js', '1234abcd\n']) {
+  for (const consent of [null, 'declined', 'accepted']) {
+    const context = createSandbox(consent);
+    context.sandbox.document.documentElement = { getAttribute(name) { return name === 'data-afro-pwa-version' ? version : null; } };
+    vm.runInNewContext(pwaInitializers[0], context.sandbox, { filename: 'navbar.js:actual-pwa-initializer' });
+    const scripts = context.inserted.filter(node => node.tagName === 'SCRIPT');
+    const suffix = version === '1234abcd' || version === '00000000' ? '?v=' + version : '';
+    assert.strictEqual(scripts.length, 1, 'one PWA child regardless of analytics consent');
+    assert.strictEqual(scripts[0].src, '/assets/js/pwa-install.js' + suffix, 'only a validated version of the fixed same-origin child is requested');
+    assert.strictEqual(scripts[0].defer, true);
+    assert.strictEqual(context.inserted.filter(node => node.rel === 'manifest').length, 1);
+    assert.strictEqual(context.inserted.filter(node => node.name === 'theme-color').length, 1);
+    assert.strictEqual(commands(context).length, 0, 'PWA versioning does not initialize analytics');
+    assert.strictEqual(context.clarityCalls.length, 0);
+  }
+}
+for (const root of [undefined, null, {}]) {
+  const context = createSandbox(null);
+  context.sandbox.document.documentElement = root;
+  context.sandbox.document.querySelector = () => ({});
+  vm.runInNewContext(pwaInitializers[0], context.sandbox, { filename: 'navbar.js:actual-pwa-initializer' });
+  assert.strictEqual(context.inserted.length, 1, 'existing manifest and theme metadata are retained');
+  assert.strictEqual(context.inserted[0].src, '/assets/js/pwa-install.js', 'missing root metadata retains the compatible child URL');
+}
+console.log('Navbar PWA child version regression: 24 consent/version cases and 3 missing-root cases passed.');

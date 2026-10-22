@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const crypto = require('crypto');
 const { minifyCss: compactCss } = require('./lib/css-minification');
 const { minify } = require('terser');
 const productHealth = require('../assets/js/lib/product-health');
@@ -329,7 +330,114 @@ function shouldSkipFile(fileName, relativeFromRoot) {
   return false;
 }
 
-function copyTree(sourceDir, targetDir, counters) {
+// Bind lazy child requests to this publish artifact. Readable source pages stay
+// unchanged; even HTML regenerated after the asset pass receives current keys.
+const LAZY_ASSET_SOURCES = Object.freeze({
+  'data-afro-consent-version': 'assets/js/components/analytics-consent-v2.js',
+  'data-afro-pwa-version': 'assets/js/pwa-install.js',
+  'data-afro-analytics-version': 'assets/js/lazy-analytics.js'
+});
+
+function readLazyAssetVersions(root = ROOT) {
+  return Object.fromEntries(Object.entries(LAZY_ASSET_SOURCES).map(([attribute, relative]) => {
+    const source = fs.readFileSync(path.join(root, relative), 'utf8').replace(/\r\n?/g, '\n');
+    return [attribute, crypto.createHash('md5').update(source).digest('hex').slice(0, 8)];
+  }));
+}
+
+function stampLazyAssetVersions(html, versions) {
+  for (const attribute of Object.keys(LAZY_ASSET_SOURCES)) {
+    if (!versions || !/^[a-f0-9]{8}$/.test(versions[attribute] || '')) {
+      throw new Error('Missing or invalid publish asset version: ' + attribute);
+    }
+  }
+  // Read only the document prolog and root start tag. A DOM reserialization
+  // would rewrite unrelated product bytes; a broad regex also matches examples
+  // inside comments and cannot distinguish quoted values from attributes.
+  const whitespace = /[\t\n\f\r ]/;
+  let start = html.charCodeAt(0) === 0xfeff ? 1 : 0;
+  while (start < html.length) {
+    while (whitespace.test(html[start] || '')) start++;
+    if (html.startsWith('<!--', start)) {
+      const end = html.indexOf('-->', start + 4);
+      if (end < 0) return html;
+      start = end + 3;
+      continue;
+    }
+    if (!html.startsWith('<!', start) && !html.startsWith('<?', start)) break;
+    let quote = '', brackets = 0, cursor = start + 2;
+    for (; cursor < html.length; cursor++) {
+      const character = html[cursor];
+      if (quote) {
+        if (character === quote) quote = '';
+      } else if (character === '"' || character === "'") quote = character;
+      else if (character === '[') brackets++;
+      else if (character === ']' && brackets) brackets--;
+      else if (character === '>' && !brackets) break;
+    }
+    if (cursor === html.length) return html;
+    start = cursor + 1;
+  }
+  if (!/^<html(?=[\t\n\f\r />])/i.test(html.slice(start, start + 6))) return html;
+  let end = start + 5, quote = '';
+  for (; end < html.length; end++) {
+    const character = html[end];
+    if (quote) {
+      if (character === quote) quote = '';
+    } else if (character === '"' || character === "'") quote = character;
+    else if (character === '>') break;
+  }
+  if (end === html.length) return html;
+
+  const removed = [];
+  let cursor = start + 5, insertion = end;
+  while (cursor < end) {
+    const leading = cursor;
+    while (cursor < end && whitespace.test(html[cursor])) cursor++;
+    if (cursor === end) {
+      insertion = leading;
+      break;
+    }
+    if (html[cursor] === '/') {
+      if (/^\/\s*$/.test(html.slice(cursor, end))) {
+        insertion = leading;
+        break;
+      }
+      cursor++;
+      continue;
+    }
+    const nameStart = cursor;
+    while (cursor < end && !/[\t\n\f\r =/>]/.test(html[cursor])) cursor++;
+    if (cursor === nameStart) return html;
+    const name = html.slice(nameStart, cursor).toLowerCase();
+    const nameEnd = cursor;
+    while (cursor < end && whitespace.test(html[cursor])) cursor++;
+    if (html[cursor] === '=') {
+      cursor++;
+      while (cursor < end && whitespace.test(html[cursor])) cursor++;
+      const delimiter = html[cursor];
+      if (delimiter === '"' || delimiter === "'") {
+        cursor++;
+        while (cursor < end && html[cursor] !== delimiter) cursor++;
+        cursor++;
+      } else {
+        while (cursor < end && !whitespace.test(html[cursor])) cursor++;
+      }
+    } else cursor = nameEnd;
+    if (Object.hasOwn(LAZY_ASSET_SOURCES, name)) removed.push([leading, cursor]);
+  }
+  const attributes = Object.keys(LAZY_ASSET_SOURCES).map(attribute => ' ' + attribute + '="' + versions[attribute] + '"').join('');
+  const parts = [];
+  let kept = 0;
+  for (const [from, to] of removed) {
+    parts.push(html.slice(kept, from));
+    kept = to;
+  }
+  parts.push(html.slice(kept, insertion), attributes, html.slice(insertion));
+  return parts.join('');
+}
+
+function copyTree(sourceDir, targetDir, counters, lazyAssetVersions) {
   for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
     const sourcePath = path.join(sourceDir, entry.name);
     const relative = path.relative(ROOT, sourcePath);
@@ -341,7 +449,7 @@ function copyTree(sourceDir, targetDir, counters) {
         continue;
       }
       fs.mkdirSync(targetPath, { recursive: true });
-      copyTree(sourcePath, targetPath, counters);
+      copyTree(sourcePath, targetPath, counters, lazyAssetVersions);
       continue;
     }
 
@@ -355,7 +463,9 @@ function copyTree(sourceDir, targetDir, counters) {
       continue;
     }
 
-    fs.copyFileSync(sourcePath, targetPath);
+    if (path.extname(entry.name).toLowerCase() === '.html') {
+      fs.writeFileSync(targetPath, stampLazyAssetVersions(fs.readFileSync(sourcePath, 'utf8'), lazyAssetVersions), 'utf8');
+    } else fs.copyFileSync(sourcePath, targetPath);
     counters.copiedFiles += 1;
   }
 }
@@ -490,11 +600,12 @@ function verifyDist() {
 
 async function main() {
   assertInsideWorkspace(DIST);
+  const lazyAssetVersions = readLazyAssetVersions();
   clearDistWithRetry();
   fs.mkdirSync(DIST, { recursive: true });
 
   const counters = { copiedFiles: 0, skippedDirs: 0, skippedFiles: 0 };
-  copyTree(ROOT, DIST, counters);
+  copyTree(ROOT, DIST, counters, lazyAssetVersions);
   writeReleaseMetadata();
   const optimized = await optimizeDistAssets(DIST);
   verifyDist();
@@ -519,6 +630,8 @@ if (require.main === module) {
 }
 
 module.exports = {
+  readLazyAssetVersions,
+  stampLazyAssetVersions,
   shouldSkipFile,
   writeReleaseMetadata,
   minifyCss,

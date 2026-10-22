@@ -2,8 +2,13 @@
   "use strict";
 
   var CONSENT_KEY = "afrotools_cookie_consent";
-  var CONSENT_SCRIPT = "/assets/js/components/analytics-consent-v2.js";
-  var ANALYTICS_SCRIPT = "/assets/js/lazy-analytics.js";
+  function versionedSource(source, attribute) {
+    var version = document.documentElement && typeof document.documentElement.getAttribute === "function"
+      ? document.documentElement.getAttribute(attribute) : null;
+    return source + (/^[a-f0-9]{8}$/.test(version || "") ? "?v=" + version : "");
+  }
+  var CONSENT_SCRIPT = versionedSource("/assets/js/components/analytics-consent-v2.js", "data-afro-consent-version");
+  var ANALYTICS_SCRIPT = versionedSource("/assets/js/lazy-analytics.js", "data-afro-analytics-version");
   var analyticsLoaded = false;
 
   function status() {

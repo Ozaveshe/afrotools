@@ -2930,7 +2930,11 @@
       const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#0062CC';
       document.head.appendChild(m);
     }
-    const s = document.createElement('script'); s.src = '/assets/js/pwa-install.js'; s.defer = true;
+    const version = document.documentElement && typeof document.documentElement.getAttribute === 'function'
+      ? document.documentElement.getAttribute('data-afro-pwa-version') : null;
+    const s = document.createElement('script');
+    s.src = '/assets/js/pwa-install.js' + (/^[a-f0-9]{8}$/.test(version || '') ? '?v=' + version : '');
+    s.defer = true;
     document.head.appendChild(s);
   })();
 
