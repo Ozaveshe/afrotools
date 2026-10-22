@@ -53,6 +53,53 @@ const {
 
 const visualAssets = require('../tools/afrokitchen/visual-assets');
 const LANDING_PATH = path.join(TOOL_DIR, "index.html");
+
+// A saved attributed reference is not a new preparation, nutrition or safety claim.
+// Other country/cuisine/background links are deliberately outside this contract.
+function sourceReferenceLinkHtml(source) {
+  let parsed;
+  try { parsed = typeof source === "string" ? new URL(source) : null; } catch { parsed = null; }
+  if (!parsed || parsed.protocol !== "https:" || !parsed.hostname || parsed.username || parsed.password
+      || source.trim() !== source || /[\u0000-\u0020\u007f\\]/.test(source)) {
+    throw new Error("Attributed recipe requires a safe saved HTTPS source reference");
+  }
+  return '<p class="ak-source-reference"><a data-ak-method-source href="' + escapeHtml(source)
+    + '" target="_blank" rel="noopener noreferrer">Source reference (opens in a new tab)</a></p>';
+}
+function renderRecipeSourceReference(recipe) {
+  if (!attributedRecipes.isAttributedRecipe(recipe)) return "";
+  const projected = attributedRecipes.projectAttributedRecipe(recipe);
+  if (!projected || recipe.source !== projected.source) throw new Error("Attributed recipe source must match its saved method owner: " + recipe.slug);
+  return sourceReferenceLinkHtml(recipe.source);
+}
+function refreshRecipeSourceReference(existing, recipe) {
+  const reference = renderRecipeSourceReference(recipe);
+  const owned = /<p class="ak-source-reference">[\s\S]*?<\/p>/g;
+  const matches = [...existing.matchAll(owned)];
+  if (matches.length > 1) throw new Error("Duplicate owned recipe source reference: " + recipe.slug);
+  if (matches.length) return existing.replace(owned, reference);
+  if (!reference) return existing;
+  const anchor = /\n([ \t]*)<div class="ak-static-facts">/g;
+  if ([...existing.matchAll(anchor)].length !== 1) throw new Error("Recipe source reference requires one facts anchor: " + recipe.slug);
+  return existing.replace(anchor, (_, indent) => '\n' + indent + reference + '\n' + indent + '<div class="ak-static-facts">');
+}
+function planRecipeSourceReferences(manifest) {
+  const plans = [], seen = new Set();
+  for (const item of manifest.recipes.filter(recipe => recipe.generated_in_wave)) {
+    if (seen.has(item.slug)) throw new Error("Duplicate generated recipe source identity: " + item.slug);
+    seen.add(item.slug);
+    const file = path.join(RECIPES_DIR, item.slug, 'index.html');
+    const existing = fs.readFileSync(file, 'utf8');
+    const target = attributedRecipes.isAttributedTarget(item);
+    if (!target && !existing.includes('<p class="ak-source-reference">')) continue;
+    const recipe = target ? attributedRecipes.projectAttributedRecipe(item) : item;
+    if (!recipe || (target && !attributedRecipes.isAttributedRecipe(recipe))) throw new Error("Recipe source reference identity is not publicly eligible: " + item.slug);
+    const next = refreshRecipeSourceReference(existing, recipe);
+    if (next !== existing) plans.push({ file, content: next, slug: item.slug });
+  }
+  return plans;
+}
+
 function renderCookbookNav() {
   return '<nav class="ak-cookbook-nav" aria-label="AfroKitchen cookbook"><a class="ak-cookbook-nav-brand" href="/tools/afrokitchen/">AfroKitchen</a><a href="/tools/afrokitchen/#browse-panel">Recipes</a><a href="/tools/afrokitchen/#country-grid">Countries</a><a href="/tools/afrokitchen/#collections-grid">Collections</a><a href="/tools/afrokitchen/#cook-this-week">Weekly planner</a><a href="/tools/afrokitchen/?saved=1#browse-panel">My cookbook</a></nav>';
 }
@@ -1462,6 +1509,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
   const renderedGallery = renderRecipePhotoGallery(recipe, galleryImages);
+  const sourceReference = renderRecipeSourceReference(recipe);
   const renderedInsightCards = renderRecipeIntelligenceCards(recipe, recipeInsight);
   const renderedPairingRail = renderRecipePairingRail(recipe, recipeInsight);
   const renderedSocialPlate = renderRecipeSocialPlate(recipe, recipeInsight);
@@ -1711,7 +1759,7 @@ ${renderCookbookNav()}
         <div class="ak-support-label">Kitchen snapshot</div>
         <h2>Before you cook</h2>
         <p>${escapeHtml(storyLead)}</p>
-        <div class="ak-static-facts">
+        ${sourceReference ? sourceReference + '\n          ' : ''}<div class="ak-static-facts">
           <div><span>Best served with</span><strong>${escapeHtml(recipe.best_served_with || "Browse the country hub for pairing ideas and nearby dishes.")}</strong></div>
           <div><span>Best occasion</span><strong>${escapeHtml(recipe.occasion || "Any time you want to cook deeper into the AfroKitchen archive.")}</strong></div>
           ${recipeInsight && recipeInsight.region_lens ? `<div><span>Regional lane</span><strong>${escapeHtml(recipeInsight.region_lens.name)}</strong></div>` : ""}
@@ -3196,6 +3244,15 @@ function projectReviewedManifest(input, researchAudit) {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-attributed-source-references')) {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    // Complete validation/planning precedes the first source write.
+    const plans = planRecipeSourceReferences(manifest);
+    for (const plan of plans) writeTextFileSync(plan.file, plan.content, 'utf8');
+    console.log('Refreshed saved attributed source references: ' + plans.length + ' pages. No recipe method or metadata replaced.');
+    return;
+  }
+
   if (process.argv.includes('--refresh-recipe-schema')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const engine = loadAfroKitchenEngine();
@@ -3460,4 +3517,4 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { projectReviewedManifest, buildPendingMethodPageHtml, buildCollectionPageHtml, buildCountryPageHtml, applyRecipeResearchPatch, isoDurationFromMinutes, collectRecipeGalleryImages, buildRecipeSchemas, buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
+module.exports = { sourceReferenceLinkHtml, renderRecipeSourceReference, refreshRecipeSourceReference, planRecipeSourceReferences, projectReviewedManifest, buildPendingMethodPageHtml, buildCollectionPageHtml, buildCountryPageHtml, applyRecipeResearchPatch, isoDurationFromMinutes, collectRecipeGalleryImages, buildRecipeSchemas, buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };

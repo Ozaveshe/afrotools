@@ -186,7 +186,7 @@ test('high-risk fuel live-data page loads without fatal browser errors', async (
   await page.goto('/tools/fuel-tracker/', { waitUntil: 'domcontentloaded' });
 
   await expect(page.getByRole('heading', { level: 1, name: /Fuel costs/i })).toBeVisible();
-  await expect(page.locator('#fuel-data-status')).toContainText(/snapshot|eligible/i, { timeout: 12000 });
+  await expect(page.locator('#fuel-data-status')).toHaveText(/^\d+ recent references; \d+ historical planning references; \d+ unavailable\.$/, { timeout: 12000 });
   await expect.poll(function () { return page.locator('#fuel-table-body tr').count(); }).toBeGreaterThan(0);
   expect(fatal).toEqual([]);
 });
