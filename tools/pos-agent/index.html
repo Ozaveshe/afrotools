@@ -364,6 +364,22 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <afro-footer></afro-footer>
 
 <script>
+var POS_INPUT_IDS = ['country','provider','commission-pct','commission-cap','daily-txns','avg-txn-size','failed-rate','operating-days','device-cost','float-capital','monthly-rent','other-monthly-costs'];
+var posResultSignature = null;
+function posInputSignature(){ return JSON.stringify(POS_INPUT_IDS.map(function(id){ return document.getElementById(id).value; })); }
+function invalidatePosResult(message){
+  posResultSignature = null;
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('pos-summary-status').textContent = '';
+  document.getElementById('pos-input-status').textContent = message || '';
+}
+function requireCurrentPosResult(){
+  if (posResultSignature === null || posResultSignature !== posInputSignature()) {
+    invalidatePosResult('Inputs changed or no valid result is available. Calculate Profitability before exporting a summary.');
+    return false;
+  }
+  return true;
+}
 var COUNTRY_DATA = {NG:{currency:"NGN",sym:"₦"},KE:{currency:"KES",sym:"KSh"},GH:{currency:"GHS",sym:"GH₵"}};
 
 function updateCurrency() {
@@ -380,6 +396,7 @@ function calcCommission(txnSize, commissionPct, commissionCap) {
 function fmt(n, sym) { return sym + Math.round(n).toLocaleString('en-NG'); }
 
 function calculate() {
+  invalidatePosResult('');
   var cc = document.getElementById('country').value;
   var provName = document.getElementById('provider').value;
   var d = COUNTRY_DATA[cc];
@@ -432,11 +449,18 @@ function calculate() {
     Math.round(effectiveDailyTxns) + " completed transactions after a " + failedRate.toFixed(1) + "% failure/reversal assumption, at " + commissionPct + "% commission" +
     (commissionCap > 0 ? " (capped at " + sym + commissionCap + "/txn)" : "");
 
+  posResultSignature = posInputSignature();
   document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   updateCurrency();
+  POS_INPUT_IDS.forEach(function(id){
+    var input = document.getElementById(id);
+    function changed(){ if (posResultSignature !== null) invalidatePosResult('Inputs changed. Calculate Profitability again to update the result and summary.'); }
+    input.addEventListener('input', changed);
+    input.addEventListener('change', changed);
+  });
 });
 
 function textOf(id){ var el=document.getElementById(id); return el ? el.textContent.trim() : ''; }
@@ -454,9 +478,9 @@ function copyToolSummary(text, statusId){
 function fallbackCopy(text){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
 function downloadToolSummary(text, filename, statusId){ var blob=new Blob([text],{type:'text/plain;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(a.href);},500); var s=document.getElementById(statusId); if(s) s.textContent='TXT summary downloaded.'; }
 
-function buildPosAgentSummary(){ return buildToolSummary('POS agent profitability summary', ['Country: '+valueOf('country'), 'Provider / evidence label: '+valueOf('provider'), 'Commission: '+valueOf('commission-pct')+'%', 'Commission cap: '+valueOf('commission-cap'), 'Daily attempted transactions: '+valueOf('daily-txns'), 'Failure/reversal assumption: '+valueOf('failed-rate')+'%', 'Average transaction size: '+valueOf('avg-txn-size'), 'Monthly net profit: '+textOf('monthly-profit'), 'Daily commission revenue: '+textOf('daily-rev'), 'Monthly commission revenue: '+textOf('monthly-rev'), 'Monthly costs: '+textOf('monthly-costs'), 'Profit margin: '+textOf('profit-margin'), 'Monthly return on setup + float: '+textOf('roi-setup'), 'Capital payback: '+textOf('breakeven-days'), 'Note: planning estimate only; verify written provider terms, reversals, settlement, float and observed completed transactions.']); }
-function copyPosAgentSummary(){ copyToolSummary(buildPosAgentSummary(),'pos-summary-status'); }
-function downloadPosAgentSummary(){ downloadToolSummary(buildPosAgentSummary(),'pos-agent-summary.txt','pos-summary-status'); }
+function buildPosAgentSummary(){ return buildToolSummary('POS agent profitability summary', ['Country: '+valueOf('country'), 'Currency: '+COUNTRY_DATA[valueOf('country')].currency, 'Provider / evidence label: '+valueOf('provider'), 'Commission: '+valueOf('commission-pct')+'%', 'Commission cap: '+(valueOf('commission-cap')||'0')+((parseFloat(valueOf('commission-cap'))||0)===0?' (no cap)':''), 'Daily attempted transactions: '+valueOf('daily-txns'), 'Failure/reversal assumption: '+valueOf('failed-rate')+'%', 'Average transaction size: '+valueOf('avg-txn-size'), 'Operating days per month: '+valueOf('operating-days'), 'Device / setup cost: '+(valueOf('device-cost')||'0'), 'Float / working capital: '+(valueOf('float-capital')||'0'), 'Monthly rent: '+(valueOf('monthly-rent')||'0'), 'Other monthly costs: '+(valueOf('other-monthly-costs')||'0'), 'Monthly net profit: '+textOf('monthly-profit'), 'Daily commission revenue: '+textOf('daily-rev'), 'Monthly commission revenue: '+textOf('monthly-rev'), 'Monthly costs: '+textOf('monthly-costs'), 'Profit margin: '+textOf('profit-margin'), 'Monthly return on setup + float: '+textOf('roi-setup'), 'Capital payback: '+textOf('breakeven-days'), 'Note: planning estimate only; verify written provider terms, reversals, settlement, float and observed completed transactions.']); }
+function copyPosAgentSummary(){ if(!requireCurrentPosResult()) return; copyToolSummary(buildPosAgentSummary(),'pos-summary-status'); }
+function downloadPosAgentSummary(){ if(!requireCurrentPosResult()) return; downloadToolSummary(buildPosAgentSummary(),'pos-agent-summary.txt','pos-summary-status'); }
 
 </script>
 <script src="/assets/js/pages/small-business-focus.js?v=e121adab" defer></script>
