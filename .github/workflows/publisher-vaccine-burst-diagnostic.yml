@@ -1,0 +1,72 @@
+{
+  "name": "Publisher vaccine same-artifact diagnostic only",
+  "on": {
+    "create": {}
+  },
+  "permissions": {
+    "contents": "read",
+    "actions": "read"
+  },
+  "jobs": {
+    "diagnostic": {
+      "if": "github.event.ref_type == 'branch' && github.event.ref == 'automation/daily-5pm-publish-deploy-gate-2026-10-22-vaccine-burst-diag-01a15fbb'",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 25,
+      "steps": [
+        {
+          "name": "Read operational diagnostic harness",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Keep harness outside exact candidate source",
+          "run": "mkdir -p \"$RUNNER_TEMP/vaccine-burst-diagnostic\"\ncp .github/vaccine-burst-diagnostic/* \"$RUNNER_TEMP/vaccine-burst-diagnostic/\""
+        },
+        {
+          "name": "Checkout unchanged failed release source",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "ref": "da99c4169857cd5c83f8565a5432f28aefe21a42",
+            "fetch-depth": 0,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Set up Node.js",
+          "uses": "actions/setup-node@v5",
+          "with": {
+            "node-version": "22",
+            "cache": "npm"
+          }
+        },
+        {
+          "name": "Install existing dependencies",
+          "run": "npm ci"
+        },
+        {
+          "name": "Install existing Chromium prerequisite",
+          "run": "npx playwright install chromium --with-deps"
+        },
+        {
+          "name": "Read-only same-artifact diagnosis; never release acceptance",
+          "env": {
+            "GITHUB_TOKEN": "${{ github.token }}"
+          },
+          "run": "node \"$RUNNER_TEMP/vaccine-burst-diagnostic/run.cjs\""
+        },
+        {
+          "name": "Preserve bounded metadata and all actual diagnostic failures",
+          "if": "always()",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "vaccine-burst-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}",
+            "path": "${{ runner.temp }}/vaccine-burst-diagnostic/*.json\n${{ runner.temp }}/vaccine-burst-diagnostic/*.log\n${{ runner.temp }}/vaccine-burst-diagnostic/output-*/",
+            "if-no-files-found": "warn"
+          }
+        }
+      ]
+    }
+  }
+}

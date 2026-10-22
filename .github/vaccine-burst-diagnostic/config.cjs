@@ -1,0 +1,1 @@
+'use strict';const W=process.cwd(),o=require(W+'/playwright.config.js');module.exports={...o,testDir:__dirname,testMatch:'diagnostic.spec.cjs',workers:1,retries:0,fullyParallel:false,use:{...o.use,storageState:{cookies:[],origins:[]},trace:'retain-on-failure'},webServer:{...o.webServer,cwd:W,reuseExistingServer:false}};
