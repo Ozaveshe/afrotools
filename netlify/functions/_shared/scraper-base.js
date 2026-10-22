@@ -160,6 +160,41 @@ async function logRun(scraperId, status, details) {
  * @param {object} [config.validateOpts] - Options passed to default validateData()
  * @returns {{ statusCode, body }}
  */
+// Stock collection opts into fixed operational labels only. Error text, bodies,
+// URLs, headers, credentials and arbitrary provider fields never enter output.
+const STOCK_FAILURE_CODES = new Set(['MISSING_CONFIG', 'UPSTREAM_TIMEOUT',
+  'UPSTREAM_ABORTED', 'UPSTREAM_NETWORK_ERROR', 'UPSTREAM_HTTP_ERROR',
+  'UPSTREAM_BODY_ERROR', 'PROVIDER_ERROR_RESPONSE', 'PROVIDER_NO_DATA',
+  'INSUFFICIENT_DATED_OBSERVATIONS']);
+function stockProviderFailure(code, details = {}) {
+  const error = new Error('Stock provider collection failed');
+  error.code = STOCK_FAILURE_CODES.has(code) ? code : 'UNKNOWN';
+  error.stockCollection = details;
+  return error;
+}
+function stockProviderDiagnostic(provider, error) {
+  const name = ['AlphaVantage', 'MarketStack'].includes(provider) ? provider : 'unlisted';
+  const label = value => {
+    const code = value && STOCK_FAILURE_CODES.has(value.code) ? value.code : 'UNKNOWN';
+    const status = value && Number.isInteger(value.status) && value.status >= 400 && value.status <= 599 ? value.status : null;
+    return code + (code === 'UPSTREAM_HTTP_ERROR' && status ? '(' + status + ')' : '');
+  };
+  let message = name + ':' + label(error);
+  const detail = error && error.stockCollection;
+  if (detail && Number.isSafeInteger(detail.requested_count) && detail.requested_count >= 0 && detail.requested_count <= 100 &&
+      Number.isSafeInteger(detail.qualified_count) && detail.qualified_count >= 0 && detail.qualified_count <= detail.requested_count) {
+    message += ' requested=' + detail.requested_count + ' qualified=' + detail.qualified_count;
+  }
+  if (detail && Array.isArray(detail.causes)) {
+    const counts = new Map();
+    for (const cause of detail.causes.slice(0, 10)) {
+      const code = label(cause); counts.set(code, (counts.get(code) || 0) + 1);
+    }
+    if (counts.size) message += ' causes=' + [...counts].sort(([a], [b]) => a.localeCompare(b)).map(([code, count]) => code + 'x' + count).join(',');
+  }
+  return message;
+}
+
 async function runScraper(config) {
   var id = config.id;
   var blobKey = config.blobKey;
@@ -175,6 +210,8 @@ async function runScraper(config) {
   // Step 1: Try each source in order
   var rawData = null;
   var usedSource = null;
+  var sourceFailures = [];
+  var stockDiagnostics = id === 'stock-indices' && config.sourceDiagnostics === 'stock-indices-v1';
 
   for (var i = 0; i < sources.length; i++) {
     var source = sources[i];
@@ -185,7 +222,13 @@ async function runScraper(config) {
       console.log('[' + id + '] Success from ' + source.name);
       break;
     } catch (err) {
-      console.error('[' + id + '] ' + source.name + ' failed during source fetch or decoding');
+      if (stockDiagnostics) {
+        var diagnostic = stockProviderDiagnostic(source.name, err);
+        sourceFailures.push(diagnostic);
+        console.error('[' + id + '] Source failure: ' + diagnostic);
+      } else {
+        console.error('[' + id + '] ' + source.name + ' failed during source fetch or decoding');
+      }
     }
   }
 
@@ -195,7 +238,7 @@ async function runScraper(config) {
   if (!rawData) {
     console.warn('[' + id + '] All sources failed.');
     await logRun(id, 'error', {
-      error_message: 'All sources failed',
+      error_message: 'All sources failed' + (sourceFailures.length ? '; ' + sourceFailures.join('; ') : ''),
       duration_ms: durationMs,
     });
     await updateMeta(metaKey, {
@@ -351,4 +394,6 @@ module.exports = {
   logConfidence,
   runScraper,
   sleep,
+  stockProviderFailure,
+  stockProviderDiagnostic,
 };

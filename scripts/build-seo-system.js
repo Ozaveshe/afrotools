@@ -248,7 +248,9 @@ function buildQuickAnswerBlock(pagePath, pageConfig, data) {
       ? [
           '  <div class="seo-cluster__answer">',
           '    <span class="seo-cluster__answer-label">' + escapeHtml(quickAnswer.title || "Quick answer") + "</span>",
-          "    <p>" + escapeHtml(quickAnswer.body) + "</p>",
+          "    <p>" + escapeHtml(quickAnswer.body) + "</p>" + (quickAnswer.action
+            ? '\n    <a class="seo-cluster__cta" href="' + escapeHtml(quickAnswer.action.href) + '">' + escapeHtml(quickAnswer.action.label) + '</a>'
+            : ""),
           "  </div>"
         ].join("\n")
       : "",
