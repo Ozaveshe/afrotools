@@ -85,6 +85,7 @@ function decodeHtml(value) {
     .replace(/&apos;|&#39;/g, "'")
     .replace(/&ndash;|&mdash;/g, "-")
     .replace(/&rsquo;|&lsquo;/g, "'")
+    .replace(/[\u2018\u2019]/g, "'")
     .replace(/&nbsp;/g, " ");
 }
 

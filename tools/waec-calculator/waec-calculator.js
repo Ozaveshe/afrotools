@@ -8,6 +8,7 @@
     pathway: 'science',
     subjects: []
   };
+  var lastReadySignature = '';
 
   var SYSTEMS = {
     'ng-waec-neco': {
@@ -202,6 +203,35 @@
     return window.WAECPlannerEngine.calculateNigeria(state.subjects);
   }
 
+  function trackResultReady(result) {
+    if (result.complete !== true) {
+      lastReadySignature = '';
+      return;
+    }
+    // Derived output only: this signature stays in memory and never enters analytics.
+    var signature = JSON.stringify([
+      state.system,
+      state.system === 'gh-wassce' ? state.pathway : null,
+      result.value,
+      result.selected.length,
+      result.credits,
+      result.checks.map(function (check) { return Boolean(check.pass); })
+    ]);
+    if (signature === lastReadySignature) return;
+    var analytics = window.AfroTools && window.AfroTools.analytics;
+    if (!analytics || typeof analytics.track !== 'function') return;
+    try {
+      if (analytics.track('waec_result_ready', {
+        tool_id: 'waec-calculator',
+        system: state.system,
+        planning_only: true,
+        counted_subject_count: result.selected.length
+      }) === true) lastReadySignature = signature;
+    } catch (_) {
+      // Measurement must not interrupt the local planning result.
+    }
+  }
+
   function setResultText(id, value) {
     var element = byId(id);
     if (element) element.textContent = value;
@@ -224,8 +254,13 @@
     setResultText('resultSubjects', String(result.entered));
     setResultText('resultCredits', String(result.credits));
     setResultText('resultBestOf', result.metricLabel);
-    setResultText('classBadge', result.complete ? 'Ready for official requirement checks' : 'Add the required results');
-    setResultText('mobileClass', result.complete ? 'Plan ready' : 'Incomplete');
+    var creditGaps = result.checks.filter(function (check) { return !check.pass; });
+    var checksReady = result.complete && creditGaps.length === 0;
+    var resultStatus = !result.complete ? 'Add the required results' : creditGaps.length
+      ? 'Review: ' + creditGaps.map(function (check) { return check.label.replace(/ recorded$/, ''); }).join('; ')
+      : 'Ready for official requirement checks';
+    setResultText('classBadge', resultStatus);
+    setResultText('mobileClass', !result.complete ? 'Incomplete' : creditGaps.length ? creditGaps.length + (creditGaps.length === 1 ? ' credit check needs attention' : ' credit checks need attention') : 'Plan ready');
     setResultText('aggMaxLabel', state.system === 'gh-wassce' ? '54 (Highest)' : '45 (Highest)');
 
     var resultLabel = document.querySelector('.wc-result-label');
@@ -235,8 +270,8 @@
 
     var badge = byId('classBadge');
     if (badge) {
-      badge.style.background = result.complete ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)';
-      badge.style.color = result.complete ? '#047857' : '#b45309';
+      badge.style.background = checksReady ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)';
+      badge.style.color = checksReady ? '#047857' : '#b45309';
     }
     var fill = byId('aggFill');
     if (fill) {
@@ -244,7 +279,7 @@
       var min = state.system === 'gh-wassce' ? 6 : 5;
       var width = result.value === null ? 0 : Math.max(3, 100 - ((result.value - min) / (max - min) * 100));
       fill.style.width = width + '%';
-      fill.style.background = result.complete ? 'var(--wc-success)' : 'var(--wc-amber)';
+      fill.style.background = checksReady ? 'var(--wc-success)' : 'var(--wc-amber)';
     }
 
     var selected = byId('selectedSubjects');
@@ -265,6 +300,7 @@
       entered_subject_count: result.entered,
       credit_count: result.credits
     });
+    trackResultReady(result);
   }
 
   function renderReference() {
@@ -355,8 +391,16 @@
   }
 
   window.loadWaecSample = function () {
-    state.system = 'ng-waec-neco';
-    state.subjects = [
+    state.subjects = state.system === 'gh-wassce' ? [
+      { name: 'English Language', grade: 'B3', compulsory: true, role: 'core' },
+      { name: 'Core Mathematics', grade: 'B2', compulsory: true, role: 'core' },
+      { name: state.pathway === 'non-science' ? 'Social Studies' : 'Integrated Science', grade: 'A1', compulsory: true, role: 'programme-core' },
+      { name: state.pathway === 'non-science' ? 'Integrated Science' : 'Social Studies', grade: 'A1', compulsory: false, role: 'alternate-core' },
+      { name: 'Biology', grade: 'A1', compulsory: false, role: 'elective' },
+      { name: 'Chemistry', grade: 'B3', compulsory: false, role: 'elective' },
+      { name: 'Physics', grade: 'C4', compulsory: false, role: 'elective' },
+      { name: 'Economics', grade: 'C5', compulsory: false, role: 'elective' }
+    ] : [
       { name: 'English Language', grade: 'B3', compulsory: true },
       { name: 'Mathematics', grade: 'B2', compulsory: true },
       { name: 'Civic Education', grade: 'A1', compulsory: false },
@@ -368,7 +412,7 @@
     renderSystemControls();
     renderSubjects();
     calculate();
-    announce('Sample Nigeria results loaded. Review the credit audit and official next steps.');
+    announce('Sample ' + (state.system === 'gh-wassce' ? 'Ghana' : 'Nigeria') + ' results loaded. Review the credit audit and official next steps.');
   };
 
   window.clearWaecGrades = function () {

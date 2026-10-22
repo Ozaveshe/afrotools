@@ -20,6 +20,12 @@
     status.classList.toggle('is-ok', type === 'ok');
   }
 
+  function invalidateResult() {
+    lastResult = null;
+    field('resultCard').classList.add('hidden');
+    field('jambActionStatus').textContent = '';
+  }
+
   function resultInput() {
     return {
       utme: value('utme'),
@@ -123,6 +129,7 @@
   window.calculate = function () {
     var result = engine.calculate(resultInput());
     if (!result.ok) {
+      invalidateResult();
       setStatus(result.error, 'error');
       field(result.error.indexOf('UTME score') === 0 ? 'utme' : 'postUtme')?.focus();
       return;
@@ -144,6 +151,7 @@
   };
 
   window.loadJambSample = function () {
+    invalidateResult();
     field('utme').value = '280';
     field('postUtme').value = '68';
     field('utmeWeight').value = '50';
@@ -160,10 +168,8 @@
     });
     field('utmeWeight').value = '50';
     field('postUtmeWeight').value = '50';
-    field('resultCard').classList.add('hidden');
-    lastResult = null;
+    invalidateResult();
     setStatus('Inputs cleared.', '');
-    field('jambActionStatus').textContent = '';
   };
 
   window.copyJambActionPack = function () {
@@ -216,5 +222,13 @@
       field('jambActionStatus').textContent = 'Could not save locally in this browser.';
     }
   };
+
+  ['utme', 'postUtme', 'utmeWeight', 'postUtmeWeight', 'publishedBenchmark', 'institutionName', 'programmeName'].forEach(function (id) {
+    var input = field(id);
+    if (input) input.addEventListener('input', function () {
+      invalidateResult();
+      setStatus('Inputs changed. Calculate a new planning aggregate.', '');
+    });
+  });
 
 }());
