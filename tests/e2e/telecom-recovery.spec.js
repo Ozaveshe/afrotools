@@ -230,12 +230,37 @@ test('English usage stays local through missing catalogue, failed retry and curr
 for (const [lang, route] of [['ha', '/ha/kayan-aiki/amfanin-bayanan-intanet/'], ['yo', '/yo/awon-ise/amulo-data/']]) {
   test(`${lang}: empty, negative, excessive and zero usage have distinct valid states`, async ({ page, baseURL }) => {
     const observed = await localOnly(page, baseURL);
+    const sentBodies = [];
+    page.on('request', request => { if (request.postData()) sentBodies.push(request.postData()); });
     await page.goto(route);
-    await expect(page.locator('#netResult')).toBeVisible();
-    const calculate = lang === 'ha' ? page.locator('button[onclick="calcNet()"]') : page.locator('#calcBtn');
+    const form = page.locator(`[data-data-usage="${lang}"]`);
+    const calculate = form.locator('button[type="submit"]');
+    const result = page.locator('#netResult');
+    const status = form.locator('[data-usage-status]');
+    await expect(form).toHaveAttribute('data-ready', 'true');
+    await expect(result).toBeHidden();
+    await calculate.click();
+    await expect(result).toBeVisible();
+    await expect(result.locator('strong')).toHaveText(lang === 'ha' ? '54 GB' : '58 GB');
+    await expect(result).toBeFocused();
+    await page.locator('#browse').fill('3');
+    await expect(result).toBeHidden();
+    await expect(result).toBeEmpty();
+    await expect(status).toHaveText(lang === 'ha'
+      ? 'Bayanai sun sauya. Sake lissafawa don samun sabon sakamako.'
+      : 'Àwọn iye ti yí padà. Ṣe ìṣirò lẹ́ẹ̀kan sí i fún àbájáde tuntun.');
+    await page.locator('#browse').press('Enter');
+    await expect(result.locator('strong')).toHaveText(lang === 'ha' ? '57 GB' : '61 GB');
+    await form.locator('button[type="reset"]').focus();
+    await page.keyboard.press('Enter');
+    await expect(result).toBeHidden();
+    await expect(page.locator('#browse')).toHaveValue('2');
+    await expect(page.locator('#browse')).toBeFocused();
+    await expect(status).not.toBeEmpty();
     if (lang === 'yo') {
+      await calculate.scrollIntoViewIfNeeded();
       await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
-      const contrast = await page.evaluate(async () => window.axe.run({ include: [['#calcBtn']] }, { runOnly: { type: 'rule', values: ['color-contrast'] } }));
+      const contrast = await page.evaluate(async () => window.axe.run({ include: [['[data-data-usage="yo"] button[type="submit"]']] }, { runOnly: { type: 'rule', values: ['color-contrast'] } }));
       expect(contrast.violations.map(({ id, nodes }) => ({ id, targets: nodes.map(node => node.target) }))).toEqual([]);
       expect(contrast.incomplete).toEqual([]);
       expect(contrast.passes.some(rule => rule.id === 'color-contrast')).toBe(true);
@@ -244,19 +269,39 @@ for (const [lang, route] of [['ha', '/ha/kayan-aiki/amfanin-bayanan-intanet/'], 
       await page.locator('#browse').fill(value); await calculate.click();
       await expect(page.locator('#netResult')).toBeHidden();
       expect(await page.locator('#browse').evaluate(el => el.checkValidity())).toBe(false);
+      await expect(page.locator('#browse')).toHaveAttribute('aria-invalid', 'true');
+      await expect(page.locator('#browse')).toBeFocused();
+      await expect(form.locator('[data-error="browse"]')).not.toBeEmpty();
     }
     await page.locator('#browse').fill('2');
     await page.locator('#calls').fill('169'); await calculate.click();
     await expect(page.locator('#netResult')).toBeHidden();
+    expect(await page.locator('#calls').evaluate(el => el.checkValidity())).toBe(false);
+    await expect(page.locator('#calls')).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.locator('#calls')).toBeFocused();
+    await expect(form.locator('[data-error="calls"]')).not.toBeEmpty();
     for (const selector of ['#browse', '#video', '#calls', '#study', ...(lang === 'yo' ? ['#social'] : [])]) await page.locator(selector).fill('0');
     await calculate.click(); await expect(page.locator('#netResult strong')).toHaveText('0 GB');
     await page.locator('#browse').fill('2'); await calculate.click();
     await expect(page.locator('#netResult strong')).toHaveText('6 GB');
     if (lang === 'ha') {
-      const text = await fileText(page, 'button[onclick="downloadNet()"]');
-      expect(text).toContain('6 GB'); expect(text).toContain('Lilo: 2h/rana');
+      const text = await fileText(page, '[data-usage-download]');
+      expect(text).toContain('6 GB');
+      // The localized report labels establish the order of the exported hours.
+      expect(text).toContain('Lilo/rana; bidiyo/rana; kiran bidiyo/mako; karatu ko aiki/rana\n2; 0; 0; 0\n');
+      expect(text).toContain('kwanaki 30 da makonni 4; karin 15%');
+      await page.locator('#browse').fill('3');
+      await expect(result).toBeHidden();
+      const current = await fileText(page, '[data-usage-download]');
+      expect(current).toContain('9 GB');
+      expect(current).toContain('\n3; 0; 0; 0\n');
+      expect(current).not.toContain('6 GB');
+      await expect(result.locator('strong')).toHaveText('9 GB');
     }
     await reflow(page);
+    expect(new URL(page.url()).search).toBe('');
+    expect(observed.navigations.every(url => !new URL(url).search)).toBe(true);
+    expect(sentBodies).toEqual([]);
     expect(observed.errors).toEqual([]);
   });
 }

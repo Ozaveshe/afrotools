@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { isDeepStrictEqual } = require("util");
 const { normalizeReviewedArtworkPresentation } = require("./reviewed-artwork-formula-presentation");
 const { normalizeReviewedRelatedProPresentation } = require("./reviewed-related-pro-presentation");
 
@@ -1563,8 +1564,82 @@ function expectedSelectors(result, selectors) {
   );
 }
 
+// These are availability assertions for the existing hold, not current tax
+// examples. The digests authorize migration of exactly three historical rows.
+const BF_WITHHELD_CASES = [
+  { suffix: "zero", grossAnnual: 0, caseClasses: ["zero_input"], historicalDigest: "ce287365af235668672f95f1d3793fe5666decd065ea2169297af97b10ea361a" },
+  { suffix: "defaults", grossAnnual: 1000000, caseClasses: ["missing_optional_input"], historicalDigest: "538bf3d1f190522c62734d9e02d234390c7c6b60714e871a2a8f94c4aba880d4" },
+  { suffix: "large-decimal", grossAnnual: 1000000000.55, caseClasses: ["very_large_value", "decimal_precision"], historicalDigest: "d1152f4fb833e2ce3692c38e75b24f8776ef6d4d58b66f3ce89ce27350b21901" },
+];
+
+function assertBFWithheldPolicy(policy) {
+  if (!policy || policy.schemaVersion !== 1 || !policy.countries
+      || !isDeepStrictEqual(Object.keys(policy.countries), ["BF"])
+      || policy.countries.BF.status !== "withheld"
+      || policy.countries.BF.reasonCode !== "PAYROLL_SOURCE_REVIEW_REQUIRED"
+      || policy.countries.BF.webHoldController !== "assets/js/pages/bf-payroll-review.js"
+      || typeof policy.countries.BF.sourceLabel !== "string" || !policy.countries.BF.sourceLabel.trim()) {
+    throw new Error("Invalid explicit BF withheld policy");
+  }
+}
+
+function readPayeAvailability(root) {
+  const policy = readJson(path.join(root, "data/calculation-quality/paye-availability.json"));
+  assertBFWithheldPolicy(policy);
+  return policy;
+}
+
+function payeWithheldExpected(policy) {
+  assertBFWithheldPolicy(policy);
+  return {
+    availability: "withheld", calculable: false,
+    reasonCode: policy.countries.BF.reasonCode, registryEngine: null,
+    resolution: { ok: false, error: "PAYROLL_WITHHELD", jurisdiction: "BF",
+      effectiveOn: null, reasonCode: policy.countries.BF.reasonCode },
+  };
+}
+
+function payeWithheldResult(registry, policy) {
+  const expected = payeWithheldExpected(policy);
+  const engine = registry.get("BF");
+  if (engine !== null || registry.getFormula("BF") !== null
+      || registry.listCountryCodes().some((code) => String(code).toUpperCase() === "BF")
+      || registry.listCountries().some((country) => String(country.code).toUpperCase() === "BF")) {
+    throw new Error("Withheld BF payroll remains exposed by the public registry");
+  }
+  const resolution = registry.resolve("BF");
+  // Subset comparison is insufficient: any extra numeric output is forbidden.
+  if (!isDeepStrictEqual(resolution, expected.resolution)) {
+    throw new Error("Invalid BF withheld resolution shape or reason");
+  }
+  return { ...expected, registryEngine: engine, resolution };
+}
+
+function assertPayeWithheldFixture(fixture, policy) {
+  const entry = BF_WITHHELD_CASES.find((item) => fixture.id === "paye-bf-" + item.suffix);
+  if (!entry || fixture.operation !== "paye-withheld" || fixture.formulaId !== "paye-server-bf"
+      || !isDeepStrictEqual(fixture.input, { country: "BF", grossAnnual: entry.grossAnnual })
+      || !isDeepStrictEqual(fixture.caseClasses, entry.caseClasses)
+      || fixture.tolerance !== 0 || fixture.changeNote !== "availability-withheld-no-numeric-acceptance"
+      || !isDeepStrictEqual(fixture.evidence, { registryId: null, title: policy.countries.BF.sourceLabel,
+        url: null, kind: "availability-hold", authorityStatus: "review-required" })
+      || !isDeepStrictEqual(fixture.expected, payeWithheldExpected(policy))) {
+    throw new Error("Invalid BF withheld availability fixture " + fixture.id);
+  }
+}
+
+function isExplicitBFWithheldMigration(previous, next, policy) {
+  if (!previous || previous.operation !== "paye-calculate" || next.operation !== "paye-withheld") return false;
+  assertPayeWithheldFixture(next, policy);
+  const entry = BF_WITHHELD_CASES.find((item) => next.id === "paye-bf-" + item.suffix);
+  const digest = crypto.createHash("sha256").update(stableJson(previous)).digest("hex");
+  return previous.id === next.id && previous.formulaVersion === next.formulaVersion
+    && digest === entry.historicalDigest;
+}
+
 function generateGoldenFixtures(formulas, root) {
   const engineRegistry = require(path.join(root, "netlify/functions/_engines"));
+  const payeAvailability = readPayeAvailability(root);
   const byCountry = new Map(
     formulas.formulas
       .filter((formula) => formula.formulaFamily === "paye-server")
@@ -1608,6 +1683,24 @@ function generateGoldenFixtures(formulas, root) {
       "very_large_value",
       "decimal_precision",
     ]);
+  }
+
+  const withheldFormula = byCountry.get("BF");
+  if (!withheldFormula) throw new Error("Missing historical BF formula record for availability fixtures");
+  for (const entry of BF_WITHHELD_CASES) {
+    fixtures.push({
+      id: "paye-bf-" + entry.suffix,
+      formulaId: withheldFormula.id,
+      formulaVersion: withheldFormula.formulaVersion,
+      caseClasses: entry.caseClasses.slice(),
+      operation: "paye-withheld",
+      input: { country: "BF", grossAnnual: entry.grossAnnual },
+      expected: payeWithheldResult(engineRegistry, payeAvailability),
+      tolerance: 0,
+      evidence: { registryId: null, title: payeAvailability.countries.BF.sourceLabel,
+        url: null, kind: "availability-hold", authorityStatus: "review-required" },
+      changeNote: "availability-withheld-no-numeric-acceptance",
+    });
   }
 
   addCalculate("ZA", "exact-threshold", { grossAnnual: 95750 }, [
@@ -4751,6 +4844,7 @@ function compareExpected(actual, expected, tolerance) {
 
 function runGoldenFixtures(artifacts, root) {
   const engineRegistry = require(path.join(root, "netlify/functions/_engines"));
+  const payeAvailability = readPayeAvailability(root);
   const taxRequest = require(
     path.join(root, "netlify/functions/_shared/tax-request"),
   );
@@ -4760,6 +4854,7 @@ function runGoldenFixtures(artifacts, root) {
   const failures = [];
   const changes = [];
   let passed = 0;
+  const passedByOperation = { payeNumeric: 0, withheldAvailability: 0, otherOperations: 0 };
 
   for (const fixture of artifacts.fixtures.fixtures) {
     const formula = formulaById.get(fixture.formulaId);
@@ -4772,6 +4867,9 @@ function runGoldenFixtures(artifacts, root) {
       if (fixture.operation === "private-paye-calculate" || fixture.operation === "private-paye-tax") {
         const engine = require(path.join(root, formula.artifactPath));
         actual = fixture.operation === "private-paye-tax" ? engine.tax(fixture.input.income) : engine.calculate(fixture.input.gross, fixture.input.period, fixture.input.options);
+      } else if (fixture.operation === "paye-withheld") {
+        assertPayeWithheldFixture(fixture, payeAvailability);
+        actual = payeWithheldResult(engineRegistry, payeAvailability);
       } else if (fixture.operation === "paye-calculate") {
         const engine = engineRegistry.get(fixture.input.country);
         if (!engine)
@@ -5129,7 +5227,12 @@ function runGoldenFixtures(artifacts, root) {
       );
       if (fixtureFailures.length)
         failures.push({ id: fixture.id, errors: fixtureFailures });
-      else passed += 1;
+      else {
+        passed += 1;
+        const category = fixture.operation === "paye-withheld" ? "withheldAvailability"
+          : fixture.operation === "paye-calculate" ? "payeNumeric" : "otherOperations";
+        passedByOperation[category] += 1;
+      }
     } catch (error) {
       failures.push({ id: fixture.id, errors: [error.message] });
     }
@@ -5140,6 +5243,7 @@ function runGoldenFixtures(artifacts, root) {
   return {
     total: artifacts.fixtures.fixtures.length,
     passed,
+    passedByOperation,
     failed: failures.length,
     failures,
     changes: changes.sort(),
@@ -5471,6 +5575,7 @@ function generateQualityReport(artifacts, root, asOf) {
     fixtures: {
       total: fixtures.total,
       passed: fixtures.passed,
+      passedByOperation: fixtures.passedByOperation,
       failed: fixtures.failed,
       changes: fixtures.changes,
     },
@@ -5518,6 +5623,9 @@ function reportMarkdown(report) {
     "## Golden fixtures",
     "",
     `- Passed: ${report.fixtures.passed}/${report.fixtures.total}`,
+    `- Public PAYE numeric assertions: ${report.fixtures.passedByOperation.payeNumeric}`,
+    `- Withheld availability assertions (no numeric acceptance): ${report.fixtures.passedByOperation.withheldAvailability}`,
+    `- Other operation assertions: ${report.fixtures.passedByOperation.otherOperations}`,
     `- Documented result changes: ${report.fixtures.changes.length}`,
     "",
     "## External data",
@@ -5551,6 +5659,11 @@ module.exports = {
   checkHighRiskRouteTraceability,
   resolveFormula,
   runGoldenFixtures,
+  readPayeAvailability,
+  payeWithheldExpected,
+  payeWithheldResult,
+  assertPayeWithheldFixture,
+  isExplicitBFWithheldMigration,
   validateExternalData,
   checkCountryIdentity,
   generateQualityReport,

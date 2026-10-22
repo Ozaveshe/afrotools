@@ -3131,6 +3131,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderDropdown(q) {
+      focusIdx = -1;
+      input.removeAttribute('aria-activedescendant');
       if (suppressDropdown) { closeDropdown(); return; }
       if (!q || !window.AFRO_TOOLS) { closeDropdown(); return; }
       var tokens = tokenise(q);
@@ -3177,7 +3179,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       // "See all results" footer
-      html += '<div class="sd-footer" id="sd-see-all">See all results for "' + esc(q) + '" →</div>';
+      html += '<div class="sd-footer" id="sd-see-all" role="option" tabindex="-1" aria-selected="false">See all results for "' + esc(q) + '" →</div>';
 
       dropdown.innerHTML = html;
       dropdown.classList.add('open');
@@ -3186,10 +3188,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function class_attr(i) {
-      return ' id="sd-option-' + i + '" class="sd-item" role="option" tabindex="-1" data-idx="' + i + '"';
+      return ' id="sd-option-' + i + '" class="sd-item" role="option" aria-selected="false" tabindex="-1" data-idx="' + i + '"';
     }
 
-    function closeDropdown() {
+    function closeDropdown(dismissed) {
+      clearTimeout(debounce);
+      if (dismissed) suppressDropdown = true;
       dropdown.classList.remove('open');
       dropdown.innerHTML = '';
       input.setAttribute('aria-expanded', 'false');
@@ -3251,8 +3255,8 @@ document.addEventListener('DOMContentLoaded', function() {
             else doSearch('keyboard');
           }
         } else { doSearch('keyboard'); }
-      } else if (e.key === 'Escape') {
-        closeDropdown();
+      } else if (e.key === 'Escape' || e.key === 'Tab') {
+        closeDropdown(true);
       }
     });
 
@@ -3343,6 +3347,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Live input
     var debounce;
     input.addEventListener('input', function() {
+      closeDropdown();
       suppressDropdown = false;
       clearTimeout(debounce);
       var q = this.value.trim();
@@ -3412,7 +3417,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close on outside click
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('.hero-search-wrap')) closeDropdown();
+      if (!e.target.closest('.hero-search-wrap')) closeDropdown(true);
     });
   })();
 

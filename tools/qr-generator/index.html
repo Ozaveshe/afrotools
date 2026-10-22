@@ -482,6 +482,12 @@
   }
   details[open] summary svg { transform: rotate(180deg); }
   details summary::-webkit-details-marker { display: none; }
+
+  #previewCard .act-png { background:#e8f2ff; color:#174326; border-color:#789bb8; min-height:44px; }
+  :root[data-theme="dark"] #previewCard .act-png { background:#193552; color:#f3f7ff; border-color:#6d9ac4; }
+  :root[data-theme="dark"] .tool-hero { background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%) !important; }
+  :root[data-theme="dark"] .starter-note { background:#193552 !important; color:#f3f7ff !important; }
+  :root[data-theme="dark"] .starter-note strong { color:#f3f7ff !important; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"QR Code Generator","description":"Free QR code generator. Create QR codes from text, URLs, WiFi credentials, and vCards. Customize colors, add logo, download as PNG or SVG.","url":"https://afrotools.com/tools/qr-generator/","inLanguage":"en","applicationCategory":"DesignApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/qr-generator.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"QR Code Generator","url":"https://afrotools.com/tools/qr-generator/","description":"Free QR code generator. Create QR codes from text, URLs, WiFi credentials, and vCards. Customize colors, add logo, download as PNG or SVG.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/qr-generator.webp"}</script>
@@ -608,7 +614,7 @@
             <button type="button" class="mode-btn" data-mode="vcard" role="button">vCard</button>
           </div>
           <div class="starter-grid">
-            <button class="starter-btn active" type="button" data-starter="whatsapp">WhatsApp Order Link</button>
+            <button class="starter-btn" type="button" data-starter="whatsapp">WhatsApp Order Link</button>
             <button class="starter-btn" type="button" data-starter="wifi">Cafe / Church WiFi</button>
             <button class="starter-btn" type="button" data-starter="menu">Menu or Price List</button>
             <button class="starter-btn" type="button" data-starter="contact">Business Contact Card</button>
@@ -717,7 +723,8 @@
             </div>
           </div>
 
-          <button type="button" class="calc-btn" id="generateBtn">Generate QR Code</button>
+          <button type="button" class="calc-btn" id="generateBtn" aria-describedby="qrStatus">Generate QR Code</button>
+      <p id="qrStatus" role="status" aria-live="polite" style="margin-top:12px;line-height:1.5;color:var(--color-text,#102a43)">Enter the content, then generate a QR code.</p>
         </div>
       </div>
     </div>
@@ -731,8 +738,8 @@
         </div>
         <div id="qrcode" style="padding:20px 0;"></div>
         <div class="action-row">
-          <button type="button" class="act-btn act-png" id="downloadPNG" aria-label="Download QR code as PNG">Download PNG</button>
-          <button type="button" class="act-btn act-png" id="downloadSVG" aria-label="Download QR code as SVG">Download SVG</button>
+          <button type="button" class="act-btn act-png" id="downloadPNG" disabled aria-label="Download QR code as PNG">Download PNG</button>
+          <button type="button" class="act-btn act-png" id="downloadSVG" disabled aria-label="Download QR code as SVG">Download SVG</button>
         </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <share-result-button
@@ -746,14 +753,14 @@
       <div class="info-card">
         <div class="info-title">Starter Guide</div>
         <div class="info-text">
-          <strong id="guideTitle">WhatsApp Order Link</strong>
+          <strong id="guideTitle">Plain Text QR</strong>
           <p id="guideIntro" style="margin-top:8px;">Use this for market stalls, food menus, service businesses, and storefront posters that convert directly in WhatsApp.</p>
           <ul class="guide-list" id="guideChecklist">
             <li>Add clear text like "Scan to order on WhatsApp"</li>
             <li>Print dark code on a light background for easy scanning</li>
             <li>Use PNG for quick posts and SVG for larger print jobs</li>
           </ul>
-          <div class="guide-foot"><strong>Suggested filename:</strong> <span id="guideFilename">whatsapp-order-qr</span></div>
+          <div class="guide-foot"><strong>Suggested filename:</strong> <span id="guideFilename">text-qr</span></div>
         </div>
       </div>
 
@@ -911,7 +918,11 @@
   const lightColorInput = document.getElementById('lightColor');
   const darkColorHex = document.getElementById('darkColorHex');
   const lightColorHex = document.getElementById('lightColorHex');
-  let currentStarter = 'whatsapp';
+  let currentStarter = null;
+  let generatedQR = null;
+  const qrStatus = document.getElementById('qrStatus');
+  const pngButton = document.getElementById('downloadPNG');
+  const svgButton = document.getElementById('downloadSVG');
   const STARTERS = {
     whatsapp: {
       mode: 'url',
@@ -1027,6 +1038,7 @@
   }
 
   function setMode(mode) {
+    invalidateQR();
     currentMode = mode;
     modeButtons.forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
     textModeDiv.style.display = currentMode === 'text' ? 'block' : 'none';
@@ -1082,67 +1094,101 @@
     });
   }
 
+  function invalidateQR(message) {
+    generatedQR = null;
+    qrcodeInstance = null;
+    document.getElementById('qrcode').innerHTML = '';
+    previewCard.classList.remove('on');
+    pngButton.disabled = true;
+    svgButton.disabled = true;
+    qrStatus.textContent = message || 'Inputs changed. Generate a new QR code before downloading.';
+  }
+
+  function currentQR() {
+    const result = getQRData();
+    if (!generatedQR || !qrcodeInstance || !result.ok || result.data !== generatedQR.data ||
+        darkColorInput.value !== generatedQR.dark || lightColorInput.value !== generatedQR.light) {
+      invalidateQR();
+      return false;
+    }
+    return true;
+  }
+
+  ['textInput', 'urlInput', 'wifiSSID', 'wifiPassword', 'wifiSecurity', 'vcardName',
+    'vcardPhone', 'vcardEmail', 'vcardOrg', 'darkColor', 'lightColor'].forEach(id => {
+    ['input', 'change'].forEach(type => document.getElementById(id).addEventListener(type, () => invalidateQR()));
+  });
+
   generateBtn.addEventListener('click', () => {
+    invalidateQR('Preparing QR code...');
     const result = getQRData();
     if (!result.ok) {
       const errors = {
-        wifi_password_required: 'Password is required for WPA/WPA2 and WEP networks',
-        wifi_password_length: 'WPA/WPA2 passwords must be between 8 and 63 characters',
-        required_fields: 'Please fill in all required fields'
+        wifi_password_required: 'Enter a password for WPA/WPA2 or WEP, or choose an open network.',
+        wifi_password_length: 'Use a WPA/WPA2 password between 8 and 63 characters.',
+        required_fields: 'Enter the required content for this QR type, then generate again.'
       };
-      alert(errors[result.error] || 'Unable to build this QR payload');
+      qrStatus.textContent = errors[result.error] || 'Check the QR content and generate again.';
       return;
     }
-
-    const qrcodeDiv = document.getElementById('qrcode');
-    qrcodeDiv.innerHTML = '';
-
-    const darkColor = darkColorInput.value;
-    const lightColor = lightColorInput.value;
-
-    qrcodeInstance = new QRCode(qrcodeDiv, {
-      text: result.data,
-      width: 256,
-      height: 256,
-      colorDark: darkColor,
-      colorLight: lightColor,
-      correctLevel: QRCode.CorrectLevel.H
-    });
-
-    previewCard.classList.add('on');
+    try {
+      qrcodeInstance = new QRCode(document.getElementById('qrcode'), {
+        text: result.data, width: 256, height: 256,
+        colorDark: darkColorInput.value, colorLight: lightColorInput.value,
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      generatedQR = { data: result.data, dark: darkColorInput.value, light: lightColorInput.value,
+        filename: currentStarter && STARTERS[currentStarter] ? STARTERS[currentStarter].filename : MODE_GUIDES[currentMode].filename };
+      previewCard.classList.add('on');
+      pngButton.disabled = false;
+      svgButton.disabled = false;
+      qrStatus.textContent = 'QR code generated for the current inputs. Download PNG or SVG, then test the scan.';
+    } catch (_) {
+      invalidateQR('This content could not fit in a QR code. Shorten it and generate again.');
+    }
   });
 
-  document.getElementById('downloadPNG').addEventListener('click', () => {
+  pngButton.addEventListener('click', () => {
+    if (!currentQR()) return;
     const canvas = document.querySelector('#qrcode canvas');
-    if (canvas) {
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      const baseName = currentStarter && STARTERS[currentStarter] ? STARTERS[currentStarter].filename : MODE_GUIDES[currentMode].filename;
-      link.download = baseName + '.png';
-      link.click();
-    }
+    if (!canvas) return;
+    const link = document.createElement('a');
+    // Preserve the rendered modules and add the same four-module quiet zone as SVG.
+    const modules = qrcodeInstance._oQRCode.getModuleCount();
+    const margin = Math.ceil(4 * canvas.width / modules);
+    const artwork = document.createElement('canvas');
+    artwork.width = canvas.width + margin * 2;
+    artwork.height = canvas.height + margin * 2;
+    const context = artwork.getContext('2d');
+    context.fillStyle = generatedQR.light;
+    context.fillRect(0, 0, artwork.width, artwork.height);
+    context.drawImage(canvas, margin, margin);
+    link.href = artwork.toDataURL('image/png');
+    link.download = generatedQR.filename + '.png';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   });
 
-  function buildQRVector() {
-    const qr = qrcodeInstance && qrcodeInstance._oQRCode;
-    return window.AfroTools.QrPayload.buildSvg(qr, darkColorInput.value, lightColorInput.value);
-  }
-
-  document.getElementById('downloadSVG').addEventListener('click', () => {
-    const svgData = buildQRVector();
-    if (svgData) {
-      const url = URL.createObjectURL(new Blob([svgData], { type: 'image/svg+xml' }));
-      const link = document.createElement('a');
-      link.href = url;
-      const baseName = currentStarter && STARTERS[currentStarter] ? STARTERS[currentStarter].filename : MODE_GUIDES[currentMode].filename;
-      link.download = baseName + '.svg';
-      link.click();
-      URL.revokeObjectURL(url);
-    }
+  const ownedSvgUrls = new Set();
+  window.addEventListener('pagehide', () => ownedSvgUrls.forEach(url => URL.revokeObjectURL(url)));
+  svgButton.addEventListener('click', () => {
+    if (!currentQR()) return;
+    const svgData = window.AfroTools.QrPayload.buildSvg(qrcodeInstance._oQRCode, generatedQR.dark, generatedQR.light);
+    if (!svgData) return;
+    const url = URL.createObjectURL(new Blob([svgData], { type: 'image/svg+xml' }));
+    ownedSvgUrls.add(url);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = generatedQR.filename + '.svg';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   });
 
   syncColorLabels();
-  renderGuide(STARTERS.whatsapp);
+  renderGuide(MODE_GUIDES.text);
+  starterNote.innerHTML = '<strong>Plain Text QR:</strong> ' + MODE_GUIDES.text.intro;
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>

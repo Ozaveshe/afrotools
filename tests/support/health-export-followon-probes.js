@@ -68,7 +68,7 @@ async function water(page, baseURL, outputPath) {
 }
 
 async function vaccine(page, baseURL, outputPath) {
- const source=null,output=outputPath,rows=[];
+ const source=null,output=outputPath,rows=[],lifecycle=[];
  const countries=['NG','KE','GH','ZA','ET','OTHER'],ages=['newborn','infant','early-childhood','school-age','adolescent','adult'],reasons=['routine','missed','unclear','no-record','reaction'];
  const routes={en:'/tools/vaccine-schedule/',fr:'/fr/tools/calendrier-vaccinal/',sw:'/sw/zana/ratiba-ya-chanjo/'};
  for(const lang of ['en','fr','sw'])for(const mode of ['patched']){
@@ -81,11 +81,33 @@ async function vaccine(page, baseURL, outputPath) {
    // Chromium limits one frame to ten burst downloads per second. Keep every fixture and actual file.
    await new Promise(resolve=>setTimeout(resolve,125));
    const dp=p.waitForEvent('download');await p.locator('#download-button').click();const download=await dp,file=output+'/'+lang+'-'+mode+'-'+n+'.txt';await download.saveAs(file);
+   if(n===0){
+    const proof={lang,edits:[],reset:null,invalid:null,recovered:null};
+    const fields=[['country','KE','select'],['age-band','infant','select'],['record-status','missed','select'],['record-product','Different synthetic product','text']];
+    for(const [id,value,type] of fields){
+     if(type==='select')await p.locator('#'+id).selectOption(value);else await p.locator('#'+id).fill(value);
+     const edit={id,hidden:await p.locator('#handoff').isHidden(),disabled:await p.locator('#download-button').isDisabled(),printDisabled:await p.locator('#print-button').isDisabled()};
+     if(!edit.hidden||!edit.disabled||!edit.printDisabled)throw Error('Vaccine stale result '+lang+' '+id);
+     proof.edits.push(edit);
+     await p.locator('#programme-form button[type=submit]').click();await p.locator('#handoff').waitFor({state:'visible'});
+     if(await p.locator('#download-button').isDisabled()||await p.locator('#print-button').isDisabled())throw Error('Vaccine recalculation did not recover '+lang+' '+id);
+    }
+    await p.locator('#programme-form button[type=reset]').click();
+    proof.reset={hidden:await p.locator('#handoff').isHidden(),disabled:await p.locator('#download-button').isDisabled(),printDisabled:await p.locator('#print-button').isDisabled()};
+    if(!proof.reset.hidden||!proof.reset.disabled||!proof.reset.printDisabled)throw Error('Vaccine reset retained export '+lang);
+    await p.locator('#programme-form button[type=submit]').click();
+    proof.invalid={hidden:await p.locator('#handoff').isHidden(),disabled:await p.locator('#download-button').isDisabled(),printDisabled:await p.locator('#print-button').isDisabled(),errors:await p.locator('#error-summary').isVisible()};
+    if(!proof.invalid.hidden||!proof.invalid.disabled||!proof.invalid.printDisabled||!proof.invalid.errors)throw Error('Vaccine invalid submit retained export '+lang);
+    await p.locator('#country').selectOption(input.country);await p.locator('#age-band').selectOption(input.ageBand);await p.locator('#record-status').selectOption(input.recordStatus);await p.locator('#record-product').fill(input.recordProduct);await p.locator('#programme-form button[type=submit]').click();await p.locator('#handoff').waitFor({state:'visible'});
+    proof.recovered={downloadEnabled:await p.locator('#download-button').isEnabled(),printEnabled:await p.locator('#print-button').isEnabled(),errorsHidden:await p.locator('#error-summary').isHidden()};
+    if(!proof.recovered.downloadEnabled||!proof.recovered.printEnabled||!proof.recovered.errorsHidden)throw Error('Vaccine valid recovery failed '+lang);
+    lifecycle.push(proof);
+   }
    rows.push({lang,mode,n,input,result,file,overflow:await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth),errors:[...errors]});
   }
   await ctx.close();
  }
- return{rows,production:false};
+ return{rows,lifecycle,production:false};
 }
 
 async function antenatal(page, baseURL, outputPath) {

@@ -494,10 +494,14 @@
 (function(){
   var review=document.getElementById('receiptReviewConfirm');
   var status=document.getElementById('receiptReviewStatus');
+  var numericReviewPending=false;
   var exportIds=['downloadPdfBtn','printBtn','copySummaryBtn','txtBtn','csvBtn','jsonBtn'];
   function value(id){var field=document.getElementById(id);return String(field&&field.value||'').trim()}
   function exportProblem(id){
     if(id==='jsonBtn')return '';
+    if(typeof window.AfroReceiptNumericProblem!=='function')return 'Receipt tools are still loading. Try again in a moment.';
+    var numericProblem=window.AfroReceiptNumericProblem();
+    if(numericProblem)return numericProblem.message;
     var item=[].slice.call(document.querySelectorAll('#itemsList [data-item-row]')).some(function(row){
       var desc=row.querySelector('[data-item-field="desc"]');
       var qty=row.querySelector('[data-item-field="qty"]');
@@ -519,10 +523,13 @@
       event.preventDefault();
       event.stopImmediatePropagation();
       if(status)status.textContent=problem;
-      var target=/business/.test(problem)?document.getElementById('businessName'):/number and date/.test(problem)?document.getElementById('receiptNumber'):/priced item/.test(problem)?document.querySelector('[data-item-field="desc"]'):document.getElementById('paymentReference');
+      var numericProblem=window.AfroReceiptNumericProblem&&window.AfroReceiptNumericProblem();
+      numericReviewPending=Boolean(numericProblem);
+      var target=numericProblem?numericProblem.field:/business/.test(problem)?document.getElementById('businessName'):/number and date/.test(problem)?document.getElementById('receiptNumber'):/priced item/.test(problem)?document.querySelector('[data-item-field="desc"]'):document.getElementById('paymentReference');
       if(target)target.focus();
       return;
     }
+    numericReviewPending=false;
     if(review&&review.checked)return;
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -530,10 +537,12 @@
     if(review)review.focus();
   }
   function invalidate(event){
-    if(!review||event.target===review||!review.checked)return;
+    if(!review||event.target===review||(!review.checked&&!numericReviewPending))return;
     if(event.target&&event.target.closest&&event.target.closest('.receipt-app')){
       review.checked=false;
-      if(status)status.textContent='Receipt changed. Review the final preview again before export.';
+      var numericProblem=window.AfroReceiptNumericProblem&&window.AfroReceiptNumericProblem();
+      numericReviewPending=Boolean(numericProblem);
+      if(status)status.textContent=numericProblem?numericProblem.message:'Receipt changed. Review the final preview again before export.';
     }
   }
   document.addEventListener('click',requireReview,true);

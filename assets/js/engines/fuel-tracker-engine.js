@@ -170,14 +170,17 @@
     var item = row && row[type];
     var local = finite(item && item.price);
     var usd = finite(item && item.usd);
-    var age = ageDays(row && row.last_updated, nowValue);
+    var checkedAt = nowValue || new Date().toISOString();
+    var rowDate = Date.parse(row && row.last_updated || '');
+    var future = rowDate > Date.parse(checkedAt);
+    var age = ageDays(row && row.last_updated, checkedAt);
     var limit = Number.isFinite(Number(maxAgeDays)) ? Number(maxAgeDays) : 45;
     var sourceUrl = row && (row.official_verified === true ? row.official_source_url : row.source_url) || '';
-    var usable = Boolean(row && row.code && local > 0 && usd > 0 && sourceUrl && age <= limit);
+    var usable = Boolean(row && row.code && local > 0 && usd > 0 && sourceUrl && !future && age <= limit);
     return {
       usable: usable,
       ageDays: age,
-      reason: usable ? '' : !row ? 'Country row unavailable.' : !sourceUrl ? 'No row-level source link.' : age > limit ? 'Snapshot is older than ' + limit + ' days.' : 'Selected fuel price is unavailable.',
+      reason: usable ? '' : !row ? 'Country row unavailable.' : !sourceUrl ? 'No row-level source link.' : future ? 'Snapshot date is in the future.' : age > limit ? 'Snapshot is older than ' + limit + ' days.' : 'Selected fuel price is unavailable.',
       localPrice: local,
       usdPrice: usd,
       unit: type === 'lpg' ? 'kg' : 'litre',

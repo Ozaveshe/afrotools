@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate all 54 farm-payroll country pages using simple string replacement."""
 import os
+import json
 from _ng_contributions import apply_nigeria_contributions
 
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -69,6 +70,9 @@ PAGE_TEMPLATE = open(os.path.join(DIR, '_template.html'), 'r', encoding='utf-8')
 def generate(code, name, flag, slug, paye_link, fp_slug):
     content = PAGE_TEMPLATE
     content = content.replace('__CODE__', code)
+    # JSON escaping plus the existing single-quote delimiter keeps JS labels safe.
+    js_name = json.dumps(name, ensure_ascii=True)[1:-1].replace("'", "\\'")
+    content = content.replace("'__NAME__'", "'" + js_name + "'")
     content = content.replace('__NAME__', name)
     content = content.replace('__FLAG__', flag)
     content = content.replace('__SLUG__', slug)

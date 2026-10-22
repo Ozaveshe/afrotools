@@ -7,7 +7,65 @@
 
   var AFCON_RANGE_FIELDS = ['formBoost', 'defenseBoost', 'hostBoost', 'upsetTolerance'];
 
+  function syncAfconKenyaControls(form) {
+    if (!form || !form.elements.kenyaStrength || !form.elements.replaceSeed) return;
+    var strength = form.elements.kenyaStrength;
+    var replacement = form.elements.replaceSeed;
+    var active = form.elements.favorite.value === 'Kenya' && form.elements.mode.value === '2027-planner';
+    [strength, replacement].forEach(function (field) {
+      var wrapper = field.closest('.sports-field');
+      if (wrapper) { wrapper.hidden = !active; wrapper.style.display = active ? '' : 'none'; }
+      field.required = active;
+    });
+    strength.min = '0';
+    strength.max = '3000';
+    strength.step = 'any';
+    var kenyaOption = form.elements.favorite.querySelector('option[value="Kenya"]');
+    if (kenyaOption) kenyaOption.disabled = form.elements.mode.value !== '2027-planner';
+    var wrapper = strength.closest('.sports-field');
+    if (wrapper && !wrapper.querySelector('[data-kenya-benchmark]')) {
+      var config = window.AfroSports.tools['afcon-predictor'];
+      var benchmark = config.kenyaBenchmark;
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sports-btn secondary';
+      button.setAttribute('data-kenya-benchmark', '');
+      button.textContent = 'Use ' + benchmark.team + ' model baseline (' + benchmark.strength + ')';
+      button.addEventListener('click', function () {
+        strength.value = String(benchmark.strength);
+        strength.dispatchEvent(new window.Event('change', { bubbles: true }));
+      });
+      wrapper.insertBefore(button, wrapper.querySelector('.sports-hint'));
+    }
+  }
+
+  function afconKenyaError(form) {
+    var strength = form.elements.kenyaStrength;
+    var replacement = form.elements.replaceSeed;
+    var favorite = form.elements.favorite;
+    if (!strength || !replacement) return null;
+    [strength, replacement, favorite].forEach(function (field) {
+      field.setCustomValidity('');
+      field.removeAttribute('aria-invalid');
+      var ids = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(function (id) { return id && id !== 'afcon-input-status'; });
+      if (ids.length) field.setAttribute('aria-describedby', ids.join(' '));
+      else field.removeAttribute('aria-describedby');
+    });
+    if (favorite.value !== 'Kenya') return null;
+    var invalid = null;
+    if (form.elements.mode.value !== '2027-planner') invalid = { field: favorite, message: 'Choose another team for 2025 review, or use Kenya in 2027 planning mode.' };
+    else if (strength.value.trim() === '' || !isFinite(Number(strength.value)) || Number(strength.value) < 0 || Number(strength.value) > 3000) invalid = { field: strength, message: 'Enter Kenya scenario strength from 0 to 3000, or choose the Uganda model benchmark.' };
+    else if (!replacement.value || replacement.value === 'Uganda' || replacement.value === 'Tanzania') invalid = { field: replacement, message: 'Choose one non-host seed Kenya replaces in this 24-team what-if field.' };
+    if (invalid) {
+      invalid.field.setCustomValidity(invalid.message);
+      invalid.field.setAttribute('aria-invalid', 'true');
+      invalid.field.setAttribute('aria-describedby', ((invalid.field.getAttribute('aria-describedby') || '') + ' afcon-input-status').trim());
+    }
+    return invalid;
+  }
+
   function bindAfconRanges(form) {
+    syncAfconKenyaControls(form);
     if (!form || form.hasAttribute('data-afcon-ranges-bound')) return;
     form.setAttribute('data-afcon-ranges-bound', '');
     AFCON_RANGE_FIELDS.forEach(function (name) {
@@ -47,7 +105,7 @@
       if (describedBy.length) field.setAttribute('aria-describedby', describedBy.join(' '));
       else field.removeAttribute('aria-describedby');
     });
-    return first;
+    return first || afconKenyaError(form);
   }
 
   function afconInputStatus(message) {
@@ -107,6 +165,12 @@
       });
       if (ids.length) field.setAttribute('aria-describedby', ids.join(' '));
       else field.removeAttribute('aria-describedby');
+    });
+    if (form) ['kenyaStrength', 'replaceSeed', 'favorite'].forEach(function (name) {
+      var field = form.elements[name];
+      if (!field) return;
+      field.setCustomValidity('');
+      field.removeAttribute('aria-invalid');
     });
     afconInputsPending = false;
     afconInputStatus('');

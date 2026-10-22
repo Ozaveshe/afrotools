@@ -74,3 +74,55 @@ test("duplicate detector reports repeated generated or source keys", () => {
     ["alpha", "beta"]
   );
 });
+
+test("explicit BF hold removes calculation discovery without withholding other review-required engines", () => {
+  const registry = require("../netlify/functions/_engines");
+  const availability = require("../data/calculation-quality/paye-availability.json");
+  const formulas = require("../data/calculation-quality/formula-registry.json").formulas;
+  assert.equal(availability.schemaVersion, 1);
+  assert.deepEqual(Object.keys(availability.countries), ["BF"]);
+  assert.equal(registry.get("BF"), null);
+  assert.equal(registry.get("bf"), null);
+  assert.equal(registry.getFormula("BF"), null);
+  for (const effectiveOn of [undefined, "2026-01-01", "1900-01-01"])
+    assert.deepEqual(registry.resolve("bf", effectiveOn), {
+      ok: false, error: "PAYROLL_WITHHELD", jurisdiction: "BF",
+      effectiveOn: effectiveOn || null, reasonCode: availability.countries.BF.reasonCode,
+    });
+  const available = formulas.filter(f => f.formulaFamily === "paye-server" && f.jurisdictions.length === 1)
+    .map(f => f.jurisdictions[0]).filter(code => code !== "BF").sort();
+  assert.equal(available.length, 52);
+  assert.deepEqual(registry.listCountryCodes(), available);
+  assert.equal(registry.count(), available.length);
+  assert.deepEqual(registry.listCountries().map(row => row.code).sort(), available);
+  for (const code of available) {
+    assert.equal(typeof registry.get(code).calculate, "function", code);
+    assert.equal(registry.resolve(code).ok, true, code + " remains available without an effective-date request");
+  }
+  assert.ok(formulas.some(f => f.formulaFamily === "paye-server" && f.effectiveDateStatus === "review-required"
+    && f.jurisdictions[0] !== "BF" && registry.get(f.jurisdictions[0])), "review-required alone must not withhold engines");
+  assert.equal(registry.resolve("XX").error, "UNSUPPORTED_JURISDICTION");
+  assert.equal(registry.resolve("ZA", "2026-03-01").error, "UNSUPPORTED_DATE");
+});
+
+test("BF AI availability is source-coupled and contains no calculable payroll facts", () => {
+  const crypto = require("node:crypto"), fs = require("node:fs"), path = require("node:path");
+  const policy = require("../data/calculation-quality/paye-availability.json");
+  const held = builder.buildAll();
+  const record = held.records["bf-paye-fr"], facts = record.sourceRecord.facts;
+  assert.equal(record.definition.status, "source-coupled");
+  assert.equal(record.definition.toolKey, "bf-paye-fr");
+  assert.match(held.contexts["bf-paye-fr"], /Répondez TOUJOURS en français/);
+  assert.equal(facts.availability, "withheld");
+  assert.equal(facts.calculable, false);
+  assert.equal(facts.countryCode, "BF");
+  assert.equal(facts.reasonCode, policy.countries.BF.reasonCode);
+  assert.equal(facts.sourceLabel, policy.countries.BF.sourceLabel);
+  const digest = text => "sha256:" + crypto.createHash("sha256").update(text).digest("hex");
+  assert.equal(facts.policyDigest, digest(JSON.stringify(policy, null, 2) + "\n"));
+  assert.equal(facts.webHoldDigest, digest(fs.readFileSync(path.join(__dirname, "..", policy.countries.BF.webHoldController), "utf8")));
+  assert.deepEqual(Object.keys(facts).sort(), ["countryCode", "availability", "calculable", "reasonCode", "sourceLabel", "policyPath", "policyDigest", "webHoldDigest"].sort());
+  assert.match(held.contexts["bf-paye-fr"], /Do not calculate or estimate/);
+  assert.match(held.contexts["bf-paye-fr"], /no current payroll rules or new source review date/);
+  assert.doesNotMatch(held.contexts["bf-paye-fr"], /\d|%|XOF|Current structured|As of:|Formula:/);
+});

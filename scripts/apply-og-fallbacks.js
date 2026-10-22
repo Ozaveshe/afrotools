@@ -565,12 +565,13 @@ function applyFallbacks(html, filePath, options = {}) {
       changed = true;
     }
 
-    if ((preferredToolImage || !getMetaContent(html, "name", "twitter:card")) && pageTitle && !getMetaContent(next, "name", "twitter:title")) {
+    // An existing card or image choice does not provide explicit Twitter copy.
+    if (pageTitle && !getMetaContent(next, "name", "twitter:title")) {
       next = upsertMetaContent(next, "name", "twitter:title", pageTitle, "name", "twitter:card");
       changed = true;
     }
 
-    if ((preferredToolImage || !getMetaContent(html, "name", "twitter:card")) && pageDescription && !getMetaContent(next, "name", "twitter:description")) {
+    if (pageDescription && !getMetaContent(next, "name", "twitter:description")) {
       next = upsertMetaContent(next, "name", "twitter:description", pageDescription, "name", "twitter:title");
       changed = true;
     }

@@ -21,3 +21,20 @@ test('source owner regenerates all locale controls, selected-source disclosure a
 
 test('legacy GPP diesel keeps useful values with the proven per-product URL and honest snapshot date',()=>{const input={code:'BI',name:'Burundi',currency:'BIF',source:'globalpetrolprices',source_url:'https://www.globalpetrolprices.com/Burundi/gasoline_prices/',last_updated:'2026-10-12',petrol:{price:4000,unit:'liter'},diesel:{price:3925,unit:'liter'}};const m=observations.merge([],{countries:[input]},now)[0],r=m.fuels.find(x=>x.fuel_type==='diesel');assert.equal(r.price,3925);assert.equal(r.source_url,'https://www.globalpetrolprices.com/Burundi/diesel_prices/');assert.equal(r.date_basis,'snapshot');assert.equal(observations.status(r,now).basis,'snapshot-estimate');const context=observations.priceContext(m,r,'snapshot-estimate');assert.equal(context.snapshotDate,'2026-10-12');assert.equal(context.observationDate,null);assert.equal(context.effectiveDate,null);assert.equal(context.lastVerifiedAt,null);});
 test('per-product observations and URLs override a newer shared row clock without freshening a reused price',()=>{const input={code:'BI',name:'Burundi',currency:'BIF',source:'globalpetrolprices',source_url:'https://www.globalpetrolprices.com/Burundi/gasoline_prices/',last_updated:'2026-10-21',petrol:{price:4000,unit:'liter',observed_at:'2026-10-12',source_url:'https://www.globalpetrolprices.com/Burundi/gasoline_prices/'},diesel:{price:3925,unit:'liter',observed_at:'2026-08-01',source_url:'https://www.globalpetrolprices.com/Burundi/diesel_prices/'}};const r=observations.merge([],{countries:[input]},now)[0].fuels.find(x=>x.fuel_type==='diesel');assert.equal(r.effective_date,'2026-08-01');assert.equal(r.source_url,input.diesel.source_url);assert.equal(observations.status(r,now).basis,'historical-estimate');});
+
+
+test('scheduled national observations merge without replacing city/outlet references or newer static products',()=>{
+ const defaults=observations.merge(markets.markets,latest,now),saved=JSON.stringify(defaults);
+ const feed={countries:[{code:'NG',name:'Nigeria',currency:'NGN',source_url:'https://www.globalpetrolprices.com/Nigeria/gasoline_prices/',last_updated:'2026-10-22',petrol:{price:1500,unit:'liter',observed_at:'2026-10-21',source_url:'https://www.globalpetrolprices.com/Nigeria/gasoline_prices/'},diesel:{price:1700,unit:'liter',observed_at:'2026-07-01',source_url:'https://www.globalpetrolprices.com/Nigeria/diesel_prices/'}}]};
+ const merged=observations.merge(defaults,feed,now),ng=merged.find(m=>m.market_id==='ng-national');
+ assert.equal(JSON.stringify(defaults),saved);assert.equal(merged.filter(m=>m.country_code==='NG'&&m.granularity==='national').length,1);
+ assert.deepEqual(merged.find(m=>m.market_id==='ng-abuja-nnpc-observed'),defaults.find(m=>m.market_id==='ng-abuja-nnpc-observed'));
+ assert.equal(ng.fuels.find(r=>r.fuel_type==='petrol').price,1500);
+ const context=observations.priceContext(ng,ng.fuels.find(r=>r.fuel_type==='petrol'),'dated-observation');assert.equal(context.observationDate,'2026-10-21');assert.equal(context.effectiveDate,null);assert.equal(context.sourceUrl,feed.countries[0].petrol.source_url);
+ assert.deepEqual(ng.fuels.find(r=>r.fuel_type==='diesel'),defaults.find(m=>m.market_id==='ng-national').fuels.find(r=>r.fuel_type==='diesel'));
+});
+
+test('empty, incomplete, unsafe and future scheduled products preserve useful committed references',()=>{
+ const defaults=observations.merge(markets.markets,latest,now);
+ for(const feed of [null,{}, {countries:[]},{countries:[{code:'NG',name:'Nigeria',currency:'NGN',last_updated:'2026-10-21',petrol:{price:0,unit:'liter'}}]},{countries:[{code:'NG',name:'Nigeria',currency:'NGN',last_updated:'2026-10-21',petrol:{price:1,unit:'liter',observed_at:'2026-10-23',source_url:'https://example.test/prices'}}]}])assert.deepEqual(observations.merge(defaults,feed,now),defaults);
+});
