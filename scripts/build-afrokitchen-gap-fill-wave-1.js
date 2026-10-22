@@ -460,6 +460,149 @@ function recipe(row) {
   };
   // Exact reviewed source rows; no UUID/public approval is assigned by this source batch.
   const attributed = {
+    "maheu-zm": {
+      "name": "Maheu – Ntambanana maize version",
+      "description": "A lightly sweet fermented maize drink, adapted from the measured Ntambanana method.",
+      "story": "A regional maize version from Ntambanana, South Africa, after Olusanya and colleagues. Fermentation observations are not safety checks.",
+      "author": "AfroKitchen adaptation of Olusanya et al. (2021), Ntambanana",
+      "source": "https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf",
+      "default_servings": null,
+      "serving_unit": null,
+      "yield_status": "not-recorded",
+      "prep_time_minutes": null,
+      "cook_time_minutes": null,
+      "total_time_minutes": null,
+      "image_url": "/assets/img/kitchen/responsive/maheu-zm-1280.webp",
+      "image_alt": "AI-generated illustration of a creamy maize Maheu drink.",
+      "calories": null,
+      "protein_g": null,
+      "carbs_g": null,
+      "fat_g": null,
+      "fiber_g": null,
+      "nutrition_basis": null,
+      "tags": [
+        "maize",
+        "fermented",
+        "drink"
+      ],
+      "diet_tags": [],
+      "chef_notes": null,
+      "best_served_with": null,
+      "occasion": null,
+      "regional_variations": "Regional South African method; Zambia-specific household variations are not documented here.",
+      "method_review_status": "attributed-source-method",
+      "method_review_revision": null,
+      "ingredients": [
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "white maize meal",
+          "amount": 120,
+          "unit": "g",
+          "prep_note": null,
+          "is_optional": false,
+          "sort_order": 10,
+          "group_name": null
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "water",
+          "amount": 1250,
+          "unit": "ml",
+          "prep_note": "900 ml for boiling, 200 ml for the paste and 150 ml for dissolving sugar",
+          "is_optional": false,
+          "sort_order": 20,
+          "group_name": null
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "sugar",
+          "amount": 50,
+          "unit": "g",
+          "prep_note": null,
+          "is_optional": false,
+          "sort_order": 30,
+          "group_name": null
+        }
+      ],
+      "steps": [
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 1,
+          "title": "Make the maize slurry",
+          "instruction": "Bring 900 ml water to a boil. Separately whisk the maize meal with 200 ml water; stir this paste into the pot.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 2,
+          "title": "Cook the porridge",
+          "instruction": "Turn the heat down to medium. Cook for 20–25 minutes, stirring now and then.",
+          "timer_seconds": 1200,
+          "timer_label": "Check the cooking stage at 20 minutes"
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 3,
+          "title": "Cool and check the temperature",
+          "instruction": "Switch off the heat. Stir occasionally for 35–40 minutes and use a thermometer to check that the porridge has cooled to 40°C.",
+          "timer_seconds": 2100,
+          "timer_label": "Check cooling temperature; target 40°C"
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 4,
+          "title": "Sweeten and cover",
+          "instruction": "Dissolve 50 g sugar in the remaining 150 ml water. Stir into the porridge, transfer to a clean food container and use a vented lid.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 5,
+          "title": "Allow fermentation",
+          "instruction": "Leave the covered container in a cupboard. The authors observed 96 hours in cold weather and described about 24 hours in warm weather; conditions change fermentation time.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 6,
+          "title": "Serve chilled",
+          "instruction": "Chill the fermented drink before serving.",
+          "timer_seconds": null,
+          "timer_label": null
+        }
+      ],
+      "method_revision": "maheu-ntambanana-maize-20261022-v1",
+      "confidence": "Attributed regional measured preparation, not kitchen-tested",
+      "review_summary": "Measured maize/water/sugar procedure and weather-dependent fermentation observations. No Zambia-specific method verification, person yield, full duration, nutrition or safe endpoint invented.",
+      "official_source_status": "Primary academic preparation, not official certification",
+      "recommended_changes": [],
+      "sources": [
+        {
+          "title": "Olusanya et al. (2021) – Preparation, storage, and utilization of Mahewu in Ntambanana",
+          "url": "https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf",
+          "source_type": "primary research preparation",
+          "accessed_at": "2026-10-22",
+          "access_basis": "Actual17-page299220-byte PDF; method page8/printed17499 rendered and inspected; storage observation on page11 read. No source prose/images republished.",
+          "supports": [
+            "120 g maize meal;1250 ml water split900+200+150;50 g sugar",
+            "Cook20–25 minutes;cool35–40 minutes to40°C;vented container",
+            "Cold-weather96hour observation and warm-weather usually24hour statement, not guaranteed endpoints"
+          ]
+        }
+      ]
+    },
     "kisra-south-sudan-ss": {
       "name": "Kisra – Sudanese Kitchen adaptation",
       "description": "Thin fermented sorghum sheets, adapted from the regional Sudanese Kitchen recipe.",
@@ -1124,29 +1267,6 @@ function recipe(row) {
     "ingredients": [],
     "steps": []
   },
-    "maheu-zm": {
-      "story": null,
-      "occasion": null,
-      "best_served_with": null,
-      "regional_variations": null,
-      "prep_time_minutes": null,
-      "cook_time_minutes": null,
-      "total_time_minutes": null,
-      "default_servings": null,
-      "serving_unit": null,
-      "calories": null,
-      "protein_g": null,
-      "carbs_g": null,
-      "fat_g": null,
-      "fiber_g": null,
-      "description": "Zambian maize-meal drink. A reviewed preparation method, quantities, fermentation conditions, duration and yield are not available on this page.",
-      "method_review_status": "pending-source-method",
-      "method_review_revision": "kisra-maheu-source-hold-20261018",
-      "yield_status": "not-recorded",
-      "ingredients": [],
-      "steps": [],
-      "diet_tags": []
-    }
   };
   if (!Object.prototype.hasOwnProperty.call(pending, row.slug)) return result;
   Object.assign(result, pending[row.slug]);
@@ -1267,11 +1387,15 @@ const seen = new Set();
 for (const item of recipes) {
   if (seen.has(item.slug)) throw new Error(`Duplicate slug: ${item.slug}`);
   seen.add(item.slug);
-  if (['kunu-zaki-ng', 'ikivuguto-rw', 'maheu-zm'].includes(item.slug)) {
+  if (['kunu-zaki-ng', 'ikivuguto-rw'].includes(item.slug)) {
     if (item.method_review_status !== 'pending-source-method' || item.method_review_revision !== (['kisra-south-sudan-ss','maheu-zm'].includes(item.slug) ? 'kisra-maheu-source-hold-20261018' : 'kunu-ikivuguto-source-hold-20261018') ||
         item.ingredients.length || item.steps.length || item.default_servings !== null || item.prep_time_minutes !== null || item.cook_time_minutes !== null || item.total_time_minutes !== null) {
       throw new Error(`${item.slug} must remain an explicit source-method hold`);
     }
+    continue;
+  }
+  if (item.slug === 'maheu-zm') {
+    if (item.method_revision !== 'maheu-ntambanana-maize-20261022-v1' || item.source !== 'https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf' || item.ingredients.length !== 3 || item.steps.length !== 6 || item.default_servings !== null || item.total_time_minutes !== null || item.diet_tags.length || item.calories !== null || ['id','is_published','is_verified'].some(key => Object.prototype.hasOwnProperty.call(item,key))) throw new Error('Maheu source adaptation drift');
     continue;
   }
   if (item.slug === 'kisra-south-sudan-ss') {

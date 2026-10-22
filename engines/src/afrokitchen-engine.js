@@ -3056,6 +3056,177 @@ var AfroKitchenEngine = function() {
         ]
       }
     },
+    "maheu-zm": {
+      "id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+      "revision": "maheu-ntambanana-maize-20261022-v1",
+      "fields": {
+        "name": "Maheu – Ntambanana maize version",
+        "description": "A lightly sweet fermented maize drink, adapted from the measured Ntambanana method.",
+        "story": "A regional maize version from Ntambanana, South Africa, after Olusanya and colleagues. Fermentation observations are not safety checks.",
+        "author": "AfroKitchen adaptation of Olusanya et al. (2021), Ntambanana",
+        "source": "https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf",
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/responsive/maheu-zm-1280.webp",
+        "image_alt": "AI-generated illustration of a creamy maize Maheu drink.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "tags": [
+          "maize",
+          "fermented",
+          "drink"
+        ],
+        "diet_tags": [],
+        "chef_notes": null,
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": "Regional South African method; Zambia-specific household variations are not documented here.",
+        "method_review_status": "attributed-source-method",
+        "method_review_revision": null,
+        "ingredients": [
+          {
+            "id": "source-maheu-zm-ingredient-1",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "white maize meal",
+            "amount": 120,
+            "unit": "g",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-maheu-zm-ingredient-2",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "water",
+            "amount": 1250,
+            "unit": "ml",
+            "prep_note": "900 ml for boiling, 200 ml for the paste and 150 ml for dissolving sugar",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-maheu-zm-ingredient-3",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 50,
+            "unit": "g",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-maheu-zm-step-1",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Make the maize slurry",
+            "instruction": "Bring 900 ml water to a boil. Separately whisk the maize meal with 200 ml water; stir this paste into the pot.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-maheu-zm-step-2",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Cook the porridge",
+            "instruction": "Turn the heat down to medium. Cook for 20–25 minutes, stirring now and then.",
+            "timer_seconds": 1200,
+            "timer_label": "Check the cooking stage at 20 minutes"
+          },
+          {
+            "id": "source-maheu-zm-step-3",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Cool and check the temperature",
+            "instruction": "Switch off the heat. Stir occasionally for 35–40 minutes and use a thermometer to check that the porridge has cooled to 40°C.",
+            "timer_seconds": 2100,
+            "timer_label": "Check cooling temperature; target 40°C"
+          },
+          {
+            "id": "source-maheu-zm-step-4",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Sweeten and cover",
+            "instruction": "Dissolve 50 g sugar in the remaining 150 ml water. Stir into the porridge, transfer to a clean food container and use a vented lid.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-maheu-zm-step-5",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Allow fermentation",
+            "instruction": "Leave the covered container in a cupboard. The authors observed 96 hours in cold weather and described about 24 hours in warm weather; conditions change fermentation time.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-maheu-zm-step-6",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 6,
+            "title": "Serve chilled",
+            "instruction": "Chill the fermented drink before serving.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-maheu-zm-hero",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/responsive/maheu-zm-1280.webp",
+            "alt_text": "AI-generated illustration of a creamy maize Maheu drink.",
+            "caption": "AI-generated serving illustration; not a photograph of a tested fermentation batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation of Olusanya et al. (2021)",
+            "credit_url": "https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
     "kisra-south-sudan-ss": {
       "id": "c0aced74-68d6-437d-b00b-abd1895605f0",
       "revision": "kisra-sudanese-kitchen-20261022-v1",
@@ -3864,32 +4035,6 @@ var AfroKitchenEngine = function() {
         "steps": []
       }
     },
-    "maheu-zm": {
-      "id": "626fd465-87e1-4f93-bca7-747decbf63d0",
-      "fields": {
-        "story": null,
-        "occasion": null,
-        "best_served_with": null,
-        "regional_variations": null,
-        "prep_time_minutes": null,
-        "cook_time_minutes": null,
-        "total_time_minutes": null,
-        "default_servings": null,
-        "serving_unit": null,
-        "calories": null,
-        "protein_g": null,
-        "carbs_g": null,
-        "fat_g": null,
-        "fiber_g": null,
-        "description": "Zambian maize-meal drink. A reviewed preparation method, quantities, fermentation conditions, duration and yield are not available on this page.",
-        "method_review_status": "pending-source-method",
-        "method_review_revision": "kisra-maheu-source-hold-20261018",
-        "yield_status": "not-recorded",
-        "ingredients": [],
-        "steps": [],
-        "diet_tags": []
-      }
-    }
   };
   function pendingRecipeMethodTarget(recipe) {
     if (!recipe || typeof recipe !== 'object') return null;
@@ -4321,6 +4466,11 @@ var AfroKitchenEngine = function() {
       if (!recipe || recipe.id !== 'c0aced74-68d6-437d-b00b-abd1895605f0' || !isAttributedRecipe(recipe)) return null;
       var steps = recipe.steps || [];
       return steps.length === 5 && steps[4].timer_seconds === 60 ? { batch: '250 g sorghum flour', ferment: 'Overnight', cook: '1–2 min per sheet' } : null;
+    },
+    getRecipeMaheuStages: function(recipe) {
+      if (!recipe || recipe.id !== '626fd465-87e1-4f93-bca7-747decbf63d0' || !isAttributedRecipe(recipe)) return null;
+      var steps = recipe.steps || [];
+      return steps.length === 6 && steps[1].timer_seconds === 1200 && steps[2].timer_seconds === 2100 ? { batch: '120 g maize meal', cook: '20–25 min', cool: '35–40 min; check 40°C', ferment: 'Observed about 24 h warm / 96 h in the cold-weather study batch' } : null;
     },
     getRecipeTiming: function(recipe) {
       if (isPendingRecipeMethod(recipe)) return { prep: null, cook: null, total: null };

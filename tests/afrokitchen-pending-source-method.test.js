@@ -18,7 +18,6 @@ const plain = value => JSON.parse(JSON.stringify(value));
 const targets = [
   ['kunu-zaki-ng', '8a2bb743-87d9-462e-bc09-335e78f9584a'],
   ['ikivuguto-rw', 'f2850789-0ffd-41b3-bbaf-e3229132c9e6'],
-  ['maheu-zm', '626fd465-87e1-4f93-bca7-747decbf63d0']
 ];
 const row = (slug, id) => ({ id, slug, name: slug, country_name: 'Synthetic country',
   generated_in_wave: true, is_published: true, is_verified: true,
@@ -149,6 +148,7 @@ test('actual dynamic public action guard blocks legacy pending actions but prese
 // Prior four deny holds plus the three new exact source identities. Recognition only withholds planning.
 const plannerYieldTargets = [
   ...targets,
+['maheu-zm', '626fd465-87e1-4f93-bca7-747decbf63d0'],
   ['kisra-south-sudan-ss', 'c0aced74-68d6-437d-b00b-abd1895605f0'],
 
   ['kapenta-stew-zm','76572d95-eb8e-4c78-bbb6-ea754f61c758'],
@@ -493,4 +493,9 @@ test('Kisra current attributed revision alone may activate static cooking; stale
  for(const [input,expected] of [[current,false],[base,true],[{...current,method_revision:'stale'},true],[{...current,id:undefined},true],[{...current,slug:'wrong'},true],[{...current,is_verified:false},true],[row('maheu-zm','626fd465-87e1-4f93-bca7-747decbf63d0'),true]]){
   const context={n:input,i:engine};vm.runInNewContext(functions.get('pendingMethod')+';result=pendingMethod();',context);assert.equal(context.result,expected);
  }
+});
+
+test('Maheu current exact attributed method activates but all legacy/missing/wrong identities or revisions remain withheld',()=>{
+ const source=fs.readFileSync(path.join(ROOT,'tools/afrokitchen/static-recipe-runtime.js'),'utf8'),functions=declarations(source),old=row('maheu-zm','626fd465-87e1-4f93-bca7-747decbf63d0'),current=engine.projectAttributedRecipe(old);assert.equal(engine.isPendingRecipeMethod(current),false);assert.equal(engine.isAttributedRecipe(current),true);
+ for(const [n,expected] of [[current,false],[old,true],[{...current,id:undefined},true],[{...current,slug:'wrong'},true],[{...current,method_revision:'old'},true],[{...current,is_published:false},true]]){const ctx={n,i:engine};vm.runInNewContext(functions.get('pendingMethod')+';result=pendingMethod();',ctx);assert.equal(ctx.result,expected);}
 });
