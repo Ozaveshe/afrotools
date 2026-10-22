@@ -235,8 +235,13 @@ h+='<div class="hr-metric"><div class="hr-metric-val">'+r.formatted.contribution
 h+='<div class="hr-metric"><div class="hr-metric-val">'+r.formatted.total+'</div><div class="hr-metric-label">Total Cost/Month</div></div></div>';
 """,
     "severance": """
-var r=E.calculateSeverance(CC,fv('lastSalary'),fv('yearsOfService'));
+clearGratuityResult();
+var salary=gratuityNumber('lastSalary',false);
+var years=gratuityNumber('yearsOfService',true);
+if(salary===null||years===null){document.getElementById(salary===null?'lastSalary':'yearsOfService').focus();return;}
+var r=E.calculateSeverance(CC,salary,years);
 if(r.error){alert(r.error);return;}
+if(r.computable!==false&&!Number.isFinite(r.amount)){alert('An estimate could not be calculated for these inputs.');return;}
 var h='<div class="hr-res-hero"><div class="hr-res-hero-label">Estimated Severance / Gratuity</div>';
 h+='<div class="hr-res-hero-amount">'+r.formatted+'</div>';
 h+='<div class="hr-res-hero-sub">Method: '+r.method+'</div></div>';
@@ -428,11 +433,27 @@ def gen_country_page(tool, code, cslug, cname, flag):
         form_html += '<div class="hr-form-grid">\n'
         for f in tool["form_fields"]:
             opt = " (optional)" if f.get("optional") else ""
-            inp = f'<input class="hr-f-input" type="{f["type"]}" id="{f["id"]}" placeholder="{f["placeholder"]}" inputmode="numeric">'
+            validation = ' min="0" step="any" required' if tmpl == "severance" else ""
+            inputmode = "decimal" if tmpl == "severance" else "numeric"
+            inp = f'<input class="hr-f-input" type="{f["type"]}" id="{f["id"]}" placeholder="{f["placeholder"]}" inputmode="{inputmode}"{validation}>'
             if f.get("prefix"):
                 inp = f'<div class="hr-input-wrap"><span class="hr-prefix" id="currPrefix"></span>{inp}</div>'
-            form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{f["label"]}{opt}</label>{inp}</div>\n'
+            field_error = f'<p class="hr-warn" id="{f["id"]}Error" role="alert" hidden></p>' if tmpl == "severance" else ""
+            form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{f["label"]}{opt}</label>{inp}{field_error}</div>\n'
         form_html += '</div>\n<button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>\n'
+
+    severance_helpers = ""
+    severance_reveal = ""
+    result_attrs = ""
+    if tmpl == "severance":
+        severance_helpers = """function clearGratuityResult(){var el=document.getElementById('results');el.innerHTML='';el.classList.remove('on');el.hidden=true;}
+function clearGratuityError(id){var el=document.getElementById(id),msg=document.getElementById(id+'Error');el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');msg.textContent='';msg.hidden=true;}
+function gratuityError(id,text){var el=document.getElementById(id),msg=document.getElementById(id+'Error');el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby',id+'Error');msg.textContent=text;msg.hidden=false;}
+function gratuityNumber(id,allowZero){var raw=document.getElementById(id).value.trim(),value=Number(raw);clearGratuityError(id);if(raw===''||!Number.isFinite(value)||value<0||(!allowZero&&value===0)){gratuityError(id,allowZero?'Enter years of service as a number of zero or more.':'Enter a monthly salary greater than zero.');return null;}return value;}
+['lastSalary','yearsOfService'].forEach(function(id){var el=document.getElementById(id);function edited(){clearGratuityResult();clearGratuityError(id);}el.addEventListener('input',edited);el.addEventListener('change',edited);});
+"""
+        severance_reveal = "document.getElementById('results').hidden=false;"
+        result_attrs = ' hidden aria-live="polite"'
 
     # Build inline script
     if tmpl in STATIC_DISPLAY:
@@ -445,12 +466,12 @@ def gen_country_page(tool, code, cslug, cname, flag):
 var CC='{code}';
 var E=window.AfroTools.HREngine;
 function fv(id){{var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}}
-var rules=(typeof EMPLOYER_COST_RULES!=='undefined')?EMPLOYER_COST_RULES[CC]:null;
+{severance_helpers}var rules=(typeof EMPLOYER_COST_RULES!=='undefined')?EMPLOYER_COST_RULES[CC]:null;
 if(rules){{var p=document.getElementById('currPrefix');if(p)p.textContent=rules.symbol||'';}}
 document.getElementById("calcBtn").addEventListener("click",function(){{
 {js_body}
 document.getElementById('results').innerHTML=h;
-document.getElementById('results').classList.add('on');
+document.getElementById('results').classList.add('on');{severance_reveal}
 }});
 }}();
 </script>"""
@@ -488,7 +509,7 @@ document.getElementById('results').classList.add('on');
 <div class="hr-card"><div class="hr-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>{icon}</span><h2>{esc(name)}</h2><span class="hr-card-toggle">&#x25BE;</span></div>
 <div class="hr-card-body">
 {form_html}</div></div>
-<div class="hr-results" id="results"></div>
+<div class="hr-results" id="results"{result_attrs}></div>
 <section class="hr-seo-section">
 <h2>{esc(cname)} {esc(name)} \u2014 What You Need to Know</h2>
 <p>Use this free tool to calculate and understand HR obligations in {esc(cname)}. Based on published labour laws and official contribution rates.</p>
