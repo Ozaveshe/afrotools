@@ -60,3 +60,16 @@ function calcGateway(){
   output.classList.add('on');
   output.focus();
 }
+
+// A comparison belongs to the exact entered quote and currency, not a later edit.
+(function bindGatewayResultFreshness(){
+  var fields=document.querySelectorAll('input[id^="pg-"],select[id^="pg-"]');
+  function invalidateGatewayResult(){
+    document.getElementById('pg-results').classList.remove('on');
+    document.getElementById('pg-error').textContent='';
+  }
+  fields.forEach(function(field){
+    field.addEventListener('input',invalidateGatewayResult);
+    field.addEventListener('change',invalidateGatewayResult);
+  });
+})();
