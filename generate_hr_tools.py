@@ -176,15 +176,15 @@ TOOLS = [
     },
     {
         "slug": "freelancer-rate",
-        "name": "Freelancer Rate Card",
+        "name": "Freelance Pricing Planner",
         "short": "Rate Card",
         "icon": "\U0001f4cb",
         "countries": 15,
-        "data_scripts": ["/data/hr/freelancer-rates-data.js"],
-        "engine_script": None,
-        "seo_title": "Freelancer Rate Card {COUNTRY} 2026 \u2014 Market Rates by Skill | AfroTools",
-        "seo_desc": "Market rates for freelancers in {COUNTRY}. Hourly, daily, and monthly rates for software developers, designers, writers, and more.",
-        "hub_desc": "Market rate guide for freelancers. Hourly, daily, and monthly rates by skill and experience level.",
+        "data_scripts": ["/data/hr/freelancer-rates-data.js", "/data/hr/employer-cost-data.js"],
+        "engine_script": "/engines/freelancer-pricing-engine.js",
+        "seo_title": "Freelance Pricing Planner {COUNTRY} | Hourly Rate & Project Quote | AfroTools",
+        "seo_desc": "Plan a freelance hourly rate and project quote in {COUNTRY} from your take-home target, expenses, billable time and reserve assumptions.",
+        "hub_desc": "Calculate your freelance hourly rate and project quote from your own costs and billable time. Existing country rate cards are separate references.",
         "form_fields": [],
         "calc_fn": None,
         "result_template": "freelancer",
@@ -315,23 +315,7 @@ STATIC_DISPLAY = {
   document.getElementById('results').innerHTML=h;document.getElementById('results').classList.add('on');
 }();
 </script>""",
-    "freelancer": """
-<script>
-!function(){
-  var CC='__CC__';
-  var d=(typeof FREELANCER_RATES!=='undefined')?FREELANCER_RATES[CC]:null;
-  if(!d){document.getElementById('results').innerHTML='<div class="hr-warn">No data available for this country.</div>';document.getElementById('results').classList.add('on');return;}
-  var sym=d.symbol||'';var h='';
-  var skills=Object.keys(d.skills);
-  for(var s=0;s<skills.length;s++){var sk=d.skills[skills[s]];
-    h+='<div class="hr-card" style="margin-top:1rem"><div class="hr-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle(\\'collapsed\\');this.setAttribute(\\'aria-expanded\\',b.classList.contains(\\'collapsed\\')\\'false\\':\\'true\\')" aria-expanded="true"><span>'+sk.label+'</span><h2>'+sk.label+'</h2><span class="hr-card-toggle">&#x25BE;</span></div>';
-    h+='<div class="hr-card-body"><table class="hr-summary-table"><thead><tr><th>Level</th><th>Hourly</th><th>Monthly</th></tr></thead><tbody>';
-    ['junior','mid','senior'].forEach(function(lv){var r=sk[lv];if(r){h+='<tr><td style="text-transform:capitalize">'+lv+'</td><td>'+(r.hourly?sym+' '+r.hourly.toLocaleString():'—')+'</td><td>'+(r.monthly?sym+' '+r.monthly.toLocaleString():'—')+'</td></tr>';}});
-    h+='</tbody></table></div></div>';
-  }
-  document.getElementById('results').innerHTML=h;document.getElementById('results').classList.add('on');
-}();
-</script>""",
+    "freelancer": '<script src="/assets/js/pages/freelancer-pricing.js?v=1" defer></script>',
     "domestic": """
 <script>
 !function(){
@@ -442,6 +426,20 @@ def gen_country_page(tool, code, cslug, cname, flag):
             form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{f["label"]}{opt}</label>{inp}{field_error}</div>\n'
         form_html += '</div>\n<button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>\n'
 
+    if tmpl == "freelancer":
+        fields = [
+            ("takeHome", "Desired monthly take-home", "e.g. 3000", None, "Your personal income target after the reserve and business expenses."),
+            ("expenses", "Monthly business expenses", "e.g. 500", "0", "Software, internet, equipment and other business costs."),
+            ("billableHours", "Billable hours per month", "e.g. 100", None, "Only hours you can invoice. Allow time for admin, leave and unpaid work."),
+            ("reservePercent", "Tax / contingency reserve (%)", "e.g. 20", "0", "Your assumption: this share of billing is set aside. This does not calculate statutory tax."),
+            ("projectHours", "Hours for this project", "e.g. 10", None, "Include the work and revisions you expect to bill."),
+        ]
+        form_html = f'<form id="freelancerPlanner" data-planner-country="{code}" data-planner-country-name="{esc(cname)}" novalidate>\n<p>Build your quote in <strong id="plannerCurrency">local currency</strong>. Your entries stay in this browser.</p>\n<div class="hr-form-grid">\n'
+        for field_id, label, placeholder, default, help_text in fields:
+            value = f' value="{default}"' if default is not None else ""
+            form_html += f'<div class="hr-field"><label class="hr-f-label" for="{field_id}">{label}</label><input class="hr-f-input" type="number" id="{field_id}" placeholder="{placeholder}" inputmode="decimal" min="0" step="any" required{value} aria-describedby="{field_id}Help"><p id="{field_id}Help">{help_text}</p><p class="hr-warn" id="{field_id}Error" role="alert" hidden></p></div>\n'
+        form_html += '</div><button class="hr-calc-btn" type="submit">Calculate my quote</button><p id="plannerStatus" role="status" aria-live="polite"></p><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="hr-calc-btn" type="button" id="copyQuote" style="width:auto" disabled>Copy summary</button><button class="hr-calc-btn" type="button" id="downloadQuote" style="width:auto" disabled>Download TXT</button></div></form>'
+
     severance_helpers = ""
     severance_reveal = ""
     result_attrs = ""
@@ -453,6 +451,9 @@ function gratuityNumber(id,allowZero){var raw=document.getElementById(id).value.
 ['lastSalary','yearsOfService'].forEach(function(id){var el=document.getElementById(id);function edited(){clearGratuityResult();clearGratuityError(id);}el.addEventListener('input',edited);el.addEventListener('change',edited);});
 """
         severance_reveal = "document.getElementById('results').hidden=false;"
+        result_attrs = ' hidden aria-live="polite"'
+
+    if tmpl == "freelancer":
         result_attrs = ' hidden aria-live="polite"'
 
     # Build inline script
@@ -477,6 +478,10 @@ document.getElementById('results').classList.add('on');{severance_reveal}
 </script>"""
     else:
         script = ""
+
+    seo_body = f'<p>Use this free tool to calculate and understand HR obligations in {esc(cname)}. Based on published labour laws and official contribution rates.</p>\n<p><strong>Disclaimer:</strong> Estimates based on available data. Always verify with official sources and consult qualified professionals for employment decisions.</p>'
+    if tmpl == "freelancer":
+        seo_body = '<p>Your quote is based on your own costs and available billable time. Adjust the assumptions for project scope, unpaid work and your business. No market rate or tax obligation is inferred.</p><h2>Country benchmark reference</h2><div id="freelancerReferences"></div>'
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -512,8 +517,7 @@ document.getElementById('results').classList.add('on');{severance_reveal}
 <div class="hr-results" id="results"{result_attrs}></div>
 <section class="hr-seo-section">
 <h2>{esc(cname)} {esc(name)} \u2014 What You Need to Know</h2>
-<p>Use this free tool to calculate and understand HR obligations in {esc(cname)}. Based on published labour laws and official contribution rates.</p>
-<p><strong>Disclaimer:</strong> Estimates based on available data. Always verify with official sources and consult qualified professionals for employment decisions.</p>
+{seo_body}
 </section>
 </main>
 <afro-footer></afro-footer>

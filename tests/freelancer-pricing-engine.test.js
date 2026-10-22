@@ -1,0 +1,12 @@
+'use strict';
+const test=require('node:test');const assert=require('node:assert/strict');
+const engine=require('../engines/src/freelancer-pricing-engine');
+const valid={takeHome:3000,expenses:500,billableHours:100,reservePercent:20,projectHours:10};
+test('pricing floor funds take-home and expenses after a reserve from billing',()=>{const r=engine.calculate(valid);assert.equal(r.monthlyBilling,4375);assert.equal(r.hourly,43.75);assert.equal(r.project,437.5);assert.equal(r.reserveAmount,875);assert.equal(r.monthlyBilling-r.reserveAmount-r.inputs.expenses,3000);});
+test('zero expenses and reserve work without inventing country taxes',()=>{const r=engine.calculate({...valid,expenses:0,reservePercent:0});assert.equal(r.hourly,30);assert.equal(r.project,300);});
+test('fractional money, hours and reserve remain supported',()=>{const r=engine.calculate({...valid,takeHome:3000.5,billableHours:100.5,reservePercent:12.5,projectHours:2.5});assert.equal(r.project,r.hourly*2.5);assert.equal(r.inputs.takeHome,3000.5);});
+test('every input rejects blanks, negative and nonfinite values',()=>{for(const key of Object.keys(valid))for(const value of ['', ' ', -1,Infinity,NaN,'3abc'])assert.ok(engine.calculate({...valid,[key]:value}).errors[key],key+':'+value);});
+test('positive dependencies reject zero; zero expense and reserve remain intentional',()=>{for(const key of ['takeHome','billableHours','projectHours'])assert.ok(engine.calculate({...valid,[key]:0}).errors[key]);for(const key of ['expenses','reservePercent'])assert.ok(!engine.calculate({...valid,[key]:0}).errors);});
+test('a reserve cannot consume all billing',()=>{assert.ok(engine.calculate({...valid,reservePercent:100}).errors.reservePercent);assert.ok(engine.calculate({...valid,reservePercent:101}).errors.reservePercent);assert.ok(!engine.calculate({...valid,reservePercent:99}).errors);});
+test('overflow returns actionable error instead of financial Infinity',()=>{assert.ok(engine.calculate({...valid,takeHome:1e308,expenses:1e308}).errors.takeHome);assert.ok(engine.calculate({...valid,projectHours:1e308}).errors.takeHome);});
+test('summary includes inputs, currency, formula and nonstatutory assumptions',()=>{const text=engine.summary(engine.calculate(valid),'TND','Tunisia');for(const s of ['TND 43.75','TND 437.50','3000.00','500.00','100','20%','10 hours','1 - reserve / 100','not a country market rate or statutory tax'])assert.ok(text.includes(s),s);});
