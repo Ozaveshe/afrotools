@@ -460,6 +460,149 @@ function recipe(row) {
   };
   // Exact reviewed source rows; no UUID/public approval is assigned by this source batch.
   const attributed = {
+    "kisra-south-sudan-ss": {
+      "name": "Kisra – Sudanese Kitchen adaptation",
+      "description": "Thin fermented sorghum sheets, adapted from the regional Sudanese Kitchen recipe.",
+      "story": "Contains milk from yoghurt. Use fresh, in-date plain yoghurt and clean utensils. A regional adaptation from Sudanese Kitchen, served with stew.",
+      "source": "https://www.sudanese.kitchen/recipe/kisra",
+      "default_servings": null,
+      "serving_unit": null,
+      "yield_status": "not-recorded",
+      "prep_time_minutes": null,
+      "cook_time_minutes": null,
+      "total_time_minutes": null,
+      "image_url": "/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp",
+      "image_alt": "AI-generated illustration of thin Kisra sorghum flatbread sheets.",
+      "calories": null,
+      "protein_g": null,
+      "carbs_g": null,
+      "fat_g": null,
+      "fiber_g": null,
+      "diet_tags": [],
+      "ingredients": [
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "is_optional": false,
+          "group_name": null,
+          "name": "sorghum flour",
+          "amount": 250,
+          "unit": "g",
+          "prep_note": null,
+          "sort_order": 10
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "is_optional": false,
+          "group_name": null,
+          "name": "water",
+          "amount": 500,
+          "unit": "ml",
+          "prep_note": "500–750 ml in total; add gradually to make a thin batter",
+          "sort_order": 20
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "is_optional": false,
+          "group_name": null,
+          "name": "plain yoghurt",
+          "amount": 3,
+          "unit": "tbsp",
+          "prep_note": "3–4 tbsp; use fresh, in-date yoghurt; contains milk",
+          "sort_order": 30
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "is_optional": false,
+          "group_name": null,
+          "name": "oil",
+          "amount": null,
+          "unit": "",
+          "prep_note": "For lightly greasing the saaj",
+          "sort_order": 40
+        }
+      ],
+      "steps": [
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 1,
+          "title": "Mix the batter",
+          "instruction": "Whisk 250 g sorghum flour with 500 ml water. Add more water gradually, up to 750 ml total, for a thin pouring batter. Stir in 3–4 tbsp plain yoghurt.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 2,
+          "title": "Ferment overnight",
+          "instruction": "Cover the bowl and leave overnight in a cool, dry place. Do not taste raw batter or keep batter as starter for another batch.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 3,
+          "title": "Heat the saaj",
+          "instruction": "Heat a saaj or flat griddle and wipe with a little oil.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 4,
+          "title": "Spread a thin sheet",
+          "instruction": "Pour about half a cup of batter onto the hot surface. Quickly spread it very thin with a crepe spreader.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 5,
+          "title": "Cook and stack",
+          "instruction": "Cook on one side for about 1–2 minutes, until the sheet is set and lifts off. Remove, stack and repeat with the remaining batter. Serve with stew.",
+          "timer_seconds": 60,
+          "timer_label": "Check sheet; allow about 1–2 minutes per sheet"
+        }
+      ],
+      "method_revision": "kisra-sudanese-kitchen-20261022-v1",
+      "confidence": "Attributed regional adaptation, not kitchen-tested",
+      "review_summary": "Measured sorghum/yoghurt batch; overnight fermentation and per-sheet cooking, no person yield or total-time claim.",
+      "official_source_status": "Primary family-recipe author, not official certification",
+      "recommended_changes": [],
+      "sources": [
+        {
+          "title": "Sudanese Kitchen – Kisra",
+          "url": "https://www.sudanese.kitchen/recipe/kisra",
+          "source_type": "primary recipe author",
+          "accessed_at": "2026-10-22",
+          "supports": [
+            "250 g sorghum, 500–750 ml water, 3–4 tbsp yoghurt",
+            "Overnight fermentation; half-cup thin sheets; 1–2 minutes on one side"
+          ]
+        }
+      ],
+      "author": "AfroKitchen adaptation of Sudanese Kitchen",
+      "tags": [
+        "sorghum",
+        "flatbread",
+        "fermented"
+      ],
+      "best_served_with": "Stew",
+      "occasion": null,
+      "regional_variations": "Regional recipe adapted from Sudanese Kitchen.",
+      "nutrition_basis": null,
+      "chef_notes": null,
+      "method_review_status": "attributed-source-method",
+      "method_review_revision": null
+    },
   "mchemsho-tz": {
     "name": "Mchemsho — TaTEDO beef version",
     "description": "Beef, potatoes and vegetables in broth, made in two pressure-cooking stages.",
@@ -981,29 +1124,6 @@ function recipe(row) {
     "ingredients": [],
     "steps": []
   },
-    "kisra-south-sudan-ss": {
-      "story": null,
-      "occasion": null,
-      "best_served_with": null,
-      "regional_variations": null,
-      "prep_time_minutes": null,
-      "cook_time_minutes": null,
-      "total_time_minutes": null,
-      "default_servings": null,
-      "serving_unit": null,
-      "calories": null,
-      "protein_g": null,
-      "carbs_g": null,
-      "fat_g": null,
-      "fiber_g": null,
-      "description": "South Sudanese Kisra, a thin cereal flatbread. A reviewed preparation method, quantities, duration and meal-portion yield are not available on this page.",
-      "method_review_status": "pending-source-method",
-      "method_review_revision": "kisra-maheu-source-hold-20261018",
-      "yield_status": "not-recorded",
-      "ingredients": [],
-      "steps": [],
-      "diet_tags": []
-    },
     "maheu-zm": {
       "story": null,
       "occasion": null,
@@ -1147,11 +1267,15 @@ const seen = new Set();
 for (const item of recipes) {
   if (seen.has(item.slug)) throw new Error(`Duplicate slug: ${item.slug}`);
   seen.add(item.slug);
-  if (['kunu-zaki-ng', 'ikivuguto-rw', 'kisra-south-sudan-ss', 'maheu-zm'].includes(item.slug)) {
+  if (['kunu-zaki-ng', 'ikivuguto-rw', 'maheu-zm'].includes(item.slug)) {
     if (item.method_review_status !== 'pending-source-method' || item.method_review_revision !== (['kisra-south-sudan-ss','maheu-zm'].includes(item.slug) ? 'kisra-maheu-source-hold-20261018' : 'kunu-ikivuguto-source-hold-20261018') ||
         item.ingredients.length || item.steps.length || item.default_servings !== null || item.prep_time_minutes !== null || item.cook_time_minutes !== null || item.total_time_minutes !== null) {
       throw new Error(`${item.slug} must remain an explicit source-method hold`);
     }
+    continue;
+  }
+  if (item.slug === 'kisra-south-sudan-ss') {
+    if (item.method_revision !== 'kisra-sudanese-kitchen-20261022-v1' || item.source !== 'https://www.sudanese.kitchen/recipe/kisra' || item.ingredients.length !== 4 || item.steps.length !== 5 || item.default_servings !== null || item.total_time_minutes !== null || item.diet_tags.length || item.calories !== null || ['id','is_published','is_verified'].some(key => Object.prototype.hasOwnProperty.call(item,key))) throw new Error('Kisra source adaptation drift');
     continue;
   }
   if (['mchemsho-tz','octopus-curry-sc'].includes(item.slug)) {

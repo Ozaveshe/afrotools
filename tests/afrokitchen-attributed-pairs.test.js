@@ -91,9 +91,9 @@ test('all other406 recipe projections, index summaries and source identities rem
   const result=indexOwner.buildRecipeIndex({...manifest,recipes:allowed});
   assert.equal(result.recipes.length,410);
   for(const row of allowed.filter(r=>!IDS[r.slug] && !(r.id==='d7d7e305-3c5d-40db-9033-36843e102176' && r.slug==='ibihaza-rw') && !(r.id==='feabebb3-cd55-48c6-be9a-17f118dddfcc' && r.slug==='kat-kat-banane-sc'))) {
-    const additional=[['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1'],['mchemsho-tz','4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1'],['octopus-curry-sc','8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
+    const additional=[['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1'],['mchemsho-tz','4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1'],['octopus-curry-sc','8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1'],['kisra-south-sudan-ss','c0aced74-68d6-437d-b00b-abd1895605f0','kisra-sudanese-kitchen-20261022-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
     if(additional){const projected=api.projectAttributedRecipe(row);assert.ok(api.isAttributedRecipe(projected));assert.equal(projected.method_revision,additional[2]);}
-    else if ((row.id==='8a2bb743-87d9-462e-bc09-335e78f9584a'&&row.slug==='kunu-zaki-ng')||(row.id==='f2850789-0ffd-41b3-bbaf-e3229132c9e6'&&row.slug==='ikivuguto-rw')||(row.id==='c0aced74-68d6-437d-b00b-abd1895605f0'&&row.slug==='kisra-south-sudan-ss')||(row.id==='626fd465-87e1-4f93-bca7-747decbf63d0'&&row.slug==='maheu-zm')) {
+    else if ((row.id==='8a2bb743-87d9-462e-bc09-335e78f9584a'&&row.slug==='kunu-zaki-ng')||(row.id==='f2850789-0ffd-41b3-bbaf-e3229132c9e6'&&row.slug==='ikivuguto-rw')||(row.id==='626fd465-87e1-4f93-bca7-747decbf63d0'&&row.slug==='maheu-zm')) {
       const pending=api.projectAttributedRecipe(row);assert.equal(pending.method_review_status,'pending-source-method');assert.deepEqual(pending.steps,[]);assert.equal(pending.total_time_minutes,null);
     } else assert.strictEqual(api.projectAttributedRecipe(row),row);
     const singleton=indexOwner.buildRecipeIndex({...manifest,recipes:[row]}).recipes[0];
@@ -150,6 +150,7 @@ test('actual dynamic timer completion marks the Koba checkpoint without declarin
 
 // Four-image recovery source scope: two exact adaptations, two method holds.
 const RECOVERY_METHODS = {
+ 'kisra-south-sudan-ss': ['c0aced74-68d6-437d-b00b-abd1895605f0','kisra-sudanese-kitchen-20261022-v1','https://www.sudanese.kitchen/recipe/kisra'],
  'mchemsho-tz': ['4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1','https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf'],
  'octopus-curry-sc': ['8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1','https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles']
 };
@@ -196,16 +197,17 @@ test('gap-fill source rows cannot regenerate the four superseded generic methods
   const sourceRow=generated.recipes.find(x=>x.slug===slug),projected=api.projectAttributedRecipe(fixture(slug));
   for(const k of ['name','description','story','source','image_url','image_alt','diet_tags','prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','yield_status','calories','protein_g','carbs_g','fat_g','fiber_g','method_revision'])assert.deepEqual(sourceRow[k],projected[k],slug+':'+k);
   const plainChildren=rows=>rows.map(({id,recipe_id,created_at,...rest})=>rest);for(const k of ['ingredients','steps'])assert.deepEqual(sourceRow[k],plainChildren(projected[k]));
+  if(slug==='kisra-south-sudan-ss')for(const key of ['author','tags','best_served_with','occasion','regional_variations','nutrition_basis','chef_notes','method_review_status','method_review_revision'])assert.deepEqual(sourceRow[key],projected[key]);
   for(const k of ['id','is_published','is_verified'])assert.equal(Object.hasOwn(sourceRow,k),false);
  }
- for(const slug of ['kisra-south-sudan-ss','maheu-zm']) {const r=generated.recipes.find(x=>x.slug===slug);assert.equal(r.method_review_status,'pending-source-method');assert.deepEqual(r.ingredients,[]);assert.deepEqual(r.steps,[]);assert.deepEqual(r.diet_tags,[]);for(const k of ['prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','calories'])assert.equal(r[k],null);for(const k of ['id','is_published','is_verified'])assert.equal(Object.hasOwn(r,k),false);}
+ for(const slug of ['maheu-zm']) {const r=generated.recipes.find(x=>x.slug===slug);assert.equal(r.method_review_status,'pending-source-method');assert.deepEqual(r.ingredients,[]);assert.deepEqual(r.steps,[]);assert.deepEqual(r.diet_tags,[]);for(const k of ['prep_time_minutes','cook_time_minutes','total_time_minutes','default_servings','serving_unit','calories'])assert.equal(r[k],null);for(const k of ['id','is_published','is_verified'])assert.equal(Object.hasOwn(r,k),false);}
 });
 
 test('the actual cuisine-source audit guard rejects missing, wrong-ID or stale method evidence for both recoveries',()=>{
  const source=actualFunction('scripts/lib/afrokitchen-cuisine-intelligence.js','curatedMethodProfile');
  for(const slug of Object.keys(RECOVERY_METHODS)) {
   const recipe=api.projectAttributedRecipe(fixture(slug)),context={recipeMethods:api};vm.runInNewContext(source+';invoke=curatedMethodProfile',context);
-  assert.deepEqual(plain(context.invoke(recipe,audit)).chefNotes,{common_mistakes:[],readiness_cues:[],pantry_notes:[],technique_notes:[],serve_with:''});
+  assert.deepEqual(plain(context.invoke(recipe,audit)).chefNotes,{common_mistakes:[],readiness_cues:[],pantry_notes:[],technique_notes:[],serve_with:recipe.best_served_with||''});
   for(const bad of [{},{[slug]:{...audit[slug],expected_recipe_id:'wrong'}},{[slug]:{...audit[slug],method_revision:'stale'}},{[slug]:{...audit[slug],curated_method:false}}])assert.throws(()=>context.invoke(recipe,bad),/identity\/revision\/audit mismatch/);
  }
 });
@@ -238,4 +240,26 @@ test('Mchemsho real TXT renderer leads with cooking content and retains the inst
 test('Mchemsho internal source history survives while current evidence records actual inspected pages',()=>{
  const a=audit['mchemsho-tz'];assert.equal(a.method_revision,RECOVERY_METHODS['mchemsho-tz'][1]);assert.equal(a.research_history[0].reviewed_at,'2026-10-18');
  assert.match(a.sources[0].access_basis,/Actual PDF text and rendered printed pages/);assert.match(a.sources[0].access_basis,/1661796a1803cbe146c311d990136d3adeafa9d3d48180250bf9a0f3a02a9f57/);
+});
+
+test('Kisra supplies a measured regional yoghurt batch without invented servings, duration or dietary assurances',()=>{
+ const r=api.projectAttributedRecipe(fixture('kisra-south-sudan-ss'));
+ assert.equal(r.default_servings,null);assert.equal(r.serving_unit,null);assert.equal(api.hasRecordedRecipeYield(r),false);assert.deepEqual(api.getRecipeTiming(r),{prep:null,cook:null,total:null});
+ assert.deepEqual(r.ingredients.map(x=>[x.name,x.amount,x.unit]),[['sorghum flour',250,'g'],['water',500,'ml'],['plain yoghurt',3,'tbsp'],['oil',null,'']]);
+ assert.match(r.ingredients[1].prep_note,/500–750/);assert.match(r.ingredients[2].prep_note,/3–4/);assert.match(r.story,/Contains milk/);assert.match(r.story,/fresh, in-date/);assert.match(r.story,/regional adaptation/);assert.deepEqual(r.diet_tags,[]);
+ assert.equal(r.steps.length,5);assert.match(r.steps[1].instruction,/overnight/);assert.match(r.steps[3].instruction,/half a cup/);assert.match(r.steps[4].instruction,/one side/);assert.match(r.steps[4].instruction,/1–2 minutes/);assert.match(r.steps[1].instruction,/Do not taste raw batter/);assert.deepEqual(r.steps.filter(x=>x.timer_seconds).map(x=>x.timer_seconds),[60]);
+ assert.deepEqual(api.getRecipeKisraStages(r),{batch:'250 g sorghum flour',ferment:'Overnight',cook:'1–2 min per sheet'});
+ for(const mutation of [{id:'wrong'},{method_revision:'stale'},{is_published:false},{steps:[]}])assert.equal(api.getRecipeKisraStages({...r,...mutation}),null);
+ assert.equal(api.getRecipeKisraStages(api.projectAttributedRecipe(fixture('mchemsho-tz'))),null);
+});
+test('Kisra genuine renderer is indexable with useful stage/batch labels, full method, source and unchanged illustration',()=>{
+ const input=fixture('kisra-south-sudan-ss'),r=api.projectAttributedRecipe(input),render=()=>owner.buildRecipePageHtml(input,{...manifest,recipes:[input]},api,{},audit,null),html=render();
+ assert.equal(render(),html);assert.match(html,/<meta name="robots" content="index, follow">/);assert.match(html,/250 g sorghum flour/);assert.match(html,/Overnight/);assert.match(html,/1–2 min per sheet/);assert.doesNotMatch(html,/Recipe method review pending|Not recorded prep|Not recorded cook|Not recorded total/);
+ assert.ok(html.includes(r.source));assert.ok(html.includes(r.steps[4].instruction));assert.match(html,/toggleTimer\(5,\s*60\)/);assert.ok(html.includes('/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp'));
+ const schema=plain(api.getStructuredData(r,null));assert.equal(Object.hasOwn(schema,'recipeYield'),false);assert.equal(Object.hasOwn(schema,'totalTime'),false);assert.equal(Object.hasOwn(schema,'nutrition'),false);
+});
+test('Kisra actual TXT keeps batch, overnight/per-sheet timing, milk disclosure, complete quantities and attribution',()=>{
+ const n=api.projectAttributedRecipe(fixture('kisra-south-sudan-ss')),context={n,i:api,s:{servings:1},e:{location:{href:'http://localhost/kisra'}},f:()=>api.scaleIngredients(n.ingredients,1,1)};
+ vm.runInNewContext(actualFunction('tools/afrokitchen/static-recipe-runtime.js','recipeExportText')+';result=recipeExportText();',context);
+ assert.match(context.result,/Batch: 250 g sorghum flour/);assert.match(context.result,/Ferment: Overnight/);assert.match(context.result,/Cook: 1–2 min per sheet/);assert.ok(context.result.includes('Source: '+n.source));assert.match(context.result,/Contains milk/);assert.doesNotMatch(context.result,/Yield: Not recorded|Time: Not recorded|NaN|undefined/);for(const x of n.steps)assert.ok(context.result.includes(x.instruction));
 });

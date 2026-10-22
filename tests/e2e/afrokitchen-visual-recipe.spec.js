@@ -224,7 +224,7 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
   const artwork = [
     { slug:'mchemsho-tz', source:'https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf', primary:'/assets/img/kitchen/mchemsho-tz.webp', width:1200, height:800, hash:'b2ec5ce348680aa0fa54216ac60c0d44afcc5a40bec9550a5e35fdff44b9a26a', smallHash:'f1cf3b741d44c8e64ae26797bf5c75d0f725194470a760bebf53cef42d02aa9a' },
     { slug:'octopus-curry-sc', source:'https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles', primary:'/assets/img/kitchen/responsive/octopus-curry-sc-1280.webp', width:1280, height:853, hash:'e34b9e31285fe6467bf1ddc1d9e0b673cb657bf92b297615a45cc2d38246031e', smallHash:'9bb8004a5022e9c5c4b34a15e7c50506c2c2202a65357260c1fa8686aef16849' },
-    { slug:'kisra-south-sudan-ss', primary:'/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp', width:1280, height:853, hash:'2c30c6b981b17c7973f1fc2aa59a4d8f128d23f7be9d9b1602e1a107cbad0f15', smallHash:'51f74361031aad696816f17e098f0bd784c0f57b6d0017d62d3360918b02ab78', id:'c0aced74-68d6-437d-b00b-abd1895605f0', pending:true },
+    { slug:'kisra-south-sudan-ss', source:'https://www.sudanese.kitchen/recipe/kisra', primary:'/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp', width:1280, height:853, hash:'2c30c6b981b17c7973f1fc2aa59a4d8f128d23f7be9d9b1602e1a107cbad0f15', smallHash:'51f74361031aad696816f17e098f0bd784c0f57b6d0017d62d3360918b02ab78', id:'c0aced74-68d6-437d-b00b-abd1895605f0', attributed:true },
     { slug:'maheu-zm', primary:'/assets/img/kitchen/responsive/maheu-zm-1280.webp', width:1280, height:853, hash:'e6c2738ac7bdb8852317906576815d24888cb685c0bf1433b64a5eb616991f8a', smallHash:'a78433b2ac2f6e15ae365a374b3997f4395165eda870f3221cab5ededb5aebfb', id:'626fd465-87e1-4f93-bca7-747decbf63d0', pending:true }
   ];
   async function rejectAnalyticsWhenShown(page) {
@@ -315,10 +315,10 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
   test('FINAL4 pending keyboard saves survive reload and exact stale documents fail closed', async ({ page, context }, testInfo) => {
     const fixture=JSON.parse(fs.readFileSync('tests/fixtures/afrokitchen/final-four-legacy-source-html.json','utf8'));
     const proof=contextProofs.get(context);
-    for (const item of artwork.filter(row => row.pending)) {
-      await visitCurrent(page,item.slug); await pendingBoundary(page,item); await keyboardSave(page);
+    for (const item of artwork.filter(row => row.pending || row.attributed)) {
+      await visitCurrent(page,item.slug); if(item.pending) await pendingBoundary(page,item); await keyboardSave(page);
       const saved=await page.evaluate(() => localStorage.getItem('ak_cookbook_v1')); expect(JSON.parse(saved)).toContain(item.slug);
-      await page.reload(); await expect(page.locator('[data-ak-save-recipe]')).toHaveAttribute('aria-pressed','true'); await pendingBoundary(page,item);
+      await page.reload(); await expect(page.locator('[data-ak-save-recipe]')).toHaveAttribute('aria-pressed','true'); if(item.pending) await pendingBoundary(page,item);
       // The genuine old payload has no UUID. Current code denies identity
       // before publication lookup. Both configured modes are UNREACHED; this
       // is not a test of503 status handling or invalid-JSON parsing.
@@ -352,6 +352,16 @@ test.describe('FINAL4 reviewed artwork and recipe boundaries', () => {
       await page.screenshot({path:testInfo.outputPath(item.slug+'-cached-identity-denied.png')});
       proof.legacy=null; proof.indexFailure=null;
     }
+  });
+  test('FINAL4 Kisra attributed batch cooks, saves and exports without inventing portions', async ({ page }) => {
+    await visitCurrent(page,'kisra-south-sudan-ss');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content','index, follow');
+    const main=await kitchenMain(page); await expect(main).toContainText('250 g sorghum flour'); await expect(main).toContainText('Overnight'); await expect(main).toContainText('Contains milk');
+    await expect(page.locator('#ak-static-ingredients .ak-ing-item')).toHaveCount(4); await expect(page.locator('#ak-static-servings')).toHaveText('Not recorded'); await expect(page.getByRole('button',{name:'Increase servings',exact:true})).toHaveCount(0);
+    const save=page.locator('[data-ak-save-recipe]'); await save.click(); await expect(save).toHaveAttribute('aria-pressed','true'); await page.reload(); await expect(save).toHaveAttribute('aria-pressed','true');
+    await page.locator('[data-ak-cook-mode]').click(); await expect(page.locator('dialog.ak-cook-dialog')).toBeVisible(); await expect(page.locator('dialog.ak-cook-dialog')).toContainText('Mix the batter'); await page.keyboard.press('Escape'); await expect(page.locator('dialog.ak-cook-dialog')).not.toBeVisible();
+    await page.getByText('Copy, print & more',{exact:true}).click(); const waiting=page.waitForEvent('download'); await page.locator('[data-ak-download-recipe]').click(); const download=await waiting; const file=await download.path(); const text=fs.readFileSync(file,'utf8');
+    expect(text).toContain('Batch: 250 g sorghum flour'); expect(text).toContain('Ferment: Overnight'); expect(text).toContain('Cook: 1–2 min per sheet'); expect(text).toContain('Contains milk'); expect(text).toContain('https://www.sudanese.kitchen/recipe/kisra'); expect(text).not.toContain('Yield: Not recorded');
   });
   test('FINAL4 unknown yield preserves source quantities and stale planner choices; Octopus scales', async ({ page, context }) => {
     const proof=contextProofs.get(context);

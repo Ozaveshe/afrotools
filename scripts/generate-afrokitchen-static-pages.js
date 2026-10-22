@@ -1506,6 +1506,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     ? `  <script type="application/ld+json">${safeJson(recipeSchema)}</script>\n`
     : "";
   const pressureStages = typeof engine.getRecipePressureStages === "function" ? engine.getRecipePressureStages(recipe) : null;
+  const kisraStages = typeof engine.getRecipeKisraStages === "function" ? engine.getRecipeKisraStages(recipe) : null;
   const renderedIngredients = renderIngredientsHtml(engine, recipe, recipe.default_servings || 1);
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
@@ -1528,7 +1529,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     name: recipe.name,
     description: recipe.description,
     story: recipe.story || "",
-    ...(pressureStages ? { source: recipe.source } : {}),
+    ...((pressureStages || kisraStages) ? { source: recipe.source } : {}),
     default_servings: recipe.yield_status === 'not-recorded' ? null : recipe.default_servings || 1,
     ...(recipe.yield_status === 'not-recorded' ? { yield_status: 'not-recorded' } : {}),
     serving_unit: recipe.serving_unit || "servings",
@@ -1746,8 +1747,8 @@ ${renderCookbookNav()}
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Region</div><div class="ak-stat-val">${escapeHtml(recipe.region)}</div></div>
-           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
-           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? 'Batch' : recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : kisraStages ? "Ferment" : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : kisraStages ? kisraStages.ferment : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages || kisraStages ? 'Batch' : recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : kisraStages ? kisraStages.batch : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
         <div class="ak-hero-actions">
@@ -1816,7 +1817,7 @@ ${renderCookbookNav()}
             </div>
             <div class="ak-method-stat-row">
               <span>${akIcon("check", "ak-icon-sm")}${escapeHtml(String((recipe.steps || []).length))} steps</span>
-              ${pressureStages ? `<span>${akIcon("timer", "ak-icon-sm")}${pressureStages.join(" + ")} min under pressure; extra time for heat-up and release</span>` : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
+              ${kisraStages ? `<span>${akIcon("time", "ak-icon-sm")}Overnight fermentation</span><span>${akIcon("timer", "ak-icon-sm")}${kisraStages.cook}</span>` : pressureStages ? `<span>${akIcon("timer", "ak-icon-sm")}${pressureStages.join(" + ")} min under pressure; extra time for heat-up and release</span>` : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
               <span>${akIcon("timer", "ak-icon-sm")}${engine.getRecipeTiming(recipe).total === null && engine.getRecipeTiming(recipe).cook !== null ? "About " : ""}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).cook))} cook (check method)</span>
               <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))} total</span>`}
               <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>

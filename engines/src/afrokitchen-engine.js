@@ -3056,6 +3056,179 @@ var AfroKitchenEngine = function() {
         ]
       }
     },
+    "kisra-south-sudan-ss": {
+      "id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+      "revision": "kisra-sudanese-kitchen-20261022-v1",
+      "fields": {
+        "name": "Kisra – Sudanese Kitchen adaptation",
+        "description": "Thin fermented sorghum sheets, adapted from the regional Sudanese Kitchen recipe.",
+        "story": "Contains milk from yoghurt. Use fresh, in-date plain yoghurt and clean utensils. A regional adaptation from Sudanese Kitchen, served with stew.",
+        "author": "AfroKitchen adaptation of Sudanese Kitchen",
+        "source": "https://www.sudanese.kitchen/recipe/kisra",
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp",
+        "image_alt": "AI-generated illustration of thin Kisra sorghum flatbread sheets.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "tags": [
+          "sorghum",
+          "flatbread",
+          "fermented"
+        ],
+        "diet_tags": [],
+        "chef_notes": null,
+        "best_served_with": "Stew",
+        "occasion": null,
+        "regional_variations": "Regional recipe adapted from Sudanese Kitchen.",
+        "method_review_status": "attributed-source-method",
+        "method_review_revision": null,
+        "ingredients": [
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-1",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "sorghum flour",
+            "amount": 250,
+            "unit": "g",
+            "prep_note": null,
+            "sort_order": 10
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-2",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "water",
+            "amount": 500,
+            "unit": "ml",
+            "prep_note": "500–750 ml in total; add gradually to make a thin batter",
+            "sort_order": 20
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-3",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "plain yoghurt",
+            "amount": 3,
+            "unit": "tbsp",
+            "prep_note": "3–4 tbsp; use fresh, in-date yoghurt; contains milk",
+            "sort_order": 30
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-4",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "oil",
+            "amount": null,
+            "unit": "",
+            "prep_note": "For lightly greasing the saaj",
+            "sort_order": 40
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-kisra-south-sudan-ss-step-1",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Mix the batter",
+            "instruction": "Whisk 250 g sorghum flour with 500 ml water. Add more water gradually, up to 750 ml total, for a thin pouring batter. Stir in 3–4 tbsp plain yoghurt.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-2",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Ferment overnight",
+            "instruction": "Cover the bowl and leave overnight in a cool, dry place. Do not taste raw batter or keep batter as starter for another batch.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-3",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Heat the saaj",
+            "instruction": "Heat a saaj or flat griddle and wipe with a little oil.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-4",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Spread a thin sheet",
+            "instruction": "Pour about half a cup of batter onto the hot surface. Quickly spread it very thin with a crepe spreader.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-5",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Cook and stack",
+            "instruction": "Cook on one side for about 1–2 minutes, until the sheet is set and lifts off. Remove, stack and repeat with the remaining batter. Serve with stew.",
+            "timer_seconds": 60,
+            "timer_label": "Check sheet; allow about 1–2 minutes per sheet"
+          }
+        ],
+        "media": [
+          {
+            "id": "source-kisra-south-sudan-ss-hero",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp",
+            "alt_text": "AI-generated illustration of thin Kisra sorghum flatbread sheets.",
+            "caption": "AI-generated serving illustration; not a photograph of a kitchen-tested batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation of Sudanese Kitchen",
+            "credit_url": "https://www.sudanese.kitchen/recipe/kisra",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
     "mchemsho-tz": {
       "id": "4caf4ed6-13ec-4fbb-8039-ce51a4201cfe",
       "revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1",
@@ -3691,32 +3864,6 @@ var AfroKitchenEngine = function() {
         "steps": []
       }
     },
-    "kisra-south-sudan-ss": {
-      "id": "c0aced74-68d6-437d-b00b-abd1895605f0",
-      "fields": {
-        "story": null,
-        "occasion": null,
-        "best_served_with": null,
-        "regional_variations": null,
-        "prep_time_minutes": null,
-        "cook_time_minutes": null,
-        "total_time_minutes": null,
-        "default_servings": null,
-        "serving_unit": null,
-        "calories": null,
-        "protein_g": null,
-        "carbs_g": null,
-        "fat_g": null,
-        "fiber_g": null,
-        "description": "South Sudanese Kisra, a thin cereal flatbread. A reviewed preparation method, quantities, duration and meal-portion yield are not available on this page.",
-        "method_review_status": "pending-source-method",
-        "method_review_revision": "kisra-maheu-source-hold-20261018",
-        "yield_status": "not-recorded",
-        "ingredients": [],
-        "steps": [],
-        "diet_tags": []
-      }
-    },
     "maheu-zm": {
       "id": "626fd465-87e1-4f93-bca7-747decbf63d0",
       "fields": {
@@ -4169,6 +4316,11 @@ var AfroKitchenEngine = function() {
       if (!recipe || recipe.id !== '4caf4ed6-13ec-4fbb-8039-ce51a4201cfe' || !isAttributedRecipe(recipe)) return null;
       var steps = recipe.steps || [];
       return steps.length === 5 && steps[1].timer_seconds === 1200 && steps[3].timer_seconds === 420 ? [20, 7] : null;
+    },
+    getRecipeKisraStages: function(recipe) {
+      if (!recipe || recipe.id !== 'c0aced74-68d6-437d-b00b-abd1895605f0' || !isAttributedRecipe(recipe)) return null;
+      var steps = recipe.steps || [];
+      return steps.length === 5 && steps[4].timer_seconds === 60 ? { batch: '250 g sorghum flour', ferment: 'Overnight', cook: '1–2 min per sheet' } : null;
     },
     getRecipeTiming: function(recipe) {
       if (isPendingRecipeMethod(recipe)) return { prep: null, cook: null, total: null };
