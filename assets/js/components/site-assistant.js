@@ -840,18 +840,23 @@ IMPORTANT RULES:
             .panel-wrap, .panel-wrap.from-left, .panel-wrap.below {
               position: fixed;
               top: max(64px, env(safe-area-inset-top, 0px));
-              bottom: auto;
+              bottom: max(12px, env(safe-area-inset-bottom, 0px));
               left: 14px;
               right: 14px;
-              width: calc(100vw - 28px);
+              width: auto;
+              height: auto;
               max-width: none;
-              max-height: calc(100dvh - 80px - env(safe-area-inset-bottom, 0px));
+              max-height: none;
               border-radius: 12px;
             }
             .panel-wrap::backdrop { background: rgba(0, 0, 0, .45); }
-            .panel { max-height: calc(100dvh - 80px - env(safe-area-inset-bottom, 0px)) !important; }
-            .p-head { flex-wrap: wrap; padding: 12px; gap: 8px; cursor: default; touch-action: auto; }
-            .head-actions { margin-left: auto; }
+            .panel-wrap[open] { display: flex; flex-direction: column; }
+            .panel { flex: 1; min-height: 0; max-height: 100% !important; }
+            .p-head { display: grid; grid-template-columns: 28px 7px minmax(0, 1fr); padding: 8px; gap: 4px 8px; cursor: default; touch-action: auto; }
+            .p-head-text { grid-column: 1 / -1; grid-row: 2; min-width: 0; overflow-wrap: anywhere; }
+            .live-dot { grid-column: 2; grid-row: 1; justify-self: center; }
+            .p-badge { grid-column: 3; grid-row: 1; justify-self: start; }
+            .head-actions { grid-column: 1 / -1; grid-row: 3; margin-left: 0; max-width: 100%; flex-wrap: wrap; justify-content: flex-end; }
             .head-btn { width: 44px; height: 44px; }
             .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .qn-item { min-width: 0; overflow-wrap: anywhere; }

@@ -70,3 +70,27 @@ test('saved-work rollout retains both immediately preceding production bundle UR
     }
   }
 });
+
+test('assistant rollout retains the current production chat URL as bundle contents change', t => {
+  const f = fixture(t);
+  const previous = 'chat.9ca610bf.min.js';
+  const retainedNames = [previous, 'chat.da912503.min.js', 'chat.e57fe38a.min.js'];
+  fs.writeFileSync(path.join(f.root, 'assets/js/bundles', previous), 'window.oldSyntheticChat = true;\n');
+  let priorCurrent;
+  for (let pass = 0; pass < 2; pass += 1) {
+    if (pass === 1) {
+      fs.appendFileSync(path.join(f.root, 'assets/js/components/site-assistant.js'), '\nwindow.syntheticChatRevision = 2;\n');
+    }
+    f.run();
+    const manifest = f.manifest();
+    const current = fs.readFileSync(path.join(f.root, 'assets/js/bundles', manifest.chat.file));
+    if (priorCurrent) assert.notEqual(manifest.chat.file, priorCurrent, 'Changed assistant bytes produce a new live chat URL');
+    assert(!current.includes(Buffer.from('window.oldSyntheticChat')), 'The stale payload is replaced by the compatible current bundle');
+    for (const filename of retainedNames) {
+      assert(manifest.chat.aliases.includes('/assets/js/bundles/' + filename), 'Retained document URL remains declared: ' + filename);
+      assert.deepEqual(fs.readFileSync(path.join(f.root, 'assets/js/bundles', filename)), current, 'Retained document URL receives the current compatible chat runtime');
+    }
+    if (pass === 1) assert(current.includes(Buffer.from('window.syntheticChatRevision = 2;')));
+    priorCurrent = manifest.chat.file;
+  }
+});

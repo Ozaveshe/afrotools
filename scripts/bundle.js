@@ -85,6 +85,8 @@ const LEGACY_BUNDLE_ALIASES = {
   chat: [
     'chat.da912503.min.js',
     'chat.e57fe38a.min.js',
+    // Retained 7327 documents can request the assistant after this rollout.
+    'chat.9ca610bf.min.js',
   ],
 };
 

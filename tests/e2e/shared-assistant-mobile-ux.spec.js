@@ -766,3 +766,56 @@ test.describe('Existing task-local Ask controls', () => {
       });
   }
 });
+
+
+test.describe('Responsive assistant Close and text stress', () => {
+  for (const width of [320, 375, 390]) {
+    for (const stress of ['normal', 'css-zoom-2', 'text-200']) {
+      test('pointer Close remains reachable at ' + width + 'px ' + stress,
+        async ({ page, observation }, testInfo) => {
+          await visit(page, '/sw/zana/mpango-wa-kulipa-madeni/', width, 'light');
+          await page.evaluate(mode => {
+            if (mode === 'css-zoom-2') document.body.style.zoom = '2';
+            if (mode === 'text-200') document.documentElement.style.fontSize = '200%';
+          }, stress);
+          const field = page.locator('#context-provider');
+          await field.fill('Synthetic lender, retained locally');
+          const ui = await loadFromKeyboard(page);
+          await ui.launcher.click();
+          await expectOpenPanel(ui, width);
+          const controls = {};
+          for (const id of ['close', 'themeBtn', 'clearBtn']) {
+            const bounds = await geometry(ui.assistant.locator('#' + id));
+            expect(bounds.full && bounds.centerHit, JSON.stringify({ id, bounds })).toBe(true);
+            expect(bounds.width).toBeGreaterThanOrEqual(44 - TARGET_PRECISION);
+            expect(bounds.height).toBeGreaterThanOrEqual(44 - TARGET_PRECISION);
+            controls[id] = bounds;
+          }
+          await ui.input.fill(PRIVATE_DRAFT);
+          const sendBounds = await geometry(ui.assistant.locator('#send'));
+          expect(sendBounds.full && sendBounds.centerHit, JSON.stringify(sendBounds)).toBe(true);
+          await testInfo.attach('Responsive assistant before real Close', {
+            body: await page.screenshot(), contentType: 'image/png'
+          });
+          // Ordinary actionability-checked click; never force or hide a layer.
+          await ui.close.click();
+          await expect(ui.panel).toBeHidden();
+          await expect(ui.launcher).toBeFocused();
+          await expect(field).toHaveValue('Synthetic lender, retained locally');
+          await expect(ui.input).toHaveValue(PRIVATE_DRAFT);
+          await page.keyboard.press('Enter');
+          await expectOpenPanel(ui, width);
+          await page.keyboard.press('Tab');
+          expect(await ui.panel.evaluate(panel => panel.contains(panel.getRootNode().activeElement))).toBe(true);
+          await page.keyboard.press('Escape');
+          await expect(ui.panel).toBeHidden();
+          await expect(ui.launcher).toBeFocused();
+          await expect(field).toHaveValue('Synthetic lender, retained locally');
+          await expect(ui.input).toHaveValue(PRIVATE_DRAFT);
+          observation.checkpoints.responsiveClose = { width, stress, controls,
+            actualClick: true, escape: true, returnedToLauncher: true,
+            localToolAndUnsentAssistantDraftPreserved: true };
+        });
+    }
+  }
+});
