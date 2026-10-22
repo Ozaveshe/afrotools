@@ -80,10 +80,10 @@ async function calculate(page) {
   await expect.poll(() => page.evaluate(() => window.PAYE_CALC_SYNC_ADAPTER.hasResult())).toBe(true);
 }
 
-async function expectUnavailable(page) {
+async function expectUnavailable(page, feedback = 'Inputs changed. Calculate again') {
   await expect(page.locator('#resultsCard')).toBeHidden();
   await expect(page.locator('#bonusCard')).toBeHidden();
-  await expect(page.locator('#calculationStatus')).toContainText('Inputs changed. Calculate again');
+  await expect(page.locator('#calculationStatus')).toContainText(feedback);
   await expect.poll(() => page.evaluate(() => ({ available: window.PAYE_CALC_SYNC_ADAPTER.hasResult(), payload: window.PAYE_CALC_SYNC_ADAPTER.buildPayload() }))).toEqual({ available: false, payload: null });
 }
 
@@ -129,10 +129,10 @@ test('blank salary retires result actions and Enter rebuilds visible results', a
   await page.getByLabel('Annual Gross Salary', { exact: true }).fill('60000');
   await calculate(page);
   await page.getByLabel('Annual Gross Salary', { exact: true }).fill('');
-  await expectUnavailable(page);
+  await expectUnavailable(page, /Inputs changed\. Calculate again|Enter a finite annual salary greater than zero\./);
   await expect(page.locator('#resultsCard')).toHaveAttribute('aria-hidden', 'true');
   await page.locator('#salaryInput').press('Enter');
-  await expectUnavailable(page);
+  await expectUnavailable(page, 'Enter a finite annual salary greater than zero.');
   await expect(page.locator('#calcSaveName')).toBeHidden();
   await expect(page.locator('#calcSaveBtn')).toBeHidden();
   await expect(page.locator('#calcSaveBtn')).toBeDisabled();
@@ -213,6 +213,36 @@ test('explicit scenario saving works locally and retires when calculation inputs
   await calculate(page);
   await expect(page.locator('#calcSaveBtn')).toBeEnabled();
   await expect(page.locator('#calcSavedList')).toHaveText(savedList);
+  expect(observed.errors).toEqual([]);
+  expect(observed.writes).toEqual([]);
+});
+
+test('negative basic salary retires results and PDF actions, then valid basic recovers', async ({ page }) => {
+  const observed = await setup(page);
+  await page.getByLabel('Annual Gross Salary', { exact: true }).fill('60000');
+  await calculate(page);
+  await page.evaluate(() => {
+    window.__ghanaValidationExports = 0;
+    window.AfroTools.pdf = { generate: async () => { window.__ghanaValidationExports++; } };
+  });
+  await page.getByLabel('Basic Salary (for SSNIT)', { exact: true }).fill('-1000');
+  await expectUnavailable(page, /Inputs changed\. Calculate again|Enter a valid basic salary of zero or more, or leave it blank to use gross salary\./);
+  await page.getByRole('button', { name: 'Calculate My Take-Home Pay', exact: true }).click();
+  await expectUnavailable(page, 'Enter a valid basic salary of zero or more, or leave it blank to use gross salary.');
+  await expect(page.locator('#basicSalary')).toHaveValue('-1000');
+  await expect(page.locator('#basicSalary')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#basicSalary')).toBeFocused();
+  await expect(page.locator('#pdfBtn')).toBeHidden();
+  await expect(page.locator('#calcSaveBtn')).toBeDisabled();
+  await page.evaluate(() => window.exportPdf());
+  expect(await page.evaluate(() => window.__ghanaValidationExports)).toBe(0);
+  await page.getByLabel('Basic Salary (for SSNIT)', { exact: true }).fill('30000');
+  await calculate(page);
+  await expect(page.locator('#basicSalary')).not.toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#calculationStatus')).toHaveText('');
+  expect((await page.evaluate(() => window.PAYE_CALC_SYNC_ADAPTER.buildPayload())).inputs.basicSalary).toBe(30000);
+  await page.getByRole('button', { name: 'Download PDF', exact: true }).click();
+  expect(await page.evaluate(() => window.__ghanaValidationExports)).toBe(1);
   expect(observed.errors).toEqual([]);
   expect(observed.writes).toEqual([]);
 });

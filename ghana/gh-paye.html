@@ -791,16 +791,38 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
     if (hadResult) $('calculationStatus').textContent = 'Inputs changed. Calculate again to update your results.';
   }
 
+  function calculationInputError(field, message, shouldFocus) {
+    field.setAttribute('aria-invalid', 'true');
+    const described = new Set((field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
+    described.add('calculationStatus');
+    field.setAttribute('aria-describedby', Array.from(described).join(' '));
+    $('calculationStatus').textContent = message;
+    if (shouldFocus) field.focus();
+    return null;
+  }
+
+  function calculationAmount(id, message, optional, shouldFocus) {
+    const field = $(id), raw = field.value.trim(), normalized = raw.replace(/,/g, '');
+    field.removeAttribute('aria-invalid');
+    const described = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(value => value && value !== 'calculationStatus');
+    if (described.length) field.setAttribute('aria-describedby', described.join(' '));
+    else field.removeAttribute('aria-describedby');
+    if (!raw && optional) return 0;
+    const value = Number(normalized);
+    if (!raw || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(normalized) ||
+        !Number.isFinite(value) || value < 0 || (!optional && value === 0)) {
+      return calculationInputError(field, message, shouldFocus);
+    }
+    return value;
+  }
+
   function calculate(shouldScroll = true) {
     invalidateResult();
-    let salary = parseAmt($('salaryInput').value);
-    if (!salary || salary <= 0) {
-      const el = $('salaryInput');
-      el.focus(); el.style.borderColor = '#e53e3e';
-      el.setAttribute('placeholder', 'Enter a valid salary');
-      setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
-      return;
-    }
+    const shouldFocus = shouldScroll !== false;
+    const salary = calculationAmount('salaryInput', 'Enter a finite annual salary greater than zero.', false, shouldFocus);
+    if (salary === null) return;
+    if (calculationAmount('basicSalary', 'Enter a valid basic salary of zero or more, or leave it blank to use gross salary.', true, shouldFocus) === null) return;
+    if ($('togTier3').checked && calculationAmount('tier3Amt', 'Enter a valid Tier III contribution of zero or more, or leave it blank for zero.', true, shouldFocus) === null) return;
 
     let gross;
     if (calcMode === 'net') {
@@ -814,6 +836,11 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
     $('salaryInput').value = gross.toFixed(0);
     R = computePAYE(gross);
     $('salaryInput').value = origVal;
+    if (Object.values(R).some(value => typeof value === 'number' && !Number.isFinite(value))) {
+      invalidateResult();
+      calculationInputError($('salaryInput'), 'This salary is too large to calculate. Enter a smaller finite amount.', shouldFocus);
+      return;
+    }
 
     renderResults();
     $('resultsCard').style.display = 'block';
