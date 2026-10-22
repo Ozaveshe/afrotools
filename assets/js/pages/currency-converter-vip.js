@@ -56,10 +56,27 @@
 
   function setStatus(kind,text){var el=byId('fxStatus');el.className='fxv-status fxv-status--'+kind;el.textContent=text}
   function fillSelects(rates){var codes=['USD'].concat(Object.keys(rates||{})).filter(function(code,index,list){return /^[A-Z]{3}$/.test(code)&&finitePositive(code==='USD'?1:rates[code])&&list.indexOf(code)===index}).sort(function(a,b){var order=['USD','EUR','GBP','NGN','KES','GHS','ZAR'];var ai=order.indexOf(a),bi=order.indexOf(b);if(ai>=0||bi>=0)return(ai<0?99:ai)-(bi<0?99:bi);return a.localeCompare(b)});var markup=codes.map(function(code){return '<option value="'+code+'">'+code+' — '+(NAMES[code]||'Currency')+'</option>'}).join('');byId('fxFrom').innerHTML=markup;byId('fxTo').innerHTML=markup;var params=new URLSearchParams(location.search);var from=(params.get('from')||'USD').toUpperCase();var to=(params.get('to')||'NGN').toUpperCase();byId('fxFrom').value=codes.indexOf(from)>=0?from:'USD';byId('fxTo').value=codes.indexOf(to)>=0?to:(codes.indexOf('NGN')>=0?'NGN':codes[1]||'USD')}
+  function renderProvenance(){
+    var first=byId('fxSourceMethodology'),second=byId('fxSourceMethodologySecondary');
+    [first,second].forEach(function(link){if(link){link.hidden=true;link.href='';link.textContent=''}});
+    if(mode()==='manual'){
+      byId('fxSourceLabel').textContent='User-provided quote';
+      byId('fxSourceDate').textContent='Use the rate and date you checked with your provider. AfroTools has not verified this quote.';
+      return;
+    }
+    if(!state.usable){var status=byId('fxStatus').className||'';byId('fxSourceLabel').textContent=status.indexOf('--loading')>=0?'AfroTools indicative FX snapshot':'Snapshot conversion paused';byId('fxSourceDate').textContent=status.indexOf('--loading')>=0?'Waiting for a dated snapshot':status.indexOf('--stale')>=0?'The available dataset is more than seven days old.':'No valid dated dataset was returned.';return}
+    var from=byId('fxFrom').value,to=byId('fxTo').value,observed=pairObservation(from,to);
+    if(!observed){byId('fxSourceLabel').textContent='Source unavailable for this pair';byId('fxSourceDate').textContent='Select a supported pair or enter your provider rate.';return}
+    byId('fxSourceLabel').textContent=observed.source;
+    byId('fxSourceDate').textContent='Pair observation date: '+new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(new Date(observed.date))+' UTC';
+    var methods={'exchangerate-api':{url:'https://www.exchangerate-api.com/docs/free',label:'ExchangeRate-API methodology'},frankfurter:{url:'https://frankfurter.dev/',label:'Frankfurter methodology'},fawazahmed:{url:'https://github.com/fawazahmed0/exchange-api',label:'fawazahmed currency-api methodology'}};
+    var providers=[state.observations[from].source,state.observations[to].source].filter(function(provider,index,list){return list.indexOf(provider)===index});
+    providers.forEach(function(provider,index){var link=index===0?first:second,method=Object.prototype.hasOwnProperty.call(methods,provider)?methods[provider]:null;if(link&&method){link.href=method.url;link.textContent=method.label;link.hidden=false}});
+  }
   function renderSource(data){state.rates=data.rates;state.observations=data.observations;state.timestamp=parsedTimestamp(data);state.source=sourceName(data.source);state.usable=true;fillSelects(state.rates);setStatus('ready','Dated snapshot ready');byId('fxSourceLabel').textContent=state.source;byId('fxSourceDate').textContent='Rate date: '+new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(state.timestamp)+' UTC';updateControls()}
   function failClosed(reason){state.rates=null;state.timestamp=null;state.source=null;state.usable=false;fillSelects({NGN:1,KES:1,GHS:1,ZAR:1,EUR:1,GBP:1});setStatus(reason==='stale'?'stale':'error',reason==='stale'?'Snapshot too old':'Rates unavailable');byId('fxSourceLabel').textContent='Snapshot conversion paused';byId('fxSourceDate').textContent=reason==='stale'?'The available dataset is more than seven days old.':'No valid dated dataset was returned.';updateControls()}
   async function load(){setStatus('loading','Checking rate date…');var sources=['/api/forex?base=USD','/data/forex/latest.json'];var sawStale=false;for(var i=0;i<sources.length;i++){try{var response=await fetch(sources[i],{cache:'no-cache',credentials:'same-origin'});if(!response.ok)continue;var data=await response.json();var accepted=acceptedSnapshot(data);if(accepted){renderSource(accepted);return}if(data&&data.rates)sawStale=true}catch(_){}}failClosed(sawStale?'stale':'error')}
-  function updateManualLabel(){byId('fxManualPair').textContent='1 '+byId('fxFrom').value+' = ? '+byId('fxTo').value}
+  function updateManualLabel(){byId('fxManualPair').textContent='1 '+byId('fxFrom').value+' = ? '+byId('fxTo').value;renderProvenance()}
   function updateControls(){var manual=mode()==='manual';byId('fxManualGroup').hidden=!manual;byId('fxManualRate').required=manual;byId('fxConvert').disabled=!manual&&!state.usable;byId('fxConvert').textContent=manual?'Convert with my rate':'Convert with dated rate';updateManualLabel();byId('fxEmpty').textContent=manual?'Enter the exact provider rate for this pair, then convert.':(state.usable?'Enter an amount and convert with the dated snapshot.':'A usable dated snapshot is required, or choose “My provider rate”.')}
   function clearErrors(){byId('fxAmountError').textContent='';byId('fxManualError').textContent=''}
   function invalidateResult(){state.result=null;byId('fxResult').hidden=true;byId('fxEmpty').hidden=false;byId('fxActionStatus').textContent=''}

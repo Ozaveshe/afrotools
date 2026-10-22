@@ -230,6 +230,12 @@ test("migrated data-heavy tools include source registry UI hooks", function () {
 
   for (const [file, sourceId] of pages) {
     const html = fs.readFileSync(path.join(__dirname, "..", file), "utf8");
+    if (file === "tools/currency-converter/index.html") {
+      assert.equal(sourceHookBuilder.hasRuntimeCurrencySource(html, sourceId, file), true, "converter must own its active pair source disclosure");
+      assert.ok(!html.includes('data-source-meta-id="' + sourceId + '"'), "static registry must not contradict loaded pair provenance");
+      assert.equal(sourceHookBuilder.addSourceHook(html, sourceId, file).html, html, "normal generation must preserve runtime disclosure");
+      continue;
+    }
     assert.match(html, /source-confidence\.js/, file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + sourceId + '"'), file + " should render " + sourceId);
   }
