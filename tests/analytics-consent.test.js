@@ -302,3 +302,32 @@ for (const root of [...currencyConsentRoots, ...privateConsentRoots]) {
   }
 }
 console.log(`Currency consent regression: ${currencyInitialCases} initial states and ${currencyTransitionCases} withdrawal/reacceptance cases passed.`);
+
+
+// Publish metadata controls only the known same-origin child request. Consent
+// choices, strict-route opt-in, analytics commands and sanitization above remain.
+for (const version of ['1234abcd', null, 'INVALID', '1234abcd?other=1', 'https://example.test/child.js']) {
+  const context = createSandbox(null);
+  context.sandbox.document.documentElement = { getAttribute(name) { return name === 'data-afro-consent-version' ? version : null; } };
+  vm.runInNewContext(lazySource, context.sandbox, { filename: 'lazy-analytics.js' });
+  const expected = '/assets/js/components/analytics-consent-v2.js' + (version === '1234abcd' ? '?v=1234abcd' : '');
+  assert.strictEqual(context.inserted.filter(node => node.src === expected).length, 1, 'one explicit consent child, safe version fallback: ' + version);
+  assert.strictEqual(commandRows(context, 'config', 'G-D859CGF391').length, 1, 'asset versioning leaves ordinary analytics policy unchanged');
+}
+const creativeConsentSource = fs.readFileSync(path.join(ROOT, 'assets/js/pages/creative/fr-creative-consent-analytics.js'), 'utf8');
+for (const consent of [null, 'declined', 'accepted']) {
+  const context = createSandbox(consent);
+  const keys = { 'data-afro-consent-version': '1234abcd', 'data-afro-analytics-version': 'abcdef12' };
+  context.sandbox.document.documentElement = { getAttribute(name) { return keys[name] || null; } };
+  vm.runInNewContext(creativeConsentSource, context.sandbox, { filename: 'fr-creative-consent-analytics.js' });
+  assert.strictEqual(context.inserted.filter(node => node.src === '/assets/js/components/analytics-consent-v2.js?v=1234abcd').length, 1);
+  assert.strictEqual(context.inserted.filter(node => node.src === '/assets/js/lazy-analytics.js?v=abcdef12').length, consent === 'accepted' ? 1 : 0, 'French creative analytics still requires explicit acceptance');
+  if (consent !== 'accepted') {
+    context.listeners['afrotools:cookie-consent']({ detail: { status: 'declined' } });
+    assert.strictEqual(context.inserted.length, 1);
+    context.setConsent('accepted');
+    context.listeners['afrotools:cookie-consent']({ detail: { status: 'accepted' } });
+    context.listeners['afrotools:cookie-consent']({ detail: { status: 'accepted' } });
+    assert.strictEqual(context.inserted.filter(node => node.src === '/assets/js/lazy-analytics.js?v=abcdef12').length, 1, 'repeated acceptance cannot duplicate a versioned loader');
+  }
+}

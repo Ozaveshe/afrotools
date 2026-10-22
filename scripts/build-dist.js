@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const crypto = require('crypto');
 const { minifyCss: compactCss } = require('./lib/css-minification');
 const { minify } = require('terser');
 const productHealth = require('../assets/js/lib/product-health');
@@ -329,7 +330,38 @@ function shouldSkipFile(fileName, relativeFromRoot) {
   return false;
 }
 
-function copyTree(sourceDir, targetDir, counters) {
+// Bind lazy child requests to this publish artifact. Readable source pages stay
+// unchanged; even HTML regenerated after the asset pass receives current keys.
+const LAZY_ASSET_SOURCES = Object.freeze({
+  'data-afro-consent-version': 'assets/js/components/analytics-consent-v2.js',
+  'data-afro-pwa-version': 'assets/js/pwa-install.js',
+  'data-afro-analytics-version': 'assets/js/lazy-analytics.js'
+});
+
+function readLazyAssetVersions(root = ROOT) {
+  return Object.fromEntries(Object.entries(LAZY_ASSET_SOURCES).map(([attribute, relative]) => {
+    const source = fs.readFileSync(path.join(root, relative), 'utf8').replace(/\r\n?/g, '\n');
+    return [attribute, crypto.createHash('md5').update(source).digest('hex').slice(0, 8)];
+  }));
+}
+
+function stampLazyAssetVersions(html, versions) {
+  for (const attribute of Object.keys(LAZY_ASSET_SOURCES)) {
+    if (!versions || !/^[a-f0-9]{8}$/.test(versions[attribute] || '')) {
+      throw new Error('Missing or invalid publish asset version: ' + attribute);
+    }
+  }
+  return html.replace(/<html\b[^>]*>/i, tag => {
+    for (const attribute of Object.keys(LAZY_ASSET_SOURCES)) {
+      const previous = new RegExp("\\s" + attribute + "(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s>]+))?", 'gi');
+      tag = tag.replace(previous, '');
+    }
+    const attributes = Object.keys(LAZY_ASSET_SOURCES).map(attribute => ' ' + attribute + '="' + versions[attribute] + '"').join('');
+    return tag.slice(0, -1) + attributes + '>';
+  });
+}
+
+function copyTree(sourceDir, targetDir, counters, lazyAssetVersions) {
   for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
     const sourcePath = path.join(sourceDir, entry.name);
     const relative = path.relative(ROOT, sourcePath);
@@ -341,7 +373,7 @@ function copyTree(sourceDir, targetDir, counters) {
         continue;
       }
       fs.mkdirSync(targetPath, { recursive: true });
-      copyTree(sourcePath, targetPath, counters);
+      copyTree(sourcePath, targetPath, counters, lazyAssetVersions);
       continue;
     }
 
@@ -355,7 +387,9 @@ function copyTree(sourceDir, targetDir, counters) {
       continue;
     }
 
-    fs.copyFileSync(sourcePath, targetPath);
+    if (path.extname(entry.name).toLowerCase() === '.html') {
+      fs.writeFileSync(targetPath, stampLazyAssetVersions(fs.readFileSync(sourcePath, 'utf8'), lazyAssetVersions), 'utf8');
+    } else fs.copyFileSync(sourcePath, targetPath);
     counters.copiedFiles += 1;
   }
 }
@@ -490,11 +524,12 @@ function verifyDist() {
 
 async function main() {
   assertInsideWorkspace(DIST);
+  const lazyAssetVersions = readLazyAssetVersions();
   clearDistWithRetry();
   fs.mkdirSync(DIST, { recursive: true });
 
   const counters = { copiedFiles: 0, skippedDirs: 0, skippedFiles: 0 };
-  copyTree(ROOT, DIST, counters);
+  copyTree(ROOT, DIST, counters, lazyAssetVersions);
   writeReleaseMetadata();
   const optimized = await optimizeDistAssets(DIST);
   verifyDist();
@@ -519,6 +554,8 @@ if (require.main === module) {
 }
 
 module.exports = {
+  readLazyAssetVersions,
+  stampLazyAssetVersions,
   shouldSkipFile,
   writeReleaseMetadata,
   minifyCss,

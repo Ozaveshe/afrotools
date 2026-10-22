@@ -191,6 +191,9 @@ test('a missing standalone CSS loader reference fails before either runtime sour
 test('deploy walker excludes French compiler templates while retaining public tools and runtime JSON', t => {
   const f = fixture(t);
   const files = {
+    'assets/js/components/analytics-consent-v2.js': 'window.syntheticConsent = true;',
+    'assets/js/pwa-install.js': 'window.syntheticInstall = true;',
+    'assets/js/lazy-analytics.js': 'window.syntheticAnalytics = true;',
     '404.html': '<h1>Missing</h1>',
     '_redirects': '/old /new 301',
     '_headers': '/*\n  X-Content-Type-Options: nosniff',

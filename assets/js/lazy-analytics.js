@@ -6,7 +6,10 @@
   var FRENCH_RELIGIOUS_TOOL_ROUTES = ["/fr/tools/calculateur-dime/","/fr/tools/calculateur-lobola/","/fr/tools/checklist-negociation-dot/","/fr/tools/liste-cadeaux-dot/","/fr/tools/generateur-proverbes-africains/","/fr/tools/calculateur-zakat/","/fr/tools/horaires-priere-qibla/","/fr/tools/calendrier-ramadan/","/fr/tools/heritage-islamique-faraid/","/fr/tools/budget-hajj-umrah/","/fr/tools/finance-islamique-profit/","/fr/tools/budget-mariage-africain/","/fr/tools/budget-ceremonie-nommage/","/fr/tools/planification-funerailles/","/fr/tools/generateur-prenom-africain/","/fr/tools/calendrier-traditionnel/","/fr/tools/calculateur-age-jour-nom/","/fr/tools/calendrier-festivals-culturels/","/fr/tools/cout-aso-ebi/","/fr/tools/cout-tenue-traditionnelle/","/fr/tools/conformite-halal/","/fr/tools/convertisseur-calendrier-islamique/"];
   var OPT_IN_ANALYTICS_PAGE = /^\/(?:(?:fr\/)?crypto\/remittance|sw\/zana\/ulinganisho-nukuu-za-kutuma-fedha|tools\/remittance-(?:compare|v2)|fr\/tools\/transfert-(?:argent|v2)|sw\/zana\/ulinganisho-uhamishaji-pesa(?:-kina)?)(?:\/index\.html)?\/?$/.test(window.location.pathname) || /^\/(?:tools\/currency-converter|fr\/tools\/convertisseur-devises|sw\/zana\/kibadilishaji-sarafu|ha\/kayan-aiki\/canja-kudi)(?:\/index\.html)?\/?$/.test(window.location.pathname) || /^\/sw\/zana\/(?:mwongozo-wa-etims-kra|mwongozo-wa-sars-efiling)(?:\/index\.html)?\/?$/.test(window.location.pathname) || FRENCH_RELIGIOUS_TOOL_ROUTES.indexOf(window.location.pathname.replace(/\/index\.html\/?$/, '/').replace(/\/?$/, '/')) !== -1;
   window.__afroAnalyticsRequiresOptIn = OPT_IN_ANALYTICS_PAGE;
-  var MANAGER_SRC = '/assets/js/components/analytics-consent-v2.js';
+  var managerVersion = document.documentElement && typeof document.documentElement.getAttribute === 'function'
+    ? document.documentElement.getAttribute('data-afro-consent-version') : null;
+  var MANAGER_SRC = '/assets/js/components/analytics-consent-v2.js'
+    + (/^[a-f0-9]{8}$/.test(managerVersion || '') ? '?v=' + managerVersion : '');
 
   function readConsent() {
     try {
