@@ -34,6 +34,7 @@
       errorElement.textContent = report.ok ? '' : report.error;
       errorElement.hidden = report.ok;
     }
+    panel.querySelectorAll('.result-box').forEach(function (result) { result.hidden = !report.ok; });
     var actions = panel.querySelectorAll('.result-action');
     actions.forEach(function (button) { button.disabled = !report.ok; });
   }
