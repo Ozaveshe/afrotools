@@ -67,19 +67,20 @@
     card.id = 'liveTranslateCard';
     card.setAttribute('aria-labelledby', 'liveTranslateTitle');
     card.innerHTML = [
-      '<h2 id="liveTranslateTitle">Optional cloud translation <span>External service</span></h2>',
-      '<p>The local phrasebook and usage guide work without a network request. Send only non-sensitive text you deliberately choose.</p>',
+      '<h2 id="liveTranslateTitle">Translate English and Hausa <span>External service</span></h2>',
+      '<p>Enter a word or sentence. Use Swap to change the language direction, then choose Translate.</p>',
       '<div data-external-translation-consent-host></div>',
       '<div class="vip-cloud-grid">',
-      '<div><label for="translateInput">Source text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
+      '<div><label id="translateInputLabel" for="translateInput">English text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
       '<div><div id="translateOutputLabel" class="vip-cloud-label">Hausa output</div><div id="translateOutput" role="region" aria-labelledby="translateOutputLabel">Cloud translation appears here after you opt in.</div></div>',
       '</div>',
       '<div class="vip-cloud-actions"><button type="button" id="translateBtn" disabled>Translate</button><button type="button" id="swapBtn" aria-label="Swap source and target languages">Swap</button><button type="button" id="clearTranslateBtn">Clear</button><span id="translateStatus" role="status" aria-live="polite"></span></div>'
     ].join('');
-    container.appendChild(card);
+    container.insertBefore(card, container.firstChild);
     consent.render(card.querySelector('[data-external-translation-consent-host]'), { toolId: toolId, primaryProvider: 'MyMemory' });
 
     var input = document.getElementById('translateInput');
+    var inputLabel = document.getElementById('translateInputLabel');
     var output = document.getElementById('translateOutput');
     var outputLabel = document.getElementById('translateOutputLabel');
     var button = document.getElementById('translateBtn');
@@ -111,6 +112,7 @@
     });
     document.getElementById('swapBtn').addEventListener('click', function () {
       swapped = !swapped;
+      inputLabel.textContent = swapped ? 'Hausa text' : 'English text';
       outputLabel.textContent = swapped ? 'English output' : 'Hausa output';
       clearResult('');
     });
@@ -121,6 +123,13 @@
       }
     });
     button.addEventListener('click', runTranslation);
+    var usePhraseQuery = document.getElementById('usePhraseQuery');
+    if (usePhraseQuery) usePhraseQuery.addEventListener('click', function () {
+      input.value = document.getElementById('search').value.trim();
+      clearResult('Your search text is ready to translate. Check the language, then choose Translate when you are ready.');
+      input.focus();
+      card.scrollIntoView({ block: 'start' });
+    });
 
     async function runTranslation() {
       if (!consent.requireConsent(toolId, 'Cloud translation is off. Review the notice and opt in first.')) {
