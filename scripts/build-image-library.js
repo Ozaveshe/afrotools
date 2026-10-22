@@ -10,6 +10,7 @@ const { imageSize } = require('./lib/image-size');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = 'data/image-generation';
 const recipeAliases = require('../data/image-generation/recipe-image-aliases.json').aliases;
+const { reviewedRecipeAlias } = require('./lib/image-batch-delivery-reconciliation');
 const imageExt = /\.(?:png|jpe?g|webp|gif|svg|avif|ico)$/i;
 const excluded = /^(?:node_modules|dist|\.git|\.codex|\.agents|\.claude|reports|artifacts|audit-results|test-results|playwright-report|ops|tests)\//;
 function read(file) { return fs.readFileSync(path.join(ROOT, file), 'utf8'); }
@@ -179,10 +180,17 @@ function nextBatch(library) {
   const batch_id = process.argv.find(a=>a.startsWith('--batch='))?.slice(8) || '2026-09-08';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(batch_id)) throw new Error('Batch must be YYYY-MM-DD');
   const existing = new Set(images.map(i=>i.path.replace(/\.[^.]+$/, '')));
+  // Fail before writing any new batch if an alias would hide a missing/unreviewed image.
+  const reviewedAliases = new Set();
+  for (const recipe of manifest.recipes) if (Object.hasOwn(recipeAliases, recipe.slug)) {
+    reviewedRecipeAlias({ slug: recipe.slug, aliases: recipeAliases, library,
+      readAsset: file => fs.readFileSync(path.join(ROOT, file.replace(/^\//, ''))) });
+    reviewedAliases.add(recipe.slug);
+  }
   const queue = [];
   const add = row => { if (!existing.has(row.path.replace(/\.[^.]+$/, '')) && !queue.some(q=>q.path===row.path) && routeFile(row.route)) queue.push({ ...row, status:'pending', locale_reuse:true }); };
   for (const r of manifest.recipes) {
-    if (recipeAliases[r.slug]) continue;
+    if (reviewedAliases.has(r.slug)) continue;
     if ([...existing].some(p => p === '/assets/img/kitchen/' + r.slug || p === '/assets/img/kitchen/' + r.slug + '-1')) continue;
     const held = images.find(i => i.path === '/assets/img/new/' + r.slug + '.webp' && i.status === 'needs-review');
     const ingredientNames = (r.ingredients || []).filter(i=>!i.is_optional).map(i=>i.name).slice(0,9).join(', ');
@@ -200,7 +208,7 @@ function nextBatch(library) {
   // The existing cuisine pipeline consumes numbered serving/gallery shots.
   // Prefer missing heroes first, then a useful second view for recipes that already have one.
   for (const r of manifest.recipes) {
-    if (recipeAliases[r.slug]) continue;
+    if (reviewedAliases.has(r.slug)) continue;
     const hero = images.find(i => i.path === '/assets/img/kitchen/' + r.slug + '.webp' || i.path === '/assets/img/kitchen/' + r.slug + '-1.webp');
     if (!hero) continue;
     add({ id:'recipe-serving-' + r.slug, type:'recipe-serving-detail', priority:r.is_featured ? 55 : 50, name:r.name + ' — serving detail', route:r.route_path, path:'/assets/img/kitchen/' + r.slug + '-2.webp', dimensions:'1200x800', alt:'Serving detail of ' + r.name, source:'tools/afrokitchen/seo-manifest.json', reference_image:hero.path, prompt:`Create a second editorial food photograph of ${r.name} from ${r.country_name}, using the existing hero ${hero.path} as the visual reference for the same dish, ingredients, tableware and lighting. Recipe brief: ${r.description}. Show a closer serving view that reveals the interior or texture, using a serving utensil appropriate to the food; do not merely crop or duplicate the hero. Keep the portion believable and appetising, with no extra ingredients unsupported by the recipe. Landscape 1200x800, natural window light, realistic colour, main portion safely within central 80%. No text, numbers, labels, flags, logos, watermark, collage or UI. Deliver WebP with exact destination filename.`, reason:'Local hero exists, but the serving-detail slot -2 is absent in every extension.' });

@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11560 |
-| Indexable pages | 7874 |
+| Indexable pages | 7872 |
 | Permanent and temporary redirects | 3123 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4261 |
+| Genuine equivalence groups | 4259 |
 | Documented fallbacks | 14991 |
-| Routes eligible for primary sitemaps | 7874 |
+| Routes eligible for primary sitemaps | 7872 |
 
 ## Locale Coverage
 
@@ -3484,7 +3484,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:122175cd79db: en=`/tools/visa-checker/namibia`; x-default=`/tools/visa-checker/namibia`
 - equivalence:1222874bdcf1: en=`/eritrea/`, fr=`/fr/eritrea/`, sw=`/sw/eritrea/`; x-default=`/eritrea/`
 - equivalence:1255211950c7: en=`/agriculture/vaccination-schedule/morocco`; x-default=`/agriculture/vaccination-schedule/morocco`
-- equivalence:1257bc04d33e: en=`/tools/afrokitchen/recipes/maheu-zm/`; x-default=`/tools/afrokitchen/recipes/maheu-zm/`
 - equivalence:125937f8baba: fr=`/fr/widgets/pertes-stockage/`; x-default=`/fr/widgets/pertes-stockage/`
 - equivalence:12663d8381e4: en=`/tools/water-bill/morocco/`; x-default=`/tools/water-bill/morocco/`
 - equivalence:126f3b8352a7: en=`/tools/afrokitchen/countries/tunisia/`; x-default=`/tools/afrokitchen/countries/tunisia/`
@@ -4790,7 +4789,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:603b52bafe8b: en=`/tanzania/`, fr=`/fr/tanzania/`, sw=`/sw/tanzania/`; x-default=`/tanzania/`
 - equivalence:6064aa0c2309: en=`/tools/afrokitchen/recipes/gomen-et/`; x-default=`/tools/afrokitchen/recipes/gomen-et/`
 - equivalence:6066bc86a5d3: en=`/sierra-leone/`, sw=`/sw/sierra-leone/`; x-default=`/sierra-leone/`
-- equivalence:607004629f76: en=`/tools/afrokitchen/recipes/kisra-south-sudan-ss/`; x-default=`/tools/afrokitchen/recipes/kisra-south-sudan-ss/`
 - equivalence:607962471c2a: en=`/tools/robots-txt/`, fr=`/fr/tools/generateur-robots-txt/`, sw=`/sw/zana/kizalishaji-robots-txt/`; x-default=`/tools/robots-txt/`
 - equivalence:607d81ca8043: en=`/tools/study-planner/`, fr=`/fr/tools/planificateur-etudes/`, sw=`/sw/zana/mpango-masomo/`; x-default=`/tools/study-planner/`
 - equivalence:6088951c5bd1: en=`/blog/relocate-kenya-to-germany-2026/`; x-default=`/blog/relocate-kenya-to-germany-2026/`

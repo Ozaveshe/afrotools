@@ -152,21 +152,23 @@ function getLatestDate(dates) {
 }
 
 function buildFuelValue(scrapedFuel, existingFuel, existingUpdatedAt) {
-  if (!scrapedFuel) {
-    return { fuel: existingFuel || null, observedAt: null, reusedExisting: !!existingFuel };
-  }
-
-  if (isOlderThan(scrapedFuel.observed_at, existingUpdatedAt)) {
-    return { fuel: existingFuel || null, observedAt: existingUpdatedAt || null, reusedExisting: !!existingFuel };
+  var existingObservedAt = existingFuel && existingFuel.observed_at;
+  // A USD equivalent is not a local-currency pump price. Keep the saved
+  // product intact when its local replacement is unavailable or older.
+  if (!scrapedFuel || !Number.isFinite(scrapedFuel.local) || scrapedFuel.local <= 0 ||
+      isOlderThan(scrapedFuel.observed_at, existingObservedAt || existingUpdatedAt)) {
+    return { fuel: existingFuel || null, observedAt: existingObservedAt || null, reusedExisting: !!existingFuel };
   }
 
   return {
     fuel: {
-      price: scrapedFuel.local || scrapedFuel.usd,
+      price: scrapedFuel.local,
       unit: 'liter',
       usd: scrapedFuel.usd,
       change: 'unknown',
       change_pct: 0,
+      observed_at: scrapedFuel.observed_at || null,
+      source_url: scrapedFuel.source_url,
     },
     observedAt: scrapedFuel.observed_at || null,
     reusedExisting: false,
@@ -187,6 +189,7 @@ async function fetchCountryFuelPrice(country, fuelType) {
     throw new Error('Could not parse ' + fuelType + ' price for ' + country.code);
   }
   parsed.observed_at = parseObservedDate(html);
+  parsed.source_url = url;
   return parsed;
 }
 
@@ -242,6 +245,7 @@ async function fetchFromGlobalPetrolPrices() {
         existing && existing.last_updated,
       ]) || new Date().toISOString().slice(0, 10);
 
+      // Country-level rollup is a snapshot date, not every product's date.
       return {
         code: c.code,
         name: c.name,

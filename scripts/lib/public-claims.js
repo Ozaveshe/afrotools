@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('node:child_process');
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require('./safe-write');
+const scanCache = require('./public-claim-scan-cache');
 
 const DEFAULT_ROOT = path.resolve(__dirname, '..', '..');
 const CLAIMS_PATH = path.join('data', 'audits', 'public-claim-registry.json');
@@ -202,7 +203,16 @@ function compilePatterns(claims) {
 }
 
 function scanContent({ claims, flows, today, files }) {
-  const validation = validateRegistries({ claims, flows, today, root: DEFAULT_ROOT });
+  const scanDay = today === undefined ? new Date().toISOString().slice(0,10) : today;
+  const validation = validateRegistries({ claims, flows, today:scanDay, root: DEFAULT_ROOT });
+  const scope = scanCache.context(DEFAULT_ROOT);
+  const cacheKey = scope && scanCache.fingerprint({root:DEFAULT_ROOT,claims,flows,today:scanDay,
+    files,validation,scannerModule:__filename,scannerSource:scanContent.toString()});
+  const cached = cacheKey && scanCache.read(scope,cacheKey);
+  if (cached) {
+    console.log('[public-claims] Reused same-job scan after exact code, registry, evidence and file-byte verification: '+cacheKey);
+    return cached;
+  }
   const errors = [...validation.errors];
   const hits = [];
   let rawHits = 0;
@@ -243,7 +253,9 @@ function scanContent({ claims, flows, today, files }) {
       }
     }
   }
-  return { ok: errors.length === 0, errors, warnings: validation.warnings, rawHits, approvedHits, hits };
+  const result = { ok: errors.length === 0, errors, warnings: validation.warnings, rawHits, approvedHits, hits };
+  if (cacheKey && result.ok) scanCache.write(scope,cacheKey,result);
+  return result;
 }
 
 function escapeHtml(value) {

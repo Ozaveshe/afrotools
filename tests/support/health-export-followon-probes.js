@@ -77,7 +77,10 @@ async function vaccine(page, baseURL, outputPath) {
   for(let n=0;n<(lang==='fr'?30:6);n++){
    const input={country:countries[n%6],ageBand:ages[n%6],recordStatus:reasons[n%5],recordProduct:n%2?'':'Download PDF — café <>&'};
    await p.locator('#country').selectOption(input.country);await p.locator('#age-band').selectOption(input.ageBand);await p.locator('#record-status').selectOption(input.recordStatus);await p.locator('#record-product').fill(input.recordProduct);await p.locator('#programme-form button[type=submit]').click();await p.locator('#handoff').waitFor({state:'visible'});
-   const result=await p.evaluate(x=>AfroToolsVaccineHandoff.prepare(x),input),dp=p.waitForEvent('download');await p.locator('#download-button').click();const download=await dp,file=output+'/'+lang+'-'+mode+'-'+n+'.txt';await download.saveAs(file);
+   const result=await p.evaluate(x=>AfroToolsVaccineHandoff.prepare(x),input);
+   // Chromium limits one frame to ten burst downloads per second. Keep every fixture and actual file.
+   await new Promise(resolve=>setTimeout(resolve,125));
+   const dp=p.waitForEvent('download');await p.locator('#download-button').click();const download=await dp,file=output+'/'+lang+'-'+mode+'-'+n+'.txt';await download.saveAs(file);
    rows.push({lang,mode,n,input,result,file,overflow:await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth),errors:[...errors]});
   }
   await ctx.close();
