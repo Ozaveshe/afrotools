@@ -99,3 +99,23 @@ test("seller text is escaped and unsafe links, wrong variants and invented publi
     { availabilityConfirmed: true }, { sellerClaimsVerified: true }
   ]) assert.throws(() => load([{ ...row, ...delta }]).askingExamplesHTML(ng, vehicle));
 });
+
+test("model search landing exposes matching dated year examples without leaking to other markets or models", () => {
+  for (const country of [ng, api.data.countries.GH]) {
+    for (const candidate of [vehicle, api.data.vehicles.find((row) => row.makeSlug !== vehicle.makeSlug)]) {
+      const page = api.html("cars/model-landing", {
+        pageType: "model", countryObj: country, listVehicles: [candidate],
+        make: candidate.make, makeSlug: candidate.makeSlug, model: candidate.model,
+        modelSlug: candidate.modelSlug, title: "Model prices", description: "Year variants"
+      });
+      const expected = country.code === "NG" && candidate.id === vehicle.id;
+      assert.equal(page.includes('id="asking-examples"'), expected);
+      if (expected) {
+        assert.ok(page.indexOf('id="asking-examples"') < page.indexOf('id="carsApp"'));
+        assert.match(page, /Dated 2022 Mercedes-AMG G63 asking examples/);
+        assert.equal((page.match(/id="asking-examples"/g) || []).length, 1);
+        assert.match(page, /NGN 260,000,000 asking/);
+      }
+    }
+  }
+});

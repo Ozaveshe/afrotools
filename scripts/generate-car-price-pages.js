@@ -386,8 +386,10 @@ function schema(meta, routePath) {
 
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
-  const hasAskingExamples = ["vehicle", "import-vs-local"].includes(meta.pageType)
-    && askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === meta.vehicleObj.id && entry.modelYear === meta.vehicleObj.year);
+  const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
+  const askingVehicle = meta.pageType === "model"
+    ? meta.listVehicles.find(hasExamples)
+    : ["vehicle", "import-vs-local"].includes(meta.pageType) && hasExamples(meta.vehicleObj) ? meta.vehicleObj : null;
   return `<!DOCTYPE html>
 <html lang="en" data-chat-bundle="${chatBundlePath}">
 <head>
@@ -420,7 +422,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
 </head>
 <body class="cars-page">
   <afro-navbar active="transport"></afro-navbar>
-  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${hasAskingExamples ? askingExamplesHTML(meta.countryObj, meta.vehicleObj) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
