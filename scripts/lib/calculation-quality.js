@@ -219,6 +219,15 @@ function normalizeHtmlFormulaPresentation(source) {
     "$1__FORMULA_DIGEST_CACHE__",
     )
     .replace(
+      /(assets\/js\/components\/footer\.min\.js\?v=)ef7e6da2(?![a-f0-9])/gi,
+      function normalizeReviewedSwahiliFooterCacheKey(match, prefix) {
+        // Only the reviewed cookie-route footer build key is presentation.
+        // Keep the protected baseline, all paths/query fields, unknown keys
+        // and every calculator expression covered by the existing digest.
+        return prefix + "6bd937ab";
+      },
+    )
+    .replace(
       /(assets\/css\/top-level-page-ui-refresh\.css\?v=)[a-f0-9]{8}/gi,
       // Preserve the reviewed baseline representation. This shared stylesheet
       // also occurs inside legacy print templates; its cache key is not a

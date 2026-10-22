@@ -219,6 +219,18 @@ test("named data-heavy lanes are represented in the shared source registry", fun
   }
 });
 
+function assertDedicatedFuelSourceHooks(html, sourceId) {
+  assert.strictEqual(sourceId, "afrofuel-static-snapshot", "fuel legacy source identity remains registered");
+  assert.ok(registry.sources.some(source => source.id === sourceId));
+  assert.match(html, /assets\/js\/lib\/fuel-market-observations\.js/, "fuel must load per-product provenance validation");
+  assert.match(html, /assets\/js\/engines\/fuel-tracker-engine\.js/, "fuel must retain its planning engine");
+  for (const id of ["fuel-data-status", "fuel-result-source", "fuel-result-date-label", "fuel-result-effective", "fuel-result-verified", "fuel-result-confidence", "fuel-result-coverage", "fuel-use-history"]) {
+    assert.ok(html.includes('id="' + id + '"'), "fuel must retain dated/source/basis and explicit-history hook: " + id);
+  }
+  assert.ok(html.includes("not a station quote"), "fuel must distinguish benchmark coverage from a station quote");
+  assert.ok(html.includes("Coordinates are not sent, stored or added to the URL"), "fuel must retain its local-only location disclosure");
+}
+
 test("migrated data-heavy tools include source registry UI hooks", function () {
   const pages = [
     ["tools/import-duty/index.html", "import-duty-planning-rates"],
@@ -230,6 +242,10 @@ test("migrated data-heavy tools include source registry UI hooks", function () {
 
   for (const [file, sourceId] of pages) {
     const html = fs.readFileSync(path.join(__dirname, "..", file), "utf8");
+    if (file === "tools/fuel-tracker/index.html") {
+      assertDedicatedFuelSourceHooks(html, sourceId);
+      continue;
+    }
     assert.match(html, /source-confidence\.js/, file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + sourceId + '"'), file + " should render " + sourceId);
   }
@@ -263,6 +279,10 @@ test("registered money routes render their primary source metadata", function ()
       assert.ok(!panel.includes("data-source-meta-id"), "generic hydration must not overwrite BF review evidence");
       continue;
     }
+    if (target.file.split(path.sep).join("/") === "tools/fuel-tracker/index.html" && target.sourceId === "afrofuel-static-snapshot") {
+      assertDedicatedFuelSourceHooks(html, target.sourceId);
+      continue;
+    }
     assert.match(html, /source-confidence\.js/, target.file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + target.sourceId + '"'), target.file + " should render " + target.sourceId);
     const hookIndex = html.indexOf('data-source-meta-id="' + target.sourceId + '"');
@@ -273,6 +293,10 @@ test("registered money routes render their primary source metadata", function ()
 test("five representative money pages use the sampled source-meta pattern", function () {
   for (const target of sourceHookBuilder.SAMPLE_TARGETS) {
     const html = fs.readFileSync(path.join(ROOT, target.file), "utf8");
+    if (target.file.split(path.sep).join("/") === "tools/fuel-tracker/index.html" && target.sourceId === "afrofuel-static-snapshot") {
+      assertDedicatedFuelSourceHooks(html, target.sourceId);
+      continue;
+    }
     assert.match(html, /source-confidence\.js/, target.file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + target.sourceId + '"'), target.file + " should render " + target.sourceId);
   }

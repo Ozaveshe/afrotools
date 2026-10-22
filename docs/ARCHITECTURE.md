@@ -98,6 +98,17 @@ post-processes committed HTML and generated files in place. A healthy clean
 checkout must remain clean after `npm run build:deploy`; CI checks this with a
 post-build Git diff.
 
+The GitHub Actions artifact producer can reuse a passing public-claim scan
+within the same native run, attempt and job, from a clean checkout at the
+exact event commit. Every command still validates the registries with the
+current date. Reuse requires identical scanner/helper code, runtime options,
+evidence bytes, and the ordered paths and raw bytes of every scanned file.
+The private cache lives under `RUNNER_TEMP`, expires after 75 minutes without
+refreshing on reads, and falls back to a full scan on any missing, corrupt,
+changed or uncertain input. Local and Netlify builds do not use this cache.
+This does not extend the original shared CI deadline, skip another gate,
+change generated reports or establish production, provider or live proof.
+
 Important generator families:
 
 | Concern | Source/generator | Output |

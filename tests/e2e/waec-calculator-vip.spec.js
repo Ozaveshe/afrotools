@@ -1,5 +1,146 @@
 const { test, expect } = require('@playwright/test');
 
+async function readyEvents(page) {
+  return page.evaluate(() => Array.from(window.dataLayer || [])
+    .filter((entry) => entry[0] === 'event' && entry[1] === 'waec_result_ready')
+    .map((entry) => entry[2]));
+}
+
+async function loadReadinessPage(page, consent = 'accepted') {
+  await page.addInitScript((choice) => {
+    localStorage.setItem('afrotools_cookie_consent', choice);
+  }, consent);
+  await page.goto('/tools/waec-calculator/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#examSystem')).toHaveValue('ng-waec-neco');
+  await page.waitForFunction(() => window.AfroTools && window.AfroTools.analytics && typeof window.gtag === 'function');
+}
+
+async function changeConsent(page, status) {
+  await page.evaluate((choice) => {
+    localStorage.setItem('afrotools_cookie_consent', choice);
+    window.dispatchEvent(new CustomEvent('afrotools:cookie-consent', { detail: { status: choice } }));
+    window.dispatchEvent(new StorageEvent('storage', { key: 'afrotools_cookie_consent', newValue: choice }));
+  }, status);
+}
+
+test.describe('WAEC planning-ready measurement', () => {
+  test('counts meaningful Nigeria results without counting empty, name-only, or repeated renders', async ({ page }) => {
+    await loadReadinessPage(page);
+    expect(await readyEvents(page)).toEqual([]);
+    const rows = page.locator('.wc-subject-row');
+    await rows.nth(0).locator('select').selectOption('A1');
+    expect(await readyEvents(page)).toEqual([]);
+    await page.getByRole('button', { name: 'Load sample grades' }).click();
+    await expect(page.locator('#resultAggregate')).toHaveText('10');
+    expect(await readyEvents(page)).toEqual([{
+      tool_id: 'waec-calculator', system: 'ng-waec-neco', planning_only: true, counted_subject_count: 5
+    }]);
+    await rows.nth(3).locator('input').fill('Synthetic subject label only');
+    await rows.nth(3).locator('input').dispatchEvent('input');
+    await page.getByRole('tab', { name: 'Official checks' }).click();
+    expect(await readyEvents(page)).toHaveLength(1);
+    await page.getByRole('tab', { name: 'Result planner' }).click();
+    await rows.nth(0).locator('select').selectOption('F9');
+    expect(await readyEvents(page)).toHaveLength(2);
+    await rows.nth(0).locator('select').selectOption('B3');
+    expect(await readyEvents(page)).toHaveLength(3);
+    await page.evaluate(() => window.clearWaecGrades());
+    expect(await readyEvents(page)).toHaveLength(3);
+    await page.getByRole('button', { name: 'Load sample grades' }).click();
+    expect(await readyEvents(page)).toHaveLength(4);
+    const legacy = await page.evaluate(() => Array.from(window.dataLayer || [])
+      .filter((entry) => entry[0] === 'event' && entry[1] === 'calculation_completed')
+      .map((entry) => entry[2]));
+    expect(legacy.some((entry) => entry.complete === false)).toBe(true);
+    expect(legacy.some((entry) => entry.complete === true)).toBe(true);
+  });
+
+  test('Ghana planning readiness remains useful when official credit checks fail and resets when incomplete', async ({ page }) => {
+    await loadReadinessPage(page);
+    await page.selectOption('#examSystem', 'gh-wassce');
+    const rows = page.locator('.wc-subject-row');
+    for (let index = 0; index < 4; index += 1) await rows.nth(index).locator('select').selectOption('F9');
+    for (let index = 4; index < 7; index += 1) {
+      await rows.nth(index).locator('input').fill('Synthetic elective ' + index);
+      if (index < 6) await rows.nth(index).locator('select').selectOption('F9');
+    }
+    expect(await readyEvents(page)).toEqual([]);
+    await rows.nth(6).locator('select').selectOption('F9');
+    await expect(page.locator('#resultAggregate')).toHaveText('54');
+    await expect(page.locator('#resultCredits')).toHaveText('0');
+    expect(await readyEvents(page)).toEqual([{
+      tool_id: 'waec-calculator', system: 'gh-wassce', planning_only: true, counted_subject_count: 6
+    }]);
+    await page.selectOption('#trackSelect', 'non-science');
+    expect(await readyEvents(page)).toHaveLength(2);
+    await rows.nth(6).locator('select').selectOption('');
+    expect(await readyEvents(page)).toHaveLength(2);
+    await rows.nth(6).locator('select').selectOption('F9');
+    expect(await readyEvents(page)).toHaveLength(3);
+    await page.selectOption('#examSystem', 'ng-waec-neco');
+    expect(await readyEvents(page)).toHaveLength(3);
+  });
+
+  test('consent acceptance alone never creates tool use and denied results do not consume readiness', async ({ page }) => {
+    await loadReadinessPage(page, 'declined');
+    await page.getByRole('button', { name: 'Load sample grades' }).click();
+    expect(await readyEvents(page)).toEqual([]);
+    await changeConsent(page, 'accepted');
+    expect(await readyEvents(page)).toEqual([]);
+    await page.locator('.wc-subject-row').nth(3).locator('input').dispatchEvent('input');
+    expect(await readyEvents(page)).toHaveLength(1);
+    await changeConsent(page, 'declined');
+    await changeConsent(page, 'accepted');
+    await page.locator('.wc-subject-row').nth(3).locator('input').dispatchEvent('input');
+    expect(await readyEvents(page)).toHaveLength(1);
+    await changeConsent(page, 'declined');
+    await page.locator('.wc-subject-row').nth(0).locator('select').selectOption('F9');
+    expect(await readyEvents(page)).toHaveLength(1);
+    await changeConsent(page, 'accepted');
+    expect(await readyEvents(page)).toHaveLength(1);
+    await page.locator('.wc-subject-row').nth(3).locator('input').dispatchEvent('input');
+    expect(await readyEvents(page)).toHaveLength(2);
+  });
+
+  test('missing helper waits for interaction and saved or sample output exposes only readiness metadata', async ({ page }) => {
+    await loadReadinessPage(page);
+    await page.evaluate(() => {
+      window.__syntheticReadyAnalytics = window.AfroTools.analytics;
+      delete window.AfroTools.analytics;
+    });
+    await page.getByRole('button', { name: 'Load sample grades' }).click();
+    expect(await readyEvents(page)).toEqual([]);
+    await page.evaluate(() => { window.AfroTools.analytics = window.__syntheticReadyAnalytics; });
+    expect(await readyEvents(page)).toEqual([]);
+    await page.locator('.wc-subject-row').nth(3).locator('input').fill('SYNTHETIC PRIVATE SUBJECT');
+    expect(await readyEvents(page)).toHaveLength(1);
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#resultAggregate')).toHaveText('10');
+    expect(await readyEvents(page)).toEqual([{
+      tool_id: 'waec-calculator', system: 'ng-waec-neco', planning_only: true, counted_subject_count: 5
+    }]);
+    expect(JSON.stringify(await readyEvents(page))).not.toMatch(/SYNTHETIC PRIVATE SUBJECT|B3|A1|aggregate|signature|value|manual|admission/i);
+  });
+
+  test('shared queue withdrawal prevents replay of an accepted ready output', async ({ page }) => {
+    await loadReadinessPage(page);
+    await page.getByRole('button', { name: 'Load sample grades' }).click();
+    expect(await readyEvents(page)).toHaveLength(1);
+    await page.evaluate(() => {
+      window.__syntheticReadyGtag = window.gtag;
+      delete window.gtag;
+    });
+    await page.locator('.wc-subject-row').nth(0).locator('select').selectOption('F9');
+    expect(await readyEvents(page)).toHaveLength(1);
+    await changeConsent(page, 'declined');
+    await page.evaluate(() => { window.gtag = window.__syntheticReadyGtag; });
+    await changeConsent(page, 'accepted');
+    await page.locator('.wc-subject-row').nth(3).locator('input').dispatchEvent('input');
+    await page.waitForTimeout(1100);
+    expect(await readyEvents(page)).toHaveLength(1);
+  });
+});
+
 test.describe('WAEC/NECO result planner VIP', () => {
   test('Nigeria planning index is transparent and exports a local action pack', async ({ page }) => {
     const errors = [];

@@ -26,6 +26,14 @@ async function g() {
     if (current()) h(message, success);
   }
 
+  function trackShareSuccess(method) {
+    if (!current()) return;
+    var analytics = e.AfroTools && e.AfroTools.analytics;
+    if (!analytics || typeof analytics.trackShare !== "function") return;
+    try { analytics.trackShare("market-days", method); }
+    catch (_) { /* Measurement must not change share feedback. */ }
+  }
+
   try {
     if (typeof navigator.share === "function") {
       sharing = true;
@@ -36,10 +44,12 @@ async function g() {
         url: url
       });
       feedback("Shared.", true);
+      trackShareSuccess("native");
     } else if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
       feedback("Copying link…", false);
       await navigator.clipboard.writeText(url);
       feedback("Link copied to clipboard.", true);
+      trackShareSuccess("clipboard");
     } else {
       feedback("Copy this URL from the address bar: " + url, false);
     }
