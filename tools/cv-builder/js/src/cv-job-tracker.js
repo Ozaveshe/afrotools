@@ -114,7 +114,7 @@
             followUpDate: t.followUpDate || t.followupDate || "",
             jd: t.jd || t.jobDescription || "",
             score: Number(t.score || 0),
-            match: Number(t.match || 0),
+            match: t.match == null ? null : Number(t.match || 0),
             ats: Number(t.ats || 0),
             fingerprint: t.fingerprint || d([ t.role || t.jobTitle, t.company, t.jobLink || t.jd ].join("|")).toLowerCase().slice(0, 260),
             createdAt: t.createdAt || l(),
