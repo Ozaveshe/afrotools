@@ -145,6 +145,24 @@ function run() {
 
   // PAYE facts are derived from the executable engine and reconciled with the
   // formula registry's version/source metadata.
+  // An explicit withheld record conveys availability, never old numeric facts.
+  const heldPaye = freshlyBuilt.records['bf-paye-fr'];
+  assert.strictEqual(heldPaye.definition.status, 'source-coupled');
+  assert.strictEqual(heldPaye.sourceRecord.facts.availability, 'withheld');
+  assert.strictEqual(heldPaye.sourceRecord.facts.calculable, false);
+  assert.ok(generated['bf-paye-fr'].includes('Répondez TOUJOURS en français'));
+  assert.ok(generated['bf-paye-fr'].includes('Do not calculate or estimate'));
+  assert.ok(!/\d|%|XOF|Current structured|As of:|Formula:/.test(generated['bf-paye-fr']));
+  Object.values(freshlyBuilt.records).forEach(function (record) {
+    const binding = (record.definition.sourceBindings || [])[0];
+    if (!binding || binding.kind !== 'paye-engine' || binding.countryCode === 'BF') return;
+    const facts = record.sourceRecord.facts;
+    assert.ok(facts.bands.length > 0, record.definition.toolKey + ' must retain executable numeric bands');
+    assert.ok(facts.formulaId && facts.formulaVersion && facts.asOf, record.definition.toolKey + ' must retain provenance');
+    facts.bands.forEach(function (band) {
+      assert.ok(Number.isFinite(band.from) && (band.to === null || Number.isFinite(band.to)) && Number.isFinite(band.rate));
+    });
+  });
   ['ng-paye', 'ke-paye', 'dz-paye', 'dz-paye-fr', 'sn-paye', 'sn-paye-fr'].forEach(function (key) {
     const facts = freshlyBuilt.records[key].sourceRecord.facts;
     const formula = formulaById.get(facts.formulaId);
