@@ -13,7 +13,7 @@
       ['Choose one recording','Use a session you own, with permission for any guests and third-party material.','repurposing','Plan your repurposing'],
       ['Mark three useful moments','Pick a clear takeaway, a strong reaction and a moment that stands on its own.','repurposing','Find your clip structure'],
       ['Make one mobile-friendly edit','Give the clip a clear opening, readable captions and a format that fits the destination.','mobile-workflow','Use a mobile workflow'],
-      ['Schedule a simple test','Publish the clips on separate days. Keep a note of the format and time used.','30-day-plan','Build a repeatable schedule'],
+      ['Schedule a simple test','Publish the clips on separate days. Keep a note of the format and time used.','plan-generator','Build a repeatable schedule'],
       ['Review and choose the next clip','Look at audience retention and useful responses before deciding what to repeat.','start-here','Build the next session']
     ]},
     pitch:{title:'Prepare a brand pitch',description:'A specific offer and credible evidence beat an inflated follower claim.',steps:[

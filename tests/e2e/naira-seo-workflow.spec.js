@@ -4,7 +4,11 @@ test('Naira search landing reaches the converter and matches its reference examp
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/tools/naira-to-words/');
   await expect(page.locator('#amount')).toBeEnabled();
-  await page.getByRole('link',{name:'Convert an amount',exact:true}).click();
+  const skip=page.getByRole('link',{name:'Skip to main content',exact:true});
+  await page.keyboard.press('Tab');
+  await expect(skip).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#naira-main-content')).toBeFocused();
   await expect.poll(async()=>{const box=await page.locator('#amount').boundingBox();return box.y>=70 && box.y+box.height<812;}).toBe(true);
   await page.locator('#amount').fill('100000');
   await expect(page.locator('#result')).toContainText('One Hundred Thousand Naira Only');
@@ -12,5 +16,10 @@ test('Naira search landing reaches the converter and matches its reference examp
   await page.locator('#amount').fill('250000.50');
   await expect(page.locator('#result')).toContainText('Two Hundred and Fifty Thousand Naira and Fifty Kobo Only');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const guide=page.locator('.seo-cluster__cta[href="/blog/naira-in-words/"]');
+  await expect(guide).toHaveText('Read the Naira wording guide');
+  await guide.click();
+  await expect(page).toHaveURL(/\/blog\/naira-in-words\/$/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://afrotools.com/blog/naira-in-words/');
   expect(errors).toEqual([]);
 });
