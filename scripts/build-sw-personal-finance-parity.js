@@ -175,6 +175,7 @@ function renderHub() {
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/50-30-20-budget.webp">
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/sw-personal-finance.css"><style>
 .swpf-hub .swpf-hero h1{color:#fff}
+.swpf-hub .swpf-skip:focus{position:fixed;z-index:501;max-width:calc(100vw - 2rem);box-sizing:border-box}
 .swpf-hub a.swpf-button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;max-width:100%;min-height:44px;text-align:center;white-space:normal;text-decoration:none}
 </style><script type="application/ld+json">${JSON.stringify(collection).replace(/</g, '\\u003c')}</script></head>
 <body class="swpf-page swpf-hub"><a class="swpf-skip" href="#swpf-directory">Ruka hadi kwenye zana</a><afro-navbar></afro-navbar>
