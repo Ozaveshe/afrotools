@@ -2414,8 +2414,9 @@
       const mobileSearchText = () => {
         var lang = this._getLang();
         return {
-          loading: lang === 'sw' ? 'Inapakia zana...' : lang === 'ha' ? 'Ana loda kayan aiki...' : lang === 'yo' ? 'Ó ń kojú irinṣẹ...' : 'Loading tools...',
-          empty: lang === 'sw' ? 'Hakuna zana iliyopatikana' : lang === 'ha' ? 'Ba a sami kayan aiki ba' : lang === 'yo' ? 'A kò rí irinṣẹ kankan' : 'No tools found',
+          loadError: lang === 'fr' ? 'Une erreur s’est produite.' : lang === 'sw' ? 'Hitilafu imetokea.' : lang === 'ha' ? 'An samu matsala.' : lang === 'yo' ? 'Àṣìṣe kan ṣẹlẹ̀.' : 'Something went wrong.',
+          loading: lang === 'fr' ? 'Chargement…' : lang === 'sw' ? 'Inapakia zana...' : lang === 'ha' ? 'Ana loda kayan aiki...' : lang === 'yo' ? 'Ó ń kojú irinṣẹ...' : 'Loading tools...',
+          empty: lang === 'fr' ? 'Aucun résultat trouvé' : lang === 'sw' ? 'Hakuna zana iliyopatikana' : lang === 'ha' ? 'Ba a sami kayan aiki ba' : lang === 'yo' ? 'A kò rí irinṣẹ kankan' : 'No tools found',
         };
       };
       let _mobDebounce;
@@ -2474,7 +2475,7 @@
               if (Array.isArray(tools)) {
                 mobSearchInput.dispatchEvent(new Event('input', { bubbles: true }));
               } else {
-                mobSearchResults.innerHTML = '<div class="mob-search-empty">' + mobileSearchText().empty + '</div>';
+                mobSearchResults.innerHTML = '<div class="mob-search-empty">' + mobileSearchText().loadError + '</div>';
               }
             });
             return;

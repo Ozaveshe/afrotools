@@ -73,12 +73,12 @@
       '<p>The local phrasebook works without a network request. Send only non-sensitive text you deliberately choose.</p>',
       '<div data-external-translation-consent-host></div>',
       '<div class="vip-cloud-grid">',
-      '<div><label for="translateInput">Source text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
+      '<div><label for="translateInput" id="translateInputLabel">English text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
       '<div><div id="translateOutputLabel" class="vip-cloud-label">Igbo output</div><div id="translateOutput" role="region" aria-labelledby="translateOutputLabel">Cloud translation appears here after you opt in.</div></div>',
       '</div>',
       '<div class="vip-cloud-actions"><button type="button" id="translateBtn" disabled>Translate</button><button type="button" id="swapBtn" aria-label="Swap source and target languages">Swap</button><button type="button" id="clearTranslateBtn">Clear</button><span id="translateStatus" role="status" aria-live="polite"></span></div>'
     ].join('');
-    container.appendChild(card);
+    container.insertBefore(card, document.getElementById('wotd'));
     consent.render(card.querySelector('[data-external-translation-consent-host]'), {
       toolId: toolId,
       primaryProvider: 'MyMemory'
@@ -87,6 +87,7 @@
     var input = document.getElementById('translateInput');
     var output = document.getElementById('translateOutput');
     var outputLabel = document.getElementById('translateOutputLabel');
+    var inputLabel = document.getElementById('translateInputLabel');
     var button = document.getElementById('translateBtn');
     var status = document.getElementById('translateStatus');
 
@@ -116,8 +117,20 @@
     });
     document.getElementById('swapBtn').addEventListener('click', function () {
       swapped = !swapped;
+      inputLabel.textContent = swapped ? 'Igbo text' : 'English text';
       outputLabel.textContent = swapped ? 'English output' : 'Igbo output';
       clearResult('');
+    });
+    document.getElementById('translateSearch').addEventListener('click', function () {
+      var text = document.getElementById('search').value.trim();
+      if (!text) return;
+      swapped = false;
+      inputLabel.textContent = 'English text';
+      outputLabel.textContent = 'Igbo output';
+      input.value = text;
+      clearResult('Text filled from your phrase search. Review it and choose whether to opt in before translating.');
+      input.focus();
+      card.scrollIntoView({ block: 'start' });
     });
     input.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' && !event.shiftKey) {
