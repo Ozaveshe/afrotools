@@ -55,7 +55,7 @@ test('unchanged generic runGroup emits ALL47 exact commands/env through a SYNTHE
 // Exact Root/native-peer accepted V3 source binding; these checks do not execute browser journeys.
 const LEGACY_FIXTURE='tests/fixtures/afrokitchen/final-four-legacy-source-html.json';
 function final4NativeInputsAreExact(specBytes,fixtureBytes){
- assert.equal(specBytes.length,37239,'Exact accepted Maheu-method successor spec byte count');assert.equal(c.sha(specBytes),'3b83d94be541ff170d7205333a91583190d6d5003fed14eaba1039cabb86f282','Exact accepted Maheu-method successor spec SHA');
+ assert.equal(specBytes.length,38698,'Exact accepted Kunu-method successor spec byte count');assert.equal(c.sha(specBytes),'bfd052eb89b7e3ba070b7e30b0452b3c8b08a54133dc742a2775cd43462afe43','Exact accepted Kunu-method successor spec SHA');
  assert.equal(fixtureBytes.length,139393,'Exact accepted historical fixture byte count');assert.equal(c.sha(fixtureBytes),'3e794ba4f824c042c8e981f0cdbcbb7945863816b5053b0b39d9eccb362b556f','Exact accepted historical fixture SHA');
  const fixture=JSON.parse(fixtureBytes.toString('utf8'));assert.equal(fixture.schemaVersion,1);assert.equal(fixture.records.length,2);
  const expected=[{slug:'kisra-south-sudan-ss',bytes:67127,sha256:'172e7839cdec45b32d55e4fb8fd8a183ee08a986b0bebf3f7d0f8c8329e9f6cc'},{slug:'maheu-zm',bytes:64291,sha256:'9c0c6635464cd55d7e37848ad7b6c82713f5d2d63841ac6422a16f7ede7c7b72'}];
@@ -65,7 +65,7 @@ function final4NativeInputsAreExact(specBytes,fixtureBytes){
 test('Kitchen gate binds the exact accepted V3 full spec and both historical cached documents',()=>{assert.equal(final4NativeInputsAreExact(fs.readFileSync(path.join(ROOT,SPEC)),fs.readFileSync(path.join(ROOT,LEGACY_FIXTURE))),true)});
 test('native source binding rejects skipped FINAL4, corrupt cached HTML and substituted lineage',()=>{
  const spec=fs.readFileSync(path.join(ROOT,SPEC)),fixtureBytes=fs.readFileSync(path.join(ROOT,LEGACY_FIXTURE)),text=spec.toString('utf8');assert.equal(text.split("test('FINAL4 ").length-1,5);
- const skipped=Buffer.from(text.replace("test('FINAL4 ","test.skip('FINAL4 "));assert.notDeepEqual(skipped,spec);assert.throws(()=>final4NativeInputsAreExact(skipped,fixtureBytes),/Exact accepted Maheu-method successor spec/);
+ const skipped=Buffer.from(text.replace("test('FINAL4 ","test.skip('FINAL4 "));assert.notDeepEqual(skipped,spec);assert.throws(()=>final4NativeInputsAreExact(skipped,fixtureBytes),/Exact accepted Kunu-method successor spec/);
  const corrupted=Buffer.from(fixtureBytes);corrupted[Math.floor(corrupted.length/2)]^=1;assert.throws(()=>final4NativeInputsAreExact(spec,corrupted),/Exact accepted historical fixture/);
  const substituted=JSON.parse(fixtureBytes.toString('utf8'));substituted.records[0].sourceCommit='0'.repeat(40);assert.throws(()=>final4NativeInputsAreExact(spec,Buffer.from(JSON.stringify(substituted))),/Exact accepted historical fixture/);
 });

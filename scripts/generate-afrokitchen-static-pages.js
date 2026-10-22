@@ -1508,6 +1508,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const pressureStages = typeof engine.getRecipePressureStages === "function" ? engine.getRecipePressureStages(recipe) : null;
   const kisraStages = typeof engine.getRecipeKisraStages === "function" ? engine.getRecipeKisraStages(recipe) : null;
   const maheuStages = typeof engine.getRecipeMaheuStages === "function" ? engine.getRecipeMaheuStages(recipe) : null;
+  const kunuStages = typeof engine.getRecipeKunuStages === "function" ? engine.getRecipeKunuStages(recipe) : null;
   const renderedIngredients = renderIngredientsHtml(engine, recipe, recipe.default_servings || 1);
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
@@ -1530,7 +1531,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     name: recipe.name,
     description: recipe.description,
     story: recipe.story || "",
-    ...((pressureStages || kisraStages || maheuStages) ? { source: recipe.source } : {}),
+    ...((pressureStages || kisraStages || maheuStages || kunuStages) ? { source: recipe.source } : {}),
     default_servings: recipe.yield_status === 'not-recorded' ? null : recipe.default_servings || 1,
     ...(recipe.yield_status === 'not-recorded' ? { yield_status: 'not-recorded' } : {}),
     serving_unit: recipe.serving_unit || "servings",
@@ -1748,8 +1749,8 @@ ${renderCookbookNav()}
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Region</div><div class="ak-stat-val">${escapeHtml(recipe.region)}</div></div>
-           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : kisraStages ? "Ferment" : maheuStages ? "Cook" : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : kisraStages ? kisraStages.ferment : maheuStages ? maheuStages.cook : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
-           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages || kisraStages || maheuStages ? 'Batch' : recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : kisraStages ? kisraStages.batch : maheuStages ? maheuStages.batch : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : kisraStages ? "Ferment" : maheuStages ? "Cook" : kunuStages ? "Soak" : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : kisraStages ? kisraStages.ferment : maheuStages ? maheuStages.cook : kunuStages ? kunuStages.soak : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages || kisraStages || maheuStages || kunuStages ? 'Batch' : recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : kisraStages ? kisraStages.batch : maheuStages ? maheuStages.batch : kunuStages ? kunuStages.batch : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
         <div class="ak-hero-actions">
@@ -1818,7 +1819,7 @@ ${renderCookbookNav()}
             </div>
             <div class="ak-method-stat-row">
               <span>${akIcon("check", "ak-icon-sm")}${escapeHtml(String((recipe.steps || []).length))} steps</span>
-              ${maheuStages ? `<span>${akIcon("time", "ak-icon-sm")}Cook ${maheuStages.cook}</span><span>${akIcon("timer", "ak-icon-sm")}Cool ${maheuStages.cool}</span><span>Fermentation varies with warmth (see method)</span>` : kisraStages ? `<span>${akIcon("time", "ak-icon-sm")}Overnight fermentation</span><span>${akIcon("timer", "ak-icon-sm")}${kisraStages.cook}</span>` : pressureStages ? `<span>${akIcon("timer", "ak-icon-sm")}${pressureStages.join(" + ")} min under pressure; extra time for heat-up and release</span>` : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
+              ${kunuStages ? `<span>${akIcon("time", "ak-icon-sm")}Soak ${kunuStages.soak}</span><span>${kunuStages.sourceYield}</span>` : maheuStages ? `<span>${akIcon("time", "ak-icon-sm")}Cook ${maheuStages.cook}</span><span>${akIcon("timer", "ak-icon-sm")}Cool ${maheuStages.cool}</span><span>Fermentation varies with warmth (see method)</span>` : kisraStages ? `<span>${akIcon("time", "ak-icon-sm")}Overnight fermentation</span><span>${akIcon("timer", "ak-icon-sm")}${kisraStages.cook}</span>` : pressureStages ? `<span>${akIcon("timer", "ak-icon-sm")}${pressureStages.join(" + ")} min under pressure; extra time for heat-up and release</span>` : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
               <span>${akIcon("timer", "ak-icon-sm")}${engine.getRecipeTiming(recipe).total === null && engine.getRecipeTiming(recipe).cook !== null ? "About " : ""}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).cook))} cook (check method)</span>
               <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))} total</span>`}
               <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>

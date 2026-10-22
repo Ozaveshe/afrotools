@@ -460,6 +460,185 @@ function recipe(row) {
   };
   // Exact reviewed source rows; no UUID/public approval is assigned by this source batch.
   const attributed = {
+    "kunu-zaki-ng": {
+      "name": "Kunu Zaki",
+      "description": "Spiced millet and sweet-potato drink, after Omolabake’s Nigerian home method.",
+      "story": "Adapted from Omolabake at Ounje Aladun. The author describes this as a Northern Nigerian drink also enjoyed in Lagos.",
+      "author": "AfroKitchen adaptation of Omolabake, Ounje Aladun (2021)",
+      "source": "https://ounjealadun.com/2021/06/15/kunu-kunu-zaki-how-to-make-kunu/",
+      "default_servings": null,
+      "serving_unit": null,
+      "yield_status": "not-recorded",
+      "prep_time_minutes": null,
+      "cook_time_minutes": null,
+      "total_time_minutes": null,
+      "image_url": "/assets/img/kitchen/kunu-zaki-ng.webp",
+      "image_alt": "AI-generated illustration of a creamy Kunu Zaki millet drink.",
+      "calories": null,
+      "protein_g": null,
+      "carbs_g": null,
+      "fat_g": null,
+      "fiber_g": null,
+      "nutrition_basis": null,
+      "tags": [
+        "kunu",
+        "millet",
+        "sweet-potato",
+        "drink"
+      ],
+      "diet_tags": [],
+      "chef_notes": null,
+      "best_served_with": "Chilled",
+      "occasion": null,
+      "regional_variations": "This attributed millet-and-fresh-potato version is one Nigerian household method.",
+      "method_review_status": "attributed-source-method",
+      "method_review_revision": null,
+      "ingredients": [
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "millet",
+          "amount": 3,
+          "unit": "cups",
+          "prep_note": null,
+          "is_optional": false,
+          "sort_order": 10,
+          "group_name": null
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "fresh ginger roots",
+          "amount": 2,
+          "unit": "large",
+          "prep_note": null,
+          "is_optional": false,
+          "sort_order": 20,
+          "group_name": null
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "raw sweet potatoes",
+          "amount": 3,
+          "unit": "large",
+          "prep_note": "Peel and keep separate from the millet mixture.",
+          "is_optional": false,
+          "sort_order": 30,
+          "group_name": null
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "cloves",
+          "amount": 1,
+          "unit": "tbsp",
+          "prep_note": null,
+          "is_optional": false,
+          "sort_order": 40,
+          "group_name": null
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "water",
+          "amount": null,
+          "unit": "as needed",
+          "prep_note": "As needed for soaking, blending, cooking and thinning.",
+          "is_optional": false,
+          "sort_order": 50,
+          "group_name": null,
+          "source_quantity_unrecorded": true
+        },
+        {
+          "ingredient_id": null,
+          "substitution": null,
+          "name": "sugar or preferred sweetener",
+          "amount": null,
+          "unit": "to taste",
+          "prep_note": "To taste.",
+          "is_optional": true,
+          "sort_order": 60,
+          "group_name": null,
+          "source_quantity_unrecorded": true
+        }
+      ],
+      "steps": [
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 1,
+          "title": "Soak the millet",
+          "instruction": "Wash the millet and soak overnight; the author allows up to 24 hours.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 2,
+          "title": "Prepare two blends",
+          "instruction": "Drain millet. Grind it with washed ginger and cloves, adding enough water for a smooth slurry. Separately peel, cube and grind the potatoes; keep the cubes submerged until grinding.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 3,
+          "title": "Strain and settle",
+          "instruction": "Strain both blends separately through a cloth. Let them settle until clear water collects above the paste. Pour off and reserve some water, leaving each paste loose.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 4,
+          "title": "Cook the millet",
+          "instruction": "Boil water, reduce the heat and slowly stir in the millet slurry. Keep stirring until it thickens; add reserved water to make it runny.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 5,
+          "title": "Cool before combining",
+          "instruction": "Turn off the heat. Let the millet cool, then stir in the loose potato paste.",
+          "timer_seconds": null,
+          "timer_label": null
+        },
+        {
+          "tip": null,
+          "image_url": null,
+          "step_number": 6,
+          "title": "Sweeten and chill",
+          "instruction": "Sweeten to taste, transfer to covered bottles and serve chilled.",
+          "timer_seconds": null,
+          "timer_label": null
+        }
+      ],
+      "method_revision": "kunu-ounje-millet-potato-20261022-v1",
+      "confidence": "Attributed household preparation, not kitchen-tested",
+      "review_summary": "Measured household ingredient units and actionable separately prepared millet/potato method. Author batch estimate retained separately from servings; no fixed full duration, nutrition or fermentation endpoint invented.",
+      "official_source_status": "Primary recipe author, not an official standard",
+      "recommended_changes": [],
+      "sources": [
+        {
+          "title": "Omolabake – Kunu; Kunu Zaki (How to make Kunu), Ounje Aladun",
+          "url": "https://ounjealadun.com/2021/06/15/kunu-kunu-zaki-how-to-make-kunu/",
+          "source_type": "primary culinary author",
+          "published_at": "2021-06-15",
+          "accessed_at": "2026-10-22",
+          "access_basis": "Actual full HTML200/154144bytes; recipe and method read directly. Page also displays2024-03-19 without a labelled change history.",
+          "supports": [
+            "Household ingredient quantities and separately prepared millet/potato procedure",
+            "Overnight soak, up to24hours; author batch estimate5–6litres"
+          ]
+        }
+      ]
+    },
     "maheu-zm": {
       "name": "Maheu – Ntambanana maize version",
       "description": "A lightly sweet fermented maize drink, adapted from the measured Ntambanana method.",
@@ -1223,28 +1402,6 @@ function recipe(row) {
   if (Object.prototype.hasOwnProperty.call(attributed, row.slug)) return Object.assign(result, attributed[row.slug]);
   // These source rows lack UUIDs; browser/API projection independently enforces UUID + slug.
   const pending = {
-  "kunu-zaki-ng": {
-    "description": "Nigerian millet-based drink. A reviewed preparation method, quantities, duration and yield are not available on this page.",
-    "story": null,
-    "occasion": null,
-    "best_served_with": null,
-    "regional_variations": null,
-    "method_review_status": "pending-source-method",
-    "method_review_revision": "kunu-ikivuguto-source-hold-20261018",
-    "prep_time_minutes": null,
-    "cook_time_minutes": null,
-    "total_time_minutes": null,
-    "default_servings": null,
-    "serving_unit": null,
-    "yield_status": "not-recorded",
-    "calories": null,
-    "protein_g": null,
-    "carbs_g": null,
-    "fat_g": null,
-    "fiber_g": null,
-    "ingredients": [],
-    "steps": []
-  },
   "ikivuguto-rw": {
     "description": "Rwandan cultured milk. A reviewed preparation method, quantities, duration and yield are not available on this page.",
     "story": null,
@@ -1387,11 +1544,15 @@ const seen = new Set();
 for (const item of recipes) {
   if (seen.has(item.slug)) throw new Error(`Duplicate slug: ${item.slug}`);
   seen.add(item.slug);
-  if (['kunu-zaki-ng', 'ikivuguto-rw'].includes(item.slug)) {
+  if (['ikivuguto-rw'].includes(item.slug)) {
     if (item.method_review_status !== 'pending-source-method' || item.method_review_revision !== (['kisra-south-sudan-ss','maheu-zm'].includes(item.slug) ? 'kisra-maheu-source-hold-20261018' : 'kunu-ikivuguto-source-hold-20261018') ||
         item.ingredients.length || item.steps.length || item.default_servings !== null || item.prep_time_minutes !== null || item.cook_time_minutes !== null || item.total_time_minutes !== null) {
       throw new Error(`${item.slug} must remain an explicit source-method hold`);
     }
+    continue;
+  }
+  if (item.slug === 'kunu-zaki-ng') {
+    if (item.method_revision !== 'kunu-ounje-millet-potato-20261022-v1' || item.source !== 'https://ounjealadun.com/2021/06/15/kunu-kunu-zaki-how-to-make-kunu/' || item.ingredients.length !== 6 || item.steps.length !== 6 || item.default_servings !== null || item.total_time_minutes !== null || item.diet_tags.length || item.calories !== null || item.steps.some(step => step.timer_seconds !== null) || ['id','is_published','is_verified'].some(key => Object.prototype.hasOwnProperty.call(item,key))) throw new Error('Kunu source adaptation drift');
     continue;
   }
   if (item.slug === 'maheu-zm') {
