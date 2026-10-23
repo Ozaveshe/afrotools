@@ -85,13 +85,13 @@ test('source arithmetic and unknown-quantity semantics follow the two original s
     const unknown=doubled.find(x=>x.amount===null);assert.equal(unknown.scaled_amount,'');assert.equal(api.formatAmount(unknown.scaled_amount),'');
   }
 });
-test('all other406 recipe projections, index summaries and source identities remain coherent',()=>{
+test('all recipe projections, index summaries and source identities remain coherent',()=>{
   assert.equal(manifest.recipes.length,410);
   const allowed=manifest.recipes.map(row=>({...row,is_published:true,is_verified:true,generated_in_wave:true}));
   const result=indexOwner.buildRecipeIndex({...manifest,recipes:allowed});
   assert.equal(result.recipes.length,410);
   for(const row of allowed.filter(r=>!IDS[r.slug] && !(r.id==='d7d7e305-3c5d-40db-9033-36843e102176' && r.slug==='ibihaza-rw') && !(r.id==='feabebb3-cd55-48c6-be9a-17f118dddfcc' && r.slug==='kat-kat-banane-sc'))) {
-    const additional=[['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1'],['mchemsho-tz','4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1'],['octopus-curry-sc','8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
+    const additional=[['masa-waina-ng','fc876ee7-c116-40eb-836e-54b0de5d94f8','masa-ramatu-allnigerianfoods-20261023-v2'],['ndizi-nyama-tz','63325da8-6678-414f-b431-f88d8d6b2fe1','ndizi-darlene-international-cuisine-20261017-v1'],['latchiri-kossan-gn','91740809-c813-417e-8af4-c5c7c989c1be','latchiri-gassama-maize-cultured-milk-20261017-v1'],['mchemsho-tz','4caf4ed6-13ec-4fbb-8039-ce51a4201cfe','mchemsho-tatedo-indexed-beef-batch-20261018-v1'],['octopus-curry-sc','8c0311ea-c7e3-4286-b535-33a75451becd','octopus-ben-pierce-jones-water-20261018-v1']].find(([slug,id])=>row.slug===slug&&row.id===id);
     if(additional){const projected=api.projectAttributedRecipe(row);assert.ok(api.isAttributedRecipe(projected));assert.equal(projected.method_revision,additional[2]);}
     else if ((row.id==='8a2bb743-87d9-462e-bc09-335e78f9584a'&&row.slug==='kunu-zaki-ng')||(row.id==='f2850789-0ffd-41b3-bbaf-e3229132c9e6'&&row.slug==='ikivuguto-rw')||(row.id==='c0aced74-68d6-437d-b00b-abd1895605f0'&&row.slug==='kisra-south-sudan-ss')||(row.id==='626fd465-87e1-4f93-bca7-747decbf63d0'&&row.slug==='maheu-zm')) {
       const pending=api.projectAttributedRecipe(row);assert.equal(pending.method_review_status,'pending-source-method');assert.deepEqual(pending.steps,[]);assert.equal(pending.total_time_minutes,null);

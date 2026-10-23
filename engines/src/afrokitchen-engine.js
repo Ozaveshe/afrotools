@@ -1771,6 +1771,166 @@ var AfroKitchenEngine = function() {
   // Four finite source-attributed display methods. These do not authorize publication
   // or write canonical recipe data. Shared by browser, static/index owners and API.
   var attributedMethods = {
+    "masa-waina-ng": {
+      "id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+      "revision": "masa-ramatu-allnigerianfoods-20261023-v2",
+      "fields": {
+        "description": "Tuwo-rice masa: start the rice soaking overnight, then allow the batter to froth before cooking both sides until golden.",
+        "story": "Adapted from Ramatu's masa recipe published by All Nigerian Foods. Plan ahead: the source calls for 8–10 hours soaking and 30 minutes frothing; its under-90-minute preparation note excludes soaking. Total elapsed time is not specified. AfroTools has not kitchen-tested this adaptation.",
+        "author": "AfroKitchen adaptation; source recipe by Ramatu, published by All Nigerian Foods",
+        "source": "https://allnigerianfoods.com/masa-2/",
+        "default_servings": 4,
+        "serving_unit": "servings",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/masa-waina-ng.webp",
+        "image_alt": "AI-generated serving illustration of golden Masa rice cakes.",
+        "diet_tags": [],
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "occasion": null,
+        "regional_variations": null,
+        "best_served_with": "Yaji (spiced ground pepper) or miyan taushe.",
+        "chef_notes": null,
+        "ingredients": [
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 10,
+            "group_name": "Masa",
+            "amount": 1.5,
+            "unit": "cups",
+            "name": "tuwo rice",
+            "prep_note": "for soaking",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 20,
+            "group_name": "Masa",
+            "amount": 1.5,
+            "unit": "cups",
+            "name": "tuwo rice",
+            "prep_note": "to boil and mash",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 30,
+            "group_name": "Masa",
+            "amount": 2,
+            "unit": "tbsp",
+            "name": "sugar",
+            "prep_note": null,
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 40,
+            "group_name": "Masa",
+            "amount": 1,
+            "unit": "tsp",
+            "name": "yeast",
+            "prep_note": null,
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 50,
+            "group_name": "Masa",
+            "amount": 1,
+            "unit": "tsp",
+            "name": "cooking potash",
+            "prep_note": "settle in the measured water; use clear liquid, leave sediment",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 60,
+            "group_name": "Masa",
+            "amount": 0.5,
+            "unit": "cup",
+            "name": "water",
+            "prep_note": "for settling the potash; more water as needed for soaking",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 80,
+            "group_name": "Masa",
+            "amount": 50,
+            "unit": "ml",
+            "name": "vegetable oil",
+            "prep_note": "for greasing the masa pan, as needed",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "sort_order": 90,
+            "group_name": "Masa",
+            "amount": null,
+            "unit": "to taste",
+            "name": "salt",
+            "prep_note": null,
+            "is_optional": false
+          }
+        ],
+        "steps": [
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "step_number": 1,
+            "title": "Soak half the rice",
+            "instruction": "Divide the rice equally. Wash one half. Settle the potash in the measured water, pour the clear liquid over this rice, leave sediment behind, and add water to cover. Soak for 8–10 hours or overnight.",
+            "timer_seconds": 28800,
+            "timer_label": "Soaking checkpoint",
+            "tip": "Check after 8 hours; the source allows up to 10 hours.",
+            "image_url": null
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "step_number": 2,
+            "title": "Cook and grind the rice",
+            "instruction": "Wash the other half, boil until very soft and mash. Grind the soaked rice and combine it with the mashed rice.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "tip": null,
+            "image_url": null
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "step_number": 3,
+            "title": "Let the batter froth",
+            "instruction": "Mix in sugar, yeast and salt to taste. Leave for about 30 minutes to froth. The source describes a runny batter.",
+            "timer_seconds": 1800,
+            "timer_label": "Frothing checkpoint",
+            "tip": null,
+            "image_url": null
+          },
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "step_number": 4,
+            "title": "Cook both sides",
+            "instruction": "Use the vegetable oil to grease the masa pan as needed. Spoon batter into the wells and cook until golden. Turn each cake and cook the other side until golden. Repeat with the remaining batter.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "tip": null,
+            "image_url": null
+          }
+        ],
+        "media": [
+          {
+            "recipe_id": "fc876ee7-c116-40eb-836e-54b0de5d94f8",
+            "role": "hero",
+            "image_url": "/assets/img/kitchen/masa-waina-ng.webp",
+            "source_type": "ai_generated_illustration",
+            "caption": "AI-generated serving illustration; not a photograph of the source recipe."
+          }
+        ]
+      }
+    },
     "mandazi-tanzania-tz": {
       "id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
       "revision": "mandazi-malaquias-20171122-v1",
