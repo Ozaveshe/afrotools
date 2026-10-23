@@ -55,7 +55,12 @@ CREATE TABLE IF NOT EXISTS recipe_ingredients (
   ingredient_id UUID REFERENCES ingredients(id),
   sort_order INTEGER NOT NULL DEFAULT 0,
   group_name TEXT,
-  amount NUMERIC NOT NULL,
+  amount NUMERIC,
+  source_quantity_unrecorded BOOLEAN NOT NULL DEFAULT false,
+  CONSTRAINT recipe_ingredients_quantity_recorded CHECK (
+    (source_quantity_unrecorded AND amount IS NULL) OR
+    (NOT source_quantity_unrecorded AND amount IS NOT NULL)
+  ),
   unit TEXT NOT NULL,
   name TEXT NOT NULL,
   prep_note TEXT,

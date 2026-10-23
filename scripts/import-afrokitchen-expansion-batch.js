@@ -77,8 +77,15 @@ function validateBatch(batch) {
       errors.push(`${recipe.slug} needs ingredients.`);
     } else {
       recipe.ingredients.forEach((ingredient, index) => {
-        if (!Number.isFinite(Number(ingredient.amount))) {
-          errors.push(`${recipe.slug} ingredient ${index + 1} has a non-numeric amount.`);
+        const markerPresent = Object.prototype.hasOwnProperty.call(ingredient, "source_quantity_unrecorded");
+        const unmeasured = ingredient.source_quantity_unrecorded === true;
+        const measuredAmount =
+          (typeof ingredient.amount === "number" ||
+            (typeof ingredient.amount === "string" && ingredient.amount.trim() !== "")) &&
+          Number.isFinite(Number(ingredient.amount));
+        if ((markerPresent && typeof ingredient.source_quantity_unrecorded !== "boolean") ||
+            (unmeasured ? ingredient.amount !== null : !measuredAmount)) {
+          errors.push(`${recipe.slug} ingredient ${index + 1} needs a finite measured amount, or null with source_quantity_unrecorded: true.`);
         }
         if (!String(ingredient.unit || "").trim() && Number(ingredient.amount) > 0) {
           errors.push(`${recipe.slug} ingredient ${index + 1} needs a unit, or amount must be 0.`);
@@ -152,7 +159,8 @@ function ingredientPayload(recipeId, ingredient, index) {
     ingredient_id: null,
     sort_order: ingredient.sort_order || (index + 1) * 10,
     group_name: ingredient.group_name || null,
-    amount: Number(ingredient.amount),
+    amount: ingredient.source_quantity_unrecorded === true ? null : Number(ingredient.amount),
+    ...(ingredient.source_quantity_unrecorded === true ? { source_quantity_unrecorded: true } : {}),
     unit: ingredient.unit || "",
     name: ingredient.name,
     prep_note: ingredient.prep_note || null,
