@@ -2,6 +2,20 @@
 !function() {
     "use strict";
 
+    function receiptNumericProblem(){
+      var fields=document.querySelectorAll('.receipt-app input[type="number"]');
+      for(var index=0;index<fields.length;index++){
+        var field=fields[index],text=String(field.value==null?'':field.value).trim();
+        var label=field.getAttribute('aria-label')||field.id||'numeric value';
+        var itemField=field.getAttribute('data-item-field');
+        if(!text&&(itemField==='qty'||itemField==='rate'))return {field:field,message:'Enter '+label+' before final document export.'};
+        if((field.validity&&!field.validity.valid)||(text&&!Number.isFinite(Number(text))))return {field:field,message:'Correct '+label+' before final document export.'};
+        if(field.id==='discount'&&document.getElementById('discountType').value==='percent'&&Number(text)>100)return {field:field,message:'Set Discount to 100% or less, or choose Amount.'};
+      }
+      return null;
+    }
+    window.AfroReceiptNumericProblem=receiptNumericProblem;
+
     function savedFailure(error) {
         var message = window.SaveState.message(error), list = document.getElementById("savedReceipts");
         var panel = document.getElementById("savedPanel");
@@ -457,7 +471,7 @@
         })(), a = C(), c("metricSubtotal").textContent = x(a.subtotal), c("metricTax").textContent = x(a.tax),
         c("metricTotal").textContent = x(a.total), c("metricBalance").textContent = x(a.balance),
         function() {
-            var t = C(), a = ![ "Cash", "Other", "Store credit" ].includes(e.payment.method), n = [ {
+            var t = C(), numericProblem = receiptNumericProblem(), a = ![ "Cash", "Other", "Store credit" ].includes(e.payment.method), n = [ {
                 label: "Business details",
                 ok: Boolean(e.business.name && (e.business.phone || e.business.email || e.business.address)),
                 points: 14
@@ -466,8 +480,8 @@
                 ok: Boolean(e.receipt.number && e.receipt.date),
                 points: 12
             }, {
-                label: "At least one priced item",
-                ok: e.items.some(function(e) {
+                label: numericProblem ? numericProblem.message : "At least one priced item",
+                ok: !numericProblem && e.items.some(function(e) {
                     return e.desc && y(e.qty, 0) > 0 && y(e.rate, 0) >= 0;
                 }),
                 points: 16
