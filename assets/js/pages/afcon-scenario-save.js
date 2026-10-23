@@ -52,7 +52,7 @@
       + '<button type="button" class="sports-btn secondary" data-scenario-reopen>Reopen saved scenario</button>'
       + '<button type="button" class="sports-btn secondary" data-scenario-download>Download scenario JSON</button>'
       + '<button type="button" class="sports-btn secondary" data-scenario-remove>Remove saved scenario</button></div>'
-      + '<p><label for="afcon-scenario-file">Open a scenario JSON backup</label><input id="afcon-scenario-file" type="file" accept=".json,application/json"></p>'
+      + '<p><label for="afcon-scenario-file">Open a scenario JSON backup</label><input id="afcon-scenario-file" type="file" accept=".json,application/json" style="box-sizing:border-box;width:100%;max-width:100%;min-width:0"></p>'
       + '<p role="status" aria-live="polite" data-scenario-status></p>';
     form.insertAdjacentElement('afterend', panel);
     var status = panel.querySelector('[data-scenario-status]'), input = panel.querySelector('input'), revision = 0;
