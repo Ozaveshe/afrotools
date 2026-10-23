@@ -7071,9 +7071,9 @@
       },
       {
         "id": "zana-ratiba-ya-chanjo-sw",
-        "name": "Ratiba ya Chanjo ya Mtoto",
+        "name": "Muhtasari wa ziara kuhusu mpango wa chanjo",
         "icon": "SW",
-        "desc": "Kadiria umri wa mtoto na tengeneza orodha ya kua...",
+        "desc": "Andaa muhtasari wa ziara kwa kundi la umri ulilo...",
         "href": "/sw/zana/ratiba-ya-chanjo/",
         "category": "health",
         "lang": "sw",

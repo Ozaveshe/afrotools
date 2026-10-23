@@ -39,7 +39,7 @@ const APPS = [
     app: 'fonds-urgence-securite',
     route: '/fr/tools/fonds-d-urgence-et-de-securite/',
     file: 'fr/tools/fonds-d-urgence-et-de-securite/index.html',
-    englishHash: '7A12DC921FB947B0C27D2D6D182F842B453A44B7283847C11216AF0015CA9DA7'
+    englishHash: 'C24AE0721E468E3E3BB93DA213BD21F537012213F941EB7F3D56F718EA6BEBE5'
   },
   {
     id: 'side-hustle-ranker',

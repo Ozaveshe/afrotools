@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK = process.argv.includes('--check');
@@ -117,14 +118,98 @@ function render(page) {
 <afro-footer></afro-footer><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/engines/sw-personal-finance.js"></script><script src="/assets/js/pages/sw-personal-finance.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script></body></html>\n`.replace(' data-import aria-label=', ' data-import tabindex="-1" aria-label=');
 }
 
+const HUB_FILE = 'sw/personal-finance/index.html';
+const HUB_CARDS = [
+  {
+    "id": "50-30-20-budget",
+    "title": "Gawa mapato kwa bajeti ya 50/30/20",
+    "description": "Linganisha matumizi ya mahitaji, matakwa na akiba na mapato yako ya mwezi.",
+    "result": "Matokeo: malengo ya mahitaji, matakwa na akiba; kiasi cha sasa na tofauti; fedha ambazo hazijagawiwa au matumizi yaliyozidi."
+  },
+  {
+    "id": "album-budget",
+    "title": "Panga bajeti ya albamu, EP au wimbo",
+    "description": "Panga gharama ulizopewa za kurekodi, sauti, picha, usambazaji na matangazo.",
+    "result": "Matokeo: gharama za utayarishaji, picha na matangazo; gharama kwa wimbo; mifano ya akiba ya tahadhari. Usikilizaji wa kufidia gharama huonyeshwa tu ukiweka mapato halisi kwa usikilizaji."
+  },
+  {
+    "id": "film-budget",
+    "title": "Gawa bajeti ya filamu kwa idara",
+    "description": "Linganisha migao ya idara, siku za kurekodi, akiba ya tahadhari na fedha zilizothibitishwa.",
+    "result": "Matokeo: migao ya idara, gharama kwa siku, bajeti pamoja na akiba ya tahadhari, na pengo au ziada ya fedha."
+  },
+  {
+    "id": "security-emergency-fund",
+    "title": "Panga mfuko wa dharura na usalama",
+    "description": "Kadiria lengo kutoka matumizi muhimu, miezi ya kufunika, gharama za mara moja na akiba iliyopo.",
+    "result": "Matokeo: lengo la akiba, hatua za mwezi mmoja na miezi sita, kiasi kinachokosekana, na muda wa kufikia lengo ukiweka mchango wa mwezi."
+  },
+  {
+    "id": "side-hustle-ranker",
+    "title": "Linganisha kazi za ziada",
+    "description": "Linganisha mawazo kwa ujuzi, saa zinazopatikana na mtaji wako. Alama si utabiri wa mapato.",
+    "result": "Matokeo: mawazo matano yaliyolinganishwa kwa ujuzi, muda na mtaji, pamoja na hatua za kuhakiki kabla ya kutumia fedha. Alama si utabiri wa mapato."
+  }
+];
+
+function renderHub() {
+  const title = 'Zana za kupanga fedha binafsi kwa Kiswahili | AfroTools';
+  const description = 'Panga bajeti ya mwezi, mradi wa muziki au filamu, mfuko wa dharura na kazi za ziada kwa zana zilizopo za Kiswahili.';
+  const url = 'https://afrotools.com/sw/personal-finance/';
+  const collection = {
+    '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description,
+    inLanguage: 'sw', url,
+    mainEntity: { '@type': 'ItemList', itemListElement: PAGES.map((page, index) => ({
+      '@type': 'ListItem', position: index + 1, name: HUB_CARDS[index].title, url: `https://afrotools.com${page.route}`
+    })) }
+  };
+  const cards = PAGES.map((page) => {
+    const copy = HUB_CARDS.find((card) => card.id === page.id);
+    return `<article class="swpf-card"><h3><a href="${page.route}">${copy.title}</a></h3><p>${copy.description}</p><p>${copy.result}</p><div class="swpf-actions"><a class="swpf-button" href="${page.route}">Fungua zana: ${copy.title}</a></div></article>`;
+  }).join('\n');
+  return enhanceCategory(`<!doctype html>
+<html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title><meta name="description" content="${description}"><meta name="robots" content="index,follow">
+<link rel="canonical" href="${url}"><link rel="alternate" hreflang="en" href="https://afrotools.com/personal-finance/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/personal-finance/"><link rel="alternate" hreflang="sw" href="${url}"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/personal-finance/">
+<meta property="og:type" content="website"><meta property="og:locale" content="sw_KE"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${url}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/50-30-20-budget.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/50-30-20-budget.webp">
+<link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/sw-personal-finance.css"><style>
+.swpf-hub .swpf-hero h1{color:#fff}
+.swpf-hub a.swpf-button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;max-width:100%;min-height:44px;text-align:center;white-space:normal;text-decoration:none}
+</style><script type="application/ld+json">${JSON.stringify(collection).replace(/</g, '\\u003c')}</script></head>
+<body class="swpf-page swpf-hub"><a class="swpf-skip" href="#swpf-directory">Ruka hadi kwenye zana</a><afro-navbar></afro-navbar>
+<header class="swpf-hero"><div class="swpf-wrap swpf-hero-grid"><div><nav class="swpf-crumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a> / <a href="/sw/makundi/">Makundi</a> / Fedha binafsi</nav><p class="swpf-eyebrow">Fedha binafsi kwa Kiswahili</p><h1>Panga bajeti na hatua zako za fedha</h1><p>Chagua zana ya kupanga matumizi ya mwezi, gharama za mradi, akiba ya dharura au kazi za ziada. Anza kwa mfano usio na taarifa binafsi, kisha soma ingizo na mipaka ya zana unayofungua.</p><div class="swpf-actions"><a class="swpf-button" href="#swpf-tools">Chagua zana</a> <a class="swpf-button" href="#localizedCategorySearch">Tafuta kwenye katalogi</a></div></div><img src="/assets/img/tools/50-30-20-budget.webp" alt="Mchoro wa kupanga mapato, matumizi na akiba" width="640" height="420"></div></header>
+<main id="swpf-directory" class="swpf-wrap" tabindex="-1"><section id="swpf-tools" class="section" aria-labelledby="swpf-tools-title"><h2 id="swpf-tools-title">Chagua zana kulingana na kazi yako</h2><p>Viungo hivi vinafungua zana zilizopo za Kiswahili. Kila zana ina ingizo, maelezo ya hesabu na mipaka yake.</p><div class="swpf-stack">${cards}</div></section>
+<section class="section" aria-labelledby="swpf-output-title"><h2 id="swpf-output-title">Matokeo na faili za kuhifadhi</h2><p>Kwenye kila zana, kokotoa kwanza ili kupakua TXT au JSON, au kuchapisha na kuhifadhi PDF. Hizi ni hatua za zana utakayofungua; ukurasa huu ni wa kuchagua zana.</p><p>Zana ikikataa ingizo, kagua sehemu iliyoonyeshwa na urekebishe thamani. Ukibadilisha ingizo, kokotoa tena kabla ya kupakua matokeo.</p><p>JSON ya zana husika inaweza kufunguliwa tena kwenye zana hiyo. Kagua taarifa na kokotoa tena baada ya kuifungua.</p><p>Soma maelezo ya faragha kwenye zana utakayofungua kabla ya kuweka taarifa zako. Matokeo ya mipango si ushauri wa kifedha wala ahadi ya mapato.</p></section>
+<section class="section" aria-labelledby="swpf-more-title"><h2 id="swpf-more-title">Unatafuta kazi nyingine ya fedha?</h2><p><a href="/sw/zana-zote/?category=personal-finance">Ona zana nyingine za fedha binafsi</a>. Katalogi huweka zana za Kiswahili mbele; matokeo yanayofunguka kwa Kiingereza yana lebo ya <strong>Kiingereza tu</strong>.</p><p>Usipopata zana, jaribu neno jingine kama bajeti au akiba, au <a href="/sw/zana-zote/">fungua zana zote</a>. Katalogi huonyesha ujumbe wa kutopatikana na njia ya kuondoa vichujio.</p></section>
+</main><afro-footer></afro-footer><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script></body></html>\n`, 'sw');
+}
+
 function main() {
+  const only = process.argv.slice(2).filter((argument) => argument.startsWith('--only'));
+  if (only.length && (only.length !== 1 || only[0] !== '--only=hub')) {
+    console.error('Unsupported selection. Use --only=hub or omit --only to include the five tool pages and directory.');
+    process.exitCode = 1;
+    return;
+  }
+  const pages = only.length ? [] : PAGES;
   let failures = 0;
-  PAGES.forEach((page) => {
+  pages.forEach((page) => {
     const target = path.join(ROOT, page.file); const expected = render(page);
     if (CHECK) { if (!fs.existsSync(target) || !localizedGeneratorEquivalent(fs.readFileSync(target,'utf8'), expected)) { console.error(`STALE ${page.file}`); failures += 1; } }
     else { fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, expected); }
   });
-  if (failures) process.exitCode = 1; else console.log(`Swahili Personal Finance pages ${CHECK ? 'verified' : 'written'}: ${PAGES.length}`);
+  const hubTarget = path.join(ROOT, HUB_FILE);
+  const expectedHub = renderHub();
+  if (CHECK) {
+    if (!fs.existsSync(hubTarget) || !localizedGeneratorEquivalent(fs.readFileSync(hubTarget, 'utf8'), expectedHub)) {
+      console.error(`STALE ${HUB_FILE}`); failures += 1;
+    }
+  } else {
+    fs.mkdirSync(path.dirname(hubTarget), { recursive: true }); fs.writeFileSync(hubTarget, expectedHub);
+  }
+  if (failures) process.exitCode = 1;
+  else console.log(`Swahili Personal Finance ${CHECK ? 'verified' : 'written'}: ${pages.length} tool pages + 1 directory`);
 }
 if (require.main === module) main();
-module.exports = { PAGES, render };
+module.exports = { PAGES, render, renderHub, HUB_FILE };
