@@ -303,8 +303,9 @@
     <textarea id="bulkMessage" placeholder="Hello! I'm reaching out about..."></textarea>
     <div class="actions-row">
       <button type="button" class="btn btn-primary" onclick="generateBulk()">Generate All Links</button>
-      <button type="button" class="btn btn-outline" onclick="copyAllBulk()">Copy All</button>
+      <button type="button" id="copyAllBulkButton" class="btn btn-outline" onclick="copyAllBulk()" disabled>Copy All</button>
     </div>
+    <p id="bulkStatus" role="status">Enter numbers and choose Generate All Links.</p>
     <div id="bulkResults" class="bulk-results" style="margin-top:1rem;"></div>
   </div>
 
@@ -495,11 +496,24 @@ function generateLink() {
   }
 }
 
+function invalidateBulk(message) {
+  document.getElementById('bulkResults').innerHTML = '';
+  document.getElementById('copyAllBulkButton').disabled = true;
+  document.getElementById('bulkStatus').textContent = message || 'Inputs changed. Choose Generate All Links to create current links.';
+}
+
+['bulkCountry', 'bulkNumbers', 'bulkMessage'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', function () { invalidateBulk(); });
+  el.addEventListener('change', function () { invalidateBulk(); });
+});
+
 function generateBulk() {
+  invalidateBulk('Enter numbers and choose Generate All Links.');
   const code = document.getElementById('bulkCountry').value;
   const raw = document.getElementById('bulkNumbers').value.trim();
   const msg = document.getElementById('bulkMessage').value;
-  if (!raw) { showToast('Enter at least one number'); return; }
+  if (!raw) { invalidateBulk('Enter at least one number, then choose Generate All Links.'); showToast('Enter at least one number'); return; }
   const numbers = raw.split('\n').map(n => n.trim()).filter(Boolean);
   const container = document.getElementById('bulkResults');
   container.innerHTML = '';
@@ -513,7 +527,13 @@ function generateBulk() {
     div.innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a><button type="button" class="btn btn-outline btn-sm" onclick="copySingle(this,\'' + link.replace(/'/g, "\\'") + '\')">Copy</button>';
     container.appendChild(div);
   });
-  if (!generated) showToast('No valid numbers found');
+  if (!generated) {
+    invalidateBulk('No valid numbers found. Check the numbers and country code, then generate again.');
+    showToast('No valid numbers found');
+    return;
+  }
+  document.getElementById('copyAllBulkButton').disabled = false;
+  document.getElementById('bulkStatus').textContent = generated + (generated === 1 ? ' current link ready.' : ' current links ready.');
 }
 
 function copySingle(btn, link) {
@@ -521,6 +541,7 @@ function copySingle(btn, link) {
 }
 
 function copyAllBulk() {
+  if (document.getElementById('copyAllBulkButton').disabled) { showToast('Generate current links first'); return; }
   const links = [...document.querySelectorAll('#bulkResults a')].map(a => a.href);
   if (!links.length) { showToast('Generate links first'); return; }
   navigator.clipboard.writeText(links.join('\n')).then(() => showToast('All links copied!'));

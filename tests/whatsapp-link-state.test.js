@@ -9,8 +9,8 @@ assert.equal(scripts.length, 1, 'exactly one maintained page controller');
 function fixture(qrAvailable = true) {
   const downloads=[], copied=[], qrs=[], nodes={};
   function node(id='') {
-    let text=''; const children=[]; const classes=new Set();
-    return {id,width:180,height:180,value:'',innerHTML:'',href:'',disabled:false,children,
+    let text='', markup=''; const children=[]; const classes=new Set();
+    return {id,width:180,height:180,value:'',get innerHTML(){return markup},set innerHTML(v){markup=v;children.length=0},href:'',disabled:false,children,
       getContext:()=>({fillRect:()=>{},drawImage:()=>{}}),
       get textContent(){return text}, set textContent(v){text=v;children.length=0},
       classList:{add:x=>classes.add(x),remove:x=>classes.delete(x),contains:x=>classes.has(x),toggle:(x,on)=>on?classes.add(x):classes.delete(x)},
@@ -21,11 +21,11 @@ function fixture(qrAvailable = true) {
       toDataURL:()=> 'data:image/png;base64,c3ludGhldGlj', click(){downloads.push({href:this.href,name:this.download})}
     };
   }
-  for(const id of ['countryCode','phoneNumber','message','businessName','offerItem','messageTemplate','linkCoach','resultArea','linkDisplay','openLink','resultCoach','qrCanvas','qrStatus','downloadQrButton','toast','singleTab','bulkTab','bulkCountry','bulkNumbers','bulkMessage','bulkResults']) nodes[id]=node(id);
-  nodes.countryCode.value='1'; nodes.messageTemplate.value='order'; nodes.downloadQrButton.disabled=true;
+  for(const id of ['countryCode','phoneNumber','message','businessName','offerItem','messageTemplate','linkCoach','resultArea','linkDisplay','openLink','resultCoach','qrCanvas','qrStatus','downloadQrButton','toast','singleTab','bulkTab','bulkCountry','bulkNumbers','bulkMessage','bulkResults','copyAllBulkButton','bulkStatus']) nodes[id]=node(id);
+  nodes.countryCode.value='1'; nodes.messageTemplate.value='order'; nodes.downloadQrButton.disabled=true; nodes.bulkCountry.value='1'; nodes.copyAllBulkButton.disabled=true;
   function QRCode(box,options){qrs.push(options.text);const canvas=node();canvas.tag='canvas';box.appendChild(canvas);}
   QRCode.CorrectLevel={M:0}; QRCode.toCanvas=(box,text)=>qrs.push(text);
-  const context={document:{getElementById:id=>nodes[id],querySelectorAll:()=>[],createElement:()=>node()},navigator:{clipboard:{writeText:async x=>copied.push(x)}},setTimeout:()=>0,clearTimeout:()=>{}};
+  const context={document:{getElementById:id=>nodes[id],querySelectorAll:selector=>selector==='#bulkResults a'?nodes.bulkResults.children.flatMap(child=>[...child.innerHTML.matchAll(/<a href="([^"]+)"/g)].map(m=>({href:m[1]}))):[],createElement:()=>node()},navigator:{clipboard:{writeText:async x=>copied.push(x)}},setTimeout:()=>0,clearTimeout:()=>{}};
   if(qrAvailable)context.QRCode=QRCode;
   vm.createContext(context);vm.runInContext(scripts[0],context,{filename:'maintained-whatsapp-link-controller.js'});
   const edit=(id,value,type='input')=>{nodes[id].value=value;nodes[id].fire(type)};
@@ -43,3 +43,32 @@ test('broad international structure accepts seven to fifteen digits and rejects 
 test('missing QR library preserves usable link but cannot export a blank QR',()=>{const f=fixture(false);f.generate();assert.equal(f.nodes.resultArea.classList.contains('show'),true);f.context.downloadQR();assert.equal(f.downloads.length,0);assert.match(f.nodes.qrStatus.textContent,/QR unavailable/)});
 test('QR download belongs to current generated link and is unavailable after an edit',()=>{const f=fixture();f.generate();assert.equal(f.qrs.at(-1),f.nodes.openLink.href);f.context.downloadQR();assert.equal(f.downloads.length,1);assert.equal(f.downloads[0].name,'whatsapp-qr.png');f.edit('message','Changed');f.context.downloadQR();assert.equal(f.downloads.length,1)});
 test('Clear removes only current page inputs and generated output while retaining country',()=>{const f=fixture();f.generate();f.context.clearForm();unavailable(f);assert.equal(f.nodes.phoneNumber.value,'');assert.equal(f.nodes.message.value,'');assert.equal(f.nodes.countryCode.value,'1')});
+
+function bulk(f, numbers='12025550123\n12025550144', message='DEMO reminder') {
+  f.edit('bulkNumbers',numbers); f.edit('bulkMessage',message); f.context.generateBulk();
+}
+function bulkUnavailable(f) {
+  assert.equal(f.nodes.bulkResults.innerHTML,''); assert.equal(f.nodes.bulkResults.children.length,0);
+  assert.equal(f.nodes.copyAllBulkButton.disabled,true); f.context.copyAllBulk(); assert.equal(f.copied.length,0);
+}
+test('bulk generation produces two current encoded links and enables Copy All',async()=>{
+  const f=fixture();bulk(f);await f.context.copyAllBulk();
+  assert.deepEqual(f.copied,['https://wa.me/12025550123?text=DEMO%20reminder\nhttps://wa.me/12025550144?text=DEMO%20reminder']);
+  assert.equal(f.nodes.copyAllBulkButton.disabled,false);assert.match(f.nodes.bulkStatus.textContent,/2 current links ready/);
+});
+for(const [id,value,event] of [['bulkMessage','DEMO reminder UPDATED','input'],['bulkNumbers','12025550144','input'],['bulkCountry','44','change']])test(id+' edit retires prior bulk links and copy availability',()=>{
+  const f=fixture();bulk(f);f.edit(id,value,event);bulkUnavailable(f);assert.match(f.nodes.bulkStatus.textContent,/Generate All Links/);
+});
+test('blank and wholly invalid bulk generation cannot retain prior links even without input event',()=>{
+  for(const value of ['', 'abc\n<invalid>']){const f=fixture();bulk(f);f.nodes.bulkNumbers.value=value;f.context.generateBulk();bulkUnavailable(f);assert.match(f.nodes.bulkStatus.textContent,value?/No valid numbers/:/Enter at least one number/);}
+});
+test('bulk edit, blank error and valid recovery copies only corrected current links',async()=>{
+  const f=fixture();bulk(f);f.edit('bulkMessage','DEMO reminder UPDATED');bulkUnavailable(f);
+  f.edit('bulkNumbers','');f.context.generateBulk();bulkUnavailable(f);
+  f.edit('bulkNumbers','12025550144');f.context.generateBulk();await f.context.copyAllBulk();
+  assert.deepEqual(f.copied,['https://wa.me/12025550144?text=DEMO%20reminder%20UPDATED']);assert.match(f.nodes.bulkStatus.textContent,/1 current link ready/);
+});
+test('bulk lifecycle preserves existing single-link and QR result',()=>{
+  const f=fixture();f.generate();const link=f.nodes.openLink.href;bulk(f);f.edit('bulkMessage','DEMO update');
+  assert.equal(f.nodes.openLink.href,link);assert.equal(f.nodes.resultArea.classList.contains('show'),true);assert.equal(f.nodes.downloadQrButton.disabled,false);
+});
