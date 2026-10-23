@@ -1,0 +1,83 @@
+{
+  "name": "Publisher native navigation capture",
+  "on": {
+    "create": {}
+  },
+  "permissions": {
+    "contents": "read",
+    "actions": "read"
+  },
+  "jobs": {
+    "selected": {
+      "if": "github.event.ref_type == 'branch' && github.event.ref == 'automation/publisher-safe49-native-navigation-39896563071-01a15fbb'",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 30,
+      "steps": [
+        {
+          "name": "Read operator proof harness",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Preserve harness outside candidate source",
+          "run": "mkdir -p \"/tmp/publisher-selected-proof\"\ncp .github/publisher-selected-proof/* \"/tmp/publisher-selected-proof/\""
+        },
+        {
+          "name": "Checkout exact original release candidate",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "ref": "67b74f5a30dbc3c9bb639d7b080365990f30b98a",
+            "fetch-depth": 0,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Bind only this owned container checkout as a safe Git directory",
+          "run": "git config --global --add safe.directory \"$PWD\"\ngit rev-parse --show-toplevel\ngit rev-parse HEAD"
+        },
+        {
+          "name": "Set up Node.js",
+          "uses": "actions/setup-node@v5",
+          "with": {
+            "node-version": "22",
+            "cache": "npm"
+          }
+        },
+        {
+          "name": "Set up Python for strict archive and selected closure checks",
+          "uses": "actions/setup-python@v5",
+          "with": {
+            "python-version": "3.12"
+          }
+        },
+        {
+          "name": "Install dependencies",
+          "run": "npm ci"
+        },
+        {
+          "name": "Verify complete seven affected specs against the exact original sealed artifact",
+          "env": {
+            "GITHUB_TOKEN": "${{ github.token }}"
+          },
+          "run": "node \"/tmp/publisher-selected-proof/wrapper.cjs\""
+        },
+        {
+          "name": "Preserve exact proof and all raw failures",
+          "if": "always()",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "safe49-navigation-proof-${{ github.run_id }}-${{ github.run_attempt }}",
+            "path": "/tmp/publisher-selected-proof/manifest.json\n/tmp/publisher-selected-proof/input.json\n/tmp/publisher-selected-proof/zip-proof.json\n/tmp/publisher-selected-proof/restore-summary.json\n/tmp/publisher-selected-proof/restore-failure.json\n/tmp/publisher-selected-proof/stages.jsonl\n/tmp/publisher-selected-proof/direct-dist-inspection.json\n/tmp/publisher-selected-proof/hosted-ui-summary.json\n/tmp/publisher-selected-proof/hosted-ui-failure.json\n/tmp/publisher-selected-proof/hosted-ui/actual-results.json\n/tmp/publisher-selected-proof/hosted-ui/hub-*.png\n/tmp/publisher-selected-proof/native-group-1.json\n/tmp/publisher-selected-proof/native-group-2.json\n/tmp/publisher-selected-proof/native-groups-export-summary.json\n/tmp/publisher-selected-proof/native-groups-export-failure.json\n/tmp/publisher-selected-proof/native-original-run.final.json\n/tmp/publisher-selected-proof/native-original-jobs.final.json",
+            "if-no-files-found": "warn"
+          }
+        }
+      ],
+      "container": {
+        "image": "mcr.microsoft.com/playwright@sha256:b0ab6f3cb99aa7803adbc14d9027ec1785fc6e433b97e134e0f8fe61683b6b53",
+        "options": "--ipc=host"
+      }
+    }
+  }
+}
