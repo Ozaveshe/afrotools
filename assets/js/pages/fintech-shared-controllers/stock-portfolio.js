@@ -8,6 +8,23 @@ function spText(key,fallback){
     : fallback;
 }
 var currentCurrency='NGN';
+var spCurrentPortfolio=null;
+function spLine(value){return String(value||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,500);}
+function spMoney(currency){return new Intl.NumberFormat(undefined,{style:'currency',currency:currency,maximumFractionDigits:currency==='XOF'?0:2});}
+function spReadReference(){
+  var dateInput=document.getElementById('sp-quote-date');
+  var sourceInput=document.getElementById('sp-quote-source');
+  var date=dateInput?dateInput.value.trim():'';
+  if(dateInput){
+    spMarkInvalid(dateInput,false);
+    var parsed=date?new Date(date+'T00:00:00Z'):null;
+    if((dateInput.validity&&dateInput.validity.badInput)||(date&&(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(parsed.getTime())||parsed.toISOString().slice(0,10)!==date||date>new Date().toISOString().slice(0,10)))){
+      var error=document.getElementById('sp-error');
+      error.textContent=spText('quoteDateInvalid','Enter a valid quote date that is not in the future.');error.classList.add('on');spMarkInvalid(dateInput,true);dateInput.focus();return null;
+    }
+  }
+  return {date:date,source:sourceInput?spLine(sourceInput.value):''};
+}
 function spMarkInvalid(input,invalid){
   var described=(input.getAttribute('aria-describedby')||'').split(/\s+/).filter(function(id){return id&&id!=='sp-error';});
   if(invalid){input.setAttribute('aria-invalid','true');described.push('sp-error');}
@@ -16,6 +33,10 @@ function spMarkInvalid(input,invalid){
   else input.removeAttribute('aria-describedby');
 }
 function spInvalidatePortfolio(){
+  spCurrentPortfolio=null;
+  var download=document.getElementById('sp-download');if(download)download.disabled=true;
+  var reference=document.getElementById('sp-result-reference');if(reference)reference.textContent='';
+  var dateInput=document.getElementById('sp-quote-date');if(dateInput)spMarkInvalid(dateInput,false);
   document.getElementById('sp-results').classList.remove('on');
   document.getElementById('sp-table-body').innerHTML='';
   ['sp-total-value','sp-total-cost','sp-total-gain','sp-return-pct'].forEach(function(id){document.getElementById(id).textContent='';});
@@ -42,6 +63,7 @@ function addRow(){
 function delRow(btn){btn.closest('tr').remove();spInvalidatePortfolio();}
 function calcPortfolio(){
   spInvalidatePortfolio();
+  var reference=spReadReference();if(!reference)return;
   var rows=document.querySelectorAll('#holdings-tbody tr');
   var totalValue=0,totalCost=0;
   var items=[];
@@ -91,7 +113,7 @@ function calcPortfolio(){
   error.classList.remove('on');
   var totalGain=totalValue-totalCost;
   var totalReturn=totalGain/totalCost*100;
-  var money=new Intl.NumberFormat(undefined,{style:'currency',currency:currentCurrency,maximumFractionDigits:2});
+  var money=spMoney(currentCurrency);
   function fmt(n){return money.format(n);}
   document.getElementById('sp-total-value').textContent=fmt(totalValue);
   document.getElementById('sp-total-cost').textContent=fmt(totalCost);
@@ -109,9 +131,31 @@ function calcPortfolio(){
     [item.name,item.shares.toLocaleString(),fmt(item.buyPrice),fmt(item.curPrice),fmt(item.value),(item.gain>=0?'+':'')+fmt(item.gain),(item.returnPct>=0?'+':'')+item.returnPct.toFixed(1)+'%',alloc+'%'].forEach(function(value,i){var td=document.createElement('td');td.textContent=value;if(i===0)td.style.fontWeight='700';if(i===5||i===6)td.className=(item.gain>=0?'gain':'loss');tr.appendChild(td);});
     tbody.appendChild(tr);
   });
+  spCurrentPortfolio={currency:currentCurrency,quoteDate:reference.date,source:reference.source,totalValue:totalValue,totalCost:totalCost,totalGain:totalGain,totalReturn:totalReturn,items:items};
+  var referenceNode=document.getElementById('sp-result-reference');
+  if(referenceNode)referenceNode.textContent=spText('manualValuation','Manual price-only valuation')+' · '+currentCurrency+(reference.date?' · '+spText('quoteDate','Quote date')+': '+reference.date:'')+(reference.source?' · '+spText('priceSource','Price source')+': '+reference.source:'');
+  var download=document.getElementById('sp-download');if(download)download.disabled=false;
   results.classList.add('on');
 }
 var spHoldingsBody=document.getElementById('holdings-tbody');
 if(spHoldingsBody)spHoldingsBody.addEventListener('input',function(event){
   if(event.target.tagName==='INPUT')spInvalidatePortfolio();
 });
+['sp-quote-date','sp-quote-source'].forEach(function(id){var input=document.getElementById(id);if(input)['input','change'].forEach(function(type){input.addEventListener(type,spInvalidatePortfolio);});});
+function spBuildPortfolioSummary(){
+  if(!spCurrentPortfolio)return '';
+  var p=spCurrentPortfolio,money=spMoney(p.currency);
+  var lines=['AfroTools stock portfolio valuation','Manual prices entered by you; no live quote fetched.','Currency: '+p.currency];
+  if(p.quoteDate)lines.push('Quote date (all current prices): '+p.quoteDate);
+  if(p.source)lines.push('Price source entered by you: '+spLine(p.source));
+  lines.push('','Total value: '+money.format(p.totalValue),'Total cost: '+money.format(p.totalCost),'Gain / loss: '+money.format(p.totalGain),'Return: '+p.totalReturn.toFixed(2)+'%','');
+  p.items.forEach(function(item){lines.push(spLine(item.name)+' | Shares: '+item.shares+' | Buy price: '+item.buyPrice+' '+p.currency+' | Current price: '+item.curPrice+' '+p.currency+' | Value: '+money.format(item.value));});
+  lines.push('','Price-only calculation; excludes dividends, trading fees and taxes.','Displayed money uses the currency fraction digits; entered prices and quantities above retain their numeric precision.');
+  return lines.join('\n')+'\n';
+}
+function spDownloadPortfolio(){
+  var text=spBuildPortfolioSummary();if(!text)return;
+  var url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
+  var link=document.createElement('a');link.href=url;link.download='afrotools-stock-valuation-'+spCurrentPortfolio.currency+(spCurrentPortfolio.quoteDate?'-'+spCurrentPortfolio.quoteDate:'')+'.txt';
+  document.body.appendChild(link);link.click();link.remove();setTimeout(function(){URL.revokeObjectURL(url);},0);
+}

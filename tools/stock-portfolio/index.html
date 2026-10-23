@@ -71,7 +71,8 @@ body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;line-height
 .btn-del{display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;height:44px;background:none;border:1px solid transparent;border-radius:8px;cursor:pointer;color:#ef4444;font-size:1rem;padding:0}
 .btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;transition:filter .2s}
 .btn-calc:hover{filter:brightness(1.1)}
-.results{display:none;margin-top:1.25rem}
+.sp-reference-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem;margin-bottom:.75rem}.sp-reference-fields label{display:block;font-size:.85rem;font-weight:700;margin-bottom:.35rem}.sp-reference-fields input{display:block;width:100%;min-width:0;min-height:44px;padding:9px 10px;border:1px solid #64748b;border-radius:6px;font:inherit;background:transparent;color:inherit}#sp-reference-help{font-size:.85rem;line-height:1.6}#sp-reference-help a{text-decoration:underline}#sp-download{margin-top:1rem;min-height:44px}#sp-download:disabled{opacity:.6;cursor:not-allowed}
+#sp-result-reference{overflow-wrap:anywhere}.results{display:none;margin-top:1.25rem}
 .results.on{display:block}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
 .metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
@@ -129,8 +130,14 @@ details[open] summary::after{content:'\2212'}
       <button type="button" class="etab" onclick="setExchange('ZAR','R',this)">JSE South Africa (ZAR)</button>
       <button type="button" class="etab" onclick="setExchange('GHS','GH&#x20B5;',this)">GSE Ghana (GHS)</button>
       <button type="button" class="etab" onclick="setExchange('KES','KSh',this)">NSE Kenya (KES)</button>
+      <button type="button" class="etab" onclick="setExchange('XOF','XOF',this)">BRVM (XOF)</button>
       <button type="button" class="etab" onclick="setExchange('USD','$',this)">Other / USD</button>
     </div>
+    <div class="sp-reference-fields">
+      <div><label for="sp-quote-date">Quote date for all current prices (optional)</label><input type="date" id="sp-quote-date" aria-describedby="sp-reference-help"></div>
+      <div><label for="sp-quote-source">Price source name or URL (optional)</label><input type="text" id="sp-quote-source" maxlength="500" placeholder="e.g. BRVM daily market report" aria-describedby="sp-reference-help"></div>
+    </div>
+    <p id="sp-reference-help">For BRVM shares, <a href="https://www.brvm.org/en/bulletins-officiels-de-la-cote" target="_blank" rel="noopener noreferrer">open the official daily market reports</a>. Read the report’s trading date and the share-price Close column, then enter those details here. Use a common date for this valuation, or calculate separate dated groups. Prices remain entered by you.</p>
     <div class="table-scroll"><table class="holdings-table">
       <thead><tr><th>Stock / Ticker</th><th>Shares</th><th>Buy Price</th><th>Current Price</th><th></th></tr></thead>
       <tbody id="holdings-tbody">
@@ -143,6 +150,7 @@ details[open] summary::after{content:'\2212'}
     <button type="button" class="btn-calc" onclick="calcPortfolio()">Calculate Portfolio Value</button>
     <div class="form-error" id="sp-error" role="alert"></div>
     <div class="results" id="sp-results" aria-live="polite">
+      <p id="sp-result-reference"></p>
       <div class="metrics">
         <div class="metric"><div class="metric-val" id="sp-total-value"></div><div class="metric-label">Total Portfolio Value</div></div>
         <div class="metric"><div class="metric-val" id="sp-total-cost"></div><div class="metric-label">Total Cost Basis</div></div>
@@ -155,6 +163,7 @@ details[open] summary::after{content:'\2212'}
           <tbody id="sp-table-body"></tbody>
         </table>
       </div>
+      <button type="button" class="btn-add" id="sp-download" onclick="spDownloadPortfolio()" disabled>Download valuation TXT</button>
     </div>
   </div>
   <div class="card">
