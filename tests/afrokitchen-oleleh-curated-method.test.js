@@ -110,7 +110,8 @@ test('actual page owner emits honest optional timing, visible attribution and es
   const target=recipe();
   const html=owner.buildRecipePageHtml(original,manifest,api,{},audit,null);
   assert.match(html,/About 40 min cook/);
-  assert.match(html,/Not recorded prep/);
+  assert.doesNotMatch(html,/Not recorded (?:prep|total)/);
+  assert.match(html,/ak-stat-lbl">Cook<\/div><div class="ak-stat-val accent">40 min/);
   assert.match(html,/AI-generated serving illustration/);
   assert.match(html,/credited to Isata by Healthy Living Platform/);
   assert.doesNotMatch(html,/PTnullM|PTundefinedM|0 min prep/);
@@ -192,8 +193,7 @@ test('the actual local export function keeps attribution, complete method and un
   const target=recipe();
   const context={n:target,i:api,s:{servings:6},e:{location:{href:'http://127.0.0.1/recipe-test'}},f:()=>api.scaleIngredients(target.ingredients,6,6)};
   vm.runInNewContext(runtimeFunction('recipeExportText')+';result=recipeExportText();',context);
-  assert.match(context.result,/Time: Not recorded/);
-  assert.match(context.result,/Prep: Not recorded/);
+  assert.doesNotMatch(context.result,/^(?:Time|Prep):/m);
   assert.match(context.result,/Cook: About 40 min/);
   assert.match(context.result,/credited to Isata by Healthy Living Platform/);
   assert.match(context.result,/AI-generated serving illustration/);
@@ -288,4 +288,34 @@ test('selected hero credit, link, alt and caption match the approved native cont
   assert.equal(hero.credit_url,null);
   assert.equal(hero.alt_text,'AI illustration of two moulded Oleleh puddings, one cut open, with coloured vegetable pieces.');
   assert.equal(hero.caption,'AI-generated serving illustration for this proposed adaptation; not a cooking photograph or kitchen-tested result.');
+});
+
+test('actual generated page, card and TXT show recorded partial durations without inventing a total', () => {
+  const cases = [
+    { times:[null,35,null], label:'Cook', value:'35 min', lines:['Cook: About 35 min'], absent:['Time:','Prep:'], card:'35 min cook' },
+    { times:[20,null,null], label:'Prep', value:'20 min', lines:['Prep: 20 min'], absent:['Time:','Cook:'], card:'20 min prep' },
+    { times:[10,35,null], label:'Cook', value:'35 min', lines:['Prep: 10 min','Cook: About 35 min'], absent:['Time:'], card:'35 min cook' },
+    { times:[null,null,null], label:'Method', value:'See method', lines:[], absent:['Time:','Prep:','Cook:'], card:'See method' },
+    { times:[null,0,null], label:'Cook', value:'0 min', lines:['Cook: About 0 min'], absent:['Time:','Prep:'], card:'0 min cook' },
+    { times:[30,65,95], label:'Time', value:'95 min', lines:['Time: 95 minutes'], absent:['Prep:','Cook:'], card:'95 min' },
+    { times:[0,0,0], label:'Time', value:'0 min', lines:['Time: 0 minutes'], absent:['Prep:','Cook:'], card:'0 min' }
+  ];
+  for (const c of cases) {
+    const target={...structuredClone(original),slug:'timing-presentation-fixture',prep_time_minutes:c.times[0],cook_time_minutes:c.times[1],total_time_minutes:c.times[2]};
+    const untouched=structuredClone(target);
+    const html=owner.buildRecipePageHtml(target,{...manifest,recipes:[target]},api,{},null,null);
+    const heroStart=html.indexOf('<div class="ak-hero-stats">'),heroEnd=html.indexOf('<div class="ak-hero-actions">',heroStart);
+    assert.ok(heroStart>=0&&heroEnd>heroStart);
+    const hero=html.slice(heroStart,heroEnd);
+    assert.ok(hero.includes('ak-stat-lbl">'+c.label+'</div><div class="ak-stat-val accent">'+c.value),c.label+' '+c.value);
+    const method=html.match(/<div class="ak-method-stat-row">([\s\S]*?)<\/div>/)[1];
+    if(c.times[2]===null) assert.doesNotMatch(method,/Not recorded| min total/);
+    const card=owner.renderStaticRecipeCard(target,{});assert.ok(card.includes(c.card));
+    const context={n:target,i:api,s:{servings:6},e:{location:{href:'http://127.0.0.1/timing-fixture'}},f:()=>api.scaleIngredients(target.ingredients,6,6)};
+    vm.runInNewContext(runtimeFunction('recipeExportText')+';result=recipeExportText();',context);
+    for(const line of c.lines) assert.ok(context.result.includes(line),line);
+    for(const label of c.absent) assert.doesNotMatch(context.result,new RegExp('^'+label,'m'));
+    assert.deepEqual(target,untouched);
+    assert.deepEqual(plain(api.getRecipeTiming(target)),{prep:c.times[0],cook:c.times[1],total:c.times[2]});
+  }
 });

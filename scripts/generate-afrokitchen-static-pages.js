@@ -674,7 +674,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
   const country = recipe.country_name || "Africa";
   const diet = recipeDietLabel(recipe);
   const region = recipe.region || "";
-  const time = classifyRecipeDuration(recipe.total_time_minutes).kind === "known" ? `${recipe.total_time_minutes} min` : "Not recorded";
+  const time = classifyRecipeDuration(recipe.total_time_minutes).kind === "known" ? `${recipe.total_time_minutes} min` : classifyRecipeDuration(recipe.cook_time_minutes).kind === "known" ? `${recipe.cook_time_minutes} min cook` : classifyRecipeDuration(recipe.prep_time_minutes).kind === "known" ? `${recipe.prep_time_minutes} min prep` : "See method";
   const servings = recipe.default_servings ? `Serves ${recipe.default_servings}` : "";
   const imageAlt = recipeImageAlt(recipe);
   const thumb = hasImage
@@ -1509,6 +1509,13 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const kisraStages = typeof engine.getRecipeKisraStages === "function" ? engine.getRecipeKisraStages(recipe) : null;
   const maheuStages = typeof engine.getRecipeMaheuStages === "function" ? engine.getRecipeMaheuStages(recipe) : null;
   const kunuStages = typeof engine.getRecipeKunuStages === "function" ? engine.getRecipeKunuStages(recipe) : null;
+  const recordedTiming = engine.getRecipeTiming(recipe);
+  const partialTimingLabel = recordedTiming.cook !== null ? "Cook" : recordedTiming.prep !== null ? "Prep" : "Method";
+  const partialTimingValue = recordedTiming.cook !== null ? engine.formatRecipeMinutes(recordedTiming.cook) : recordedTiming.prep !== null ? engine.formatRecipeMinutes(recordedTiming.prep) : "See method";
+  const partialTimingMarkup = [
+    recordedTiming.prep === null ? "" : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(recordedTiming.prep))} prep</span>`,
+    recordedTiming.cook === null ? "" : `<span>${akIcon("timer", "ak-icon-sm")}About ${escapeHtml(engine.formatRecipeMinutes(recordedTiming.cook))} cook (check method)</span>`
+  ].filter(Boolean).join("\n              ");
   const renderedIngredients = renderIngredientsHtml(engine, recipe, recipe.default_servings || 1);
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
@@ -1749,7 +1756,7 @@ ${renderCookbookNav()}
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Region</div><div class="ak-stat-val">${escapeHtml(recipe.region)}</div></div>
-           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : kisraStages ? "Ferment" : maheuStages ? "Cook" : kunuStages ? "Soak" : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : kisraStages ? kisraStages.ferment : maheuStages ? maheuStages.cook : kunuStages ? kunuStages.soak : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : kisraStages ? "Ferment" : maheuStages ? "Cook" : kunuStages ? "Soak" : recordedTiming.total === null ? partialTimingLabel : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : kisraStages ? kisraStages.ferment : maheuStages ? maheuStages.cook : kunuStages ? kunuStages.soak : recordedTiming.total === null ? escapeHtml(partialTimingValue) : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
            <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages || kisraStages || maheuStages || kunuStages ? 'Batch' : recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : kisraStages ? kisraStages.batch : maheuStages ? maheuStages.batch : kunuStages ? kunuStages.batch : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
@@ -1819,7 +1826,7 @@ ${renderCookbookNav()}
             </div>
             <div class="ak-method-stat-row">
               <span>${akIcon("check", "ak-icon-sm")}${escapeHtml(String((recipe.steps || []).length))} steps</span>
-              ${kunuStages ? `<span>${akIcon("time", "ak-icon-sm")}Soak ${kunuStages.soak}</span><span>${kunuStages.sourceYield}</span>` : maheuStages ? `<span>${akIcon("time", "ak-icon-sm")}Cook ${maheuStages.cook}</span><span>${akIcon("timer", "ak-icon-sm")}Cool ${maheuStages.cool}</span><span>Fermentation varies with warmth (see method)</span>` : kisraStages ? `<span>${akIcon("time", "ak-icon-sm")}Overnight fermentation</span><span>${akIcon("timer", "ak-icon-sm")}${kisraStages.cook}</span>` : pressureStages ? `<span>${akIcon("timer", "ak-icon-sm")}${pressureStages.join(" + ")} min under pressure; extra time for heat-up and release</span>` : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
+              ${kunuStages ? `<span>${akIcon("time", "ak-icon-sm")}Soak ${kunuStages.soak}</span><span>${kunuStages.sourceYield}</span>` : maheuStages ? `<span>${akIcon("time", "ak-icon-sm")}Cook ${maheuStages.cook}</span><span>${akIcon("timer", "ak-icon-sm")}Cool ${maheuStages.cool}</span><span>Fermentation varies with warmth (see method)</span>` : kisraStages ? `<span>${akIcon("time", "ak-icon-sm")}Overnight fermentation</span><span>${akIcon("timer", "ak-icon-sm")}${kisraStages.cook}</span>` : pressureStages ? `<span>${akIcon("timer", "ak-icon-sm")}${pressureStages.join(" + ")} min under pressure; extra time for heat-up and release</span>` : recordedTiming.total === null ? partialTimingMarkup : `<span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).prep))} prep</span>
               <span>${akIcon("timer", "ak-icon-sm")}${engine.getRecipeTiming(recipe).total === null && engine.getRecipeTiming(recipe).cook !== null ? "About " : ""}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).cook))} cook (check method)</span>
               <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))} total</span>`}
               <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>
@@ -1840,7 +1847,7 @@ ${renderCookbookNav()}
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>${recipe.method_revision && !recipe.occasion ? "An occasion has not been documented for this adaptation." : "Best for " + escapeHtml(recipeOccasionText(recipe)) + "."} Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook. ${engine.getRecipeTiming(recipe).total === null ? "Total time is not recorded." : "Allow about " + escapeHtml(String(recipe.total_time_minutes)) + " minutes total."}</p>
+            <p>${recipe.method_revision && !recipe.occasion ? "An occasion has not been documented for this adaptation." : "Best for " + escapeHtml(recipeOccasionText(recipe)) + "."} Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook. ${recordedTiming.total === null ? recordedTiming.cook !== null ? "Cook for about " + escapeHtml(String(recordedTiming.cook)) + " minutes; follow the method for preparation and any cooling or resting." : recordedTiming.prep !== null ? "Allow about " + escapeHtml(String(recordedTiming.prep)) + " minutes for preparation; follow the method for the remaining stages." : "Follow the method for the cooking stages." : "Allow about " + escapeHtml(String(recipe.total_time_minutes)) + " minutes total."}</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>

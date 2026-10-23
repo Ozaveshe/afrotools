@@ -74,7 +74,7 @@ function recipeExportText() {
   var maheuStages = typeof i.getRecipeMaheuStages === "function" ? i.getRecipeMaheuStages(n) : null;
   var kunuStages = typeof i.getRecipeKunuStages === "function" ? i.getRecipeKunuStages(n) : null;
   var timeLines = kunuStages ? ["Soak: " + kunuStages.soak, "Source batch yield: " + kunuStages.sourceYield] : maheuStages ? ["Cook: " + maheuStages.cook, "Cool: " + maheuStages.cool, "Fermentation: " + maheuStages.ferment] : kisraStages ? ["Ferment: " + kisraStages.ferment, "Cook: " + kisraStages.cook] : pressureStages ? ["Pressure stages: " + pressureStages.join(" + ") + " minutes"] : timing.total === null
-    ? ['Time: Not recorded', 'Prep: ' + i.formatRecipeMinutes(timing.prep), 'Cook: ' + (timing.cook === null ? '' : 'About ') + i.formatRecipeMinutes(timing.cook) + ' (see method for checks)']
+    ? [timing.prep === null ? null : 'Prep: ' + i.formatRecipeMinutes(timing.prep), timing.cook === null ? null : 'Cook: About ' + i.formatRecipeMinutes(timing.cook) + ' (see method for checks)'].filter(function(line) { return line !== null; })
     : ['Time: ' + timing.total + ' minutes'];
   var t = [n.name, n.country_name + (n.region ? ' | ' + n.region : ''), pressureStages ? 'Batch: 1 kg beef + vegetables' : kisraStages ? 'Batch: ' + kisraStages.batch : maheuStages ? 'Batch: ' + maheuStages.batch : kunuStages ? 'Batch: ' + kunuStages.batch : n.yield_status === 'not-recorded' ? 'Yield: Not recorded; source quantities' : 'Servings: ' + s.servings + ' ' + (n.serving_unit || 'servings')].concat(timeLines, ['', n.description || '']);
   if (n.method_revision) t.push(n.story || '', illustration);
