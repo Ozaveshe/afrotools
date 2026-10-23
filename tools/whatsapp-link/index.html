@@ -30,7 +30,7 @@
   <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
   <meta name="tool-id" content="whatsapp-link">
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="/assets/vendor/qrcode/qrcode.min.js"></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -318,11 +318,12 @@
         <div class="actions-row">
           <button type="button" class="btn btn-primary btn-sm" onclick="copyLink()">Copy Link</button>
           <a id="openLink" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open in WhatsApp</a>
-          <button type="button" class="btn btn-outline btn-sm" onclick="downloadQR()">Download QR</button>
+          <button type="button" class="btn btn-outline btn-sm" id="downloadQrButton" onclick="downloadQR()" disabled>Download QR</button>
         </div>
       </div>
       <div class="qr-box">
-        <canvas id="qrCanvas"></canvas>
+        <div id="qrCanvas" role="img" aria-label="QR code for the current WhatsApp link"></div>
+        <p id="qrStatus" role="status"></p>
       </div>
     </div>
   </div>
@@ -377,6 +378,28 @@
 let currentLink = '';
 let currentNormalizedNumber = '';
 
+function invalidateLink() {
+  currentLink = '';
+  currentNormalizedNumber = '';
+  document.getElementById('resultArea').classList.remove('show');
+  document.getElementById('linkDisplay').textContent = '';
+  document.getElementById('openLink').removeAttribute('href');
+  document.getElementById('resultCoach').textContent = '';
+  document.getElementById('qrCanvas').textContent = '';
+  document.getElementById('qrStatus').textContent = '';
+  document.getElementById('downloadQrButton').disabled = true;
+}
+
+function normalizedNumber(code, phone) {
+  const country = String(code || '').trim();
+  const raw = String(phone || '').trim();
+  if (!/^[1-9]\d{0,3}$/.test(country) || !/^[+\d\s().-]+$/.test(raw)) return null;
+  const clean = cleanNumber(raw);
+  if (!/^\d+$/.test(clean)) return null;
+  const full = clean.startsWith(country) && clean.length > country.length + 5 ? clean : country + clean;
+  return /^[1-9]\d{6,14}$/.test(full) ? full : null;
+}
+
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach((t, i) => {
     t.classList.toggle('active', (tab === 'single' && i === 0) || (tab === 'bulk' && i === 1));
@@ -387,13 +410,12 @@ function switchTab(tab) {
 }
 
 function cleanNumber(num) {
-  return num.replace(/[\s\-\(\)\+]/g, '').replace(/^0+/, '');
+  return num.replace(/[\s\-().+]/g, '').replace(/^0+/, '');
 }
 
 function buildLink(code, phone, msg) {
-  const clean = cleanNumber(phone);
-  if (!clean) return null;
-  const normalized = clean.startsWith(code) && clean.length > code.length + 5 ? clean : code + clean;
+  const normalized = normalizedNumber(code, phone);
+  if (!normalized) return null;
   currentNormalizedNumber = normalized;
   let url = 'https://wa.me/' + normalized;
   if (msg && msg.trim()) url += '?text=' + encodeURIComponent(msg.trim());
@@ -414,6 +436,7 @@ function templateMessage(kind, business, item) {
 }
 
 function applyTemplate() {
+  invalidateLink();
   const kind = document.getElementById('messageTemplate').value;
   const business = document.getElementById('businessName').value.trim();
   const item = document.getElementById('offerItem').value.trim();
@@ -424,10 +447,9 @@ function applyTemplate() {
 function renderLinkCoach() {
   const code = document.getElementById('countryCode').value;
   const phone = document.getElementById('phoneNumber').value.trim();
-  const clean = cleanNumber(phone);
   const msg = document.getElementById('message').value.trim();
-  const normalized = clean ? (clean.startsWith(code) && clean.length > code.length + 5 ? clean : code + clean) : '';
-  const hasGoodLength = normalized.length >= 8 && normalized.length <= 15;
+  const normalized = normalizedNumber(code, phone) || '';
+  const hasGoodLength = !!normalized;
   const messageState = msg.length ? (msg.length <= 180 ? 'Short message' : 'Long message') : 'No prefill';
   const box = document.getElementById('linkCoach');
   if (!box) return;
@@ -435,7 +457,7 @@ function renderLinkCoach() {
     'Official click-to-chat links use a full international number with no plus sign, brackets, spaces, or leading zero.' +
     '<div class="link-score">' +
     '<div class="score-pill"><b>' + (normalized || 'No number') + '</b>Normalized number</div>' +
-    '<div class="score-pill"><b>' + (hasGoodLength ? 'Looks valid' : 'Check length') + '</b>8 to 15 digits is typical</div>' +
+    '<div class="score-pill"><b>' + (hasGoodLength ? 'Looks valid' : 'Check length') + '</b>7 to 15 digits; format check only</div>' +
     '<div class="score-pill"><b>' + messageState + '</b>' + msg.length + ' characters</div>' +
     '</div>';
 }
@@ -443,25 +465,33 @@ function renderLinkCoach() {
 ['countryCode','phoneNumber','message','businessName','offerItem','messageTemplate'].forEach(id => {
   const el = document.getElementById(id);
   if (el) {
-    el.addEventListener('input', renderLinkCoach);
-    el.addEventListener('change', renderLinkCoach);
+    const onEdit = function () { invalidateLink(); renderLinkCoach(); };
+    el.addEventListener('input', onEdit);
+    el.addEventListener('change', onEdit);
   }
 });
 
 function generateLink() {
+  invalidateLink();
   const code = document.getElementById('countryCode').value;
   const phone = document.getElementById('phoneNumber').value.trim();
   const msg = document.getElementById('message').value;
   if (!phone) { showToast('Please enter a phone number'); return; }
   const link = buildLink(code, phone, msg);
-  if (!link) { showToast('Invalid phone number'); return; }
+  if (!link) { showToast('Use 7 to 15 digits including the country code. Remove letters or extensions.'); return; }
   currentLink = link;
   document.getElementById('linkDisplay').innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a>';
   document.getElementById('openLink').href = link;
   document.getElementById('resultCoach').innerHTML = '<strong>Share-ready checklist</strong> Number: ' + currentNormalizedNumber + '. Message is URL-encoded. Test once before adding to an ad, poster, receipt, or profile bio.';
   document.getElementById('resultArea').classList.add('show');
-  if (typeof QRCode !== 'undefined') {
-    QRCode.toCanvas(document.getElementById('qrCanvas'), link, { width: 180, margin: 1, color: { dark: '#0f1419', light: '#ffffff' } });
+  try {
+    if (typeof QRCode !== 'function') throw new Error('QR library unavailable');
+    new QRCode(document.getElementById('qrCanvas'), { text: link, width: 180, height: 180, colorDark: '#0f1419', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    document.getElementById('downloadQrButton').disabled = false;
+    document.getElementById('qrStatus').textContent = 'QR ready for this link. Opening it still requires you to send the message in WhatsApp.';
+  } catch (error) {
+    document.getElementById('qrCanvas').textContent = '';
+    document.getElementById('qrStatus').textContent = 'QR unavailable. You can still use the link above.';
   }
 }
 
@@ -502,14 +532,26 @@ function copyLink() {
 }
 
 function downloadQR() {
-  const canvas = document.getElementById('qrCanvas');
+  if (!currentLink || document.getElementById('downloadQrButton').disabled) return;
+  const canvas = document.getElementById('qrCanvas').querySelector('canvas');
+  if (!canvas) { showToast('QR unavailable. Copy the current link instead.'); return; }
+  const image = document.createElement('canvas');
+  // Reserve at least four modules of white space even for the smallest QR.
+  const margin = Math.ceil(canvas.width * 4 / 21);
+  image.width = canvas.width + margin * 2;
+  image.height = canvas.height + margin * 2;
+  const ctx = image.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, image.width, image.height);
+  ctx.drawImage(canvas, margin, margin);
   const a = document.createElement('a');
   a.download = 'whatsapp-qr.png';
-  a.href = canvas.toDataURL('image/png');
+  a.href = image.toDataURL('image/png');
   a.click();
 }
 
 function clearForm() {
+  invalidateLink();
   document.getElementById('phoneNumber').value = '';
   document.getElementById('message').value = '';
   document.getElementById('businessName').value = '';
