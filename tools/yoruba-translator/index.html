@@ -413,12 +413,15 @@ function init(){
 }
 function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(function(b){var selected=b.textContent===c;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});filter();}
 function escapeMarkup(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function foldYorubaSearch(value){
+  return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/\s+/g,' ');
+}
 function filter(){
-  const q=document.getElementById('search').value.toLowerCase();
+  const q=foldYorubaSearch(document.getElementById('search').value);
   const list=PHRASES.filter(p=>{
     if(activeCat!=='All'&&p.cat!==activeCat)return false;
     if(!q)return true;
-    return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);
+    return foldYorubaSearch(p.en).includes(q)||foldYorubaSearch(p.lang).includes(q);
   });
   document.getElementById('countBadge').textContent=list.length+' phrases';
   document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${escapeMarkup(p.en)}</span><span><span class="lang" lang="yo">${escapeMarkup(p.lang)}</span><br><span class="pron">${escapeMarkup(p.pron)}</span>${p.note?`<span class="verification-note">${escapeMarkup(p.note)}</span>`:''}</span><button type="button" class="speak-btn" onclick="speak('${p.lang.replace(/'/g,"\\'")}')" aria-label="Listen to ${escapeMarkup(p.lang)} in Yoruba">&#128266;</button></div>`).join('');
