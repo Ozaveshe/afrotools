@@ -106,7 +106,7 @@
 
 <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
   <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
-  <script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+  <script src="/assets/js/bundles/core.5f2559c8.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81" defer></script>
   <!-- Twemoji: consistent flag rendering on Windows -->
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
@@ -3131,6 +3131,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderDropdown(q) {
+      focusIdx = -1;
+      input.removeAttribute('aria-activedescendant');
       if (suppressDropdown) { closeDropdown(); return; }
       if (!q || !window.AFRO_TOOLS) { closeDropdown(); return; }
       var tokens = tokenise(q);
@@ -3177,7 +3179,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       // "See all results" footer
-      html += '<div class="sd-footer" id="sd-see-all">See all results for "' + esc(q) + '" →</div>';
+      html += '<div class="sd-footer" id="sd-see-all" role="option" tabindex="-1" aria-selected="false">See all results for "' + esc(q) + '" →</div>';
 
       dropdown.innerHTML = html;
       dropdown.classList.add('open');
@@ -3186,10 +3188,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function class_attr(i) {
-      return ' id="sd-option-' + i + '" class="sd-item" role="option" tabindex="-1" data-idx="' + i + '"';
+      return ' id="sd-option-' + i + '" class="sd-item" role="option" aria-selected="false" tabindex="-1" data-idx="' + i + '"';
     }
 
-    function closeDropdown() {
+    function closeDropdown(dismissed) {
+      clearTimeout(debounce);
+      if (dismissed) suppressDropdown = true;
       dropdown.classList.remove('open');
       dropdown.innerHTML = '';
       input.setAttribute('aria-expanded', 'false');
@@ -3251,8 +3255,8 @@ document.addEventListener('DOMContentLoaded', function() {
             else doSearch('keyboard');
           }
         } else { doSearch('keyboard'); }
-      } else if (e.key === 'Escape') {
-        closeDropdown();
+      } else if (e.key === 'Escape' || e.key === 'Tab') {
+        closeDropdown(true);
       }
     });
 
@@ -3343,6 +3347,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Live input
     var debounce;
     input.addEventListener('input', function() {
+      closeDropdown();
       suppressDropdown = false;
       clearTimeout(debounce);
       var q = this.value.trim();
@@ -3412,7 +3417,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close on outside click
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('.hero-search-wrap')) closeDropdown();
+      if (!e.target.closest('.hero-search-wrap')) closeDropdown(true);
     });
   })();
 
@@ -3812,7 +3817,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(document.querySelector('script[src*="tool-registry"]'))return;
     loaded = true;
     var s=document.createElement('script');
-    s.src='/assets/js/components/tool-registry.min.js?v=9ea256a9';
+    s.src='/assets/js/components/tool-registry.min.js?v=927374e9';
     s.onload=function(){
       if (typeof window.refreshHomepageRegistryStats === 'function') window.refreshHomepageRegistryStats();
       window.dispatchEvent(new CustomEvent('afrotools:registry-ready'));

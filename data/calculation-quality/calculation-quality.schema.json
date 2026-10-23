@@ -121,6 +121,29 @@
         "routeMappings": {"type": "array", "items": {"$ref": "#/$defs/RouteMapping"}}
       }
     },
+    "PayeWithheldExpected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["availability", "calculable", "reasonCode", "registryEngine", "resolution"],
+      "properties": {
+        "availability": {"const": "withheld"},
+        "calculable": {"const": false},
+        "reasonCode": {"const": "PAYROLL_SOURCE_REVIEW_REQUIRED"},
+        "registryEngine": {"type": "null"},
+        "resolution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ok", "error", "jurisdiction", "effectiveOn", "reasonCode"],
+          "properties": {
+            "ok": {"const": false},
+            "error": {"const": "PAYROLL_WITHHELD"},
+            "jurisdiction": {"const": "BF"},
+            "effectiveOn": {"type": "null"},
+            "reasonCode": {"const": "PAYROLL_SOURCE_REVIEW_REQUIRED"}
+          }
+        }
+      }
+    },
     "GoldenFixture": {
       "type": "object",
       "additionalProperties": false,
@@ -130,13 +153,35 @@
         "formulaId": {"type": "string"},
         "formulaVersion": {"type": "string"},
         "caseClasses": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "operation": {"enum": ["paye-calculate", "tax-input-rejection", "formula-resolve", "private-paye-tax", "private-paye-calculate"]},
+        "operation": {"enum": ["paye-calculate", "paye-withheld", "tax-input-rejection", "formula-resolve", "private-paye-tax", "private-paye-calculate"]},
         "input": {"type": "object"},
         "expected": {"type": "object", "minProperties": 1},
         "tolerance": {"type": "number", "minimum": 0},
         "evidence": {"$ref": "#/$defs/SourceReference"},
         "changeNote": {"type": "string", "minLength": 5}
-      }
+      },
+      "allOf": [{
+        "if": {"properties": {"operation": {"const": "paye-withheld"}}, "required": ["operation"]},
+        "then": {
+          "properties": {
+            "formulaId": {"const": "paye-server-bf"},
+            "expected": {"$ref": "#/$defs/PayeWithheldExpected"},
+            "evidence": {"properties": {"registryId": {"type": "null"}, "url": {"type": "null"}, "kind": {"const": "availability-hold"}, "authorityStatus": {"const": "review-required"}}},
+            "tolerance": {"const": 0},
+            "changeNote": {"const": "availability-withheld-no-numeric-acceptance"},
+            "input": {
+              "type": "object", "additionalProperties": false,
+              "required": ["country", "grossAnnual"],
+              "properties": {"country": {"const": "BF"}, "grossAnnual": {"type": "number"}}
+            }
+          },
+          "oneOf": [
+            {"properties": {"id": {"const": "paye-bf-zero"}, "input": {"properties": {"grossAnnual": {"const": 0}}}, "caseClasses": {"const": ["zero_input"]}}},
+            {"properties": {"id": {"const": "paye-bf-defaults"}, "input": {"properties": {"grossAnnual": {"const": 1000000}}}, "caseClasses": {"const": ["missing_optional_input"]}}},
+            {"properties": {"id": {"const": "paye-bf-large-decimal"}, "input": {"properties": {"grossAnnual": {"const": 1000000000.55}}}, "caseClasses": {"const": ["very_large_value", "decimal_precision"]}}}
+          ]
+        }
+      }]
     },
     "GoldenFixtureRegistry": {
       "type": "object",

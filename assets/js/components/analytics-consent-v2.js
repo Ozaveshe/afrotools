@@ -5,6 +5,8 @@
   var BANNER_ID = 'afro-cookie-consent';
   var STYLE_ID = 'afro-cookie-consent-style';
   var pendingBodyOpen = false;
+  var pendingOpenOptions = null;
+  var opener = null;
   var COPY = {
     en: {
       label: 'Cookie consent',
@@ -71,6 +73,41 @@
   }
 };
 
+  // Shared notices occupy normal flow; keep an active tool/view anchored when
+  // automatic insertion/removal changes preceding page height. Never move main.
+  function preserveNoticeView(change) {
+    var active = document.activeElement;
+    var focused = active && active !== document.body && active.closest && !active.closest('[data-afro-flow-notice]');
+    var anchor = focused ? active : null;
+    if (!anchor && window.scrollY > 0 && document.elementFromPoint) {
+      var nav = document.querySelector('afro-navbar');
+      var top = nav ? nav.getBoundingClientRect().bottom : 0;
+      anchor = document.elementFromPoint(window.innerWidth / 2, Math.min(top + 16, window.innerHeight / 2));
+      if (anchor && anchor.closest && anchor.closest('[data-afro-flow-notice]')) anchor = document.querySelector('main,[role="main"]');
+    }
+    var oldTop = anchor && anchor.getBoundingClientRect ? anchor.getBoundingClientRect().top : null;
+    change();
+    if (oldTop === null) return;
+    var restore = function () {
+      if (!anchor.isConnected || (focused && document.activeElement !== active)) return;
+      var delta = anchor.getBoundingClientRect().top - oldTop;
+      if (delta) window.scrollBy({ left: 0, top: delta, behavior: 'instant' });
+    };
+    if (window.requestAnimationFrame) window.requestAnimationFrame(restore); else restore();
+  }
+
+  function placeNotice(notice, preserveView) {
+    function branch(node) {
+      while (node && node.parentNode && node.parentNode !== document.body) node = node.parentNode;
+      return node && node.parentNode === document.body ? node : null;
+    }
+    var nav = branch(document.querySelector('afro-navbar'));
+    var main = branch(document.querySelector('main,[role="main"]'));
+    var reference = nav && (!main || !nav.contains(main)) ? nav.nextSibling : main || document.body.firstChild;
+    var insert = function () { document.body.insertBefore(notice, reference || null); };
+    if (preserveView) preserveNoticeView(insert); else insert();
+  }
+
   function readConsent() {
     try {
       return window.localStorage.getItem(CONSENT_KEY);
@@ -84,9 +121,17 @@
     if (node && node.parentNode) node.parentNode.removeChild(node);
   }
 
-  function close() {
-    remove(BANNER_ID);
-    remove(STYLE_ID);
+  function close(restoreFocus) {
+    var banner = document.getElementById(BANNER_ID);
+    var returnTo = restoreFocus !== false && opener && banner && banner.contains(document.activeElement) && opener.node.isConnected ? opener : null;
+    var clear = function () { remove(BANNER_ID); remove(STYLE_ID); };
+    if (returnTo) {
+      clear();
+      window.scrollTo({ left: returnTo.left, top: returnTo.top, behavior: 'instant' });
+      returnTo.node.focus({ preventScroll: true });
+    } else if (restoreFocus === false) clear();
+    else preserveNoticeView(clear);
+    opener = null;
   }
 
   function save(status) {
@@ -108,41 +153,58 @@
     var style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = [
-      '#afro-cookie-consent{box-sizing:border-box;position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:99999;width:min(720px,calc(100% - 24px));transform:translateX(-50%);background:#102033;border:1px solid rgba(203,213,225,.24);border-radius:10px;padding:12px;font-family:"DM Sans",system-ui,sans-serif;box-shadow:0 14px 34px rgba(2,8,23,.22)}',
+      '#afro-cookie-consent{box-sizing:border-box;position:relative;grid-column:1/-1;width:min(720px,calc(100% - 24px));min-width:0;margin:12px auto;overflow-anchor:none;scroll-margin-block-start:76px;background:#102033;border:1px solid rgba(203,213,225,.24);border-radius:10px;padding:12px;font-family:"DM Sans",system-ui,sans-serif;box-shadow:0 14px 34px rgba(2,8,23,.22)}',
       '#afro-cookie-consent .afro-cc-inner{display:grid;gap:10px}',
       '#afro-cookie-consent .afro-cc-message{margin:0;color:#e5eef8;font-size:13px;line-height:1.5}',
       '#afro-cookie-consent .afro-cc-current{color:#bfdbfe;font-weight:700}',
       '#afro-cookie-consent .afro-cc-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}',
-      '#afro-cookie-consent button,#afro-cookie-consent a{align-items:center;border-radius:8px;display:inline-flex;font-family:inherit;font-size:13px;font-weight:800;justify-content:center;min-height:44px;padding:0 14px}',
+      '#afro-cookie-consent button,#afro-cookie-consent a{align-items:center;border-radius:8px;display:inline-flex;font-family:inherit;font-size:13px;font-weight:800;justify-content:center;min-height:44px;min-width:44px;max-width:100%;padding:8px 14px;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere}',
       '#afro-analytics-consent-accept{background:#0062cc;border:1px solid #0062cc;color:#fff;cursor:pointer}',
       '#afro-cc-decline{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;cursor:pointer}',
       '#afro-cc-learn{border:1px solid transparent;color:#bfdbfe;text-decoration:none}',
       '#afro-cc-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#e5eef8;cursor:pointer;margin-left:auto;width:44px;padding:0}',
       '#afro-cookie-consent button:hover,#afro-cookie-consent a:hover{background:#004fa8;color:#fff}',
       '#afro-cookie-consent button:focus-visible,#afro-cookie-consent a:focus-visible{outline:3px solid rgba(147,197,253,.6);outline-offset:2px}',
-      '@media(max-width:560px){#afro-cookie-consent{bottom:calc(8px + env(safe-area-inset-bottom));width:calc(100% - 20px);padding:10px}#afro-cookie-consent .afro-cc-actions{display:grid;grid-template-columns:1fr 1fr}#afro-cookie-consent button,#afro-cookie-consent a{font-size:12.4px;padding:0 8px}#afro-cc-close{grid-column:2;margin-left:auto}}'
+      '@media(max-width:560px){#afro-cookie-consent{width:calc(100% - 20px);margin:10px auto;padding:10px}#afro-cookie-consent .afro-cc-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))}#afro-cookie-consent button,#afro-cookie-consent a{font-size:12.4px;padding:0 8px}#afro-cc-close{grid-column:auto;justify-self:end;margin-left:0}}'
     ].join('');
     document.head.appendChild(style);
   }
 
-  function open() {
+  function open(options) {
+    var automatic = options && options.initial === true;
     if (!document.body) {
+      pendingOpenOptions = options;
       if (!pendingBodyOpen) {
         pendingBodyOpen = true;
         document.addEventListener('DOMContentLoaded', function () {
           pendingBodyOpen = false;
-          open();
+          var requested = pendingOpenOptions;
+          pendingOpenOptions = null;
+          open(requested);
         }, { once: true });
       }
       return null;
     }
     var copy = languageCopy();
     var status = readConsent();
-    close();
+    var previous = document.activeElement;
+    var previousOpener = opener;
+    var existing = document.getElementById(BANNER_ID);
+    var previousView = { left: window.scrollX || 0, top: window.scrollY || 0 };
+    if (existing && existing.contains(previous) && previousOpener) {
+      previous = previousOpener.node;
+      previousView = previousOpener;
+    }
+    close(false);
+    opener = !automatic && previous && previous !== document.body ? { node: previous, left: previousView.left, top: previousView.top } : null;
     addStyles();
 
     var banner = document.createElement('section');
     banner.id = BANNER_ID;
+    banner.setAttribute('data-afro-flow-notice', '');
+    // Legacy page styles size the former overlay in viewport units. Keep this
+    // normal-flow notice within its containing block, including doubled text.
+    banner.setAttribute('style', 'width:min(720px,calc(100% - 24px))!important;max-width:calc(100% - 24px)!important');
     banner.setAttribute('role', 'region');
     banner.setAttribute('aria-label', copy.label);
     banner.innerHTML = '<div class="afro-cc-inner"><div class="afro-cc-message">' + copy.message + '</div>'
@@ -152,7 +214,13 @@
       + '<a href="' + copy.privacyHref + '" id="afro-cc-learn">' + copy.privacy + '</a>'
       + (status ? '<button id="afro-cc-close" type="button" aria-label="' + copy.close + '">&times;</button>' : '')
       + '</div></div>';
-    document.body.appendChild(banner);
+    placeNotice(banner, automatic);
+    if (!automatic) {
+      banner.scrollIntoView({ block: 'start', behavior: 'instant' });
+      var firstChoice = document.getElementById('afro-analytics-consent-accept');
+      firstChoice.focus({ preventScroll: true });
+      firstChoice.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    }
 
     document.getElementById('afro-analytics-consent-accept').addEventListener('click', function () { save('accepted'); });
     document.getElementById('afro-cc-decline').addEventListener('click', function () { save('declined'); });
@@ -175,5 +243,5 @@
       open();
     }
   });
-  if (!readConsent()) open();
+  if (!readConsent()) open({ initial: true });
 }(window, document));

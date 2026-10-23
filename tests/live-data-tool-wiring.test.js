@@ -20,7 +20,24 @@ const electricityApi = read('netlify/functions/api-electricity.js');
 assert.match(fuelPage, /fuel-tracker-vip\.js[^>]+defer/, 'Fuel app should start on page load');
 assert.match(fuelPage, /id="fuel-data-status"/, 'Fuel page needs a visible data status hook');
 assert.match(fuelApp, /\/data\/fuel\/markets\.json/, 'Fuel app should request the maintained dated market snapshot');
-assert.doesNotMatch(fuelApp, /\/api\/fuel/, 'Fuel app should not imply a live API');
+const fuelAst = require('acorn').parse(fuelApp, {ecmaVersion:'latest'});
+const optionalFeedCalls=[];
+function inspectFuelCalls(node) {
+  if (!node || typeof node!=='object') return;
+  if (node.type==='CallExpression' && node.callee.type==='Identifier' && node.callee.name==='fetch' && node.arguments[0] && node.arguments[0].type==='Literal' && node.arguments[0].value==='/api/fuel-prices') optionalFeedCalls.push(node);
+  for (const value of Object.values(node)) {
+    if (Array.isArray(value)) value.forEach(inspectFuelCalls);
+    else if (value && typeof value==='object') inspectFuelCalls(value);
+  }
+}
+inspectFuelCalls(fuelAst);
+assert.equal(optionalFeedCalls.length,1,'Optional fuel feed must use one fixed same-origin endpoint');
+const feedOptions = new Map(optionalFeedCalls[0].arguments[1].properties.map(property=>[property.key.name||property.key.value,property.value]));
+assert.equal(feedOptions.get('credentials').value,'omit','Optional public feed must omit account credentials');
+assert.equal(feedOptions.get('cache').value,'no-store','Optional feed must not silently reuse an undated browser cache');
+assert.equal(feedOptions.has('body'),false,'Optional feed must not transmit visitor input');
+assert.equal(feedOptions.has('method'),false,'Fixed feed request retains the default GET method');
+assert.match(read('netlify.toml'),/from\s*=\s*"\/api\/fuel-prices"\s+to\s*=\s*"\/\.netlify\/functions\/api-fuel"/,'Optional feed is backed by the existing production fuel handler');
 assert.match(fuelApp, /sourceUrl|source_url/, 'Fuel rows should retain source provenance');
 assert.match(fuelApp, /MAX_AGE_DAYS\s*=\s*45/, 'Fuel rows should have a freshness gate');
 assert.doesNotMatch(fuelApp, /Built-in fallback estimates|built-in planning estimate|using a static estimate/i, 'Fuel must not present randomized estimates as data');

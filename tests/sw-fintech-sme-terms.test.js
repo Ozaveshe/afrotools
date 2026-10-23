@@ -26,7 +26,7 @@ for (const [id, file, controller] of apps) {
   assert(html.includes(`/fintech-shared-controllers/${controller}`));
   assert(html.includes(`data-ai-candidate-tool-id="${id}"`));
   assert(html.includes('Udhamini au ushirika'));
-  assert(html.includes('Hakuna data inayotumwa kwa seva'));
+  assert(html.includes('Taarifa hizi za hesabu hazitumwi kwa seva'));
   assert(!/<iframe\b/i.test(html));
   assert(!/(Pakua|Download|CSV|PDF|Nakili)/i.test(html));
 }

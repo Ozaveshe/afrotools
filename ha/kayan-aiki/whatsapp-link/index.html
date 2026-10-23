@@ -111,6 +111,7 @@ textarea{resize:vertical;min-height:80px}
 @media(max-width:960px){.container{padding:1rem}.preview-grid{grid-template-columns:1fr}.input-row{flex-direction:column}.country-select{min-width:100%}.template-grid,.link-score{grid-template-columns:1fr}}
 </style>
   <link rel="stylesheet" href="/ha/assets/ha-improvements.css?v=dbd6b41d">
+<link rel="stylesheet" href="/assets/css/ha-yo-whatsapp-link.css?v=d264c352">
 <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/whatsapp-link/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/whatsapp-link/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/lien-whatsapp/">
@@ -128,121 +129,22 @@ textarea{resize:vertical;min-height:80px}
 </div></section>
 <main id="main">
 <div class="container">
-  <div class="tabs">
-    <button type="button" class="tab active" onclick="switchTab('single')">Link daya</button>
-    <button type="button" class="tab" onclick="switchTab('bulk')">Yanayin taro</button>
-  </div>
-  <div id="singleTab" class="card">
-    <h2>Gina WhatsApp link</h2>
-    <label for="countryCode">Lambar kasa</label>
-    <div class="input-row">
-      <select id="countryCode" class="country-select">
-        <option value="234">Najeriya (+234)</option>
-        <option value="254">Kenya (+254)</option>
-        <option value="233">Ghana (+233)</option>
-        <option value="27">Afirka ta Kudu (+27)</option>
-        <option value="20">Masar (+20)</option>
-        <option value="255">Tanzania (+255)</option>
-        <option value="256">Uganda (+256)</option>
-        <option value="237">Kamaru (+237)</option>
-        <option value="225">Cote d'Ivoire (+225)</option>
-        <option value="251">Habasha (+251)</option>
-        <option value="212">Maroko (+212)</option>
-        <option value="213">Aljeriya (+213)</option>
-        <option value="216">Tunisiya (+216)</option>
-        <option value="250">Rwanda (+250)</option>
-        <option value="263">Zimbabwe (+263)</option>
-        <option value="260">Zambia (+260)</option>
-        <option value="265">Malawi (+265)</option>
-        <option value="221">Senegal (+221)</option>
-        <option value="1">Amurka/Kanada (+1)</option>
-        <option value="44">Birtaniya (+44)</option>
-        <option value="91">Indiya (+91)</option>
-        <option value="971">Hadaddiyar Daular Larabawa (+971)</option>
-        <option value="966">Saudiyya (+966)</option>
-        <option value="86">Sin (+86)</option>
-        <option value="49">Jamus (+49)</option>
-        <option value="33">Faransa (+33)</option>
-      </select>
-      <input aria-label="Misali 8012345678" type="text" id="phoneNumber" placeholder="misali 8012345678" inputmode="tel">
-    </div>
-    <label for="message">Sakon farko (idan kana so)</label>
-    <textarea id="message" placeholder="Sannu! Ina son karin bayani..."></textarea>
-    <div class="template-grid">
-      <div><label for="businessName">Sunan kasuwanci</label><input type="text" id="businessName" placeholder="misali Amina Foods"></div>
-      <div><label for="offerItem">Abu ko hidima</label><input type="text" id="offerItem" placeholder="misali oda, isarwa, ajiyar lokaci"></div>
-      <div><label for="messageTemplate">Samfurin sako</label><select id="messageTemplate"><option value="order">Neman oda</option><option value="support">Taimakon kwastoma</option><option value="booking">Ajiyar lokaci</option><option value="payment">Tabbacin biya</option><option value="delivery">Bayani kan isarwa</option></select></div>
-    </div>
-    <div class="actions-row">
-      <button type="button" class="btn btn-outline" onclick="applyTemplate()">Saka samfurin sako</button>
-      <button type="button" class="btn btn-primary" onclick="generateLink()">Gina link</button>
-      <button type="button" class="btn btn-outline" onclick="clearForm()">Goge</button>
-    </div>
-    <div class="link-coach" id="linkCoach"><strong>Shirin link</strong>Hanyar WhatsApp wa.me tana bukatar cikakkiyar lambar kasa ba tare da alamar +, baka ko tazara ba.</div>
-  </div>
-  <div id="bulkTab" class="card" style="display:none;">
-    <h2>Gina link masu yawa</h2>
-    <label for="bulkCountry">Lambar kasa ta farko</label>
-    <select id="bulkCountry" style="margin-bottom:1rem;">
-      <option value="234">Najeriya (+234)</option>
-      <option value="254">Kenya (+254)</option>
-      <option value="233">Ghana (+233)</option>
-      <option value="27">Afirka ta Kudu (+27)</option>
-      <option value="20">Masar (+20)</option>
-      <option value="1">Amurka/Kanada (+1)</option>
-      <option value="44">Birtaniya (+44)</option>
-    </select>
-    <label for="bulkNumbers">Lambobin waya (daya a kowane layi)</label>
-    <textarea id="bulkNumbers" rows="6" placeholder="8012345678&#10;9023456789&#10;7034567890"></textarea>
-    <label for="bulkMessage" style="margin-top:1rem;">Sakon farko (idan kana so)</label>
-    <textarea id="bulkMessage" placeholder="Sannu! Ina son karin bayani..."></textarea>
-    <div class="actions-row">
-      <button type="button" class="btn btn-primary" onclick="generateBulk()">Gina duka</button>
-      <button type="button" class="btn btn-outline" onclick="copyAllBulk()">Kwafe duka</button>
-    </div>
-    <div id="bulkResults" class="bulk-results" style="margin-top:1rem;"></div>
-  </div>
-  <div id="resultArea" class="card result-area">
-    <h2>WhatsApp link dinka</h2>
-    <div class="preview-grid">
-      <div>
-        <div class="link-display" id="linkDisplay"></div>
-        <div class="link-coach" id="resultCoach"></div>
-        <div class="actions-row">
-          <button type="button" class="btn btn-primary btn-sm" onclick="copyLink()">Kwafe link</button>
-          <a id="openLink" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Bude a WhatsApp</a>
-          <button type="button" class="btn btn-outline btn-sm" onclick="downloadQR()">Sauke QR</button>
-        </div>
-      </div>
-      <div class="qr-box"><div id="qrCanvas" aria-label="Lambar QR ta mahadar WhatsApp"></div></div>
-    </div>
-  </div>
-  <section style="max-width:900px;margin:32px auto 0;">
+  <!-- whatsapp-local-workflow:start -->
+<div data-wa-workflow="ha"><p class="wa-privacy">Lamba da sako suna cikin link, QR da fayil din da ka raba. Ana shirya su a naurarka. Bude a WhatsApp ne kawai zai kai ka zuwa WhatsApp. Kada ka saka PIN, BVN, NIN ko bayanan kati.</p><div class="wa-actions" role="group" aria-label="Yanayin aikin WhatsApp"><button class="btn btn-primary" type="button" data-wa-mode="single" aria-pressed="true" aria-controls="wa-ha-single">Link daya</button><button class="btn btn-secondary" type="button" data-wa-mode="bulk" aria-pressed="false" aria-controls="wa-ha-bulk">Link masu yawa</button></div><form id="wa-ha-single" data-wa-form="single" novalidate aria-label="Link daya"><h2>Gina link</h2><div class="wa-grid"><div class="form-field wa-field"><label class="form-label" for="wa-ha-country">Lambar kasa</label><select class="form-select" id="wa-ha-country" name="country" aria-describedby="wa-ha-country-error"><option value="">Zabi lambar kasa</option><option value="234">+234 — Najeriya</option><option value="254">+254 — Kenya</option><option value="233">+233 — Ghana</option><option value="27">+27 — Afirka ta Kudu</option><option value="20">+20 — Masar</option><option value="255">+255 — Tanzania</option><option value="256">+256 — Uganda</option><option value="237">+237 — Kamaru</option><option value="225">+225 — Cote d’Ivoire</option><option value="251">+251 — Habasha</option><option value="212">+212 — Maroko</option><option value="213">+213 — Aljeriya</option><option value="216">+216 — Tunisiya</option><option value="250">+250 — Rwanda</option><option value="263">+263 — Zimbabwe</option><option value="260">+260 — Zambia</option><option value="265">+265 — Malawi</option><option value="221">+221 — Senegal</option><option value="1">+1 — Amurka/Kanada</option><option value="44">+44 — UK</option><option value="91">+91 — Indiya</option><option value="971">+971 — UAE</option><option value="966">+966 — Saudiyya</option><option value="86">+86 — Sin</option><option value="49">+49 — Jamus</option><option value="33">+33 — Faransa</option></select><p class="form-error wa-error" id="wa-ha-country-error" data-wa-error="country" aria-live="polite"></p></div><div class="form-field wa-field"><label class="form-label" for="wa-ha-phone">Lambar WhatsApp</label><input class="form-input" id="wa-ha-phone" name="phone" inputmode="tel" autocomplete="off" aria-describedby="wa-ha-phone-error wa-ha-phone-help"><p class="form-error wa-error" id="wa-ha-phone-error" data-wa-error="phone" aria-live="polite"></p><p class="form-help" id="wa-ha-phone-help">Zabi kasar lambar. Za ka iya saka lambar gida mai 0 a farko ko cikakkiyar lamba da lambar kasa. Bayan hada lambar kasa, lambobi 7 zuwa 15 ake bukata. Wannan ba tabbacin asusun WhatsApp ba ne.</p></div><div class="form-field wa-field"><label class="form-label" for="wa-ha-business">Sunan kasuwanci (idan kana so)</label><input class="form-input" id="wa-ha-business" name="business" aria-describedby="wa-ha-business-error" autocomplete="off"><p class="form-error wa-error" id="wa-ha-business-error" data-wa-error="business" aria-live="polite"></p></div><div class="form-field wa-field"><label class="form-label" for="wa-ha-item">Kaya ko hidima (idan kana so)</label><input class="form-input" id="wa-ha-item" name="item" aria-describedby="wa-ha-item-error" autocomplete="off"><p class="form-error wa-error" id="wa-ha-item-error" data-wa-error="item" aria-live="polite"></p></div><div class="form-field wa-field"><label class="form-label" for="wa-ha-template">Samfurin sako</label><select class="form-select" id="wa-ha-template" name="template" aria-describedby="wa-ha-template-error"><option value="order">Neman oda</option><option value="support">Taimakon kwastoma</option><option value="booking">Ajiyar lokaci</option><option value="payment">Tabbacin biya</option><option value="delivery">Bayani kan isarwa</option></select><p class="form-error wa-error" id="wa-ha-template-error" data-wa-error="template" aria-live="polite"></p></div></div><button class="btn btn-secondary" type="button" data-wa-template>Saka samfurin sako</button><div class="form-field wa-field"><label class="form-label" for="wa-ha-message">Sakon farko (idan kana so)</label><textarea class="form-input" id="wa-ha-message" name="message" rows="3" aria-describedby="wa-ha-message-error"></textarea><p class="form-error wa-error" id="wa-ha-message-error" data-wa-error="message" aria-live="polite"></p></div><div class="wa-actions"><button class="btn btn-primary" type="submit">Gina link</button><button class="btn btn-secondary" type="reset">Sake farawa</button></div><div data-wa-result role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></div><div data-wa-details hidden><label class="form-label" for="wa-ha-url">Link din da za a raba</label><textarea id="wa-ha-url" data-wa-url readonly rows="3"></textarea><h3>Sakon da ke cikin link</h3><p class="wa-preview" data-wa-preview></p><div data-wa-qr aria-label="QR"></div><p data-wa-qr-status role="status" aria-live="polite"></p><p>QR yana dauke da link din nan. Duba lamba da sako kafin rabawa.</p><div class="wa-actions"><button class="btn btn-secondary" type="button" data-wa-copy>Kwafi link</button><a class="btn btn-secondary" data-wa-open target="_blank" rel="noopener noreferrer">Bude a WhatsApp</a><button class="btn btn-secondary" type="button" data-wa-download-qr>Sauke QR PNG</button><button class="btn btn-secondary" type="button" data-wa-download-txt>Sauke TXT</button></div></div><p data-wa-status role="status" aria-live="polite"></p></form><form id="wa-ha-bulk" data-wa-form="bulk" novalidate aria-label="Link masu yawa" hidden><h2>Gina link din taro</h2><div class="form-field wa-field"><label class="form-label" for="wa-ha-bulk-country">Lambar kasa</label><select class="form-select" id="wa-ha-bulk-country" name="bulk-country" aria-describedby="wa-ha-bulk-country-error"><option value="">Zabi lambar kasa</option><option value="234">+234 — Najeriya</option><option value="254">+254 — Kenya</option><option value="233">+233 — Ghana</option><option value="27">+27 — Afirka ta Kudu</option><option value="20">+20 — Masar</option><option value="1">+1 — Amurka/Kanada</option><option value="44">+44 — UK</option></select><p class="form-error wa-error" id="wa-ha-bulk-country-error" data-wa-error="bulk-country" aria-live="polite"></p></div><div class="form-field wa-field"><label class="form-label" for="wa-ha-numbers">Lambobin waya, daya a kowane layi</label><textarea class="form-input" id="wa-ha-numbers" name="numbers" rows="3" aria-describedby="wa-ha-numbers-error wa-ha-numbers-help"></textarea><p class="form-error wa-error" id="wa-ha-numbers-error" data-wa-error="numbers" aria-live="polite"></p><p class="form-help" id="wa-ha-numbers-help">Har layi 500. Za a nuna layukan da ba su dace ba; ba za a boye kuskure ba.</p></div><div class="form-field wa-field"><label class="form-label" for="wa-ha-bulk-message">Sakon farko (idan kana so)</label><textarea class="form-input" id="wa-ha-bulk-message" name="bulk-message" rows="3" aria-describedby="wa-ha-bulk-message-error"></textarea><p class="form-error wa-error" id="wa-ha-bulk-message-error" data-wa-error="bulk-message" aria-live="polite"></p></div><div class="wa-actions"><button class="btn btn-primary" type="submit">Gina link din taro</button><button class="btn btn-secondary" type="reset">Sake farawa</button></div><div data-wa-result role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></div><div data-wa-details hidden><ol data-wa-links></ol><h3>Layukan da za a gyara</h3><ol data-wa-line-errors></ol><div class="wa-actions"><button class="btn btn-secondary" type="button" data-wa-copy-all>Kwafi duka</button><button class="btn btn-secondary" type="button" data-wa-download-txt>Sauke TXT</button></div></div><p data-wa-status role="status" aria-live="polite"></p></form></div>
+<!-- whatsapp-local-workflow:end -->
+<section style="max-width:900px;margin:32px auto 0;">
     <div style="font-size:.9rem;color:#475569;line-height:1.75;margin-bottom:24px;">
       <p>Mai Gina WhatsApp Link yana gina hanyar da za ta bude tattaunawa kai tsaye ba tare da kwastoma ya fara ajiye lambar ba. Ka saka lambar waya da lambar kasa, ka kara sako idan kana so, sannan ka raba link din a bayanin shafi, shafin yanar gizo, takardar talla, rasit ko kafafen sada zumunta.</p>
     </div>
   </section>
   <div class="faq-section">
     <h2 style="font-size:1.3rem;margin-bottom:1rem;">Tambayoyi</h2>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Ta yaya zan kirkiro WhatsApp link ga kasuwanci?</div>
-      <div class="faq-a">Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Zan iya yin link da yawa lokaci daya?</div>
-      <div class="faq-a">Eh. Yi amfani da yanayin taro, saka lambobin waya daya a kowane layi, sannan ka saka sako daya da zai tafi da kowanne link.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Shin wa.me link yana aiki ba tare da ajiye lamba ba?</div>
-      <div class="faq-a">Eh. Link din yana bude tattaunawa kai tsaye a WhatsApp, shi yasa yake da amfani ga taimakon kwastoma, sayarwa ta intanet, ajiyar lokaci da isarwa.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Ina amfani da QR code yaya?</div>
-      <div class="faq-a">Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp.</div>
-    </div>
+    <details class="wa-editorial-faq"><summary>Ta yaya zan kirkiro WhatsApp link ga kasuwanci?</summary><p>Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi.</p></details>
+    <details class="wa-editorial-faq"><summary>Zan iya yin link da yawa lokaci daya?</summary><p>Eh. Yi amfani da yanayin taro, saka lambobin waya daya a kowane layi, sannan ka saka sako daya da zai tafi da kowanne link.</p></details>
+    <details class="wa-editorial-faq"><summary>Shin wa.me link yana aiki ba tare da ajiye lamba ba?</summary><p>Eh. Link din yana bude tattaunawa kai tsaye a WhatsApp, shi yasa yake da amfani ga taimakon kwastoma, sayarwa ta intanet, ajiyar lokaci da isarwa.</p></details>
+    <details class="wa-editorial-faq"><summary>Ina amfani da QR code yaya?</summary><p>Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp.</p></details>
   </div>
 </div>
-<div class="copy-toast" id="toast">An kwafe zuwa allon kwafe!</div>
 <afro-related-tools category="telecom" current="whatsapp-link-ha"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 
@@ -258,155 +160,9 @@ textarea{resize:vertical;min-height:80px}
 </main>
 <afro-footer></afro-footer>
 <script src="/engines/whatsapp-link-engine.js?v=72a4c1bc"></script>
-<script>
-let currentLink = '';
-let currentNormalizedNumber = '';
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', (tab === 'single' && i === 0) || (tab === 'bulk' && i === 1));
-  });
-  document.getElementById('singleTab').style.display = tab === 'single' ? '' : 'none';
-  document.getElementById('bulkTab').style.display = tab === 'bulk' ? '' : 'none';
-  if (tab === 'single') document.getElementById('resultArea').classList.remove('show');
-}
-function cleanNumber(num) {
-  return String(num || '').replace(/\D/g, '').replace(/^0+/, '');
-}
-function buildLink(code, phone, msg) {
-  try {
-    const result = window.AfroTools.engines.whatsappLink.build(code, phone, msg);
-    currentNormalizedNumber = result.normalized;
-    return result.url;
-  } catch (error) {
-    currentNormalizedNumber = '';
-    return null;
-  }
-}
-function templateMessage(kind, business, item) {
-  const name = business || 'kasuwancinku';
-  const thing = item || 'abu ko hidima';
-  const templates = {
-    order: 'Sannu ' + name + ', ina son yin oda na ' + thing + '. Don Allah a turo farashi, ko akwai, da zabin isarwa.',
-    support: 'Sannu ' + name + ', ina bukatar taimako game da ' + thing + '. Don Allah a sanar da ni mataki na gaba.',
-    booking: 'Sannu ' + name + ', ina son ajiye lokaci na ' + thing + '. Wane lokaci ne yake nan?',
-    payment: 'Sannu ' + name + ', na biya kudin ' + thing + '. Don Allah a tabbatar da rasit.',
-    delivery: 'Sannu ' + name + ', ina son bayani game da isarwar ' + thing + '.'
-  };
-  return templates[kind] || templates.order;
-}
-function applyTemplate() {
-  const kind = document.getElementById('messageTemplate').value;
-  const business = document.getElementById('businessName').value.trim();
-  const item = document.getElementById('offerItem').value.trim();
-  document.getElementById('message').value = templateMessage(kind, business, item);
-  renderLinkCoach();
-}
-function renderLinkCoach() {
-  const code = document.getElementById('countryCode').value;
-  const phone = document.getElementById('phoneNumber').value.trim();
-  const clean = cleanNumber(phone);
-  const msg = document.getElementById('message').value.trim();
-  const normalized = clean ? (clean.startsWith(code) && clean.length > code.length + 5 ? clean : code + clean) : '';
-  const hasGoodLength = normalized.length >= 8 && normalized.length <= 15;
-  const messageState = msg.length ? (msg.length <= 180 ? 'Gajeren sako' : 'Dogon sako') : 'Babu sako na farko';
-  const box = document.getElementById('linkCoach');
-  if (!box) return;
-  box.innerHTML = '<strong>Shirin link</strong>' +
-    'Hanyar wa.me tana amfani da cikakkiyar lambar kasa ba tare da alamar +, baka, tazara ko sifili a farko ba.' +
-    '<div class="link-score">' +
-    '<div class="score-pill"><b>' + (normalized || 'Babu lamba') + '</b>Lambar da aka daidaita</div>' +
-    '<div class="score-pill"><b>' + (hasGoodLength ? 'Ya yi kama da daidai' : 'Duba tsawon lamba') + '</b>Lambobi 8 zuwa 15 yawanci ya dace</div>' +
-    '<div class="score-pill"><b>' + messageState + '</b>' + msg.length + ' haruffa</div>' +
-    '</div>';
-}
-['countryCode','phoneNumber','message','businessName','offerItem','messageTemplate'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) {
-    el.addEventListener('input', renderLinkCoach);
-    el.addEventListener('change', renderLinkCoach);
-  }
-});
-function generateLink() {
-  const code = document.getElementById('countryCode').value;
-  const phone = document.getElementById('phoneNumber').value.trim();
-  const msg = document.getElementById('message').value;
-  if (!phone) { showToast('Saka lambar waya'); return; }
-  const link = buildLink(code, phone, msg);
-  if (!link) { showToast('Lambar waya ba ta dace ba'); return; }
-  currentLink = link;
-  const display = document.getElementById('linkDisplay');
-  display.replaceChildren();
-  const anchor = document.createElement('a');
-  anchor.href = link; anchor.target = '_blank'; anchor.rel = 'noopener'; anchor.textContent = link;
-  display.appendChild(anchor);
-  document.getElementById('openLink').href = link;
-  document.getElementById('resultCoach').innerHTML = '<strong>Abin dubawa kafin rabawa</strong> Lamba: ' + currentNormalizedNumber + '. An shirya sakon a cikin link yadda ya dace. Gwada sau daya kafin ka saka a talla, takardar talla, rasit ko bayanin shafi.';
-  document.getElementById('resultArea').classList.add('show');
-  if (typeof QRCode !== 'undefined') {
-    const qr = document.getElementById('qrCanvas'); qr.replaceChildren();
-    new QRCode(qr, { text: link, width: 180, height: 180, colorDark: '#0f1419', colorLight: '#ffffff' });
-  }
-}
-function generateBulk() {
-  const code = document.getElementById('bulkCountry').value;
-  const raw = document.getElementById('bulkNumbers').value.trim();
-  const msg = document.getElementById('bulkMessage').value;
-  if (!raw) { showToast('Saka akalla lamba daya'); return; }
-  const numbers = raw.split('\n').map(n => n.trim()).filter(Boolean);
-  const container = document.getElementById('bulkResults');
-  container.innerHTML = '';
-  let generated = 0;
-  numbers.forEach(num => {
-    const link = buildLink(code, num, msg);
-    if (!link) return;
-    generated += 1;
-    const div = document.createElement('div'); div.className = 'bulk-item';
-    const anchor = document.createElement('a'); anchor.href = link; anchor.target = '_blank'; anchor.rel = 'noopener'; anchor.textContent = link;
-    const button = document.createElement('button'); button.type = 'button'; button.className = 'btn btn-outline btn-sm'; button.textContent = 'Kwafe';
-    button.addEventListener('click', function(){ copySingle(button, link); });
-    div.append(anchor, button); container.appendChild(div);
-  });
-  if (!generated) showToast('Babu lambar da ta dace da aka samu');
-}
-function copySingle(btn, link) {
-  navigator.clipboard.writeText(link).then(() => { btn.textContent = 'An kwafe'; setTimeout(() => btn.textContent = 'Kwafe', 1500); });
-}
-function copyAllBulk() {
-  const links = [...document.querySelectorAll('#bulkResults a')].map(a => a.href);
-  if (!links.length) { showToast('Fara gina link'); return; }
-  navigator.clipboard.writeText(links.join('\n')).then(() => showToast('An kwafe duk link din'));
-}
-function copyLink() {
-  if (!currentLink) return;
-  navigator.clipboard.writeText(currentLink).then(() => showToast('An kwafe link'));
-}
-function downloadQR() {
-  const canvas = document.querySelector('#qrCanvas canvas');
-  if (!canvas) { showToast('Fara gina link'); return; }
-  const a = document.createElement('a');
-  a.download = 'whatsapp-qr.png';
-  a.href = canvas.toDataURL('image/png');
-  a.click();
-}
-function clearForm() {
-  document.getElementById('phoneNumber').value = '';
-  document.getElementById('message').value = '';
-  document.getElementById('businessName').value = '';
-  document.getElementById('offerItem').value = '';
-  document.getElementById('resultArea').classList.remove('show');
-  currentLink = '';
-  currentNormalizedNumber = '';
-  renderLinkCoach();
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
-renderLinkCoach();
-</script>
+
   <script src="/ha/assets/ha-surface.js?v=6a9f01c5" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/ha-yo-whatsapp-link.js?v=f5b4f638" defer></script>
 </body>
 </html>

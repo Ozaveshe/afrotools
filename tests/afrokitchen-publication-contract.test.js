@@ -74,9 +74,20 @@ function referenceFixtureGenerator(htmlBySlug) {
   vm.runInThisContext('(function(exports,require,module,__filename,__dirname){'+fs.readFileSync(filename,'utf8').replace(/^#![^\n]*\n/,'')+'\n})',{filename})(module.exports,load,module,filename,path.dirname(filename));
   return module.exports;
 }
-test('all nine original native cases remain registered and no browser callback is launched',()=>{assert.equal(native.registered.length,9);assert.equal(native.registered.filter(row=>row.name.startsWith('FINAL4 ')).length,3)});
-test('actual full native inventory callback accepts all classified pages',async()=>{await native.registered[1].callback();assert.equal(typeof native.inventory,'function');const result=native.inventory(manifest,readHtml);assert.equal(result.total,manifest.routes.generated_recipe_slugs.length);assert.equal(result.total,410);assert.equal(result.canvas,406);assert.equal(result.pending,4);assert.equal(result.aliases,7)});
-test('unknown yield with a maintained preparation method remains a canvas',()=>{const rows=manifest.recipes.filter(recipe=>!policy.isPendingRecipeMethod(recipe)&&recipe.yield_status==='not-recorded');assert.equal(rows.length,3);for(const row of rows)assert.equal(inventory(row,readHtml(row.slug)).canvas,1)});
+test('all nine original native cases plus three reviewed method journeys remain registered without launching a browser',()=>{assert.deepEqual(native.registered.map(row=>row.name),[
+ 'old query recipe links reach the published canvas and retain planned servings',
+ 'all generated public recipe pages retain classified method and recipe-data boundaries',
+ ...Array(3).fill('ingredient cards, serving changes, independent timers and full method'),
+ 'no JavaScript still exposes ingredients and every cooking step',
+ 'FINAL4 literal image identities decode with captions at390 and1280',
+ 'FINAL4 pending keyboard saves survive reload and exact stale documents fail closed',
+ 'FINAL4 Kisra attributed batch cooks, saves and exports without inventing portions',
+ 'FINAL4 Maheu measured maize method saves, reopens, cooks and exports observational timing',
+ 'Kunu author method saves, reopens, cooks and exports source batch rather than fabricated servings',
+ 'FINAL4 unknown yield preserves source quantities and stale planner choices; Octopus scales'
+]);assert.equal(native.registered.length,12);assert.equal(native.registered.filter(row=>row.name.startsWith('FINAL4 ')).length,5)});
+test('actual full native inventory callback accepts all classified pages',async()=>{await native.registered[1].callback();assert.equal(typeof native.inventory,'function');const result=native.inventory(manifest,readHtml);assert.equal(result.total,manifest.routes.generated_recipe_slugs.length);assert.equal(result.total,410);assert.equal(result.canvas,409);assert.equal(result.pending,1);assert.deepEqual(manifest.recipes.filter(recipe=>policy.isPendingRecipeMethod(recipe)).map(recipe=>recipe.slug),['ikivuguto-rw']);assert.equal(result.aliases,7)});
+test('unknown yield with a maintained preparation method remains a canvas',()=>{const rows=manifest.recipes.filter(recipe=>!policy.isPendingRecipeMethod(recipe)&&recipe.yield_status==='not-recorded');assert.deepEqual(rows.map(recipe=>recipe.slug).sort(),['ibihaza-rw','kapenta-stew-zm','kisra-south-sudan-ss','kunu-zaki-ng','maheu-zm','mchemsho-tz'].sort());assert.equal(rows.length,6);for(const row of rows)assert.equal(inventory(row,readHtml(row.slug)).canvas,1)});
 test('all actual pending pages pass the genuine maintained auditor',()=>{for(const row of manifest.recipes.filter(recipe=>policy.isPendingRecipeMethod(recipe)))assert.equal(inventory(row,readHtml(row.slug)).pending,1)});
 for(const [name,change]of [
  ['robots noindex removed',html=>html.replace('noindex, follow','index, follow')],

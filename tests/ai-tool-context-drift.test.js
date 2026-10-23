@@ -98,7 +98,9 @@ function diffToolKeys(expectedKeys, actualKeys) {
 
 function run() {
   const sourceInventory = summarizeSourceDefinitions(loadSourceDefinitions(builder.CONTEXT_DIR));
+  const fuelBuildStartedOn = new Date().toISOString().slice(0, 10);
   const freshlyBuilt = builder.buildAll();
+  const fuelBuildFinishedOn = new Date().toISOString().slice(0, 10);
   assert.deepStrictEqual(
     freshlyBuilt.summary,
     sourceInventory.summary,
@@ -145,6 +147,24 @@ function run() {
 
   // PAYE facts are derived from the executable engine and reconciled with the
   // formula registry's version/source metadata.
+  // An explicit withheld record conveys availability, never old numeric facts.
+  const heldPaye = freshlyBuilt.records['bf-paye-fr'];
+  assert.strictEqual(heldPaye.definition.status, 'source-coupled');
+  assert.strictEqual(heldPaye.sourceRecord.facts.availability, 'withheld');
+  assert.strictEqual(heldPaye.sourceRecord.facts.calculable, false);
+  assert.ok(generated['bf-paye-fr'].includes('Répondez TOUJOURS en français'));
+  assert.ok(generated['bf-paye-fr'].includes('Do not calculate or estimate'));
+  assert.ok(!/\d|%|XOF|Current structured|As of:|Formula:/.test(generated['bf-paye-fr']));
+  Object.values(freshlyBuilt.records).forEach(function (record) {
+    const binding = (record.definition.sourceBindings || [])[0];
+    if (!binding || binding.kind !== 'paye-engine' || binding.countryCode === 'BF') return;
+    const facts = record.sourceRecord.facts;
+    assert.ok(facts.bands.length > 0, record.definition.toolKey + ' must retain executable numeric bands');
+    assert.ok(facts.formulaId && facts.formulaVersion && facts.asOf, record.definition.toolKey + ' must retain provenance');
+    facts.bands.forEach(function (band) {
+      assert.ok(Number.isFinite(band.from) && (band.to === null || Number.isFinite(band.to)) && Number.isFinite(band.rate));
+    });
+  });
   ['ng-paye', 'ke-paye', 'dz-paye', 'dz-paye-fr', 'sn-paye', 'sn-paye-fr'].forEach(function (key) {
     const facts = freshlyBuilt.records[key].sourceRecord.facts;
     const formula = formulaById.get(facts.formulaId);
@@ -194,12 +214,38 @@ function run() {
   // than the legacy numbers that used to live in ai-advisor.js.
   {
     const facts = freshlyBuilt.records['fuel-cost'].sourceRecord.facts;
-    const nigeria = fuelSnapshot.countries.find(function (country) { return country.code === 'NG'; });
-    const generatedNigeria = facts.countries.find(function (country) { return country.code === 'NG'; });
-    assert.strictEqual(generatedNigeria.petrol, nigeria.petrol.price);
-    assert.ok(generatedNigeria.sourceUrl);
-    assert.strictEqual(facts.officialVerifiedCount, 0);
-    assert.deepStrictEqual(facts.excluded.map(function (row) { return row.code; }), ['KE', 'ZA', 'GH']);
+    const fuelEngine = require('../assets/js/engines/fuel-tracker-engine.js');
+    const checkedAt = new Date().toISOString();
+    const expectedRows = ['NG', 'KE', 'ZA', 'GH'].map(function (code) {
+      const row = fuelSnapshot.countries.find(function (country) { return country.code === code; });
+      assert.ok(row, 'Fuel source row missing: ' + code);
+      return { row, gate: fuelEngine.rowUsability(row, 'petrol', checkedAt, facts.maxAgeDays) };
+    });
+    assert.strictEqual(facts.reviewedOn, '2026-07-22');
+    assert.match(facts.freshnessCheckedOn, /^\d{4}-\d{2}-\d{2}$/);
+    const checkedDay = new Date(facts.freshnessCheckedOn + 'T00:00:00.000Z');
+    assert.ok(Number.isFinite(checkedDay.getTime()), 'Fuel freshness check day must be a valid ISO date');
+    assert.strictEqual(checkedDay.toISOString().slice(0, 10), facts.freshnessCheckedOn);
+    assert.ok(facts.freshnessCheckedOn >= fuelBuildStartedOn && facts.freshnessCheckedOn <= fuelBuildFinishedOn,
+      'Fuel freshness check day must fall within the observed real UTC build interval');
+    assert.strictEqual(facts.maxAgeDays, 45);
+    assert.match(freshlyBuilt.contexts['fuel-cost'], /Filtering is performed at generation time; this is not runtime or live verification\./);
+    assert.doesNotMatch(freshlyBuilt.contexts['fuel-cost'], /Freshness checked against the build clock/);
+    assert.deepStrictEqual(facts.countries.map(function (row) { return row.code; }),
+      expectedRows.filter(function (item) { return item.gate.usable; }).map(function (item) { return item.row.code; }));
+    expectedRows.forEach(function (item) {
+      const selected = facts.countries.find(function (row) { return row.code === item.row.code; });
+      if (item.gate.usable) {
+        assert.strictEqual(selected.petrol, item.row.petrol.price);
+        assert.strictEqual(selected.asOf, item.row.last_updated);
+        assert.strictEqual(selected.sourceUrl, item.gate.sourceUrl);
+      } else {
+        assert.strictEqual(selected, undefined, item.row.code + ' must be withheld');
+      }
+    });
+    assert.strictEqual(facts.officialVerifiedCount, fuelSnapshot.official_verified_count || 0);
+    assert.deepStrictEqual(facts.excluded, expectedRows.filter(function (item) { return !item.gate.usable; })
+      .map(function (item) { return { code: item.row.code, reason: item.gate.reason }; }));
     ['fuel-tracker', 'suivi-carburant-fr'].forEach(function (key) {
       assertGeneratedContextIsCurrent(key, generated[key], freshlyBuilt);
       assert.ok(generated[key].includes('not official verification'));

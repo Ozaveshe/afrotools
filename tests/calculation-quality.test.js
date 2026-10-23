@@ -244,6 +244,103 @@ test('formula resolver never falls back across jurisdiction or effective dates',
   }
 });
 
+function withheldBFFixtures() {
+  const policy = quality.readPayeAvailability(ROOT);
+  return artifacts.fixtures.fixtures.filter((row) => row.formulaId === 'paye-server-bf').map((row) => ({
+    ...row, operation: 'paye-withheld', expected: quality.payeWithheldExpected(policy), tolerance: 0,
+    evidence: { registryId: null, title: policy.countries.BF.sourceLabel, url: null, kind: 'availability-hold', authorityStatus: 'review-required' },
+    changeNote: 'availability-withheld-no-numeric-acceptance'
+  }));
+}
+
+test('BF availability uses a typed exact noncalculable schema', function () {
+  const schema = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/calculation-quality/calculation-quality.schema.json'), 'utf8'));
+  assert.ok(schema.$defs.GoldenFixture.properties.operation.enum.includes('paye-withheld'));
+  assert.strictEqual(schema.$defs.PayeWithheldExpected.additionalProperties, false);
+  assert.strictEqual(schema.$defs.PayeWithheldExpected.properties.resolution.additionalProperties, false);
+  const policy = quality.readPayeAvailability(ROOT);
+  const expected = quality.payeWithheldExpected(policy);
+  assert.deepStrictEqual(Object.keys(expected).sort(), schema.$defs.PayeWithheldExpected.required.slice().sort());
+  assert.deepStrictEqual(Object.keys(expected.resolution).sort(), schema.$defs.PayeWithheldExpected.properties.resolution.required.slice().sort());
+  for (const field of ['availability', 'calculable', 'reasonCode']) {
+    assert.strictEqual(expected[field], schema.$defs.PayeWithheldExpected.properties[field].const);
+  }
+  for (const mutate of [p => { p.schemaVersion = 2; }, p => { p.countries.BF.status = 'available'; }, p => { p.countries.BF.reasonCode = 'OTHER'; }, p => { p.countries.NG = p.countries.BF; }]) {
+    const bad = JSON.parse(JSON.stringify(policy)); mutate(bad);
+    assert.throws(() => quality.payeWithheldExpected(bad), /Invalid explicit BF withheld policy/);
+  }
+});
+
+test('BF public registry withholding rejects exposure and extra numeric results', function () {
+  const policy = quality.readPayeAvailability(ROOT);
+  const registry = require('../netlify/functions/_engines');
+  assert.deepStrictEqual(quality.payeWithheldResult(registry, policy), quality.payeWithheldExpected(policy));
+  let calculations = 0;
+  const exposed = { ...registry, get: () => ({ calculate() { calculations += 1; return { tax: 0 }; } }) };
+  assert.throws(() => quality.payeWithheldResult(exposed, policy), /remains exposed/);
+  assert.strictEqual(calculations, 0, 'availability checks must never invoke a withheld engine');
+  for (const overrides of [
+    { getFormula: () => ({ formulaId: 'paye-server-bf' }) },
+    { listCountryCodes: () => registry.listCountryCodes().concat('BF') },
+    { listCountries: () => registry.listCountries().concat({ code: 'BF' }) },
+  ]) assert.throws(() => quality.payeWithheldResult({ ...registry, ...overrides }, policy), /remains exposed/);
+  for (const change of [{ ok: true }, { error: 'UNSUPPORTED_JURISDICTION' }, { jurisdiction: 'NG' }, { reasonCode: 'OTHER' }, { netAnnual: 0 }, { tax: undefined }]) {
+    assert.throws(() => quality.payeWithheldResult({ ...registry, resolve: () => ({ ...registry.resolve('BF'), ...change }) }, policy), /resolution shape or reason/);
+  }
+});
+
+test('BF withheld fixtures fail closed on malformed operation, expected shape or inputs', function () {
+  const policy = quality.readPayeAvailability(ROOT);
+  const runOne = (row) => quality.runGoldenFixtures({ ...artifacts, fixtures: { fixtures: [row] }, fixtureDeltas: { deltas: [] } }, ROOT);
+  for (const row of withheldBFFixtures()) {
+    quality.assertPayeWithheldFixture(row, policy);
+    const valid = runOne(row);
+    assert.strictEqual(valid.failed, 0);
+    assert.deepStrictEqual(valid.passedByOperation, { payeNumeric: 0, withheldAvailability: 1, otherOperations: 0 });
+    for (const change of [
+      { operation: 'withheld-ish' }, { input: { ...row.input, grossAnnual: 1 } }, { tolerance: 0.01 },
+      { expected: { ...row.expected, calculable: true } }, { expected: { ...row.expected, availability: 'available' } },
+      { expected: { ...row.expected, reasonCode: 'OTHER' } }, { expected: { ...row.expected, netAnnual: 0 } },
+      { expected: { ...row.expected, resolution: { ...row.expected.resolution, netTax: 0 } } },
+      { evidence: { ...row.evidence, authorityStatus: 'official-verified' } },
+    ]) assert.strictEqual(runOne({ ...row, ...change }).failed, 1, row.id + ' must reject ' + JSON.stringify(change));
+  }
+});
+
+test('only the exact three historical BF numeric rows migrate to explicit withholding', function () {
+  const policy = quality.readPayeAvailability(ROOT);
+  const builder = require('../scripts/build-calculation-quality');
+  // Retired historical oracles exist only to prove the narrow migration. They
+  // are not accepted as current payroll results or authoritative examples.
+  const historicalValues = {
+    'paye-bf-zero': [0, 0, 0, 0],
+    'paye-bf-defaults': [144400, 855600, 71300, 89400],
+    'paye-bf-large-decimal': [291081400, 708918601, 59076550, 236081400],
+  };
+  const selectors = ['deductions.totalDeductions', 'result.netAnnual', 'result.netMonthly', 'tax.netTax'];
+  const next = withheldBFFixtures();
+  const previous = next.map((row) => ({ ...row, operation: 'paye-calculate', tolerance: 0.01,
+    expected: Object.fromEntries(selectors.map((selector, index) => [selector, historicalValues[row.id][index]])),
+    evidence: { authorityStatus: 'source-reviewed', kind: 'authority-link', registryId: null, title: 'Direction generale des impots - Burkina Faso', url: 'https://dgi.bf/' },
+    changeNote: 'baseline-no-change' }));
+  const registry = (rows) => ({ fixtures: rows });
+  assert.deepStrictEqual(builder.preserveFixtureExpectations(registry(previous), registry(next), false), registry(next));
+  for (let index = 0; index < next.length; index += 1) {
+    assert.strictEqual(quality.isExplicitBFWithheldMigration(previous[index], next[index], policy), true);
+    for (const change of [{ id: 'paye-ng-defaults' }, { formulaVersion: 'tampered' }, { input: { country: 'BF', grossAnnual: 1 } }, { expected: { 'tax.netTax': 0 } }]) {
+      assert.strictEqual(quality.isExplicitBFWithheldMigration({ ...previous[index], ...change }, next[index], policy), false);
+    }
+  }
+  const changed = { ...previous[0], expected: { ...previous[0].expected, 'tax.netTax': 1 } };
+  const blocked = builder.preserveFixtureExpectations(registry([changed]), registry([next[0]]), false).fixtures[0];
+  assert.deepStrictEqual(blocked.expected, changed.expected, 'an unreviewed historical oracle must not be silently replaced');
+  assert.throws(() => quality.assertPayeWithheldFixture(blocked, policy), /Invalid BF withheld/);
+  const ordinary = artifacts.fixtures.fixtures.find(row => row.formulaId === 'paye-server-ng' && row.operation === 'paye-calculate');
+  const successor = { ...ordinary, expected: { changed: 1 }, formulaVersion: 'unreviewed', changeNote: 'unreviewed' };
+  const preserved = builder.preserveFixtureExpectations(registry([ordinary]), registry([successor]), false).fixtures[0];
+  for (const field of ['expected', 'formulaVersion', 'changeNote']) assert.deepStrictEqual(preserved[field], ordinary[field]);
+});
+
 test('golden fixtures cover required boundary classes and current results', function () {
   const classes = new Set(artifacts.fixtures.fixtures.flatMap((fixture) => fixture.caseClasses));
   for (const required of quality.REQUIRED_FIXTURE_CLASSES) {
@@ -252,7 +349,26 @@ test('golden fixtures cover required boundary classes and current results', func
 
   const run = quality.runGoldenFixtures(artifacts, ROOT);
   assert.strictEqual(run.failed, 0, JSON.stringify(run.failures, null, 2));
-  assert.ok(run.total >= 53 * 3, 'expected at least three PAYE fixtures per server engine');
+  const available = require('../netlify/functions/_engines').listCountryCodes();
+  assert.strictEqual(available.includes('BF'), false);
+  const expectedAvailable = artifacts.formulas.formulas.filter(row => row.formulaFamily === 'paye-server')
+    .flatMap(row => row.jurisdictions).filter(code => code !== 'BF').sort();
+  assert.deepStrictEqual(available, expectedAvailable, 'every other configured public PAYE jurisdiction must remain available');
+  for (const code of available) {
+    for (const suffix of ['zero', 'defaults', 'large-decimal']) {
+      const row = artifacts.fixtures.fixtures.find(item => item.id === 'paye-' + code.toLowerCase() + '-' + suffix);
+      assert.ok(row && row.operation === 'paye-calculate', code + ' must retain each numeric boundary fixture');
+    }
+  }
+  const withheld = artifacts.fixtures.fixtures.filter(row => row.operation === 'paye-withheld');
+  assert.deepStrictEqual(withheld.map(row => row.id).sort(), ['paye-bf-defaults', 'paye-bf-large-decimal', 'paye-bf-zero']);
+  const categories = {
+    payeNumeric: artifacts.fixtures.fixtures.filter(row => row.operation === 'paye-calculate').length,
+    withheldAvailability: 3,
+    otherOperations: artifacts.fixtures.fixtures.filter(row => row.operation !== 'paye-calculate' && row.operation !== 'paye-withheld').length
+  };
+  assert.deepStrictEqual(run.passedByOperation, categories);
+  assert.strictEqual(Object.values(categories).reduce((sum, count) => sum + count, 0), run.passed);
   for (const delta of artifacts.fixtureDeltas.deltas) {
     const fixture = artifacts.fixtures.fixtures.find((entry) => entry.id === delta.fixtureId);
     assert.ok(fixture, 'reviewed delta must identify a current fixture');

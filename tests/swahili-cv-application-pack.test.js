@@ -90,6 +90,10 @@ test('mobile document context survives form focus loss and ends on a main CV com
 });
 
 test('four generated modules and native route references match maintained owners',()=>{
+  const assetCommands=JSON.parse(fs.readFileSync(path.join(ROOT,'package.json'),'utf8')).scripts['build:assets'].split(' && ');
+  const owner='node scripts/build-swahili-cv-application-pack-runtime.js --write';
+  assert.equal(assetCommands.filter(command=>command===owner).length,1,'shared CV source changes must regenerate the existing native runtime exactly once');
+  assert.ok(assetCommands.indexOf(owner)<assetCommands.indexOf('node scripts/minify.js'),'localized runtime owner must run before shared asset versions');
   const result=build();
   assert.deepEqual(result.map(item=>item.filename),FILES);
   result.forEach(item=>assert.equal(item.sourceOwner,fs.existsSync(path.join(ROOT,'tools/cv-builder/js/src',item.filename))

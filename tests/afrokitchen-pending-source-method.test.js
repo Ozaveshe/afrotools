@@ -16,10 +16,7 @@ const staticOwner = require('../scripts/lib/afrokitchen-static');
 const { inspectPendingMethodPage } = require('../scripts/audit-afrokitchen-indexability');
 const plain = value => JSON.parse(JSON.stringify(value));
 const targets = [
-  ['kunu-zaki-ng', '8a2bb743-87d9-462e-bc09-335e78f9584a'],
   ['ikivuguto-rw', 'f2850789-0ffd-41b3-bbaf-e3229132c9e6'],
-  ['kisra-south-sudan-ss', 'c0aced74-68d6-437d-b00b-abd1895605f0'],
-  ['maheu-zm', '626fd465-87e1-4f93-bca7-747decbf63d0']
 ];
 const row = (slug, id) => ({ id, slug, name: slug, country_name: 'Synthetic country',
   generated_in_wave: true, is_published: true, is_verified: true,
@@ -45,7 +42,7 @@ for (const [slug, id] of targets) {
   for (const [label, mutation] of [
     ['wrong UUID', value => { value.id = '11111111-1111-4111-8111-111111111111'; }],
     ['wrong slug', value => { value.slug = 'another-dish'; }],
-    ['other pending slug', value => { value.slug = targets.find(item => item[0] !== slug)[0]; }]
+    ['other method slug', value => { const other=targets.find(item => item[0] !== slug); value.slug=other ? other[0] : 'kunu-zaki-ng'; }]
   ]) test(`${slug}: ${label} is a real projection error`, () => {
     const input = row(slug, id); mutation(input);
     assert.throws(() => engine.projectAttributedRecipe(input), /identity mismatch/);
@@ -150,6 +147,10 @@ test('actual dynamic public action guard blocks legacy pending actions but prese
 // Prior four deny holds plus the three new exact source identities. Recognition only withholds planning.
 const plannerYieldTargets = [
   ...targets,
+  ['kunu-zaki-ng', '8a2bb743-87d9-462e-bc09-335e78f9584a'],
+['maheu-zm', '626fd465-87e1-4f93-bca7-747decbf63d0'],
+  ['kisra-south-sudan-ss', 'c0aced74-68d6-437d-b00b-abd1895605f0'],
+
   ['kapenta-stew-zm','76572d95-eb8e-4c78-bbb6-ea754f61c758'],
   ['ibihaza-rw','d7d7e305-3c5d-40db-9033-36843e102176'],
   ['mchemsho-tz','4caf4ed6-13ec-4fbb-8039-ce51a4201cfe']
@@ -223,7 +224,7 @@ test('saved-manifest owner projects exact pending rows and summaries without alt
   assert.deepEqual(unchanged, ordinary);
 });
 
-test('pending UI responsive assets are actual owned local files for all four exact targets', () => {
+test('pending UI responsive assets are actual owned local files for remaining exact holds', () => {
   for (const [slug] of targets) assert.ok(fs.statSync(path.join(ROOT, 'assets/img/kitchen/responsive', slug + '-640.webp')).size > 0);
   for (const file of ['recipe-page.js','static-recipe-runtime.js']) {
     const source = fs.readFileSync(path.join(ROOT, 'tools/afrokitchen', file), 'utf8');
@@ -485,3 +486,21 @@ for (const [slug, id] of targets) for (const variant of ['current', 'unmarked', 
     if (variant === 'wrong-id') assert.equal(Object.hasOwn(context.e.__AK_STATIC_RECIPE, 'id'), false);
   });
 }
+
+test('Kisra current attributed revision alone may activate static cooking; stale/missing identity and revisions stay withheld',()=>{
+ const source=fs.readFileSync(path.join(ROOT,'tools/afrokitchen/static-recipe-runtime.js'),'utf8'),functions=declarations(source),base=row('kisra-south-sudan-ss','c0aced74-68d6-437d-b00b-abd1895605f0'),current=engine.projectAttributedRecipe(base);
+ assert.equal(engine.isPendingRecipeMethod(current),false);assert.equal(engine.isAttributedRecipe(current),true);
+ for(const [input,expected] of [[current,false],[base,true],[{...current,method_revision:'stale'},true],[{...current,id:undefined},true],[{...current,slug:'wrong'},true],[{...current,is_verified:false},true],[row('maheu-zm','626fd465-87e1-4f93-bca7-747decbf63d0'),true]]){
+  const context={n:input,i:engine};vm.runInNewContext(functions.get('pendingMethod')+';result=pendingMethod();',context);assert.equal(context.result,expected);
+ }
+});
+
+test('Maheu current exact attributed method activates but all legacy/missing/wrong identities or revisions remain withheld',()=>{
+ const source=fs.readFileSync(path.join(ROOT,'tools/afrokitchen/static-recipe-runtime.js'),'utf8'),functions=declarations(source),old=row('maheu-zm','626fd465-87e1-4f93-bca7-747decbf63d0'),current=engine.projectAttributedRecipe(old);assert.equal(engine.isPendingRecipeMethod(current),false);assert.equal(engine.isAttributedRecipe(current),true);
+ for(const [n,expected] of [[current,false],[old,true],[{...current,id:undefined},true],[{...current,slug:'wrong'},true],[{...current,method_revision:'old'},true],[{...current,is_published:false},true]]){const ctx={n,i:engine};vm.runInNewContext(functions.get('pendingMethod')+';result=pendingMethod();',ctx);assert.equal(ctx.result,expected);}
+});
+
+test('Kunu current exact attributed method activates while legacy and wrong publication/UUID/revision remain withheld',()=>{
+ const functions=declarations(fs.readFileSync(path.join(ROOT,'tools/afrokitchen/static-recipe-runtime.js'),'utf8')),old=row('kunu-zaki-ng','8a2bb743-87d9-462e-bc09-335e78f9584a'),current=engine.projectAttributedRecipe(old);assert.equal(engine.isPendingRecipeMethod(current),false);assert.equal(engine.isAttributedRecipe(current),true);
+ for(const [n,expected]of [[current,false],[old,true],[{...current,id:undefined},true],[{...current,slug:'wrong'},true],[{...current,method_revision:'old'},true],[{...current,is_published:false},true],[{...current,is_verified:false},true]]){const ctx={n,i:engine};vm.runInNewContext(functions.get('pendingMethod')+';result=pendingMethod();',ctx);assert.equal(ctx.result,expected);}
+});

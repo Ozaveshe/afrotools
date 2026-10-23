@@ -3056,13 +3056,573 @@ var AfroKitchenEngine = function() {
         ]
       }
     },
+    "kunu-zaki-ng": {
+      "id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+      "revision": "kunu-ounje-millet-potato-20261022-v1",
+      "fields": {
+        "name": "Kunu Zaki",
+        "description": "Spiced millet and sweet-potato drink, after Omolabake’s Nigerian home method.",
+        "story": "Adapted from Omolabake at Ounje Aladun. The author describes this as a Northern Nigerian drink also enjoyed in Lagos.",
+        "author": "AfroKitchen adaptation of Omolabake, Ounje Aladun (2021)",
+        "source": "https://ounjealadun.com/2021/06/15/kunu-kunu-zaki-how-to-make-kunu/",
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/kunu-zaki-ng.webp",
+        "image_alt": "AI-generated illustration of a creamy Kunu Zaki millet drink.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "tags": [
+          "kunu",
+          "millet",
+          "sweet-potato",
+          "drink"
+        ],
+        "diet_tags": [],
+        "chef_notes": null,
+        "best_served_with": "Chilled",
+        "occasion": null,
+        "regional_variations": "This attributed millet-and-fresh-potato version is one Nigerian household method.",
+        "method_review_status": "attributed-source-method",
+        "method_review_revision": null,
+        "ingredients": [
+          {
+            "id": "source-kunu-zaki-ng-ingredient-1",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "millet",
+            "amount": 3,
+            "unit": "cups",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-ingredient-2",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "fresh ginger roots",
+            "amount": 2,
+            "unit": "large",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-ingredient-3",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "raw sweet potatoes",
+            "amount": 3,
+            "unit": "large",
+            "prep_note": "Peel and keep separate from the millet mixture.",
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-ingredient-4",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "cloves",
+            "amount": 1,
+            "unit": "tbsp",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 40,
+            "group_name": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-ingredient-5",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "water",
+            "amount": null,
+            "unit": "as needed",
+            "prep_note": "As needed for soaking, blending, cooking and thinning.",
+            "is_optional": false,
+            "sort_order": 50,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          },
+          {
+            "id": "source-kunu-zaki-ng-ingredient-6",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar or preferred sweetener",
+            "amount": null,
+            "unit": "to taste",
+            "prep_note": "To taste.",
+            "is_optional": true,
+            "sort_order": 60,
+            "group_name": null,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-kunu-zaki-ng-step-1",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Soak the millet",
+            "instruction": "Wash the millet and soak overnight; the author allows up to 24 hours.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-step-2",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Prepare two blends",
+            "instruction": "Drain millet. Grind it with washed ginger and cloves, adding enough water for a smooth slurry. Separately peel, cube and grind the potatoes; keep the cubes submerged until grinding.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-step-3",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Strain and settle",
+            "instruction": "Strain both blends separately through a cloth. Let them settle until clear water collects above the paste. Pour off and reserve some water, leaving each paste loose.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-step-4",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Cook the millet",
+            "instruction": "Boil water, reduce the heat and slowly stir in the millet slurry. Keep stirring until it thickens; add reserved water to make it runny.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-step-5",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Cool before combining",
+            "instruction": "Turn off the heat. Let the millet cool, then stir in the loose potato paste.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kunu-zaki-ng-step-6",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 6,
+            "title": "Sweeten and chill",
+            "instruction": "Sweeten to taste, transfer to covered bottles and serve chilled.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-kunu-zaki-ng-hero",
+            "recipe_id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/kunu-zaki-ng.webp",
+            "alt_text": "AI-generated illustration of a creamy Kunu Zaki millet drink.",
+            "caption": "AI-generated serving illustration; not a photograph of a tested batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation of Omolabake, Ounje Aladun",
+            "credit_url": "https://ounjealadun.com/2021/06/15/kunu-kunu-zaki-how-to-make-kunu/",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "maheu-zm": {
+      "id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+      "revision": "maheu-ntambanana-maize-20261022-v1",
+      "fields": {
+        "name": "Maheu – Ntambanana maize version",
+        "description": "A lightly sweet fermented maize drink, adapted from the measured Ntambanana method.",
+        "story": "A regional maize version from Ntambanana, South Africa, after Olusanya and colleagues. Fermentation observations are not safety checks.",
+        "author": "AfroKitchen adaptation of Olusanya et al. (2021), Ntambanana",
+        "source": "https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf",
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/responsive/maheu-zm-1280.webp",
+        "image_alt": "AI-generated illustration of a creamy maize Maheu drink.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "tags": [
+          "maize",
+          "fermented",
+          "drink"
+        ],
+        "diet_tags": [],
+        "chef_notes": null,
+        "best_served_with": null,
+        "occasion": null,
+        "regional_variations": "Regional South African method; Zambia-specific household variations are not documented here.",
+        "method_review_status": "attributed-source-method",
+        "method_review_revision": null,
+        "ingredients": [
+          {
+            "id": "source-maheu-zm-ingredient-1",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "white maize meal",
+            "amount": 120,
+            "unit": "g",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 10,
+            "group_name": null
+          },
+          {
+            "id": "source-maheu-zm-ingredient-2",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "water",
+            "amount": 1250,
+            "unit": "ml",
+            "prep_note": "900 ml for boiling, 200 ml for the paste and 150 ml for dissolving sugar",
+            "is_optional": false,
+            "sort_order": 20,
+            "group_name": null
+          },
+          {
+            "id": "source-maheu-zm-ingredient-3",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "name": "sugar",
+            "amount": 50,
+            "unit": "g",
+            "prep_note": null,
+            "is_optional": false,
+            "sort_order": 30,
+            "group_name": null
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-maheu-zm-step-1",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Make the maize slurry",
+            "instruction": "Bring 900 ml water to a boil. Separately whisk the maize meal with 200 ml water; stir this paste into the pot.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-maheu-zm-step-2",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Cook the porridge",
+            "instruction": "Turn the heat down to medium. Cook for 20–25 minutes, stirring now and then.",
+            "timer_seconds": 1200,
+            "timer_label": "Check the cooking stage at 20 minutes"
+          },
+          {
+            "id": "source-maheu-zm-step-3",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Cool and check the temperature",
+            "instruction": "Switch off the heat. Stir occasionally for 35–40 minutes and use a thermometer to check that the porridge has cooled to 40°C.",
+            "timer_seconds": 2100,
+            "timer_label": "Check cooling temperature; target 40°C"
+          },
+          {
+            "id": "source-maheu-zm-step-4",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Sweeten and cover",
+            "instruction": "Dissolve 50 g sugar in the remaining 150 ml water. Stir into the porridge, transfer to a clean food container and use a vented lid.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-maheu-zm-step-5",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Allow fermentation",
+            "instruction": "Leave the covered container in a cupboard. The authors observed 96 hours in cold weather and described about 24 hours in warm weather; conditions change fermentation time.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-maheu-zm-step-6",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 6,
+            "title": "Serve chilled",
+            "instruction": "Chill the fermented drink before serving.",
+            "timer_seconds": null,
+            "timer_label": null
+          }
+        ],
+        "media": [
+          {
+            "id": "source-maheu-zm-hero",
+            "recipe_id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/responsive/maheu-zm-1280.webp",
+            "alt_text": "AI-generated illustration of a creamy maize Maheu drink.",
+            "caption": "AI-generated serving illustration; not a photograph of a tested fermentation batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation of Olusanya et al. (2021)",
+            "credit_url": "https://www.ajfand.net/Volume21/No2/Olusanya18855.pdf",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
+    "kisra-south-sudan-ss": {
+      "id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+      "revision": "kisra-sudanese-kitchen-20261022-v1",
+      "fields": {
+        "name": "Kisra – Sudanese Kitchen adaptation",
+        "description": "Thin fermented sorghum sheets, adapted from the regional Sudanese Kitchen recipe.",
+        "story": "Contains milk from yoghurt. Use fresh, in-date plain yoghurt and clean utensils. A regional adaptation from Sudanese Kitchen, served with stew.",
+        "author": "AfroKitchen adaptation of Sudanese Kitchen",
+        "source": "https://www.sudanese.kitchen/recipe/kisra",
+        "default_servings": null,
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp",
+        "image_alt": "AI-generated illustration of thin Kisra sorghum flatbread sheets.",
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "tags": [
+          "sorghum",
+          "flatbread",
+          "fermented"
+        ],
+        "diet_tags": [],
+        "chef_notes": null,
+        "best_served_with": "Stew",
+        "occasion": null,
+        "regional_variations": "Regional recipe adapted from Sudanese Kitchen.",
+        "method_review_status": "attributed-source-method",
+        "method_review_revision": null,
+        "ingredients": [
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-1",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "sorghum flour",
+            "amount": 250,
+            "unit": "g",
+            "prep_note": null,
+            "sort_order": 10
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-2",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "water",
+            "amount": 500,
+            "unit": "ml",
+            "prep_note": "500–750 ml in total; add gradually to make a thin batter",
+            "sort_order": 20
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-3",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "plain yoghurt",
+            "amount": 3,
+            "unit": "tbsp",
+            "prep_note": "3–4 tbsp; use fresh, in-date yoghurt; contains milk",
+            "sort_order": 30
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-ingredient-4",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "ingredient_id": null,
+            "substitution": null,
+            "created_at": null,
+            "is_optional": false,
+            "group_name": null,
+            "name": "oil",
+            "amount": null,
+            "unit": "",
+            "prep_note": "For lightly greasing the saaj",
+            "sort_order": 40
+          }
+        ],
+        "steps": [
+          {
+            "id": "source-kisra-south-sudan-ss-step-1",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 1,
+            "title": "Mix the batter",
+            "instruction": "Whisk 250 g sorghum flour with 500 ml water. Add more water gradually, up to 750 ml total, for a thin pouring batter. Stir in 3–4 tbsp plain yoghurt.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-2",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 2,
+            "title": "Ferment overnight",
+            "instruction": "Cover the bowl and leave overnight in a cool, dry place. Do not taste raw batter or keep batter as starter for another batch.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-3",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 3,
+            "title": "Heat the saaj",
+            "instruction": "Heat a saaj or flat griddle and wipe with a little oil.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-4",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 4,
+            "title": "Spread a thin sheet",
+            "instruction": "Pour about half a cup of batter onto the hot surface. Quickly spread it very thin with a crepe spreader.",
+            "timer_seconds": null,
+            "timer_label": null
+          },
+          {
+            "id": "source-kisra-south-sudan-ss-step-5",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "tip": null,
+            "image_url": null,
+            "created_at": null,
+            "step_number": 5,
+            "title": "Cook and stack",
+            "instruction": "Cook on one side for about 1–2 minutes, until the sheet is set and lifts off. Remove, stack and repeat with the remaining batter. Serve with stew.",
+            "timer_seconds": 60,
+            "timer_label": "Check sheet; allow about 1–2 minutes per sheet"
+          }
+        ],
+        "media": [
+          {
+            "id": "source-kisra-south-sudan-ss-hero",
+            "recipe_id": "c0aced74-68d6-437d-b00b-abd1895605f0",
+            "role": "hero",
+            "sort_order": 0,
+            "image_url": "/assets/img/kitchen/responsive/kisra-south-sudan-ss-1280.webp",
+            "alt_text": "AI-generated illustration of thin Kisra sorghum flatbread sheets.",
+            "caption": "AI-generated serving illustration; not a photograph of a kitchen-tested batch.",
+            "source_type": "ai_generated_illustration",
+            "credit_text": "AfroKitchen adaptation of Sudanese Kitchen",
+            "credit_url": "https://www.sudanese.kitchen/recipe/kisra",
+            "created_at": null,
+            "updated_at": null
+          }
+        ]
+      }
+    },
     "mchemsho-tz": {
       "id": "4caf4ed6-13ec-4fbb-8039-ce51a4201cfe",
       "revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1",
       "fields": {
         "name": "Mchemsho — TaTEDO beef version",
-        "description": "Beef, potatoes and vegetables in broth, adapted from TaTEDO’s Tanzania eCookbook. Source batch quantities are shown; person yield and full duration are unrecorded.",
-        "story": "Adapted from the 2020 TaTEDO Tanzania eCookbook, hosted by MECS, using indexed printed pages 38–39. Beef is selected from the source’s beef/chicken option; optional spaghetti, beans and peas are omitted. The full PDF and page images were not inspected in this review. The source describes 20-minute and 7-minute pressure phases, not a 27-minute total. Heat-up and pressure release are additional, unrecorded stages. Use a pressure cooker of suitable capacity and follow its manufacturer’s fill, liquid and release instructions. The quantity is a source batch, not six person portions. AfroTools has not kitchen-tested this adaptation.",
+        "description": "Beef, potatoes and vegetables in broth, made in two pressure-cooking stages.",
+        "story": "Use a pressure cooker large enough for this batch and follow its fill, liquid and pressure-release instructions. Allow extra time for heat-up and pressure release.",
         "author": "AfroKitchen adaptation of TaTEDO Tanzania eCookbook (2020)",
         "default_servings": null,
         "serving_unit": null,
@@ -3213,8 +3773,8 @@ var AfroKitchenEngine = function() {
             "image_url": null,
             "created_at": null,
             "step_number": 1,
-            "title": "Prepare the source batch",
-            "instruction": "Prepare and cut the beef. Put the beef and source water quantity into a suitably sized pressure cooker, staying within the appliance’s fill and liquid requirements.",
+            "title": "Prepare the beef",
+            "instruction": "Cut the beef into pieces. Put it in the pressure cooker with 8 cups water.",
             "timer_seconds": null,
             "timer_label": null
           },
@@ -3225,10 +3785,10 @@ var AfroKitchenEngine = function() {
             "image_url": null,
             "created_at": null,
             "step_number": 2,
-            "title": "First source pressure phase",
-            "instruction": "Following the appliance instructions, pressure-cook the beef for the source’s 20-minute phase. Prepare and cut the vegetables while it cooks. This is a source stage checkpoint, not the full cooking time or a guarantee that the meat is done.",
-            "timer_seconds": null,
-            "timer_label": null
+            "title": "Pressure-cook the beef",
+            "instruction": "Bring to pressure following your appliance instructions, then pressure-cook for 20 minutes. Meanwhile, chop the carrot, bell pepper, onion and potatoes, and cut the broccoli into florets.",
+            "timer_seconds": 1200,
+            "timer_label": "First pressure stage"
           },
           {
             "id": "source-mchemsho-tz-step-3",
@@ -3237,8 +3797,8 @@ var AfroKitchenEngine = function() {
             "image_url": null,
             "created_at": null,
             "step_number": 3,
-            "title": "Release pressure and add vegetables",
-            "instruction": "Release pressure and open only as directed by the appliance manufacturer. Add carrot, bell pepper, onion, potatoes, broccoli and salt. Check the water before proceeding; the source gives no replacement-water quantity.",
+            "title": "Add the vegetables",
+            "instruction": "Release pressure as your appliance directs. Open only when safe, then add the vegetables and salt. Check the liquid against your cooker requirements.",
             "timer_seconds": null,
             "timer_label": null
           },
@@ -3249,10 +3809,10 @@ var AfroKitchenEngine = function() {
             "image_url": null,
             "created_at": null,
             "step_number": 4,
-            "title": "Second source pressure phase",
-            "instruction": "Pressure-cook the remaining ingredients for the source’s further 7-minute phase, following the appliance instructions. Release pressure safely before opening and inspect the meat and vegetables; continue cooking as needed. The two timed phases exclude heat-up and pressure release and do not establish total elapsed time.",
-            "timer_seconds": null,
-            "timer_label": null
+            "title": "Pressure-cook the vegetables",
+            "instruction": "Return to pressure, then cook for 7 minutes. Release pressure as directed before opening.",
+            "timer_seconds": 420,
+            "timer_label": "Second pressure stage"
           },
           {
             "id": "source-mchemsho-tz-step-5",
@@ -3261,8 +3821,8 @@ var AfroKitchenEngine = function() {
             "image_url": null,
             "created_at": null,
             "step_number": 5,
-            "title": "Serve the batch",
-            "instruction": "Serve hot once the meat and vegetables are cooked. This adaptation uses beef and omits the source’s optional spaghetti, beans and peas. Person yield is not recorded; keep these quantities as a batch.",
+            "title": "Check and serve",
+            "instruction": "Check that the beef is tender and the vegetables are cooked; cook a little longer if needed. Adjust salt and serve hot with the broth.",
             "timer_seconds": null,
             "timer_label": null
           }
@@ -3641,31 +4201,6 @@ var AfroKitchenEngine = function() {
   };
   // Exact finite source-method holds; publication approval remains independent.
   var pendingBeverageMethods = {
-    "kunu-zaki-ng": {
-      "id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
-      "fields": {
-        "description": "Nigerian millet-based drink. A reviewed preparation method, quantities, duration and yield are not available on this page.",
-        "story": null,
-        "occasion": null,
-        "best_served_with": null,
-        "regional_variations": null,
-        "method_review_status": "pending-source-method",
-        "method_review_revision": "kunu-ikivuguto-source-hold-20261018",
-        "prep_time_minutes": null,
-        "cook_time_minutes": null,
-        "total_time_minutes": null,
-        "default_servings": null,
-        "serving_unit": null,
-        "yield_status": "not-recorded",
-        "calories": null,
-        "protein_g": null,
-        "carbs_g": null,
-        "fat_g": null,
-        "fiber_g": null,
-        "ingredients": [],
-        "steps": []
-      }
-    },
     "ikivuguto-rw": {
       "id": "f2850789-0ffd-41b3-bbaf-e3229132c9e6",
       "fields": {
@@ -3691,58 +4226,6 @@ var AfroKitchenEngine = function() {
         "steps": []
       }
     },
-    "kisra-south-sudan-ss": {
-      "id": "c0aced74-68d6-437d-b00b-abd1895605f0",
-      "fields": {
-        "story": null,
-        "occasion": null,
-        "best_served_with": null,
-        "regional_variations": null,
-        "prep_time_minutes": null,
-        "cook_time_minutes": null,
-        "total_time_minutes": null,
-        "default_servings": null,
-        "serving_unit": null,
-        "calories": null,
-        "protein_g": null,
-        "carbs_g": null,
-        "fat_g": null,
-        "fiber_g": null,
-        "description": "South Sudanese Kisra, a thin cereal flatbread. A reviewed preparation method, quantities, duration and meal-portion yield are not available on this page.",
-        "method_review_status": "pending-source-method",
-        "method_review_revision": "kisra-maheu-source-hold-20261018",
-        "yield_status": "not-recorded",
-        "ingredients": [],
-        "steps": [],
-        "diet_tags": []
-      }
-    },
-    "maheu-zm": {
-      "id": "626fd465-87e1-4f93-bca7-747decbf63d0",
-      "fields": {
-        "story": null,
-        "occasion": null,
-        "best_served_with": null,
-        "regional_variations": null,
-        "prep_time_minutes": null,
-        "cook_time_minutes": null,
-        "total_time_minutes": null,
-        "default_servings": null,
-        "serving_unit": null,
-        "calories": null,
-        "protein_g": null,
-        "carbs_g": null,
-        "fat_g": null,
-        "fiber_g": null,
-        "description": "Zambian maize-meal drink. A reviewed preparation method, quantities, fermentation conditions, duration and yield are not available on this page.",
-        "method_review_status": "pending-source-method",
-        "method_review_revision": "kisra-maheu-source-hold-20261018",
-        "yield_status": "not-recorded",
-        "ingredients": [],
-        "steps": [],
-        "diet_tags": []
-      }
-    }
   };
   function pendingRecipeMethodTarget(recipe) {
     if (!recipe || typeof recipe !== 'object') return null;
@@ -4164,6 +4647,25 @@ var AfroKitchenEngine = function() {
       if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)\s*$/.test(value)) return { kind: 'invalid', minutes: null };
       var number = Number(value);
       return Number.isFinite(number) && number >= 0 ? { kind: 'known', minutes: number } : { kind: 'invalid', minutes: null };
+    },
+    getRecipePressureStages: function(recipe) {
+      if (!recipe || recipe.id !== '4caf4ed6-13ec-4fbb-8039-ce51a4201cfe' || !isAttributedRecipe(recipe)) return null;
+      var steps = recipe.steps || [];
+      return steps.length === 5 && steps[1].timer_seconds === 1200 && steps[3].timer_seconds === 420 ? [20, 7] : null;
+    },
+    getRecipeKisraStages: function(recipe) {
+      if (!recipe || recipe.id !== 'c0aced74-68d6-437d-b00b-abd1895605f0' || !isAttributedRecipe(recipe)) return null;
+      var steps = recipe.steps || [];
+      return steps.length === 5 && steps[4].timer_seconds === 60 ? { batch: '250 g sorghum flour', ferment: 'Overnight', cook: '1–2 min per sheet' } : null;
+    },
+    getRecipeMaheuStages: function(recipe) {
+      if (!recipe || recipe.id !== '626fd465-87e1-4f93-bca7-747decbf63d0' || !isAttributedRecipe(recipe)) return null;
+      var steps = recipe.steps || [];
+      return steps.length === 6 && steps[1].timer_seconds === 1200 && steps[2].timer_seconds === 2100 ? { batch: '120 g maize meal', cook: '20–25 min', cool: '35–40 min; check 40°C', ferment: 'Observed about 24 h warm / 96 h in the cold-weather study batch' } : null;
+    },
+    getRecipeKunuStages: function(recipe) {
+      if (!recipe || recipe.id !== '8a2bb743-87d9-462e-bc09-335e78f9584a' || !isAttributedRecipe(recipe)) return null;
+      return recipe.ingredients && recipe.ingredients.length === 6 && recipe.steps && recipe.steps.length === 6 ? { batch: '3 cups millet', soak: 'Overnight; up to 24 h in the source', sourceYield: 'About 5–6 litres (author’s batch estimate)' } : null;
     },
     getRecipeTiming: function(recipe) {
       if (isPendingRecipeMethod(recipe)) return { prep: null, cook: null, total: null };

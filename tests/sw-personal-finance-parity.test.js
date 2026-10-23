@@ -17,7 +17,7 @@ const APPS = [
   { id: '50-30-20-budget', route: '/sw/zana/bajeti-50-30-20/', file: 'sw/zana/bajeti-50-30-20/index.html', frRoute: '/fr/tools/budget-50-30-20/', frFile: 'fr/tools/budget-50-30-20/index.html', hash: '3f6adb5573a531a9f95dd700eb5179df937b07a5f89f5dc096746000a32a2e07', fields: ['country','income','currentNeeds','currentWants','currentSavings'], countries: ['NG','KE','ZA','GH','EG','ET','TZ','UG','RW','CI','CM','SN','MA','TN','AO'] },
   { id: 'album-budget', route: '/sw/zana/bajeti-ya-albamu/', file: 'sw/zana/bajeti-ya-albamu/index.html', frRoute: '/fr/tools/budget-album-ep/', frFile: 'fr/tools/budget-album-ep/index.html', hash: '51496064067d955fa69f3c39546215b3b6ba5dd69f4385fb5a1babb9b0e24165', fields: ['country','projectType','tracks','studioRate','hoursPerTrack','beatCost','mixCost','masterCost','coverArt','photoShoot','musicVideo','distroCost','playlistBudget','adsBudget','prBudget','netPerStream'], countries: ['NG','KE','ZA','GH','EG','TZ','RW','CI','CM','SN','MA'] },
   { id: 'film-budget', route: '/sw/zana/bajeti-ya-filamu/', file: 'sw/zana/bajeti-ya-filamu/index.html', frRoute: '/fr/tools/budget-film/', frFile: 'fr/tools/budget-film/index.html', hash: 'a18dec00674bdf13113390c0ad7e54fc80e110295105583019e126f9a0c0a2ef', fields: ['country','prodType','totalBudget','shootDays','cashSecured','contingencyPct','aboveLinePct','productionPct','postPct','marketingPct'], countries: ['NG','KE','ZA','GH','EG'] },
-  { id: 'security-emergency-fund', route: '/sw/zana/mfuko-wa-dharura-wa-usalama/', file: 'sw/zana/mfuko-wa-dharura-wa-usalama/index.html', frRoute: '/fr/tools/fonds-d-urgence-et-de-securite/', frFile: 'fr/tools/fonds-d-urgence-et-de-securite/index.html', hash: '7a12dc921fb947b0c27d2d6d182f842b453a44b7283847c11216af0015ca9da7', fields: ['country','monthlyExpenses','targetMonths','oneOffCosts','currentSavings','monthlyContribution'], countries: ['NG','KE','ZA','GH','ET','TZ','UG','EG','MA','CI','SN','CM','ZM','ZW'] },
+  { id: 'security-emergency-fund', route: '/sw/zana/mfuko-wa-dharura-wa-usalama/', file: 'sw/zana/mfuko-wa-dharura-wa-usalama/index.html', frRoute: '/fr/tools/fonds-d-urgence-et-de-securite/', frFile: 'fr/tools/fonds-d-urgence-et-de-securite/index.html', hash: 'c24ae0721e468e3e3bb93da213bd21f537012213f941eb7f3d56f718ea6bebe5', fields: ['country','monthlyExpenses','targetMonths','oneOffCosts','currentSavings','monthlyContribution'], countries: ['NG','KE','ZA','GH','ET','TZ','UG','EG','MA','CI','SN','CM','ZM','ZW'] },
   { id: 'side-hustle-ranker', route: '/sw/zana/orodha-ya-side-hustle/', file: 'sw/zana/orodha-ya-side-hustle/index.html', frRoute: '/fr/tools/classement-d-activites-complementaires/', frFile: 'fr/tools/classement-d-activites-complementaires/index.html', hash: 'a75abb8d4276632e138fabbf0f20b7aeebda01fe65826b17fee7bfc0b67b8109', fields: ['hours','capital','skills'], countries: [] }
 ];
 
@@ -54,10 +54,87 @@ test('historical manifest reconciles all five rows to coordinator acceptance', (
   assert.deepEqual(inventory.rows.filter((row) => row.categoryKey === 'personal-finance').map((row) => row.englishId), ids);
 });
 
-test('generator owns exactly the five source pages and stays fresh', () => {
+test('generator owns five tool pages and one directory and stays fresh', () => {
   const check = spawnSync(process.execPath, ['scripts/build-sw-personal-finance-parity.js', '--check'], { cwd: ROOT, encoding: 'utf8' });
   assert.equal(check.status, 0, check.stderr || check.stdout);
-  assert.match(check.stdout, /verified: 5/);
+  assert.match(check.stdout, /verified: 5 tool pages \+ 1 directory/);
+});
+
+test('native directory lists only the five existing tools and explains their actual results', () => {
+  const { PAGES, renderHub, HUB_FILE } = require('../scripts/build-sw-personal-finance-parity');
+  const html = read(HUB_FILE);
+  assert.equal(PAGES.length, 5, 'the directory is not a sixth app');
+  assert.deepEqual(PAGES.map((page) => page.id), APPS.map((app) => app.id));
+  const collection = schemas(html).find((item) => item['@type'] === 'CollectionPage');
+  assert.equal(collection.inLanguage, 'sw');
+  assert.deepEqual(collection.mainEntity.itemListElement.map((item) => item.url), APPS.map((app) => `https://afrotools.com${app.route}`));
+  for (const app of APPS) {
+    assert.match(html, new RegExp(`href="${app.route}"`));
+    assert.ok(fs.existsSync(path.join(ROOT, app.file)), app.file);
+  }
+  for (const phrase of ['Mahitaji', 'Matokeo:', 'kufidia gharama', 'pengo au ziada', 'muda wa kufikia lengo', 'Alama si utabiri wa mapato', 'TXT au JSON', 'kokotoa tena', 'Kiingereza tu']) {
+    assert.ok(visibleText(html).toLowerCase().includes(phrase.toLowerCase()), phrase);
+  }
+  assert.match(renderHub(), /<html lang="sw">/);
+  assert.doesNotMatch(html, /data-sw-personal-finance|data-action=|data-export=|src="[^"\n]*pages\/sw-personal-finance/);
+});
+
+test('directory has native search, reachable landmarks, managed SEO and an idempotent standard', () => {
+  const { renderHub } = require('../scripts/build-sw-personal-finance-parity');
+  const { enhanceCategory, ROUTES } = require('../scripts/lib/localized-category-standard');
+  const { SWAHILI_CATEGORIES } = require('../scripts/lib/swahili-category-directory');
+  const policy = require('../data/registry/locale-coverage-policy.json');
+  const html = renderHub();
+  assert.equal(enhanceCategory(html, 'sw'), html);
+  assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  assert.match(html, /class="swpf-skip" href="#swpf-directory"/);
+  assert.match(html, /<main id="swpf-directory"[^>]*tabindex="-1"/);
+  assert.match(html, /<form[^>]*action="\/sw\/zana-zote\/"[^>]*method="get"/);
+  assert.match(html, /<label for="localizedCategorySearch">Tafuta/);
+  assert.match(html, /id="localizedCategorySearch" name="q" type="search"/);
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(new Set(ids).size, ids.length, 'unique accessible targets');
+  for (const match of html.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(match[1]), match[1]);
+  assert.match(html, /<img[^>]*alt="[^"\n]+"[^>]*width="640" height="420"/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/afrotools.com\/sw\/personal-finance\/"/);
+  for (const [lang, route] of [['en','/personal-finance/'], ['fr','/fr/personal-finance/'], ['sw','/sw/personal-finance/'], ['x-default','/personal-finance/']]) {
+    assert.ok(html.includes(`hreflang="${lang}" href="https://afrotools.com${route}"`));
+  }
+  assert.match(html, /og:locale" content="sw_KE/);
+  assert.match(html, /twitter:card" content="summary_large_image/);
+  assert.ok(ROUTES.sw.includes('sw/personal-finance/index.html'));
+  assert.equal(SWAHILI_CATEGORIES.find((row) => row.key === 'personal-finance').href, '/sw/personal-finance/');
+  assert.match(read('sw/index.html'), /href="\/sw\/personal-finance\/"/);
+  assert.deepEqual(policy.overrides.find((row) => row.route === '/sw/personal-finance/'), {
+    route: '/sw/personal-finance/', state: 'native', sourceOwner: 'scripts/build-sw-personal-finance-parity.js', equivalentRoute: '/personal-finance/'
+  });
+  const catalogue = read('sw/zana-zote/index.html');
+  assert.match(catalogue, /Hakuna zana iliyopatikana/);
+  assert.match(catalogue, /sw-directory-clear-filters/);
+  assert.match(catalogue, /Kiingereza tu/);
+});
+
+test('hub-only generation preserves all five app outputs and rejects unsupported selection before writes', () => {
+  const { HUB_FILE } = require('../scripts/build-sw-personal-finance-parity');
+  const files = [HUB_FILE, ...APPS.map((app) => app.file)];
+  const before = files.map(read);
+  try {
+  const run = spawnSync(process.execPath, ['scripts/build-sw-personal-finance-parity.js', '--only=hub'], { cwd: ROOT, encoding: 'utf8' });
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+  assert.match(run.stdout, /written: 0 tool pages \+ 1 directory/);
+  const { localizedGeneratorEquivalent } = require('../scripts/lib/localized-generator-equivalence');
+  assert.ok(localizedGeneratorEquivalent(read(HUB_FILE), before[0]));
+  assert.deepEqual(APPS.map((app) => read(app.file)), before.slice(1));
+  const after = files.map(read);
+  for (const selection of ['--only=unknown', '--only', '--only=hub --only=hub']) {
+    const rejected = spawnSync(process.execPath, ['scripts/build-sw-personal-finance-parity.js', ...selection.split(' ')], { cwd: ROOT, encoding: 'utf8' });
+    assert.equal(rejected.status, 1);
+    assert.match(rejected.stderr, /Unsupported selection/);
+    assert.deepEqual(files.map(read), after, 'invalid selection cannot write any page');
+  }
+  } finally {
+    fs.writeFileSync(path.join(ROOT, HUB_FILE), before[0]);
+  }
 });
 
 test('the English product formula contracts remain frozen', () => {

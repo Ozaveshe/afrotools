@@ -100,3 +100,44 @@ for (const variant of [{width:320,theme:'light'}, {width:390,theme:'dark'}]) {
     await expect(page.locator(report)).toBeVisible();
   });
 }
+
+
+test('AFCON Kenya 2027 explicit benchmark, what-if replacement and report recovery', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(route);
+  await page.locator('#sports-favorite').selectOption('Kenya');
+  await expect(page.locator('#sports-kenyaStrength')).toBeVisible();
+  await expect(page.locator('#sports-kenyaStrength')).toHaveValue('');
+  await expect(page.locator(report)).toHaveCount(0);
+  await expect(page.locator(status)).toContainText('Enter Kenya scenario strength');
+  await page.getByRole('button', { name: 'Use Uganda model baseline (1505)', exact: true }).click();
+  await expect(page.locator('#sports-kenyaStrength')).toHaveValue('1505');
+  await expect(page.locator(report)).toHaveCount(0);
+  await expect(page.locator(status)).toContainText('Choose one non-host seed');
+  await expect(page.locator('#sports-replaceSeed option[value="Uganda"]')).toHaveCount(0);
+  await expect(page.locator('#sports-replaceSeed option[value="Tanzania"]')).toHaveCount(0);
+  await page.locator('#sports-replaceSeed').selectOption('Sierra Leone');
+  await page.getByRole('button', { name: 'Calculate', exact: true }).click();
+  await expect(page.locator('.sports-result-label')).toHaveText('Kenya 2027 what-if model');
+  await expect(page.locator(report)).toContainText('1505 model points; user-selected scenario, not Kenya/FIFA rating');
+  await expect(page.locator(report)).toContainText('model share');
+  await expect(page.locator(report)).toContainText('share assigned to other teams');
+  await expect(page.locator(report)).toContainText('Top two scenario teams');
+  await expect(page.locator(report)).not.toContainText('Most likely final path');
+  await expect(page.locator(report)).not.toContainText('title probability');
+  await expect(page.locator(report)).toContainText('not calibrated chances or a simulated bracket');
+  await expect(page.locator(report)).toContainText('Kenya replaces Sierra Leone; co-hosts Uganda and Tanzania retained');
+  await expect(page.locator(report)).toContainText('19 June–17 July 2027');
+  expect(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth))).toBe(0);
+  await page.locator('#sports-kenyaStrength').fill('3001');
+  await page.getByRole('button', { name: 'Calculate', exact: true }).click();
+  await expect(page.locator(report)).toHaveCount(0);
+  await expect(page.locator(status)).toContainText('0 to 3000');
+  await page.locator('#sports-kenyaStrength').fill('1600');
+  await page.getByRole('button', { name: 'Calculate', exact: true }).click();
+  await expect(page.locator(report)).toContainText('1600 model points');
+  await page.getByRole('button', { name: 'Reset', exact: true }).click();
+  await expect(page.locator('.sports-result-value')).toHaveText('8.0%');
+  await expect(page.locator('#sports-kenyaStrength')).toBeHidden();
+  await expect(page.locator(report)).not.toContainText('Kenya scenario strength');
+});

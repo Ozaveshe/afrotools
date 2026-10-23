@@ -80,15 +80,17 @@ test("gross-up reconciles the published plus-one-cent formula with exact branch 
   assert.ok(result.previousCentNet<target);
 });
 
-test("unsupported combinations, unsafe bounds and stale rules fail closed",()=>{
+test("unsupported combinations and unsafe bounds fail closed even after review is due",()=>{
   assert.deepEqual(engine.calculate({country:"GH",channel:"amex",amount:1000,count:1},fresh).error,"channel");
   assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:0,count:1},fresh).error,"amount");
   assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:1000,count:1.5},fresh).error,"count");
-  assert.deepEqual(engine.calculate({country:"NG",channel:"local",amount:1000,count:1},new Date("2026-10-30T00:00:00Z")).error,"stale");
+  const overdue=new Date(engine.REVIEW_DUE_AT+"T23:59:59Z");overdue.setTime(overdue.getTime()+1000);
+  assert.equal(engine.calculate({country:"XX",channel:"local",amount:1000,count:1},overdue).error,"country");
+  assert.equal(engine.calculate({country:"NG",channel:"local",amount:-1,count:1},overdue).error,"amount");
 });
 
 test("freshness distinguishes review and source dates from an unpublished effective date",()=>{
-  assert.deepEqual(engine.freshness(fresh),{fresh:true,reviewedAt:"2026-10-22",sourceUpdatedAt:"2026-09-15",reviewDueAt:"2026-10-29",effectiveDate:null});
+  assert.deepEqual(engine.freshness(fresh),{fresh:true,mode:"reviewed-estimate",reviewedAt:"2026-10-22",sourceUpdatedAt:"2026-09-15",reviewDueAt:"2026-10-29",effectiveDate:null});
 });
 
 // Official country pricing: https://paystack.com/za/pricing, observed 2026-10-09.
@@ -131,5 +133,22 @@ test("visible Paystack review dates and FAQ facts stay aligned with the reviewed
     const faq=blocks.find(block=>block["@type"]==="FAQPage");
     const answer=faq.mainEntity[faq.mainEntity.length-1].acceptedAnswer.text;
     for(const date of [engine.SOURCE_UPDATED_AT,engine.REVIEWED_AT,engine.REVIEW_DUE_AT])assert.ok(answer.includes(date),route+" FAQ date "+date);
+  }
+});
+
+
+test("overdue estimates retain the exact reviewed arithmetic and dated provenance for every channel",()=>{
+  const overdue=new Date(new Date(engine.REVIEW_DUE_AT+"T23:59:59Z").getTime()+1000);
+  for(const country of Object.keys(engine.COUNTRIES)){
+    for(const channel of Object.keys(engine.COUNTRIES[country].channels)){
+      const input={country,channel,amount:10000,count:10,targetNet:9000};
+      const current=engine.calculate(input,fresh),reference=engine.calculate(input,overdue);
+      assert.equal(reference.ok,true);assert.equal(reference.freshness.fresh,false);
+      assert.equal(reference.freshness.mode,"dated-reference");
+      assert.equal(reference.freshness.reviewedAt,engine.REVIEWED_AT);
+      assert.equal(reference.freshness.sourceUpdatedAt,engine.SOURCE_UPDATED_AT);
+      assert.equal(reference.freshness.effectiveDate,null);
+      for(const key of ["rule","breakdown","perTransaction","monthly","grossUp","source"])assert.deepEqual(reference[key],current[key],country+"/"+channel+" "+key);
+    }
   }
 });
