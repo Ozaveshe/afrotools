@@ -172,26 +172,30 @@
         }
       };
     },
-    contractorVsEmployee: function(r, a) {
-      var o = t(r, a, {
-        hasFivePlusEmployees: !0
-      }), n = "undefined" != typeof WHT_RATES && WHT_RATES[r] && WHT_RATES[r].services || 0, s = ("undefined" != typeof EMPLOYER_COST_RULES ? EMPLOYER_COST_RULES[r] : {}).symbol || "", i = a, y = a * (n / 100), l = (o.totalCostToCompany || a) - i, u = o.totalCostToCompany ? (l / o.totalCostToCompany * 100).toFixed(1) : "0";
+    contractorVsEmployee: function(country, employeeGross, options) {
+      options = options || {};
+      var invoice = options.contractorInvoice === undefined ? employeeGross : options.contractorInvoice;
+      var rawRate = options.withholdingRate;
+      var hasRate = rawRate !== undefined && rawRate !== null && String(rawRate).trim() !== "";
+      var gross = Number(employeeGross), amount = Number(invoice), rate = hasRate ? Number(rawRate) : null;
+      function positive(raw, value) { return raw !== null && raw !== undefined && String(raw).trim() !== "" && Number.isFinite(value) && value > 0; }
+      var errors = {};
+      if (!positive(employeeGross, gross)) errors.employeeGross = "Enter an employee monthly gross salary greater than zero.";
+      if (!positive(invoice, amount)) errors.contractorInvoice = "Enter a monthly contractor invoice greater than zero.";
+      if (hasRate && (!Number.isFinite(rate) || rate < 0 || rate > 100)) errors.withholdingRate = "Enter a withholding assumption from zero to 100, or leave it blank.";
+      if (Object.keys(errors).length) return { error: "Correct the comparison inputs.", errors: errors };
+      var employee = t(country, gross, { hasFivePlusEmployees: true });
+      if (employee.error) return { error: employee.error };
+      var withheld = hasRate ? Math.round(amount * rate) / 100 : null;
+      var net = hasRate ? Math.round((amount - withheld) * 100) / 100 : null;
+      var difference = employee.totalCostToCompany - amount;
+      if (!Number.isFinite(employee.totalCostToCompany) || !Number.isFinite(employee.totalEmployerContributions) || !Number.isFinite(difference) || (hasRate && (!Number.isFinite(withheld) || !Number.isFinite(net)))) return { error: "These amounts are too large to calculate. Enter smaller amounts." };
       return {
-        employee: o,
-        contractor: {
-          invoiceAmount: a,
-          whtRate: n,
-          whtAmount: Math.round(y),
-          totalCost: a,
-          netToContractor: a
-        },
-        savings: Math.round(l),
-        savingsPercent: u,
-        formatted: {
-          employeeCost: e(o.totalCostToCompany, s),
-          contractorCost: e(a, s),
-          savings: e(l, s)
-        }
+        employee: employee,
+        contractor: { invoiceAmount: amount, whtRate: rate, whtAmount: withheld, totalCost: amount, netToContractor: net, withholdingAssumptionProvided: hasRate },
+        savings: difference,
+        savingsPercent: employee.totalCostToCompany > 0 ? (difference / employee.totalCostToCompany * 100).toFixed(1) : null,
+        formatted: { employeeGross: e(gross, employee.symbol), employeeCost: e(employee.totalCostToCompany, employee.symbol), contractorCost: e(amount, employee.symbol), savings: e(difference, employee.symbol) }
       };
     },
     fmt: e

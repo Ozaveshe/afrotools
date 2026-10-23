@@ -151,8 +151,8 @@ TOOLS = [
         "data_scripts": ["/data/hr/employer-cost-data.js", "/data/hr/severance-data.js"],
         "engine_script": "/engines/employee-cost-engine.js",
         "seo_title": "Contractor vs Employee Cost {COUNTRY} 2026 | AfroTools",
-        "seo_desc": "Compare the cost of hiring a contractor vs employee in {COUNTRY}. Side-by-side: total cost, WHT, pension, social security savings.",
-        "hub_desc": "Side-by-side comparison: same amount paid to a contractor vs employee. See total cost difference, WHT, pension savings, and compliance risk.",
+        "seo_desc": "Compare an employee gross salary and employer costs with a contractor invoice in {COUNTRY}. Add your own withholding assumption if needed.",
+        "hub_desc": "Compare employee gross pay and employer costs with a contractor invoice. Optional visitor-entered withholding helps estimate contractor take-home.",
         "form_fields": [
             {"id": "monthlyAmount", "label": "Monthly Amount", "type": "number", "placeholder": "e.g. 500000", "prefix": True},
         ],
@@ -280,20 +280,8 @@ h+='<tr><td>Unused Leave Payout ('+r.unusedLeaveDays+' days)</td><td class="high
 h+='<tr style="font-weight:800;border-top:2px solid #0d9488"><td>Total Package</td><td class="highlight">'+r.formatted.total+'</td></tr>';
 h+='</tbody></table>';
 """,
-    "contractor": """
-var r=E.contractorVsEmployee(CC,fv('monthlyAmount'));
-if(r.error){alert(r.error||'Error');return;}
-var h='<div class="hr-res-hero"><div class="hr-res-hero-label">Monthly Savings as Contractor</div>';
-h+='<div class="hr-res-hero-amount">'+r.formatted.savings+'</div>';
-h+='<div class="hr-res-hero-sub">'+r.savingsPercent+'% lower than employee cost</div></div>';
-h+='<table class="hr-summary-table"><thead><tr><th>Item</th><th>Employee</th><th>Contractor</th></tr></thead><tbody>';
-h+='<tr><td>Gross / Invoice</td><td>'+r.formatted.employeeCost+'</td><td>'+r.formatted.contractorCost+'</td></tr>';
-h+='<tr><td>Employer Contributions</td><td>'+E.fmt(r.employee.totalEmployerContributions,r.employee.symbol)+'</td><td>None</td></tr>';
-h+='<tr><td>WHT Deduction</td><td>N/A</td><td>'+r.contractor.whtRate+'%</td></tr>';
-h+='<tr style="font-weight:800"><td>Total Cost to Company</td><td>'+r.formatted.employeeCost+'</td><td>'+r.formatted.contractorCost+'</td></tr>';
-h+='</tbody></table>';
-h+='<div class="hr-warn"><strong>Compliance Warning:</strong> Misclassifying employees as contractors carries legal risk. Ensure the engagement genuinely qualifies as independent contracting under local labour law.</div>';
-""",
+    # Contractor comparison is wired by its local controller below.
+
 }
 
 # ── Work permit, freelancer, domestic worker use static display (no calc button) ──
@@ -442,6 +430,18 @@ def gen_country_page(tool, code, cslug, cname, flag):
             form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{f["label"]}{opt}</label>{inp}{field_error}</div>\n'
         form_html += '</div>\n<button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>\n'
 
+    if tmpl == "contractor":
+        form_html = f'<form id="contractorComparison" data-comparison-country="{code}" novalidate><p>Compare monthly employer costs in <strong id="comparisonCurrency">local currency</strong>. Inputs and summaries stay in this browser.</p><div class="hr-form-grid">'
+        for field_id, label, hint in [
+            ("employeeGross", "Employee monthly gross salary", "Salary before employee deductions; employer contributions are added separately."),
+            ("contractorInvoice", "Monthly contractor invoice", "The total invoiced amount paid by the business; contractor expenses are not included."),
+            ("withholdingRate", "Withholding assumption (%) — optional", "Add a withholding rate to estimate contractor take-home. Leave blank for a cost-only comparison. This is your assumption, not a supplied statutory rate."),
+        ]:
+            required = "" if field_id == "withholdingRate" else " required"
+            maximum = ' max="100"' if field_id == "withholdingRate" else ""
+            form_html += f'<div class="hr-field"><label class="hr-f-label" for="{field_id}">{label}</label><input class="hr-f-input" type="number" id="{field_id}" inputmode="decimal" min="0" step="any"{maximum}{required} aria-describedby="{field_id}Help"><p id="{field_id}Help">{hint}</p><p class="hr-warn" id="{field_id}Error" role="alert" hidden></p></div>'
+        form_html += '</div><button class="hr-calc-btn" type="submit">Compare monthly costs</button><p id="comparisonStatus" role="status" aria-live="polite"></p><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="hr-calc-btn" type="button" id="copyComparison" style="width:auto" disabled>Copy summary</button><button class="hr-calc-btn" type="button" id="downloadComparison" style="width:auto" disabled>Download TXT</button></div></form>'
+
     severance_helpers = ""
     severance_reveal = ""
     result_attrs = ""
@@ -456,7 +456,10 @@ function gratuityNumber(id,allowZero){var raw=document.getElementById(id).value.
         result_attrs = ' hidden aria-live="polite"'
 
     # Build inline script
-    if tmpl in STATIC_DISPLAY:
+    if tmpl == "contractor":
+        script = '<script src="/assets/js/pages/contractor-comparison.js?v=1" defer></script>'
+        result_attrs = ' hidden aria-live="polite"'
+    elif tmpl in STATIC_DISPLAY:
         script = STATIC_DISPLAY[tmpl].replace("__CC__", code)
     elif tmpl in RESULT_JS:
         js_body = RESULT_JS[tmpl]
