@@ -420,6 +420,11 @@ def gen_country_page(tool, code, cslug, cname, flag):
 
     title = tool["seo_title"].replace("{COUNTRY}", cname)
     desc = tool["seo_desc"].replace("{COUNTRY}", cname)
+    malawi_severance = tmpl == "severance" and code == "MW"
+    if malawi_severance:
+        name = "Conditional Severance Estimate"
+        title = "Malawi Severance Pay Estimate | AfroTools"
+        desc = "Estimate severance for a qualifying termination using current qualifying monthly wages and completed years. Separate pension-exempt gratuity is not included."
 
     data_tags = ""
     for ds in tool["data_scripts"]:
@@ -429,17 +434,30 @@ def gen_country_page(tool, code, cslug, cname, flag):
 
     # Build form
     form_html = ""
+    if malawi_severance:
+        form_html += '<p class="hr-info">For qualifying redundancy, retrenchment, economic/operational termination or unfair dismissal. Eligibility exceptions and pension entitlements must be checked separately.</p>'
     if tool["form_fields"]:
         form_html += '<div class="hr-form-grid">\n'
         for f in tool["form_fields"]:
             opt = " (optional)" if f.get("optional") else ""
+            label = f["label"]
+            help_html = ""
+            if malawi_severance and f["id"] == "lastSalary":
+                label = "Current qualifying monthly wage"
+                help_html = '<p id="mw-wage-help" class="hr-info">Use the monthly wage qualifying under section 35, including relevant allowances and benefits. Basic salary alone may not be the correct base.</p>'
+            elif malawi_severance and f["id"] == "yearsOfService":
+                label = "Years of continuous service"
+                help_html = '<p id="mw-years-help" class="hr-info">Only completed years count. For example, 5.5 years uses 5 completed years.</p>'
             validation = ' min="0" step="any" required' if tmpl == "severance" else ""
             inputmode = "decimal" if tmpl == "severance" else "numeric"
             inp = f'<input class="hr-f-input" type="{f["type"]}" id="{f["id"]}" placeholder="{f["placeholder"]}" inputmode="{inputmode}"{validation}>'
+            if malawi_severance:
+                help_id = "mw-wage-help" if f["id"] == "lastSalary" else "mw-years-help"
+                inp = inp.replace('inputmode=', 'aria-describedby="' + help_id + '" inputmode=', 1)
             if f.get("prefix"):
                 inp = f'<div class="hr-input-wrap"><span class="hr-prefix" id="currPrefix"></span>{inp}</div>'
             field_error = f'<p class="hr-warn" id="{f["id"]}Error" role="alert" hidden></p>' if tmpl == "severance" else ""
-            form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{f["label"]}{opt}</label>{inp}{field_error}</div>\n'
+            form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{label}{opt}</label>{inp}{help_html}{field_error}</div>\n'
         form_html += '</div>\n<button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>\n'
 
     severance_helpers = ""
@@ -452,6 +470,9 @@ function gratuityError(id,text){var el=document.getElementById(id),msg=document.
 function gratuityNumber(id,allowZero){var raw=document.getElementById(id).value.trim(),value=Number(raw);clearGratuityError(id);if(raw===''||!Number.isFinite(value)||value<0||(!allowZero&&value===0)){gratuityError(id,allowZero?'Enter years of service as a number of zero or more.':'Enter a monthly salary greater than zero.');return null;}return value;}
 ['lastSalary','yearsOfService'].forEach(function(id){var el=document.getElementById(id);function edited(){clearGratuityResult();clearGratuityError(id);}el.addEventListener('input',edited);el.addEventListener('change',edited);});
 """
+        if malawi_severance:
+            severance_helpers = severance_helpers.replace("el.removeAttribute('aria-describedby');", "el.setAttribute('aria-describedby',id==='lastSalary'?'mw-wage-help':'mw-years-help');")
+            severance_helpers = severance_helpers.replace("el.setAttribute('aria-describedby',id+'Error');", "el.setAttribute('aria-describedby',(id==='lastSalary'?'mw-wage-help':'mw-years-help')+' '+id+'Error');")
         severance_reveal = "document.getElementById('results').hidden=false;"
         result_attrs = ' hidden aria-live="polite"'
 
@@ -460,6 +481,15 @@ function gratuityNumber(id,allowZero){var raw=document.getElementById(id).value.
         script = STATIC_DISPLAY[tmpl].replace("__CC__", code)
     elif tmpl in RESULT_JS:
         js_body = RESULT_JS[tmpl]
+        if malawi_severance:
+            js_body = js_body.replace("Estimated Severance / Gratuity", "Conditional severance estimate")
+            js_body = js_body.replace("<div class=\"hr-warn\"><strong>Note:</strong> ", "<details class=\"hr-info\"><summary>Eligibility, wage components and exclusions</summary><p>")
+            js_body = js_body.replace("'+r.notes+'</div>'", "'+r.notes+'</p></details>'")
+            js_body += """
+h+='<div class="hr-info"><strong>Completed years used:</strong> '+r.completedYears+'<br><strong>Severance weeks:</strong> '+r.totalWeeks+'</div>';
+h+='<p class="hr-info">'+r.qualification+'</p>';
+if(r.sourceUrl==='https://natlex.ilo.org/dyn/natlex2/natlex2/files/download/91385/MWI91385.pdf')h+='<p class="hr-info"><a href="https://natlex.ilo.org/dyn/natlex2/natlex2/files/download/91385/MWI91385.pdf">2010 amended statutory schedule</a> · <a href="https://eplex.ilo.org/en/country-detail?code=MWI&amp;yr=2025">ILO EPLex 2025 reference</a></p>';
+"""
         script = f"""<script>
 !function(){{
 "use strict";

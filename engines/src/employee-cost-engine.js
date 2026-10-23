@@ -57,6 +57,31 @@
         error: "Country not found"
       };
     }
+    // Malawi's graduated weekly schedule counts completed years, not fractions.
+    // Keep its wage conversion and validation separate from other country rules.
+    if (o.tieredWeeks) {
+      if (null == r || null == a || String(r).trim() === "" || String(a).trim() === "" ||
+          !Number.isFinite(Number(r)) || !Number.isFinite(Number(a)) || Number(r) <= 0 || Number(a) < 0) {
+        return { error: "Enter a positive monthly wage and non-negative years of service." };
+      }
+      var mwSalary = Number(r), mwYears = Math.floor(Number(a)), mwPrevious = 0, mwWeeks = 0;
+      for (var mwIndex = 0; mwIndex < o.tiers.length; mwIndex++) {
+        var mwTier = o.tiers[mwIndex];
+        var mwWidth = Math.max(0, Math.min(mwYears, mwTier.maxYears == null ? mwYears : mwTier.maxYears) - mwPrevious);
+        mwWeeks += mwWidth * mwTier.weeksPerYear;
+        mwPrevious = mwTier.maxYears == null ? mwYears : mwTier.maxYears;
+      }
+      var mwWeekly = mwSalary * 12 / 52, mwAmount = mwWeekly * mwWeeks;
+      if (!Number.isFinite(mwAmount)) return { error: "The estimate exceeds the supported numeric range." };
+      return {
+        method: o.method, formula: o.formula, amount: Math.round(mwAmount),
+        detail: mwWeeks + " weeks for " + mwYears + " completed years; monthly wage x 12 / 52",
+        law: o.law, notes: o.notes, computable: true,
+        formatted: e(mwAmount, "MK"), currency: "MWK", completedYears: mwYears,
+        totalWeeks: mwWeeks, weeklyWage: mwWeekly, amountBeforeRounding: mwAmount,
+        sourceUrl: o.sourceUrl, qualification: "Severance planning estimate; eligibility and qualifying wage must be confirmed. Final total rounded to the nearest kwacha; weekly wage is not rounded first."
+      };
+    }
     var n = ("undefined" != typeof EMPLOYER_COST_RULES ? EMPLOYER_COST_RULES[t] : {}).symbol || "", s = 0, i = "";
     if (o.monthsPerYear) {
       s = r * a * o.monthsPerYear, i = o.monthsPerYear + " months per year x " + a + " years";
