@@ -119,7 +119,8 @@ test('three debt-resilience routes pass mobile, zoom, theme, a11y, metadata, pri
     await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('uhakika ni wa kati');
     await expect(page.locator('.source-box')).toContainText('Udhamini');
-    await expect(page.locator('.privacy-box')).toContainText('Hakuna data');
+    await expect(page.locator('.privacy-box')).toContainText('Taarifa hizi za hesabu hazitumwi kwa seva.');
+    await expect(page.locator('.privacy-box')).toContainText('Usaidizi wa AI ni wa hiari na unahitaji ridhaa ya wazi kabla ya kutuma taarifa.');
     for (const theme of ['light','dark']) {
       await page.locator('html').evaluate((node, value) => { node.dataset.theme=value; node.dataset.themeChoice=value; }, theme);
       const state = await page.evaluate(contrastProof);
