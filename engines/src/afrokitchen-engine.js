@@ -1771,6 +1771,158 @@ var AfroKitchenEngine = function() {
   // Four finite source-attributed display methods. These do not authorize publication
   // or write canonical recipe data. Shared by browser, static/index owners and API.
   var attributedMethods = {
+    "zobo-ng": {
+      "id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+      "revision": "zobo-nigerianfoodtv-pineapple-20261023-v1",
+      "fields": {
+        "description": "Hibiscus and pineapple Zobo with optional ginger and cloves. Boil for 35 minutes, cool fully, strain and serve over ice. Base recipe: about five small 150 ml glasses.",
+        "story": "Adapted from Nky Lily Lete's Nigerian Food TV recipe, using 6 cups water from the source's 5–6 cup range. Use servings controls to scale the ingredients; allow the drink to cool completely before straining. Recipe source: https://www.nigerianfoodtv.com/zobo-drink-how-to-make-zobo-zoborodo/",
+        "author": "AfroKitchen adaptation; source recipe by Nky Lily Lete, Nigerian Food TV",
+        "source": "https://www.nigerianfoodtv.com/zobo-drink-how-to-make-zobo-zoborodo/",
+        "default_servings": 5,
+        "serving_unit": "small glasses (approx.)",
+        "yield_status": "source-estimate",
+        "prep_time_minutes": null,
+        "cook_time_minutes": 35,
+        "total_time_minutes": null,
+        "image_url": "/assets/img/kitchen/zobo-ng.webp",
+        "image_alt": "Zobo drink illustration",
+        "diet_tags": [],
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "occasion": null,
+        "regional_variations": null,
+        "best_served_with": "Ice, if desired.",
+        "chef_notes": null,
+        "ingredients": [
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "sort_order": 10,
+            "group_name": "Zobo",
+            "amount": 1,
+            "unit": "cup",
+            "name": "dried hibiscus",
+            "prep_note": "rinse well",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "sort_order": 20,
+            "group_name": "Zobo",
+            "amount": 0.5,
+            "unit": "whole",
+            "name": "small pineapple",
+            "prep_note": "wash thoroughly, peel and cut; retain its peel",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "sort_order": 30,
+            "group_name": "Zobo",
+            "amount": 6,
+            "unit": "cups",
+            "name": "water",
+            "prep_note": "",
+            "is_optional": false
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "sort_order": 40,
+            "group_name": "Zobo",
+            "amount": 1,
+            "unit": "tbsp",
+            "name": "fresh ginger",
+            "prep_note": "grated or chopped",
+            "is_optional": true
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "sort_order": 50,
+            "group_name": "Zobo",
+            "amount": 1,
+            "unit": "tsp",
+            "name": "cloves",
+            "prep_note": "",
+            "is_optional": true
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "sort_order": 60,
+            "group_name": "Zobo",
+            "amount": null,
+            "unit": "",
+            "name": "sugar or honey",
+            "prep_note": "to taste",
+            "is_optional": true,
+            "source_quantity_unrecorded": true
+          }
+        ],
+        "steps": [
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "step_number": 1,
+            "title": "Prepare the flowers and fruit",
+            "instruction": "Rinse hibiscus. Thoroughly wash the pineapple before peeling; cut the listed amount into chunks and keep its peel.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "tip": null,
+            "image_url": null
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "step_number": 2,
+            "title": "Boil the mixture",
+            "instruction": "Put hibiscus, pineapple chunks and peel in a pot with the measured water. Add ginger and cloves if using. Cover and boil over medium heat for 35 minutes.",
+            "timer_seconds": 2100,
+            "timer_label": "Boiling time",
+            "tip": null,
+            "image_url": null
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "step_number": 3,
+            "title": "Cool completely",
+            "instruction": "Remove from heat. Keep covered until completely cool; cooling time depends on batch size.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "tip": null,
+            "image_url": null
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "step_number": 4,
+            "title": "Strain and taste",
+            "instruction": "Strain into a clean container. Add optional sweetener to taste.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "tip": null,
+            "image_url": null
+          },
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "step_number": 5,
+            "title": "Serve or refrigerate",
+            "instruction": "Serve over ice, or transfer to an airtight container and refrigerate.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "tip": null,
+            "image_url": null
+          }
+        ],
+        "media": [
+          {
+            "recipe_id": "3d776f6e-0f91-4006-9492-2f3667abfdc0",
+            "role": "hero",
+            "image_url": "/assets/img/kitchen/zobo-ng.webp",
+            "source_type": "existing_illustrative_image",
+            "caption": "Zobo drink illustration"
+          }
+        ]
+      }
+    },
     "mandazi-tanzania-tz": {
       "id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
       "revision": "mandazi-malaquias-20171122-v1",
