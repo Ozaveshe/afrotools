@@ -2,6 +2,8 @@
   'use strict';
   // Display labels only. Market identifiers, source names and user values never pass through this dictionary.
   var rows={
+    'brand-reference':['Dated brand price — confirm the current pump price','Prix daté de l’enseigne — confirmez le prix actuel à la pompe','Bei ya kampuni yenye tarehe — hakiki bei ya sasa ya kituo'],
+    brand:['Brand price reference','Prix de référence de l’enseigne','Rejea ya bei ya kampuni'],
     'market-reference':['Dated market reference — verify at the pump','Référence de marché datée — à vérifier à la pompe','Rejea ya soko yenye tarehe — hakiki kwenye kituo'],
     'snapshot-estimate':['Dated source snapshot — planning estimate','Instantané daté de la source — estimation de budget','Taswira ya chanzo yenye tarehe — makadirio ya kupanga'],
     referenceDate:['Reference date (see price basis)','Date de référence (voir l’origine du prix)','Tarehe ya rejea (angalia msingi wa bei)'],

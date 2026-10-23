@@ -6,7 +6,7 @@
   var valid=Boolean(record&&['petrol','diesel'].includes(record.fuel_type)&&Number.isFinite(Number(record.price))&&Number(record.price)>0&&Number(record.price)<=10000000&&/^[A-Z]{3}$/.test(record.currency||'')&&record.unit==='litre'&&/^https:\/\/[^\s]+$/.test(record.source_url||'')&&record.source_name&&Number.isFinite(now)&&Number.isFinite(effective)&&Number.isFinite(verified)&&effective<=now&&verified<=now&&(!record.valid_to||Number.isFinite(end)));
   var age=valid?Math.floor((now-effective)/86400000):null;
   var historical=valid&&((Number.isFinite(end)&&now>end+86400000)||age>(Number(maxAge)||45));
-  return {valid:valid,available:valid&&!historical,historical:historical,stale:historical,ageDays:age,basis:!valid?'unavailable':historical?'historical-estimate':record.date_basis==='snapshot'?'snapshot-estimate':record.date_basis==='observation'?'dated-observation':'market-reference'};
+  return {valid:valid,available:valid&&!historical,historical:historical,stale:historical,ageDays:age,basis:!valid?'unavailable':historical?'historical-estimate':record.price_kind==='brand-published-retail'?'brand-reference':record.date_basis==='snapshot'?'snapshot-estimate':record.date_basis==='observation'?'dated-observation':'market-reference'};
  }
  function merge(markets,latest,nowValue){
   var rows=JSON.parse(JSON.stringify(markets||[]));
