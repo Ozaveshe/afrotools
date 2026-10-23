@@ -738,12 +738,17 @@ function setPBCat(c) {
   filterPhrases();
 }
 
+function phraseSearchText(value) {
+  return String(value || '').normalize('NFKC').replace(/[\u2018\u2019\u02bc]/g, "'")
+    .toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
 function getFilteredPhrases() {
-  var q = (document.getElementById('search').value || '').toLowerCase();
+  var q = phraseSearchText(document.getElementById('search').value);
   return PHRASES.filter(function(p) {
     if (pbCat !== 'All' && p.cat !== pbCat) return false;
     if (!q) return true;
-    return p.en.toLowerCase().indexOf(q) !== -1 || p.lang.toLowerCase().indexOf(q) !== -1;
+    return phraseSearchText(p.en).indexOf(q) !== -1 || phraseSearchText(p.lang).indexOf(q) !== -1;
   });
 }
 
