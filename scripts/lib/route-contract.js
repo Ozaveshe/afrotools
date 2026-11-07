@@ -379,6 +379,9 @@ function discoverPages(policy) {
     list.push(page);
     byNormalized.set(page.normalizedRoute, list);
   }
+  // Metadata and sitemaps must describe the same physical page that delivery serves.
+  const explicitOwners = new Map(staticOwnerPolicy.staticOwnerDecisions(policy)
+    .map((decision) => [normalizeRoute(decision.source), decision.destination.slice(1)]));
   const owned = [];
   for (const group of byNormalized.values()) {
     group.sort((left, right) => {
@@ -386,8 +389,10 @@ function discoverPages(policy) {
       const rightDirectory = right.route.endsWith("/") ? 0 : 1;
       return leftDirectory - rightDirectory || left.source.file.localeCompare(right.source.file);
     });
-    const owner = group[0];
-    if (group.length > 1) owner.source.alternateFiles = group.slice(1).map((page) => page.source.file);
+    const explicitFile = explicitOwners.get(group[0].normalizedRoute);
+    const owner = explicitFile ? group.find((page) => page.source.file === explicitFile) : group[0];
+    if (!owner) throw new Error(`Static owner ${explicitFile} is not a discovered page for ${group[0].normalizedRoute}`);
+    if (group.length > 1) owner.source.alternateFiles = group.filter((page) => page !== owner).map((page) => page.source.file);
     owned.push(owner);
   }
   return owned;
@@ -1187,7 +1192,25 @@ function replaceHeadLinks(html, canonicalRoute, hreflangs, localeCoverage) {
   next = next.replace(/<link\b[^>]*\brel=["'][^"']*canonical[^"']*["'][^>]*>\s*/gi, "");
   next = next.replace(/<link\b[^>]*\brel=["'][^"']*alternate[^"']*["'][^>]*\bhreflang=["'][^"']+["'][^>]*>\s*/gi, "");
   next = next.replace(/<meta\b[^>]*\bname=["']afrotools-locale-(?:coverage|fallback)["'][^>]*>\s*/gi, "");
-  const lines = [`<link rel="canonical" href="${absoluteRoute(canonicalRoute)}">`];
+  const canonical = `<link rel="canonical" href="${absoluteRoute(canonicalRoute)}">`;
+  const lines = [];
+  // AfroStream replaces this complete block at request time. Keep its fallback
+  // canonical inside the same boundary, including after repeated build passes.
+  const articleStart = '<!-- AS_ARTICLE_META_START -->';
+  const articleEnd = '<!-- AS_ARTICLE_META_END -->';
+  const head = next.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i);
+  const articleMetadata = head && head[1];
+  const singleArticleBlock = articleMetadata
+    && next.split(articleStart).length === 2
+    && next.split(articleEnd).length === 2
+    && articleMetadata.indexOf(articleStart) >= 0
+    && articleMetadata.indexOf(articleEnd) >= 0
+    && articleMetadata.indexOf(articleStart) < articleMetadata.indexOf(articleEnd);
+  if (singleArticleBlock) {
+    next = next.replace(articleEnd, `${canonical}\n${articleEnd}`);
+  } else {
+    lines.push(canonical);
+  }
   if (localeCoverage && ["english-fallback", "unavailable", "deprecated"].includes(localeCoverage.state)) {
     const robotsTag = /<meta\b[^>]*\bname=["']robots["'][^>]*>/i;
     if (robotsTag.test(next)) {
@@ -1213,7 +1236,7 @@ function replaceHeadLinks(html, canonicalRoute, hreflangs, localeCoverage) {
     lines.push(`<meta name="afrotools-locale-coverage" content="${localeCoverage.state}">`);
     lines.push(`<meta name="afrotools-locale-fallback" content="${localeCoverage.fallbackRoute}">`);
   }
-  return next.replace(/<\/head>/i, `${lines.join("\n")}\n</head>`);
+  return lines.length ? next.replace(/<\/head>/i, `${lines.join("\n")}\n</head>`) : next;
 }
 
 function syncRouteMetadata(graph, options = {}) {

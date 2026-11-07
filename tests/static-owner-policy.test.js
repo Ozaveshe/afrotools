@@ -38,10 +38,12 @@ function runFilesystemChecks(policy) {
 }
 function runGraphChecks(routeApi, graph, policy, basePolicy) {
   const flat="tools/africa-conflict/conflicts.html",index="tools/africa-conflict/conflicts/index.html";
-  const page=graph.routes.find(p=>p.source?.file===index);
-  assert(page,"Existing index metadata record retained");
-  assert.equal(page.source.file,index);assert(page.source.alternateFiles.includes(flat));
-  assert.equal(page.canonicalRoute,"/tools/africa-conflict/conflicts/");
+  const page=graph.routes.find(p=>p.source?.file===flat);
+  assert(page,"Delivered physical owner supplies metadata and sitemap record");
+  assert.equal(page.source.file,flat);assert(page.source.alternateFiles.includes(index));
+  assert.equal(page.route,"/tools/africa-conflict/conflicts");
+  assert.equal(page.canonicalRoute,page.route);
+  assert.equal(page.sitemap.included,true);
   assert.equal(page.deliveryRewrite.target,"/"+flat);assert.equal(page.deliveryRewrite.physicalOwnerFile,flat);
   assert.equal(page.deliveryRewrite.owner,"data/registry/route-policy.json");
   assert.deepEqual(policy.canonicalDecisions,basePolicy.canonicalDecisions);
@@ -54,8 +56,14 @@ function runGraphChecks(routeApi, graph, policy, basePolicy) {
   assert.equal(routeApi.renderRedirectContract(graph,policy,rendered),rendered,"Real managed renderer is idempotent");
   assert.equal(rendered.split(ownerLine).length,2,"One owner rule, no slash duplicate");
   assert.match(rendered,/^\/tools\/africa-conflict\/conflicts\.html\s+\/tools\/africa-conflict\/conflicts\s+301!$/m,"Existing external HTML301 retained");
-  assert.equal(JSON.stringify(page.source),JSON.stringify(graph.routes.find(p=>p.source?.file===index).source));
-  return 12;
+  assert.equal(JSON.stringify(page.source),JSON.stringify(graph.routes.find(p=>p.source?.file===flat).source));
+  for (const decision of policy.staticOwnerDecisions) {
+    const record=routeApi.getRouteRecord(graph,decision.source);
+    assert.equal(record.source.file,decision.destination.slice(1),"Every explicit physical owner supplies the graph record");
+    assert.equal(record.canonicalRoute,record.route);
+  }
+  assert.equal(graph.routes.filter(p=>p.normalizedRoute===page.normalizedRoute&&p.state==="page").length,1,"One hub sitemap owner");
+  return 16;
 }
 function main() {
   const routeApi=require("../scripts/lib/route-contract"),policy=routeApi.loadPolicy(),basePolicy={...policy};delete basePolicy.staticOwnerDecisions;

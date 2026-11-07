@@ -4923,6 +4923,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:674580647ec7: en=`/tools/solar-roi/cape-verde/`, fr=`/fr/tools/roi-solaire/cape-verde/`; x-default=`/tools/solar-roi/cape-verde/`
 - equivalence:675665798462: en=`/tools/afrokitchen/recipes/maru-we-llham-mr/`; x-default=`/tools/afrokitchen/recipes/maru-we-llham-mr/`
 - equivalence:675c72559cc6: en=`/agriculture/vaccination-schedule/gabon`; x-default=`/agriculture/vaccination-schedule/gabon`
+- equivalence:676580dc7513: en=`/tools/africa-conflict/conflicts`; x-default=`/tools/africa-conflict/conflicts`
 - equivalence:676937b00f45: en=`/agriculture/harvest-date/mali`; x-default=`/agriculture/harvest-date/mali`
 - equivalence:676b36b168c6: en=`/tools/gratuity-calculator/zimbabwe/`; x-default=`/tools/gratuity-calculator/zimbabwe/`
 - equivalence:67779d81e3e8: en=`/tools/cac-checker/`, fr=`/fr/tools/verificateur-cac/`, ha=`/ha/kayan-aiki/duba-cac/`, sw=`/sw/zana/ukaguzi-wa-jina-cac-nigeria/`; x-default=`/tools/cac-checker/`
@@ -5410,7 +5411,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:85295256ee1a: en=`/faq/`, fr=`/fr/faq/`, sw=`/sw/maswali-ya-mara-kwa-mara/`; x-default=`/faq/`
 - equivalence:852be19c722f: en=`/tools/work-permit-cost/ethiopia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ethiopie/`; x-default=`/tools/work-permit-cost/ethiopia/`
 - equivalence:853e4d0ebd60: en=`/tools/matatu-fare/`, fr=`/fr/tools/tarif-matatu-danfo/`, sw=`/sw/zana/nauli-za-matatu-danfo-trotro/`; x-default=`/tools/matatu-fare/`
-- equivalence:854297d878a1: en=`/tools/africa-conflict/conflicts/`; x-default=`/tools/africa-conflict/conflicts/`
 - equivalence:855a6f806219: en=`/afrowork/api/`; x-default=`/afrowork/api/`
 - equivalence:8560d4a99e5c: en=`/guinea/`, fr=`/fr/guinee/`, sw=`/sw/guinea/`; x-default=`/guinea/`
 - equivalence:8566111d66de: en=`/telecom/internet-compare/`, fr=`/fr/telecom/comparateur-internet/`, sw=`/sw/zana/kilinganisha-intaneti/`; x-default=`/telecom/internet-compare/`

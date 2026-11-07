@@ -20,7 +20,8 @@
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5">
-  <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
+  <script src="/assets/js/components/tool-registry.min.js?v=927374e9" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
   <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
   <script src="/assets/js/bundles/core.1254bf4a.min.js" defer></script>
   <style>
@@ -76,7 +77,7 @@
           <p class="ai-local-copy">Eleza unachotaka kufanya: mshahara, PAYE, VAT, kuagiza bidhaa, CV, PDF, sola, ufadhili, bajeti au nchi. AfroTools AI hufungua zana inayofaa, huuliza maelezo machache muhimu, na hulinda taarifa nyeti.</p>
         </div>
         <div class="ai-local-panel">
-          <form class="ai-local-form" action="/ai/" method="get" role="search">
+          <form class="ai-local-form" action="/sw/ai/" method="get" role="search">
             <input type="hidden" name="lang" value="sw">
             <label for="aiSwQuery">Unataka kufanya nini?</label>
             <div class="ai-local-input-row">
@@ -85,6 +86,81 @@
             </div>
             <p class="ai-local-note">Utafutaji wa zana huanza ndani ya kivinjari. Maswali ghafi hayahifadhiwi kwenye analytics, na msaada wa AI wa hiari huomba ruhusa kabla ya kutuma maelezo nyeti.</p>
           </form>
+<script data-afrotools-sw-ai-submit>
+(function initSwahiliAiSubmitBootstrap(root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else factory().boot(root);
+})(typeof globalThis !== "undefined" ? globalThis : this, function createSwahiliAiSubmitBootstrap() {
+  "use strict";
+
+  function boot(root) {
+    var input = root.document && root.document.getElementById("aiSwQuery");
+    var form = input && input.form;
+    if (!form || typeof root.URLSearchParams !== "function") return;
+    if (!input.value) input.value = new root.URLSearchParams(root.location.search || "").get("q") || "";
+    var pending = false;
+    var timer = null;
+    var loadingComplete = false;
+    function clearTimer() {
+      if (timer !== null) root.clearTimeout(timer);
+      timer = null;
+    }
+    function showProgress(waiting) {
+      var result = root.document.getElementById("aiSwResult");
+      if (!result) {
+        result = root.document.createElement("div");
+        result.id = "aiSwResult";
+        result.setAttribute("role", "status");
+        result.setAttribute("aria-live", "polite");
+        form.appendChild(result);
+      }
+      result.replaceChildren();
+      var message = root.document.createElement("p");
+      message.textContent = waiting ? "Inapakia utafutaji wa zana…" : "Unaweza kujaribu tena au kufungua katalogi ya zana za Kiswahili.";
+      result.appendChild(message);
+      var link = root.document.createElement("a");
+      link.href = "/sw/zana-zote/";
+      link.textContent = "Vinjari zana za Kiswahili";
+      result.appendChild(link);
+    }
+    root.AfroToolsAISwEntryQueue = {
+      take: function () {
+        var submitted = pending;
+        pending = false;
+        clearTimer();
+        return submitted;
+      }
+    };
+    form.addEventListener("submit", function (event) {
+      if (form.dataset.aiRouterReady === "true") return;
+      event.preventDefault();
+      if (!input.value.trim()) {
+        pending = false;
+        clearTimer();
+        if (root.document.getElementById("aiSwResult")) showProgress(false);
+        input.focus();
+        return;
+      }
+      pending = true;
+      showProgress(!loadingComplete);
+      if (!loadingComplete && timer === null) timer = root.setTimeout(function () {
+        timer = null;
+        if (pending) showProgress(false);
+      }, 8000);
+    });
+    root.document.addEventListener("DOMContentLoaded", function () {
+      loadingComplete = true;
+      if (pending && form.dataset.aiRouterReady !== "true") {
+        clearTimer();
+        showProgress(false);
+      }
+    }, { once: true });
+  }
+
+  return { boot: boot };
+});
+
+</script>
         </div>
       </section>
 
@@ -98,12 +174,12 @@
       <section class="ai-local-section" aria-labelledby="ai-sw-examples">
         <h2 id="ai-sw-examples">Jaribu kazi ya kawaida</h2>
         <div class="ai-local-links">
-          <a class="ai-local-link" href="/ai/?lang=sw&amp;q=Hesabu%20PAYE%20ya%20wafanyakazi%205%20Kenya"><strong>Mshahara na kodi</strong><span>Fungua PAYE, checklist ya mwajiri na maelezo ya kuthibitisha.</span></a>
-          <a class="ai-local-link" href="/ai/?lang=sw&amp;q=Kadiria%20gharama%20ya%20kuingiza%20Toyota%20Axio%20Nigeria"><strong>Kuagiza bidhaa</strong><span>Linganisha CIF, forodha, makadirio na nyaraka za kuangalia.</span></a>
-          <a class="ai-local-link" href="/ai/?lang=sw&amp;q=Tengeneza%20CV%20ya%20mhandisi%20wa%20umeme%20Ghana"><strong>CV na kazi</strong><span>Anza CV Builder kwa njia ya faragha na iliyo wazi.</span></a>
-          <a class="ai-local-link" href="/ai/?lang=sw&amp;q=Linganisha%20sola%20na%20jenereta%20kwa%20duka%20Lagos"><strong>Nishati</strong><span>Linganisha gharama ya jenereta, sola, betri na maswali kwa fundi.</span></a>
-          <a class="ai-local-link" href="/ai/?lang=sw&amp;q=Compress%20sign%20na%20export%20PDF%20bila%20kupakia"><strong>PDF ya ndani</strong><span>Fungua zana za PDF bila kupakia faili kwa chaguo-msingi.</span></a>
-          <a class="ai-local-link" href="/ai/?lang=sw&amp;q=Panga%20bajeti%20ya%20kuishi%20Nairobi%20kwa%20mwezi"><strong>Maisha ya kila siku</strong><span>Bajeti, kodi ya nyumba, usafiri, shule na presha ya mwezi.</span></a>
+          <a class="ai-local-link" href="/sw/ai/?lang=sw&amp;q=Hesabu%20PAYE%20ya%20wafanyakazi%205%20Kenya"><strong>Mshahara na kodi</strong><span>Fungua PAYE, checklist ya mwajiri na maelezo ya kuthibitisha.</span></a>
+          <a class="ai-local-link" href="/sw/ai/?lang=sw&amp;q=Kadiria%20gharama%20ya%20kuingiza%20Toyota%20Axio%20Nigeria"><strong>Kuagiza bidhaa</strong><span>Linganisha CIF, forodha, makadirio na nyaraka za kuangalia.</span></a>
+          <a class="ai-local-link" href="/sw/ai/?lang=sw&amp;q=Tengeneza%20CV%20ya%20mhandisi%20wa%20umeme%20Ghana"><strong>CV na kazi</strong><span>Anza CV Builder kwa njia ya faragha na iliyo wazi.</span></a>
+          <a class="ai-local-link" href="/sw/ai/?lang=sw&amp;q=Linganisha%20sola%20na%20jenereta%20kwa%20duka%20Lagos"><strong>Nishati</strong><span>Linganisha gharama ya jenereta, sola, betri na maswali kwa fundi.</span></a>
+          <a class="ai-local-link" href="/sw/ai/?lang=sw&amp;q=Compress%20sign%20na%20export%20PDF%20bila%20kupakia"><strong>PDF ya ndani</strong><span>Fungua zana za PDF bila kupakia faili kwa chaguo-msingi.</span></a>
+          <a class="ai-local-link" href="/sw/ai/?lang=sw&amp;q=Panga%20bajeti%20ya%20kuishi%20Nairobi%20kwa%20mwezi"><strong>Maisha ya kila siku</strong><span>Bajeti, kodi ya nyumba, usafiri, shule na presha ya mwezi.</span></a>
         </div>
       </section>
 <!-- localized-ai-parity:start --><section class="ai-local-section ai-local-parity" data-source-owner="scripts/build-localized-ai-api-pages.js" aria-labelledby="ai-sw-parity-title"><h2 id="ai-sw-parity-title">Andaa ombi lenye maana bila kupoteza udhibiti</h2><p class="ai-local-copy">AfroTools AI ni safu ya kuelekeza juu ya katalogi. Husaidia kutaja uamuzi, kuchagua nchi na kipindi, kuona taarifa zinazokosekana, kisha kufungua kikokotoo, mwongozo, hati au ukurasa wa data uliopo. Matokeo ya mwisho hutolewa na mtiririko wa kazi uliochaguliwa, pamoja na vyanzo, makadirio na mipaka yake.</p><div class="ai-local-grid"><article class="ai-local-card"><h3>1. Taja uamuzi</h3><p>Eleza unachotaka kuamua au kutengeneza, atakayetumia matokeo na sehemu zinazopaswa kubadilishwa. Swali kamili huelekezwa vizuri kuliko neno moja.</p></article><article class="ai-local-card"><h3>2. Weka muktadha</h3><p>Tenganisha lugha, nchi, sarafu, kipindi na sekta. Kiolesura cha Kiswahili hakibadilishi mamlaka, sarafu au kanuni inayotumika.</p></article><article class="ai-local-card"><h3>3. Kagua ushahidi</h3><p>Kwa viwango, bei, muda na wajibu unaobadilika, kagua chanzo, tarehe na kiwango cha uhakika kabla ya uamuzi halisi.</p></article><article class="ai-local-card"><h3>4. Fungua na uhakiki</h3><p>Soma tena taarifa zinazohamishwa kwenda kwenye zana ya mwisho. Unaweza kubadilisha au kuondoa taarifa kabla ya kukokotoa, kuhifadhi au kupakua.</p></article></div><h2>Vinjari kwa muktadha</h2><form class="ai-local-panel ai-local-form" action="/sw/zana-zote/" method="get" role="search"><label>Kazi au matokeo unayotafuta<input name="q" type="search" required autocomplete="off"></label><label>Nchi au soko<input name="country" autocomplete="country-name"></label><label>Kundi<select name="category"><option value="">—</option><option>Fedha na kodi</option><option>Hati na PDF</option><option>Kazi na masomo</option><option>Biashara na usafiri</option><option>Nishati na nyumba</option></select></label><button class="ai-local-button" type="submit">Tafuta kwenye katalogi</button></form><h2>Andaa kuendelea kwenye AfroTools AI</h2><form class="ai-local-panel ai-local-form" action="/ai/" method="get"><input type="hidden" name="lang" value="sw"><label>Maelezo muhimu<textarea name="q" rows="4" required></textarea></label><label>Kipindi au tarehe ya marejeo<input name="period"></label><label>Aina ya matokeo unayotaka<select name="output"><option value="summary">Muhtasari</option><option value="checklist">Orodha ya ukaguzi</option><option value="tool">Zana</option></select></label><button class="ai-local-button" type="submit">Endelea kwenye AfroTools AI</button></form><h2>Njia za kazi za vitendo</h2><div class="ai-local-links"><a class="ai-local-link" href="/ai/business/?lang=sw"><strong>Biashara na uendeshaji</strong><span>Gharama, ankara, faida na mpangilio.</span></a><a class="ai-local-link" href="/ai/trade/?lang=sw"><strong>Uagizaji na biashara ya nje</strong><span>Forodha, usafirishaji, hati na makadirio.</span></a><a class="ai-local-link" href="/ai/career/?lang=sw"><strong>Kazi na masomo</strong><span>CV, maombi, mshahara na mafunzo.</span></a><a class="ai-local-link" href="/ai/energy/?lang=sw"><strong>Nishati na nyumba</strong><span>Sola, jenereta, betri na bajeti.</span></a><a class="ai-local-link" href="/ai/local-life/?lang=sw"><strong>Maisha ya kila siku</strong><span>Kodi ya nyumba, kuhama, shule na matumizi.</span></a><a class="ai-local-link" href="/ai/construction/?lang=sw"><strong>Ujenzi</strong><span>Vifaa, kiasi, bajeti na ukaguzi wa mtaalamu.</span></a></div><h2>Faragha, vyanzo na mipaka</h2><p class="ai-local-copy">Kuelekezwa kwenye zana na kufungua ukurasa hakuhitaji kutuma maudhui binafsi kwa modeli. Usiweke nenosiri, kitambulisho, rekodi ya afya, CV halisi, faili la mteja au taarifa nyeti za fedha kwenye ombi. Msaada wa mtandao wa hiari lazima ueleze kitakachotumwa na uombe idhini wazi. AfroTools AI haibadilishi makadirio kuwa uamuzi rasmi wala kufanya chanzo cha zamani kuwa cha sasa.</p><h2>Matokeo na hatua inayofuata</h2><p class="ai-local-copy">Kulingana na mtiririko wa kazi, unaweza kupata hesabu, orodha ya ukaguzi, rasimu, muhtasari, chapisho au faili. Ukurasa wa mwisho unaeleza aina za matokeo zinazopatikana kweli. Kiungo cha ugunduzi pekee hakithibitishi kuwa kupakua, usawazishaji au kipengele cha Pro kinafanya kazi. Hifadhi maelezo muhimu, soma kanusho la zana na urudi kwenye chanzo rasmi wakati tarehe au kanuni inaweza kubadilika. Linganisha matokeo na hali yako halisi kabla ya kuyatumia.</p><nav class="ai-local-links" aria-label="Njia za kazi za vitendo"><a class="ai-local-link" href="/sw/zana-zote/"><strong>Zana zote</strong></a><a class="ai-local-link" href="/sw/nchi/"><strong>Nchi</strong></a><a class="ai-local-link" href="/sw/makundi/"><strong>Makundi</strong></a><a class="ai-local-link" href="/sw/blogu/"><strong>Miongozo</strong></a><a class="ai-local-link" href="/sw/zana-za-developer/"><strong>Zana za wasanidi</strong></a><a class="ai-local-link" href="/sw/wasiliana/"><strong>Wasiliana</strong></a></nav></section><!-- localized-ai-parity:end -->
@@ -119,6 +195,10 @@
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
   <script src="/assets/js/ai/swahili-route-map.generated.js?v=bb58ff0a" defer></script>
-  <script src="/assets/js/pages/sw-ai-route-entry.js?v=fb48fccf" defer></script>
+  <script src="/assets/js/ai/tool-manifest.js?v=f987a469" defer></script>
+<script src="/assets/js/ai/guardrails.js?v=f4a52150" defer></script>
+<script src="/assets/js/ai/i18n.js?v=2b001162" defer></script>
+<script src="/assets/js/ai/intent-router.js?v=ef6b0e79" defer></script>
+<script src="/assets/js/pages/sw-ai-route-entry.js?v=4fcfe830" defer></script>
 </body>
 </html>

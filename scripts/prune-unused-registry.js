@@ -12,7 +12,7 @@ const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const ROOT = path.resolve(__dirname, '..');
 const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify', 'dist']);
 const REGISTRY_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*tool-registry(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
-const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|agriculture-taxonomy-hub\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js/;
+const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|agriculture-taxonomy-hub\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js|sw-ai-route-entry(?:\.min)?\.js/;
 const LAZY_REGISTRY_RE = /afrotools:lazy-registry|document\.querySelector\(['"]script\[src\*=["']tool-registry["']\]/;
 const RELATED_TOOLS_RE = /related-tools(?:\.min)?\.js|<afro-related-tools\b/i;
 const SSR_RELATED_TOOLS_RE = /<afro-related-tools\b[^>]*\bdata-ssr=["']1["']/i;
