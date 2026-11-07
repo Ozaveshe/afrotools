@@ -69,16 +69,18 @@
     var toolId = String(config.toolId || 'yoruba-translator');
     var controller = null;
     var swapped = false;
+    var requestSequence = 0;
+    var lastResult = null;
     var card = document.createElement('section');
     card.className = 'card vip-cloud';
     card.id = 'liveTranslateCard';
     card.setAttribute('aria-labelledby', 'liveTranslateTitle');
     card.innerHTML = [
-      '<h2 id="liveTranslateTitle">Optional cloud translation <span>External service</span></h2>',
-      '<p>The local phrasebook above works without a network request. Use this separate service only for non-sensitive text you choose to send.</p>',
+      '<h2 id="liveTranslateTitle">Translate your own text <span>Optional cloud service</span></h2>',
+      '<p><a href="#search">Search local phrases</a> without sending text, or opt in below to translate your own non-sensitive text.</p>',
       '<div data-external-translation-consent-host></div>',
       '<div class="vip-cloud-grid">',
-      '<div><label for="translateInput">Source text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
+      '<div><label for="translateInput" id="translateInputLabel">English text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
       '<div><div id="translateOutputLabel" class="vip-cloud-label">Yoruba output</div><div id="translateOutput" role="region" aria-labelledby="translateOutputLabel">Cloud translation appears here after you opt in.</div></div>',
       '</div>',
       '<div class="vip-cloud-actions">',
@@ -88,7 +90,7 @@
       '<span id="translateStatus" role="status" aria-live="polite"></span>',
       '</div>'
     ].join('');
-    container.appendChild(card);
+    container.insertBefore(card, container.firstChild);
 
     consent.render(card.querySelector('[data-external-translation-consent-host]'), {
       toolId: toolId,
@@ -98,6 +100,7 @@
     var input = document.getElementById('translateInput');
     var output = document.getElementById('translateOutput');
     var outputLabel = document.getElementById('translateOutputLabel');
+    var inputLabel = document.getElementById('translateInputLabel');
     var translateButton = document.getElementById('translateBtn');
     var status = document.getElementById('translateStatus');
 
@@ -108,13 +111,25 @@
     }
 
     function abortRequest() {
+      requestSequence += 1;
       if (controller) controller.abort();
       controller = null;
     }
 
+    function currentResult() {
+      return lastResult && lastResult.input === input.value && lastResult.swapped === swapped;
+    }
+    function updateLanguageLabels() {
+      inputLabel.textContent = swapped ? 'Yoruba text' : 'English text';
+      outputLabel.textContent = swapped ? 'English output' : 'Yoruba output';
+      input.setAttribute('lang', swapped ? config.target : (config.source || 'en'));
+      output.setAttribute('lang', swapped ? (config.source || 'en') : config.target);
+      input.placeholder = swapped ? 'Enter non-sensitive Yoruba text…' : 'Enter non-sensitive English text…';
+    }
     function clearResult(message) {
       abortRequest();
-      output.textContent = 'Cloud translation appears here after you opt in.';
+      lastResult = null;
+      output.textContent = consent.hasConsent(toolId) ? 'Translation will appear here.' : 'Cloud translation appears here after you opt in.';
       status.textContent = message || '';
       setBusy(false);
     }
@@ -134,12 +149,19 @@
     });
 
     document.getElementById('swapBtn').addEventListener('click', function () {
+      var translated = currentResult() ? lastResult.text : null;
       swapped = !swapped;
-      input.placeholder = swapped ? 'Enter non-sensitive Yoruba text…' : 'Enter non-sensitive source text…';
-      outputLabel.textContent = swapped ? 'English output' : 'Yoruba output';
-      clearResult('');
+      if (translated !== null) input.value = translated;
+      updateLanguageLabels();
+      clearResult(translated !== null
+        ? 'Translation moved to the input. Choose Translate to translate it back.'
+        : 'Languages swapped. Your text has been kept; check the input language before translating.');
+      input.focus();
     });
 
+    input.addEventListener('input', function () {
+      clearResult('Text changed. Choose Translate when your current text is ready.');
+    });
     input.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
@@ -150,17 +172,18 @@
 
     async function runTranslation() {
       if (!consent.requireConsent(toolId, 'Cloud translation is off. Review the notice and opt in first.')) {
-        status.textContent = 'No text was sent. Cloud translation needs your explicit opt-in.';
+        clearResult('No text was sent. Cloud translation needs your explicit opt-in.');
         return;
       }
-      var text = input.value.trim();
+      var sourceInput = input.value;
+      var text = sourceInput.trim();
       if (!text) {
-        output.textContent = 'Enter text above to translate.';
+        clearResult('Enter text above to translate.');
         input.focus();
         return;
       }
       if (Array.from(text).length > 2000) {
-        output.textContent = 'Text is too long. Use 2,000 characters or fewer.';
+        clearResult('Text is too long. Use 2,000 characters or fewer.');
         input.focus();
         return;
       }
@@ -168,6 +191,12 @@
       abortRequest();
       controller = typeof AbortController === 'function' ? new AbortController() : null;
       var requestController = controller;
+      var sequence = requestSequence;
+      var requestSwapped = swapped;
+      lastResult = null;
+      function isCurrent() {
+        return sequence === requestSequence && input.value === sourceInput && swapped === requestSwapped && consent.hasConsent(toolId);
+      }
       var source = swapped ? config.target : (config.source || 'en');
       var target = swapped ? (config.source || 'en') : config.target;
       setBusy(true);
@@ -188,18 +217,26 @@
             allowFallback: false
           })
         });
+        if (!isCurrent()) return;
         var data = await response.json().catch(function () { return {}; });
-        if (!response.ok || !data.translatedText) {
-          if (response.status === 428) consent.reset(toolId);
+        if (!isCurrent()) return;
+        if (!response.ok || typeof data.translatedText !== 'string' || !data.translatedText.trim()) {
+          if (response.status === 428) {
+            consent.reset(toolId);
+            clearResult('Cloud translation is off. Review the notice and opt in again.');
+            return;
+          }
           output.textContent = 'Cloud translation is unavailable. The local phrasebook above still works.';
           status.textContent = data.message || data.error || 'No external translation was returned.';
           return;
         }
+        lastResult = { text: data.translatedText, input: sourceInput, swapped: requestSwapped };
         output.textContent = data.translatedText;
         status.textContent = (data.provider || 'External provider')
           + (data.unchanged ? ' · unchanged; verify this result' : '')
           + ' · temporary uncached result';
       } catch (error) {
+        if (!isCurrent()) return;
         if (error && error.name === 'AbortError') {
           status.textContent = 'Cloud translation request cancelled.';
         } else {
@@ -207,11 +244,14 @@
           status.textContent = 'Connection error. No result was stored.';
         }
       } finally {
-        if (controller === requestController) controller = null;
-        setBusy(false);
+        if (sequence === requestSequence) {
+          controller = null;
+          setBusy(false);
+        }
       }
     }
 
+    updateLanguageLabels();
     setBusy(false);
   }
 

@@ -632,61 +632,108 @@ function updateProgress() {
 }
 
 /* ── Translate Mode ── */
-function swapLangs() {
-  swapped = !swapped;
-  document.getElementById('srcLabel').textContent = swapped ? 'Nigerian Pidgin' : 'English';
-  document.getElementById('tgtLabel').textContent = swapped ? 'English' : 'Nigerian Pidgin';
-  document.getElementById('srcText').placeholder = swapped ? 'Type Pidgin text here...' : 'Type English text here...';
-  document.getElementById('tgtOutput').textContent = 'Translation will appear here...';
-}
+var translationSequence = 0;
+var translationController = null;
+var translationResult = null;
+var translationBusy = false;
+var translationInitialized = false;
 
-function doTranslate() {
-  var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+function translationConsent() {
+  return window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+}
+function setTranslationBusy(busy) {
+  translationBusy = busy;
+  var consent = translationConsent(), button = document.getElementById('translateBtn');
+  button.disabled = busy || !consent || !consent.hasConsent('pidgin-translator');
+  button.textContent = busy ? 'Translating...' : 'Translate \u2192';
+}
+function clearTranslationOwnership(state) {
+  var output = document.getElementById('tgtOutput');
+  output.setAttribute('data-translation-state', state || 'idle');
+  ['data-translation-input', 'data-translation-output', 'data-translation-target-label'].forEach(function(name) { output.removeAttribute(name); });
+}
+function invalidateTranslation(message) {
+  translationSequence += 1;
+  if (translationController) translationController.abort();
+  translationController = null;
+  translationResult = null;
+  clearTranslationOwnership('idle');
+  document.getElementById('tgtOutput').textContent = 'Translation will appear here after you opt in.';
+  document.getElementById('translateStatus').textContent = message || '';
+  setTranslationBusy(false);
+}
+function updateTranslationLabels() {
+  document.getElementById('srcLabel').textContent = swapped ? 'Nigerian Pidgin text to send' : 'English text to send';
+  document.getElementById('tgtLabel').textContent = swapped ? 'English result' : 'Nigerian Pidgin result';
+  var input = document.getElementById('srcText');
+  input.placeholder = swapped ? 'Type Pidgin text here...' : 'Type English text here...';
+  input.setAttribute('lang', swapped ? 'pcm' : 'en');
+  document.getElementById('tgtOutput').setAttribute('lang', swapped ? 'en' : 'pcm');
+}
+function swapLangs() {
+  var input = document.getElementById('srcText');
+  var translated = translationResult && translationResult.input === input.value && translationResult.swapped === swapped ? translationResult.text : null;
+  swapped = !swapped;
+  if (translated !== null) input.value = translated;
+  updateTranslationLabels();
+  invalidateTranslation(translated !== null
+    ? 'Translation moved to the input. Choose Translate to translate it back.'
+    : 'Languages swapped. Your text has been kept; check its language before translating.');
+  input.focus();
+}
+async function doTranslate() {
+  var consent = translationConsent();
   if (!consent || !consent.requireConsent('pidgin-translator', 'Cloud translation is off. Review the notice and opt in first.')) {
-    document.getElementById('translateStatus').textContent = 'No text was sent. Cloud translation needs your explicit opt-in.';
+    invalidateTranslation('No text was sent. Cloud translation needs your explicit opt-in.');
     return;
   }
-  var text = document.getElementById('srcText').value.trim();
-  if (!text) return;
-  var btn = document.getElementById('translateBtn');
-  var status = document.getElementById('translateStatus');
-  btn.disabled = true;
-  btn.textContent = 'Translating...';
-  status.textContent = '';
-  var src = swapped ? 'pcm' : 'en';
-  var tgt = swapped ? 'en' : 'pcm';
-  var requestHeaders = Object.assign({'Content-Type': 'application/json'}, consent.headers('pidgin-translator'));
-  fetch('/api/translate', {
-    method: 'POST',
-    headers: requestHeaders,
-    credentials: 'same-origin',
-    cache: 'no-store',
-    body: JSON.stringify({text: text, source: src, target: tgt, allowFallback: false})
-  }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(data){ return {response:r,data:data}; }); })
-  .then(function(result) {
-    var r = result.response;
-    var d = result.data;
-    if (!r.ok) {
-      if (r.status === 428) consent.reset('pidgin-translator');
-      document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
-      status.textContent = d.message || d.error || 'No external translation was returned.';
+  var input = document.getElementById('srcText'), rawInput = input.value, text = rawInput.trim();
+  if (!text) { invalidateTranslation('Enter text to translate.'); input.focus(); return; }
+  invalidateTranslation('Sending the text you selected to the external translation service.');
+  translationController = typeof AbortController === 'function' ? new AbortController() : null;
+  var controller = translationController, sequence = translationSequence, direction = swapped;
+  var output = document.getElementById('tgtOutput'), status = document.getElementById('translateStatus');
+  function isCurrent() {
+    return sequence === translationSequence && input.value === rawInput && swapped === direction && consent.hasConsent('pidgin-translator');
+  }
+  clearTranslationOwnership('pending');
+  output.textContent = 'Translating...';
+  setTranslationBusy(true);
+  try {
+    var response = await fetch('/api/translate', {
+      method: 'POST', headers: Object.assign({'Content-Type': 'application/json'}, consent.headers('pidgin-translator')),
+      credentials: 'same-origin', cache: 'no-store', signal: controller ? controller.signal : undefined,
+      body: JSON.stringify({text: text, source: direction ? 'pcm' : 'en', target: direction ? 'en' : 'pcm', allowFallback: false})
+    });
+    if (!isCurrent()) return;
+    var data = await response.json().catch(function() { return {}; });
+    if (!isCurrent()) return;
+    if (!response.ok || typeof data.translatedText !== 'string' || !data.translatedText.trim()) {
+      if (response.status === 428) { consent.reset('pidgin-translator'); invalidateTranslation('Cloud translation needs a new explicit opt-in.'); return; }
+      clearTranslationOwnership('error');
+      output.textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
+      status.textContent = data.message || data.error || 'No external translation was returned.';
       return;
     }
-    document.getElementById('tgtOutput').textContent = d.translatedText || 'Translation not available';
-    status.textContent = d.provider ? 'via ' + d.provider + (d.unchanged ? ' | unchanged; verify this result' : '') : '';
-  }).catch(function() {
-    document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
+    translationResult = {input: rawInput, swapped: direction, text: data.translatedText};
+    output.textContent = data.translatedText;
+    output.setAttribute('data-translation-input', rawInput);
+    output.setAttribute('data-translation-output', data.translatedText);
+    output.setAttribute('data-translation-target-label', document.getElementById('tgtLabel').textContent);
+    output.setAttribute('data-translation-state', 'ready');
+    status.textContent = data.provider ? 'via ' + data.provider + (data.unchanged ? ' | unchanged; verify this result' : '') : '';
+  } catch (error) {
+    if (!isCurrent()) return;
+    clearTranslationOwnership('error');
+    output.textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
     status.textContent = 'Connection error. No result was stored.';
-  }).finally(function() {
-    btn.disabled = !(consent && consent.hasConsent('pidgin-translator'));
-    btn.textContent = 'Translate \u2192';
-  });
+  } finally {
+    if (isCurrent()) { translationController = null; setTranslationBusy(false); }
+  }
 }
-
 function clearCloudTranslation() {
   document.getElementById('srcText').value = '';
-  document.getElementById('tgtOutput').textContent = 'Translation will appear here after you opt in.';
-  document.getElementById('translateStatus').textContent = 'Text and temporary translation state cleared.';
+  invalidateTranslation('Text and temporary translation state cleared.');
   document.getElementById('srcText').focus();
 }
 
@@ -709,13 +756,20 @@ function downloadPhrasebook() {
 }
 
 function initExternalTranslationConsent() {
-  var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+  var consent = translationConsent();
   var host = document.getElementById('pidginTranslationConsent');
-  var button = document.getElementById('translateBtn');
-  if (!consent || !host || !button) return;
+  if (!consent || !host || translationInitialized) return;
+  translationInitialized = true;
   consent.render(host, {toolId: 'pidgin-translator', primaryProvider: 'MyMemory'});
+  updateTranslationLabels();
+  clearTranslationOwnership('idle');
+  setTranslationBusy(false);
+  document.getElementById('srcText').addEventListener('input', function() {
+    invalidateTranslation('Text changed. Choose Translate when your current text is ready.');
+  });
   host.addEventListener('afrotools:external-translation-consent-change', function() {
-    button.disabled = !consent.hasConsent('pidgin-translator');
+    if (!consent.hasConsent('pidgin-translator')) invalidateTranslation('Cloud translation is off. No text will be sent.');
+    else setTranslationBusy(translationBusy);
   });
 }
 
@@ -738,12 +792,17 @@ function setPBCat(c) {
   filterPhrases();
 }
 
+function phraseSearchText(value) {
+  return String(value || '').normalize('NFKC').replace(/[\u2018\u2019\u02bc]/g, "'")
+    .toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
 function getFilteredPhrases() {
-  var q = (document.getElementById('search').value || '').toLowerCase();
+  var q = phraseSearchText(document.getElementById('search').value);
   return PHRASES.filter(function(p) {
     if (pbCat !== 'All' && p.cat !== pbCat) return false;
     if (!q) return true;
-    return p.en.toLowerCase().indexOf(q) !== -1 || p.lang.toLowerCase().indexOf(q) !== -1;
+    return phraseSearchText(p.en).indexOf(q) !== -1 || phraseSearchText(p.lang).indexOf(q) !== -1;
   });
 }
 
@@ -844,6 +903,7 @@ if (document.readyState === 'loading') {
 }
 window.addEventListener('pagehide', function() {
   document.getElementById('srcText').value = '';
+  invalidateTranslation('');
   document.getElementById('tgtOutput').textContent = '';
 });
 </script>
@@ -860,5 +920,6 @@ window.addEventListener('pagehide', function() {
 })();
 </script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/language-tool-focus.js" defer></script>
 </body>
 </html>
