@@ -4,9 +4,10 @@
  function status(record,nowValue,maxAge){
   var now=date(nowValue||new Date().toISOString()),effective=date(record&&record.effective_date),verified=date(record&&record.last_verified_at),end=date(record&&record.valid_to);
   var valid=Boolean(record&&['petrol','diesel'].includes(record.fuel_type)&&Number.isFinite(Number(record.price))&&Number(record.price)>0&&Number(record.price)<=10000000&&/^[A-Z]{3}$/.test(record.currency||'')&&record.unit==='litre'&&/^https:\/\/[^\s]+$/.test(record.source_url||'')&&record.source_name&&Number.isFinite(now)&&Number.isFinite(effective)&&Number.isFinite(verified)&&effective<=now&&verified<=now&&(!record.valid_to||Number.isFinite(end)));
+  if(valid&&record.date_basis==='survey-period'){var start=date(record.period_start),finish=date(record.period_end),published=date(record.source_published_at);valid=Number.isFinite(start)&&Number.isFinite(finish)&&Number.isFinite(published)&&start<=finish&&finish===effective&&finish<=published&&published<=verified;}
   var age=valid?Math.floor((now-effective)/86400000):null;
   var historical=valid&&((Number.isFinite(end)&&now>end+86400000)||age>(Number(maxAge)||45));
-  return {valid:valid,available:valid&&!historical,historical:historical,stale:historical,ageDays:age,basis:!valid?'unavailable':historical?'historical-estimate':record.date_basis==='snapshot'?'snapshot-estimate':record.date_basis==='observation'?'dated-observation':'market-reference'};
+  return {valid:valid,available:valid&&!historical,historical:historical,stale:historical,ageDays:age,basis:!valid?'unavailable':historical?'historical-estimate':record.price_kind==='brand-published-retail'?'brand-reference':record.date_basis==='survey-period'?'period-average':record.date_basis==='snapshot'?'snapshot-estimate':record.date_basis==='observation'?'dated-observation':'market-reference'};
  }
  function merge(markets,latest,nowValue){
   var rows=JSON.parse(JSON.stringify(markets||[]));
@@ -28,6 +29,6 @@
   });
   return rows;
  }
- function priceContext(market,record,basis){return {id:market.market_id,name:market.locality_name,countryCode:market.country_code,granularity:market.granularity,price:record.price,currency:record.currency,referenceDate:record.effective_date,effectiveDate:!record.date_basis||record.date_basis==='effective'?record.effective_date:null,observationDate:record.date_basis==='observation'?record.effective_date:null,snapshotDate:record.date_basis==='snapshot'?record.effective_date:null,dateBasis:record.date_basis||'effective',lastVerifiedAt:record.date_basis==='snapshot'?null:record.last_verified_at,validTo:record.valid_to||null,sourceName:record.source_name,sourceUrl:record.source_url,priceBasis:basis,priceKind:record.price_kind||'country-benchmark',notes:record.notes||''};}
+ function priceContext(market,record,basis){return {id:market.market_id,name:market.locality_name,countryCode:market.country_code,granularity:market.granularity,price:record.price,currency:record.currency,referenceDate:record.effective_date,effectiveDate:!record.date_basis||record.date_basis==='effective'?record.effective_date:null,observationDate:record.date_basis==='observation'?record.effective_date:null,snapshotDate:record.date_basis==='snapshot'?record.effective_date:null,dateBasis:record.date_basis||'effective',periodStart:record.date_basis==='survey-period'?record.period_start:null,periodEnd:record.date_basis==='survey-period'?record.period_end:null,sourcePublishedAt:record.source_published_at||null,lastVerifiedAt:record.date_basis==='snapshot'?null:record.last_verified_at,validTo:record.valid_to||null,sourceName:record.source_name,sourceUrl:record.source_url,priceBasis:basis,priceKind:record.price_kind||'country-benchmark',notes:record.notes||''};}
  return {status:status,merge:merge,priceContext:priceContext};
 }));

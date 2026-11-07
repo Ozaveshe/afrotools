@@ -11,6 +11,7 @@
   var DAY_MS = 86400000;
   var US_GALLON_LITRES = 3.785411784;
   var GRANULARITY_LABELS = {
+    brand: 'Brand price reference',
     station: 'Station price',
     city: 'City reference',
     region: 'Regional reference',
@@ -70,7 +71,9 @@
       ['country_code', 'country_name', 'locality_name', 'granularity'].forEach(function (field) {
         if (!market[field]) errors.push(prefix + '.' + field + ' is required.');
       });
-      if (!Number.isFinite(finite(market.latitude)) || !Number.isFinite(finite(market.longitude))) errors.push(prefix + ' requires numeric coordinates.');
+      if (market.granularity === 'brand') {
+        if (market.latitude !== null || market.longitude !== null) errors.push(prefix + ' brand reference must not imply a station location.');
+      } else if (!Number.isFinite(finite(market.latitude)) || !Number.isFinite(finite(market.longitude))) errors.push(prefix + ' requires numeric coordinates.');
       if (!Array.isArray(market.fuels) || !market.fuels.length) errors.push(prefix + '.fuels must be non-empty.');
       var fuelIds = Object.create(null);
       (market.fuels || []).forEach(function (record, fuelIndex) {
@@ -103,6 +106,7 @@
   function nearestMarket(markets, latitude, longitude) {
     if (!Array.isArray(markets) || !markets.length) return null;
     return markets.reduce(function (nearest, market) {
+      if (market.granularity === 'brand') return nearest;
       var distance = distanceKm(latitude, longitude, market.latitude, market.longitude);
       if (!nearest || distance < nearest.distanceKm) return { market: market, distanceKm: distance };
       return nearest;
