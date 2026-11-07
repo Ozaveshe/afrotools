@@ -838,6 +838,7 @@ function calculate() {
     currency: currencyCode,
     cattleCount: cattleCount,
     cattlePrice: cattlePrice,
+    familyExpectation: familyExpectation,
     totalValue: totalValue,
     livestockValue: livestockValue,
     giftValue: giftValue,
@@ -904,7 +905,9 @@ function renderNegotiationPlan(data) {
   ];
   lastLobolaBrief = [
     'Lobola preparation brief',
-    data.country + ' | ' + data.region + ' | ' + data.cattleCount + ' cattle at ' + data.symbol + ' ' + fmt(data.cattlePrice) + ' per head.',
+    data.country + ' | ' + data.region + ' | ' + (data.familyExpectation > 0
+      ? 'Agreed base cash amount: ' + money(data.symbol, data.familyExpectation) + ' ' + data.currency + ' (replaces the livestock reference).'
+      : data.cattleCount + ' cattle at ' + data.symbol + ' ' + fmt(data.cattlePrice) + ' per head.'),
     'Estimate: ' + money(data.symbol, data.totalValue) + ' ' + data.currency + ' | Low: ' + money(data.symbol, data.lowScenario) + ' | High: ' + money(data.symbol, data.highScenario) + '.',
     'Gifts/items: ' + (data.giftItems || 'Not specified yet') + '.',
     'Notes: ' + (data.familyNotes || 'No notes added yet') + '.',
