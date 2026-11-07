@@ -8,7 +8,7 @@ const sports = require('../assets/js/sports-toolkit.js');
 
 const EXPECTED = {
   'betting-odds': ['Positive value', 'NGN 7,500'],
-  'afcon-predictor': ['Morocco title model', '8.0%'],
+  'afcon-predictor': ['Morocco model share', '8.0%'],
   'fantasy-football': ['Gameweek points', '10 pts'],
   'betting-tax': ['Net betting profit after modeled tax', 'NGN 7,125'],
   'streaming-royalties': ['Estimated artist net', 'USD 250.74'],
@@ -48,7 +48,15 @@ for (const [id, expected] of Object.entries(EXPECTED)) {
     assert.ok(description.length >= 80 && description.length <= 180);
     assert.match(html, new RegExp(`<link rel="canonical" href="https://afrotools\\.com/tools/${id}/">`));
     assert.ok(schemas.some((schema) => schema['@type'] === 'WebApplication'));
-    assert.match(html, /\/assets\/js\/pages\/day9-sports-safety\.js/);
+    if (id === 'afcon-predictor') {
+      assert.match(html, /\/assets\/js\/sports-toolkit\.js/);
+      assert.match(html, /data-sports-tool="afcon-predictor"/);
+      assert.match(html, /\.sports-report-preview\{display:block!important;max-height:none!important;overflow:visible!important;white-space:pre-wrap/);
+      assert.doesNotMatch(html, /\/assets\/js\/pages\/day9-sports-safety\.js/,
+        'AFCON uses the native untruncated report rather than the generic report replacement');
+    } else {
+      assert.match(html, /\/assets\/js\/pages\/day9-sports-safety\.js/);
+    }
   });
 }
 

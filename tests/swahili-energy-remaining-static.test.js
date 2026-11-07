@@ -86,7 +86,13 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
       "Gharama ya Umeme na Unit za Kulipia Kabla", 'id="electricityCustomCurrency"', 'id="electricityCustomTax"',
     ] : [
       "/data/energy/sw-energy-planning-snapshot.js", "/assets/js/pages/sw-energy-remaining-parity.js",
-      "Machi 2026", "Uhakika", "si data ya sasa wala bei hai", 'data-export="json"', 'data-export="csv"',
+      "Machi 2026",
+      ...(app.mode === "solarComparison" ? [
+        "Risiti, nukuu na matumizi", "Hizi ni dhana za kupanga, si nukuu ya kifaa chako.",
+        'id="solarFuelReference"', 'id="useSolarFuelReference"', app.fuelReference.url,
+        ...app.comparisonFields.map(field => `name="${field.name}"`),
+      ] : ["Uhakika", "si data ya sasa wala bei hai"]),
+      'data-export="json"', 'data-export="csv"',
       'data-export="txt"', 'data-export="pdf"', 'id="importJson"', "Hakuna taarifa inayotumwa kwa seva au AI",
       'data-theme-toggle', 'type="reset"',
     ];
