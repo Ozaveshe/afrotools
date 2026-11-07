@@ -368,16 +368,27 @@ function schema(meta, routePath) {
       }))
     });
   }
-  const listVehicles = meta.listVehicles || [];
-  if (listVehicles.length > 1) {
+  // Mirror the destinations already linked in the static page content.
+  const listItems = meta.pageType === "root"
+    ? Object.values(data.countries)
+      .filter((country) => marketObservations.some((entry) => entry.countryCode === country.code))
+      .map((country) => ({ name: country.name, url: canonical(`cars/${country.slug}`) }))
+    : meta.countryObj
+      ? (meta.listVehicles || []).map((vehicle) => ({
+        name: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+        url: canonical(`cars/${meta.countryObj.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`)
+      }))
+      : [];
+  if (listItems.length > 1) {
     blocks.push({
       "@context": "https://schema.org",
       "@type": "ItemList",
       name: meta.title,
-      itemListElement: listVehicles.slice(0, 12).map((vehicle, index) => ({
+      itemListElement: listItems.slice(0, 12).map((item, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        name: `${vehicle.year} ${vehicle.make} ${vehicle.model}`
+        name: item.name,
+        url: item.url
       }))
     });
   }
