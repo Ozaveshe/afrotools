@@ -1438,7 +1438,7 @@
       <a class="home-tool-card" href="/tools/scholarship-finder/" data-tone="aid"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4z"/><path d="M6 10v5c0 2 3 4 6 4s6-2 6-4v-5"/><path d="M21 8v6"/></svg></span><small class="home-tool-tag">Study</small><strong>Scholarship Finder</strong><p>Search funding, check whether you qualify, and keep deadlines in one place.</p><em>Find funding</em></a>
       <a class="home-tool-card" href="/tools/naira-to-words/" data-tone="invoice"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h4"/><path d="M7 14h7"/><circle cx="17" cy="12" r="1.5"/></svg></span><small class="home-tool-tag">Money</small><strong>Naira to Words</strong><p>Turn any naira amount into exact cheque and invoice wording, kobo included.</p><em>Convert amount</em></a>
       <a class="home-tool-card" href="/tools/solar-roi/" data-tone="solar"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M12 1v2"/><path d="M12 13v2"/><path d="m4.9 3.9 1.4 1.4"/><path d="m17.7 5.3 1.4-1.4"/><path d="M3 8h2"/><path d="M19 8h2"/><path d="M4 21h16"/><path d="m6 21 2-6h8l2 6"/><path d="M8.7 18h6.6"/></svg></span><small class="home-tool-tag">Energy</small><strong>Solar ROI</strong><p>Estimate monthly savings, payback, battery needs, and the generator tradeoff.</p><em>Plan solar</em></a>
-      <a class="home-tool-card" href="/tools/fuel-tracker/" data-tone="fuel"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 21h14"/><path d="M7 7h6"/><path d="M16 8h2l2 2v8a2 2 0 0 1-4 0v-4h4"/><path d="m18 8 2-2"/></svg></span><small class="home-tool-tag">Energy</small><strong>AfroFuel</strong><p>Check petrol, diesel, and LPG prices with the date and source on every figure.</p><em>Check fuel</em></a>
+      <a class="home-tool-card" href="/tools/fuel-tracker/" data-tone="fuel"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 21h14"/><path d="M7 7h6"/><path d="M16 8h2l2 2v8a2 2 0 0 1-4 0v-4h4"/><path d="m18 8 2-2"/></svg></span><small class="home-tool-tag">Energy</small><strong>AfroFuel</strong><p>Find dated petrol and diesel prices, then estimate your fill cost.</p><em>Check fuel</em></a>
       <a class="home-tool-card" href="/engineering/floor-planner/" data-tone="plan"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h6"/><path d="M10 4v16"/><path d="M10 14h10"/><path d="M15 14v6"/><path d="M6 7h2"/></svg></span><small class="home-tool-tag">Building</small><strong>Floor Planner</strong><p>Draw rooms, place furniture, estimate materials, and export a bill of quantities.</p><em>Open planner</em></a>
       <a class="home-tool-card" href="/cars/" data-tone="cars"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13 5 7a3 3 0 0 1 3-2h8a3 3 0 0 1 3 2l2 6"/><path d="M5 13h14v5H5z"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M7 10h10"/></svg></span><small class="home-tool-tag">Cars</small><strong>Car Price Directory</strong><p>Compare local prices against import costs before you commit to a vehicle.</p><em>Compare cars</em></a>
     </div>
@@ -2859,7 +2859,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     var CATEGORY_ALIASES = {
-      'financial':'finance money salary tax paye fx forex rates prices market data fuel prices',
+      'financial':'finance money salary tax paye fx forex rates prices market data',
       'document-pdf':'documents pdf forms files office',
       'image-design':'image design photo graphics creative assets',
       'developer':'dev tools api json seo code webmaster',
@@ -2913,10 +2913,29 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
       });
     }
+    // Geographic query recognition only; this is not a list of markets with price coverage.
+    // Names mirror data/registry/countries.json; the finder still requires market selection or a manual price.
+    var FUEL_FINDER_COUNTRY_NAMES = ["Angola", "Burkina Faso", "Burundi", "Benin", "Botswana", "Congo - Kinshasa", "Central African Republic", "Congo - Brazzaville", "Côte d’Ivoire", "Cameroon", "Cape Verde", "Djibouti", "Algeria", "Egypt", "Eritrea", "Ethiopia", "Gabon", "Ghana", "Gambia", "Guinea", "Equatorial Guinea", "Guinea-Bissau", "Kenya", "Comoros", "Liberia", "Lesotho", "Libya", "Morocco", "Madagascar", "Mali", "Mauritania", "Mauritius", "Malawi", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Seychelles", "Sudan", "Sierra Leone", "Senegal", "Somalia", "South Sudan", "São Tomé & Príncipe", "Eswatini", "Chad", "Togo", "Tunisia", "Tanzania", "Uganda", "South Africa", "Zambia", "Zimbabwe"];
+    function isGlobalFuelFinder(tool) {
+      return tool.id === 'fuel-tracker' || tool.sourceId === 'fuel-tracker';
+    }
+    function fuelFinderCountryTokens(tool, tokens) {
+      if (!isGlobalFuelFinder(tool) || !tokens.some(function(t){return /^(fuel|petrol|diesel|gasoline)$/.test(t);}) ||
+          !tokens.some(function(t){return /^(price|prices|tracker|finder)$/.test(t);})) return [];
+      var query = ' ' + tokens.join(' ') + ' ';
+      var countryTokens = [];
+      FUEL_FINDER_COUNTRY_NAMES.forEach(function(name) {
+        var country = normalizeSearchText(name);
+        if (query.indexOf(' ' + country + ' ') !== -1) countryTokens = countryTokens.concat(country.split(' '));
+      });
+      return countryTokens;
+    }
+
     function generatedAliases(tool) {
       var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
       var terms = [];
-      if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(raw)) terms.push('fuel tracker fuel prices petrol diesel gasoline carburant');
+      if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(raw)) terms.push('fuel petrol diesel gasoline carburant');
+      if (isGlobalFuelFinder(tool)) terms.push('fuel tracker fuel prices petrol prices diesel prices gasoline prices');
       if (/\btax\b|paye|vat|wht|cit|cgt|duty/.test(raw)) terms.push('tax income tax business tax salary tax impot fiscal');
       if (/stream|creator|content|media|music|video/.test(raw)) terms.push('creator economy creative economy streaming content creator media');
       return terms.join(' ');
@@ -2939,13 +2958,15 @@ document.addEventListener('DOMContentLoaded', function() {
         (tool.countries||[]).join(' '), countryText, CATEGORY_LABELS[tool.category]||'', CATEGORY_ALIASES[tool.category]||'', generatedAliases(tool)].join(' '));
       var s = 0;
       var matchedTokens = 0;
+      var optionalCountryTokens = fuelFinderCountryTokens(tool, tokens);
       tokens.forEach(function(t) {
         var tokenScore = 0;
         if (name.split(' ').some(function(w){return w===t;})) tokenScore = 40;
         else if (name.startsWith(t)) tokenScore = 30;
         else if (name.includes(t)) tokenScore = 20;
         else if (blob.includes(t)) tokenScore = 5;
-        if (tokenScore > 0) {
+        // Country metadata improves ranking; a recognised country does not exclude the global finder.
+        if (tokenScore > 0 || optionalCountryTokens.indexOf(t) !== -1) {
           matchedTokens++;
           s += tokenScore;
         }
@@ -3161,7 +3182,7 @@ document.addEventListener('DOMContentLoaded', function() {
       results.forEach(function(r, i) {
         var tool = r.t;
         var isLive = tool.status === 'live' || tool.status === 'new';
-        var cat = CATEGORY_LABELS[tool.category] || tool.category;
+        var cat = isGlobalFuelFinder(tool) ? 'Choose a supported market or enter your own price' : (CATEGORY_LABELS[tool.category] || tool.category);
         var badge = isLive
           ? '<span class="sd-badge sd-badge-live">● Live</span>'
           : '<span class="sd-badge sd-badge-soon">Coming Soon</span>';
