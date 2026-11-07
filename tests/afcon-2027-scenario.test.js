@@ -11,6 +11,65 @@ test("existing Morocco and Nigeria default outcomes remain unchanged",()=>{
  assert.equal(calculate({...defaults,favorite:"Nigeria"}).heroValue,"6.9%");
  assert.deepEqual(calculate({...defaults,kenyaStrength:"invalid",replaceSeed:"Uganda"}),calculate(defaults));
 });
+
+test("every seeded team appears in the full ranking and the comparison bars",()=>{
+ for(const favorite of sports.tools["afcon-predictor"].fields.find(field=>field.id==="favorite").options.map(option=>option.value)){
+  for(const mode of ["2027-planner","2025-review"]){
+   const r=calculate({...defaults,favorite,mode}),rankings=r.rows.filter(([label])=>/^\d+\. /.test(label));
+   assert.equal(rankings.length,24);
+   assert.equal(new Set(rankings.map(([label])=>label.replace(/^\d+\. /,"").replace(/ \(selected\)$/, ""))).size,24);
+   assert.ok(rankings.some(([label])=>label.endsWith(favorite+" (selected)")));
+   assert.ok(r.bars.some(bar=>bar.label===favorite+" (selected)"));
+   assert.equal(r.scenarioField.names[r.comparison.selectedRank-1],favorite);
+   assert.ok(Math.abs(r.scenarioField.shares.reduce((a,b)=>a+b,0)-100)<1e-9);
+   assert.doesNotMatch(JSON.stringify(r),/title probability|chance someone else wins|Most likely final path/);
+  }
+ }
+});
+
+test("zero boosts show no invented improvement and preserve the baseline rank",()=>{
+ for(const favorite of ["Morocco","Sierra Leone","Kenya"]){
+  const r=calculate({...kenya,favorite,formBoost:0,defenseBoost:0,hostBoost:0});
+  assert.equal(r.comparison.deltaPoints,0);
+  assert.equal(r.comparison.selectedRank,r.comparison.baselineRank);
+  assert.equal(r.comparison.selectedShare,r.comparison.baselineShare);
+ }
+});
+
+test("boost impact agrees with an independent weight-ratio calculation for the same field",()=>{
+ for(const scenario of [defaults,{...defaults,favorite:"Sierra Leone"},kenya,{...defaults,mode:"2025-review"}]){
+  const base=calculate({...scenario,formBoost:0,defenseBoost:0,hostBoost:0});
+  const boosted=calculate({...scenario,formBoost:3.5,defenseBoost:2.5,hostBoost:1.5});
+  const share=base.comparison.selectedShare/100;
+  const points=3.5*8+2.5*5+1.5*10;
+  const multiplier=Math.exp(points/(330+28*scenario.upsetTolerance));
+  const expected=100*share*multiplier/(1-share+share*multiplier);
+  assert.ok(Math.abs(boosted.comparison.selectedShare-expected)<1e-10);
+  assert.ok(Math.abs(boosted.comparison.deltaPoints-(expected-share*100))<1e-10);
+  assert.equal(boosted.comparison.boostPoints,points);
+  assert.ok(boosted.comparison.selectedRank<=boosted.comparison.baselineRank);
+  assert.match(boosted.rows.find(([label])=>label==="Boost calculation")[1],/3\.5 × 8.*2\.5 × 5.*1\.5 × 10 host = 55\.5/);
+ }
+});
+
+test("comparison measures the leader gap, or runner-up lead when selected team is first",()=>{
+ for(const favorite of ["Morocco","Sierra Leone"]){
+  const r=calculate({...defaults,favorite}),f=r.scenarioField;
+  const rivalIndex=r.comparison.selectedRank===1?1:0;
+  assert.equal(r.comparison.rival,f.names[rivalIndex]);
+  assert.ok(Math.abs(r.comparison.gapPoints-Math.abs(r.comparison.selectedShare-f.shares[rivalIndex]))<1e-10);
+ }
+});
+
+test("all teams receive validated controls and the source for their selected tournament",()=>{
+ for(const name of ["formBoost","defenseBoost","hostBoost","upsetTolerance"]){
+  for(const value of [-1,11,Infinity,"3bad",""])assert.equal(calculate({...defaults,[name]:value}).heroValue,"Not calculated");
+ }
+ assert.equal(calculate({...defaults,favorite:"Not a team"}).heroValue,"Not calculated");
+ assert.equal(calculate({...defaults,mode:"2030"}).heroValue,"Not calculated");
+ assert.match(calculate(defaults).sources[0].url,/pamoja-2027/);
+ assert.doesNotMatch(JSON.stringify(calculate({...defaults,mode:"2025-review"}).sources),/pamoja|appeal/);
+});
 test("explicit Kenya assumption replaces one non-host and keeps 24 unique teams including all co-hosts",()=>{
  const result=calculate(kenya),field=result.scenarioField;
  assert.ok(field);
@@ -81,7 +140,7 @@ test("Kenya wording describes relative model shares without predicting a draw or
  assert.match(r.insights.join(" "),/replacement seed fixed/);
  assert.doesNotMatch(r.insights.join(" "),/Competitor|knockout tournament/);
  const old=calculate(defaults);
- assert.equal(old.metrics.find(row=>row.label==="Field pressure").unit,"chance someone else wins");
- assert.ok(old.rows.some(([label])=>label==="Most likely final path"));
- assert.ok(old.rows.slice(0,8).every(([,value])=>value.endsWith(" title probability")));
+ assert.equal(old.metrics.find(row=>row.label==="Field pressure").unit,"share assigned to other teams");
+ assert.ok(!old.rows.some(([label])=>label==="Most likely final path"));
+ assert.ok(old.rows.slice(0,8).every(([,value])=>value.endsWith(" model share")));
 });

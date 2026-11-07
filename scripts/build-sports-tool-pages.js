@@ -18,11 +18,11 @@ const PAGES = [
     id: 'afcon-predictor',
     title: 'AFCON Tournament Predictor',
     seoTitle: 'AFCON Tournament Predictor - 2025 Review and 2027 Planning | AfroTools',
-    description: 'Model AFCON title probability, compare contenders, and run 2025 review or 2027 planning assumptions with official CAF context.',
+    description: 'Compare all 24 teams in an AFCON what-if scenario, see your selected team’s rank, and measure how form, defense and host boosts change its model share.',
     eyebrow: 'Tournament model',
     h1: 'AFCON Tournament Predictor',
-    intro: 'Stress-test African national teams with a transparent title model. Use it for 2025 review content, 2027 planning, fan analysis, and pre-tournament scenario writing.',
-    promise: ['Top contender ranking across a 24-team field.', 'Adjustable form, defensive, and host assumptions.', 'Official CAF source card for tournament and appeal context.']
+    intro: 'Choose a team, adjust your assumptions, and compare it with the full 24-team scenario. See its rank, gap to the leader and change from an unboosted baseline for 2027 planning or a 2025 what-if review.',
+    promise: ['Full 24-team ranking with your selected team highlighted.', 'Before-and-after comparison of your form, defense and host boosts.', 'Tournament-specific CAF context, separate from illustrative model shares.']
   },
   {
     id: 'fantasy-football',
