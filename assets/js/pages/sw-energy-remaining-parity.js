@@ -41,6 +41,99 @@
   var regulatorLink = document.getElementById("regulatorLink");
   var themeButton = document.querySelector("[data-theme-toggle]");
   var lastRecord = null;
+  var isSolarComparison = config.mode === "solarComparison";
+  var solarFields = config.assumptionFields || [];
+  var solarFuelReferenceUsed = false;
+
+  function solarBasis() {
+    var basis = {};
+    solarFields.forEach(function (item) {
+      var field = form.elements.namedItem(item.name);
+      basis[item.name] = field.dataset.basis || "user_entered";
+    });
+    return basis;
+  }
+
+  function refreshSolarDefaults(reset) {
+    if (!isSolarComparison) return;
+    if (reset) {
+      solarFuelReferenceUsed = false;
+      solarFields.forEach(function (item) {
+        var field = form.elements.namedItem(item.name);
+        field.value = ""; field.dataset.basis = "planning_default";
+      });
+    }
+    var selectedCountry = root.ENERGY_DATA && root.ENERGY_DATA.countries[countrySelect.value];
+    document.getElementById("solarCurrency").textContent = selectedCountry ? "Bei na gharama zote: " + selectedCountry.currency + "." : "Chagua nchi ili kuweka sarafu.";
+    var referenceNode = document.getElementById("solarFuelReference");
+    if (referenceNode) referenceNode.hidden = !config.fuelReference || countrySelect.value !== config.fuelReference.country;
+    var engine = root.AfroTools && root.AfroTools[config.global];
+    if (!engine || typeof engine.planningDefaults !== "function") return;
+    var current = values(), seed = { dailyHours: current.dailyHours, dailyKWh: current.dailyKWh, genKVA: current.genKVA };
+    solarFields.forEach(function (item) {
+      var field = form.elements.namedItem(item.name);
+      if (!reset && field.dataset.basis && field.dataset.basis !== "planning_default") seed[item.name] = current[item.name];
+    });
+    var defaults = engine.planningDefaults(seed, countrySelect.value);
+    if (defaults.error) return;
+    solarFields.forEach(function (item) {
+      var field = form.elements.namedItem(item.name);
+      if ((reset || !field.dataset.basis || field.dataset.basis === "planning_default") && Number.isFinite(defaults[item.name])) {
+        field.value = String(Number(defaults[item.name].toPrecision(12)));
+        field.dataset.basis = "planning_default";
+      }
+    });
+    var basis = solarBasis(), changed = Object.keys(basis).filter(function (name) { return basis[name] !== "planning_default"; }).length;
+    document.getElementById("solarAssumptionStatus").textContent = changed
+      ? changed + " kati ya " + solarFields.length + " thamani ni zako au za faili; zilizobaki ni dhana za mfano."
+      : "Mfano wa kuanzia umejazwa. Bei ya mafuta ni nakala ya Machi 2026; badilisha kwa risiti au nukuu zako.";
+  }
+
+  function solarBreakdownRows(result) {
+    var b = result.breakdown, a = result.assumptions;
+    function money(value) { return a.currency + " " + Math.round(value).toLocaleString("en-US"); }
+    return [
+      ["Msingi wa jenereta", b.genCapital === 0 ? "Jenereta iliyopo; hakuna gharama mpya ya ununuzi" : "Gharama ya ununuzi na ufungaji imejumuishwa"],
+      ["Mzigo wa wastani / uwezo wa mfano", Number(a.averageLoadKW.toFixed(2)) + " kW / " + Number(a.generatorKW.toFixed(2)) + " kW (0.8 × kVA)"],
+      ["Msingi wa matumizi ya dizeli", solarBasis().genLitresHour === "planning_default" ? "kWh/siku ÷ saa/siku × 0.28 lita/kWh" : "Lita kwa saa ulizoweka; si makadirio ya mzigo"],
+      ["Dizeli kwa mwaka", Number(b.annualLitres.toFixed(2)).toLocaleString("en-US") + " lita"],
+      ["Mtaji — jenereta / solar", money(b.genCapital) + " / " + money(b.solarCapital)],
+      ["Mafuta ya jenereta, miaka 5", money(b.genFuel5yr)],
+      ["Matengenezo, miaka 5 — jenereta / solar", money(b.genMaintenance5yr) + " / " + money(b.solarMaintenance5yr)],
+      ["Uingizwaji wa vifaa vya solar, miaka 5", money(b.solarReplacement5yr)],
+      ["Akiba ya solar kwa mwaka, baada ya akiba ya uingizwaji", money(b.annualSaving)],
+      ["Tofauti ya mtaji wa solar dhidi ya jenereta", money(b.extraCapital)],
+      ["Paneli zinazokadiriwa", a.solarSizeKW + " kW; " + a.dailyKWh + " kWh/siku; jua " + a.sunHours + " saa/siku"]
+    ];
+  }
+
+  function recordSolarComparison(result, input) {
+    if (!isSolarComparison) return;
+    var rows = solarBreakdownRows(result), container = document.getElementById("comparisonBreakdown");
+    container.replaceChildren();
+    rows.forEach(function (row) {
+      var group = document.createElement("div"), term = document.createElement("dt"), detail = document.createElement("dd");
+      term.textContent = row[0]; detail.textContent = row[1]; group.append(term, detail); container.appendChild(group);
+    });
+    var boundary = "Gharama zinatumia thamani zilizo kwenye fomu kwa miaka 5. Akiba ya uingizwaji wa vifaa imegawanywa kwa miaka 5 katika hesabu ya kurejesha mtaji.";
+    document.getElementById("resultBoundary").textContent = boundary;
+    lastRecord.assumptionBasis = solarBasis();
+    lastRecord.resolvedAssumptions = result.assumptions;
+    lastRecord.breakdown = result.breakdown;
+    lastRecord.breakdownRows = rows;
+    lastRecord.assumptionRows = [
+      ["Nchi / sarafu", (COUNTRY_NAMES[input.country] || input.country) + " / " + result.assumptions.currency],
+      ["Saa za akiba kwa siku", input.dailyHours], ["Jenereta (kVA)", input.genKVA || Number(result.assumptions.genKVA.toFixed(2)) + " (mfano wa mzigo wa wastani)"], ["Nishati kwa siku (kWh)", input.dailyKWh]
+    ].concat(solarFields.map(function (item) {
+      var basis = lastRecord.assumptionBasis[item.name];
+      return [item.label, String(input[item.name]) + (basis === "planning_default" ? " (mfano)" : basis === "saved_assumption" ? " (faili)" : basis === "official_reference" ? " (EWURA, " + config.fuelReference.location + ", " + config.fuelReference.effectiveDate + ")" : " (umeweka)")];
+    }));
+    lastRecord.confidence = "scenario_from_displayed_assumptions";
+    lastRecord.boundary = boundary;
+    lastRecord.sourceContext = { presetSnapshot: "2026-03", fuelReference: solarFuelReferenceUsed ? config.fuelReference : null, regulatorUrl: regulatorLink.href, note: "User entries are assumptions or quotes supplied by the user, not independently verified live prices." };
+    if (solarFuelReferenceUsed) lastRecord.assumptionRows.push(["Chanzo cha bei ya dizeli", "EWURA, " + config.fuelReference.location + ", " + config.fuelReference.effectiveDate]);
+  }
+
 
   function setStatus(node, message, state) {
     if (!node) return;
@@ -60,10 +153,11 @@
     });
     countrySelect.value = countries.TZ ? "TZ" : (countries.KE ? "KE" : Object.keys(countries)[0] || "");
     updateSourceLink();
+    refreshSolarDefaults(true);
   }
 
   function updateSourceLink() {
-    var source = REGULATORS[countrySelect.value];
+    var source = isSolarComparison && countrySelect.value === "TZ" ? ["EWURA — bei elekezi za mafuta", "https://www.ewura.go.tz/publications/petroleum-price"] : REGULATORS[countrySelect.value];
     regulatorLink.href = source ? source[1] : "https://www.iea.org/regions/africa";
     regulatorLink.textContent = source ? source[0] : "IEA Africa — rejeo ya nishati; kiungo cha mdhibiti wa nchi hii bado hakijafungwa";
   }
@@ -81,6 +175,7 @@
     var engine = root.AfroTools && root.AfroTools[config.global];
     if (!engine || typeof engine.calculate !== "function") return { error: "engine_missing" };
     var country = input.country;
+    if (isSolarComparison) return typeof engine.calculateComparison === "function" ? engine.calculateComparison(input, country) : { error: "engine_missing" };
     if (config.mode === "solarQuick") return engine.calculate(input, country);
     if (config.mode === "appliance") {
       return engine.calculate({
@@ -143,7 +238,7 @@
     if (!form.checkValidity()) {
       clearResult();
       form.reportValidity();
-      setStatus(formStatus, "Kamilisha sehemu zinazohitajika kwa maadili halali.", "error");
+      setStatus(formStatus, isSolarComparison ? "Kamilisha sehemu zinazohitajika kwa thamani halali." : "Kamilisha sehemu zinazohitajika kwa maadili halali.", "error");
       return false;
     }
     var input = values();
@@ -151,19 +246,30 @@
     try { output = calculate(input); } catch (error) { output = { error: "calculation_failed" }; }
     if (!output || output.error || output.available === false) {
       clearResult();
+      if (isSolarComparison && output && output.error === "capacity") {
+        setStatus(formStatus, "Mzigo wa wastani ni " + output.averageLoadKW.toFixed(2) + " kW; mfano wa jenereta uliyochagua ni " + output.generatorKW.toFixed(2) + " kW (0.8 × kVA). Rekebisha ukubwa, saa au kWh ili ulinganisho utumie mahitaji yanayolingana.", "error");
+        return false;
+      }
       setStatus(formStatus, output && output.available === false
         ? "Mpango huu haupatikani kwa wingi katika nchi uliyochagua; thibitisha na wasambazaji wa eneo lako."
         : "Hesabu haikuweza kukamilika. Kagua maadili na ujaribu tena.", "error");
       return false;
     }
     render(output, input);
-    setStatus(formStatus, options.reopened ? "Faili imefunguliwa tena na hesabu imerudiwa." : "Makadirio yamekamilika. Kagua mpaka wa data kabla ya kuyatumia.", "success");
+    recordSolarComparison(output, input);
+    setStatus(formStatus, options.reopened ? "Faili imefunguliwa tena na hesabu imerudiwa." : isSolarComparison ? "Ulinganisho umekamilika. Bei, matumizi na mgawanyo wa gharama vimeonyeshwa." : "Makadirio yamekamilika. Kagua mpaka wa data kabla ya kuyatumia.", "success");
     if (!options.silent) results.scrollIntoView({ behavior: root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     return true;
   }
 
   function reportText() {
     if (!lastRecord) return "";
+    if (isSolarComparison) return [lastRecord.title, "Tarehe: " + lastRecord.calculatedAt, "Mfano wa kuanzia: Machi 2026; bei zako zimehifadhiwa", ""].concat(
+      lastRecord.metrics.map(function (metric) { return metric.label + ": " + metric.value; }),
+      ["", "Vigezo vilivyotumika"], lastRecord.assumptionRows.map(function (row) { return row[0] + ": " + row[1]; }),
+      ["", "Mgawanyo"], lastRecord.breakdownRows.map(function (row) { return row[0] + ": " + row[1]; }),
+      ["", "Bei hazibadiliki katika miaka 5; riba na thamani ya kuuza tena hazijaongezwa."]
+    ).join("\n");
     return [lastRecord.title, "Tarehe: " + lastRecord.calculatedAt, "Nakala ya data: Machi 2026", "Uhakika: mdogo hadi uhakiki wa eneo", ""].concat(
       lastRecord.metrics.map(function (metric) { return metric.label + ": " + metric.value; }),
       ["", lastRecord.boundary, "Faragha: taarifa ilichakatwa kwenye kivinjari na haikutumwa kwa seva au AI."]
@@ -219,11 +325,12 @@
     if (format === "txt") download(base + ".txt", "text/plain;charset=utf-8", reportText());
     if (format === "csv") {
       var rows = [["kipimo","thamani"]].concat(lastRecord.metrics.map(function (m) { return [m.label, m.value]; }));
+      if (isSolarComparison) rows = rows.concat(lastRecord.assumptionRows, lastRecord.breakdownRows);
       var csv = rows.map(function (row) { return row.map(function (cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(","); }).join("\r\n");
       download(base + ".csv", "text/csv;charset=utf-8", "\ufeff" + csv);
     }
     if (format === "pdf") {
-      download(base + ".pdf", "application/pdf", simplePdfBlob(config.title + "\n\n" + reportText()));
+      download(base + ".pdf", "application/pdf", simplePdfBlob(isSolarComparison ? reportText() : config.title + "\n\n" + reportText()));
     }
     setStatus(exportStatus, "Faili ya " + format.toUpperCase() + " imeundwa kwenye kifaa hiki.", "success");
   }
@@ -236,21 +343,51 @@
       if (!record || record.toolId !== config.id || !record.input) {
         setStatus(exportStatus, "Faili hii si rekodi halali ya zana hii.", "error"); return;
       }
+      if (isSolarComparison) {
+        var preview;
+        try { preview = calculate(record.input); } catch (error) { preview = null; }
+        if (!preview || preview.error || ["country", "dailyHours", "dailyKWh", "genKVA"].some(function (name) { return record.input[name] == null; })) {
+          setStatus(exportStatus, "Faili ina thamani zisizofaa. Rekodi iliyopo haijabadilishwa.", "error"); return;
+        }
+        solarFuelReferenceUsed = Boolean(config.fuelReference && record.sourceContext && record.sourceContext.fuelReference
+          && record.sourceContext.fuelReference.url === config.fuelReference.url
+          && record.sourceContext.fuelReference.effectiveDate === config.fuelReference.effectiveDate
+          && record.input.country === config.fuelReference.country && Number(record.input.fuelPrice) === config.fuelReference.price);
+        // Old four-input records receive explicit presets; complete records retain every saved amount.
+        solarFields.forEach(function (item) {
+          var field = form.elements.namedItem(item.name);
+          field.value = String(preview.assumptions[item.name]);
+          field.dataset.basis = record.input[item.name] != null ? "saved_assumption" : "planning_default";
+          if (item.name === "genLitresHour" && record.assumptionBasis && record.assumptionBasis.genLitresHour === "planning_default") field.dataset.basis = "planning_default";
+        });
+      }
       Object.keys(record.input).forEach(function (name) {
         var field = form.elements.namedItem(name);
         if (field) field.value = record.input[name];
       });
       updateSourceLink();
+      refreshSolarDefaults(false);
       runCalculation({ reopened: true, silent: true });
     };
     reader.readAsText(file);
   }
 
   form.addEventListener("submit", function (event) { event.preventDefault(); runCalculation(); });
-  form.addEventListener("input", function () { clearResult(); setStatus(formStatus, "Maadili yamebadilika; kokotoa tena."); });
+  form.addEventListener("input", function (event) {
+    if (isSolarComparison) {
+      if (solarFields.some(function (item) { return item.name === event.target.name; })) event.target.dataset.basis = "user_entered";
+      if (event.target.name === "fuelPrice") solarFuelReferenceUsed = false;
+      refreshSolarDefaults(false);
+    }
+    clearResult(); setStatus(formStatus, isSolarComparison ? "Thamani zimebadilika; kokotoa tena." : "Maadili yamebadilika; kokotoa tena.");
+  });
   form.addEventListener("reset", function () {
     root.setTimeout(function () {
       clearResult();
+      if (isSolarComparison) {
+        if (!countrySelect.value) countrySelect.value = root.ENERGY_DATA.countries.TZ ? "TZ" : Object.keys(root.ENERGY_DATA.countries)[0];
+        refreshSolarDefaults(true);
+      }
       updateSourceLink();
       setStatus(formStatus, "Sehemu zimerejeshwa kwenye maadili ya mfano. Kokotoa upya.", "success");
     }, 0);
@@ -261,7 +398,23 @@
     themeButton.setAttribute("aria-pressed", String(dark));
     themeButton.textContent = dark ? "Tumia mandhari mepesi" : "Tumia mandhari meusi";
   });
-  countrySelect.addEventListener("change", updateSourceLink);
+  countrySelect.addEventListener("change", function () {
+    updateSourceLink();
+    if (isSolarComparison) {
+      refreshSolarDefaults(true); clearResult();
+      setStatus(formStatus, "Nchi imebadilika; bei za mfano zimewekwa upya katika sarafu yake. Ingiza nukuu zako.");
+    }
+  });
+  if (isSolarComparison && config.fuelReference) document.getElementById("useSolarFuelReference").addEventListener("click", function () {
+    if (countrySelect.value !== config.fuelReference.country) return;
+    var field = form.elements.namedItem("fuelPrice");
+    field.value = String(config.fuelReference.price); field.dataset.basis = "official_reference";
+    solarFuelReferenceUsed = true; refreshSolarDefaults(false); clearResult();
+    setStatus(formStatus, "Bei ya dizeli ya " + config.fuelReference.location + ", EWURA " + config.fuelReference.effectiveDate + ", imewekwa. Kokotoa tena.");
+  });
+  if (isSolarComparison) document.getElementById("solarDefaults").addEventListener("click", function () {
+    refreshSolarDefaults(true); clearResult(); setStatus(formStatus, "Bei za mfano zimerejeshwa. Kokotoa tena.");
+  });
   document.querySelectorAll("[data-export]").forEach(function (button) { button.addEventListener("click", function () { exportRecord(button.dataset.export); }); });
   document.getElementById("importJson").addEventListener("change", function (event) { var file = event.target.files && event.target.files[0]; if (file) reopen(file); });
   populateCountries();
