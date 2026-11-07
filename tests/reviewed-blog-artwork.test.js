@@ -10,7 +10,8 @@ const ROOT=path.resolve(__dirname,'..');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
 const generatedArtwork=new Map([
  ...require('../data/image-generation/blog-generated-2026-10-09.json').images,
- ...require('../data/image-generation/blog-generated-2026-10-13.json').images
+ ...require('../data/image-generation/blog-generated-2026-10-13.json').images,
+ ...require('../data/image-generation/blog-generated-2026-11-07-tyre-quotation.json').images
 ].map(row=>[row.slug,row]));
 
 test('reviewed blog imagery retains exact subjects, hashes and explicit illustration labels',()=>{

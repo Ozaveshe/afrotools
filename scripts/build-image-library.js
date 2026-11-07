@@ -79,6 +79,7 @@ function build() {
   for (const item of [
     ...JSON.parse(read(OUT + '/blog-generated-2026-10-09.json')).images,
     ...JSON.parse(read(OUT + '/blog-generated-2026-10-13.json')).images,
+    ...JSON.parse(read(OUT + '/blog-generated-2026-11-07-tyre-quotation.json')).images,
     ...JSON.parse(read(OUT + '/car-generated-2026-10-13.json')).images
   ]) {
     for (const variant of item.variants) reviewed.set(variant.path, { ...variant, text_status:item.text_status || 'no-language-specific-text-reviewed', locale_reuse:item.locale_reuse !== false, review_note:item.review });
