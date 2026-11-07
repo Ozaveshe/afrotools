@@ -277,11 +277,11 @@ const solarLaunch = prefill.buildSafeLaunch("solar-energy", {
   backupHours: 6,
 });
 assert.strictEqual(solarLaunch.toolId, "solar-roi");
-assert.strictEqual(solarLaunch.route, "/tools/solar-roi/");
+assert.strictEqual(solarLaunch.route, "/tools/solar-roi/nigeria/");
 assert.deepStrictEqual(solarLaunch.missingInputs, []);
 assert.strictEqual(solarLaunch.payload.normalizedInputs.loadSizeKw, 5);
 assert.strictEqual(solarLaunch.payload.normalizedInputs.backupHours, 6);
-assertUrlDoesNotLeak(solarLaunch, ["Nigeria", "Lagos", "120000"]);
+assertUrlDoesNotLeak(solarLaunch, ["Lagos", "120000"]);
 
 const solarCountryLaunch = prefill.buildSafeLaunch("solar-roi", {
   country: "Nigeria",
@@ -300,15 +300,23 @@ assert.strictEqual(solarCountryLaunch.payload.normalizedInputs.monthlyGeneratorS
 assert.strictEqual(solarCountryLaunch.payload.normalizedInputs.userType, "shop");
 assertUrlDoesNotLeak(solarCountryLaunch, ["Lagos", "120000", "95000"]);
 
-const generatorLaunch = prefill.buildSafeLaunch("fuel-tracker", {
-  country: "Kenya",
-  fuelType: "diesel",
-  generatorHoursPerDay: 6,
+const fuelLaunch = prefill.buildSafeLaunch("fuel-tracker", {
+  country: "Kenya", fuelType: "diesel", generatorHoursPerDay: 6,
 });
-assert.strictEqual(generatorLaunch.toolId, "fuel-tracker");
-assert.strictEqual(generatorLaunch.route, "/tools/fuel-tracker/#generator-cost");
-assert.strictEqual(generatorLaunch.launchUrl, "/tools/fuel-tracker/?source=ask&prefill=1#generator-cost");
+assert.strictEqual(fuelLaunch.toolId, "fuel-tracker");
+assert.strictEqual(fuelLaunch.route, "/tools/fuel-tracker/");
+assert.deepStrictEqual(fuelLaunch.missingInputs, []);
+assert.strictEqual(fuelLaunch.payload.normalizedInputs.generatorHoursPerDay, undefined);
+assertUrlDoesNotLeak(fuelLaunch, ["Kenya", "diesel", "6"]);
+
+const generatorLaunch = prefill.buildSafeLaunch("generator-fuel", {
+  country: "Kenya", fuelType: "diesel", generatorHoursPerDay: 6, generatorSizeKva: 5,
+});
+assert.strictEqual(generatorLaunch.toolId, "generator-fuel");
+assert.strictEqual(generatorLaunch.route, "/tools/generator-fuel/");
+assert.strictEqual(generatorLaunch.launchUrl, "/tools/generator-fuel/?source=ask&prefill=1");
 assert.deepStrictEqual(generatorLaunch.missingInputs, []);
+assert.strictEqual(generatorLaunch.payload.normalizedInputs.generatorSizeKva, 5);
 assertUrlDoesNotLeak(generatorLaunch, ["Kenya", "diesel", "6"]);
 
 const invoiceLaunch = prefill.buildSafeLaunch("invoice-generator", {

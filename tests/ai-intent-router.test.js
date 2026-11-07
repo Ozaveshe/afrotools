@@ -20,7 +20,7 @@ const cases = [
   ["Car import landed cost for Honda Fit to Ghana", "import-duty", "finance"],
   ["Should I install solar for my shop in Lagos?", "solar-roi", "energy"],
   ["Compare solar battery payback for a shop in Ghana", "solar-roi", "energy"],
-  ["Generator fuel cost for my restaurant", "fuel-tracker", "energy"],
+  ["Generator fuel cost for my restaurant", "generator-fuel", "energy"],
   ["Current petrol price context in Kenya", "fuel-tracker", "energy"],
   ["Create an invoice for a client in Accra", "invoice-generator", "finance"],
   ["VAT calculator for a small business in Rwanda", "vat-calc-pan-african", "tax"],
