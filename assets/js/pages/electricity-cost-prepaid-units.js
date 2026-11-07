@@ -7,6 +7,10 @@
     NG: { name: 'Nigeria', currency: 'NGN' }, SN: { name: 'Senegal', currency: 'XOF' }, TZ: { name: 'Tanzania', currency: 'TZS' },
     UG: { name: 'Uganda', currency: 'UGX' }, ZA: { name: 'South Africa', currency: 'ZAR' }, ZM: { name: 'Zambia', currency: 'ZMW' }
   };
+  var ugandaBilling = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.ugandaElectricityBilling;
+  var ugandaFields = document.getElementById('electricityUgandaFields');
+  var previousUnits = document.getElementById('electricityPreviousUnits');
+  var serviceMonths = document.getElementById('electricityServiceMonths');
   var dataset;
   var latestResult;
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.electricityCost;
@@ -93,6 +97,10 @@
   function updateTariffs() {
     var state = countryState();
     var rows = state.current.filter(function (record) { return !provider.value || record.provider_id === provider.value; });
+    if (country.value === 'UG' && rows.length) {
+      var lang = document.documentElement.lang;
+      rows.push({ tariff_id: '', tariff_name: lang === 'fr' ? 'Autre catégorie / tarif actuel saisi' : lang === 'sw' ? 'Daraja jingine / tarifa ya sasa unayoingiza' : 'Other class / custom current rate' });
+    }
     optionsFor(tariff, rows.length ? rows : [{ tariff_id: '', tariff_name: 'Use a custom local rate' }], 'tariff_id', 'tariff_name');
     tariff.disabled = rows.length === 0;
     renderSource();
@@ -114,6 +122,13 @@
 
   function renderSource() {
     var record = selectedRecord();
+    if (ugandaFields) {
+      ugandaFields.hidden = !(ugandaBilling && ugandaBilling.applies(record));
+      ugandaFields.style.display = ugandaFields.hidden ? 'none' : '';
+      var priorField = previousUnits.closest('label');
+      priorField.hidden = mode() !== 'money_to_units';
+      priorField.style.display = priorField.hidden ? 'none' : '';
+    }
     if (!record) {
       sourceCard.dataset.state = countryState().stale ? 'stale' : 'custom';
       document.getElementById('electricitySourceTitle').textContent = countryState().stale ? 'Automatic estimate paused' : 'Custom-rate mode';
@@ -147,7 +162,7 @@
 
   function clearError() {
     status.textContent = '';
-    [amount, customRate, customFixed, customTax, percentDeduction, fixedDeduction].forEach(function (input) { input.removeAttribute('aria-invalid'); });
+    [amount, customRate, customFixed, customTax, percentDeduction, fixedDeduction, previousUnits, serviceMonths].filter(Boolean).forEach(function (input) { input.removeAttribute('aria-invalid'); });
   }
 
   function fail(input, message) {
@@ -195,6 +210,12 @@
         return fail(customRate, 'This tariff is no longer current enough for an automatic estimate. Enter a current rate from your bill or official notice.');
       }
     }
+    if (official && record.country_code === 'UG' && record.customer_class.indexOf('domestic_') === 0) {
+      if (!ugandaBilling) return fail(amount, 'Uganda billing controls could not load. Reload before estimating.');
+      var prepared = ugandaBilling.prepare(record, { mode: mode(), previousUnits: previousUnits.value, serviceMonths: serviceMonths.value, language: document.documentElement.lang });
+      if (!prepared.ok) return fail(prepared.field === 'previousUnits' ? previousUnits : serviceMonths, prepared.error);
+      record = prepared.record;
+    }
     var calculation = mode() === 'money_to_units'
       ? engine.calculateUnits(record, value, { extra_deductions: deductions() })
       : engine.calculateBill(record, value);
@@ -211,7 +232,7 @@
   country.addEventListener('change', updateProviders);
   provider.addEventListener('change', function () { updateTariffs(); track('electricity_provider_selected', { country_code: country.value, provider_id: provider.value }); });
   customCurrency.addEventListener('change', updateCustomCurrency);
-  tariff.addEventListener('change', function () { renderSource(); var record = selectedRecord(); track('electricity_tariff_selected', { country_code: country.value, provider_id: provider.value, tariff_id: tariff.value, customer_class: record ? record.customer_class : 'custom' }); });
+  tariff.addEventListener('change', function () { custom.hidden = Boolean(selectedRecord()); renderSource(); var record = selectedRecord(); track('electricity_tariff_selected', { country_code: country.value, provider_id: provider.value, tariff_id: tariff.value, customer_class: record ? record.customer_class : 'custom' }); });
   form.addEventListener('submit', calculate);
   form.querySelectorAll('input[name="electricityMode"]').forEach(function (input) {
     input.addEventListener('change', function () {
@@ -219,6 +240,7 @@
       document.getElementById('electricityAmountHelp').textContent = mode() === 'money_to_units' ? 'Enter the money paid for the token; do not enter a token or meter number.' : 'Enter monthly or billing-period consumption in kWh.';
       document.getElementById('electricityPrepaidFields').hidden = mode() !== 'money_to_units';
       result.hidden = true;
+      renderSource();
     });
   });
   sourceLink.addEventListener('click', function () { var record = selectedRecord(); track('electricity_source_opened', { country_code: country.value, provider_id: record ? record.provider_id : 'none', tariff_id: record ? record.tariff_id : 'none' }); });

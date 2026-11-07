@@ -92,9 +92,20 @@
                 <span class="electricity-help" id="electricityAmountHelp">Enter the money paid for the token; do not enter a token or meter number.</span>
               </label>
             </div>
+            <fieldset id="electricityUgandaFields" class="electricity-fields" style="display:none" hidden>
+              <legend>Uganda domestic billing context</legend>
+              <label class="electricity-field" for="electricityPreviousUnits">Units already purchased this month (kWh)
+                <input id="electricityPreviousUnits" type="number" min="0" step="any" value="0" inputmode="decimal"><span class="electricity-help">Use 0 for the first purchase; later purchases continue the same monthly tariff bands.</span>
+              </label>
+              <label class="electricity-field" for="electricityServiceMonths">Unpaid monthly service charges
+                <input id="electricityServiceMonths" type="number" min="0" step="1" value="1" inputmode="numeric"><span class="electricity-help">UGX 3,360 per month before VAT. Use 1 for this month only, 0 if already paid, or the number of unpaid months shown by UEDCL. A full monthly bill normally includes one charge.</span>
+              </label>
+              <p class="electricity-note">Uganda domestic estimates include 18% VAT on energy and service charges. Do not add this VAT or the same service charge again under receipt deductions. Confirm lifeline eligibility with UEDCL; no eligibility is inferred.</p>
+              <p><a href="https://www.era.go.ug/media/2025/07/UNDERSTANDING-ELECTRICITY-PRICES-FOR-DOMESTIC-CUSTOMERS-JUL-2025.pdf" target="_blank" rel="noopener">Official explanation of service charges and VAT</a> (2025)</p>
+            </fieldset>
             <div id="electricityPrepaidFields" class="electricity-fields">
               <label class="electricity-field" for="electricityPercentDeduction">Receipt deductions (%)
-                <input id="electricityPercentDeduction" type="number" min="0" max="100" step="0.01" value="0" inputmode="decimal"><span class="electricity-help">Optional VAT, levy or percentage deduction shown on the receipt.</span>
+                <input id="electricityPercentDeduction" type="number" min="0" max="100" step="0.01" value="0" inputmode="decimal"><span class="electricity-help">Additional receipt deductions not already included in the tariff. Do not enter 18% again for Uganda domestic VAT.</span>
               </label>
               <label class="electricity-field" for="electricityFixedDeduction">Fixed receipt deductions (<span data-electricity-currency>UGX</span>)
                 <input id="electricityFixedDeduction" type="number" min="0" step="any" value="0" inputmode="decimal"><span class="electricity-help">Optional arrears, debt recovery or fixed vending deduction.</span>
@@ -134,8 +145,8 @@
     <section class="electricity-section" aria-labelledby="electricityExamplesTitle">
       <h2 id="electricityExamplesTitle">Immediate tariff examples</h2><p class="electricity-note">These crawlable examples use the same maintained records as the calculator and make the class assumptions explicit.</p>
       <div class="electricity-answer-list">
-        <article class="electricity-answer"><h3>Uganda standard: UGX 10,000</h3><p>At UEDCL’s Q3 2026 domestic standard rate of UGX 779.4/kWh, UGX 10,000 buys about <strong>12.83 kWh</strong> before receipt-specific deductions.</p></article>
-        <article class="electricity-answer"><h3>Uganda lifeline: 30 kWh</h3><p>For an eligible UEDCL lifeline account, the first 15 kWh at UGX 250 and the next 15 kWh at UGX 779.4 total about <strong>UGX 15,441</strong>.</p></article>
+        <article class="electricity-answer"><h3>Uganda standard: UGX 10,000</h3><p>For a Q4 2026 non-lifeline account with no units bought yet, one unpaid service charge and no other deductions, UGX 10,000 buys about <strong>6.56 kWh</strong> after the UGX 3,360 charge and 18% VAT.</p></article>
+        <article class="electricity-answer"><h3>Uganda lifeline: 30 kWh</h3><p>For an eligible UEDCL account, 30 monthly kWh cost UGX 15,441 for energy. Adding one UGX 3,360 service charge and 18% VAT gives <strong>UGX 22,185.18</strong>, excluding other account adjustments.</p></article>
         <article class="electricity-answer"><h3>Tanzania D1: 100 kWh</h3><p>For a TANESCO D1 account, 75 kWh at TZS 100 plus 25 kWh at TZS 350 totals <strong>TZS 16,250</strong>.</p></article>
       </div>
     </section>
@@ -143,7 +154,7 @@
     <section class="electricity-section" aria-labelledby="electricityCoverageTitle">
       <h2 id="electricityCoverageTitle">Coverage and limitations</h2>
       <div class="electricity-availability">
-        <article><h3>Automatic at release</h3><p><strong>Uganda:</strong> UEDCL Q3 2026 domestic standard, eligible domestic lifeline and commercial average classes. <strong>Tanzania:</strong> TANESCO D1 low-usage domestic and T1 general-use classes from EWURA’s published schedule.</p></article>
+        <article><h3>Automatic at release</h3><p><strong>Uganda:</strong> UEDCL Q4 2026 domestic standard and eligible lifeline classes, including the cooking band, service charge and VAT. Commercial automatic estimates remain paused until their full billing components are verified. <strong>Tanzania:</strong> TANESCO D1 low-usage domestic and T1 general-use classes from EWURA’s published schedule.</p></article>
         <article><h3>Custom-rate only</h3><p>Nigeria, Ghana, Kenya, South Africa, Zambia, Côte d'Ivoire and Senegal are not auto-calculated until exact current provider/class schedules are parsed and reviewed. A regulator homepage or national benchmark is not enough.</p></article>
       </div>
       <p class="electricity-note">Actual bills and token receipts may include taxes, levies, fixed charges, minimum charges, arrears, debt recovery, meter corrections or time-of-use pricing. Enter receipt deductions where known and verify the result before paying or disputing a charge.</p>
@@ -166,6 +177,7 @@
 </afro-related-tools>
   <afro-footer></afro-footer>
   <script src="/assets/js/bundles/core.1254bf4a.min.js" defer></script><script src="/engines/electricity-cost-engine.js?v=34a66793"></script>
+  <script src="/assets/js/engines/uganda-electricity-billing.js"></script>
   <script src="/assets/js/pages/electricity-cost-prepaid-units.js?v=cfd489f9"></script>
   <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>

@@ -7,26 +7,26 @@ const dataset = require('../data/energy/electricity-tariffs.json');
 assert.equal(engine.validateDataset(dataset).valid, true);
 assert.equal(new Set(dataset.records.map((record) => record.tariff_id)).size, dataset.records.length);
 
-const ugStandard = dataset.records.find((record) => record.tariff_id === 'ug-uedcl-domestic-standard-q3-2026');
-const ugLifeline = dataset.records.find((record) => record.tariff_id === 'ug-uedcl-domestic-lifeline-q3-2026');
+const ugStandard = dataset.records.find((record) => record.tariff_id === 'ug-uedcl-domestic-standard-q4-2026');
+const ugLifeline = dataset.records.find((record) => record.tariff_id === 'ug-uedcl-domestic-lifeline-q4-2026');
 const tzD1 = dataset.records.find((record) => record.tariff_id === 'tz-tanesco-d1');
 
-assert.deepStrictEqual(engine.recordStatus(ugStandard, '2026-08-15', 45).available, true);
-assert.deepStrictEqual(engine.recordStatus(ugStandard, '2026-10-01', 45).reason, 'expired');
+assert.deepStrictEqual(engine.recordStatus(ugStandard, '2026-11-07', 45).available, true);
+assert.deepStrictEqual(engine.recordStatus(ugStandard, '2027-01-01', 45).reason, 'expired');
 assert.equal(engine.recordStatus(null, '2026-08-15', 45).reason, 'unsupported');
 
 const flatBill = engine.calculateBill(ugStandard, 10);
 assert.equal(flatBill.ok, true);
-assert.equal(flatBill.total, 7794);
-assert.equal(flatBill.effective_rate, 779.4);
+assert.equal(flatBill.total, 13161.72);
+assert.equal(flatBill.effective_rate, 1316.172);
 
 const boundary15 = engine.calculateBill(ugLifeline, 15);
-assert.equal(boundary15.total, 3750);
+assert.equal(boundary15.total, 8389.8);
 assert.equal(boundary15.tier_breakdown.length, 1);
 const boundary16 = engine.calculateBill(ugLifeline, 16);
-assert.equal(boundary16.total, 4529.4);
+assert.equal(boundary16.total, 9309.49);
 assert.equal(boundary16.tier_breakdown.length, 2);
-assert.equal(engine.calculateBill(ugLifeline, 30).total, 15441);
+assert.equal(engine.calculateBill(ugLifeline, 30).total, 22185.18);
 assert.equal(engine.calculateBill(tzD1, 75).total, 7500);
 assert.equal(engine.calculateBill(tzD1, 100).total, 16250);
 
@@ -49,8 +49,8 @@ assert.equal(chargeBill.total, 173.25);
 
 const units = engine.calculateUnits(ugStandard, 10000);
 assert.equal(units.ok, true);
-assert.equal(units.units, 12.8304);
-assert(Math.abs(engine.calculateBill(ugStandard, units.units).energy_charge - 10000) < 0.1);
+assert.equal(units.units, 6.5622);
+assert(Math.abs(engine.calculateBill(ugStandard, units.units).total - 10000) < 0.1);
 const deductedUnits = engine.calculateUnits(synthetic, 1020, { extra_deductions: [{ id: 'extra', label: 'Extra', type: 'percent', value: 10 }] });
 assert.equal(deductedUnits.amount_after_prepaid_deductions, 898);
 assert.equal(deductedUnits.amount_for_energy, 727.49);

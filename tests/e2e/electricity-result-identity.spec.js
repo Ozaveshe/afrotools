@@ -5,7 +5,7 @@ const routes = { en: '/tools/electricity-tariff/', fr: '/fr/tools/tarifs-electri
 for (const [locale, route] of Object.entries(routes)) {
   test(`${locale} electricity estimates stay tied to current inputs and source`, async ({ page, baseURL }) => {
     await page.setViewportSize({ width: 320, height: 800 });
-    await page.addInitScript(() => { window.__AFROTOOLS_ELECTRICITY_AS_OF__ = '2026-08-15'; });
+    await page.addInitScript(() => { window.__AFROTOOLS_ELECTRICITY_AS_OF__ = '2026-11-07'; });
     const origin = new URL(baseURL).origin;
     await page.route('**/*', request => new URL(request.request().url()).origin === origin ? request.continue() : request.abort());
     await page.goto(route);
@@ -22,7 +22,7 @@ for (const [locale, route] of Object.entries(routes)) {
       await expect(result).toBeVisible();
     };
     await calculate();
-    await expect(primary).toContainText('12.83 kWh');
+    await expect(primary).toContainText('6.56 kWh');
     await page.locator('#electricityAmount').fill('20000');
     await expect(result).toBeHidden();
     await calculate();
@@ -46,7 +46,7 @@ for (const [locale, route] of Object.entries(routes)) {
     await expect(result).toBeHidden();
     await page.locator('#electricityCountry').selectOption('UG');
     await page.locator('input[name="electricityMode"][value="units_to_bill"]').check();
-    await page.locator('#electricityTariff').selectOption('ug-uedcl-domestic-lifeline-q3-2026');
+    await page.locator('#electricityTariff').selectOption('ug-uedcl-domestic-lifeline-q4-2026');
     await page.locator('#electricityAmount').fill('15');
     await calculate();
     await expect(primary).toContainText('3,750');
@@ -54,7 +54,7 @@ for (const [locale, route] of Object.entries(routes)) {
     await expect(result).toBeHidden();
     await calculate();
     await expect(primary).toContainText('4,529.4');
-    await page.locator('#electricityTariff').selectOption('ug-uedcl-domestic-standard-q3-2026');
+    await page.locator('#electricityTariff').selectOption('ug-uedcl-domestic-standard-q4-2026');
     await expect(result).toBeHidden();
     await calculate();
     await expect(primary).toContainText('12,470.4');

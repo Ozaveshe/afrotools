@@ -152,9 +152,9 @@ test("all 17 shared engines pass a valid oracle and reject an invalid oracle", (
     if (app.exactTariff) {
       const engine = context.AfroTools.engines.electricityCost;
       const data = JSON.parse(read("data/energy/electricity-tariffs.json"));
-      const record = data.records.find((row) => row.tariff_id === "ug-uedcl-domestic-standard-q3-2026");
+      const record = data.records.find((row) => row.tariff_id === "ug-uedcl-domestic-standard-q4-2026");
       assert.equal(engine.calculateBill(record, 10).total, 7794);
-      assert.equal(engine.calculateUnits(record, 10000).units, 12.8304);
+      assert.equal(engine.calculateUnits(record, 10000).units, 6.5622);
       assert.equal(engine.calculateBill(record, 0).ok, false);
       continue;
     }
