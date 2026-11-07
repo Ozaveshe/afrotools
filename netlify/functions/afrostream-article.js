@@ -57,7 +57,7 @@ function response(statusCode, body, robots) {
     'Content-Type': 'text/html; charset=utf-8', 'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Frame-Options': 'DENY',
     'Cache-Control': statusCode === 200 ? 'public,max-age=60' : 'no-store',
-    'Netlify-CDN-Cache-Control': statusCode === 200 ? 'public,max-age=120,stale-while-revalidate=300' : 'no-store',
+    'Netlify-CDN-Cache-Control': statusCode === 200 ? 'public,durable,max-age=120,stale-while-revalidate=300' : 'no-store',
     ...(robots ? {'X-Robots-Tag':robots} : {})
   }, body };
 }
@@ -69,24 +69,46 @@ function errorPage(statusCode) {
     .replace(/<!-- AS_ARTICLE_BODY_START -->[\s\S]*?<!-- AS_ARTICLE_BODY_END -->/, () => body)
     .replace('<script src="/tools/afrostream/article.js" defer></script>', '');
 }
+function reportUnavailable(category, startedAt, view, upstreamStatus) {
+  const elapsed = Date.now() - startedAt;
+  const detail = {
+    category,
+    elapsed_ms: Number.isFinite(elapsed) ? Math.max(0, Math.min(60000, Math.floor(elapsed))) : 0,
+    view: view === 'scene' || view === 'news' ? view : 'article'
+  };
+  if (Number.isInteger(upstreamStatus) && upstreamStatus >= 100 && upstreamStatus <= 599) detail.upstream_status = upstreamStatus;
+  try { console.warn('afrostream_article_unavailable', detail); } catch (_) { /* Logging must not replace the usable error response. */ }
+}
 exports.handler = async function (event) {
   if (!['GET','HEAD'].includes(event.httpMethod)) return {statusCode:405,headers:{Allow:'GET, HEAD'},body:''};
   const {view,slug} = route(event);
   if (!view && !/^[a-z0-9][a-z0-9-]{0,220}$/.test(slug)) return response(404,errorPage(404),'noindex,follow');
   const key = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) return response(503,errorPage(503),'noindex,follow');
+  const startedAt = Date.now();
+  if (!key) {
+    reportUnavailable('configuration_missing', startedAt, view);
+    return response(503,errorPage(503),'noindex,follow');
+  }
+  let failureStage = 'upstream_network', upstreamStatus;
   try {
     let query = PROJECT + '/rest/v1/as_news?select=' + PUBLIC_FIELDS + '&is_published=eq.true&published_at=lte.' + encodeURIComponent(new Date().toISOString());
     query += view ? '&order=published_at.desc&limit=50' : '&slug=eq.' + encodeURIComponent(slug) + '&limit=1';
     const result = await fetch(query, { signal:AbortSignal.timeout(7000),headers:{apikey:key,Authorization:'Bearer '+key,Prefer:'count=exact'} });
-    if (!result.ok) throw new Error('News unavailable');
+    upstreamStatus = result.status;
+    if (!result.ok) { failureStage = 'upstream_http'; throw new Error('News unavailable'); }
+    failureStage = 'invalid_payload';
     const rows = await result.json();
     if (!Array.isArray(rows)) throw new Error('Invalid news response');
     if (!view && !rows[0]) return response(404,errorPage(404),'noindex,follow');
     const count = Number((result.headers.get('content-range') || '').split('/')[1]) || rows.length;
+    failureStage = 'render_failure';
     const html = view ? collectionPage(rows,count,view) : articlePage(rows[0]);
     const resultResponse = response(200,event.httpMethod === 'HEAD' ? '' : html,view ? '' : U.articleMetadata(rows[0]).robots);
     return resultResponse;
-  } catch (_) { return response(503,errorPage(503),'noindex,follow'); }
+  } catch (error) {
+    const timedOut = (failureStage === 'upstream_network' || failureStage === 'invalid_payload') && error && (error.name === 'TimeoutError' || error.name === 'AbortError');
+    reportUnavailable(timedOut ? 'upstream_timeout' : failureStage, startedAt, view, upstreamStatus);
+    return response(503,errorPage(503),'noindex,follow');
+  }
 };
 exports.__test = { head, json, articlePage, collectionPage, cover, route };
