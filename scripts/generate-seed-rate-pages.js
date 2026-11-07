@@ -211,8 +211,8 @@ countries.forEach(c => {
 
   // Sources footer
   html = html.replace(
-    /Data sources: FAO crop guidance, NASC \(National Agricultural Seed Council\), IITA, Nigeria National Bureau of Statistics, CGIAR and World Bank\. Tomato planning parameters also reference <a href="https:\/\/www\.fao\.org\/land-water\/databases-and-software\/crop-information\/tomato\/en\/" rel="noopener noreferrer">FAO crop information<\/a>\./g,
-    `Data sources: FAO crop guidance, CGIAR, ${c.name} national agricultural authority and World Bank. Tomato planning parameters also reference <a href="https://www.fao.org/land-water/databases-and-software/crop-information/tomato/en/" rel="noopener noreferrer">FAO crop information</a>.`
+    /Data sources: FAO crop guidance, NASC \(National Agricultural Seed Council\), IITA, Nigeria National Bureau of Statistics, CGIAR and World Bank\. Tomato planning parameters also reference <a href="https:\/\/www\.fao\.org\/4\/i2800e\/i2800e07\.pdf#page=106" rel="noopener noreferrer">FAO crop information<\/a>/g,
+    `Data sources: FAO crop guidance, CGIAR, ${c.name} national agricultural authority and World Bank. Tomato planning parameters also reference <a href="https://www.fao.org/4/i2800e/i2800e07.pdf#page=106" rel="noopener noreferrer">FAO crop information</a>`
   );
   html = html.replace(/current="seed-rate-ng"/g, `current="seed-rate-${c.code.toLowerCase()}"`);
   const inheritedFacts = /<section class="seo-content agri-country-facts"[\s\S]*?<\/section>/;

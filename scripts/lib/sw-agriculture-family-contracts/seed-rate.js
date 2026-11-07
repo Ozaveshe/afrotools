@@ -100,13 +100,13 @@ function sourceMetadata(row, nativeCountryName) {
   const ownerCopy = row.country.code === 'NG'
     ? 'Mwongozo wa mazao wa FAO, Baraza la Taifa la Mbegu za Kilimo la Nigeria (NASC), IITA, Ofisi ya Taifa ya Takwimu ya Nigeria, CGIAR na Benki ya Dunia.'
     : `Mwongozo wa mazao wa FAO, CGIAR, mamlaka ya kitaifa ya kilimo ya ${nativeCountryName}, na Benki ya Dunia.`;
-  const linkCopy = `Vigezo vya kupanga nyanya pia vinarejelea ${links.map(link => link.label).join(', ')}.`;
+  const linkCopy = `Vigezo vya kupanga nyanya pia vinarejelea ${links.map(link => link.label).join(', ')}. Rejea ya FAO ni ya 2012, ukurasa 194. Nafasi ya nyanya ya 60 × 40 cm inayoweza kubadilishwa ni mfano wa kupanga, si pendekezo la FAO.`;
   const linkedHtml = links.map(link => (
     `<a href="${escapeHtml(link.href)}" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`
   )).join(', ');
   return {
     source: `${ownerCopy} ${linkCopy}`,
-    sourceHtml: `${escapeHtml(ownerCopy)} Vigezo vya kupanga nyanya pia vinarejelea ${linkedHtml}.`,
+    sourceHtml: `${escapeHtml(ownerCopy)} Vigezo vya kupanga nyanya pia vinarejelea ${linkedHtml}. Rejea ya FAO ni ya 2012, ukurasa 194. Nafasi ya nyanya ya 60 × 40 cm inayoweza kubadilishwa ni mfano wa kupanga, si pendekezo la FAO.`,
     links,
     reviewed: reviewed ? reviewed[1] : 'haijaonyeshwa'
   };
@@ -151,7 +151,7 @@ function renderHub(row, context) {
 <section class="card" aria-labelledby="planningTitle">
   <h2 id="planningTitle">Vyanzo, upya na kiwango cha uhakika</h2>
   <div class="trust-grid">
-    <div class="trust-item"><strong>Vyanzo</strong><span><a href="https://www.fao.org/land-water/databases-and-software/crop-information/tomato/en/" rel="noopener noreferrer">Taarifa za FAO kuhusu zao la nyanya</a>, <a href="https://www.cgiar.org/" rel="noopener noreferrer">CGIAR</a>, mamlaka za kitaifa za kilimo, na <a href="https://data.worldbank.org/" rel="noopener noreferrer">Benki ya Dunia</a>.</span></div>
+    <div class="trust-item"><strong>Vyanzo</strong><span><a href="https://www.fao.org/4/i2800e/i2800e07.pdf#page=106" rel="noopener noreferrer">Taarifa za FAO kuhusu zao la nyanya (2012, uk. 194)</a>, <a href="https://www.cgiar.org/" rel="noopener noreferrer">CGIAR</a>, mamlaka za kitaifa za kilimo, na <a href="https://data.worldbank.org/" rel="noopener noreferrer">Benki ya Dunia</a>.</span></div>
     <div class="trust-item"><strong>Data ilivyopitiwa</strong><span>Marejeo ya kurasa za Kiingereza yameonyeshwa kuwa yamesasishwa mwaka 2026; si data ya moja kwa moja.</span></div>
     <div class="trust-item"><strong>Uhakika</strong><span>Makadirio ya kupanga tu; aina ya mbegu, kiwango cha uotaji, nafasi, hali ya shamba na kifurushi hubadilisha mahitaji.</span></div>
   </div>
