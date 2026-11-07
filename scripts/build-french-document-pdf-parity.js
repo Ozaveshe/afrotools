@@ -175,7 +175,22 @@ function recursivelyLocalizeSchema(value, app, canonicalUrl, allRoutes, frenchAp
   }
   const output = {};
   for (const [key, entry] of Object.entries(value)) {
-    if (key === 'inLanguage') output[key] = 'fr';
+    // JSON-LD vocabulary is machine-readable, unlike names and descriptions.
+    // Repair the finite legacy translations when normalizing preserved French pages.
+    if (key === '@type' || key === '@context' || key === 'applicationCategory') {
+      const legacy = {
+        'Application Web': 'WebApplication',
+        'Organisation': 'Organization',
+        'UtilitairesApplication': 'UtilitiesApplication',
+        'ProductivitéApplication': 'ProductivityApplication',
+        'Application métier': 'BusinessApplication',
+        'Application de sécurité': 'SecurityApplication'
+      };
+      const vocabulary = (token) => typeof token === 'string' ? (legacy[token] || token) : token;
+      output[key] = Array.isArray(entry) ? entry.map(vocabulary) : vocabulary(entry);
+    } else if (key === 'inLanguage') {
+      if (![].concat(value['@type'] || []).includes('BreadcrumbList')) output[key] = 'fr';
+    }
     else if (key === 'url' && typeof entry === 'string' && routeVariants(app.englishRoute).some((route) => {
       try {
         return new URL(entry, 'https://afrotools.com').pathname === route;
@@ -200,7 +215,7 @@ function recursivelyLocalizeSchema(value, app, canonicalUrl, allRoutes, frenchAp
       }
     }
   }
-  if (output['@context'] === 'https://schema.org' && !output.inLanguage) output.inLanguage = 'fr';
+  if (output['@context'] === 'https://schema.org' && ![].concat(output['@type'] || []).includes('BreadcrumbList') && !output.inLanguage) output.inLanguage = 'fr';
   return output;
 }
 

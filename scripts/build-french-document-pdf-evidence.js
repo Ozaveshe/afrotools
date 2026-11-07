@@ -206,7 +206,9 @@ function main() {
     const schema = schemas(html);
     const schemaAccepted = schema.failures.length === 0
       && schema.parsed.length > 0
-      && schema.parsed.every((entry) => entry && entry.inLanguage === 'fr');
+      && schema.parsed.every((entry) => entry && ([].concat(entry['@type'] || []).includes('BreadcrumbList')
+        ? !Object.prototype.hasOwnProperty.call(entry, 'inLanguage')
+        : entry.inLanguage === 'fr'));
     const scopedEnglishLinks = findScopedEnglishLinks(html, englishRoutes);
     const expectedFrenchUrl = `${ORIGIN}${app.frenchRoute}`;
     const expectedEnglishUrl = `${ORIGIN}${app.englishRoute}`;
