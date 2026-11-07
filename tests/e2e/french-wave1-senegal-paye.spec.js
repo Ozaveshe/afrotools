@@ -6,8 +6,8 @@ test.describe('French Wave 1 Senegal payroll', () => {
     await page.waitForLoadState('domcontentloaded');
   });
 
-  test('uses capped IPRES and the 43% top IRPP band', async ({ page }) => {
-    await page.fill('#grossSalary', '30000000');
+  test('uses capped IPRES and the 43% IRPP band above 50m taxable', async ({ page }) => {
+    await page.fill('#grossSalary', '60000000');
     await page.click('.calc-btn');
     const result = await page.evaluate(() => window.RESULT);
     expect(result.ipres).toBe(290304);
