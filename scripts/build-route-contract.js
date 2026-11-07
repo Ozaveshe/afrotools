@@ -84,11 +84,11 @@ function run(options = {}) {
   if (write) {
     sync.redirects = routeApi.syncRedirectContract(graph, { write: true });
     const redirectsChangedInitially = sync.redirects.changed;
-    graph = routeApi.buildRouteGraph();
+    if (sync.redirects.changed) graph = routeApi.buildRouteGraph();
     sync.metadata = routeApi.syncRouteMetadata(graph, { write: true });
-    graph = routeApi.buildRouteGraph();
+    if (sync.metadata.changed) graph = routeApi.buildRouteGraph();
     sync.links = routeApi.syncInternalLinks(graph, { write: true });
-    graph = routeApi.buildRouteGraph();
+    if (sync.links.changed) graph = routeApi.buildRouteGraph();
     const finalRedirectSync = routeApi.syncRedirectContract(graph, { write: true });
     sync.redirects = { ...finalRedirectSync, changed: redirectsChangedInitially || finalRedirectSync.changed };
     if (finalRedirectSync.changed) graph = routeApi.buildRouteGraph();
