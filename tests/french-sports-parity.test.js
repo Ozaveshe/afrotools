@@ -116,7 +116,9 @@ test("manifest preserves every source note emitted by the English engine", () =>
     for (const field of config.fields) {
       if (field.type !== "heading") input[field.id] = field.value;
     }
-    const engineSources = sportsEngine.calculate(page.id, input).sources || [];
+    const engineSources = page.id === "afcon-predictor"
+      ? ["2027-planner", "2025-review"].flatMap((mode) => sportsEngine.calculate(page.id, { ...input, mode }).sources || [])
+      : sportsEngine.calculate(page.id, input).sources || [];
     const manifestSources = sourceManifest.tools[page.id].sources;
     assert.deepEqual(
       manifestSources.map((source) => ({
@@ -136,9 +138,18 @@ test("dated and mutable baselines are explicitly archival or non-current", () =>
   assert.match(fpl.asOf, /2025\/26.*archive/i);
 
   const afcon = sourceManifest.tools["afcon-predictor"];
-  assert.equal(afcon.state, "archived-snapshot");
-  assert.match(afcon.asOf, /archive.*Maroc 2025/i);
-  assert.match(afcon.assumptions.join(" "), /Aucun entrant 2027/);
+  assert.equal(afcon.state, "static-scenario");
+  assert.equal(afcon.sourceMode, "official-reference-plus-scenario");
+  assert.equal(afcon.reviewedAt, "2026-11-07");
+  assert.match(afcon.asOf, /Kenya, Tanzanie et Ouganda.*19 juin au 17 juillet 2027/);
+  assert.match(afcon.assumptions.join(" "), /trois hôtes qualifiés automatiquement et 21 équipes illustratives, pas 21 qualifiés confirmés/);
+  assert.match(afcon.assumptions.join(" "), /1505.*Ouganda.*pas un classement Kenya\/FIFA/);
+  assert.equal(afcon.sources[0].url, "https://www.cafonline.com/afcon2025/news/everything-you-need-to-know-about-totalenergies-caf-africa-cup-of-nations-pamoja-2027/");
+  assert.equal(afcon.sources[0].state, "static-reference");
+  assert.match(afcon.sources[0].note, /17 juin 2026.*7 novembre 2026/);
+  assert.equal(afcon.sources[1].url, "https://www.cafonline.com/afcon2025/news/everything-you-need-to-know-about-totalenergies-caf-africa-cup-of-nations-morocco-2025/");
+  assert.equal(afcon.sources[1].state, "archived");
+  assert.match(afcon.assumptions.join(" "), /revue 2025.*pas les résultats/);
 
   for (const id of ["dj-booking-rate", "gym-roi-business", "match-tickets", "athlete-earnings", "gaming-pc-build", "photo-video-pricing"]) {
     const entry = sourceManifest.tools[id];
@@ -174,7 +185,7 @@ for (const page of SPORTS) {
     assert.match(html, /Aucune donnée en direct inventée/);
     assert.match(html, /Export JSON et impression/);
     assert.match(html, /"sourceConfidence":\{/);
-    assert.match(html, /"reviewedAt":"2026-07-29"/);
+    assert.match(html, page.id === "afcon-predictor" ? /"reviewedAt":"2026-11-07"/ : /"reviewedAt":"2026-07-29"/);
     assert.match(html, /"live":false/);
     assert.match(html, /"confidence":\{"grade":"[ABC]"/);
     assert.match(html, /"assumptions":\[/);

@@ -25,15 +25,15 @@ const SPORTS = [
     seoTitle: "Scénarios de tournoi CAN | AfroTools",
     description: "Testez des hypothèses de forme, défense et avantage du public pour un scénario transparent de CAN, sans score en direct ni prédiction officielle.",
     eyebrow: "Scénario de tournoi",
-    intro: "Comparez une sélection à un plateau de 24 équipes avec un modèle déterministe. Les réglages sont vos hypothèses, pas un classement en direct.",
-    resultLabel: "Part du modèle pour le titre",
+    intro: "Fixez un plateau de 24 équipes avec les trois hôtes de 2027, puis comparez une équipe, ses bonus et le classement complet. Conservez vos hypothèses dans un rapport local.",
+    resultLabel: "Part relative dans le scénario",
     resultSummary: "Scénario indicatif fondé sur la force de base et vos hypothèses de forme, défense, public et volatilité.",
     insights: [
       "Les réglages de forme et de défense sont des hypothèses éditoriales, pas des données en direct.",
-      "Dans un tournoi à élimination directe, une faible probabilité individuelle est normale.",
+      "Une part du modèle est un poids relatif parmi les 24 équipes du scénario, pas une probabilité de titre.",
       "Utilisez le classement de scénarios pour préparer des questions, jamais comme résultat officiel."
     ],
-    safety: "Aucun score, entrant, blessure ni résultat en direct n’est récupéré ou inventé. Vérifiez le plateau et le règlement auprès de la CAF."
+    safety: "Les trois hôtes sont confirmés par la CAF. Les 21 autres équipes et les forces sont des hypothèses modifiables; aucun résultat en direct n’est fourni."
   },
   {
     id: "fantasy-football",

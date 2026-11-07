@@ -18,11 +18,11 @@ const PAGES = [
     id: 'afcon-predictor',
     title: 'AFCON Tournament Predictor',
     seoTitle: 'AFCON Tournament Predictor - 2025 Review and 2027 Planning | AfroTools',
-    description: 'Model AFCON title probability, compare contenders, and run 2025 review or 2027 planning assumptions with official CAF context.',
+    description: 'Compare all 24 teams in an AFCON what-if scenario, see your selected team’s rank, and measure how form, defense and host boosts change its model share.',
     eyebrow: 'Tournament model',
     h1: 'AFCON Tournament Predictor',
-    intro: 'Stress-test African national teams with a transparent title model. Use it for 2025 review content, 2027 planning, fan analysis, and pre-tournament scenario writing.',
-    promise: ['Top contender ranking across a 24-team field.', 'Adjustable form, defensive, and host assumptions.', 'Official CAF source card for tournament and appeal context.']
+    intro: 'Set the 2027 field with all three hosts, then compare teams without changing that field. See all 24 model shares, your boost impact and a free report. You can also explore the legacy seeded field or a 2025 what-if review.',
+    promise: ['Full 24-team ranking with your selected team highlighted.', 'Before-and-after comparison of your form, defense and host boosts.', 'All three 2027 hosts, with editable Kenya strength and non-host replacement.', 'Full scenario report: print or download TXT without an email.']
   },
   {
     id: 'fantasy-football',
@@ -214,7 +214,25 @@ function renderPage(page) {
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5"><link rel="stylesheet" href="/assets/css/sports-tools.css"><link rel="stylesheet" href="/assets/css/sports-tools-theme.css">
-<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+${page.id === 'afcon-predictor' ? `<style>
+@media print {
+body[data-sports-tool="afcon-predictor"]{background:#fff!important;color:#000!important}
+body[data-sports-tool="afcon-predictor"] > :not(main),
+body[data-sports-tool="afcon-predictor"] .sports-workflow-strip,
+body[data-sports-tool="afcon-predictor"] #sports-next-apps,
+body[data-sports-tool="afcon-predictor"] .sports-shell-grid > .sports-panel:first-child,
+body[data-sports-tool="afcon-predictor"] #sports-result-panel > .sports-panel-title,
+body[data-sports-tool="afcon-predictor"] #sports-results > :not(.sports-report-gate),
+body[data-sports-tool="afcon-predictor"] .sports-report-gate > :not(.sports-report-preview){display:none!important}
+body[data-sports-tool="afcon-predictor"] .sports-page-main,
+body[data-sports-tool="afcon-predictor"] .sports-tool-layout,
+body[data-sports-tool="afcon-predictor"] .sports-shell-grid,
+body[data-sports-tool="afcon-predictor"] #sports-result-panel,
+body[data-sports-tool="afcon-predictor"] .sports-report-gate{display:block!important;max-width:none;width:auto;margin:0;padding:0;border:0!important;box-shadow:none;background:#fff!important}
+body[data-sports-tool="afcon-predictor"] .sports-report-preview{display:block!important;max-height:none!important;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;font:10pt/1.4 system-ui,sans-serif;color:#000!important;background:#fff!important;border:0;margin:0;padding:0}
+}
+</style>
+` : ''}<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 </head>
 <body data-sports-tool="${escapeHtml(page.id)}">
 <afro-navbar theme="dark" active="sports"></afro-navbar>

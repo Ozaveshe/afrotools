@@ -11,6 +11,7 @@
     return;
   }
   var tool = engine.tools[page.toolId];
+  if (page.toolId === "afcon-predictor") engine.prepareAfconFields(page.toolId, tool);
   var last = null;
 
   var FIELD = {
@@ -172,6 +173,119 @@
     "athlete-earnings": ["monthlySalary"]
   };
 
+
+  // AFCON-only copy and result presentation. Numeric output remains owned by AfroSports.
+  var AFCON_COPY = {
+  "labels": [
+    "Timu za hali ya 2027",
+    "Nguvu ya Kenya kwenye modeli",
+    "Timu isiyo mwenyeji inayobadilishwa na Kenya"
+  ],
+  "options": [
+    "Wenyeji wote watatu na timu 21 za mfano",
+    "Orodha ya awali ya kulinganisha (bila Kenya)",
+    "Kenya (mwenyeji mwenza 2027)"
+  ],
+  "hints": [
+    "Chagua timu za hali hii kwanza, kisha linganisha. Timu nyingine 21 ni mifano, si waliofuzu waliothibitishwa.",
+    "Thamani ya kuanzia: 1505, sawa na mfano wa Uganda kwenye modeli. Ibadilishe kupima wazo lingine; si kiwango rasmi cha Kenya au FIFA.",
+    "Sierra Leone inabadilishwa mwanzoni kama mfano tu, si taarifa ya kuondolewa. Ili kuilinganisha, badilisha timu nyingine. Wenyeji wote watatu wanabaki."
+  ],
+  "metric": [
+    "Nafasi ya timu yako",
+    "Athari ya nyongeza zako",
+    "Tofauti kati ya timu",
+    "Sehemu ya timu nyingine"
+  ],
+  "units": [
+    "kati ya timu 24 za hali hii",
+    "dhidi ya timu hizi hizi bila nyongeza zako",
+    "mbele ya ",
+    "nyuma ya ",
+    "sehemu iliyogawiwa timu nyingine"
+  ],
+  "row": [
+    "Timu mbili za juu katika hali hii",
+    "Timu yako bila nyongeza",
+    "Athari ya nyongeza zako",
+    "Hesabu ya nyongeza",
+    "Kiwango cha mabadiliko",
+    "Tarehe zilizotangazwa na CAF",
+    "Nguvu iliyokadiriwa ya Kenya",
+    "Mabadiliko ya timu",
+    "Mawazo ya mapitio ya 2025",
+    "Timu katika hali hii"
+  ],
+  "selected": " (iliyochaguliwa)",
+  "share": "sehemu ya modeli",
+  "rank": "nafasi",
+  "of": "kati ya",
+  "and": " na ",
+  "points": "pointi za asilimia",
+  "modelPoints": "pointi za modeli",
+  "boostMath": [
+    "kiwango",
+    "ulinzi",
+    "mashabiki"
+  ],
+  "volatility": "kiwango kikubwa husawazisha zaidi sehemu za timu",
+  "dates": "19 Juni–17 Julai 2027; Kenya, Tanzania na Uganda wenyeji wenza",
+  "kenyaBasis": "pointi za mfano; 1505 inatumia mfano wa Uganda, si kiwango rasmi cha Kenya/FIFA",
+  "replaces": "Kenya inachukua nafasi ya ",
+  "retained": "; Uganda na Tanzania zinabaki",
+  "review": "Marekebisho ya kudumu: Moroko +35 na Senegal +25 pointi. Hii ni hali ya mfano, si kurudia matokeo ya mashindano.",
+  "allField": "Wenyeji wote watatu na timu 21 za mfano; timu hizi hazibadiliki unapochagua timu nyingine",
+  "seedField": "Orodha ya awali ya timu 24; Kenya haimo",
+  "contextAll": "Wenyeji wote watatu katika orodha thabiti ya timu 24. Nguvu iliyokadiriwa ya Kenya: ",
+  "contextReview": "Linganisha timu 24 kwa marekebisho ya kudumu ya mapitio ya 2025.",
+  "contextSeed": "Orodha ya awali bila Kenya. Chagua orodha ya wenyeji wote watatu kulinganisha wenyeji wenza wa 2027.",
+  "insights": [
+    "Badilisha nyongeza moja kwa wakati kupima athari yake kwa timu hizi hizi.",
+    "Ili kulinganisha timu iliyoondolewa kwenye mfano, chagua kwanza timu nyingine ya kubadilishwa. Timu hazibadiliki zenyewe.",
+    "Timu zote 24 na timu uliyochagua zimo kwenye orodha na ripoti.",
+    "Sehemu hizi ni uzito wa kulinganisha ndani ya hali hii, si uwezekano uliothibitishwa wala ratiba ya mtoano iliyosimuliwa."
+  ],
+  "errorTitle": "Kamilisha hali ya AFCON",
+  "errorValue": "Haijahesabiwa",
+  "error": "Kagua aina ya modeli, nyongeza (0–10), nguvu ya Kenya (0–3000) na timu. Timu iliyochaguliwa haiwezi kubadilishwa; chagua mbadala au timu nyingine. Kenya inahitaji orodha ya wenyeji wote watatu katika hali ya 2027."
+};
+  function afconResult(input, result) {
+    var copy = AFCON_COPY;
+    if (!result.scenarioField || !result.comparison) return Object.assign({}, result, { heroLabel: copy.errorTitle, heroValue: copy.errorValue, heroSub: copy.error, insights: [copy.error] });
+    var field = result.scenarioField, comparison = result.comparison;
+    var favorite = afconTeam(input.favorite || "Morocco");
+    var selected = copy.selected;
+    function fixed(value, digits) { return Number(value).toFixed(digits); }
+    function percent(value) { return fixed(value, 1) + "%"; }
+    var direction = comparison.selectedRank === 1 ? copy.units[2] : copy.units[3];
+    var rows = field.names.map(function (name, index) {
+      return [String(index + 1) + ". " + afconTeam(name) + (name === (input.favorite || "Morocco") ? selected : ""), percent(field.shares[index]) + " " + copy.share];
+    }).concat([
+      [copy.row[0], afconTeam(field.names[0]) + copy.and + afconTeam(field.names[1])],
+      [copy.row[1], percent(comparison.baselineShare) + "; " + copy.rank + " " + comparison.baselineRank + " " + copy.of + " 24"],
+      [copy.row[2], "+" + fixed(comparison.deltaPoints, 2) + " " + copy.points + "; " + copy.rank + " " + comparison.baselineRank + " → " + comparison.selectedRank],
+      [copy.row[3], String(input.formBoost || 0) + " × 8 " + copy.boostMath[0] + " + " + String(input.defenseBoost || 0) + " × 5 " + copy.boostMath[1] + " + " + String(input.hostBoost || 0) + " × 10 " + copy.boostMath[2] + " = " + comparison.boostPoints + " " + copy.modelPoints],
+      [copy.row[4], String(input.upsetTolerance == null ? 4 : input.upsetTolerance) + "/10; " + copy.volatility]
+    ]);
+    if (input.mode !== "2025-review") rows.push([copy.row[5], copy.dates]);
+    if (field.setup === "all-hosts") rows.push([copy.row[6], field.strength + " " + copy.kenyaBasis], [copy.row[7], copy.replaces + afconTeam(field.replaced) + copy.retained]);
+    if (input.mode === "2025-review") rows.push([copy.row[8], copy.review]);
+    rows.push([copy.row[9], field.setup === "all-hosts" ? copy.allField : copy.seedField]);
+    var context = field.setup === "all-hosts" ? copy.contextAll + field.strength + ". " + copy.replaces + afconTeam(field.replaced) + "." : input.mode === "2025-review" ? copy.contextReview : copy.contextSeed;
+    return Object.assign({}, result, {
+      heroLabel: favorite + " — " + copy.share, heroSub: context, rows: rows,
+      metrics: [
+        { label: copy.metric[0], value: String(comparison.selectedRank), unit: copy.units[0] },
+        { label: copy.metric[1], value: "+" + fixed(comparison.deltaPoints, 2) + " pp", unit: copy.units[1] },
+        { label: copy.metric[2], value: fixed(comparison.gapPoints, 2) + " pp", unit: direction + afconTeam(comparison.rival) },
+        { label: copy.metric[3], value: percent(100 - comparison.selectedShare), unit: copy.units[4] }
+      ],
+      bars: result.bars.map(function (bar) { return { label: afconTeam(bar.label.replace(/ \(selected\)$/, "")) + (/ \(selected\)$/.test(bar.label) ? selected : ""), value: bar.value, text: bar.text }; }),
+      insights: [favorite + " : " + copy.rank + " " + comparison.selectedRank + " " + copy.of + " 24; " + fixed(comparison.gapPoints, 2) + " " + copy.points + " " + direction + afconTeam(comparison.rival) + ".", copy.insights[0], field.setup === "all-hosts" ? copy.insights[1] : copy.insights[2], copy.insights[3]]
+    });
+  }
+  function afconTeam(name) { return ({Morocco:"Moroko", Egypt:"Misri", "South Africa":"Afrika Kusini", "Cote d\'Ivoire":"Côte d’Ivoire", Algeria:"Aljeria", Cameroon:"Kamerun", "DR Congo":"Jamhuri ya Kidemokrasia ya Kongo", "Equatorial Guinea":"Guinea ya Ikweta"})[name] || name; }
+
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
       return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
@@ -267,13 +381,17 @@
       .replace(/\byears?\b/gi, "miaka").replace(/\bper match\b/gi, "kwa mechi")
       .replace(/\bplanning\b/gi, "kupanga").replace(/\bestimate\b/gi, "makisio");
   }
-  function optionLabel(option) { return OPTIONS[option.label] || tr(option.label); }
+  function optionLabel(option) {
+    var afconOption = ["All three hosts + 21 illustrative seeds", "Legacy seeded comparison (Kenya not included)", "Kenya (2027 co-host)"].indexOf(option.label);
+    return afconOption >= 0 ? AFCON_COPY.options[afconOption] : OPTIONS[option.label] || tr(option.label);
+  }
   function isOptional(fieldId) {
     return (OPTIONAL_FIELDS[page.toolId] || []).indexOf(fieldId) !== -1;
   }
   function fieldHtml(field) {
+    var afconIndex = ["fieldSetup", "kenyaStrength", "replaceSeed"].indexOf(field.id);
     if (field.type === "heading") return '<h3 class="sw-field-heading">' + esc(tr(field.label)) + "</h3>";
-    var label = FIELD[field.id] || tr(field.label || field.id);
+    var label = afconIndex >= 0 ? AFCON_COPY.labels[afconIndex] : FIELD[field.id] || tr(field.label || field.id);
     var html = '<label for="sw-sport-' + esc(field.id) + '">' + esc(label);
     if (field.type === "select") {
       html += '<select id="sw-sport-' + esc(field.id) + '" name="' + esc(field.id) + '" required>';
@@ -284,6 +402,7 @@
     } else {
       html += '<input id="sw-sport-' + esc(field.id) + '" name="' + esc(field.id) + '" type="' + esc(field.type || "text") + '" value="' + esc(field.value) + '" ' + (field.type === "number" ? 'inputmode="decimal" min="0" step="any" ' : "") + (isOptional(field.id) ? "" : "required") + ">";
     }
+    if (afconIndex >= 0) html += '<small class="sw-field-hint">' + esc(AFCON_COPY.hints[afconIndex]) + "</small>";
     return html + "</label>";
   }
   function inputs() {
@@ -400,6 +519,7 @@
   }
   function insightsFor(result) {
     var engineInsights = Array.isArray(result.insights) ? result.insights : [];
+    if (page.toolId === "afcon-predictor") return engineInsights;
     var translated = INSIGHTS[page.toolId] || [];
     return engineInsights.map(function (insight, index) {
       return translated[index] || tr(insight);
@@ -443,7 +563,7 @@
     lines.push("", "Viingizo");
     tool.fields.forEach(function (field) {
       if (field.type !== "heading") {
-        lines.push("- " + (FIELD[field.id] || tr(field.label)) + ": " + inputDisplay(field, input[field.id]));
+        lines.push("- " + (["fieldSetup", "kenyaStrength", "replaceSeed"].includes(field.id) ? AFCON_COPY.labels[["fieldSetup", "kenyaStrength", "replaceSeed"].indexOf(field.id)] : FIELD[field.id] || tr(field.label)) + ": " + inputDisplay(field, input[field.id]));
       }
     });
     if (page.sourceReview) {
@@ -514,6 +634,7 @@
         "</section>";
     }
     html += '<div class="sw-actions"><button type="button" data-sw-copy>Nakili</button><button type="button" data-sw-print>Chapisha kupitia kivinjari</button><button type="button" data-sw-json>Pakua JSON</button><button type="button" class="secondary" data-sw-import-trigger aria-controls="sw-sport-import">Fungua JSON</button><input id="sw-sport-import" type="file" accept="application/json,.json" data-sw-import hidden></div><p data-sw-status aria-live="polite"></p><pre tabindex="0">' + esc(reportText(input, result)) + "</pre></div>";
+    if (page.toolId === "afcon-predictor") html = html.replace('<button type="button" data-sw-json>', '<button type="button" data-sw-txt>Pakua TXT</button><button type="button" data-sw-json>');
     resultRoot.innerHTML = html;
   }
   function download(payload) {
@@ -525,13 +646,16 @@
 
   mount.innerHTML = '<form class="sw-sports-form" novalidate><div class="sw-sports-fields">' + tool.fields.map(fieldHtml).join("") + '</div><div class="sw-actions"><button type="submit">Kokotoa</button><button type="button" class="secondary" data-sw-sport-reset>Futa</button></div><p class="sw-error" data-sw-sport-error role="alert"></p></form><section data-sw-sport-result aria-live="polite"></section>';
   var form = mount.querySelector("form");
+  if (page.toolId === "afcon-predictor") engine.syncAfconFieldControls(page.toolId, tool, form);
   var error = mount.querySelector("[data-sw-sport-error]");
   var resultRoot = mount.querySelector("[data-sw-sport-result]");
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     try {
+      if (page.toolId === "afcon-predictor") engine.syncAfconFieldControls(page.toolId, tool, form);
       var input = inputs(); validate(input);
       var result = engine.calculate(page.toolId, input);
+      if (page.toolId === "afcon-predictor") result = afconResult(input, result);
       if (!result || !Array.isArray(result.metrics) || !Array.isArray(result.rows)) throw new Error("Modeli haikutoa matokeo kamili.");
       assertFiniteResult(result);
       last = { input:input, result:result };
@@ -541,6 +665,7 @@
     }
   });
   function clearStaleResult() {
+    if (page.toolId === "afcon-predictor") engine.syncAfconFieldControls(page.toolId, tool, form);
     error.textContent = "";
     last = null;
     resultRoot.innerHTML = "";
@@ -550,6 +675,7 @@
   mount.querySelector("[data-sw-sport-reset]").addEventListener("click", function () {
     tool.fields.forEach(function (field) { if (field.type !== "heading" && form.elements[field.id]) form.elements[field.id].value = field.value; });
     last = null; resultRoot.innerHTML = ""; error.textContent = "";
+    if (page.toolId === "afcon-predictor") engine.syncAfconFieldControls(page.toolId, tool, form);
     var first = form.querySelector("input,select"); if (first) first.focus();
   });
   resultRoot.addEventListener("click", function (event) {
@@ -561,13 +687,21 @@
       return;
     }
     if (event.target.closest("[data-sw-print]")) { window.print(); return; }
+    if (page.toolId === "afcon-predictor" && event.target.closest("[data-sw-txt]")) {
+      var txtUrl = URL.createObjectURL(new Blob([reportText(last.input, last.result)], { type:"text/plain;charset=utf-8" }));
+      var txtLink = document.createElement("a");
+      txtLink.href = txtUrl; txtLink.download = "afcon-ripoti-ya-hali.txt";
+      document.body.appendChild(txtLink); txtLink.click(); txtLink.remove();
+      window.setTimeout(function () { URL.revokeObjectURL(txtUrl); }, 1000);
+      return;
+    }
     if (event.target.closest("[data-sw-copy]")) {
       var text = reportText(last.input, last.result);
       var operation = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text) : Promise.reject();
       operation.then(function () { status.textContent = "Ripoti imenakiliwa."; }).catch(function () { status.textContent = "Chagua ripoti na unakili mwenyewe."; });
     }
     if (event.target.closest("[data-sw-json]")) {
-      download({ schemaVersion:1, locale:"sw", toolId:page.toolId, fields:last.input, result:localizedResult(last.result), sourceReview:page.sourceReview, privacy:"local-export", exportedAt:new Date().toISOString() });
+      download({ ...(page.toolId === "afcon-predictor" ? { report:reportText(last.input, last.result) } : {}), schemaVersion:1, locale:"sw", toolId:page.toolId, fields:last.input, result:localizedResult(last.result), sourceReview:page.sourceReview, privacy:"local-export", exportedAt:new Date().toISOString() });
       status.textContent = "JSON imeundwa kwenye kifaa hiki.";
     }
   });
