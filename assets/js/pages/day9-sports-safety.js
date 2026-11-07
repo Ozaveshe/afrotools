@@ -1,3 +1,70 @@
+(function () {
+  'use strict';
+  if (!document.body || document.body.getAttribute('data-sports-tool') !== 'fantasy-football') return;
+  var form = document.getElementById('sports-tool-form');
+  var results = document.getElementById('sports-results');
+  if (!form || !results) return;
+  var status = document.createElement('p');
+  status.id = 'fantasy-input-status';
+  status.setAttribute('role', 'alert');
+  status.hidden = true;
+  form.appendChild(status);
+  var counts = ['minutes', 'goals', 'assists', 'goalsConceded', 'saves', 'defensiveActions', 'yellowCards', 'redCards', 'ownGoals', 'penaltySaves', 'penaltyMisses', 'bonus'];
+  var names = counts.concat(['playerPrice', 'startProbability', 'fixtureDifficulty']);
+  function validate() {
+    var first = null;
+    names.forEach(function (name) {
+      var field = form.elements[name];
+      if (!field) return;
+      var value = Number(field.value);
+      var label = form.querySelector('label[for="' + field.id + '"]');
+      var title = label ? label.textContent : name;
+      var rule = name === 'bonus' ? 'a whole number from 0 to 3' : counts.indexOf(name) !== -1 ? 'a non-negative whole number (no exponent notation)' : name === 'playerPrice' ? 'a decimal number of at least 0.1 (no exponent notation)' : name === 'startProbability' ? 'a decimal number from 0 to 100 (no exponent notation)' : 'a whole number from 1 to 5 (no exponent notation)';
+      var plain = counts.indexOf(name) !== -1 || name === 'fixtureDifficulty' ? /^\d+$/.test(field.value.trim()) : /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(field.value.trim());
+      var invalid = !plain || !Number.isFinite(value);
+      if (counts.indexOf(name) !== -1) invalid = invalid || value < 0 || !Number.isInteger(value);
+      else if (name === 'playerPrice') invalid = invalid || value < 0.1;
+      else if (name === 'startProbability') invalid = invalid || value < 0 || value > 100;
+      else invalid = invalid || value < 1 || value > 5 || !Number.isInteger(value);
+      if (name === 'bonus') invalid = invalid || value > 3;
+      var message = invalid ? 'Enter ' + rule + ' for ' + title + '.' : '';
+      field.setCustomValidity(message);
+      if (invalid) { field.setAttribute('aria-invalid', 'true'); if (!first) first = { field: field, message: message }; }
+      else field.removeAttribute('aria-invalid');
+    });
+    return first;
+  }
+  ['input', 'change', 'submit'].forEach(function (type) {
+    form.addEventListener(type, function (event) {
+      var error = validate();
+      if (type === 'input' || error) {
+        results.textContent = '';
+        results.hidden = true;
+        status.textContent = error ? error.message : 'Inputs changed. Use Calculate to update your result and report.';
+        status.hidden = false;
+      } else {
+        results.hidden = false;
+        status.hidden = true;
+        status.textContent = '';
+      }
+      if (error && type !== 'input') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (type === 'submit') { error.field.focus(); error.field.reportValidity(); }
+      }
+    }, true);
+  });
+  form.addEventListener('click', function (event) {
+    if (!event.target.closest('[data-reset]')) return;
+    names.forEach(function (name) {
+      var field = form.elements[name];
+      if (field) { field.setCustomValidity(''); field.removeAttribute('aria-invalid'); }
+    });
+    status.hidden = true;
+    status.textContent = '';
+    results.hidden = false;
+  }, true);
+})();
 (function (window, document) {
   'use strict';
 
