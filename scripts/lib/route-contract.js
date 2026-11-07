@@ -379,6 +379,9 @@ function discoverPages(policy) {
     list.push(page);
     byNormalized.set(page.normalizedRoute, list);
   }
+  // Metadata and sitemaps must describe the same physical page that delivery serves.
+  const explicitOwners = new Map(staticOwnerPolicy.staticOwnerDecisions(policy)
+    .map((decision) => [normalizeRoute(decision.source), decision.destination.slice(1)]));
   const owned = [];
   for (const group of byNormalized.values()) {
     group.sort((left, right) => {
@@ -386,8 +389,10 @@ function discoverPages(policy) {
       const rightDirectory = right.route.endsWith("/") ? 0 : 1;
       return leftDirectory - rightDirectory || left.source.file.localeCompare(right.source.file);
     });
-    const owner = group[0];
-    if (group.length > 1) owner.source.alternateFiles = group.slice(1).map((page) => page.source.file);
+    const explicitFile = explicitOwners.get(group[0].normalizedRoute);
+    const owner = explicitFile ? group.find((page) => page.source.file === explicitFile) : group[0];
+    if (!owner) throw new Error(`Static owner ${explicitFile} is not a discovered page for ${group[0].normalizedRoute}`);
+    if (group.length > 1) owner.source.alternateFiles = group.filter((page) => page !== owner).map((page) => page.source.file);
     owned.push(owner);
   }
   return owned;
