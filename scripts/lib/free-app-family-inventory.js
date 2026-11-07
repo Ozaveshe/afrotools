@@ -32,7 +32,7 @@ function resolveRouteOwner(route, paths) {
 }
 // Read actual markup attributes; data-rel, data-href and quoted text are not
 // canonical authority. This is a bounded source verifier, not an HTML renderer.
-function canonicalLinkHrefs(html) {
+function markupHrefs(html, tagName, relation) {
   const links = [], space = ch => /[ \t\r\n\f]/.test(ch);
   let at = 0;
   while ((at = html.indexOf('<', at)) !== -1) {
@@ -61,7 +61,7 @@ function canonicalLinkHrefs(html) {
       if (!match) return null;
       at = rawEnd.lastIndex; continue;
     }
-    if (name !== 'link') continue;
+    if (name !== tagName) continue;
     const attrs = Object.create(null);
     let i = 0;
     while (i < body.length) {
@@ -92,13 +92,16 @@ function canonicalLinkHrefs(html) {
       } else i = afterName;
       attrs[key] = value;
     }
-    if ((attrs.rel || '').toLowerCase().split(/[ \t\r\n\f]+/).includes('canonical')) {
-      if (!attrs.href) return null;
+    if (!relation || (attrs.rel || '').toLowerCase().split(/[ \t\r\n\f]+/).includes(relation)) {
+      if (!attrs.href) { if (relation) return null; continue; }
       links.push(attrs.href);
     }
   }
   return links;
 }
+
+const canonicalLinkHrefs = html => markupHrefs(html, 'link', 'canonical');
+const anchorHrefs = html => markupHrefs(html, 'a', null);
 
 function pageOwnerMatches(pin, route, context) {
   const pathname = route.split(/[?#]/)[0];
@@ -228,9 +231,32 @@ function validateInventory(inventory, context) {
       requireThat(families.get(row.appFamilyId).sourceEvidence.some(owner => owner.kind === 'page-owner' && row.sourceEvidence.some(member => member.kind === 'page-owner' && member.pin.gitBlob === owner.pin.gitBlob && member.pin.path === owner.pin.path)), 'FAMILY_AUTHORITY', 'shared helper/title/slug is not a workflow-family contract');
       requireThat(same(row.requirements.map(item => item.kind).sort(), ['accessibility', 'error', 'export', 'happy', 'privacy', 'recovery']), 'ACCEPTANCE_REQUIREMENTS', row.key);
     } else requireThat(row.requirements.length === 0, 'NON_APP_ACCEPTANCE', row.key);
+    if (Object.hasOwn(row, 'jobContract')) {
+      const job = row.jobContract;
+      requireThat(row.role === 'app' && job.jobId === row.appFamilyId, 'JOB_CONTRACT', row.key + ' must bind an app and its declared primary job');
+      requireThat(row.sourceEvidence.some(item => item.kind === 'page-owner' && item.pin.path === job.primaryOwner && pageOwnerMatches(item.pin, row.route, context)), 'JOB_CONTRACT', row.key + ' primary operating owner differs');
+      requireThat(job.runtimeOwners.includes(job.primaryOwner) && job.runtimeOwners.every(path => row.sourceEvidence.some(item => item.pin.path === path)), 'JOB_CONTRACT', row.key + ' unbound runtime owner');
+    }
     if (row.role === 'alias') requireThat(typeof row.targetRoute === 'string' && row.targetRoute !== row.route && row.appFamilyId !== null, 'ALIAS_TARGET', row.key);
     else requireThat(!Object.hasOwn(row, 'targetRoute'), 'ALIAS_TARGET', row.key);
     if (['hub', 'reference', 'collection', 'pro-only', 'discovery', 'unresolved'].includes(row.role)) requireThat(row.appFamilyId === null, 'NON_APP_FAMILY', row.key);
+  }
+  const entryKeys = new Set(), entryPairs = new Set();
+  for (const edge of inventory.entryEdges || []) {
+    requireThat(!entryKeys.has(edge.key), 'ENTRY_EDGE', 'duplicate edge key'); entryKeys.add(edge.key);
+    const from = members.get(edge.fromMemberKey), to = members.get(edge.toMemberKey);
+    requireThat(from && to && from !== to && to.role === 'app', 'ENTRY_EDGE', 'explicit source and operating target members required');
+    const pair = from.key + '\0' + to.key;
+    requireThat(!entryPairs.has(pair), 'ENTRY_EDGE', 'duplicate directed entry'); entryPairs.add(pair);
+    requireThat(edge.targetCanonicalRoute === to.route, 'ENTRY_EDGE', 'target canonical differs');
+    evidence(edge.sourceEvidence);
+    const owner = edge.sourceEvidence.find(item => item.kind === 'page-owner' && from.sourceEvidence.some(source => source.kind === 'page-owner' && same(source.pin, item.pin)) && pageOwnerMatches(item.pin, from.route, context));
+    requireThat(owner, 'ENTRY_EDGE', 'edge has no actual source page owner');
+    const hrefs = anchorHrefs(sourceBytes(owner.pin, context).toString('utf8'));
+    requireThat(hrefs && hrefs.includes(edge.href), 'ENTRY_EDGE', 'literal actual anchor required');
+    let destination;
+    try { destination = new URL(edge.href, 'https://afrotools.com' + from.route); } catch (_) { fail('ENTRY_EDGE', 'invalid href'); }
+    requireThat(destination.origin === 'https://afrotools.com' && !destination.search && !destination.hash && to.sourceEvidence.some(item => item.kind === 'page-owner' && pageOwnerMatches(item.pin, destination.pathname, context)), 'ENTRY_EDGE', 'href does not resolve to the declared operating owner');
   }
   for (const row of inventory.ambiguities) {
     requireThat(!ambiguities.has(row.key), 'DUPLICATE_AMBIGUITY', row.key); ambiguities.set(row.key, row);

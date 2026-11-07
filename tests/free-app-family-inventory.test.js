@@ -98,7 +98,7 @@ function eightFixture(){
  Object.assign(f.inventory.snapshot.expectedCounts,{raw:14,eligible:11,english:10,localized:1,freeEnglish:6,freeAndProEnglish:4,separateProApps:2});repack(f);return f;
 }
 test('eight named English mappings retain literal owners and only proposed partial identity',()=>{
- assert.equal(mappedInventory.families.length,14);assert.equal(mappedInventory.members.filter(x=>x.role==='app').length,14);
+ assert.equal(mappedInventory.families.length,19);assert.equal(mappedInventory.members.filter(x=>x.role==='app').length,20);
  for(const [id,familyId,route,owner] of EIGHT_MAPPING_EXPECTED){
   const member=mappedInventory.members.find(x=>x.key===id),family=mappedInventory.families.find(x=>x.appFamilyId===familyId);
   assert.ok(member&&family,id);assert.equal(member.catalogueId,id);assert.equal(member.route,route);assert.equal(member.role,'app');assert.equal(member.appFamilyId,familyId);assert.equal(member.locale,'en');assert.equal(member.variant,'canonical');
@@ -118,7 +118,7 @@ for(const [id] of EIGHT_MAPPING_EXPECTED)test(id+': shared helper cannot collaps
 });
 test('all 48 added requirements remain unknown and do not manufacture a global percentage',()=>{
  const added=mappedInventory.members.filter(x=>EIGHT_MAPPING_EXPECTED.some(([id])=>id===x.key)).flatMap(x=>x.requirements);
- assert.equal(added.length,48);assert.ok(added.every(x=>x.state==='unknown'));assert.equal(mappedInventory.members.flatMap(x=>x.requirements).filter(x=>x.state==='unknown').length,84);
+ assert.equal(added.length,48);assert.ok(added.every(x=>x.state==='unknown'));assert.equal(mappedInventory.members.flatMap(x=>x.requirements).filter(x=>x.state==='unknown').length,120);
  assert.equal(Object.hasOwn(mappedInventory,'completionPercentage'),false);assert.equal(mappedInventory.coverage,'partial');assert.equal(mappedInventory.acceptancePolicy,'requirements-only-no-functional-verdict');
  assert.ok(!mappedInventory.members.some(x=>['ng-paye','cover-letter'].includes(x.catalogueId)));
 });
@@ -307,4 +307,53 @@ test('report actual maintained snapshot remains historical even when current reg
  const registryText=read('data/registry/canonical-registry.json'),snapshot=JSON.parse(read('data/registry/free-app-source-role-review.json'));
  const r=reportInventory(JSON.parse(read('data/registry/free-app-families.json')),JSON.parse(registryText),snapshot,sha('sha256',Buffer.from(registryText)));
  assert.equal(r.historicalRoleReview.status,'accepted-historical-source-role-snapshot');assert.equal(r.currentCompatibility.ownerContext,'not-assessed');assert.equal(r.functional.uniqueApps,null);assert.equal(r.functional.completedApps,null);assert.equal(r.functional.remainingApps,null);assert.equal(r.functional.completionPercentage,null);
+});
+
+// Source1 primary-job/entry-edge controls. Synthetic files and registry only.
+const JOB_MEMBER_KEYS=['boq-builder-discovery','boq-builder-operating','boq-gen','school-fees','school-fees-comparator','emergency-fund','security-emergency-fund'];
+function jobFixture(){
+ const f=fixture(),added=mappedInventory.members.filter(m=>JOB_MEMBER_KEYS.includes(m.key));
+ const familyIds=new Set(added.map(m=>m.appFamilyId).filter(Boolean));
+ const familyRows=mappedInventory.families.filter(r=>familyIds.has(r.appFamilyId));
+ const allEvidence=added.flatMap(m=>m.sourceEvidence);
+ for(const e of allEvidence){if(!f.context.sourceFiles[e.pin.path])f.context.sourceFiles[e.pin.path]=Buffer.from(e.pin.path.endsWith('.html')?'<h1>Synthetic operating source</h1>':'// Synthetic runtime owner declaration');}
+ f.context.sourceFiles['tools/boq-builder/index.html']=Buffer.from('<h1>Synthetic landing</h1><a href="app.html">Open app</a>');
+ f.context.sourceFiles['tools/school-fees/index.html']=Buffer.from('<h1>Synthetic reserve planner</h1><a href="/tools/school-fees/app">Compare quotes</a>');
+ for(const p of ['tools/boq-builder/app.html','tools/school-fees/app.html'])f.context.sourceFiles[p]=Buffer.from('<link rel="canonical" href="https://afrotools.com/'+p.slice(0,-5)+'"><h1>Synthetic operating source</h1>');
+ const ev=e=>f.evidence(e.pin.path,e.pin.path.endsWith('.html')?'Synthetic':'Synthetic runtime',e.kind);
+ for(const m of added){const row=structuredClone(m);row.sourceEvidence=row.sourceEvidence.map(ev);f.inventory.members.push(row);if(row.catalogueId)f.registry.tools.push({id:row.catalogueId,route:row.route,canonicalRoute:row.route,localeCoverage:['en'],availability:'free',publicationStatus:'published',deprecated:false,applicability:{countryIds:row.countryIds.slice()},source:{sourceId:null,compatibilityTargetId:null},redirectTarget:null});}
+ for(const r of familyRows){const row=structuredClone(r);row.sourceEvidence=row.sourceEvidence.map(ev);f.inventory.families.push(row);}
+ for(const r of mappedInventory.ambiguities.filter(r=>familyRows.some(family=>family.ambiguityKeys.includes(r.key))))f.inventory.ambiguities.push(structuredClone(r));
+ f.inventory.entryEdges=structuredClone(mappedInventory.entryEdges);for(const edge of f.inventory.entryEdges)edge.sourceEvidence=edge.sourceEvidence.map(ev);
+ f.context.routeOwnerPaths=new Set(Object.keys(f.context.sourceFiles));
+ Object.assign(f.inventory.snapshot.expectedCounts,{raw:11,eligible:8,english:7,localized:1,freeEnglish:6,freeAndProEnglish:1,separateProApps:2});repack(f);return f;
+}
+function jobDenied(name,edit,code){test(name,()=>{const f=jobFixture();edit(f);assert.throws(()=>run(f),new RegExp('^Error: '+code+':'))});}
+test('current-source adaptation retains repinned original rows and appends exactly five families, seven surfaces and two directed entries',()=>{
+ const expected={"families":"b786ae312a32cd3fffe2b7702eac0ee4de02365a7eb228789bf487e75599036d","members":"00c8179730bcac2611921e95aed5f350f0a631e375ce74e5fca63f8f9c99b119","ambiguities":"3d476be25dcb106fa1f4ea80a85192d8ffdf375982186fa5f2111175c9136def"};
+ for(const [key,n] of [['families',14],['members',18],['ambiguities',19]])assert.equal(sha('sha256',Buffer.from(JSON.stringify(mappedInventory[key].slice(0,n)))),expected[key]);
+ const f=jobFixture(),result=run(f);assert.equal(result.proposedFamilyCount,6);assert.equal(result.memberRoles.app,7);assert.equal(result.memberRoles.discovery,1);assert.equal(result.sourceOnlySeedCount,2);assert.equal(f.inventory.entryEdges.length,2);
+ assert.equal(result.globalFamilyTotal,null);assert.equal(result.completedFamilies,null);assert.equal(result.completionPercentage,null);
+ const added=f.inventory.members.filter(m=>JOB_MEMBER_KEYS.includes(m.key));assert.equal(added.length,7);assert.equal(new Set(added.filter(m=>m.catalogueId).map(m=>m.catalogueId)).size,5);assert.equal(added.flatMap(m=>m.requirements).length,36);assert.ok(added.flatMap(m=>m.requirements).every(r=>r.state==='unknown'));
+});
+test('BOQ landing remains discovery while two different operating schemas retain different jobs',()=>{const f=jobFixture();run(f);const lookup=k=>f.inventory.members.find(m=>m.key===k);assert.equal(lookup('boq-builder-discovery').appFamilyId,null);assert.equal(lookup('boq-builder-discovery').requirements.length,0);assert.notEqual(lookup('boq-builder-operating').jobContract.jobId,lookup('boq-gen').jobContract.jobId);assert.match(lookup('boq-builder-operating').jobContract.negativeExamples[0],/qty=3/);assert.match(lookup('boq-builder-operating').jobContract.actions,/escaped quotes/);assert.match(lookup('boq-builder-operating').jobContract.actions,/Failed import preserves current items/);assert.match(lookup('boq-gen').jobContract.negativeExamples[0],/2025-Q1/);});
+test('School planner and noncatalogued canonical comparator remain distinct primary jobs',()=>{const f=jobFixture();run(f);const a=f.inventory.members.find(m=>m.key==='school-fees'),b=f.inventory.members.find(m=>m.key==='school-fees-comparator');assert.equal(a.role,'app');assert.equal(b.role,'app');assert.equal(b.catalogueId,null);assert.equal(b.variant,'source-only');assert.notEqual(a.jobContract.jobId,b.jobContract.jobId);assert.equal(b.route,'/tools/school-fees/app');assert.match(b.jobContract.inputs,/same period/);});
+test('Emergency model variants retain independent numeric and lifecycle obligations under one proposed job',()=>{const f=jobFixture();run(f);const a=f.inventory.members.find(m=>m.key==='emergency-fund'),b=f.inventory.members.find(m=>m.key==='security-emergency-fund');assert.equal(a.appFamilyId,b.appFamilyId);assert.notEqual(a.jobContract.variant,b.jobContract.variant);assert.match(a.jobContract.obligations,/checks finite derived/);assert.match(a.jobContract.actions,/input\/change on all seven fields/);assert.match(b.jobContract.obligations,/Math.max/);assert.match(a.jobContract.negativeExamples[0],/363/);assert.match(b.jobContract.negativeExamples[0],/370/);assert.ok([...a.requirements,...b.requirements].every(r=>r.state==='unknown'));});
+jobDenied('job cannot bind a different family merely because totals resemble each other',f=>{f.inventory.members.find(m=>m.key==='boq-gen').jobContract.jobId='boq-priced-document-authoring'},'JOB_CONTRACT');
+jobDenied('job owner cannot be replaced by a related landing or shared helper',f=>{f.inventory.members.find(m=>m.key==='boq-builder-operating').jobContract.primaryOwner='tools/boq-builder/index.html'},'JOB_CONTRACT');
+jobDenied('contract runtime paths must each have a current pinned declaration',f=>{f.inventory.members.find(m=>m.key==='school-fees-comparator').jobContract.runtimeOwners.push('unreviewed/provider.js')},'JOB_CONTRACT');
+jobDenied('nonapp discovery cannot acquire a job contract',f=>{f.inventory.members.find(m=>m.key==='boq-builder-discovery').jobContract=structuredClone(f.inventory.members.find(m=>m.key==='boq-gen').jobContract)},'JOB_CONTRACT');
+jobDenied('entry target must be a real operating member',f=>{f.inventory.entryEdges[0].toMemberKey='boq-builder-discovery'},'ENTRY_EDGE');
+jobDenied('entry source must exist',f=>{f.inventory.entryEdges[0].fromMemberKey='invented-landing'},'ENTRY_EDGE');
+jobDenied('entry canonical cannot hide another child path',f=>{f.inventory.entryEdges[0].targetCanonicalRoute='/tools/boq-builder/app.html'},'ENTRY_EDGE');
+jobDenied('entry href must occur as an actual anchor',f=>{f.inventory.entryEdges[0].href='imagined.html'},'ENTRY_EDGE');
+jobDenied('duplicate directed entries are rejected even with another key',f=>{f.inventory.entryEdges.push({...structuredClone(f.inventory.entryEdges[0]),key:'duplicate-directed-entry'})},'ENTRY_EDGE');
+jobDenied('another page cannot authorize an entry edge',f=>{f.inventory.entryEdges[0].sourceEvidence=f.inventory.entryEdges[1].sourceEvidence},'ENTRY_EDGE');
+jobDenied('source-only comparator cannot steal its root catalogue ID',f=>{f.inventory.members.find(m=>m.key==='school-fees-comparator').catalogueId='school-fees'},'AMBIGUOUS_MEMBERSHIP');
+jobDenied('an identity proposal cannot fabricate functional PASS',f=>{f.inventory.members.find(m=>m.key==='security-emergency-fund').requirements[0].state='passed'},'SHAPE');
+test('script and comment text cannot impersonate an operating entry anchor',()=>{
+ const f=jobFixture(),p='tools/boq-builder/index.html';f.context.sourceFiles[p]=Buffer.from('<h1>Synthetic landing</h1><!-- <a href="app.html">fake</a> --><script>var text=\'<a href="app.html">fake</a>\';</script>');
+ const refresh=e=>e.pin.path===p?f.evidence(p,'Synthetic',e.kind):e;
+ for(const m of f.inventory.members)m.sourceEvidence=m.sourceEvidence.map(refresh);for(const e of f.inventory.entryEdges)e.sourceEvidence=e.sourceEvidence.map(refresh);
+ assert.throws(()=>run(f),/^Error: ENTRY_EDGE:/);
 });
