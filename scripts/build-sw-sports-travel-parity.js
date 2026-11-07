@@ -257,7 +257,6 @@ function rawRenderSportsHub() {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: "sw",
     numberOfItems: rows.length,
     itemListElement: rows.map((row, index) => ({
       "@type": "ListItem",
@@ -311,7 +310,6 @@ function rawRenderTravelHub() {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: "sw",
     numberOfItems: rows.length,
     itemListElement: rows.map((row, index) => ({
       "@type": "ListItem",

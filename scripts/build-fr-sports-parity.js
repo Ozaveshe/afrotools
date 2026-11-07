@@ -240,7 +240,6 @@ function renderHub() {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: "fr",
     numberOfItems: SPORTS.length,
     itemListElement: SPORTS.map((page, index) => ({
       "@type": "ListItem",

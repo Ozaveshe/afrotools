@@ -152,7 +152,6 @@ ${lane.ownerIds.map((ownerId) => renderToolCard(byOwner.get(ownerId))).join("\n"
       "@type": "ItemList",
       name: "Outils AfroTools pour l’économie créative",
       numberOfItems: OWNERS.length,
-      inLanguage: "fr",
       itemListElement: itemList,
     },
     {
