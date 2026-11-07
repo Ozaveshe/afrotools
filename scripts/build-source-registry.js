@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const sourceConfidence = require('../assets/js/lib/source-confidence.js');
 const canonicalRegistry = require('./lib/canonical-registry');
 const { parseTelecomData } = require('./lib/read-telecom-data');
+const { dedicatedContract } = require('./lib/paye-verification-contract');
 
 const ROOT = path.resolve(__dirname, '..');
 const SOURCE_PATH = path.join(ROOT, 'data', 'source-registry.json');
@@ -194,6 +195,31 @@ function formulaEntry(formula, options, today) {
   const entry = { id: options.id, sourceName, sourceType: sourceTypeForFormula(source), countryCodes: [countryCode || 'ALL'], appliesTo: options.appliesTo, lastCheckedAt: checked, lastReviewedAt: checked, freshnessStatus: freshnessStatus(checked, checked, cadenceDays, today), confidence, reviewCadenceDays: cadenceDays, notes: options.notes + ' Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.', displayDisclaimer: options.disclaimer };
   return withOptional(entry, { sourceUrl: sourceUrl(source), effectiveFrom: dateOnly(formula.effectiveFrom), effectiveTo: dateOnly(formula.effectiveTo), toolIds: unique(options.toolIds), routes: unique(options.routes) });
 }
+
+// Distinct current locale records; preserve the historical source without active route coverage.
+function buildSenegalPayeSources(formula, englishFormula, today) {
+  const review = readJson(path.join(ROOT, 'data/calculation-quality/reviews/senegal-paye-household-provenance-2026-11-07.json'));
+  for (const [candidate, expectedId] of [[formula, 'paye-server-sn'], [englishFormula, 'route-sn-paye']]) {
+    if (!candidate || candidate.id !== expectedId || candidate.lastVerified !== review.reviewedAt ||
+        !(candidate.sources || []).some(source => source.url === review.sourceUrl)) {
+      throw new Error('Adopt the dated Senegal formula review before rebuilding source coverage: ' + expectedId);
+    }
+  }
+  const previous = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find(source => source.id === 'paye-sn-source');
+  if (!previous) throw new Error('Missing historical Senegal source record');
+  const historical = { ...previous, sourceName: review.legacyEnglish.sourceTitleCorrection,
+    confidence: 'low_confidence', freshnessStatus: freshnessStatus(previous.lastCheckedAt, previous.lastReviewedAt, previous.reviewCadenceDays, today), routes: [], toolIds: [], notes: review.legacyEnglish.scopeNotice,
+    displayDisclaimer: 'Historical reference only; this record does not certify either replacement calculator or the old production arithmetic.' };
+  const current = formulaEntry(formula, { id: 'ledger-tool-sn-paye-fr', countryCode: 'SN', appliesTo: ['tax', 'salary'], routes: ['/fr/senegal/calculateur-salaire-net'], toolIds: ['sn-paye-fr'], notes: review.verification.methodology_markdown + ' ' + review.verification.law_or_version, disclaimer: review.verification.known_limitations.join(' ') }, today);
+  const english = formulaEntry(englishFormula, { id: 'ledger-tool-sn-paye-en', countryCode: 'SN', appliesTo: ['tax', 'salary'], routes: ['/senegal/sn-paye'], toolIds: ['sn-paye'], notes: review.englishVerification.methodology_markdown + ' ' + review.englishVerification.law_or_version, disclaimer: review.englishVerification.known_limitations.join(' ') }, today);
+  for (const entry of [current, english]) {
+    entry.sourceName = review.sourceRecords[0].title;
+    entry.sourceUrl = review.sourceRecords[0].url;
+    entry.notes += ' Additional sources: ' + review.sourceRecords.slice(1).map(source => source.url).join(' ; ');
+  }
+  return [historical, current, english];
+}
+
 
 function mergeCoverage(entry, toolIds, routes) {
   entry.toolIds = unique((entry.toolIds || []).concat(toolIds || []));
@@ -534,6 +560,10 @@ function buildRegistry(asOf) {
         return toolsByRoute.get(normalizedRoute(route)) || [];
       });
       const entry = formulaEntry(formula, { id: 'paye-' + country.toLowerCase() + '-source', countryCode: country, fallbackName: (countryNames.get(country) || country) + ' PAYE source pack', appliesTo: ['tax', 'salary'], routes, toolIds, notes: (countryNames.get(country) || country) + ' PAYE engine source audit. Outputs remain planning estimates.', disclaimer: 'PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.' }, today);
+      if (country === 'SN') {
+        buildSenegalPayeSources(formula, payeRoutes.find(route => route.id === 'route-sn-paye'), today).forEach(add);
+        return;
+      }
       if (country === 'ST') {
         entry.sourceName = 'INSS Decreto-Lei 19/2022';
         entry.routes = ['/fr/sao-tome/st-paye', '/sao-tome/st-paye', '/sw/sao-tome/kikokotoo-kodi-mshahara/', '/widgets/iframe/financial-sao-tome-paye.html'];
@@ -1503,7 +1533,10 @@ function buildRegistry(asOf) {
     entry.routes = (entry.routes || []).filter(function (route) {
       const file = routeFile(route);
       if (!file) return true;
-      return fs.readFileSync(file, 'utf8').includes('data-source-meta-id="' + entry.id + '"');
+      const html = fs.readFileSync(file, 'utf8');
+      const dedicated = dedicatedContract(html);
+      return html.includes('data-source-meta-id="' + entry.id + '"')
+        || Boolean(dedicated && !dedicated.errors.length && dedicated.sourceId === entry.id);
     });
   });
 
@@ -1664,4 +1697,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { preserveRecordedReview, atomicWriteJson, buildRegistry, buildTelecomSnapshotEntry, dateOnly, freshnessStatus, normalizedRoute, syncSelectedSourceRegistry, syncTelecomSourceRegistry };
+module.exports = { buildSenegalPayeSources, preserveRecordedReview, atomicWriteJson, buildRegistry, buildTelecomSnapshotEntry, dateOnly, freshnessStatus, normalizedRoute, syncSelectedSourceRegistry, syncTelecomSourceRegistry };

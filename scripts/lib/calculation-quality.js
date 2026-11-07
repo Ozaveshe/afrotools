@@ -733,6 +733,16 @@ function makeFormulaVersion(label, digest) {
 }
 
 function verificationByCountry(toolVerification, code) {
+  // Only the French page and shared browser/API engines use the reviewed Senegal model.
+  if (code === "SN") {
+    const review = require("../../data/calculation-quality/reviews/senegal-paye-household-provenance-2026-11-07.json");
+    const verified = toolVerification.tools && toolVerification.tools["sn-paye-fr"];
+    if (!verified || verified.last_verified !== review.reviewedAt ||
+        !Array.isArray(verified.source_urls) || !verified.source_urls.includes(review.sourceUrl)) {
+      throw new Error("Apply the dated Senegal French source review before regenerating shared-engine formula metadata");
+    }
+    return verified;
+  }
   const direct =
     toolVerification.tools &&
     toolVerification.tools[code.toLowerCase() + "-paye"];
@@ -1436,7 +1446,9 @@ function buildJsFormula(
     artifactDigest: digest,
     jurisdictions,
     sourceJurisdictions,
-    applicablePopulation: applicablePopulationFor(classification.riskDomain),
+    applicablePopulation: countryCode === "SN"
+      ? "Resident employee, stable cash salary over twelve months; general IPRES parameters dated 1 January 2026; no full November contribution certification."
+      : applicablePopulationFor(classification.riskDomain),
     sources,
     ...effective,
     parameters: safeFormulaParameters(engine, artifactPath, digest),
@@ -1449,7 +1461,9 @@ function buildJsFormula(
         : "Currency follows the declared runtime or canonical country data.",
     currencyOverride,
     units: currency === null ? ["domain-specific"] : ["currency"],
-    knownExclusions,
+    knownExclusions: countryCode === "SN"
+      ? verificationByCountry(toolVerification, "SN").known_limitations.slice()
+      : knownExclusions,
     lastVerified,
     verificationBasis: sources.some(
       (source) => source.authorityStatus === "source-reviewed",
@@ -5654,6 +5668,7 @@ module.exports = {
   classifyArtifact,
   loadQualityArtifacts,
   buildQualityArtifacts,
+  verificationByCountry,
   validateFixtureDeltaReviews,
   assertFormulaMetadata,
   checkHighRiskRouteTraceability,

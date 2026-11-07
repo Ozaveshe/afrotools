@@ -257,7 +257,17 @@
       englishOwnerRoute: config.englishRoute };
   }
 
+  function senegalSalarySnapshot(config) {
+    var provider = global.AfroTools && global.AfroTools.senegalSalaryReport;
+    if (typeof provider !== 'function') throw new Error('Le résumé du salaire est indisponible. Rechargez la page puis recalculez.');
+    var report = provider();
+    return { schema: 'afrotools.fr.finance.export.v1', route: global.location.pathname,
+      title: report.title, generatedAt: new Date().toISOString(), inputs: report.inputs, results: report.results,
+      locale: 'fr-SN', privacy: { processing: 'local', accountRequired: false, emailRequired: false }, englishOwnerRoute: config.englishRoute };
+  }
+
   function snapshot(config) {
+    if (config.englishId === 'sn-paye') return senegalSalarySnapshot(config);
     if (config.englishId === 'home-loan-eligibility') return homeLoanSnapshot(config);
     if (config.englishId === 'fuel-tracker') return fuelSnapshot(config);
     var data = {
@@ -439,10 +449,21 @@
 
   async function downloadPdf(data, filename) {
     var JsPDF = await loadJsPdf();
+    var senegalFrench = data.locale === 'fr-SN' && data.englishOwnerRoute === '/senegal/sn-paye';
+    if (senegalFrench) {
+      // Loading the local renderer can be asynchronous: refuse an edited or replaced scenario.
+      var current = global.AfroTools.senegalSalaryReport();
+      if (JSON.stringify(current.inputs) !== JSON.stringify(data.inputs) || JSON.stringify(current.results) !== JSON.stringify(data.results)) {
+        throw new Error('Le scénario a changé. Relancez l’export du résultat actualisé.');
+      }
+    }
     var pdf = new JsPDF({ unit: 'mm', format: 'a4' });
     var y = 18;
     function write(value, bold, size) {
-      var lines = pdf.splitTextToSize(pdfSafe(value), 170);
+      // Helvetica supports French Latin-1 accents; keep the legacy encoding for every other report.
+      var text = senegalFrench ? clean(value).normalize('NFC').replace(/[–—]/g, '-').replace(/[’‘]/g, "'") : pdfSafe(value);
+      if (senegalFrench) { pdf.setFont('helvetica', bold ? 'bold' : 'normal'); pdf.setFontSize(size || 9); }
+      var lines = pdf.splitTextToSize(text, 170);
       var needed = Math.max(5, lines.length * 4.2);
       if (y + needed > 280) {
         pdf.addPage();
@@ -456,13 +477,13 @@
     write('AFROTOOLS', true, 14);
     write(data.title, true, 12);
     y += 3;
-    write('Donnees saisies', true, 11);
+    write(senegalFrench ? 'Données saisies' : 'Donnees saisies', true, 11);
     data.inputs.slice(0, 14).forEach(function (item) { write(item.label + ' : ' + item.value); });
     y += 3;
-    write('Resultats', true, 11);
+    write(senegalFrench ? 'Résultats' : 'Resultats', true, 11);
     data.results.slice(0, 22).forEach(function (item) { write(item.label + ' : ' + item.value); });
     y += 3;
-    write('Estimation de planification. Verifiez les regles, taux, sources et dates affiches.', false, 8);
+    write(senegalFrench ? 'Estimation de planification. Vérifiez les règles, taux, sources et dates affichés.' : 'Estimation de planification. Verifiez les regles, taux, sources et dates affiches.', false, 8);
     write('Traitement local. Aucun compte ni e-mail requis.', false, 8);
     downloadBlob(pdf.output('blob'), filename);
   }

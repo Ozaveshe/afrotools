@@ -62,7 +62,7 @@
   "image": "https://afrotools.com/assets/img/tools/sn-paye.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que calcule cette estimation de salaire net au Sénégal ?","acceptedAnswer":{"@type":"Answer","text":"Elle déduit l’IPRES du régime général sur une base plafonnée, puis applique les sept tranches annuelles de l’IRPP."}},{"@type":"Question","name":"Le résultat correspond-il exactement à une fiche de paie ?","acceptedAnswer":{"@type":"Answer","text":"Non. La réduction pour charges de famille, le régime complémentaire des cadres, les charges CSS employeur et d’autres éléments de paie ne sont pas inclus."}},{"@type":"Question","name":"Mes montants sont-ils envoyés à un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le calcul reste dans le navigateur, le partage envoie seulement l’adresse de la page et le PDF ne demande pas d’adresse e-mail."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que calcule cette estimation de salaire net au Sénégal ?","acceptedAnswer":{"@type":"Answer","text":"Elle calcule l’IR sur le brut après abattement de 30 % plafonné à 900 000 FCFA et arrondi au millier inférieur. La réduction familiale est appliquée à l’IR; l’IPRES plafonnée et la TRIMF sont déduites du montant versé."}},{"@type":"Question","name":"Le résultat correspond-il exactement à une fiche de paie ?","acceptedAnswer":{"@type":"Answer","text":"Non. La réduction familiale et la TRIMF sont incluses selon vos réponses, mais pas l’IPM, la retraite complémentaire, les avantages en nature, les charges CSS employeur ni les autres retenues du contrat."}},{"@type":"Question","name":"Mes montants sont-ils envoyés à un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le calcul et le PDF restent locaux. Le bouton Partager envoie seulement l’adresse de la page. Une sauvegarde dans votre compte, si vous la demandez, transmet les paramètres et le résultat."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
@@ -120,9 +120,8 @@
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
   <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 <meta property="og:locale:alternate" content="en_US">
-<meta property="article:modified_time" content="2026-07-28">
+<meta property="article:modified_time" content="2026-11-07">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f9debbdd">
-<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/senegal/calculateur-salaire-net">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/senegal/sn-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/senegal/calculateur-salaire-net">
@@ -146,14 +145,14 @@
       <span class="badge b-red">IPRES plafonnée</span>
       <span class="badge b-grey">XOF · Sénégal</span>
     </div>
-    <p class="hero-meta">Dernière revue : 28 juillet 2026 · Barème IRPP publié par le ministère des Finances · Paramètres IPRES issus du rapport officiel 2024</p>
+    <p class="hero-meta">Calcul revu le 7 novembre 2026 · DGID : CGI de janvier 2025 · CLEISS : IPRES au 1er janvier 2026</p>
   </div>
 </section>
 
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>Estimation de planification :</strong> IRPP progressif de <strong>0 % à 43 %</strong> et IPRES du régime général plafonnée. La réduction pour charges de famille, le régime complémentaire des cadres et les charges CSS employeur ne sont pas calculés.</p>
+    <p><strong>Estimation de planification :</strong> IRPP progressif de <strong>0 % à 43 %</strong> et IPRES du régime général plafonnée. Réduction familiale et TRIMF incluses pour un résident au salaire stable sur douze mois. IPM, retraite complémentaire, avantages en nature et charges CSS employeur ne sont pas calculés.</p>
   </div>
 </div>
 
@@ -173,19 +172,19 @@
           <!-- SALARY SLIDER -->
           <div class="slider-wrap">
             <div class="slider-row">
-              <span class="slider-label">Salaire brut annuel</span>
+              <span class="slider-label" id="salarySliderLabel">Salaire brut annuel</span>
               <span class="slider-val" id="sliderVal">7 500 000 FCFA</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="500000" max="100000000" step="250000" value="7500000" oninput="onSlider(this)">
+            <input aria-label="Salaire brut annuel" type="range" id="salarySlider" min="500000" max="100000000" step="250000" value="7500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>500 000 FCFA</span><span>100 000 000 FCFA</span></div>
           </div>
 
           <!-- INPUT -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Ou saisissez le montant annuel exact</span><span class="f-hint">Avant toute d&#233;duction</span></div>
+            <div class="f-label"><label class="f-label-text" for="grossSalary" id="salaryInputLabel">Salaire brut annuel exact</label><span class="f-hint" id="salaryInputHint">Avant les retenues sélectionnées</span></div>
             <div class="f-wrap">
               <span class="f-prefix">FCFA</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="7 500 000" min="0" step="250000" value="7500000" oninput="onInput(this)">
+              <input type="number" class="f-input" id="grossSalary" aria-label="Salaire brut annuel exact" placeholder="7 500 000" min="0" step="250000" value="7500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -204,22 +203,44 @@
             <div class="toggles">
               <button type="button" class="tog on" data-tog="ipres" aria-pressed="true" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">IPRES (retraite)</div><div class="tog-rate">5,6% jusqu&#8217;&#224; 5 184 000 FCFA/an</div></div>
+                <div><div class="tog-label">IPRES (retraite)</div><div class="tog-rate">5,6% jusqu&#8217;&#224; 5 184 000 FCFA/an (janvier 2026)</div></div>
               </button>
             </div>
             <p class="f-note">D&#233;sactivez seulement si cette retenue ne s&#8217;applique pas &#224; votre situation. La CSS n&#8217;est pas une seconde retenue salariale de 5,6% et n&#8217;est donc pas d&#233;duite ici.</p>
           </div>
 
-          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
+          <fieldset id="householdFields" style="border:0;padding:0;margin:20px 0;min-width:0">
+            <legend class="f-label-text">Votre situation familiale</legend>
+            <p class="f-note">Résident, douze mois de salaire stable en espèces, sans avantages en nature. Aucun nom ni justificatif demandé.</p>
+            <div class="field"><label class="f-label-text" for="familyStatus">Situation familiale</label><select id="familyStatus" class="f-input" onchange="familyChanged()"><option value="single">Célibataire</option><option value="married">Marié(e)</option><option value="divorced">Divorcé(e)</option><option value="widowed">Veuf / veuve</option></select></div>
+            <div class="field"><label class="f-label-text" for="dependentChildren">Enfants fiscalement à charge</label><input id="dependentChildren" class="f-input" type="number" min="0" step="1" value="0" aria-describedby="childrenHelp" oninput="familyChanged()"><p id="childrenHelp" class="f-note">Sans revenus distincts : enfants mineurs, infirmes ou étudiants de moins de 25 ans, selon l’article 177 du CGI. Une demi-part par enfant admissible, dans la limite de cinq parts.</p></div>
+            <div id="spouseFields" hidden>
+              <div class="field"><label class="f-label-text" for="soleTaxableEarner">Êtes-vous le seul conjoint ayant des revenus imposables ?</label><select id="soleTaxableEarner" class="f-input" onchange="familyChanged()"><option value="">Choisir</option><option value="yes">Oui</option><option value="no">Non</option></select></div>
+              <div class="field"><label class="f-label-text" for="spousesWithoutIncome">Nombre de conjoints sans aucun revenu</label><input id="spousesWithoutIncome" class="f-input" type="number" min="0" step="1" placeholder="0, 1…" aria-describedby="spousesHelp" oninput="familyChanged()"><p id="spousesHelp" class="f-note">Pour la TRIMF, un revenu même non imposable compte comme un revenu. Les enfants ne sont pas comptés. Plusieurs conjoints n’ajoutent pas plusieurs demi-parts à l’IR.</p></div>
+            </div>
+            <p id="familyPreview" class="f-note" aria-live="polite">1 part fiscale · 1 personne pour la TRIMF</p>
+            <details><summary>Valeurs confirmées par votre service paie (facultatif)</summary>
+              <p class="f-note">Pour une situation particulière ou une exonération confirmée. Laissez vide pour le calcul automatique. Aucun renseignement médical demandé.</p>
+              <div class="field"><label class="f-label-text" for="confirmedParts">Parts fiscales confirmées (1 à 5)</label><input id="confirmedParts" class="f-input" type="number" min="1" max="5" step="0.5" placeholder="Automatique" oninput="overrideChanged()"></div>
+              <div class="field"><label class="f-label-text" for="confirmedTrimfPersons">Personnes imposables à la TRIMF, vous compris</label><input id="confirmedTrimfPersons" class="f-input" type="number" min="0" step="1" placeholder="Automatique" oninput="overrideChanged()"></div>
+              <p class="f-note">Zéro signifie une exonération confirmée de toutes les personnes concernées. L’exonération du salarié ne s’étend pas toujours au conjoint. Non-résidents et changements en cours d’année : faites vérifier votre paie séparément.</p>
+            </details>
+          </fieldset>
+          <p id="calculationStatus" role="status" aria-live="polite" class="f-note"></p>
+          <div class="mode-toggle" role="group" aria-label="Sens du calcul, montants saisis par an">
+            <button type="button" id="grossModeButton" class="mode-btn on" aria-pressed="true" onclick="setCalcMode('gross')">Brut → Net</button>
+            <button type="button" id="netModeButton" class="mode-btn" aria-pressed="false" onclick="setCalcMode('net')">Net → Brut</button>
+          </div>
+          <button type="button" id="calculateButton" class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
         </div>
       </div>
 
       <!-- RESULTS -->
-      <div class="card results-card" id="resultsCard">
+      <div class="card results-card" id="resultsCard" style="scroll-margin-top:96px">
         <div class="res-hero">
-          <div class="res-hero-label">Salaire net annuel</div>
+          <div class="res-hero-label" id="resultHeadlineLabel">Salaire net mensuel estimé</div>
           <div class="res-hero-amount" id="resAmount">0 FCFA</div>
-          <div class="res-hero-period">Apr&#232;s IRPP et toutes d&#233;ductions</div>
+          <div class="res-hero-period" id="resultPeriodLabel">Moyenne sur 12 mois, après IR, IPRES sélectionnée et TRIMF</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
@@ -274,7 +295,7 @@
     <div class="sidebar">
 
       <div class="disclaimer">
-        <strong>Calcul local et privé.</strong> Votre salaire reste dans ce navigateur. Le partage envoie uniquement l’adresse de la page et le PDF ne demande ni compte ni adresse e-mail.
+        <strong>Calcul local et privé.</strong> Calcul et PDF restent dans ce navigateur. Le partage envoie uniquement l’adresse de la page. Si vous choisissez de sauvegarder dans votre compte, les paramètres et le résultat sont transmis pour cette sauvegarde.
       </div>
 
 <!-- DGID TAX BANDS -->
@@ -289,9 +310,9 @@
           <div class="band-row"><span class="band-range">1 500 001 &#8211; 4 000 000 FCFA</span><span class="band-rate">30% sur l&#8217;exc&#233;dent au-dessus de 1 500k</span></div>
           <div class="band-row"><span class="band-range">4 000 001 &#8211; 8 000 000 FCFA</span><span class="band-rate">35% sur l&#8217;exc&#233;dent au-dessus de 4 000k</span></div>
           <div class="band-row"><span class="band-range">8 000 001 &#8211; 13 500 000 FCFA</span><span class="band-rate">37% sur l&#8217;exc&#233;dent au-dessus de 8 000k</span></div>
-          <div class="band-row"><span class="band-range">13 500 001 &#8211; 25 000 000 FCFA</span><span class="band-rate">40% sur cette tranche</span></div>
-          <div class="band-row"><span class="band-range">Au-del&#224; de 25 000 000 FCFA</span><span class="band-rate">43% sur l&#8217;exc&#233;dent</span></div>
-          <p class="band-note">Calcul annuel sur le revenu imposable après IPRES. La réduction pour charges de famille n’est pas modélisée : le résultat est une estimation avant cette réduction.</p>
+          <div class="band-row"><span class="band-range">13 500 001 &#8211; 50 000 000 FCFA</span><span class="band-rate">40% sur cette tranche</span></div>
+          <div class="band-row"><span class="band-range">Au-del&#224; de 50 000 000 FCFA</span><span class="band-rate">43% sur l&#8217;exc&#233;dent</span></div>
+          <p class="band-note">Calcul annuel après abattement salarial de 30 % plafonné à 900 000 FCFA, puis arrondi au millier inférieur. L’IPRES est une retenue de trésorerie, pas une seconde déduction de la base fiscale. La réduction familiale est appliquée après le barème, selon vos réponses. La TRIMF est une retenue distincte fondée sur le brut et le nombre de personnes imposables.</p>
         </div>
       </div>
 
@@ -304,23 +325,27 @@
         <div class="bands-body">
           <div class="band-row"><span class="band-range">IPRES salari&#233;</span><span class="band-rate">5,6% jusqu’au plafond annuel de 5 184 000 FCFA</span></div>
           <div class="band-row"><span class="band-range">IPRES employeur</span><span class="band-rate">8,4% sur la même base plafonnée</span></div>
-          <p class="band-note">Le régime complémentaire des cadres, les prestations familiales et accidents du travail gérés par la CSS, ainsi que les autres éléments de paie ne sont pas chiffrés ici. Confirmez-les auprès de votre employeur.</p>
+          <p class="band-note">La retraite complémentaire au-delà du plafond général, l’IPM, les prestations familiales et accidents du travail gérés par la CSS, ainsi que les autres éléments de paie ne sont pas chiffrés ici. Paramètres généraux IPRES confirmés au 1er janvier 2026 par le CLEISS. Le Code de sécurité sociale de septembre 2026 renvoie les taux et plafonds aux textes d’application : confirmez tout paramètre plus récent auprès de votre employeur.</p>
         </div>
       </div>
 
       <div class="disclaimer">
-        <strong>Avertissement :</strong> &#192; titre informatif uniquement. Ne constitue pas une fiche de paie ni un conseil fiscal. Le bar&#232;me IRPP est publi&#233; par le minist&#232;re des Finances et les param&#232;tres IPRES proviennent du rapport officiel 2024. V&#233;rifiez votre situation aupr&#232;s de la DGID, de l&#8217;IPRES ou de votre employeur.
+        <strong>Avertissement :</strong> Estimation informative, et non fiche de paie. L’IR et la TRIMF suivent le CGI de janvier 2025 publié par la DGID ; les paramètres généraux IPRES sont ceux publiés par le CLEISS au 1er janvier 2026. Confirmez les paramètres plus récents et les retenues propres à votre emploi auprès de votre employeur.
       </div>
 
-      <div class="card bands-card">
+      <section class="card bands-card" data-tool-verification-panel data-tool-id="sn-paye-fr" data-source-record-id="ledger-tool-sn-paye-fr" data-senegal-paye-disclosure="2026-11-07" aria-labelledby="sn-sources-heading">
         <div class="card-head">
-          <span class="card-title">Sources officielles vérifiées</span>
+          <h2 id="sn-sources-heading" class="card-title" style="margin:0">Sources et périmètre du calcul</h2>
         </div>
         <div class="bands-body open">
-          <p class="band-note"><a href="https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf" target="_blank" rel="noopener">Ministère des Finances — rapport d’évaluation des dépenses fiscales, édition 2022</a> : sept tranches IRPP et réduction pour charges de famille.</p>
-          <p class="band-note"><a href="https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf" target="_blank" rel="noopener">DGTSS — Rapport annuel des statistiques du travail 2024</a> : taux d’appel et plafond du régime général IPRES.</p>
+          <p class="band-note">Calcul revu le <time datetime="2026-11-07">7 novembre 2026</time> pour un salarié résident au Sénégal, avec un salaire en espèces stable sur douze mois : IR avec réduction familiale, TRIMF et IPRES général inclus.</p>
+          <p class="band-note"><a href="https://www.dgid.sn/storage/docs/CGI-2025.pdf" target="_blank" rel="noopener">DGID — CGI, édition janvier 2025</a> : articles 168 et 182 (abattement), 173 (barème et arrondi), 174–179 (réduction familiale), 275–282 (TRIMF).</p>
+          <p class="band-note"><a href="https://www.cleiss.fr/docs/cotisations/senegal.html" target="_blank" rel="noopener">CLEISS — cotisations au 1er janvier 2026</a> : IPRES général, 5,6 % salarié et 8,4 % employeur, base plafonnée à 432 000 FCFA par mois.</p>
+          <p class="band-note">Le <a href="https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Cadre-juridique/Lois/JO-Loi-2026-19-du-03-septembre-2026-portant-CODE-SECURITE-SOCIALE.pdf" target="_blank" rel="noopener">Code de sécurité sociale de septembre 2026</a>, articles 73–75, renvoie les taux et plafonds aux textes d’application. Leurs éventuels changements ultérieurs restent non confirmés ici.</p>
+          <p class="band-note">L’IPM, la retraite complémentaire, les cotisations employeur CSS et les autres retenues propres à votre emploi ne sont pas chiffrées. Pour une rémunération variable, une année incomplète ou des avantages en nature, faites confirmer votre paie.</p>
+          <p class="band-note"><a class="tool-verification-report" href="/fr/contact/?topic=calculation-error&amp;tool=sn-paye-fr">Signaler une erreur de calcul</a></p>
         </div>
-      </div>
+      </section>
 
       <div class="tool-info-card">
         <div class="tool-info-header">
@@ -332,20 +357,20 @@
         </div>
         <div class="tool-info-body">
           <div class="tool-info-stats">
-            <div class="tool-stat"><div class="tool-stat-val">2,4K</div><div class="tool-stat-lbl">Calculs</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">4,8</div><div class="tool-stat-lbl">Note</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Gratuit</div><div class="tool-stat-lbl">Pour toujours</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Sénégal</div><div class="tool-stat-lbl">Pays</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">FCFA</div><div class="tool-stat-lbl">Devise</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Gratuit</div><div class="tool-stat-lbl">Estimation</div></div>
           </div>
           <div class="tool-info-features">
             <span class="tool-feat">IRPP 2026</span>
             <span class="tool-feat">IPRES</span>
             <span class="tool-feat">Calcul local</span>
-            <span class="tool-feat">PDF paie</span>
-            <span class="tool-feat">Coût employeur</span>
+            <span class="tool-feat">PDF estimation</span>
+            <span class="tool-feat">IR familial + TRIMF</span>
           </div>
         </div>
         <div class="tool-info-footer">
-          <span class="tool-info-updated">Mis &#224; jour : avril 2026</span>
+          <span class="tool-info-updated">Estimation mise à jour : 7 novembre 2026</span>
           <div class="tool-info-actions">
             <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/salary-tax/francophone/">Hub francophone</a>
@@ -365,11 +390,11 @@
     <div class="faq-grid">
       <div class="faq-item">
         <div class="faq-q">Que calcule cette estimation ?</div>
-        <p class="faq-a">Elle déduit l’IPRES du régime général sur une base annuelle plafonnée à 5 184 000 FCFA, puis applique les sept tranches de l’IRPP.</p>
+        <p class="faq-a">Elle applique l’abattement salarial de 30 % plafonné à 900 000 FCFA, arrondit la base au millier inférieur puis calcule l’IR. La réduction familiale diminue ensuite l’IR. L’IPRES plafonnée et la TRIMF réduisent le montant versé; l’IPRES n’est pas une deuxième déduction fiscale.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">Pourquoi le résultat peut-il différer de ma fiche de paie ?</div>
-        <p class="faq-a">La réduction pour charges de famille, le régime complémentaire des cadres, les charges CSS employeur et d’autres éléments propres à votre contrat ne sont pas modélisés.</p>
+        <p class="faq-a">La réduction familiale et la TRIMF sont incluses selon vos réponses. L’IPM, la retraite complémentaire, les avantages en nature, les charges CSS employeur et les autres retenues propres à votre contrat ne sont pas modélisés.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">La CSS est-elle une retenue salariale de 5,6% ?</div>
@@ -377,7 +402,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">Mes montants quittent-ils le navigateur ?</div>
-        <p class="faq-a">Non. Le calcul et le PDF restent locaux. Le bouton de partage copie ou envoie uniquement l’adresse de la page.</p>
+        <p class="faq-a">Le calcul et le PDF restent locaux. Le bouton de partage copie ou envoie uniquement l’adresse de la page. Si vous demandez une sauvegarde dans votre compte, ses paramètres et son résultat sont transmis.</p>
       </div>
     </div>
   </div>
@@ -412,22 +437,124 @@
 var RESULT=null;
 var CHART        = null;
 var CHART_TYPE   = 'donut';
+var CALC_MODE = 'gross';
 
 var fmt = typeof AfroFrench !== 'undefined'
   ? function(n){ return AfroFrench.fmt(n, 'XOF'); }
-  : function(n){ return Math.round(Math.abs(n)).toLocaleString('fr-SN') + '\u00A0FCFA'; };
+  : function(n){ return Math.round(n).toLocaleString('fr-SN') + '\u00A0FCFA'; };
 var pct = typeof AfroFrench !== 'undefined'
   ? function(r){ return AfroFrench.pct(r); }
   : function(r){ var v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SLIDER ────────────────────────────────────────────────────
+// This page always accepts annual amounts and shows a monthly result headline.
+// Keep the adapter local: the shared enhancer assumes monthly input on other tools.
+function setCalcMode(mode) {
+  if (mode !== 'gross' && mode !== 'net') return;
+  var previous = RESULT;
+  CALC_MODE = mode;
+  var netMode = mode === 'net';
+  document.getElementById('salarySliderLabel').textContent = netMode ? 'Salaire net annuel souhaité' : 'Salaire brut annuel';
+  document.getElementById('salaryInputLabel').textContent = netMode ? 'Salaire net annuel souhaité exact' : 'Salaire brut annuel exact';
+  document.getElementById('salaryInputHint').textContent = netMode ? 'Après les retenues sélectionnées' : 'Avant les retenues sélectionnées';
+  document.getElementById('salarySlider').setAttribute('aria-label', netMode ? 'Salaire net annuel souhaité' : 'Salaire brut annuel');
+  document.getElementById('grossSalary').setAttribute('aria-label', netMode ? 'Salaire net annuel souhaité exact' : 'Salaire brut annuel exact');
+  document.getElementById('calculateButton').textContent = netMode ? 'Estimer le salaire brut requis →' : 'Calculer mon salaire net →';
+  ['gross', 'net'].forEach(function (item) {
+    var button = document.getElementById(item + 'ModeButton');
+    button.classList.toggle('on', item === mode);
+    button.setAttribute('aria-pressed', String(item === mode));
+  });
+  if (previous) {
+    document.getElementById('grossSalary').value = netMode ? previous.netAnnual : previous.gross;
+    onInput(document.getElementById('grossSalary'));
+    calculate();
+  } else invalidateResult();
+}
+function grossForAnnualNet(target, options) {
+  // Keep integer bisection well below floating-point precision limits.
+  var maximumAnnualNet = 1000000000000;
+  if (!Number.isFinite(target) || target <= 0 || target > maximumAnnualNet) {
+    return { error: 'Le net annuel doit être supérieur à zéro et ne pas dépasser 1 000 000 000 000 FCFA.', field: 'grossSalary' };
+  }
+  function forwardAt(gross) {
+    var value = window.SenegalPayeEngine.calculate(gross, options);
+    if (value.error) return value;
+    return Number.isFinite(value.netAnnual) ? value : { error: 'Le moteur ne peut pas calculer ce montant annuel.' };
+  }
+  var probe = forwardAt(Math.max(1, target));
+  if (probe.error) return probe;
+  var low = 0, high = Math.ceil(Math.max(1000, target * 3));
+  if (!Number.isSafeInteger(high)) return { error: 'Montant trop élevé pour cette estimation.' };
+  var candidate = forwardAt(high);
+  if (candidate.error) return candidate;
+  for (var attempt = 0; candidate.netAnnual < target && attempt < 32; attempt++) {
+    high *= 2;
+    if (!Number.isSafeInteger(high)) return { error: 'Montant trop élevé pour cette estimation.' };
+    candidate = forwardAt(high);
+    if (candidate.error) return candidate;
+  }
+  if (candidate.netAnnual < target) return { error: 'Impossible de retrouver ce salaire net avec ces paramètres.' };
+  // Retain a feasible integer gross; tax rounding can make the inverse non-unique.
+  while (low + 1 < high) {
+    var middle = Math.floor((low + high) / 2);
+    var checked = forwardAt(middle);
+    if (checked.error) return checked;
+    if (checked.netAnnual >= target) high = middle; else low = middle;
+  }
+  candidate = forwardAt(high);
+  if (candidate.error) return candidate;
+  if (candidate.netAnnual < target) return { error: 'Le résultat inverse doit être recalculé.' };
+  return candidate;
+}
+
+var SENEGAL_EXPORT_SIGNATURE = null;
+function senegalScenarioSignature() {
+  return JSON.stringify({ annual: Number(document.getElementById('grossSalary').value), mode: CALC_MODE, household: householdOptions() });
+}
+function invalidateResult() {
+  SENEGAL_EXPORT_SIGNATURE = null;
+  RESULT = null;
+  document.getElementById('resultsCard').classList.remove('on');
+  document.getElementById('calculationStatus').textContent = 'Paramètres modifiés : recalculez pour mettre à jour le résultat et le PDF.';
+  var save = document.querySelector('save-result-button');
+  if (save && save.setData) save.setData(null);
+  var share = document.querySelector('share-result-button');
+  if (share) { share.hidden = true; share.style.display = 'none'; }
+  if (CHART) { CHART.destroy(); CHART = null; }
+}
+function householdOptions() {
+  var married = document.getElementById('familyStatus').value === 'married';
+  var answer = document.getElementById('soleTaxableEarner').value;
+  return { includeIpres: isOn('ipres'), familyStatus: document.getElementById('familyStatus').value,
+    dependentChildren: document.getElementById('dependentChildren').value,
+    soleTaxableEarner: married && answer === '' ? undefined : answer === 'yes',
+    spousesWithoutIncome: married ? document.getElementById('spousesWithoutIncome').value : 0,
+    confirmedParts: document.getElementById('confirmedParts').value,
+    confirmedTrimfPersons: document.getElementById('confirmedTrimfPersons').value };
+}
+function refreshFamilyPreview() {
+  document.getElementById('spouseFields').hidden = document.getElementById('familyStatus').value !== 'married';
+  var preview = window.SenegalPayeEngine && window.SenegalPayeEngine.calculateHousehold(7500000, 1834000, householdOptions());
+  document.getElementById('familyPreview').textContent = !preview || preview.error ? 'Complétez votre situation familiale.' :
+    preview.familyParts.toLocaleString('fr-SN') + ' part(s) fiscale(s) · ' + preview.trimfPersons + ' personne(s) pour la TRIMF';
+}
+function familyChanged() {
+  document.getElementById('confirmedParts').value = '';
+  document.getElementById('confirmedTrimfPersons').value = '';
+  invalidateResult(); refreshFamilyPreview();
+}
+function overrideChanged() { invalidateResult(); refreshFamilyPreview(); }
+
 function onSlider(el) {
+  invalidateResult();
   var v = parseInt(el.value);
   document.getElementById('grossSalary').value = v;
   document.getElementById('sliderVal').textContent = fmt(v);
   updateSliderFill(el);
 }
 function onInput(el) {
+  invalidateResult();
   var v = Math.min(Math.max(parseInt(el.value) || 0, 500000), 100000000);
   var s = document.getElementById('salarySlider');
   s.value = v;
@@ -444,6 +571,7 @@ updateSliderFill(document.getElementById('salarySlider'));
 
 // ── TOGGLES ───────────────────────────────────────────────────
 function togItem(el) {
+  invalidateResult();
   el.classList.toggle('on');
   el.setAttribute('aria-pressed', el.classList.contains('on') ? 'true' : 'false');
 }
@@ -460,9 +588,11 @@ function isOn(tog) { return !!document.querySelector('[data-tog="' + tog + '"]')
   }
 
   function calculate() {
+  invalidateResult();
   var gross = parseFloat(document.getElementById('grossSalary').value) || 0;
   if (!gross || gross <= 0) {
     var el = document.getElementById('grossSalary');
+    document.getElementById('calculationStatus').textContent = 'Entrez un montant annuel supérieur à zéro.';
     el.focus(); el.style.borderColor = '#e53e3e';
     el.setAttribute('placeholder', 'Entrez un salaire valide');
     setTimeout(function(){ el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
@@ -473,17 +603,28 @@ function isOn(tog) { return !!document.querySelector('[data-tog="' + tog + '"]')
     alert('Le moteur de calcul n’est pas disponible. Rechargez la page.');
     return;
   }
-  RESULT = window.SenegalPayeEngine.calculate(gross, { includeIpres: isOn('ipres') });
+  var enteredAnnual = gross;
+  RESULT = CALC_MODE === 'net' ? grossForAnnualNet(enteredAnnual, householdOptions()) : window.SenegalPayeEngine.calculate(gross, householdOptions());
   if (RESULT.error) {
-    alert(RESULT.error);
+    document.getElementById('calculationStatus').textContent = RESULT.error;
+    var errorField = RESULT.field === 'grossSalary' ? 'grossSalary' : 'familyStatus';
+    RESULT = null;
+    document.getElementById(errorField).focus();
     return;
   }
+  RESULT.calculationMode = CALC_MODE;
+  RESULT.targetNetAnnual = CALC_MODE === 'net' ? enteredAnnual : null;
+  SENEGAL_EXPORT_SIGNATURE = senegalScenarioSignature();
+  gross = RESULT.gross;
   var netAnnual = RESULT.netAnnual;
   var annualPAYE = RESULT.annualPAYE;
   var effectiveRate = RESULT.effectiveRate;
 
-  document.getElementById('resAmount').textContent = fmt(netAnnual);
-  document.getElementById('resGross').textContent = 'Brut : ' + fmt(gross) + '/an';
+  document.getElementById('calculationStatus').textContent = 'Estimation mise à jour. Réduction familiale et TRIMF incluses.';
+  document.getElementById('resultHeadlineLabel').textContent = CALC_MODE === 'net' ? 'Brut mensuel requis estimé' : 'Salaire net mensuel estimé';
+  document.getElementById('resultPeriodLabel').textContent = CALC_MODE === 'net' ? 'Moyenne sur 12 mois, avant les retenues sélectionnées' : 'Moyenne sur 12 mois, après IR, IPRES sélectionnée et TRIMF';
+  document.getElementById('resAmount').textContent = fmt((CALC_MODE === 'net' ? gross : netAnnual) / 12);
+  document.getElementById('resGross').textContent = 'Net annuel : ' + fmt(netAnnual) + ' · Brut : ' + fmt(gross) + '/an';
   document.getElementById('resContent').innerHTML = renderRows(RESULT);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(function(){ document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
@@ -491,14 +632,16 @@ function isOn(tog) { return !!document.querySelector('[data-tog="' + tog + '"]')
   // Save/Share/Benchmark wiring
   var _saveBtn = document.querySelector('save-result-button');
   if (_saveBtn) _saveBtn.setData({
-    inputs: { grossSalary: RESULT.gross },
+    inputs: { grossSalary: RESULT.gross, calculationMode: CALC_MODE, targetNetAnnual: RESULT.targetNetAnnual, includeIpres: isOn('ipres'), household: RESULT.assumptions },
     outputs: {
       netPay: RESULT.netAnnual,
       tax: RESULT.annualPAYE,
+      familyParts: RESULT.familyParts, familyReduction: RESULT.familyReduction, trimf: RESULT.trimf,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) { _shareBtn.hidden = false; _shareBtn.style.display = ''; }
   if (_shareBtn) _shareBtn.setResult({
     headline: 'Mon salaire net',
     mainValue: fmt(RESULT.netAnnual) + '/an',
@@ -511,9 +654,48 @@ function isOn(tog) { return !!document.querySelector('[data-tog="' + tog + '"]')
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netAnnual); }
   renderChart(CHART_TYPE);
-  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 }
+
+// Export the successful calculation, never a scrape of mixed input/result text.
+window.AfroTools = window.AfroTools || {};
+window.AfroTools.senegalSalaryReport = function () {
+  if (!RESULT || !SENEGAL_EXPORT_SIGNATURE || SENEGAL_EXPORT_SIGNATURE !== senegalScenarioSignature()) {
+    throw new Error('Calculez ou actualisez le salaire avant l’export.');
+  }
+  var R = RESULT, family = R.assumptions;
+  var row = function (label, value) { return { label: label, value: String(value) }; };
+  var money = function (label, value) { return row(label, fmt(value)); };
+  var labels = { single: 'Célibataire', married: 'Marié(e)', divorced: 'Divorcé(e)', widowed: 'Veuf / veuve' };
+  var inputs = [
+    row('Sens du calcul', R.calculationMode === 'net' ? 'Net annuel vers brut estimé' : 'Brut annuel vers net estimé'),
+    money(R.calculationMode === 'net' ? 'Net annuel demandé' : 'Brut annuel saisi', R.calculationMode === 'net' ? R.targetNetAnnual : R.gross),
+    row('IPRES général sélectionné', isOn('ipres') ? 'Oui' : 'Non'),
+    row('Situation familiale', labels[family.familyStatus]),
+    row('Enfants fiscalement à charge', family.dependentChildren),
+    row('Seul conjoint ayant des revenus imposables', family.familyStatus === 'married' ? (family.soleTaxableEarner ? 'Oui' : 'Non') : 'Sans objet'),
+    row('Conjoints sans aucun revenu', family.familyStatus === 'married' ? family.spousesWithoutIncome : 'Sans objet'),
+    row('Parts confirmées manuellement', family.confirmedParts === null ? 'Aucune : calcul automatique' : family.confirmedParts),
+    row('Personnes TRIMF confirmées manuellement', family.confirmedTrimfPersons === null ? 'Aucune : calcul automatique' : family.confirmedTrimfPersons)
+  ];
+  var results = [
+    money(R.calculationMode === 'net' ? 'Brut mensuel requis estimé' : 'Net mensuel estimé', (R.calculationMode === 'net' ? R.gross : R.netAnnual) / 12),
+    money('Salaire brut annuel', R.gross), money('Salaire net annuel', R.netAnnual), money('Net mensuel moyen sur 12 mois', R.netMonthly),
+    money('Abattement fiscal, sans retenue de trésorerie', R.salaryAllowance), money('Revenu imposable arrondi au millier inférieur', R.taxableAnnual),
+    money('IR avant réduction familiale', R.grossAnnualPAYE), row('Parts fiscales', R.familyParts), money('Réduction familiale', R.familyReduction),
+    money('IR après réduction familiale', R.annualPAYE), money('IPRES salarié général', R.ipres),
+    money('TRIMF annuelle (' + R.trimfPersons + ' personne(s), ' + fmt(R.trimfPerPerson) + ' chacune)', R.trimf),
+    money('Total annuel des retenues modélisées', R.totalEmployeeDeductions),
+    money('IPRES général employeur', R.empIPRES), money('Brut et IPRES employeur uniquement, coût partiel', R.totalEmployerCostAnnual),
+    row('Périmètre', 'Résident ; salaire en espèces stable sur 12 mois ; réduction familiale et TRIMF incluses. Estimation, pas une fiche de paie.'),
+    row('DGID, CGI de janvier 2025', 'Articles 168, 173–179, 182 et 275–282. https://www.dgid.sn/storage/docs/CGI-2025.pdf'),
+    row('CLEISS, paramètres au 1er janvier 2026', 'IPRES général : 5,6 % salarié ; 8,4 % employeur ; plafond 432 000 FCFA/mois. https://www.cleiss.fr/docs/cotisations/senegal.html'),
+    row('Limites', 'IPM, retraite complémentaire, CSS employeur, avantages en nature et retenues propres à l’emploi exclus. Les éventuels taux d’application ultérieurs au Code social de septembre 2026 restent non confirmés.'),
+    row('Calcul revu le 7 novembre 2026', 'Détails et sources : https://afrotools.com/fr/senegal/calculateur-salaire-net/')
+  ];
+  return { title: 'Sénégal — estimation du salaire', inputs: inputs, results: results };
+};
 
 // ── RENDER ROWS ───────────────────────────────────────────────
 function renderRows(R) {
@@ -521,18 +703,27 @@ function renderRows(R) {
 
   return '<div class="res-section">' +
       '<div class="res-section-title">Revenu brut</div>' +
+      (R.targetNetAnnual !== null ? row('Net annuel demandé', fmt(R.targetNetAnnual)) : '') +
       row('Salaire brut annuel', fmt(R.gross)) +
     '</div>' +
     '<div class="res-section">' +
       '<div class="res-section-title">Cotisations sociales</div>' +
       (R.ipres > 0 ? row('IPRES (5,6%, base plafonn\u00e9e)', fmt(R.ipres), 'c-red') : '') +
-      row('Revenu imposable avant r\u00e9duction familiale', fmt(R.taxableAnnual), 'c-mut') +
+    '</div>' +
+    '<div class="res-section"><div class="res-section-title">Base fiscale (sans retenue de trésorerie)</div>' +
+      row('Abattement salarial (30%, plafond 900 000)', fmt(R.salaryAllowance), 'c-mut') +
+      row('Revenu imposable arrondi au millier inférieur', fmt(R.taxableAnnual), 'c-mut') +
     '</div>' +
     '<div class="res-section">' +
       '<div class="res-section-title">IRPP (Imp\u00f4t sur le revenu)</div>' +
-      row('Imp\u00f4t sur le revenu (IRPP)', fmt(R.annualPAYE), 'c-red') +
+      row('IR avant réduction familiale', fmt(R.grossAnnualPAYE)) +
+      row('Parts fiscales', R.familyParts.toLocaleString('fr-SN')) +
+      row('Réduction familiale', fmt(R.familyReduction), 'c-grn') +
+      row('IR après réduction familiale', fmt(R.annualPAYE), 'c-red') +
+      row('TRIMF : ' + R.trimfPersons + ' × ' + fmt(R.trimfPerPerson), fmt(R.trimf), 'c-red') +
     '</div>' +
     '<div class="res-section">' +
+      row('Moyenne mensuelle nette (12 mois)', fmt(R.netMonthly), 'c-grn') +
       row('Total des d\u00e9ductions mod\u00e9lis\u00e9es', fmt(R.totalEmployeeDeductions), 'c-red') +
       '<div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-grn">' + fmt(R.netAnnual) + '</span></div>' +
     '</div>';
@@ -564,8 +755,8 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Salaire net', 'IRPP', 'IPRES'],
-        datasets: [{ data: [R.netAnnual, R.annualPAYE, R.ipres], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
+        labels: ['Salaire net', 'IRPP', 'IPRES', 'TRIMF'],
+        datasets: [{ data: [R.netAnnual, R.annualPAYE, R.ipres, R.trimf], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
     });
@@ -629,7 +820,9 @@ function generatePdf() {
 '  </div>' +
 '  <div class="doc-title">S\u00e9n\u00e9gal IRPP<br><span>R\u00e9sum\u00e9 2026</span></div>' +
 '  <div class="doc-meta">G\u00e9n\u00e9r\u00e9 le ' + dateStr + ' \u00B7 afrotools.com/fr/senegal/calculateur-salaire-net</div>' +
-'  <div class="badge">Estimation locale</div>' +
+'  <div class="badge">Estimation locale · résident · douze mois</div>' +
+    (R.targetNetAnnual !== null ? '<p>Net annuel demandé : ' + fmt(R.targetNetAnnual) + ' · Brut mensuel requis estimé : ' + fmt(R.gross / 12) + '</p>' : '') +
+'  <p>Parts fiscales : ' + R.familyParts + ' · Enfants à charge : ' + R.assumptions.dependentChildren + ' · TRIMF : ' + R.trimfPersons + ' personne(s)' + (R.assumptions.confirmedParts !== null || R.assumptions.confirmedTrimfPersons !== null ? ' · Valeurs confirmées par la paie saisies' : '') + '</p>' +
 '</div>' +
 '<div class="body">' +
 '  <div class="sh">' +
@@ -642,22 +835,26 @@ function generatePdf() {
 '    <div class="shi"><div class="sh-lbl">Taux effectif</div><div class="sh-val red">' + pct(R.effectiveRate) + '</div></div>' +
 '  </div>' +
 '' +
-'  <div class="sec-head">Section 1 \u2014 Revenu annuel et d\u00e9ductions</div>' +
+'  <div class="sec-head">Section 1 \u2014 Base fiscale (abattement sans retenue de trésorerie)</div>' +
 '  <table>' +
 '    <tr><td>Salaire brut annuel</td><td class="num">' + Math.round(R.gross).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
-    (R.ipres > 0 ? '<tr><td style="padding-left:14px;color:#4b5563">Cotisation IPRES salari\u00e9 (5,6%, base plafonn\u00e9e)</td><td class="num red">(' + Math.round(R.ipres).toLocaleString('fr-SN') + ' FCFA)</td></tr>' : '') +
-'    <tr><td style="font-weight:600">Revenu imposable avant r\u00e9duction familiale</td><td class="num muted">' + Math.round(R.taxableAnnual).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
+'    <tr><td>Abattement fiscal (30%, plafond 900 000)</td><td class="num muted">' + Math.round(R.salaryAllowance).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
+'    <tr><td style="font-weight:600">Revenu imposable arrondi au millier inférieur</td><td class="num muted">' + Math.round(R.taxableAnnual).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
 '  </table>' +
 '' +
 '  <div class="sec-head">Section 2 \u2014 Calcul IRPP (2026)</div>' +
 '  <table>' +
     (bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Revenu dans la tranche \u00e0 0% \u2014 aucun IRPP d\u00fb</td></tr>') +
-'    <tr class="total"><td>IRPP annuel</td><td class="num red">' + Math.round(R.annualPAYE).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
+'    <tr><td>Parts fiscales</td><td class="num">' + R.familyParts.toLocaleString('fr-SN') + '</td></tr>' +
+'    <tr><td>Réduction familiale</td><td class="num">' + fmt(R.familyReduction) + '</td></tr>' +
+'    <tr class="total"><td>IRPP annuel après réduction</td><td class="num red">' + Math.round(R.annualPAYE).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
 '  </table>' +
 '' +
 '  <div class="sec-head">Section 3 \u2014 R\u00e9sum\u00e9 du salaire net annuel</div>' +
 '  <table>' +
     (R.ipres > 0 ? '<tr><td>IPRES (salari\u00e9)</td><td class="num red">(' + Math.round(R.ipres).toLocaleString('fr-SN') + ' FCFA)</td></tr>' : '') +
+'    <tr><td>TRIMF (' + R.trimfPersons + ' × ' + fmt(R.trimfPerPerson) + ')</td><td class="num red">' + fmt(R.trimf) + '</td></tr>' +
+'    <tr><td>Net mensuel moyen (12 mois)</td><td class="num">' + fmt(R.netMonthly) + '</td></tr>' +
 '    <tr><td>IRPP</td><td class="num red">(' + Math.round(R.annualPAYE).toLocaleString('fr-SN') + ' FCFA)</td></tr>' +
 '    <tr><td style="font-weight:700">Total d\u00e9ductions mod\u00e9lis\u00e9es</td><td class="num red">(' + Math.round(R.totalEmployeeDeductions).toLocaleString('fr-SN') + ' FCFA)</td></tr>' +
 '    <tr class="total"><td style="color:#0062CC;font-weight:800">Salaire net annuel</td><td class="num green">' + Math.round(R.netAnnual).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
@@ -667,13 +864,13 @@ function generatePdf() {
 '  <table>' +
 '    <tr><td>Salaire brut du salari\u00e9</td><td class="num">' + Math.round(R.gross).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
 '    <tr><td>IPRES employeur (8,4%)</td><td class="num red">' + Math.round(R.empIPRES).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
-'    <tr><td colspan="2" class="muted">Charges CSS employeur et r\u00e9gime compl\u00e9mentaire des cadres non inclus.</td></tr>' +
+'    <tr><td colspan="2" class="muted">Charges CSS employeur, IPM et retraite complémentaire non incluses.</td></tr>' +
 '    <tr class="total"><td style="font-weight:800">Sous-total employeur mod\u00e9lis\u00e9</td><td class="num red">' + Math.round(R.totalEmployerCostAnnual).toLocaleString('fr-SN') + ' FCFA</td></tr>' +
 '  </table>' +
 '' +
 '  <div class="sec-head">Section 5 \u2014 Base l\u00e9gale et sources</div>' +
 '  <table>' +
-'    <tr><td style="width:30%"><span class="src">DGID</span>Bar\u00e8me IRPP</td><td style="color:#6b7280;font-size:8pt">Sept tranches publiques, jusqu\u2019\u00e0 43%. R\u00e9duction pour charges de famille non incluse.</td></tr>' +
+'    <tr><td style="width:30%"><span class="src">DGID</span>Bar\u00e8me IRPP</td><td style="color:#6b7280;font-size:8pt">Abattement de 30% plafonné à 900 000 FCFA; base arrondie au millier inférieur; 43% au-delà de 50 millions. Réduction familiale et TRIMF incluses selon les réponses saisies. Résident, salaire stable en espèces sur douze mois; IPM et retraite complémentaire non incluses.</td></tr>' +
 '    <tr><td><span class="src">IPRES</span>Retraite</td><td style="color:#6b7280;font-size:8pt">R\u00e9gime g\u00e9n\u00e9ral plafonn\u00e9 \u00e0 5 184 000 FCFA/an; 5,6% salari\u00e9 et 8,4% employeur.</td></tr>' +
 '  </table>' +
 '</div>' +
@@ -718,22 +915,14 @@ function shareResult() {
 document.getElementById('grossSalary').addEventListener('keydown',function(e){if(e.key==='Enter')calculate();});
 
 
-// Net-to-Gross: register forward function
-window._grossToNet = function(g) {
-  if (!window.SenegalPayeEngine) return 0;
-  var result = window.SenegalPayeEngine.calculate(g, { includeIpres: isOn('ipres') });
-  return result.error ? 0 : result.netAnnual;
-};
 </script>
 <script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script><script src="/assets/js/share-image-inject.js?v=5adaadcb" defer></script>
-<script src="/assets/js/lib/net-to-gross.js?v=fdcfe940" defer></script>
+<!-- Annual-input reverse calculation is owned by this page controller. -->
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 <!-- french-finance-export-contract:start -->
 <script type="application/json" id="afrotools-fr-finance-export-contract">{"schemaVersion":1,"englishId":"sn-paye","englishRoute":"/senegal/sn-paye","frenchRoute":"/fr/senegal/calculateur-salaire-net","formats":["pdf"]}</script>
 <script src="/assets/js/pages/french-finance-export-contract.js?v=170231e1" defer></script>
 <!-- french-finance-export-contract:end -->
 
-  <!-- AfroTools source confidence -->
-  <div class="container afro-source-meta" data-source-meta-id="paye-sn-source" data-source-meta-compact="true"></div>
 </body>
 </html>

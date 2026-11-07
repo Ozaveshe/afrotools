@@ -482,6 +482,35 @@ function htmlList(items) {
 
 // Keep this reviewed record source-owned: generated panels and prior manifests
 // must not reintroduce legacy authority URLs or truncated scraped copy.
+// Dated evidence applies only to the reviewed replacement pages and their shared engine.
+function applySenegalPayeEvidence(manifest) {
+  const review = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/calculation-quality/reviews/senegal-paye-household-provenance-2026-11-07.json'), 'utf8'));
+  const { dedicatedContract } = require('./lib/paye-verification-contract');
+  for (const [file, locale] of [['fr/senegal/calculateur-salaire-net.html', 'fr'], ['senegal/sn-paye.html', 'en']]) {
+    const disclosure = dedicatedContract(fs.readFileSync(path.join(ROOT, file), 'utf8'));
+    if (!disclosure || disclosure.locale !== locale || disclosure.errors.length) {
+      throw new Error('Install the reviewed replacement Senegal page before adopting its source evidence: ' + file);
+    }
+  }
+  const previous = manifest.tools['sn-paye-fr'] || {};
+  const history = (previous.change_history || []).filter(item => item.date !== review.reviewedAt || item.note !== review.reason);
+  manifest.tools['sn-paye-fr'] = {
+    ...previous, ...review.verification,
+    source_urls: review.sourceRecords.map(source => source.url),
+    source_titles: review.sourceRecords.map(source => source.title),
+    change_history: history.concat({ date: review.reviewedAt, note: review.reason })
+  };
+  const previousEnglish = manifest.tools['sn-paye'] || {};
+  const englishHistory = (previousEnglish.change_history || []).filter(item => item.date !== review.reviewedAt || item.note !== review.reason);
+  manifest.tools['sn-paye'] = {
+    ...previousEnglish, ...review.englishVerification,
+    source_urls: review.sourceRecords.map(source => source.url),
+    source_titles: review.sourceRecords.map(source => source.title),
+    change_history: englishHistory.concat({ date: review.reviewedAt, note: review.reason })
+  };
+  return manifest;
+}
+
 function applyEswatiniPayeEvidence(manifest) {
   const entry = manifest.tools['sz-paye'];
   if (!entry) return;
@@ -711,6 +740,11 @@ function insertPanel(html, panel) {
 
 function applyPanelToFile(file, entry) {
   const original = fs.readFileSync(file, 'utf8');
+  if (/data-senegal-paye-disclosure(?:-en)?=/.test(original)) {
+    const disclosure = require('./lib/paye-verification-contract').dedicatedContract(original);
+    if (!disclosure || disclosure.errors.length) throw new Error('Invalid dedicated Senegal disclosure: ' + (disclosure && disclosure.errors.join('; ')));
+    return false;
+  }
   let html = removeOldVerificationPanels(original);
   html = ensureCss(html);
   html = replaceGenericBadges(html);
@@ -790,6 +824,7 @@ function main() {
     if (!entry) continue;
     entry.routes = Array.from(new Set(entry.routes.concat(routeFromFile(file)))).sort();
   }
+  applySenegalPayeEvidence(manifest);
   const dataPath = path.join(ROOT, 'data', 'tool-verification.json');
   const dataJson = `${JSON.stringify(manifest, null, 2)}\n`;
   if (WRITE && !LANG_FILTER) fs.writeFileSync(dataPath, dataJson, 'utf8');
@@ -826,4 +861,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { applyEswatiniPayeEvidence, applyPanelToFile, buildManifest, shouldKeepToolSource };
+module.exports = { applySenegalPayeEvidence, applyEswatiniPayeEvidence, applyPanelToFile, buildManifest, shouldKeepToolSource };

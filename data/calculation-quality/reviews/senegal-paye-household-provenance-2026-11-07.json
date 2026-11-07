@@ -1,0 +1,126 @@
+{
+  "reviewedBy": "AfroTools completion coordinator; independent decimal source-table review",
+  "reviewedAt": "2026-11-07",
+  "sourceUrl": "https://www.dgid.sn/storage/docs/CGI-2025.pdf",
+  "reason": "Adopt the independently checked shared Senegal salary model and exact reviewed French and English calculator pages: CGI allowance and rounding, 50m top band, family relief and TRIMF; dated January 2026 general-IPRES parameters. Preserve the zero/no-employment API contract, historical July 28 review and historical source record. This source review does not certify the old production English arithmetic or later unconfirmed social-security rates.",
+  "formulaIds": [
+    "paye-browser-sn",
+    "paye-server-sn",
+    "route-sn-paye",
+    "route-sn-paye-fr"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-sn-defaults",
+      "input": {
+        "country": "SN",
+        "grossAnnual": 1000000
+      },
+      "previousExpected": {
+        "deductions.totalDeductions": 118800,
+        "result.netAnnual": 881200,
+        "result.netMonthly": 73433,
+        "tax.netTax": 62800
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 74800,
+        "result.netAnnual": 925200,
+        "result.netMonthly": 77100,
+        "tax.netTax": 14000
+      },
+      "reason": "Independent decimal arithmetic from DGID CGI arts168,173,174-179,182,275-282 and datedCLEISS generalIPRES; resident single employee, no dependents, stable12month cash salary.",
+      "reviewedAt": "2026-11-07",
+      "sourceUrl": "https://www.dgid.sn/storage/docs/CGI-2025.pdf"
+    },
+    {
+      "fixtureId": "paye-sn-large-decimal",
+      "input": {
+        "country": "SN",
+        "grossAnnual": 1000000000.55
+      },
+      "previousExpected": {
+        "deductions.totalDeductions": 428374474,
+        "result.netAnnual": 571625527,
+        "result.netMonthly": 47635461,
+        "tax.netTax": 428084170
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 427398304,
+        "result.netAnnual": 572601697,
+        "result.netMonthly": 47716808,
+        "tax.netTax": 427072000
+      },
+      "reason": "Independent decimal arithmetic from DGID CGI arts168,173,174-179,182,275-282 and datedCLEISS generalIPRES; resident single employee, no dependents, stable12month cash salary.",
+      "reviewedAt": "2026-11-07",
+      "sourceUrl": "https://www.dgid.sn/storage/docs/CGI-2025.pdf"
+    }
+  ],
+  "contributionParametersAsOf": "2026-01-01",
+  "sourceRecords": [
+    {
+      "title": "DGID — Code général des impôts, édition janvier 2025",
+      "url": "https://www.dgid.sn/storage/docs/CGI-2025.pdf"
+    },
+    {
+      "title": "CLEISS — Cotisations au Sénégal au 1er janvier 2026",
+      "url": "https://www.cleiss.fr/docs/cotisations/senegal.html"
+    },
+    {
+      "title": "DGTSS — Code de sécurité sociale, loi 2026-19 du 3 septembre 2026",
+      "url": "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Cadre-juridique/Lois/JO-Loi-2026-19-du-03-septembre-2026-portant-CODE-SECURITE-SOCIALE.pdf"
+    }
+  ],
+  "verification": {
+    "tool_id": "sn-paye-fr",
+    "jurisdiction": "Senegal",
+    "routes": [
+      "/fr/senegal/calculateur-salaire-net"
+    ],
+    "last_verified": "2026-11-07",
+    "verified_by": "AfroTools Senegal French/shared-engine source review, 7 November 2026",
+    "risk_level": "high",
+    "disclaimer_type": "tax",
+    "law_or_version": "CGI janvier 2025, articles 168, 173-179, 182 et 275-282; paramètres IPRES généraux au 1er janvier 2026. Les textes d’application postérieurs au Code social de septembre 2026 restent à confirmer.",
+    "methodology_markdown": "Salarié résident, salaire stable en espèces sur douze mois. Abattement de 30% plafonné à 900 000 FCFA, base fiscale arrondie au millier inférieur et taux de 43% au-delà de 50 millions. Réduction familiale et TRIMF selon les réponses saisies. IPRES général: 5,6% salarié et 8,4% employeur, plafond mensuel de 432 000 FCFA au 1er janvier 2026; pas de seconde déduction fiscale des cotisations.",
+    "known_limitations": [
+      "Estimation de salaire, pas une fiche de paie ni une validation de toutes les règles en vigueur en novembre 2026.",
+      "IPM, retraite complémentaire, charges patronales CSS, avantages et autres situations de paie ne sont pas chiffrés.",
+      "Les taux et plafonds d’application postérieurs au Code social de septembre 2026 restent à confirmer auprès de l’employeur ou des organismes compétents."
+    ]
+  },
+  "legacyEnglish": {
+    "route": "/senegal/sn-paye",
+    "sourceTitleCorrection": "Ministère des Finances — évaluation budgétaire des dépenses fiscales, édition 2022 (barème historique)",
+    "scopeNotice": "Historical provenance for the former independent English inline calculator. It does not validate the replacement shared-engine pages or the old production six-band/uncapped-contribution arithmetic."
+  },
+  "artifactScope": {
+    "paye-browser-sn": "Reviewed shared French browser engine",
+    "paye-server-sn": "Reviewed API engine using same household helper",
+    "route-sn-paye-fr": "Reviewed French calculator",
+    "route-sn-paye": "Exact reviewed replacement English calculator; not certification of prior production bytes"
+  },
+  "englishVerification": {
+    "tool_id": "sn-paye",
+    "jurisdiction": "Senegal",
+    "routes": [
+      "/senegal/sn-paye"
+    ],
+    "last_verified": "2026-11-07",
+    "verified_by": "AfroTools exact English/shared-engine source review, 7 November 2026",
+    "risk_level": "high",
+    "disclaimer_type": "tax",
+    "law_or_version": "DGID CGI January 2025, articles 168, 173-179, 182 and 275-282; general IPRES parameters as of 1 January 2026. Later implementing rates after the September 2026 Social Security Code remain unconfirmed.",
+    "methodology_markdown": "Resident employee with stable cash salary over twelve months. Salary allowance of 30%, capped at XOF 900,000; taxable salary rounded down to XOF 1,000; seven income-tax bands with 43% above XOF 50 million. Family relief and TRIMF follow the entered household answers. General IPRES uses 5.6% employee and 8.4% employer on a monthly base capped at XOF 432,000 as of 1 January 2026. Pension is a cash deduction and is not deducted again from the income-tax base. Reverse calculation and annual/monthly results use the same shared model.",
+    "known_limitations": [
+      "Planning salary estimate, not a payslip or certification of every rule in force in November 2026.",
+      "IPM, supplementary pension, employer CSS, noncash benefits, partial-year/variable pay and employment-specific deductions are not modeled.",
+      "Later implementing rates and caps after the September 2026 Social Security Code remain unconfirmed. Employer cost includes only gross salary plus general employer IPRES."
+    ]
+  },
+  "reviewedSourcePins": {
+    "senegal/sn-paye.html": "90c6456da6261db7c33cb010bda1481ddbea0cdc4402072fbcbd0999eca834ef",
+    "fr/senegal/calculateur-salaire-net.html": "9375b3f7abec7abea0b50b3497810c5fe59ae4a7e9578319917f93a1c20acd04",
+    "assets/js/engines/sn-paye.js": "e1cd663dc9c4fc19f66e819bbb38f800a6d67c34a3d7566d0a5b8525ed6518c0"
+  },
+  "reviewedSourcePinsPurpose": "Audit snapshot only. These exact source SHA-256 values identify the reviewed source candidate; they are not runtime whole-page hash requirements. Maintained disclosure guards enforce locale, dated scope and required links. Formula artifact digests and publisher source-pin checks separately validate the actual adopted code."
+}
