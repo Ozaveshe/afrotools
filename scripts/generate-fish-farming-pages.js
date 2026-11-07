@@ -61,7 +61,7 @@ function generatePage(c) {
   "@type": "WebApplication",
   "name": "${c.name} Fish Farming ROI Calculator",
   "url": "https://afrotools.com/agriculture/fish-farming/${c.slug}",
-  "applicationCategory": "UtilityApplication",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "All",
   "description": "Calculate fish farming profitability in ${c.name}. Full ROI for ${c.speciesLabel.replace(/&amp;/g, '&')} with local feed prices, fingerling costs, and pond setup costs.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

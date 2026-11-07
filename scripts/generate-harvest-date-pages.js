@@ -102,7 +102,7 @@ function generatePage(country) {
   "@type": "WebApplication",
   "name": "${country.name} Harvest Date Estimator",
   "url": "https://afrotools.com/agriculture/harvest-date/${country.slug}",
-  "applicationCategory": "UtilityApplication",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "All",
   "description": "Estimate harvest dates for ${cropsText} in ${country.name}. Growth stage timelines and key farming dates.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
