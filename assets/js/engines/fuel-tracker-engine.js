@@ -11,6 +11,7 @@
   var DAY_MS = 86400000;
   var US_GALLON_LITRES = 3.785411784;
   var GRANULARITY_LABELS = {
+    brand: 'Brand price reference',
     station: 'Station price',
     city: 'City reference',
     region: 'Regional reference',
@@ -35,19 +36,50 @@
     return key === 'national' && countryName ? label + ' for ' + countryName : label;
   }
 
+  function strictDate(value) {
+    var parsed = /^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(value || '') ? Date.parse(value) : NaN;
+    return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === String(value).slice(0, 10) ? parsed : NaN;
+  }
+
+  // Only an explicit, evidence-backed current-price check may age a regulated rate
+  // from verification. Its original effective date and published end date survive.
+  function referenceFreshness(record, nowValue, maxAgeDays) {
+    var now = strictDate(nowValue || new Date().toISOString());
+    var effective = strictDate(record && record.effective_date);
+    var end = strictDate(record && record.valid_to);
+    var valid = Boolean(record && Number.isFinite(now) && Number.isFinite(effective) && effective <= now && (!record.valid_to || (/^\d{4}-\d{2}-\d{2}$/.test(record.valid_to) && Number.isFinite(end) && end >= effective)));
+    var verified = strictDate(record && record.last_verified_at);
+    if (record && record.last_verified_at) valid = valid && Number.isFinite(verified) && verified <= now;
+    var basis = 'effective-date', anchor = effective;
+    var evidence = record && record.current_price_verification;
+    var eligible = record && record.date_basis === 'effective' && ['regulated-retail', 'regulated-retail-cap'].includes(record.price_kind);
+    if (evidence && eligible) {
+      var checked = strictDate(evidence.verified_at);
+      var evidenceUrlValid = false;
+      try { var evidenceUrl = new URL(evidence.source_url); evidenceUrlValid = evidenceUrl.protocol === 'https:' && Boolean(evidenceUrl.hostname); } catch (_) {}
+      valid = valid && evidence.basis === 'official-still-effective' && Number.isFinite(checked) && checked >= effective && checked <= now && evidence.verified_at === record.last_verified_at && evidenceUrlValid && typeof evidence.evidence_note === 'string' && evidence.evidence_note.trim().length > 0;
+      anchor = checked;
+      basis = 'official-verification';
+    }
+    var limit = Number.isFinite(Number(maxAgeDays)) && Number(maxAgeDays) >= 0 ? Number(maxAgeDays) : 45;
+    var age = valid ? Math.floor((now - anchor) / DAY_MS) : null;
+    var expired = valid && Number.isFinite(end) && now >= end + DAY_MS;
+    return { valid: Boolean(valid), ageDays: age, effectiveAgeDays: valid ? Math.floor((now - effective) / DAY_MS) : null, freshnessBasis: basis, expired: Boolean(expired), stale: Boolean(valid && (expired || age > limit)) };
+  }
+
   function recordStatus(record, nowValue, maxAgeDays) {
-    var now = Date.parse(nowValue || new Date().toISOString());
+    var freshness = referenceFreshness(record, nowValue, maxAgeDays);
     var limit = Number.isFinite(Number(maxAgeDays)) ? Number(maxAgeDays) : 45;
-    var effectiveAge = ageDays(record && record.effective_date, nowValue);
-    var validTo = Date.parse(record && record.valid_to || '');
     var price = finite(record && record.price);
-    var missing = !record || !record.fuel_type || !(price > 0) || !record.currency || !record.unit || !record.source_url;
-    var expired = Number.isFinite(now) && Number.isFinite(validTo) && now > validTo + DAY_MS;
-    var stale = !missing && (expired || effectiveAge > limit);
+    var missing = !freshness.valid || !record || !record.fuel_type || !(price > 0) || !record.currency || !record.unit || !record.source_url;
+    var expired = freshness.expired;
+    var stale = !missing && freshness.stale;
     return {
       available: !missing && !stale,
       stale: stale,
-      ageDays: effectiveAge,
+      ageDays: freshness.ageDays,
+      effectiveAgeDays: freshness.effectiveAgeDays,
+      freshnessBasis: freshness.freshnessBasis,
       reason: missing
         ? 'No complete source-backed record is available.'
         : stale
@@ -70,7 +102,9 @@
       ['country_code', 'country_name', 'locality_name', 'granularity'].forEach(function (field) {
         if (!market[field]) errors.push(prefix + '.' + field + ' is required.');
       });
-      if (!Number.isFinite(finite(market.latitude)) || !Number.isFinite(finite(market.longitude))) errors.push(prefix + ' requires numeric coordinates.');
+      if (market.granularity === 'brand') {
+        if (market.latitude !== null || market.longitude !== null) errors.push(prefix + ' brand reference must not imply a station location.');
+      } else if (!Number.isFinite(finite(market.latitude)) || !Number.isFinite(finite(market.longitude))) errors.push(prefix + ' requires numeric coordinates.');
       if (!Array.isArray(market.fuels) || !market.fuels.length) errors.push(prefix + '.fuels must be non-empty.');
       var fuelIds = Object.create(null);
       (market.fuels || []).forEach(function (record, fuelIndex) {
@@ -103,6 +137,7 @@
   function nearestMarket(markets, latitude, longitude) {
     if (!Array.isArray(markets) || !markets.length) return null;
     return markets.reduce(function (nearest, market) {
+      if (market.granularity === 'brand') return nearest;
       var distance = distanceKm(latitude, longitude, market.latitude, market.longitude);
       if (!nearest || distance < nearest.distanceKm) return { market: market, distanceKm: distance };
       return nearest;
@@ -193,6 +228,7 @@
     ageDays: ageDays,
     granularityLabel: granularityLabel,
     recordStatus: recordStatus,
+    referenceFreshness: referenceFreshness,
     validateDataset: validateDataset,
     distanceKm: distanceKm,
     nearestMarket: nearestMarket,
