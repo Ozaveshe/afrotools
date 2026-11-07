@@ -42,7 +42,10 @@ test('stale and degraded live evidence is visibly labelled', async ({ page }) =>
 
   await page.goto('/status/');
   await expect(page.locator('[data-product-id="fuel"] .status-badge')).toHaveText('Stale');
-  await expect(page.locator('[data-product-id="fx"] .status-badge')).toHaveText('Temporarily unavailable');
+  await expect(page.locator('[data-product-id="fx"] .status-badge')).toHaveText('Live refresh unavailable');
+  await expect(page.locator('[data-product-id="fx"]')).toContainText('does not establish current prices or a tool outage');
+  await expect(page.locator('[data-product-id="afrostream"] .status-date')).not.toContainText('Next expected check:');
+  await expect(page.locator('#healthSummary strong')).not.toContainText('verified evidence');
   await expect(page.locator('[data-product-id="scholarships"] .status-badge')).toHaveText('Degraded');
   await expect(page.locator('[data-product-id="afrostream"] .status-badge')).toHaveText('Partial coverage');
 });
