@@ -30,7 +30,8 @@
     } catch (_) { return ''; }
   }
   function isPlaceholderImage(value) {
-    return !value || /\/assets\/img\/og-default\.png|placeholder/i.test(String(value));
+    return !value || /\/assets\/img\/og-default\.png|placeholder/i.test(String(value)) ||
+      /^(?:https:\/\/afrotools\.com)?\/assets\/img\/tools\/afrostream\.webp(?:[?#].*)?$/i.test(String(value));
   }
   function cleanExcerpt(value) {
     return String(value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ')

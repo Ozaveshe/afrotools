@@ -18,10 +18,19 @@ const HOSTS = new Set([
   'is1-ssl.mzstatic.com', 'is2-ssl.mzstatic.com', 'is3-ssl.mzstatic.com', 'is4-ssl.mzstatic.com', 'is5-ssl.mzstatic.com'
 ]);
 const MAX_BYTES = 3 * 1024 * 1024;
+const SITE_ORIGIN = 'https://afrotools.com';
+const LOCAL_STORY_IMAGE = /^\/assets\/img\/afrostream\/news\/[a-z0-9][a-z0-9-]*\.(?:webp|png|jpe?g|avif)$/i;
 function allowedUrl(value) {
   try {
-    const url = new URL(value);
-    return url.protocol === 'https:' && !url.username && !url.password && (!url.port || url.port === '443') && HOSTS.has(url.hostname) ? url : null;
+    const text = String(value || '');
+    // Only the maintained story-image directory may use our own origin. Never
+    // turn arbitrary relative paths into requests to functions or private routes.
+    const url = new URL(text, SITE_ORIGIN);
+    const ownStoryImage = url.origin === SITE_ORIGIN && (text === url.pathname || text === url.href) &&
+      LOCAL_STORY_IMAGE.test(url.pathname) && !url.search && !url.hash;
+    const absoluteRemote = /^https:\/\//i.test(text) && HOSTS.has(url.hostname);
+    return url.protocol === 'https:' && !url.username && !url.password && (!url.port || url.port === '443') &&
+      (ownStoryImage || absoluteRemote) ? url : null;
   } catch (_) { return null; }
 }
 function publicAddress(address) {
