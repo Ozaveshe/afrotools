@@ -69,6 +69,18 @@ function aiSupplement(c) {
 
 function buildAi(c) {
   let html = read(c.file);
+  if (c.lang === 'sw') {
+    html = html.replace(/(class="ai-local-link" href=")\/ai\/\?lang=sw&amp;q=/g, '$1/sw/ai/?lang=sw&amp;q=');
+    html = html.replace('<form class="ai-local-form" action="/ai/" method="get" role="search">', '<form class="ai-local-form" action="/sw/ai/" method="get" role="search">');
+    html = html.replace(/\n<script data-afrotools-sw-ai-submit>[\s\S]*?<\/script>/g, '');
+    const submitBootstrap = read('assets/js/pages/sw-ai-submit-bootstrap.js');
+    html = html.replace(/(<form class="ai-local-form"[^>]*role="search">[\s\S]*?<\/form>)/, `$1\n<script data-afrotools-sw-ai-submit>\n${submitBootstrap}\n</script>`);
+    // Reuse the local AI router; loading a prompt never submits it to a model.
+    const dependencies = ['components/tool-registry.min.js', 'ai/tool-manifest.js', 'ai/guardrails.js', 'ai/i18n.js', 'ai/intent-router.js'];
+    const scripts = dependencies.filter((file) => !html.includes(`/assets/js/${file}`))
+      .map((file) => `<script src="/assets/js/${file}" defer></script>`).join('\n');
+    if (scripts) html = html.replace(/<script src="\/assets\/js\/pages\/sw-ai-route-entry\.js(?:\?[^"]*)?" defer><\/script>/, `${scripts}\n$&`);
+  }
   html = html.replace(/\n\s*<!-- localized-ai-parity:start -->[\s\S]*?<!-- localized-ai-parity:end -->\s*(?=<section class="ai-local-faq")/, '\n');
   html = html.replace(/\n\s*<section class="ai-local-section ai-local-parity"[\s\S]*(?=<section class="ai-local-faq")/, '\n');
   html = html.replace('<section class="ai-local-faq"', `${aiSupplement(c)}\n<section class="ai-local-faq"`);
