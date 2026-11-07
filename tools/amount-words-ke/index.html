@@ -178,8 +178,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card">
 <div class="card-head"><span class="card-title">Enter Amount</span></div>
 <div class="card-body">
-<label>Amount in Kenya Shillings (KES)</label>
-<input aria-label="E.g. 125,750.50" type="text" id="amount" placeholder="e.g. 125,750.50" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<label for="amount">Amount in Kenya Shillings (KES)</label>
+<input inputmode="decimal" aria-describedby="amountHelp amountError" type="text" id="amount" placeholder="e.g. 125,750.50" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<p id="amountHelp">Enter a non-negative KES amount from 0 to 999,999,999,999.99 after rounding. Extra decimal places are rounded to the nearest cent, with 5 rounded up.</p>
+<p id="amountError" role="status" aria-live="polite"></p>
 <div class="quick-amounts">
 <button type="button" class="quick-btn" onclick="setAmt(1000)">1,000</button>
 <button type="button" class="quick-btn" onclick="setAmt(5000)">5,000</button>
@@ -204,6 +206,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="words" id="wordsResult"></div>
 <div class="formatted" id="fmtResult"></div>
 <div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()">Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()">Copy Document Line</button></div>
+<p id="copyStatus" role="status" aria-live="polite"></p>
 <div class="doc-preview" id="docPreview"></div>
 <div style="margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px;text-align:left">
   <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px">Did You Know?</div>
@@ -292,12 +295,15 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/amount-words-input.js"></script>
 <script>
 const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
   'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
 const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
 let lastWords = '';
 let lastDocumentLine = '';
+let amountRevision = 0;
+let amountCopyAttempt = 0;
 
 function numWords(n) {
   if (n === 0) return '';
@@ -310,9 +316,8 @@ function numWords(n) {
 }
 
 function amountToWords(amount) {
-  const parts = amount.toFixed(2).split('.');
-  const shillings = parseInt(parts[0]);
-  const cents = parseInt(parts[1]);
+  const shillings = amount.major;
+  const cents = amount.minor;
 
   let words = '';
   if (shillings === 0 && cents === 0) return 'Zero Kenya Shillings Only';
@@ -342,18 +347,11 @@ function applyCaseMode(text) {
   return text;
 }
 
-function cleanAmount(raw) {
-  raw = String(raw || '').replace(/,/g, '').replace(/[^0-9.]/g, '');
-  const firstDot = raw.indexOf('.');
-  if (firstDot !== -1) raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
-  return raw;
-}
-
 function buildDocumentLine(amount, words) {
   const mode = document.getElementById('docMode').value;
   const payee = document.getElementById('payeeName').value.trim();
   const ref = document.getElementById('docRef').value.trim();
-  const figure = 'KES ' + amount.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const figure = 'KES ' + amount.figure;
   const prefix = payee ? 'Pay ' + payee + ': ' : '';
   const suffix = ref ? ' | Ref: ' + ref : '';
   if (mode === 'invoice') return prefix + 'Tax invoice amount ' + figure + ' (' + words + ')' + suffix;
@@ -366,9 +364,9 @@ function renderReview(amount) {
   const grid = document.getElementById('reviewGrid');
   if (!grid) return;
   grid.style.display = 'grid';
-  const cents = Math.round((amount % 1) * 100);
+  const cents = amount.minor;
   const payee = document.getElementById('payeeName').value.trim();
-  const large = amount >= 1000000;
+  const large = amount.major >= 1000000;
   grid.innerHTML =
     '<div class="review-pill"><strong>' + (payee ? 'Payee ready' : 'Add payee') + '</strong>' + (payee ? 'Recipient appears in the copy line.' : 'Useful before printing a cheque.') + '</div>' +
     '<div class="review-pill"><strong>' + (cents ? 'Cents included' : 'Whole shillings') + '</strong>' + (cents ? 'The cents portion is written out.' : 'No cents line is needed.') + '</div>' +
@@ -376,24 +374,35 @@ function renderReview(amount) {
 }
 
 function convert() {
-  const raw = cleanAmount(document.getElementById('amount').value);
-  if (!raw || isNaN(parseFloat(raw))) { document.getElementById('resultCard').style.display='none'; document.getElementById('reviewGrid').style.display='none'; return; }
-
-  const amount = parseFloat(raw);
-  if (amount > 999999999999.99) { document.getElementById('resultCard').style.display='none'; return; }
+  amountRevision += 1;
+  const input = document.getElementById('amount');
+  const parser = window.AfroTools?.engines?.amountWordsInput;
+  const amount = parser ? parser.parse(input.value, '999999999999') : { valid: false, error: 'Unable to load the converter. Reload to try again.' };
+  lastWords = '';
+  lastDocumentLine = '';
+  document.getElementById('copyStatus').textContent = '';
+  input.setAttribute('aria-invalid', String(!amount.valid && !amount.empty));
+  document.getElementById('amountError').textContent = amount.error || (amount.rounded ? 'Rounded to KES ' + amount.figure + '. Words and figures use this amount.' : '');
+  if (!amount.valid) {
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('reviewGrid').style.display = 'none';
+    for (const id of ['wordsResult', 'fmtResult', 'docPreview', 'chequeFormat']) document.getElementById(id).textContent = '';
+    return false;
+  }
 
   const words = applyCaseMode(amountToWords(amount));
   lastWords = words;
   lastDocumentLine = buildDocumentLine(amount, words);
   document.getElementById('wordsResult').textContent = words;
-  document.getElementById('fmtResult').textContent = 'KES ' + amount.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('fmtResult').textContent = 'KES ' + amount.figure;
   document.getElementById('chequeFormat').innerHTML =
     '<strong>Pay:</strong> ' + escapeHtml(document.getElementById('payeeName').value.trim() || '____________________') + '<br>' +
-    '<strong>Amount (figures):</strong> KES ' + amount.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) + '<br>' +
+    '<strong>Amount (figures):</strong> KES ' + amount.figure + '<br>' +
     '<strong>Amount (words):</strong> ' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
   renderReview(amount);
   document.getElementById('resultCard').style.display='block';
+  return true;
 }
 
 function setAmt(n) {
@@ -402,21 +411,44 @@ function setAmt(n) {
 }
 
 function copyWords() {
-  navigator.clipboard.writeText(lastWords).then(() => {
-    const btn = document.querySelector('.copy-btn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy Words', 1500);
-  }).catch(() => window.prompt('Copy words', lastWords));
+  if (convert()) copyAmountText(lastWords, document.querySelector('[onclick="copyWords()"]'));
 }
 
 function copyDocumentLine() {
-  convert();
-  navigator.clipboard.writeText(lastDocumentLine).then(() => {
-    const buttons = document.querySelectorAll('.copy-btn');
-    buttons[1].textContent = 'Copied!';
-    setTimeout(() => buttons[1].textContent = 'Copy Document Line', 1500);
-  }).catch(() => window.prompt('Copy document line', lastDocumentLine));
+  if (convert()) copyAmountText(lastDocumentLine, document.querySelector('[onclick="copyDocumentLine()"]'));
 }
+
+function copyAmountText(text, button) {
+  const revision = amountRevision;
+  const attempt = ++amountCopyAttempt;
+  const focusedControl = () => {
+    let control = document.activeElement;
+    while (control?.shadowRoot?.activeElement) control = control.shadowRoot.activeElement;
+    return control;
+  };
+  const requestFocus = focusedControl();
+  const words = lastWords;
+  const documentLine = lastDocumentLine;
+  const current = () => revision === amountRevision && attempt === amountCopyAttempt &&
+    button && button.isConnected && words === lastWords && documentLine === lastDocumentLine && !!lastWords;
+  const feedback = message => { if (current()) document.getElementById('copyStatus').textContent = message; };
+  const fallback = () => {
+    if (!current()) return;
+    if (focusedControl() !== requestFocus) {
+      feedback('Automatic copy is unavailable. Select and copy the result shown on this page.');
+      return;
+    }
+    feedback('Automatic copy is unavailable. Select and copy the result, or use the copy dialog.');
+    try { window.prompt('Copy amount text', text); }
+    catch (_) { feedback('Automatic copy is unavailable. Select and copy the result shown on this page.'); }
+  };
+  try {
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') { fallback(); return; }
+    Promise.resolve(navigator.clipboard.writeText(text)).then(() => feedback('Copied.'), fallback);
+  } catch (_) { fallback(); }
+}
+
+convert();
 </script>
 
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
