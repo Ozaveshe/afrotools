@@ -10,7 +10,9 @@
   var locale = fr ? 'fr-FR' : sw ? 'sw-KE' : 'en';
   var storageKey = 'afrotools.creatorInvoice.local.v2';
   var lastResult = null;
+  var lastInputSnapshot = null;
   var text = sw ? {
+    changed: "Taarifa zimebadilika. Kokotoa tena kabla ya kunakili au kupakua.",
     missing: 'Jaza mtoa huduma, mteja, namba ya ankara na angalau huduma moja halali.',
     ready: 'Ankara imekokotolewa. Thibitisha masharti ya eneo lako kabla ya kuituma.',
     saved: 'Rasimu imehifadhiwa kwenye kivinjari hiki.', loaded: 'Rasimu ya ndani imerejeshwa.',
@@ -18,6 +20,7 @@
     downloaded: 'Faili imepakuliwa.', pdfError: 'PDF haikuweza kutengenezwa.', items: 'Huduma',
     subtotal: 'Jumla ndogo', discount: 'Punguzo', tax: 'Kodi', total: 'Jumla'
   } : fr ? {
+    changed: "Les données ont changé. Recalculez avant de copier ou de télécharger.",
     missing: 'Complétez le nom de l’émetteur, le client, le numéro et au moins une ligne valide.',
     ready: 'Facture calculée. Vérifiez les mentions obligatoires avant de l’envoyer.',
     saved: 'Brouillon enregistré dans ce navigateur.',
@@ -32,6 +35,7 @@
     tax: 'Taxe',
     total: 'Total'
   } : {
+    changed: "Details changed. Recalculate before copying or downloading.",
     missing: 'Complete the issuer, client, invoice number and at least one valid line item.',
     ready: 'Invoice calculated. Check required local invoice details before sending.',
     saved: 'Draft saved in this browser.',
@@ -110,20 +114,47 @@
     });
   }
 
+  function invalidate() {
+    lastResult = null;
+    lastInputSnapshot = null;
+    window.__creatorInvoiceLastResult = null;
+    byId('ciPreview').hidden = true;
+    root.querySelectorAll('[data-needs-invoice]').forEach(function (button) {
+      button.disabled = true;
+    });
+  }
+
+  function inputsChanged() {
+    if (!lastResult) return;
+    invalidate();
+    setStatus(text.changed, false);
+  }
+
+  function isCurrent(invoice) {
+    return lastResult === invoice && JSON.stringify(collect()) === lastInputSnapshot;
+  }
+
+  function currentResult() {
+    if (!lastResult || JSON.stringify(collect()) !== lastInputSnapshot) {
+      invalidate();
+      setStatus(text.changed, false);
+      return null;
+    }
+    return lastResult;
+  }
+
   function calculate(event) {
     if (event) event.preventDefault();
-    var invoice = engine.createInvoice(collect());
+    var input = collect();
+    var invoice = engine.createInvoice(input);
     if (!invoice.valid) {
-      lastResult = null;
-      byId('ciPreview').hidden = true;
-      root.querySelectorAll('[data-needs-invoice]').forEach(function (button) {
-        button.disabled = true;
-      });
+      invalidate();
       setStatus(text.missing, true);
       return null;
     }
     invoice.locale = locale;
     lastResult = invoice;
+    lastInputSnapshot = JSON.stringify(input);
     window.__creatorInvoiceLastResult = invoice;
     render(invoice);
     setStatus(text.ready, false);
@@ -147,6 +178,8 @@
   }
 
   root.querySelector('form').addEventListener('submit', calculate);
+  root.querySelector('form').addEventListener('input', inputsChanged);
+  root.querySelector('form').addEventListener('change', inputsChanged);
   byId('ciSave').addEventListener('click', function () {
     localStorage.setItem(storageKey, JSON.stringify(collect()));
     setStatus(text.saved, false);
@@ -185,11 +218,13 @@
     }
   });
   byId('ciCopy').addEventListener('click', async function () {
-    if (!lastResult) return;
-    var summary = engine.serializeText(lastResult, locale);
+    var invoice = currentResult();
+    if (!invoice) return;
+    var summary = engine.serializeText(invoice, locale);
     try {
       await navigator.clipboard.writeText(summary);
     } catch (_) {
+      if (!isCurrent(invoice) || !document.hasFocus()) return;
       var area = document.createElement('textarea');
       area.value = summary;
       document.body.appendChild(area);
@@ -197,16 +232,18 @@
       document.execCommand('copy');
       area.remove();
     }
-    setStatus(text.copied, false);
+    if (isCurrent(invoice)) setStatus(text.copied, false);
   });
   byId('ciJson').addEventListener('click', function () {
-    if (!lastResult) return;
-    download(new Blob([JSON.stringify(lastResult, null, 2)], { type: 'application/json;charset=utf-8' }), safeFilename('json'));
+    var invoice = currentResult();
+    if (!invoice) return;
+    download(new Blob([JSON.stringify(invoice, null, 2)], { type: 'application/json;charset=utf-8' }), safeFilename('json'));
     setStatus(text.downloaded, false);
   });
   byId('ciText').addEventListener('click', function () {
-    if (!lastResult) return;
-    download(new Blob([engine.serializeText(lastResult, locale)], { type: 'text/plain;charset=utf-8' }), safeFilename('txt'));
+    var invoice = currentResult();
+    if (!invoice) return;
+    download(new Blob([engine.serializeText(invoice, locale)], { type: 'text/plain;charset=utf-8' }), safeFilename('txt'));
     setStatus(text.downloaded, false);
   });
   async function generateSwPDF(invoice) {
@@ -229,13 +266,15 @@
     return doc.output('blob');
   }
   byId('ciPdf').addEventListener('click', async function () {
-    if (!lastResult) return;
+    var invoice = currentResult();
+    if (!invoice) return;
     try {
-      var blob = sw ? await generateSwPDF(lastResult) : await engine.generatePDF(lastResult);
+      var blob = sw ? await generateSwPDF(invoice) : await engine.generatePDF(invoice);
+      if (!isCurrent(invoice)) return;
       download(blob, safeFilename('pdf'));
       setStatus(text.downloaded, false);
     } catch (_) {
-      setStatus(text.pdfError, true);
+      if (isCurrent(invoice)) setStatus(text.pdfError, true);
     }
   });
 
