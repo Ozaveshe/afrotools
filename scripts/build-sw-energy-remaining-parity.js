@@ -62,7 +62,7 @@ function fieldMarkup(field) {
     field.max != null ? `max="${esc(field.max)}"` : "",
     field.required === false ? "" : "required",
   ].filter(Boolean).join(" ");
-  return `<label class="sw-energy-field"><span>${esc(field.label)}</span><input ${attrs}></label>`;
+  return `<label class="sw-energy-field"><span>${esc(field.label)}</span><input ${attrs}${field.hint ? ` aria-describedby="${esc(field.name)}Hint"` : ""}>${field.hint ? `<small id="${esc(field.name)}Hint">${esc(field.hint)}</small>` : ""}</label>`;
 }
 
 function swahiliElectricityCatalog() {
@@ -147,6 +147,7 @@ function page(app) {
     countryInInput: Boolean(app.countryInInput),
     metrics: app.metrics,
     reviewedAt: app.reviewedAt,
+    ...(app.comparisonFields ? { assumptionFields: app.comparisonFields.map(({name,label}) => ({name,label})), fuelReference: app.fuelReference } : {}),
   };
   const schema = {
     "@context": "https://schema.org",
@@ -193,27 +194,35 @@ ${alternates}
   <section class="sw-energy-layout" aria-label="Kikokotoo na mpaka wa data">
     <article class="sw-energy-card sw-energy-calculator">
       <h2>Weka taarifa zako</h2>
-      <p class="sw-energy-helper">Badilisha maadili ya mfano kwa taarifa ulizohakiki. Hakuna taarifa inayotumwa kwa seva au AI.</p>
+      <p class="sw-energy-helper">${app.comparisonFields ? "Badilisha thamani za mfano kwa taarifa ulizohakiki." : "Badilisha maadili ya mfano kwa taarifa ulizohakiki."} Hakuna taarifa inayotumwa kwa seva au AI.</p>
       <form id="energyForm" novalidate>
         <div class="sw-energy-grid">
           <label class="sw-energy-field"><span>Nchi</span><select name="country" id="country" required aria-describedby="countryHint"><option value="">Chagua nchi</option></select><small id="countryHint">Nchi hubadilisha sarafu na nakala ya viwango.</small></label>
           ${app.fields.map(fieldMarkup).join("\n          ")}
         </div>
+        ${app.comparisonFields ? `<h3>Bei na gharama zako</h3><p id="solarCurrency" role="status" aria-live="polite"></p><p>Badilisha mfano kwa risiti na nukuu zako. Mabadiliko ya nchi huweka upya bei katika sarafu mpya.</p><div class="sw-energy-grid">${app.comparisonFields.map(fieldMarkup).join("\n")}</div><p id="solarAssumptionStatus" role="status" aria-live="polite"></p><button type="button" id="solarDefaults" class="sw-energy-reset">Rudisha bei za mfano</button>` : ""}
         <div class="sw-energy-form-actions"><button class="sw-energy-primary" type="submit">Kokotoa</button><button class="sw-energy-reset" type="reset">Weka upya</button></div>
         <p id="formStatus" class="sw-energy-status" role="alert" aria-live="polite"></p>
       </form>
     </article>
     <aside class="sw-energy-card sw-energy-source" aria-labelledby="sourceTitle">
-      <p class="sw-energy-kicker">Chanzo, upya na uhakika</p><h2 id="sourceTitle">Nakala ya kupanga ya Machi 2026</h2>
+${app.comparisonFields ? `      <p class="sw-energy-kicker">Linganisha kwa bei zako</p><h2 id="sourceTitle">Risiti, nukuu na matumizi</h2>
+      <p>Ingiza bei ya dizeli unayonunua na nukuu kamili ya solar. Hesabu hutumia gharama ulizoweka, pamoja na matengenezo na uingizwaji wa vifaa.</p>
+      <p><a id="regulatorLink" href="https://www.ewura.go.tz/publications/petroleum-price" rel="noopener noreferrer">Angalia bei za mafuta</a></p>
+      <div id="solarFuelReference" hidden><p>Dar es Salaam: kikomo cha dizeli <strong>TZS 4,128/lita</strong>, kuanzia <strong>4 Novemba 2026</strong>. Bei ya eneo lako inaweza kutofautiana.</p><p><a href="${esc(app.fuelReference.url)}" rel="noopener noreferrer">Taarifa ya EWURA, jedwali la 1 (PDF)</a></p><button type="button" id="useSolarFuelReference" class="sw-energy-reset">Tumia bei ya Dar es Salaam</button></div>
+      <details><summary>Misingi ya mfano wa kuanzia</summary><p>Bei ya dizeli na ubadilishaji wa sarafu: nakala ya nchi ya Machi 2026. Mtaji wa jenereta: USD 150/kVA; solar: USD 900/kW. Hizi ni dhana za kupanga, si nukuu ya kifaa chako.</p><p>Matengenezo ya mfano: 15% ya mafuta kwa jenereta na 3% ya mtaji wa solar kwa mwaka. Betri hazijapangiwa bei tofauti; ingiza nukuu inayojumuisha hifadhi unayohitaji.</p></details>
+` : `      <p class="sw-energy-kicker">Chanzo, upya na uhakika</p><h2 id="sourceTitle">Nakala ya kupanga ya Machi 2026</h2>
       <dl><div><dt>Hali</dt><dd>Imezeeka; si data ya sasa wala bei hai</dd></div><div><dt>Uhakika</dt><dd>Mdogo hadi uthibitishe viwango vya eneo lako</dd></div><div><dt>Mtandao</dt><dd>Hakuna muunganisho wa bei ya moja kwa moja</dd></div></dl>
       <p>AfroTools ina kiungo cha mdhibiti kwa masoko 12 kati ya 54. Masoko 42 bado yana pengo la chanzo cha mdhibiti. Thibitisha bili, tarifa, bei ya mafuta au nukuu kabla ya kulipa.</p>
       <p><a id="regulatorLink" href="https://www.iea.org/regions/africa" rel="noopener noreferrer">Fungua chanzo cha ukaguzi</a></p>
       <p class="sw-energy-boundary">Makadirio ya kupanga tu; si bili rasmi, bei ya muuzaji, usanifu wa umeme, ukaguzi wa usalama, ofa ya fedha au ushauri wa kitaalamu.</p>
+`}
     </aside>
   </section>
   <section id="results" class="sw-energy-card sw-energy-results" hidden aria-labelledby="resultsTitle">
-    <div class="sw-energy-result-head"><div><p class="sw-energy-kicker">Matokeo ya uchunguzi</p><h2 id="resultsTitle">${esc(app.title)}</h2></div><span class="sw-energy-confidence">Uhakika mdogo · hakiki data</span></div>
+    <div class="sw-energy-result-head"><div><p class="sw-energy-kicker">Matokeo ya uchunguzi</p><h2 id="resultsTitle">${esc(app.title)}</h2></div><span class="sw-energy-confidence">${app.comparisonFields ? "Ulinganisho wa gharama za miaka 5" : "Uhakika mdogo · hakiki data"}</span></div>
     <dl id="metricGrid" class="sw-energy-metrics"></dl>
+    ${app.comparisonFields ? `<div class="sw-energy-source"><h3>Mgawanyo wa gharama na matumizi</h3><dl id="comparisonBreakdown"></dl></div>` : ""}
     <p id="resultBoundary" class="sw-energy-boundary"></p>
     <div class="sw-energy-actions" aria-label="Hamisha au fungua tena matokeo">
       <button type="button" data-export="json">Pakua JSON</button><button type="button" data-export="csv">Pakua CSV</button><button type="button" data-export="txt">Pakua TXT</button><button type="button" data-export="pdf">Pakua PDF</button>
@@ -223,8 +232,14 @@ ${alternates}
   </section>
   <section class="sw-energy-card sw-energy-method">
     <h2>Jinsi makadirio haya yanavyofanya kazi</h2>
-    <p>Ukurasa huu hutumia injini ileile ya hesabu isiyotegemea lugha kama zana ya Kiingereza. Kiswahili hubadilisha uwasilishaji, si formula. Maadili ya nchi yanatoka <code>country-energy-index.js</code>; rekodi ya vyanzo inakaguliwa kila siku 90, au siku 30 kwa data hatarishi.</p>
+${app.comparisonFields ? `    <p>Mafuta kwa mwaka = lita kwa saa × saa kwa siku × siku za matumizi × bei kwa lita. Jumla ya miaka 5 = mtaji + mafuta na matengenezo ya miaka 5 + gharama za kubadilisha vifaa.</p>
+    <p>Matumizi ya mafuta ya mfano hutumia mahitaji yako ya kWh, si ukubwa wote wa jenereta: kWh kwa siku ÷ saa kwa siku × 0.28 lita/kWh. Kipimo cha lita kwa saa unachoweka mwenyewe kinachukua nafasi ya makadirio haya.</p>
+    <p>Ukaguzi wa uwezo hutumia 0.8 × kVA kama kW za mfano na kuulinganisha na kWh ÷ saa. Huu ni ukaguzi wa mzigo wa wastani, si usanifu unaothibitisha nguvu za kuanzisha vifaa au kilele cha matumizi.</p>
+    <p>Muda wa kurejesha tofauti ya mtaji wa solar hutumia akiba ya mwaka, ikijumuisha akiba ya uingizwaji wa vifaa iliyogawanywa kwa miaka 5. Bei zinabaki zilezile; riba, mfumuko wa bei na thamani ya kuuza tena hazijaongezwa.</p>
+    <p>Hifadhi JSON ili kufungua tena thamani zilezile. Ukubwa wa paneli ni makadirio ya nishati kwa siku; linganisha nukuu zinazotimiza mzigo na saa zako za akiba.</p>
+` : `    <p>Ukurasa huu hutumia injini ileile ya hesabu isiyotegemea lugha kama zana ya Kiingereza. Kiswahili hubadilisha uwasilishaji, si formula. Maadili ya nchi yanatoka <code>country-energy-index.js</code>; rekodi ya vyanzo inakaguliwa kila siku 90, au siku 30 kwa data hatarishi.</p>
     <ul><li>Weka viwango vya sasa kutoka bili, risiti au nukuu yako inapowezekana.</li><li>Hifadhi JSON pamoja na tarehe ya makadirio ili uweze kufungua tena na kukagua.</li><li>Mtaalamu athibitishe usalama, ukubwa wa vifaa, sheria na gharama kabla ya uamuzi.</li></ul>
+`}
   </section>
 </main>
 <afro-footer></afro-footer>

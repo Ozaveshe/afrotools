@@ -100,7 +100,7 @@ function generatePage(country) {
   "@type": "WebApplication",
   "name": "${country.name} Farm Profit/Loss Calculator",
   "url": "https://afrotools.com/agriculture/farm-profit/${country.slug}",
-  "applicationCategory": "UtilityApplication",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "All",
   "description": "Calculate farming profitability in ${country.name}. Full cost analysis for ${cropsText} including seeds, fertilizer, labor, and transport.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

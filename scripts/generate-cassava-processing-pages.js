@@ -63,7 +63,7 @@ function generatePage(c) {
   "@type": "WebApplication",
   "name": "${c.name} Cassava Processing Profit Calculator",
   "url": "https://afrotools.com/agriculture/cassava-processing/${c.slug}",
-  "applicationCategory": "UtilityApplication",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "All",
   "description": "Calculate profits from processing cassava into ${topProdsText} in ${c.name}. Full cost analysis including raw material, labour, energy, packaging, and equipment depreciation.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

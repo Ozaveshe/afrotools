@@ -14,7 +14,7 @@ const { enhanceCategory } = require("./lib/localized-category-standard");
 
 const META = {
   "betting-odds": ["Kikokotoo cha uwezekano wa kamari", "Badili odds na ukokotoe uwezekano, thamani inayotarajiwa na malipo kwa fedha yako.", "Makadirio ya kupanga tu; si ushauri wa kamari wala hakikisho la ushindi.", "Juu kwa hesabu; chini kwa matokeo ya mchezo."],
-  "afcon-predictor": ["Kitabiri cha mashindano ya AFCON", "Pima timu 24 kwa modeli ya AFCON inayotumia nguvu, kiwango, ulinzi na faida ya mwenyeji.", "Modeli ya kupanga maudhui, si utabiri rasmi wala taarifa ya moja kwa moja.", "Wastani; hutegemea mawazo uliyoingiza."],
+  "afcon-predictor": ["Linganisha timu za AFCON", "Chagua timu 24 pamoja na wenyeji wote watatu wa 2027, linganisha nyongeza na uhifadhi orodha kamili kwenye ripoti.", "CAF imethibitisha wenyeji watatu; timu nyingine 21 na nguvu ni mawazo ya mfano. Sehemu za modeli si uwezekano wa ubingwa.", "Ulinganisho wa mawazo ya modeli."],
   "fantasy-football": ["Kikokotoo cha alama za Fantasy Football", "Kokotoa alama za FPL kwa nafasi, dakika, mabao, pasi, ulinzi na bonasi.", "Alama rasmi zinaweza kurekebishwa baada ya mchezo; hakiki FPL.", "Juu kwa kanuni zilizoorodheshwa; si alama ya mwisho rasmi."],
   "betting-tax": ["Kikokotoo cha kodi ya kamari", "Kadiria ushuru wa dau, zuio la ushindi na malipo halisi kwa soko ulilochagua.", "Makadirio ya kupanga tu; hakiki mamlaka ya kodi na leseni ya kampuni kabla ya kufungua jalada.", "Wastani; viwango vinaweza kubadilika na hutegemea mamlaka."],
   "streaming-royalties": ["Kikokotoo cha mirabaha ya muziki", "Kadiria mapato ya utiririshaji kwa majukwaa, mgawanyo, ada na marejesho ya malipo ya awali.", "Majukwaa hayalipi kiwango kimoja kwa kila mtiririko; tumia kama safu ya kupanga.", "Chini hadi wastani; malipo halisi hutegemea mkataba na mgao wa mitiririko."],
@@ -72,8 +72,8 @@ function sportsSourceReview(row, meta) {
     cadence: "Kagua kabla ya uamuzi na baada ya mabadiliko ya kanuni, msimu, soko au modeli.",
     confidence: {
       grade: source.confidence.grade,
-      label: confidenceLabels[source.confidence.grade] || meta[3],
-      rationale: "Daraja linahusu ubora wa hesabu na muktadha wa chanzo, si matokeo, bei, nafasi au ustahiki wa sasa."
+      label: row.toolId === "afcon-predictor" ? "Ulinganisho wa mawazo; si uwezekano uliothibitishwa" : confidenceLabels[source.confidence.grade] || meta[3],
+      rationale: row.toolId === "afcon-predictor" ? "CAF inathibitisha wenyeji na tarehe. Nguvu ni mawazo ya mfano; sehemu zinaonyesha uzito wa kulinganisha ndani ya orodha uliyochagua." : "Daraja linahusu ubora wa hesabu na muktadha wa chanzo, si matokeo, bei, nafasi au ustahiki wa sasa."
     },
     assumptions: copy.assumptions,
     mutableBaselines: copy.mutableBaselines,
@@ -198,7 +198,7 @@ function render(row) {
     swSlug: row.swahiliRoute.split("/").filter(Boolean).pop(),
     name: meta[0],
     boundary: meta[2],
-    checked: CHECKED,
+    checked: row.toolId === "afcon-predictor" ? "7 Novemba 2026" : CHECKED,
     sourceReview: sportsReview,
     ...(ownerConfig ? { owner: ownerConfig } : {})
   };

@@ -211,6 +211,119 @@
     [/recommended build tier/g, "gamme recommandée"], [/personal/g, "personnel"], [/online/g, "en ligne"], [/local/g, "local"]
   ];
 
+
+  // AFCON-only copy and result presentation. Numeric output remains owned by AfroSports.
+  var AFCON_COPY = {
+  "labels": [
+    "Plateau du scénario 2027",
+    "Force du Kenya dans le modèle",
+    "Équipe non hôte remplacée par le Kenya"
+  ],
+  "options": [
+    "Les trois hôtes et 21 équipes illustratives",
+    "Ancien plateau de comparaison (sans le Kenya)",
+    "Kenya (cohôte 2027)"
+  ],
+  "hints": [
+    "Fixez le plateau avant de comparer les équipes. Les 21 autres équipes sont des hypothèses, pas des qualifiés confirmés.",
+    "Valeur de départ : 1505, comme la référence interne de l’Ouganda. Modifiez-la pour tester une hypothèse; ce n’est pas un classement du Kenya ou de la FIFA.",
+    "La Sierra Leone est remplacée au départ à titre d’hypothèse, sans affirmer son élimination. Pour la comparer, remplacez une autre équipe. Les trois hôtes restent."
+  ],
+  "metric": [
+    "Rang de votre équipe",
+    "Effet de vos bonus",
+    "Écart entre équipes",
+    "Part des autres équipes"
+  ],
+  "units": [
+    "sur 24 équipes du scénario",
+    "par rapport au même plateau sans vos bonus",
+    "devant ",
+    "derrière ",
+    "part attribuée aux autres équipes"
+  ],
+  "row": [
+    "Deux premières équipes du scénario",
+    "Votre équipe sans bonus",
+    "Effet de vos bonus",
+    "Calcul des bonus",
+    "Réglage de volatilité",
+    "Dates annoncées par la CAF",
+    "Force supposée du Kenya",
+    "Modification du plateau",
+    "Hypothèses de la revue 2025",
+    "Plateau du scénario"
+  ],
+  "selected": " (sélectionnée)",
+  "share": "part du modèle",
+  "rank": "rang",
+  "of": "sur",
+  "and": " et ",
+  "points": "points de pourcentage",
+  "modelPoints": "points du modèle",
+  "boostMath": [
+    "forme",
+    "défense",
+    "public"
+  ],
+  "volatility": "un niveau élevé rapproche les parts des équipes",
+  "dates": "19 juin–17 juillet 2027; Kenya, Tanzanie et Ouganda cohôtes",
+  "kenyaBasis": "points illustratifs; 1505 reprend la référence interne de l’Ouganda, pas un classement Kenya/FIFA",
+  "replaces": "Le Kenya remplace ",
+  "retained": "; l’Ouganda et la Tanzanie sont conservés",
+  "review": "Ajustements fixes : Maroc +35 et Sénégal +25 points. Comparaison hypothétique, pas une reconstitution des résultats.",
+  "allField": "Les trois hôtes et 21 équipes illustratives; le plateau reste fixe quand vous changez d’équipe",
+  "seedField": "Ancien plateau de 24 équipes; Kenya absent",
+  "contextAll": "Les trois hôtes dans un plateau fixe de 24 équipes. Force supposée du Kenya : ",
+  "contextReview": "Comparez 24 équipes avec les ajustements fixes de la revue 2025.",
+  "contextSeed": "Ancien plateau sans le Kenya. Choisissez le plateau des trois hôtes pour comparer les cohôtes de 2027.",
+  "insights": [
+    "Modifiez un seul bonus à la fois pour mesurer son effet sur le même plateau.",
+    "Pour comparer l’équipe remplacée, choisissez d’abord un autre remplacement. Aucune équipe ne change automatiquement.",
+    "Les 24 équipes et votre sélection figurent dans le classement et le rapport.",
+    "Les parts sont des poids relatifs du scénario, pas des probabilités calibrées ni un tableau simulé."
+  ],
+  "errorTitle": "Terminez le scénario CAN",
+  "errorValue": "Non calculé",
+  "error": "Vérifiez le mode, les bonus (0–10), la force du Kenya (0–3000) et le plateau. Une équipe sélectionnée ne peut pas être remplacée; changez le remplacement ou l’équipe. Le Kenya nécessite le plateau des trois hôtes en mode 2027."
+};
+  function afconResult(input, result) {
+    var copy = AFCON_COPY;
+    if (!result.scenarioField || !result.comparison) return Object.assign({}, result, { heroLabel: copy.errorTitle, heroValue: copy.errorValue, heroSub: copy.error, insights: [copy.error] });
+    var field = result.scenarioField, comparison = result.comparison;
+    var favorite = afconTeam(input.favorite || "Morocco");
+    var selected = copy.selected;
+    function fixed(value, digits) { return Number(value).toFixed(digits); }
+    function percent(value) { return fixed(value, 1) + "%"; }
+    var direction = comparison.selectedRank === 1 ? copy.units[2] : copy.units[3];
+    var rows = field.names.map(function (name, index) {
+      return [String(index + 1) + ". " + afconTeam(name) + (name === (input.favorite || "Morocco") ? selected : ""), percent(field.shares[index]) + " " + copy.share];
+    }).concat([
+      [copy.row[0], afconTeam(field.names[0]) + copy.and + afconTeam(field.names[1])],
+      [copy.row[1], percent(comparison.baselineShare) + "; " + copy.rank + " " + comparison.baselineRank + " " + copy.of + " 24"],
+      [copy.row[2], "+" + fixed(comparison.deltaPoints, 2) + " " + copy.points + "; " + copy.rank + " " + comparison.baselineRank + " → " + comparison.selectedRank],
+      [copy.row[3], String(input.formBoost || 0) + " × 8 " + copy.boostMath[0] + " + " + String(input.defenseBoost || 0) + " × 5 " + copy.boostMath[1] + " + " + String(input.hostBoost || 0) + " × 10 " + copy.boostMath[2] + " = " + comparison.boostPoints + " " + copy.modelPoints],
+      [copy.row[4], String(input.upsetTolerance == null ? 4 : input.upsetTolerance) + "/10; " + copy.volatility]
+    ]);
+    if (input.mode !== "2025-review") rows.push([copy.row[5], copy.dates]);
+    if (field.setup === "all-hosts") rows.push([copy.row[6], field.strength + " " + copy.kenyaBasis], [copy.row[7], copy.replaces + afconTeam(field.replaced) + copy.retained]);
+    if (input.mode === "2025-review") rows.push([copy.row[8], copy.review]);
+    rows.push([copy.row[9], field.setup === "all-hosts" ? copy.allField : copy.seedField]);
+    var context = field.setup === "all-hosts" ? copy.contextAll + field.strength + ". " + copy.replaces + afconTeam(field.replaced) + "." : input.mode === "2025-review" ? copy.contextReview : copy.contextSeed;
+    return Object.assign({}, result, {
+      heroLabel: favorite + " — " + copy.share, heroSub: context, rows: rows,
+      metrics: [
+        { label: copy.metric[0], value: String(comparison.selectedRank), unit: copy.units[0] },
+        { label: copy.metric[1], value: "+" + fixed(comparison.deltaPoints, 2) + " pp", unit: copy.units[1] },
+        { label: copy.metric[2], value: fixed(comparison.gapPoints, 2) + " pp", unit: direction + afconTeam(comparison.rival) },
+        { label: copy.metric[3], value: percent(100 - comparison.selectedShare), unit: copy.units[4] }
+      ],
+      bars: result.bars.map(function (bar) { return { label: afconTeam(bar.label.replace(/ \(selected\)$/, "")) + (/ \(selected\)$/.test(bar.label) ? selected : ""), value: bar.value, text: bar.text }; }),
+      insights: [favorite + " : " + copy.rank + " " + comparison.selectedRank + " " + copy.of + " 24; " + fixed(comparison.gapPoints, 2) + " " + copy.points + " " + direction + afconTeam(comparison.rival) + ".", copy.insights[0], field.setup === "all-hosts" ? copy.insights[1] : copy.insights[2], copy.insights[3]]
+    });
+  }
+  function afconTeam(name) { return COUNTRIES[name] || ({Senegal:"Sénégal", "DR Congo":"RD Congo", "Equatorial Guinea":"Guinée équatoriale", Guinea:"Guinée", "Guinea-Bissau":"Guinée-Bissau", Mauritania:"Mauritanie", Namibia:"Namibie"})[name] || name; }
+
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (character) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character];
@@ -218,6 +331,8 @@
   }
 
   function optionLabel(label) {
+    var afconOption = ["All three hosts + 21 illustrative seeds", "Legacy seeded comparison (Kenya not included)", "Kenya (2027 co-host)"].indexOf(label);
+    if (afconOption >= 0) return AFCON_COPY.options[afconOption];
     if (OPTIONS[label]) return OPTIONS[label];
     var match = String(label).match(/^(.+) \(([A-Z]{3})\)$/);
     if (match) return (COUNTRIES[match[1]] || match[1]) + " (" + match[2] + ")";
@@ -315,20 +430,21 @@
   }
 
   function fieldHtml(field) {
+    var afconIndex = ["fieldSetup", "kenyaStrength", "replaceSeed"].indexOf(field.id);
     if (field.type === "heading") return '<div class="sports-field-heading">' + esc(FIELD_LABELS[field.id] || field.label) + "</div>";
-    var label = FIELD_LABELS[field.id] || field.label;
+    var label = afconIndex >= 0 ? AFCON_COPY.labels[afconIndex] : FIELD_LABELS[field.id] || field.label;
     var id = "fr-sports-" + field.id;
     var html = '<div class="' + (field.full ? "sports-field full" : "sports-field") + '"><label class="sports-label" for="' + esc(id) + '">' + esc(label) + "</label>";
     if (field.type === "select") {
       html += '<select class="sports-select" id="' + esc(id) + '" name="' + esc(field.id) + '">';
       (field.options || []).forEach(function (option) {
-        html += '<option value="' + esc(option.value) + '"' + (String(option.value) === String(field.value) ? " selected" : "") + ">" + esc(optionLabel(option.label)) + "</option>";
+        html += '<option value="' + esc(option.value) + '"' + (String(option.value) === String(field.value) ? " selected" : "") + ">" + esc((field.id === "favorite" || field.id === "replaceSeed") ? afconTeam(optionLabel(option.label)) : optionLabel(option.label)) + "</option>";
       });
       html += "</select>";
     } else {
       html += '<input class="sports-input" id="' + esc(id) + '" name="' + esc(field.id) + '" type="' + esc(field.type || "text") + '" value="' + esc(field.value) + '" inputmode="' + (field.type === "number" ? "decimal" : "text") + '">';
     }
-    if (field.hint) html += '<div class="sports-hint">Valeur de scénario modifiable.</div>';
+    if (field.hint) html += '<div class="sports-hint">' + esc(afconIndex >= 0 ? AFCON_COPY.hints[afconIndex] : "Valeur de scénario modifiable.") + "</div>";
     return html + "</div>";
   }
 
@@ -340,7 +456,7 @@
       "Route : /fr/tools/" + contract.frSlug + "/",
       "",
       contract.resultLabel + " : " + resultValue(result.heroValue),
-      contract.resultSummary,
+      contract.id === "afcon-predictor" ? result.heroSub : contract.resultSummary,
       "",
       "Indicateurs"
     ];
@@ -356,7 +472,7 @@
       if (field.type !== "heading") {
         var raw = input[field.id] == null ? "" : input[field.id];
         var selected = (field.options || []).find(function (option) { return String(option.value) === String(raw); });
-        lines.push("- " + (FIELD_LABELS[field.id] || field.label) + " : " + (selected ? optionLabel(selected.label) : String(raw)));
+        lines.push("- " + (["fieldSetup", "kenyaStrength", "replaceSeed"].includes(field.id) ? AFCON_COPY.labels[["fieldSetup", "kenyaStrength", "replaceSeed"].indexOf(field.id)] : FIELD_LABELS[field.id] || field.label) + " : " + (selected ? ((field.id === "favorite" || field.id === "replaceSeed") ? afconTeam(optionLabel(selected.label)) : optionLabel(selected.label)) : String(raw)));
       }
     });
     if (source) {
@@ -392,8 +508,9 @@
 
   function renderResult(root, contract, config, input, result) {
     var html = '<aside class="sports-source-card fr-sports-boundary" data-fr-sports-boundary aria-label="Limites du scénario"><h3>Scénario local, pas une information en direct</h3><p>' + esc(contract.safety) + '</p><p>Les prix, règles, classements, participants, blessures et disponibilités externes ne sont pas actualisés automatiquement.</p></aside>';
-    html += sourceConfidenceHtml(contract);
-    html += '<div class="sports-result-hero"><div class="sports-result-label">' + esc(contract.resultLabel) + '</div><div class="sports-result-value">' + esc(resultValue(result.heroValue || "—")) + '</div><div class="sports-result-sub">' + esc(contract.resultSummary) + "</div></div>";
+    if (contract.id !== "afcon-predictor") html += sourceConfidenceHtml(contract);
+    else html = "";
+    html += '<div class="sports-result-hero"><div class="sports-result-label">' + esc(contract.id === "afcon-predictor" ? result.heroLabel : contract.resultLabel) + '</div><div class="sports-result-value">' + esc(resultValue(result.heroValue || "—")) + '</div><div class="sports-result-sub">' + esc(contract.id === "afcon-predictor" ? result.heroSub : contract.resultSummary) + "</div></div>";
     if (result.metrics && result.metrics.length) {
       html += '<div class="sports-metrics">';
       result.metrics.forEach(function (metric) {
@@ -414,10 +531,12 @@
       result.rows.forEach(function (row) { html += "<tr><td>" + esc(resultLabel(row[0])) + "</td><td>" + esc(resultValue(row[1])) + "</td></tr>"; });
       html += "</tbody></table></div>";
     }
+    if (contract.id === "afcon-predictor") html += '<details class="sports-source-card"><summary>Sources et hypothèses du modèle</summary>' + sourceConfidenceHtml(contract) + "</details>";
     html += '<div class="sports-insights"><h3>Comment utiliser ce résultat</h3><ul>';
-    contract.insights.forEach(function (insight) { html += "<li>" + esc(insight) + "</li>"; });
+    (contract.id === "afcon-predictor" ? result.insights : contract.insights).forEach(function (insight) { html += "<li>" + esc(insight) + "</li>"; });
     html += "</ul></div>";
     html += '<div class="sports-report-gate" data-fr-local-export><h3>Exporter ou rouvrir ce scénario</h3><p>Copiez, imprimez ou téléchargez un fichier JSON local. Aucun courriel, compte ou envoi réseau n’est requis.</p><div class="sports-report-actions"><button class="sports-btn" type="button" data-fr-print>Imprimer ou enregistrer en PDF</button><button class="sports-btn secondary" type="button" data-fr-copy>Copier le rapport</button><button class="sports-btn secondary" type="button" data-fr-download>Télécharger JSON</button><label class="sports-btn secondary fr-sports-import">Rouvrir JSON<input type="file" accept="application/json,.json" data-fr-import></label></div><div class="sports-lead-msg" data-fr-export-status aria-live="polite"></div><pre class="sports-report-preview on" tabindex="0" data-fr-report>' + esc(reportText(contract, config, input, result)) + "</pre></div>";
+    if (contract.id === "afcon-predictor") html = html.replace('<button class="sports-btn secondary" type="button" data-fr-download>', '<button class="sports-btn secondary" type="button" data-fr-txt>Télécharger TXT</button><button class="sports-btn secondary" type="button" data-fr-download>');
     root.innerHTML = html;
   }
 
@@ -428,6 +547,7 @@
     var config = engine && engine.tools && engine.tools[page];
     var mount = document.getElementById("fr-sports-tool-root");
     if (!mount || !contract || !config) return;
+    if (page === "afcon-predictor") engine.prepareAfconFields(page, config);
 
     mount.innerHTML = '<div class="sports-shell-grid"><section class="sports-panel"><div class="sports-panel-title"><span>Vos hypothèses</span><span class="sports-panel-kicker">' + esc(contract.eyebrow) + '</span></div><form id="fr-sports-tool-form" novalidate><div class="sports-form-grid">' + config.fields.map(fieldHtml).join("") + '</div><div class="sports-actions"><button class="sports-btn" type="submit">Calculer</button><button class="sports-btn secondary" type="button" data-fr-reset>Réinitialiser</button></div><div class="fr-sports-error" data-fr-error role="alert" aria-live="assertive"></div></form></section><section class="sports-panel" id="fr-sports-result-panel"><div class="sports-panel-title"><span>Résultats</span><span class="sports-status">Calcul local</span></div><div id="fr-sports-results" role="status" aria-live="polite"></div></section></div>';
     var form = document.getElementById("fr-sports-tool-form");
@@ -436,6 +556,7 @@
     var last = null;
 
     function calculate() {
+      if (page === "afcon-predictor") engine.syncAfconFieldControls(page, config, form);
       var read = readInputs(form, config);
       errorRoot.textContent = read.error;
       if (read.error) {
@@ -444,6 +565,7 @@
         return;
       }
       var result = engine.calculate(page, read.input);
+      if (page === "afcon-predictor") result = afconResult(read.input, result);
       last = { input: read.input, result: result };
       renderResult(resultRoot, contract, config, read.input, result);
     }
@@ -467,6 +589,13 @@
         window.print();
         window.setTimeout(function () { document.body.classList.remove("fr-sports-printing"); }, 300);
       }
+      if (page === "afcon-predictor" && event.target.closest("[data-fr-txt]") && report) {
+        var txtUrl = URL.createObjectURL(new Blob([report.textContent], { type: "text/plain;charset=utf-8" }));
+        var txtLink = document.createElement("a");
+        txtLink.href = txtUrl; txtLink.download = "can-rapport-scenario.txt";
+        document.body.appendChild(txtLink); txtLink.click(); txtLink.remove();
+        window.setTimeout(function () { URL.revokeObjectURL(txtUrl); }, 1000);
+      }
       if (event.target.closest("[data-fr-copy]") && report) {
         var operation = window.navigator.clipboard && window.navigator.clipboard.writeText
           ? window.navigator.clipboard.writeText(report.textContent) : Promise.reject(new Error("clipboard"));
@@ -476,6 +605,7 @@
       if (event.target.closest("[data-fr-download]") && last) {
         var payload = {
           schema: "afrotools.fr.sports-scenario.v1", toolId: page, route: "/fr/tools/" + contract.frSlug + "/",
+          ...(page === "afcon-predictor" ? { report: reportText(contract, config, last.input, last.result), rankings: last.result.rows } : {}),
           inputs: last.input, resultLabel: contract.resultLabel, resultValue: last.result.heroValue,
           sourceReview: contract.sourceConfidence, createdAt: new Date().toISOString(), privacy: "local-export"
         };

@@ -39,9 +39,24 @@ const SW_ENERGY_REMAINING_APPS = [
   {
     id: "solar-vs-generator", slug: "solar-dhidi-ya-generator", frSlug: "solaire-vs-generateur",
     title: "Nishati ya Jua dhidi ya Jenereta", description: "Linganisha gharama za miaka mitano za jenereta na mfumo wa nishati ya jua kwa mzigo na saa zako za akiba.",
-    engine: "solar-vs-generator-engine", global: "SolarVsGeneratorEngine",
-    fields: [number("dailyHours", "Saa za akiba kwa siku", 6, 0.5, 0.5, {max:24}), number("genKVA", "Ukubwa wa generator (kVA)", 5, 0, 0.1, {required:false}), number("dailyKWh", "Mahitaji ya nishati kwa siku (kWh)", 20, 0, 0.1, {required:false})],
-    metrics: [["gen5yrTotal","Jumla ya generator miaka 5"],["solar5yrTotal","Jumla ya solar miaka 5"],["savings5yr","Tofauti ya gharama"],["paybackYrs","Muda wa kurejesha gharama"]],
+    engine: "solar-vs-generator-engine", global: "SolarVsGeneratorEngine", mode: "solarComparison",
+    fuelReference: {
+      country: "TZ", location: "Dar es Salaam", fuel: "diesel", price: 4128, currency: "TZS",
+      effectiveDate: "2026-11-04", checkedAt: "2026-11-07", label: "EWURA — kikomo cha bei ya rejareja",
+      url: "https://www.ewura.go.tz/uploads/documents/en-1793740364-Cap%20Prices%20for%20the%20Month%20of%20November%202026.pdf"
+    },
+    fields: [number("dailyHours", "Saa za akiba kwa siku", 6, 0.5, 0.5, {max:24}), number("genKVA", "Ukubwa wa jenereta (kVA)", 5, 0, 0.1, {required:false, hint:"Weka 0 kama ukubwa haujulikani: mfano utatumia kWh na saa kukadiria uwezo wa wastani, si ukubwa wa mwisho wa kifaa."}), number("dailyKWh", "Mahitaji ya nishati kwa siku (kWh)", 20, 0, 0.1, {required:false})],
+    comparisonFields: [
+      number("fuelPrice", "Bei ya dizeli kwa lita", "", 0, "any", {hint:"Tumia bei ya risiti ya eneo lako; sarafu inaonyeshwa hapa chini."}),
+      number("genCapex", "Gharama ya kununua na kufunga jenereta", "", 0, "any", {hint:"Weka 0 ikiwa tayari unamiliki jenereta na hulinganishi ununuzi mpya."}),
+      number("solarCapex", "Nukuu kamili ya mfumo wa solar", "", 0, "any", {hint:"Jumuisha paneli, betri, inverter na ufungaji unaohitaji."}),
+      number("genLitresHour", "Matumizi ya dizeli (lita kwa saa)", "", 0.000001, "any", {hint:"Mfano: kWh/siku ÷ saa/siku × 0.28 lita/kWh. Badilisha kwa kipimo chako au taarifa ya mtengenezaji kwa mzigo huo."}),
+      number("operatingDays", "Siku za kutumia mfumo kwa mwaka", "", 1, "any", {max:366}),
+      number("genAnnualMaintenance", "Matengenezo ya jenereta kwa mwaka", "", 0, "any"),
+      number("solarAnnualMaintenance", "Matengenezo ya solar kwa mwaka", "", 0, "any"),
+      number("solarReplacement5yr", "Betri au vifaa vya kubadilisha ndani ya miaka 5", "", 0, "any", {hint:"Jumla ya gharama inayotarajiwa; 0 ikiwa hakuna uingizwaji uliopangwa."})
+    ],
+    metrics: [["gen5yrTotal","Jumla ya jenereta miaka 5"],["solar5yrTotal","Jumla ya solar miaka 5"],["savings5yr","Tofauti ya gharama"],["paybackYrs","Kurejesha tofauti ya mtaji"]],
   },
   {
     id: "electricity-bill-verify", slug: "ukaguzi-wa-bili-ya-umeme", frSlug: "verifier-facture-electricite",
