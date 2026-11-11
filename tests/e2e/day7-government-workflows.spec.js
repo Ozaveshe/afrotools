@@ -49,7 +49,7 @@ test.describe('Day 7 Government & Civic serial workflow proof', () => {
       country: 'GH',
       task: 'child',
       summary: 'Ghana - Child or caregiver support',
-      officialUrl: 'https://www.mogcsp.gov.gh/',
+      officialUrl: 'https://leap.mogcsp.gov.gh/faq.php',
       boundary: 'No eligibility, benefit, priority, payment, or approval verdict'
     }
   ];
