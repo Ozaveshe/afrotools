@@ -179,7 +179,7 @@
     rule("mining", "artisanal-mining-income", ["revenu minier artisanal", "revenu orpaillage", "revenu mineur artisanal", "prix acheteur agree minerai"], ["finance"]),
     rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "cif", "port charges", "duty and port", "machinery into", "toyota", "honda", "mazda", "nissan"], ["finance"]),
     rule("solar-energy", "solar-vs-generator", ["sola na jenereta", "sola dhidi ya jenereta", "solar na jenereta"], ["energy"]),
-    rule("solar-energy", "solar-roi", ["solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
+    rule("solar-energy", "solar-roi", ["solar vs generator", "solar versus generator", "solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
     rule("fuel-energy", "generator-fuel", ["generator fuel cost", "generator cost", "generator consumption", "generator running", "generator", "genset"], ["energy"]),
     rule("fuel-energy", "fuel-tracker", ["fuel", "petrol", "diesel", "kerosene"], ["energy"]),
     rule("career-documents", "cover-letter", ["lettre de motivation", "créer lettre motivation", "rédiger lettre motivation"], ["employment"]),

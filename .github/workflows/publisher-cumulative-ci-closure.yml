@@ -1,0 +1,114 @@
+{
+  "name": "AfroTools cumulative full CI closure",
+  "on": {
+    "create": null
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "prepare": {
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'automation/daily-5pm-publish-deploy-gate-20261111-cumulative-ci-closure-localized'",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 100,
+      "env": {
+        "CONTEXT": "local",
+        "NETLIFY": "false",
+        "COMMIT_REF": "${{ github.sha }}"
+      },
+      "steps": [
+        {
+          "name": "Checkout exact preparation commit",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 0,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Require build storage",
+          "run": "available=$(df -PB1 \"$GITHUB_WORKSPACE\" | awk 'NR == 2 {print $4}')\nminimum=27917287424\nprintf 'Build filesystem available_bytes=%s minimum_bytes=%s\\n' \"$available\" \"$minimum\"\n[[ \"$available\" =~ ^[0-9]+$ ]] && (( available >= minimum ))"
+        },
+        {
+          "name": "Set up Node",
+          "uses": "actions/setup-node@v5",
+          "with": {
+            "node-version": "22"
+          }
+        },
+        {
+          "name": "Install dependencies",
+          "run": "npm ci"
+        },
+        {
+          "name": "Freshness and current claims preflight",
+          "run": "npm run data:fallbacks:check\nnode scripts/build-public-claims.js --check"
+        },
+        {
+          "name": "Targeted source tests",
+          "run": "node --test tests/ai-energy-discovery-prefill.test.js tests/ai-fuel-context-freshness.test.js tests/ai-vertical-landing-pages.test.js tests/blog-content-explosion-wave2.test.js tests/day7-government-verification-planners.test.js tests/fr-uniquely-african-engine.test.js"
+        },
+        {
+          "name": "Build deploy artifact",
+          "run": "npm run build:deploy"
+        },
+        {
+          "name": "Combined checks and security",
+          "run": "npm run build:checks\nnpm run security:scan\nnpm run audit:dist\nnode -e 'const f=require(\"node:fs\"); for (const p of [\".git\",\".github\",\".codex\",\".agents\",\"node_modules\",\"netlify\",\"scripts\",\"supabase\",\"tests\",\"docs\",\"reports\",\"audit-results\",\"artifacts\",\"test-results\",\"package.json\",\"package-lock.json\",\"AGENTS.md\",\".env\",\"data/registry\",\"data/automation\",\"data/image-generation\"]) if(f.existsSync(\"dist/\"+p)) throw Error(p)'"
+        },
+        {
+          "name": "Capture generated path inventory",
+          "if": "always()",
+          "run": "out=\"$RUNNER_TEMP/preparation-inventory\"\nmkdir -p \"$out\"\ngit rev-parse HEAD HEAD^{tree} > \"$out/identity.txt\"\ngit diff --name-status HEAD > \"$out/changed-files.txt\"\ngit ls-files --others --exclude-standard > \"$out/untracked-paths.txt\""
+        },
+        {
+          "name": "Upload preparation path inventory",
+          "if": "always()",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "cumulative-paths-${{ github.sha }}",
+            "path": "${{ runner.temp }}/preparation-inventory",
+            "if-no-files-found": "error",
+            "retention-days": 3
+          }
+        },
+        {
+          "name": "Verify government sources on corrected routes",
+          "run": "npm run government:sources:check"
+        },
+        {
+          "run": "out=\"$RUNNER_TEMP/cumulative-preparation\"\nmkdir -p \"$out\"\ngit diff --check HEAD\ngit diff --name-status --no-renames HEAD > \"$out/tracked-status.txt\"\ngit ls-files --others --exclude-standard > \"$out/untracked-paths.txt\"\ntest ! -s \"$out/untracked-paths.txt\"\nif grep -v -E '^M[[:space:]]' \"$out/tracked-status.txt\"; then exit 1; fi\ngit diff --binary --full-index HEAD -- . | gzip -n > \"$out/generated.patch.gz\"\ntest \"$(wc -c < \"$out/generated.patch.gz\")\" -le 8388608\ngit rev-parse HEAD HEAD^{tree} > \"$out/identity.txt\"\n(cd \"$out\" && sha256sum identity.txt tracked-status.txt untracked-paths.txt generated.patch.gz > SHA256SUMS)",
+          "name": "Export bounded generated changes"
+        },
+        {
+          "name": "Upload reviewed cumulative output",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "cumulative-generated-${{ github.sha }}",
+            "if-no-files-found": "error",
+            "path": "${{ runner.temp }}/cumulative-preparation",
+            "retention-days": 3
+          }
+        },
+        {
+          "name": "Run complete native Verify source gates",
+          "run": "npm run lint\nnpm run type-check\nnpm run test:ai\nnpm test"
+        },
+        {
+          "name": "Install Chromium for the corrected government visitor journeys",
+          "run": "npx playwright install chromium --with-deps"
+        },
+        {
+          "name": "Verify built government workflows",
+          "env": {
+            "AFROTOOLS_TEST_PUBLISH_ARTIFACT": "1",
+            "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+            "PORT": "4187"
+          },
+          "run": "npx playwright test tests/e2e/day7-government-workflows.spec.js --project=chromium --workers=2 --retries=0"
+        }
+      ]
+    }
+  }
+}
