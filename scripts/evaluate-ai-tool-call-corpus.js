@@ -98,8 +98,9 @@ function evaluateRecord(record, manifestMap, manifest) {
   const promptText = record.messages && record.messages[0] && record.messages[0].content || "";
   const decision = router.routeDeterministically(promptText, { manifest });
   const validation = router.validateRouterOutput(decision);
-  const tool = manifestMap.get(decision.selectedToolId);
-  const toolCall = tool ? selectedToolCall(tool, decision) : record.expected.toolCall;
+  const fallback = router.getSearchFallback();
+  const tool = manifestMap.get(decision.selectedToolId) || (decision.selectedToolId === fallback.id ? fallback : null);
+  const toolCall = tool ? selectedToolCall(tool, decision) : null;
   const execution = invocationRuntime.buildExecution({
     toolId: decision.selectedToolId,
     selectedRoute: decision.selectedRoute,
@@ -114,6 +115,7 @@ function evaluateRecord(record, manifestMap, manifest) {
   const routingFixture = record.source === "routing_eval_fixture";
   const missingInputMatch = !routingFixture || JSON.stringify(sorted(decision.missingInputs)) === JSON.stringify(sorted(record.expected.missingInputs));
   const errors = [];
+  if (!tool) errors.push("Selected tool is missing from the invocation manifest");
   if (!validation.valid) errors.push("router output invalid: " + validation.errors.join("; "));
   if (!exactTool) errors.push("selectedToolId expected " + record.expected.selectedToolId + " got " + decision.selectedToolId);
   if (!categoryMatch) errors.push("category expected compatible with " + record.expected.intentCategory + " got " + decision.intentCategory);

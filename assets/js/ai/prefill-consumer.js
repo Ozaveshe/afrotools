@@ -50,24 +50,9 @@
       port: ["carImportPort"],
       portCode: ["carImportPort"],
     }, null, { quietFields: true, afterApply: recalculateCarImportOnce }),
-    config("solar-roi", ["/tools/solar-roi/"], {
-      monthlyBill: ["monthlyBill"],
-      monthlyGeneratorSpend: ["generatorSpend"],
-      generatorSpend: ["generatorSpend"],
-      outageHours: ["outageHours"],
-      backupHours: ["outageHours"],
-      loadSizeKw: ["systemKW"],
-      systemKW: ["systemKW"],
-      fuelPrice: ["fuelPrice"],
-      installCostPerKw: ["installCostPerKw"],
-      budgetAmount: ["solarBudget"],
-    }, null, { quietFields: true }),
-    config("fuel-tracker", ["/tools/fuel-tracker/"], {
-      country: ["calc-country"],
-      fuelType: ["calc-fuel-type"],
-      generatorHoursPerDay: ["calc-hours"],
-      generatorSizeKva: ["calc-gen-size"],
-    }),
+    config("solar-roi", ["/tools/solar-roi/"], {}, applyEnergyToolPrefill),
+    config("fuel-tracker", ["/tools/fuel-tracker/"], {}, applyEnergyToolPrefill),
+    config("generator-fuel", ["/tools/generator-fuel/"], {}, applyEnergyToolPrefill),
     config("invoice-generator", ["/tools/invoice-generator/"], {
       clientName: ["clientName"],
       clientCompany: ["clientCompany"],
@@ -210,6 +195,70 @@
     var num = Number(value);
     if (!Number.isFinite(num)) return "";
     return String(Math.round(num));
+  }
+
+  var energyPrefillProgress = {};
+  function applyEnergyToolPrefill(payload) {
+    var fuelLookup = payload.toolId === "fuel-tracker";
+    var solar = payload.toolId === "solar-roi";
+    var controls = solar
+      ? { monthlyBill: "monthlyBill", monthlyGeneratorSpend: "generatorSpend", outageHours: "outageHours", loadSizeKw: "systemKW", fuelPrice: "fuelPrice", installCostPerKw: "installCostPerKw", budgetAmount: "solarBudget" }
+      : fuelLookup
+      ? { country: "fuel-country", fuelType: "fuel-type" }
+      : { country: "gfCountry", fuelType: "gfFuel", generatorSizeKva: "gfKva", generatorHoursPerDay: "gfHours" };
+    var inputs = Object.assign({}, payload.normalizedInputs || {});
+    if (solar) {
+      if (isEmpty(inputs.monthlyGeneratorSpend)) inputs.monthlyGeneratorSpend = inputs.generatorSpend;
+      if (isEmpty(inputs.outageHours)) inputs.outageHours = inputs.backupHours;
+      if (isEmpty(inputs.loadSizeKw)) inputs.loadSizeKw = inputs.systemKW;
+    }
+    var key = payload.toolId + ":" + String(payload.createdAt || "");
+    var state = energyPrefillProgress[key] || (energyPrefillProgress[key] = { applied: [], fields: {} });
+    Object.keys(controls).forEach(function(name) {
+      var field = document.getElementById(controls[name]);
+      if (!field || state.fields[name]) return;
+      var progress = state.fields[name] = { field: field, done: false, touched: false };
+      function preserveUserEdit(event) { if (event.isTrusted) progress.touched = true; }
+      field.addEventListener("input", preserveUserEdit);
+      field.addEventListener("change", preserveUserEdit);
+    });
+    // Wait for real market options. Never change a disabled loading selector.
+    var country = document.getElementById(controls.country);
+    if (!solar && (!country || country.disabled)) return state.applied.slice();
+    var requestedCountry = inputs.countryCode || countryCode(inputs.country) || inputs.country;
+    if (!solar && requestedCountry && !Array.prototype.some.call(country.options || [], function(option) {
+      return String(option.value).toLowerCase() === String(requestedCountry).toLowerCase() || String(option.textContent).toLowerCase() === String(requestedCountry).toLowerCase();
+    })) {
+      state.countryUnavailable = inputs.country || requestedCountry;
+      return state.applied.slice();
+    }
+    state.countryUnavailable = "";
+
+    Object.keys(controls).forEach(function(name) {
+      var progress = state.fields[name];
+      if (!progress || progress.done || progress.touched) return;
+      var field = progress.field;
+      var value = name === "country" ? (inputs.countryCode || countryCode(inputs.country) || inputs.country) : inputs[name];
+      if (isEmpty(value)) { progress.done = true; return; }
+      if (field.disabled || isHiddenField(field)) return;
+      if (field.tagName === "SELECT") {
+        // Country names/codes and supported sizes must match exactly, not a substring.
+        var match = Array.prototype.slice.call(field.options || []).find(function(option) {
+          return String(option.value).toLowerCase() === String(value).toLowerCase() || String(option.textContent).toLowerCase() === String(value).toLowerCase();
+        });
+        if (!match) return;
+        value = match.value;
+      } else if (field.type === "number") {
+        var number = Number(value), min = field.min === "" ? -Infinity : Number(field.min), max = field.max === "" ? Infinity : Number(field.max);
+        var step = Number(field.step);
+        if (!Number.isFinite(number) || number < min || number > max || (step > 0 && Math.abs((number - (Number.isFinite(min) ? min : 0)) / step - Math.round((number - (Number.isFinite(min) ? min : 0)) / step)) > 1e-8)) return;
+      }
+      if (setField(controls[name], value)) {
+        progress.done = true;
+        state.applied = mergeApplied(state.applied, [name]);
+      }
+    });
+    return state.applied.slice();
   }
 
   function applyCvBuilderPrefill(payload) {
@@ -468,10 +517,14 @@
   function noticeText(payload, applied) {
     var missing = Array.isArray(payload.missingInputs) ? payload.missingInputs : [];
     var lines = [];
+    var energyState = energyPrefillProgress[payload.toolId + ":" + String(payload.createdAt || "")];
+    if (energyState && energyState.countryUnavailable) {
+      lines.push("No matching country reference for " + energyState.countryUnavailable + ". No country or fuel details were applied. Choose a supported market, or enter a locally verified pump price below; the current selector is not a reference for your requested country.");
+    }
     if (applied.length) lines.push("Applied prefill fields: " + applied.join(", ") + ".");
-    if (!applied.length) lines.push("Prefill details are ready for this workflow.");
+    if (!applied.length && !(energyState && energyState.countryUnavailable)) lines.push("Prefill details are ready for this workflow.");
     if (missing.length) lines.push("Missing: " + missing.join(", ") + ".");
-    if (payload.userFacingSummary) lines.push(payload.userFacingSummary);
+    if (payload.userFacingSummary && !(energyState && energyState.countryUnavailable)) lines.push(payload.userFacingSummary);
     lines.push(payload.privacyNote || "Prefill data is stored briefly in this browser session and not in the URL.");
     return lines.join(" ");
   }

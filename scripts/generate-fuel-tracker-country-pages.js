@@ -263,7 +263,39 @@ function faqItems(row, rows, estimate) {
   ];
 }
 
+function regionalPetrolReference(row) {
+  if (row.code !== 'ZA') return null;
+  const data = readJson(path.join(ROOT, 'data', 'fuel', 'markets.json'));
+  const today = new Date().toISOString().slice(0, 10);
+  const validDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+  const candidates = (data.markets || []).filter(m => /^za-gauteng-9c-petrol95-/.test(m.market_id || '') && m.country_code === 'ZA' && m.granularity === 'region').map(market => ({ market, record: (market.fuels || []).find(r => r.fuel_type === 'petrol') })).filter(({record}) => record &&
+    record.currency === 'ZAR' && record.unit === 'litre' && Number.isFinite(record.price) && record.price > 0 &&
+    record.official_verified === true && record.price_kind === 'regulated-retail' &&
+    /^https:\/\/(?:www\.dmpr\.gov\.za|cefgroup\.co\.za)\//.test(record.source_url || '') &&
+    validDate(record.effective_date) && validDate(record.last_verified_at) && record.effective_date <= today && record.last_verified_at <= today &&
+    (!record.valid_to || (validDate(record.valid_to) && record.valid_to >= record.effective_date)));
+  candidates.sort((a, b) => b.record.effective_date.localeCompare(a.record.effective_date));
+  if (!candidates.length) return null;
+  const reference = candidates[0], record = reference.record;
+  reference.historical = (record.valid_to && record.valid_to < today) || (Date.parse(today) - Date.parse(record.effective_date)) / 86400000 > 45;
+  return reference;
+}
+
+function regionalPetrolCard(reference) {
+  if (!reference) return '';
+  const { market, record, historical } = reference;
+  return `<section class="fuel-price-card fuel-regional-reference" aria-labelledby="regional-petrol-title">
+          <h2 id="regional-petrol-title">Gauteng zone 9C: 95 RON petrol</h2>
+          <p><strong class="fuel-local">ZAR ${escapeHtml(formatNumber(record.price))}/L</strong>${historical ? 'Historical regional reference — planning only' : 'Published regional petrol reference'} · effective ${escapeHtml(formatDate(record.effective_date))}${record.valid_to ? ' · period ends ' + escapeHtml(formatDate(record.valid_to)) : ''}</p>
+          <p>95 RON unleaded petrol in Gauteng zone 9C only. Other zones and grades differ; this is not a national price or a live station quote. Check your local pump before buying.</p>
+          <p><a href="${escapeHtml(record.source_url)}">Official CEF / DMPR fuel-price publication</a></p>
+          <div class="fuel-actions"><a class="fuel-btn primary" href="/tools/fuel-tracker/?market=${encodeURIComponent(market.market_id)}#fuel-finder">Calculate a Gauteng 95 RON fill</a></div>
+          <p class="fuel-date">Choose South Africa, then ${escapeHtml(market.locality_name)} in the finder. You can enter the price available at your pump${historical ? ', or explicitly choose this historical price for planning' : ''}.</p>
+        </section>`;
+}
+
 function htmlPage(row, rows) {
+  const regionalReference = regionalPetrolReference(row);
   const slug = countrySlug(row);
   const url = `${BASE_URL}/tools/fuel-tracker/${slug}/`;
   const flag = countryFlag(row.code);
@@ -434,7 +466,7 @@ function htmlPage(row, rows) {
   .fuel-faq summary { cursor: pointer; padding: 16px 18px; font-weight: 900; }
   .fuel-faq details p { padding: 0 18px 18px; margin: 0; }
   .fuel-note { padding: 16px 18px; border-radius: 8px; background: #eef6ef; color: #415247; border: 1px solid rgba(35,92,57,.12); }
-  @media (max-width: 760px) {
+${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-columns: 1fr; }\n  .fuel-regional-reference h2 { color: #142018; margin-top: 0; }\n  .fuel-regional-reference .fuel-btn { min-height: 44px; }\n' : ''}  @media (max-width: 760px) {
     .fuel-country-shell { width: min(100% - 24px, 1120px); }
     .fuel-country-hero { padding-top: 36px; }
     .fuel-country-grid, .fuel-panels, .fuel-links { grid-template-columns: 1fr; }
@@ -452,18 +484,18 @@ function htmlPage(row, rows) {
       <a href="/tools/fuel-tracker/">AfroFuel</a><span>/</span>
       <span>${escapeHtml(row.name)}</span>
     </nav>
-    <div class="fuel-country-grid">
+    <div class="fuel-country-grid${regionalReference ? ' fuel-country-grid--with-reference' : ''}">
       <div>
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>${escapeHtml(region)} fuel prices</span></div>
-        <h1>Fuel prices in ${escapeHtml(row.name)}</h1>
-        <p class="fuel-lede">Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
+        <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}
+        <p class="fuel-lede">${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
         <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
         <p class="fuel-date">Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
       <aside class="fuel-price-card" aria-label="${escapeHtml(row.name)} fuel price summary">
         <div class="fuel-card-top">
           <div>
-            <strong>${escapeHtml(row.name)}</strong>
+            <strong>${regionalReference ? 'Historical national snapshot: ' : ''}${escapeHtml(row.name)}</strong>
             <div class="fuel-date">Dataset row date: ${escapeHtml(date)}</div>
           </div>
           <div class="fuel-flag" aria-hidden="true">${flag}</div>
@@ -483,12 +515,12 @@ function htmlPage(row, rows) {
 </header>
 <main class="fuel-country-shell fuel-main">
   <section class="fuel-section" aria-labelledby="generator-estimate">
-    <h2 id="generator-estimate">Generator cost estimate in ${escapeHtml(row.name)}</h2>
+    <h2 id="generator-estimate">${regionalReference ? 'Historical national generator estimate' : 'Generator cost estimate in ' + escapeHtml(row.name)}</h2>${regionalReference ? `<p>This uses the national snapshot dated ${escapeHtml(date)} at ${escapeHtml(priceLocal(row, 'petrol'))}, not the Gauteng regional price above. <a href="/tools/fuel-tracker/?market=${encodeURIComponent(regionalReference.market.market_id)}#fuel-finder">Calculate a Gauteng fill with an editable price</a>.</p>` : ''}
     <p>A ${escapeHtml(estimate.generatorSize)} petrol generator running ${estimate.hoursPerDay} hours per day for ${estimate.daysPerMonth} days per month uses about ${formatNumber(estimate.litresPerMonth)} litres monthly in this simple planning model.</p>
     <div class="fuel-panels">
-      <div class="fuel-panel"><strong>Monthly estimate</strong><span>${escapeHtml(estimate.local)}</span><p>${escapeHtml(estimate.usd)} for comparison.</p></div>
+      <div class="fuel-panel"><strong>${regionalReference ? 'Historical monthly estimate' : 'Monthly estimate'}</strong><span>${escapeHtml(estimate.local)}</span><p>${escapeHtml(estimate.usd)} for comparison.</p></div>
       <div class="fuel-panel"><strong>Fuel used</strong><span>${formatNumber(estimate.litresPerMonth)} litres/month</span><p>Assumes 1.5 litres per hour.</p></div>
-      <div class="fuel-panel"><strong>Price basis</strong><span>${escapeHtml(priceLocal(row, 'petrol'))}</span><p>Use local pump prices for final decisions.</p></div>
+      <div class="fuel-panel"><strong>${regionalReference ? 'Historical national price basis' : 'Price basis'}</strong><span>${escapeHtml(priceLocal(row, 'petrol'))}</span><p>Use local pump prices for final decisions.</p></div>
     </div>
   </section>
   <section class="fuel-section" aria-labelledby="country-context">
