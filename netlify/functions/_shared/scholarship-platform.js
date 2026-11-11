@@ -727,6 +727,12 @@ function buildLegacyScholarship(row, now = new Date()) {
   const deadlineOverride = getScholarshipDeadlineOverride(row.slug);
   const deadlineDate = row.deadline_date || snapshot.deadline_date || null;
   const deadlineAt = row.deadline_at || snapshot.deadline_at || (deadlineOverride && deadlineOverride.deadline_at) || null;
+  const opensAt = deadlineOverride && deadlineOverride.deadline_date === deadlineDate
+    ? Date.parse(deadlineOverride.application_opens_at)
+    : NaN;
+  const applicationStatus = row.status === 'upcoming' && now.getTime() >= opensAt
+    ? 'open'
+    : row.status;
   return {
     id: row.id,
     slug: row.slug,
@@ -779,7 +785,7 @@ function buildLegacyScholarship(row, now = new Date()) {
     deadline_notes: row.deadline_notes || snapshot.deadline_notes || '',
     deadline_evidence: snapshot.deadline_evidence || '',
     deadline_checked_urls: Array.isArray(snapshot.deadline_checked_urls) ? snapshot.deadline_checked_urls : [],
-    status: normalizeDeadlineStatus(row.status, deadlineDate, deadlineAt, now),
+    status: normalizeDeadlineStatus(applicationStatus, deadlineDate, deadlineAt, now),
     confidence_mode: row.confidence_mode,
     source_confidence: row.source_confidence != null ? row.source_confidence : null,
     freshness_score: row.freshness_score != null ? row.freshness_score : null,

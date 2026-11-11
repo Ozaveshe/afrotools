@@ -180,7 +180,8 @@
     rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "cif", "port charges", "duty and port", "machinery into", "toyota", "honda", "mazda", "nissan"], ["finance"]),
     rule("solar-energy", "solar-vs-generator", ["sola na jenereta", "sola dhidi ya jenereta", "solar na jenereta"], ["energy"]),
     rule("solar-energy", "solar-roi", ["solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
-    rule("fuel-energy", "fuel-tracker", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["energy"]),
+    rule("fuel-energy", "generator-fuel", ["generator fuel cost", "generator cost", "generator consumption", "generator running", "generator", "genset"], ["energy"]),
+    rule("fuel-energy", "fuel-tracker", ["fuel", "petrol", "diesel", "kerosene"], ["energy"]),
     rule("career-documents", "cover-letter", ["lettre de motivation", "créer lettre motivation", "rédiger lettre motivation"], ["employment"]),
     rule("documents", "meeting-minutes", ["compte rendu de réunion", "procès verbal réunion", "notes de réunion"], ["none"]),
     rule("documents", "receipt-generator", ["générateur de reçus", "créer un reçu", "reçu de vente"], ["finance"]),
@@ -746,8 +747,20 @@
       if (!extracted.payPeriod && /\bweekly|per week\b/i.test(original)) extracted.payPeriod = "weekly";
       if (!extracted.payPeriod && /\bdaily|per day\b/i.test(original)) extracted.payPeriod = "daily";
     }
-    if (ruleMatch && ruleMatch.toolId === "solar-roi" && money) {
-      extracted.monthlyBill = money;
+    if (ruleMatch && (ruleMatch.toolId === "fuel-tracker" || ruleMatch.toolId === "generator-fuel")) {
+      var fuel = original.match(/\b(diesel|petrol|gasoline|kerosene)\b/i);
+      if (fuel) extracted.fuelType = fuel[1].toLowerCase() === "gasoline" ? "petrol" : fuel[1].toLowerCase();
+      if (ruleMatch.toolId === "generator-fuel") {
+        var runHours = original.match(/\b(\d+(?:\.\d+)?)\s*(?:hours?|hrs?)\b/i);
+        var generatorSize = original.match(/\b(\d+(?:\.\d+)?)\s*kva\b/i);
+        if (runHours) extracted.generatorHoursPerDay = Number(runHours[1]);
+        if (generatorSize) extracted.generatorSizeKva = Number(generatorSize[1]);
+      }
+    }
+    if (ruleMatch && ruleMatch.toolId === "solar-roi") {
+      if (money) extracted.monthlyBill = money;
+      var solarLoad = original.match(/\b(\d+(?:\.\d+)?)\s*kw\b/i);
+      if (solarLoad) extracted.loadSizeKw = Number(solarLoad[1]);
     }
     if (ruleMatch && (ruleMatch.toolId === "invoice-generator" || ruleMatch.toolId === "vat-calc-pan-african")) {
       if (money) {
@@ -1066,6 +1079,21 @@
     return decision;
   }
 
+  function isUnsupportedFuelQuery(query) {
+    var text = normalizeText(query);
+    return /\b(kerosene|lpg|cooking gas)\b/.test(text) && /\b(prices?|cost|fuel|generator)\b/.test(text);
+  }
+
+  function unsupportedFuelDecision(query, options) {
+    var decision = localizeDecision(rawFallbackDecision(query), options);
+    decision.confidence = 0;
+    decision.reasonShort = "AfroFuel currently supports petrol and diesel, not kerosene or LPG. No price match was selected.";
+    decision.clarificationQuestion = "For kerosene or LPG, check a dated local supplier quote. You can search other tools or change your request to petrol or diesel.";
+    decision.suggestedNextActions = ["Check a dated local supplier quote for the requested fuel", "Search other AfroTools tools", "Change the request to petrol or diesel if that is what you need"];
+    decision._meta = Object.assign({}, decision._meta, { router: "unsupported_fuel", providerUsed: false });
+    return decision;
+  }
+
   function routeDeterministically(query, options) {
     if (guardrailsApi && typeof guardrailsApi.inspectPrompt === "function") {
       var inspection = guardrailsApi.inspectPrompt(query, { maxChars: guardrailsApi.ROUTER_PROMPT_LIMIT || 1200 });
@@ -1075,6 +1103,7 @@
     var match = findBestRule(query);
     var manifestMatch = findManifestCandidate(query, manifest);
     var normalizedQuery = normalizeText(query);
+    if (isUnsupportedFuelQuery(query)) return unsupportedFuelDecision(query, options);
     if (isAmbiguousCountryPrompt(normalizedQuery)) return ambiguousCountryDecision(query, options);
     var keepCountryComparisonRule = match && match.toolId === "afroatlas" && detectedCountryCount(normalizedQuery) >= 2;
     var weakGenericCountryRule = match && match.toolId === "afroatlas" && match.score <= 3 && !keepCountryComparisonRule && !isExplicitCountryIntelligenceQuery(normalizedQuery);
@@ -1109,6 +1138,7 @@
     var base = decision && typeof decision === "object" ? Object.assign({}, decision) : {};
     var tool = findTool(manifest, base.selectedToolId) || findTool(manifest, base.selectedToolId || base.toolId) || SEARCH_FALLBACK;
     var deterministic = routeDeterministically(query, options);
+    if (deterministic._meta && deterministic._meta.router === "unsupported_fuel") return deterministic;
     var extracted = Object.assign({}, deterministic.extractedInputs || {}, base.extractedInputs || {});
     var missing = Array.isArray(base.missingInputs) ? base.missingInputs : findMissingInputs(tool, extracted);
     var safetyDomain = OUTPUT_SCHEMA.enums.safetyDomain.indexOf(base.safetyDomain) !== -1 ? base.safetyDomain : (tool.highStakesDomain || "none");
@@ -1164,6 +1194,7 @@
   }
 
   return {
+    isUnsupportedFuelQuery: isUnsupportedFuelQuery,
     OUTPUT_SCHEMA: OUTPUT_SCHEMA,
     ROUTING_RULES: ROUTING_RULES,
     routeDeterministically: routeDeterministically,

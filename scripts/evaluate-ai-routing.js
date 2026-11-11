@@ -115,7 +115,9 @@ function validateFixtures(fixtures, manifest) {
     if (!fixture.expected || typeof fixture.expected !== "object") errors.push(`${fixture.id} missing expected object`);
     const expected = fixture.expected || {};
     const tool = manifest.find((entry) => entry.id === expected.selectedToolId);
-    if (!tool) errors.push(`${fixture.id} expected selectedToolId not found in manifest: ${expected.selectedToolId}`);
+    const fallback = router.fallbackDecision("");
+    const isSearchRecovery = expected.selectedToolId === fallback.selectedToolId && expected.category === fallback.intentCategory && expected.canPrefill === false;
+    if (!tool && !isSearchRecovery) errors.push(`${fixture.id} expected selectedToolId not found in manifest: ${expected.selectedToolId}`);
     ["selectedToolId", "category", "safetyDomain"].forEach((field) => {
       if (!expected[field]) errors.push(`${fixture.id} expected.${field} is required`);
     });
@@ -156,6 +158,10 @@ function checkDecision(fixture, decision) {
   const errors = [];
   const validation = router.validateRouterOutput(decision);
   if (!validation.valid) errors.push(`router output invalid: ${validation.errors.join("; ")}`);
+  if (typeof expected.canPrefill === "boolean" && decision.canPrefill !== expected.canPrefill) errors.push(`canPrefill expected ${expected.canPrefill} got ${decision.canPrefill}`);
+  for (const text of expected.reasonIncludes || []) {
+    if (!String(decision.reasonShort || "").includes(text)) errors.push(`reasonShort must include ${text}`);
+  }
   if (decision.selectedToolId !== expected.selectedToolId) errors.push(`selectedToolId expected ${expected.selectedToolId} got ${decision.selectedToolId}`);
   if (decision.intentCategory !== expected.category) errors.push(`category expected ${expected.category} got ${decision.intentCategory}`);
   if (decision.safetyDomain !== expected.safetyDomain) errors.push(`safetyDomain expected ${expected.safetyDomain} got ${decision.safetyDomain}`);

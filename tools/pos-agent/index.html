@@ -165,6 +165,17 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
           <div id="provider-note" class="provider-note">Enter the commission and cap from your current written provider terms. AfroTools does not supply a live provider rate.</div>
 
           <div class="row" style="margin-top:14px">
+            <div class="field">
+              <label for="commission-basis">How you earn commission</label>
+              <select id="commission-basis">
+                <option value="percentage">Percentage of transaction value</option>
+                <option value="fixed">Fixed amount per completed transaction</option>
+              </select>
+            </div>
+            <div class="field" id="fixed-commission-field" style="display:none">
+              <label for="commission-fixed">Fixed commission in the scenario currency</label>
+              <input type="number" id="commission-fixed" min="0" step="0.01" disabled>
+            </div>
             <div class="field"><label for="commission-pct">Commission Earned per Completed Transaction %</label><input type="number" id="commission-pct" min="0" max="100" step="0.01" placeholder="e.g. 0.5"></div>
             <div class="field"><label for="commission-cap">Commission Cap per Transaction (optional)</label><input type="number" id="commission-cap" min="0" placeholder="e.g. 200"></div>
           </div>
@@ -364,7 +375,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <afro-footer></afro-footer>
 
 <script>
-var POS_INPUT_IDS = ['country','provider','commission-pct','commission-cap','daily-txns','avg-txn-size','failed-rate','operating-days','device-cost','float-capital','monthly-rent','other-monthly-costs'];
+var POS_INPUT_IDS = ['country','provider','commission-basis','commission-fixed','commission-pct','commission-cap','daily-txns','avg-txn-size','failed-rate','operating-days','device-cost','float-capital','monthly-rent','other-monthly-costs'];
 var posResultSignature = null;
 function posInputSignature(){ return JSON.stringify(POS_INPUT_IDS.map(function(id){ return document.getElementById(id).value; })); }
 function invalidatePosResult(message){
@@ -387,6 +398,24 @@ function updateCurrency() {
   document.getElementById('provider-note').textContent = 'Scenario currency: ' + data.currency + '. Enter the commission and cap from your current written provider terms; no live provider rate is embedded.';
 }
 
+function updateCommissionFields() {
+  var fixed = document.getElementById('commission-basis').value === 'fixed';
+  document.getElementById('fixed-commission-field').style.display = fixed ? '' : 'none';
+  document.getElementById('commission-fixed').disabled = !fixed;
+  document.getElementById('commission-pct').disabled = fixed;
+  document.getElementById('commission-cap').disabled = fixed;
+}
+
+function commissionTerms() {
+  var currency = COUNTRY_DATA[valueOf('country')].currency;
+  if (valueOf('commission-basis') === 'fixed') {
+    return currency + ' ' + valueOf('commission-fixed') + ' per completed transaction';
+  }
+  var cap = Number(valueOf('commission-cap'));
+  return valueOf('commission-pct') + '% of transaction value' +
+    (cap > 0 ? ' (cap ' + currency + ' ' + cap + ' per transaction)' : '');
+}
+
 function calcCommission(txnSize, commissionPct, commissionCap) {
   var raw = txnSize * (commissionPct / 100);
   if (commissionCap > 0) raw = Math.min(raw, commissionCap);
@@ -406,6 +435,8 @@ function calculate() {
   var avgTxnSize = parseFloat(document.getElementById('avg-txn-size').value)||0;
   var failedRate = parseFloat(document.getElementById('failed-rate').value)||0;
   var opDays = parseFloat(document.getElementById('operating-days').value)||0;
+  var fixedBasis = document.getElementById('commission-basis').value === 'fixed';
+  var fixedCommission = Number(document.getElementById('commission-fixed').value);
   var commissionPct = parseFloat(document.getElementById('commission-pct').value)||0;
   var commissionCap = parseFloat(document.getElementById('commission-cap').value)||0;
   var deviceCost = parseFloat(document.getElementById('device-cost').value)||0;
@@ -414,7 +445,7 @@ function calculate() {
   var otherCosts = parseFloat(document.getElementById('other-monthly-costs').value)||0;
   var inputStatus = document.getElementById('pos-input-status');
 
-  if (!provName.trim() || dailyTxns <= 0 || avgTxnSize <= 0 || opDays <= 0 || opDays > 31 || commissionPct <= 0 || commissionPct > 100 || failedRate < 0 || failedRate >= 100 || commissionCap < 0 || deviceCost < 0 || floatCapital < 0 || monthlyRent < 0 || otherCosts < 0) {
+  if (!provName.trim() || dailyTxns <= 0 || avgTxnSize <= 0 || opDays <= 0 || opDays > 31 || (fixedBasis ? !Number.isFinite(fixedCommission) || fixedCommission <= 0 : commissionPct <= 0 || commissionPct > 100 || commissionCap < 0) || failedRate < 0 || failedRate >= 100 || deviceCost < 0 || floatCapital < 0 || monthlyRent < 0 || otherCosts < 0) {
     inputStatus.textContent = 'Enter a provider label, positive transactions, value, days and commission, a failure rate below 100%, and non-negative costs.';
     document.getElementById('results-section').style.display = 'none';
     return;
@@ -422,7 +453,7 @@ function calculate() {
   inputStatus.textContent = '';
 
   var effectiveDailyTxns = dailyTxns * (1 - failedRate / 100);
-  var commPerTxn = calcCommission(avgTxnSize, commissionPct, commissionCap);
+  var commPerTxn = fixedBasis ? fixedCommission : calcCommission(avgTxnSize, commissionPct, commissionCap);
   var dailyRev = commPerTxn * effectiveDailyTxns;
   var monthlyRev = dailyRev * opDays;
   var monthlyCosts = monthlyRent + otherCosts;
@@ -446,8 +477,7 @@ function calculate() {
   var totalDailyVol = effectiveDailyTxns * avgTxnSize;
   document.getElementById('txn-volume-note').textContent =
     "Daily transaction volume: " + sym + totalDailyVol.toLocaleString('en-NG') + " across ~" +
-    Math.round(effectiveDailyTxns) + " completed transactions after a " + failedRate.toFixed(1) + "% failure/reversal assumption, at " + commissionPct + "% commission" +
-    (commissionCap > 0 ? " (capped at " + sym + commissionCap + "/txn)" : "");
+    Math.round(effectiveDailyTxns) + " completed transactions after a " + failedRate.toFixed(1) + "% failure/reversal assumption, at " + commissionTerms() + ".";
 
   posResultSignature = posInputSignature();
   document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -455,6 +485,8 @@ function calculate() {
 
 document.addEventListener('DOMContentLoaded', function() {
   updateCurrency();
+  updateCommissionFields();
+  document.getElementById('commission-basis').addEventListener('change', updateCommissionFields);
   POS_INPUT_IDS.forEach(function(id){
     var input = document.getElementById(id);
     function changed(){ if (posResultSignature !== null) invalidatePosResult('Inputs changed. Calculate Profitability again to update the result and summary.'); }
@@ -478,7 +510,7 @@ function copyToolSummary(text, statusId){
 function fallbackCopy(text){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
 function downloadToolSummary(text, filename, statusId){ var blob=new Blob([text],{type:'text/plain;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(a.href);},500); var s=document.getElementById(statusId); if(s) s.textContent='TXT summary downloaded.'; }
 
-function buildPosAgentSummary(){ return buildToolSummary('POS agent profitability summary', ['Country: '+valueOf('country'), 'Currency: '+COUNTRY_DATA[valueOf('country')].currency, 'Provider / evidence label: '+valueOf('provider'), 'Commission: '+valueOf('commission-pct')+'%', 'Commission cap: '+(valueOf('commission-cap')||'0')+((parseFloat(valueOf('commission-cap'))||0)===0?' (no cap)':''), 'Daily attempted transactions: '+valueOf('daily-txns'), 'Failure/reversal assumption: '+valueOf('failed-rate')+'%', 'Average transaction size: '+valueOf('avg-txn-size'), 'Operating days per month: '+valueOf('operating-days'), 'Device / setup cost: '+(valueOf('device-cost')||'0'), 'Float / working capital: '+(valueOf('float-capital')||'0'), 'Monthly rent: '+(valueOf('monthly-rent')||'0'), 'Other monthly costs: '+(valueOf('other-monthly-costs')||'0'), 'Monthly net profit: '+textOf('monthly-profit'), 'Daily commission revenue: '+textOf('daily-rev'), 'Monthly commission revenue: '+textOf('monthly-rev'), 'Monthly costs: '+textOf('monthly-costs'), 'Profit margin: '+textOf('profit-margin'), 'Monthly return on setup + float: '+textOf('roi-setup'), 'Capital payback: '+textOf('breakeven-days'), 'Note: planning estimate only; verify written provider terms, reversals, settlement, float and observed completed transactions.']); }
+function buildPosAgentSummary(){ return buildToolSummary('POS agent profitability summary', ['Country: '+valueOf('country'), 'Currency: '+COUNTRY_DATA[valueOf('country')].currency, 'Provider / evidence label: '+valueOf('provider'), 'Commission: '+commissionTerms(), 'Daily attempted transactions: '+valueOf('daily-txns'), 'Failure/reversal assumption: '+valueOf('failed-rate')+'%', 'Average transaction size: '+valueOf('avg-txn-size'), 'Operating days per month: '+valueOf('operating-days'), 'Device / setup cost: '+(valueOf('device-cost')||'0'), 'Float / working capital: '+(valueOf('float-capital')||'0'), 'Monthly rent: '+(valueOf('monthly-rent')||'0'), 'Other monthly costs: '+(valueOf('other-monthly-costs')||'0'), 'Monthly net profit: '+textOf('monthly-profit'), 'Daily commission revenue: '+textOf('daily-rev'), 'Monthly commission revenue: '+textOf('monthly-rev'), 'Monthly costs: '+textOf('monthly-costs'), 'Profit margin: '+textOf('profit-margin'), 'Monthly return on setup + float: '+textOf('roi-setup'), 'Capital payback: '+textOf('breakeven-days'), 'Note: planning estimate only; verify written provider terms, reversals, settlement, float and observed completed transactions.']); }
 function copyPosAgentSummary(){ if(!requireCurrentPosResult()) return; copyToolSummary(buildPosAgentSummary(),'pos-summary-status'); }
 function downloadPosAgentSummary(){ if(!requireCurrentPosResult()) return; downloadToolSummary(buildPosAgentSummary(),'pos-agent-summary.txt','pos-summary-status'); }
 
