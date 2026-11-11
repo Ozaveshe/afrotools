@@ -3099,6 +3099,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function mergeAIHeroResult(results, q) {
+      var first = results[0];
+      if (first && normalizeSearchText(first.t.id) === normalizeSearchText(q)) return results;
       var routed = buildAIHeroResult(q);
       if (!routed) return results;
       var routedKey = normalizeSearchHref(routed.t.href) || normalizeSearchText(routed.t.id || routed.t.name);

@@ -27,3 +27,19 @@ test('non-finder fuel tools do not receive price-finder aliases',()=>{
 test('locale filtering and href deduplication remain in actual search',()=>{
  const tools=Array.from(ctx.homepageSearchTools());assert.ok(tools.length>100);assert.equal(tools.some(t=>/^\/(fr|sw|ha|yo)\//.test(t.href)),false);const hrefs=tools.map(t=>ctx.normalizeSearchHref(t.href));assert.equal(new Set(hrefs).size,hrefs.length);
 });
+
+test('an exact leading tool stays first after the AI router is available',()=>{
+ const start=html.indexOf('    function mergeAIHeroResult(');
+ const end=html.indexOf('    function navigate(',start);
+ assert.ok(start>=0&&end>start);
+ const original=ranked('fuel cost').map(row=>({t:{id:row.id,href:row.href},s:row.score}));
+ const routed={t:{id:'fuel-tracker',href:'/tools/fuel-tracker/'},s:10090};
+ let calls=0;
+ ctx.buildAIHeroResult=()=>{calls++;return routed;};
+ vm.runInContext(html.slice(start,end),ctx);
+ assert.equal(ctx.mergeAIHeroResult(original,'fuel cost')[0].t.id,'fuel-cost');
+ assert.equal(calls,0);
+ const descriptive=ranked('fuel prices Kenya').map(row=>({t:{id:row.id,href:row.href},s:row.score}));
+ assert.equal(ctx.mergeAIHeroResult(descriptive,'fuel prices Kenya')[0],routed);
+ assert.equal(calls,1);
+});

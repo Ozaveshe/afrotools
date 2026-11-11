@@ -167,6 +167,7 @@ function buildScholarshipMetadata(items, meta, now) {
     total_loaded: list.length,
     scholarships_added_count: list.length,
     added_today_count: counts.addedToday,
+    // Legacy opportunity count includes open, upcoming and variable rows. Use summary.open for applications open now.
     open_count: counts.open,
     closing_soon_count: counts.closingSoon,
     verified_today_count: counts.verifiedToday,
