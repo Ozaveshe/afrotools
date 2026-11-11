@@ -17,6 +17,7 @@ const matrix = [
   ["5 kVA generator consumption for 4.5 hours daily in Ghana", "generator-fuel", "/tools/generator-fuel/"],
   ["Solar payback for a Nigeria home with a monthly electricity bill of 120000 NGN", "solar-roi", "/tools/solar-roi/nigeria/"],
   ["solar ROI and generator backup costs in Nigeria", "solar-roi", "/tools/solar-roi/nigeria/"],
+  ["Compare solar vs generator costs for a Lagos shop", "solar-roi", "/tools/solar-roi/nigeria/"],
   ["Compare sola na jenereta Kenya", "solar-vs-generator", "/tools/solar-vs-generator/"],
   ["bajeti ya kuishi Kenya", "cost-of-living", "/tools/cost-of-living/"],
 ];
@@ -97,16 +98,24 @@ assert.match(block,/storeAndOpen\("generator-fuel"/);assert.doesNotMatch(block,/
 console.log("Energy discovery: 10 actual router/runtime identities, extracted hours/size, live-selector delayed prefill, user-edit preservation, unsupported/step bounds and solar control passed.");
 
 const fuelBuilder=require("../scripts/build-fuel-market-locales.js");
+const core=require("../assets/js/bundles/manifest.json").core;
+assert.ok(core.files.includes("assets/js/ai/prefill-adapters.js"));
+assert.ok(core.files.includes("assets/js/ai/prefill-consumer.js"));
+const bundle=fs.readFileSync(path.join(__dirname,"..",core.path.slice(1)),"utf8");
+assert.match(bundle,/AfroToolsAIPrefillAdapters/);
+assert.match(bundle,/afrotools-ai-prefill-notice/);
+
+function assertDestinationPrefill(html) {
+  if (html.includes('src="'+core.path+'" defer')) return;
+  assert.match(html,/src="\/assets\/js\/ai\/prefill-adapters\.js(?:\?v=[a-f0-9]{8})?" defer/);
+  assert.match(html,/src="\/assets\/js\/ai\/prefill-consumer\.js(?:\?v=[a-f0-9]{8})?" defer/);
+}
 for (const owner of ["tools/fuel-tracker/index.html","tools/generator-fuel/index.html"]) {
   const html=fs.readFileSync(path.join(__dirname,"..",owner),"utf8");
-  assert.match(html, /src="\/assets\/js\/ai\/prefill-adapters\.js" defer/);
-  assert.match(html, /src="\/assets\/js\/ai\/prefill-consumer\.js" defer/);
-  if(owner.includes("fuel-tracker")) {
-    const rebuilt=fuelBuilder.build(html,"en");
-    assert.match(rebuilt,/src="\/assets\/js\/ai\/prefill-consumer\.js" defer/);
-  }
+  assertDestinationPrefill(html);
+  if (owner.includes("fuel-tracker")) assertDestinationPrefill(fuelBuilder.build(html,"en"));
 }
-console.log("Destination sources load real prefill modules; maintained fuel transformation preserves them.");
+console.log("Fuel destinations load the prefill modules through the reviewed core bundle or standalone scripts.");
 
 const solarCountries=require("../data/energy/solar-roi-country-dataset.js").countries;
 for (const country of Object.values(solarCountries)) {
