@@ -71,4 +71,13 @@ assert.strictEqual(api._private.buildScholarshipMetadata([chevening], {}, atCuto
   'closed exact deadlines must not remain in the closing-soon count');
 assert.strictEqual(api._private.buildScholarshipSummary([chevening], {}, atCutoff).closed, 1);
 
+const publicOpportunities = [
+  chevening,
+  { status: 'upcoming', deadline_date: '2026-12-01' },
+  { status: 'variable', deadline_confidence: 'no_single_public_deadline' },
+  { status: 'closed', deadline_date: '2026-01-01' }
+];
+assert.strictEqual(api._private.buildScholarshipMetadata(publicOpportunities, {}, justBefore).open_count, 3);
+assert.strictEqual(api._private.buildScholarshipSummary(publicOpportunities, {}, justBefore).open, 1);
+
 console.log('Scholarship API metadata contract verified.');

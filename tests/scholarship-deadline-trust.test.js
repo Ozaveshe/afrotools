@@ -245,4 +245,21 @@ assert.strictEqual(icgebArturo.status, 'closed', 'ICGEB Arturo must close after 
 const icgebAicad = deadlineOverrides.overrides['icgeb-aicad-short-term-postdoctoral-fellowships-september-2026'];
 assert.strictEqual(icgebAicad.status, 'closed', 'ICGEB-AICAD must close after the public expression-of-interest stage');
 
+const esopOverride = deadlineOverrides.overrides['eth-excellence-scholarship'];
+const esopMirrorRow = {
+  slug: 'eth-excellence-scholarship', title: 'ETH Zurich Excellence Scholarship',
+  status: 'upcoming', deadline_date: esopOverride.deadline_date
+};
+const otherUpcomingRow = {
+  slug: 'synthetic-upcoming', title: 'Synthetic upcoming scholarship',
+  status: 'upcoming', deadline_date: '2027-01-01'
+};
+const esopOpening = Date.parse(esopOverride.application_opens_at);
+const deadlineRows = [otherUpcomingRow, esopMirrorRow];
+const listStatuses = time => scholarshipPlatform.buildLegacyScholarships(deadlineRows, new Date(time)).map(row => row.status);
+assert.deepStrictEqual(listStatuses(esopOpening - 1), ['upcoming', 'upcoming']);
+assert.deepStrictEqual(listStatuses(esopOpening), ['upcoming', 'open']);
+assert.deepStrictEqual(listStatuses('2026-11-30T18:00:00Z'), ['upcoming', 'open']);
+assert.deepStrictEqual(listStatuses('2026-12-01T00:00:00Z'), ['upcoming', 'closed']);
+
 console.log('Scholarship deadline trust model verified.');

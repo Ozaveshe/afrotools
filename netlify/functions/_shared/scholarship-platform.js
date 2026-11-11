@@ -800,6 +800,10 @@ function buildLegacyScholarship(row, now = new Date()) {
   };
 }
 
+function buildLegacyScholarships(rows, now = new Date()) {
+  return rows.map(row => buildLegacyScholarship(row, now));
+}
+
 function filterScholarships(scholarships, params) {
   let results = Array.isArray(scholarships) ? scholarships.slice() : [];
 
@@ -1451,7 +1455,7 @@ async function syncScholarshipMirror(options) {
   }
 
   const rows = await fetchMirrorRows(client);
-  const scholarships = rows.map(buildLegacyScholarship);
+  const scholarships = buildLegacyScholarships(rows);
   const meta = buildFeedMeta(rows, {
     mode: finalMode || null,
     lastCheckedAt: new Date().toISOString(),
@@ -1757,7 +1761,7 @@ async function loadScholarshipFeed(options) {
           return await syncScholarshipMirror({ client: client });
         } catch (error) {
           if (rows.length) {
-            const scholarships = rows.map(buildLegacyScholarship);
+            const scholarships = buildLegacyScholarships(rows);
             const meta = buildFeedMeta(rows, {
               mode: 'cached',
               error: error.message
@@ -1769,7 +1773,7 @@ async function loadScholarshipFeed(options) {
       }
 
       if (rows.length) {
-        const scholarships = rows.map(buildLegacyScholarship);
+        const scholarships = buildLegacyScholarships(rows);
         const meta = buildFeedMeta(rows, {});
         await writeFeedCache(scholarships, meta);
         return { scholarships: scholarships, rows: rows, meta: meta };
@@ -2230,6 +2234,7 @@ module.exports = {
   SOURCE_KEYS,
   buildFeedMeta,
   buildLegacyScholarship,
+  buildLegacyScholarships,
   normalizeDeadlineStatus,
   buildScholarshipSourceSnapshot,
   buildReminderSchedule,
