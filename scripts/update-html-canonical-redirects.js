@@ -17,12 +17,10 @@ const PRIORITY_END_MARKER = "# END AUTO FRENCH CALCULATOR HTML ALIASES";
 const PRIORITY_INSERT_BEFORE = "# French fallback redirects";
 // These reviewed aliases must precede the broad French-to-English fallback.
 // A later forced rule cannot override an earlier matching non-forced rule.
-const PRIORITY_SOURCES = new Set([
-  "/fr/cape-verde/cv-paye.html",
-  "/fr/cape-verde/cv-vat.html",
-  "/fr/cote-divoire/ci-paye.html",
-  "/fr/eq-guinea/gq-paye.html",
-  "/fr/eq-guinea/gq-vat.html",
+const FRENCH_FALLBACK_ALIAS = /^\/fr\/[^/]+\/[^/]+\.html$/i;
+const VERIFIED_TRAILING_SLASH_TARGETS = new Set([
+  "/fr/burundi/calculateur-salaire-net",
+  "/fr/centrafrique/calculateur-salaire-net",
 ]);
 const EOL = "\n";
 const FORBIDDEN_GENERATED_ROUTE_PATTERNS = [
@@ -97,13 +95,17 @@ const aliases = buildCanonicalAliasMap().map((alias) => ({
   ...alias,
   target: routeContract.resolveFinalRoute(routeGraph, alias.target).finalRoute,
 }));
-const priorityAliases = aliases.filter((alias) => PRIORITY_SOURCES.has(alias.source));
-if (!stripGenerated.includes(PRIORITY_INSERT_BEFORE) || priorityAliases.length !== PRIORITY_SOURCES.size ||
-    priorityAliases.some((alias) => existingSources.has(alias.source) || !alias.target.startsWith("/fr/"))) {
+const priorityAliases = aliases
+  .filter(({ source, target }) => FRENCH_FALLBACK_ALIAS.test(source) && target.startsWith("/fr/") && !existingSources.has(source))
+  .map((alias) => VERIFIED_TRAILING_SLASH_TARGETS.has(alias.target)
+    ? { ...alias, target: `${alias.target}/` }
+    : alias);
+if (!stripGenerated.includes(PRIORITY_INSERT_BEFORE) || priorityAliases.length === 0) {
   throw new Error("Review French calculator alias ownership and fallback anchor before regeneration");
 }
+const prioritySources = new Set(priorityAliases.map(({ source }) => source));
 const priority = buildBlock(eol, priorityAliases, existingSources, PRIORITY_START_MARKER, PRIORITY_END_MARKER);
-const { block, count } = buildBlock(eol, aliases.filter((alias) => !PRIORITY_SOURCES.has(alias.source)), existingSources);
+const { block, count } = buildBlock(eol, aliases.filter(({ source }) => !prioritySources.has(source)), existingSources);
 
 let next;
 if (stripGenerated.includes(INSERT_BEFORE)) {
