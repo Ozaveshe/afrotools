@@ -49,7 +49,7 @@ test.describe('Day 7 Government & Civic serial workflow proof', () => {
       country: 'GH',
       task: 'child',
       summary: 'Ghana - Child or caregiver support',
-      officialUrl: 'https://www.mogcsp.gov.gh/',
+      officialUrl: 'https://leap.mogcsp.gov.gh/faq.php',
       boundary: 'No eligibility, benefit, priority, payment, or approval verdict'
     }
   ];
@@ -269,9 +269,8 @@ test.describe('Day 7 Government & Civic serial workflow proof', () => {
     await page.goto('/tools/africa-election-tracker/', { waitUntil: 'domcontentloaded' });
 
     await expect(page.locator('#ledgerMeta')).toContainText(
-      /Generated .* (?:within \d+-day review cadence|review overdue by \d+ days)/
+      /Generated .* \/ [1-9]\d* records \/ (?:within \d+-day review cadence|review overdue by \d+ days)/
     );
-    await expect(page.locator('#metricRecords')).not.toHaveText('0');
     await page.locator('#findElection summary').click();
     await page.locator('#sourceFilter').selectOption('official');
     await expect(page.locator('#electionList .et-pill-official').first()).toContainText('Official source');

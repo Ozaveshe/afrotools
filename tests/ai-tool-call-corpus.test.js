@@ -15,6 +15,10 @@ assert.deepStrictEqual(result.errors, [], "generated AI tool-call corpus should 
 
 const manifest = manifestApi.getToolManifestForRouter();
 const manifestIds = new Set(manifest.map((entry) => entry.id));
+const searchFallback = require("../assets/js/ai/intent-router.js").getSearchFallback();
+assert.ok(!manifestIds.has(searchFallback.id), "internal search fallback must stay outside the public tool catalog");
+assert.deepStrictEqual(searchFallback.aiCapabilities, ["route_only"]);
+manifestIds.add(searchFallback.id);
 const fixtures = evalRunner.loadFixtures();
 
 assert.ok(result.records.length >= fixtures.length + promptExamples.PROMPT_EXAMPLES.length, "corpus should include routing fixtures and prompt examples");
@@ -45,6 +49,13 @@ for (const record of result.records) {
   assert.strictEqual(record.expected.toolCall.type, "existing_tool_call");
   assert.strictEqual(record.expected.toolCall.toolId, record.expected.selectedToolId);
   assert.ok(record.expected.toolCall.route.startsWith("/"));
+  if (record.expected.selectedToolId === searchFallback.id) {
+    assert.strictEqual(record.expected.selectedRoute, searchFallback.route);
+    assert.strictEqual(record.expected.toolCall.route, searchFallback.route);
+    assert.strictEqual(record.expected.toolCall.invocationMode, "route_only");
+    assert.strictEqual(record.expected.toolCall.canPrefill, false);
+    assert.deepStrictEqual(record.expected.extractedInputKeys, []);
+  }
   const execution = invocationRuntime.buildExecution({
     toolId: record.expected.selectedToolId,
     selectedRoute: record.expected.selectedRoute,
