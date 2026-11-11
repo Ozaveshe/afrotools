@@ -6,9 +6,9 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11561 |
+| Public pages | 11557 |
 | Indexable pages | 7876 |
-| Permanent and temporary redirects | 3123 |
+| Permanent and temporary redirects | 3127 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
@@ -20,7 +20,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Locale Coverage
 
 - en: 6150 page records
-- fr: 3662 page records
+- fr: 3658 page records
 - ha: 106 page records
 - sw: 1597 page records
 - yo: 46 page records
@@ -31,7 +31,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - article: 546
 - auth: 3
 - category: 695
-- country-tool: 514
+- country-tool: 510
 - legal: 4
 - page: 5407
 - tool: 4010
@@ -1520,7 +1520,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/api/pricing.html` -> `/fr/api/pricing` (301, owner: _redirects)
 - `/fr/benin/bj-paye` -> `/fr/benin/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/benin/bj-paye.html` -> `/fr/benin/calculateur-salaire-net/` (301, owner: _redirects)
-- `/fr/benin/bj-vat.html` -> `/fr/benin/bj-vat` (301, owner: _redirects)
+- `/fr/benin/bj-vat` -> `/fr/benin/calculateur-tva` (301, owner: _redirects)
+- `/fr/benin/bj-vat.html` -> `/fr/benin/calculateur-tva` (301, owner: _redirects)
 - `/fr/benin/calculateur-tva.html` -> `/fr/benin/calculateur-tva` (301, owner: _redirects)
 - `/fr/blog/bareme-irpp-cote-divoire.html` -> `/blog/bareme-irpp-cote-divoire/` (301, owner: data/registry/route-policy.json)
 - `/fr/blog/bareme-irpp-cote-divoire/` -> `/blog/bareme-irpp-cote-divoire/` (301, owner: data/registry/route-policy.json)
@@ -1579,7 +1580,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/chad/` -> `/fr/tchad/` (301, owner: _redirects)
 - `/fr/chad/td-paye` -> `/fr/tchad/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/chad/td-paye.html` -> `/fr/tchad/calculateur-salaire-net/` (301, owner: _redirects)
-- `/fr/chad/td-vat.html` -> `/fr/chad/td-vat` (301, owner: _redirects)
+- `/fr/chad/td-vat` -> `/fr/tchad/calculateur-tva` (301, owner: _redirects)
+- `/fr/chad/td-vat.html` -> `/fr/tchad/calculateur-tva` (301, owner: _redirects)
 - `/fr/comores/calculateur-tva.html` -> `/fr/comores/calculateur-tva` (301, owner: _redirects)
 - `/fr/comoros/` -> `/fr/comores/` (301, owner: _redirects)
 - `/fr/comoros/km-paye` -> `/fr/comores/calculateur-salaire-net/` (301, owner: _redirects)
@@ -1659,7 +1661,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/madagascar/calculateur-tva.html` -> `/fr/madagascar/calculateur-tva` (301, owner: _redirects)
 - `/fr/madagascar/mg-paye` -> `/fr/madagascar/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/madagascar/mg-paye.html` -> `/fr/madagascar/calculateur-salaire-net/` (301, owner: _redirects)
-- `/fr/madagascar/mg-vat.html` -> `/fr/madagascar/mg-vat` (301, owner: _redirects)
+- `/fr/madagascar/mg-vat` -> `/fr/madagascar/calculateur-tva` (301, owner: _redirects)
+- `/fr/madagascar/mg-vat.html` -> `/fr/madagascar/calculateur-tva` (301, owner: _redirects)
 - `/fr/malawi/mw-paye.html` -> `/fr/malawi/mw-paye` (301, owner: _redirects)
 - `/fr/malawi/mw-vat.html` -> `/fr/malawi/mw-vat` (301, owner: _redirects)
 - `/fr/mali/calculateur-salaire-net.html` -> `/fr/mali/calculateur-salaire-net` (301, owner: _redirects)
@@ -1675,7 +1678,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/mauritania/` -> `/fr/mauritanie/` (301, owner: _redirects)
 - `/fr/mauritania/mr-paye` -> `/fr/mauritanie/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/mauritania/mr-paye.html` -> `/fr/mauritanie/calculateur-salaire-net/` (301, owner: _redirects)
-- `/fr/mauritania/mr-vat.html` -> `/fr/mauritania/mr-vat` (301, owner: _redirects)
+- `/fr/mauritania/mr-vat` -> `/fr/mauritanie/calculateur-tva` (301, owner: _redirects)
+- `/fr/mauritania/mr-vat.html` -> `/fr/mauritanie/calculateur-tva` (301, owner: _redirects)
 - `/fr/mauritanie/calculateur-tva.html` -> `/fr/mauritanie/calculateur-tva` (301, owner: _redirects)
 - `/fr/mauritius/mu-paye.html` -> `/fr/mauritius/mu-paye` (301, owner: _redirects)
 - `/fr/mauritius/mu-vat.html` -> `/fr/mauritius/mu-vat` (301, owner: _redirects)
@@ -7903,15 +7907,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/cape-verde` -> `/fr/cabo-verde/` (_redirects:1401)
 - `/fr/comoros` -> `/fr/comores/` (_redirects:1403)
 - `/fr/mauritania` -> `/fr/mauritanie/` (_redirects:1405)
-- `/tools/rent-own-abroad` -> `/tools/rent-vs-buy/` (_redirects:1577)
-- `/tools/property-transfert-cost` -> `/tools/property-transfer-cost/` (_redirects:1579)
-- `/tools/ielts-toefl-converter` -> `/tools/ielts-calculator/` (_redirects:1581)
-- `/tools/oil-production` -> `/tools/oil-well-production/` (_redirects:1583)
-- `/tools/label-branding-cost` -> `/tools/made-in-africa-label/` (_redirects:1585)
-- `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:1587)
-- `/tools/return-migration` -> `/diaspora/` (_redirects:1589)
-- `/tools/double-taxation` -> `/salary-tax/` (_redirects:1591)
-- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3997)
+- `/tools/rent-own-abroad` -> `/tools/rent-vs-buy/` (_redirects:1583)
+- `/tools/property-transfert-cost` -> `/tools/property-transfer-cost/` (_redirects:1585)
+- `/tools/ielts-toefl-converter` -> `/tools/ielts-calculator/` (_redirects:1587)
+- `/tools/oil-production` -> `/tools/oil-well-production/` (_redirects:1589)
+- `/tools/label-branding-cost` -> `/tools/made-in-africa-label/` (_redirects:1591)
+- `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:1593)
+- `/tools/return-migration` -> `/diaspora/` (_redirects:1595)
+- `/tools/double-taxation` -> `/salary-tax/` (_redirects:1597)
+- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:4003)
 - `/admin` -> `/404.html` (netlify.toml:178)
 - `/admin/` -> `/404.html` (netlify.toml:184)
 - `/afrotools-mission-control` -> `/404.html` (netlify.toml:196)

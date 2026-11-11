@@ -511,7 +511,7 @@
         fuelType: normalized.fuelType || "petrol",
       }),
       solarRoute: normalized.countrySlug || normalized.country ? (countryData.slug ? "/tools/solar-roi/" + countryData.slug + "/" : "/tools/solar-roi/") : "/tools/solar-roi/",
-      generatorRoute: "/tools/fuel-tracker/#generator-cost",
+      generatorRoute: "/tools/generator-fuel/",
       generatorFuelRoute: generatorFuelRoute(countryData),
       decisionBriefText: briefLines.join("\n"),
     };
@@ -558,7 +558,7 @@
       '</div>' +
       '<div class="ai-energy-actions">' +
       '<a class="ai-small-button primary" href="' + escapeHtml(plan.solarRoute) + '" data-energy-solar-link>Open Solar ROI with prefill</a>' +
-      '<a class="ai-small-button" href="' + escapeHtml(plan.generatorRoute) + '" data-energy-generator-link>Open AfroFuel with prefill</a>' +
+      '<a class="ai-small-button" href="' + escapeHtml(plan.generatorRoute) + '" data-energy-generator-link>Open Generator Fuel with prefill</a>' +
       '<a class="ai-small-button" href="' + escapeHtml(plan.generatorFuelRoute) + '">Open generator calculator</a>' +
       '<button class="ai-small-button secondary" type="button" data-workflow-export="pdf" data-workflow-export-kind="energy" aria-label="Export energy advisor PDF brief">PDF brief</button>' +
       '<button class="ai-small-button secondary" type="button" data-workflow-export="copy" data-workflow-export-kind="energy" aria-label="Copy energy advisor checklist">Copy checklist</button>' +

@@ -5,6 +5,7 @@ const path = require("path");
 
 const evalRunner = require("./evaluate-ai-routing.js");
 const manifestApi = require("../assets/js/ai/tool-manifest.js");
+const router = require("../assets/js/ai/intent-router.js");
 const promptExamples = require("../assets/js/ai/example-registry.js");
 const promptRegistry = require("../assets/js/ai/prompt-registry.js");
 const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
@@ -21,8 +22,10 @@ function manifestById(manifest) {
   return new Map(manifest.map((entry) => [entry.id, entry]));
 }
 
-function selectedTool(manifestMap, id) {
-  return manifestMap.get(id) || manifestMap.get("tool-search");
+function selectedTool(manifestMap, id, sourceId) {
+  const tool = manifestMap.get(id);
+  if (!tool) throw new Error(sourceId + " references unknown tool " + id);
+  return tool;
 }
 
 function compactExpected(decision, tool, sourceId) {
@@ -77,7 +80,7 @@ function trainingRecord(id, source, split, promptText, expected, promptMeta) {
 function fromRoutingFixtures(fixtures, manifestMap, promptMeta) {
   return fixtures.map((fixture) => {
     const expected = fixture.expected || {};
-    const tool = selectedTool(manifestMap, expected.selectedToolId);
+    const tool = selectedTool(manifestMap, expected.selectedToolId, fixture.id);
     return trainingRecord(
       "routing-fixture:" + fixture.id,
       "routing_eval_fixture",
@@ -91,7 +94,7 @@ function fromRoutingFixtures(fixtures, manifestMap, promptMeta) {
 
 function fromPromptExamples(examples, manifestMap, promptMeta) {
   return examples.map((example) => {
-    const tool = selectedTool(manifestMap, example.expectedToolId);
+    const tool = selectedTool(manifestMap, example.expectedToolId, example.id);
     return trainingRecord(
       "prompt-example:" + example.id,
       "prompt_example_registry",
@@ -161,13 +164,15 @@ function summarize(records) {
 function buildCorpus() {
   const manifest = manifestApi.getToolManifestForRouter();
   const manifestMap = manifestById(manifest);
+  const fallback = router.getSearchFallback();
+  manifestMap.set(fallback.id, fallback);
   const promptMeta = promptRegistry.getProductionPrompt("router.classify-intent");
   const fixtures = evalRunner.loadFixtures();
   const fixtureErrors = evalRunner.validateFixtures(fixtures, manifest);
   if (fixtureErrors.length) throw new Error("Cannot generate corpus from invalid fixtures:\n" + fixtureErrors.join("\n"));
   const records = fromRoutingFixtures(fixtures, manifestMap, promptMeta)
     .concat(fromPromptExamples(promptExamples.PROMPT_EXAMPLES, manifestMap, promptMeta));
-  const manifestIds = new Set(manifest.map((entry) => entry.id));
+  const manifestIds = new Set(manifestMap.keys());
   const errors = [];
   const ids = new Set();
   records.forEach((record) => {

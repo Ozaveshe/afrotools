@@ -1,6 +1,6 @@
 # Image library audit
 
-Generated 2026-10-22T17:18:51.779Z. Repository proof only; no deployment.
+Generated 2026-11-11T15:43:58.243Z. Repository proof only; no deployment.
 
 - images: 3195
 - placed: 2484

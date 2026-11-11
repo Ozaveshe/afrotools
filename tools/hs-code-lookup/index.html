@@ -65,7 +65,7 @@
 .autocomplete-list.open { display: block; }
 .ac-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #F1F5F9; }
 .ac-item:last-child { border-bottom: none; }
-.ac-item:hover { background: #F4F7FA; }
+.ac-item:hover, .ac-item[aria-selected="true"] { background: #F4F7FA; }
 .ac-code { font-size: 0.72rem; font-weight: 700; color: var(--color-primary,#0062CC); font-family: monospace; margin-right: 8px; }
 .ac-desc { font-size: 0.82rem; color: #0f172a; }
 .ac-chapter { font-size: 0.68rem; color: #94A3B8; margin-top: 2px; }
@@ -157,7 +157,7 @@
   .card-title { color: #93A5BE; }
   .search-input,.f-input { background: #111D30; color: #E2E8F0; border-color: #1E2D40; }
   .ac-item { background: #131D2E; border-color: #1E2D40; }
-  .ac-item:hover { background: #1E2D40; }
+  .ac-item:hover, .ac-item[aria-selected="true"] { background: #1E2D40; }
   .duty-table td,.duty-table th { color: #CBD5E1; }
   .duty-table tr:hover td { background: #1E293B; }
   .duty-table tr.lowest td { background: #172554; }
@@ -198,7 +198,7 @@
 
 <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
 <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
-<script src="/assets/js/bundles/core.1254bf4a.min.js" defer></script>
+<script src="/assets/js/bundles/core.25fd2009.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -260,8 +260,8 @@
         <div class="card-body">
           <div class="search-wrap">
             <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input aria-label="Search product name or HS code" type="text" id="searchInput" class="search-input" placeholder="Search product name or HS code..." autocomplete="off" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
-            <div class="autocomplete-list" id="acList"></div>
+            <input aria-label="Search product name or HS code" type="text" id="searchInput" role="combobox" aria-autocomplete="list" aria-controls="acList" aria-expanded="false" class="search-input" placeholder="Search product name or HS code..." autocomplete="off" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
+            <div class="autocomplete-list" id="acList" role="listbox" aria-label="HS code suggestions"></div>
           </div>
           <div id="searchHint" style="font-size:0.8rem;color:#94A3B8;margin-top:4px">Try: rice, smartphone, palm oil, vehicle, cement, fertiliser, laptop, clothing</div>
         </div>
@@ -511,7 +511,7 @@ function setTab(id, btn) {
 
 /* ── Search ── */
 function onSearch(val) {
-  clearTimeout(searchTimer);
+  closeAc();
   if (!val || val.trim().length < 2) {
     closeAc();
     return;
@@ -522,26 +522,64 @@ function onSearch(val) {
   }, 120);
 }
 
+var activeSuggestion = -1;
+
 function renderAc(results) {
   var list = document.getElementById('acList');
   if (!results.length) { closeAc(); return; }
+  setActiveSuggestion(-1);
   list.innerHTML = '';
-  results.forEach(function(item) {
+  results.forEach(function(item, index) {
     var div = document.createElement('div');
     div.className = 'ac-item';
+    div.id = 'hs-suggestion-' + index;
+    div.setAttribute('role', 'option');
+    div.setAttribute('aria-selected', 'false');
     div.innerHTML = '<span class="ac-code">' + item.code + '</span><span class="ac-desc">' + item.description + '</span><div class="ac-chapter">Ch.' + item.chapter + ' — ' + item.chapterTitle + '</div>';
     div.onclick = function() { selectCode(item); };
     list.appendChild(div);
   });
   list.classList.add('open');
+  document.getElementById('searchInput').setAttribute('aria-expanded', 'true');
+}
+
+function setActiveSuggestion(index) {
+  var input = document.getElementById('searchInput');
+  var options = document.getElementById('acList').children;
+  activeSuggestion = index;
+  Array.from(options).forEach(function(option, position) {
+    option.setAttribute('aria-selected', String(position === index));
+  });
+  if (index < 0) {
+    input.removeAttribute('aria-activedescendant');
+  } else {
+    input.setAttribute('aria-activedescendant', options[index].id);
+    options[index].scrollIntoView({ block: 'nearest' });
+  }
 }
 
 function closeAc() {
+  clearTimeout(searchTimer);
   document.getElementById('acList').classList.remove('open');
+  document.getElementById('searchInput').setAttribute('aria-expanded', 'false');
+  setActiveSuggestion(-1);
 }
 
 function onSearchKey(e) {
-  if (e.key === 'Escape') closeAc();
+  var list = document.getElementById('acList');
+  if (e.key === 'Escape' || e.key === 'Tab') closeAc();
+  if (list.classList.contains('open') && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    e.preventDefault();
+    var count = list.children.length;
+    var next = e.key === 'ArrowDown' ? activeSuggestion + 1 : (activeSuggestion < 0 ? count - 1 : activeSuggestion - 1);
+    setActiveSuggestion((next + count) % count);
+    return;
+  }
+  if (e.key === 'Enter' && activeSuggestion >= 0) {
+    e.preventDefault();
+    list.children[activeSuggestion].click();
+    return;
+  }
   if (e.key === 'Enter') {
     var val = document.getElementById('searchInput').value.trim();
     if (val) {

@@ -7,7 +7,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
 | fr | 161 | 2 | 312 |
-| sw | 138 | 1 | 336 |
+| sw | 137 | 2 | 336 |
 
 ## By surface class
 
@@ -20,7 +20,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
-| product-entry | 7 | 4 | 1 | 2 | 3 | 0 | 4 |
+| product-entry | 7 | 4 | 1 | 2 | 2 | 1 | 4 |
 | public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
 
 ## Gap Ledger
@@ -31,6 +31,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | / | home | sw | /sw/ | under-standard | form controls 5/7 |
 | /afrowork/ | product-entry | fr | — | missing | no localized route or owner file |
 | /afrowork/ | product-entry | sw | — | missing | no localized route or owner file |
+| /ai/ | product-entry | sw | /sw/ai/ | under-standard | visible content 61% of English |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/african-recipes/ | editorial | fr | — | missing | no localized route or owner file |
