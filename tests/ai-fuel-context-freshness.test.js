@@ -111,12 +111,12 @@ test('official qualifiers remain tied to source flags and package metadata', () 
   assert.equal(gate.sourceUrl, 'https://example.test/fuel/NG');
 });
 
-test('age display and planned market-record semantics are unchanged by snapshot-only rejection', () => {
+test('future market records stay unavailable while age display and fill arithmetic remain stable', () => {
   assert.equal(engine.ageDays('2026-10-16', NOW), 0);
   const planned = { fuel_type: 'petrol', price: 300, currency: 'NGN', unit: 'litre',
     source_url: 'https://example.test/planned', effective_date: '2026-10-16' };
-  assert.equal(engine.recordStatus(planned, NOW, 45).available, true);
-  // Market UI consumers independently reject future effective/verified dates.
+  assert.equal(engine.recordStatus(planned, NOW, 45).available, false);
+  assert.equal(engine.recordStatus({ ...planned, effective_date: '2026-10-15' }, NOW, 45).available, true);
   assert.equal(engine.calculateFillCost({ pricePerLitre: 300, mode: 'quantity', unit: 'litre', quantity: 2 }).totalCost, 600);
 });
 

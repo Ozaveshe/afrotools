@@ -497,7 +497,7 @@ test("server router success renders a workflow card", async ({ page }) => {
 
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("Scholarship Finder");
-  await expect(card).toContainText("AI-assisted match");
+  await expect(card).toContainText("Tool match");
   await expect(card).not.toContainText("server-side AfroTools router");
   await expect(card).toContainText("88% match");
   await expect(card).toContainText("Destination country");
@@ -955,7 +955,7 @@ test("import advisor opens car workspace with private session prefill", async ({
 test("energy advisor renders a decision brief and Solar ROI receives prefill", async ({ page }) => {
   await quietExternalNoise(page);
 
-  await page.goto("/ai/?q=Should%20I%20install%20solar%20for%20my%20shop%20in%20Lagos%20with%20monthly%20bill%20NGN%20120000%205kVA%20generator%206%20hours%20daily&router=off", { waitUntil: "domcontentloaded" });
+  await page.goto("/ai/?q=Should%20I%20install%20solar%20for%20my%20shop%20in%20Lagos%20with%20monthly%20bill%20NGN%20120000%20and%20a%205%20kW%20load%20with%20a%205%20kVA%20generator%206%20hours%20daily&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
   const details = await openWorkflowDetails(page);
@@ -964,7 +964,8 @@ test("energy advisor renders a decision brief and Solar ROI receives prefill", a
   await expect(details.locator("[data-energy-advisor]")).toContainText("Monthly generator cost");
   await expect(details.locator("[data-energy-advisor]")).toContainText("Questions to ask installer");
   await expect(details.locator("[data-energy-advisor]")).toContainText("Planning estimate only");
-  await expect(details.locator("[data-energy-advisor]")).toContainText("Open AfroFuel with prefill");
+  const generator = details.getByRole("link", { name: "Open Generator Fuel with prefill", exact: true });
+  await expect(generator).toHaveAttribute("href", /^\/tools\/generator-fuel\//);
   await expect(details.locator("[data-energy-advisor]")).toContainText("Open generator calculator");
   await expect(details.locator("[data-energy-advisor]")).toContainText("PDF brief");
   await expect(details.locator("[data-energy-advisor]")).toContainText("Copy checklist");
@@ -986,6 +987,13 @@ test("energy advisor renders a decision brief and Solar ROI receives prefill", a
   await expect(page.locator("#generatorSpend")).not.toHaveValue("12600");
   await expect(page.locator("#outageHours")).toHaveValue("6");
   await expect(page.locator("#systemKW")).toHaveValue("5");
+
+  await page.goto("/ai/?q=Should%20I%20install%20solar%20for%20my%20shop%20in%20Lagos%20with%20monthly%20bill%20NGN%20120000%20and%20a%205%20kW%20load%20with%20a%205%20kVA%20generator%206%20hours%20daily&router=off", { waitUntil: "domcontentloaded" });
+  const generatorDetails = await openWorkflowDetails(page);
+  await generatorDetails.getByRole("link", { name: "Open Generator Fuel with prefill", exact: true }).click();
+  await page.waitForURL(/\/tools\/generator-fuel\/.*prefill=1/);
+  await expect(page.locator("#gfKva")).toHaveValue("5");
+  await expect(page.locator("#gfHours")).toHaveValue("6");
 });
 
 test("SME finance assistant routes Kenya payroll into PAYE prefill", async ({ page }) => {
