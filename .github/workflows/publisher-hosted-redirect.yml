@@ -1,0 +1,69 @@
+{
+  "name": "AfroTools hosted redirect preparation",
+  "on": {
+    "create": null
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "prepare": {
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'automation/daily-5pm-publish-deploy-gate-20261111-hosted-redirect-claims'",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 75,
+      "env": {
+        "CONTEXT": "local",
+        "NETLIFY": "false",
+        "COMMIT_REF": "${{ github.sha }}"
+      },
+      "steps": [
+        {
+          "name": "Check out preparation commit",
+          "uses": "actions/checkout@v5",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Require build storage",
+          "shell": "bash",
+          "run": "available=$(df -PB1 \"$GITHUB_WORKSPACE\" | awk 'NR == 2 {print $4}')\nminimum=27917287424\nprintf 'Build filesystem available_bytes=%s minimum_bytes=%s\\n' \"$available\" \"$minimum\"\n[[ \"$available\" =~ ^[0-9]+$ ]] && (( available >= minimum ))"
+        },
+        {
+          "name": "Set up Node",
+          "uses": "actions/setup-node@v5",
+          "with": {
+            "node-version": "22"
+          }
+        },
+        {
+          "name": "Install dependencies",
+          "run": "npm ci"
+        },
+        {
+          "name": "Check fallback freshness and targeted routes",
+          "run": "npm run data:fallbacks:check\nnode --test tests/route-fallback.test.mjs\ngit diff --check"
+        },
+        {
+          "name": "Build and audit the deploy artifact",
+          "run": "npm run build:deploy\nnpm run build:checks\nnpm run security:scan\nnpm run audit:dist\nnode -e 'const f=require(\"node:fs\"); for (const p of [\".git\",\".github\",\".codex\",\".agents\",\"node_modules\",\"netlify\",\"scripts\",\"supabase\",\"tests\",\"docs\",\"reports\",\"audit-results\",\"artifacts\",\"test-results\",\"package.json\",\"package-lock.json\",\"AGENTS.md\",\".env\",\"data/registry\",\"data/automation\",\"data/image-generation\"]) if(f.existsSync(\"dist/\"+p)) throw Error(p)'"
+        },
+        {
+          "name": "Export reviewed redirect output",
+          "run": "out=\"$RUNNER_TEMP/publisher-prep\"\nmkdir -p \"$out\"\ngit diff --check HEAD\ngit diff --name-status HEAD > \"$out/changed-files.txt\"\ngit ls-files --others --exclude-standard > \"$out/untracked-paths.txt\"\ncp _redirects \"$out/_redirects\"\ngit rev-parse HEAD HEAD^{tree} > \"$out/preparation-identity.txt\"\n(cd \"$out\" && sha256sum _redirects changed-files.txt untracked-paths.txt preparation-identity.txt > SHA256SUMS)"
+        },
+        {
+          "name": "Upload small preparation artifact",
+          "uses": "actions/upload-artifact@v4",
+          "with": {
+            "name": "publisher-redirect-prep-${{ github.sha }}",
+            "path": "${{ runner.temp }}/publisher-prep",
+            "if-no-files-found": "error",
+            "retention-days": 3
+          }
+        }
+      ]
+    }
+  }
+}
