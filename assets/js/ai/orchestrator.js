@@ -97,7 +97,9 @@
         privacyMode: "browser_local",
       };
     }
-    return applyAfroCalibration(query, intentRouter.routeDeterministically(query, options || {}), options);
+    var decision = intentRouter.routeDeterministically(query, options || {});
+    if (typeof intentRouter.isUnsupportedFuelQuery === "function" && intentRouter.isUnsupportedFuelQuery(query)) return decision;
+    return applyAfroCalibration(query, decision, options);
   }
 
   /**
@@ -139,7 +141,9 @@
         ((decision.selectedToolId === "cv-builder" &&
           structuredSource === "profession_role") ||
           (decision.selectedToolId === "passport-checklist" &&
-            structuredSource === "explicit_passport"))
+            structuredSource === "explicit_passport") ||
+          ((decision.selectedToolId === "fuel-tracker" || decision.selectedToolId === "generator-fuel") &&
+            decision.intentCategory === "fuel-energy" && structuredSource === "rule"))
       ) {
         return decision;
       }

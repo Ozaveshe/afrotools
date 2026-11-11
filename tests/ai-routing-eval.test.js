@@ -10,6 +10,13 @@ async function run() {
   const fixtureErrors = evalRunner.validateFixtures(fixtures, manifest);
 
   assert.strictEqual(fixtureErrors.length, 0, fixtureErrors.join("\n"));
+  const recovery = fixtures.find(item => item.id === "energy-009");
+  assert.equal(recovery.expected.selectedToolId, "tool-search");
+  assert.equal(recovery.expected.canPrefill, false);
+  assert.ok(recovery.expected.reasonIncludes.includes("No price match"));
+  const unknown = fixtures.map(item => item === recovery ? {...item, expected:{...item.expected,selectedToolId:"imaginary-fuel-prices"}} : item);
+  assert.ok(evalRunner.validateFixtures(unknown,manifest).some(error => error.includes("imaginary-fuel-prices")), "unknown destinations remain rejected");
+
   assert.ok(fixtures.length >= 100, "routing eval must include at least 100 fixtures");
 
   const categories = new Set(fixtures.map((fixture) => fixture.category));
