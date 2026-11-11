@@ -90,6 +90,7 @@
     "cv-builder": "/tools/cv-builder/",
     "fish-farming-roi": "/agriculture/fish-farming/",
     "fuel-tracker": "/tools/fuel-tracker/",
+    "generator-fuel": "/tools/generator-fuel/",
     "import-duty": "/tools/import-duty/",
     "invoice-generator": "/tools/invoice-generator/",
     "irrigation-calculator": "/agriculture/irrigation/",
@@ -148,7 +149,7 @@
     prompt("machinery-tanzania", "Help me compare CIF, duty and port charges for machinery into Tanzania", "trade", ["TZ"], "import-duty", ["ai_vertical"], 68),
 
     prompt("solar-shop-lagos", "Compare solar vs generator costs for a Lagos shop", "energy", ["NG"], "solar-roi", ["homepage_command", "ai_hub", "ai_vertical", "ai_widget", "eval"], 100),
-    prompt("generator-nairobi", "Estimate generator cost for a Nairobi home running 4 hours daily", "energy", ["KE"], "fuel-tracker", ["ai_vertical", "eval"], 82),
+    prompt("generator-nairobi", "Estimate generator cost for a Nairobi home running 4 hours daily", "energy", ["KE"], "generator-fuel", ["ai_vertical", "eval"], 82),
     prompt("solar-accra-office", "Compare solar payback for an Accra office with a diesel generator", "energy", ["GH"], "solar-roi", ["ai_vertical", "eval"], 76),
     prompt("solar-johannesburg-small-business", "What questions should a Johannesburg small business ask a solar installer?", "energy", ["ZA"], "solar-roi", ["ai_vertical"], 68),
 

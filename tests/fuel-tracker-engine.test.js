@@ -32,8 +32,11 @@ assert.equal(engine.granularityLabel('city', 'Kenya'), 'City reference');
 const nearest = engine.nearestMarket(markets.markets, 6.5244, 3.3792);
 assert.equal(nearest.market.market_id, 'ng-abuja-nnpc-observed');
 assert(nearest.distanceKm > 0);
-const currentRecord = engine.marketRecord(markets.markets.find((market) => market.market_id === 'ng-national'), 'petrol');
+// Fixed dated fixture: availability must not depend on the dataset's latest observation.
+const currentRecord = { ...engine.marketRecord(markets.markets.find((market) => market.market_id === 'ng-national'), 'petrol'), effective_date: '2026-08-03', last_verified_at: '2026-08-09' };
 assert.equal(engine.recordStatus(currentRecord, '2026-08-13', 45).available, true);
+assert.equal(engine.recordStatus(currentRecord, '2026-08-02', 45).available, false);
+assert.equal(engine.recordStatus({ ...currentRecord, last_verified_at: '2026-08-14' }, '2026-08-13', 45).available, false);
 const staleRecord = engine.marketRecord(markets.markets.find((market) => market.market_id === 'ke-nairobi-2026-10'), 'petrol').previous_record;
 assert.equal(engine.recordStatus(staleRecord, '2026-08-13', 45).stale, true);
 const litreFill = engine.calculateFillCost({ pricePerLitre: 1000, mode: 'quantity', unit: 'litre', quantity: 20 });

@@ -563,12 +563,26 @@
     routeFor: carImportRoute,
   });
 
+  function solarCountryRecord(inputs) {
+    var dataset = typeof globalThis !== "undefined" && globalThis.SOLAR_ROI_COUNTRY_DATA;
+    if (!dataset && typeof require === "function") {
+      try { dataset = require("../../../data/energy/solar-roi-country-dataset.js"); } catch (err) {}
+    }
+    var countries = dataset && dataset.countries || {};
+    var country = lower(firstValue(inputs, ["country"])), code = text(firstValue(inputs, ["countryCode"])).toUpperCase();
+    var slug = lower(firstValue(inputs, ["countrySlug"]));
+    return Object.keys(countries).map(function(key) { return countries[key]; }).find(function(item) {
+      return (code && item.code === code) || (country && lower(item.countryName) === country) || (slug && item.slug === slug);
+    }) || null;
+  }
+
   var energyAdapter = createAdapter({
     id: "energy-prefill",
     primaryToolId: "solar-roi",
-    aliases: ["solar-energy", "fuel-tracker", "generator-cost", "generator-fuel"],
+    aliases: ["solar-energy"],
     route: "/tools/solar-roi/",
     normalizeInputs: function normalizeEnergy(inputs) {
+      var countryRecord = solarCountryRecord(inputs);
       var fuelType = lower(firstValue(inputs, ["fuelType", "fuel"]));
       var generatorHours = positiveNumber(firstValue(inputs, ["generatorHoursPerDay", "generatorHours", "hoursPerDay"]));
       var generatorSize = positiveNumber(firstValue(inputs, ["generatorSizeKva", "generatorSize", "kva"]));
@@ -577,13 +591,11 @@
       var loadSizeKw = positiveNumber(firstValue(inputs, ["loadSizeKw", "loadSize", "systemKW", "systemSizeKw"]));
       var outageHours = positiveNumber(firstValue(inputs, ["outageHours", "backupHours", "backupHoursPerDay"]));
       var budgetAmount = positiveNumber(firstValue(inputs, ["budgetAmount", "budgetRange", "budget"]));
-      var mode = lower(firstValue(inputs, ["mode", "energyMode"]));
-      if (!mode && (fuelType || generatorHours !== null || generatorSize !== null) && monthlyBill === null) mode = "generator";
       return {
-        mode: mode === "generator" || mode === "fuel" ? "generator" : "solar",
-        country: text(firstValue(inputs, ["country"])),
-        countryCode: text(firstValue(inputs, ["countryCode"])),
-        countrySlug: text(firstValue(inputs, ["countrySlug"])),
+        mode: "solar",
+        country: countryRecord ? countryRecord.countryName : text(firstValue(inputs, ["country"])),
+        countryCode: countryRecord ? countryRecord.code : text(firstValue(inputs, ["countryCode"])),
+        countrySlug: countryRecord ? countryRecord.slug : "",
         city: text(firstValue(inputs, ["city", "location"])),
         userType: lower(firstValue(inputs, ["userType", "customerType"])),
         monthlyBill: monthlyBill,
@@ -603,7 +615,6 @@
       return makeValidation(validateNumbers(normalized, ["monthlyBill", "monthlyGeneratorSpend", "loadSizeKw", "backupHours", "outageHours", "budgetAmount", "fuelPrice", "generatorHoursPerDay", "generatorSizeKva"]));
     },
     getMissingInputs: function getMissingEnergy(normalized) {
-      if (normalized.mode === "generator") return missing(normalized, ["country"]);
       var required = ["country"];
       if (normalized.monthlyBill === null && normalized.monthlyGeneratorSpend === null) required.push("monthlyBill");
       if (normalized.loadSizeKw === null && normalized.generatorSizeKva === null) required.push("loadSizeKw");
@@ -611,7 +622,7 @@
     },
     getUserFacingSummary: function summarizeEnergy(normalized) {
       return summaryList([
-        normalized.mode === "generator" ? "Generator/fuel workflow" : "Solar ROI workflow",
+        "Solar ROI workflow",
         normalized.country ? "Country: " + normalized.country : "",
         normalized.city ? "City: " + normalized.city : "",
         normalized.userType ? "Use case: " + normalized.userType : "",
@@ -623,8 +634,61 @@
       ]);
     },
     routeFor: function routeForEnergy(normalized) {
-      if (normalized && normalized.mode === "generator") return "/tools/fuel-tracker/#generator-cost";
       return normalized && normalized.countrySlug ? "/tools/solar-roi/" + normalized.countrySlug + "/" : "/tools/solar-roi/";
+    },
+  });
+
+  function fuelChoice(value) {
+    var clean = lower(value);
+    return clean === "gasoline" ? "petrol" : clean;
+  }
+
+  function normalizeFuelLookup(inputs) {
+    var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
+    return {
+      country: meta.country || text(firstValue(inputs, ["country"])),
+      countryCode: meta.code || text(firstValue(inputs, ["countryCode"])),
+      fuelType: fuelChoice(firstValue(inputs, ["fuelType", "fuel"])),
+    };
+  }
+
+  function validateFuelChoice(normalized) {
+    return normalized.fuelType && ["petrol", "diesel"].indexOf(normalized.fuelType) === -1
+      ? ["Choose petrol or diesel in the destination tool; this fuel type is not supported."] : [];
+  }
+
+  var fuelPriceAdapter = createAdapter({
+    id: "fuel-price-prefill",
+    primaryToolId: "fuel-tracker",
+    route: "/tools/fuel-tracker/",
+    normalizeInputs: normalizeFuelLookup,
+    validateInputs: function(normalized) { return makeValidation(validateFuelChoice(normalized)); },
+    getMissingInputs: function() { return []; },
+    getUserFacingSummary: function(normalized) {
+      return summaryList(["Fuel price lookup", normalized.country ? "Country: " + normalized.country : "", normalized.fuelType ? "Fuel: " + normalized.fuelType : ""]) + "; review the available dated market references and estimate your fill cost.";
+    },
+  });
+
+  var generatorAdapter = createAdapter({
+    id: "generator-fuel-prefill",
+    primaryToolId: "generator-fuel",
+    aliases: ["generator-cost"],
+    route: "/tools/generator-fuel/",
+    normalizeInputs: function(inputs) {
+      return Object.assign(normalizeFuelLookup(inputs), {
+        generatorHoursPerDay: positiveNumber(firstValue(inputs, ["generatorHoursPerDay", "generatorHours", "hoursPerDay"])),
+        generatorSizeKva: positiveNumber(firstValue(inputs, ["generatorSizeKva", "generatorSize", "kva"])),
+      });
+    },
+    validateInputs: function(normalized) {
+      var errors = validateFuelChoice(normalized).concat(validateNumbers(normalized, ["generatorHoursPerDay", "generatorSizeKva"]));
+      if (normalized.generatorHoursPerDay !== null && (normalized.generatorHoursPerDay < 0.5 || normalized.generatorHoursPerDay > 24 || normalized.generatorHoursPerDay * 2 % 1 !== 0)) errors.push("Generator hours must be between 0.5 and 24 per day in half-hour steps.");
+      if (normalized.generatorSizeKva !== null && [2, 5, 10, 20, 50].indexOf(normalized.generatorSizeKva) === -1) errors.push("Choose a supported generator size: 2, 5, 10, 20 or 50 kVA.");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function(normalized) { return missing(normalized, ["country"]); },
+    getUserFacingSummary: function(normalized) {
+      return summaryList(["Generator fuel cost", normalized.country ? "Country: " + normalized.country : "", normalized.fuelType ? "Fuel: " + normalized.fuelType : "", normalized.generatorHoursPerDay !== null ? "Run time: " + normalized.generatorHoursPerDay + " hours/day" : "", normalized.generatorSizeKva !== null ? "Size: " + normalized.generatorSizeKva + " kVA" : ""]) + "; review the fuel-price basis and calculator assumptions before estimating.";
     },
   });
 
@@ -825,6 +889,8 @@
     carImportCostAdapter,
     importDutyAdapter,
     energyAdapter,
+    fuelPriceAdapter,
+    generatorAdapter,
     vatAdapter,
     invoiceAdapter,
     payeAdapter,
@@ -860,9 +926,6 @@
     var normalized = adapter.normalizeInputs(extractedInputs || {});
     var validation = adapter.validateInputs(normalized);
     var payload = adapter.toSafeLaunchPayload(normalized);
-    if (adapter.id === "energy-prefill" && String(payload.route || "").indexOf("/tools/fuel-tracker/") === 0) {
-      payload.toolId = "fuel-tracker";
-    }
     var launchUrl = appendLaunchParams(payload.route || route || adapter.routeFor(normalized));
     return {
       supported: true,
