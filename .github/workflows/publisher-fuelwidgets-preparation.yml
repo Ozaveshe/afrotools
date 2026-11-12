@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-fuelwidgets-20261113-a3'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-fuelwidgets-20261113-a4'",
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 100,
       "env": {
@@ -47,11 +47,11 @@
         },
         {
           "name": "Targeted source tests",
-          "run": "node --test tests/fuel-tracker-engine.test.js tests/fuel-market-observations.test.js tests/fuel-official-verification.test.js tests/fuel-market-locales.test.js tests/fuel-ng-td-usefulness.test.js"
+          "run": "node --test tests/ai-mini-router-widget.test.js tests/ai-fuel-context-freshness.test.js tests/break-even-planner.test.js tests/french-fuel-country-pages.test.js tests/fuel-south-africa-landing.test.js tests/fuel-sierra-leone-reference.test.js tests/fuel-official-verification.test.js tests/fuel-ng-td-usefulness.test.js tests/fuel-mu-cv-reference.test.js tests/fuel-market-observations.test.js tests/fuel-market-locales.test.js tests/fuel-ghana-brand-reference.test.js tests/fuel-collector-provenance.test.js tests/french-widget-sitemap-contract.test.js tests/fuel-tracker-engine.test.js tests/fuel-south-africa-reference.test.js tests/generator-fuel-root.test.js tests/homepage-fuel-search-relevance.test.js tests/sw-fuel-scenario.test.js tests/sw-fuel-heading.test.js"
         },
         {
           "name": "Regenerate cumulative maintained fuel and widget outputs",
-          "run": "node scripts/generate-fuel-tracker-country-pages.js\nnpm run widgets:build -- --runtime-only --only=poultry-roi-estimator\nnode scripts/generate-fr-widget-parent-pages.js --embed-controls-only\nnode tests/progressive-directories.test.js"
+          "run": "node scripts/generate-fuel-tracker-country-pages.js\nnpm run widgets:build -- --runtime-only --only=poultry-roi-estimator\nnode scripts/generate-fr-widget-parent-pages.js --embed-controls-only\nnode tests/progressive-directories.test.js\nnode --test tests/break-even-planner.test.js tests/fuel-south-africa-landing.test.js"
         },
         {
           "name": "Build deploy artifact",
