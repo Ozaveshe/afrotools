@@ -418,6 +418,7 @@
   function download(content, type, extension) {
     var blob = new Blob([content], { type: type });
     var link = document.createElement('a');
+    link.dataset.noPdfGate = 'true';
     link.href = URL.createObjectURL(blob);
     link.download = 'afrotools-crypto-' + state.currency + '-' +
       new Date(state.receipt.fetchedAt).toISOString().replace(/[:.]/g, '-') + '.' + extension;
@@ -470,6 +471,9 @@
     render();
   });
   els.refresh.addEventListener('click', load);
+  // The market snapshot controller owns these exports and its download link.
+  els.csv.dataset.noPdfGate = 'true';
+  els.json.dataset.noPdfGate = 'true';
   els.csv.addEventListener('click', exportCsv);
   els.json.addEventListener('click', exportJson);
   root.querySelectorAll('[data-sort]').forEach(function (button) {
