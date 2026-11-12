@@ -398,6 +398,15 @@ function buildScholarshipSourceSnapshot(raw, source) {
   return snapshot;
 }
 
+function formatScholarshipRecordLabel(count, meta = {}) {
+  const value = Math.max(0, Math.floor(Number(count) || 0));
+  const mode = { cached: 'cached feed', curated: 'curated catalog', fallback: 'fallback feed', live: 'public feed' }[meta.mode] || 'available feed';
+  const qualifiers = [meta.isLimited && 'limited', meta.stale && 'stale', meta.isDegraded && !meta.stale && 'degraded'].filter(Boolean);
+  const source = qualifiers.length ? qualifiers.join(', ') + ' ' + mode : mode;
+  return value + ' scholarship ' + (value === 1 ? 'record' : 'records') +
+    ' in the ' + source + '; verify current deadlines with providers.';
+}
+
 function toPositiveInteger(value, fallback) {
   const number = parseInt(value, 10);
   return Number.isInteger(number) && number > 0 ? number : fallback;
@@ -922,7 +931,7 @@ function buildFeedMeta(rows, options) {
     isDegraded: isDegraded,
     isLimited: isLimited,
     publicMinCount: PUBLIC_MIN_SCHOLARSHIP_COUNT,
-    claimSafeLabel: formatScholarshipClaimLabel(count),
+    claimSafeLabel: formatScholarshipRecordLabel(count, { mode, isLimited, isDegraded, stale: mode === 'cached' }),
     stale: mode === 'cached',
     error: options && options.error ? String(options.error) : ''
   };
@@ -1795,7 +1804,7 @@ async function loadScholarshipFeed(options) {
       tone: 'warn',
       isLimited: isLimited,
       publicMinCount: PUBLIC_MIN_SCHOLARSHIP_COUNT,
-      claimSafeLabel: formatScholarshipClaimLabel(cachedCount),
+      claimSafeLabel: formatScholarshipRecordLabel(cachedCount, { mode: 'cached', isLimited, isDegraded: true, stale: true }),
       error: settings.error || (cached.meta && cached.meta.error) || ''
     });
     if (isLimited) {
@@ -2233,6 +2242,7 @@ module.exports = {
   PUBLIC_MIN_SCHOLARSHIP_COUNT,
   SOURCE_KEYS,
   buildFeedMeta,
+  formatScholarshipRecordLabel,
   buildLegacyScholarship,
   buildLegacyScholarships,
   normalizeDeadlineStatus,
