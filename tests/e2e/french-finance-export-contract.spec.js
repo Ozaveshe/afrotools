@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const pdfParse = require('pdf-parse');
+const { snapshot: cryptoSnapshot } = require('../support/crypto-market-fixture');
 const { test, expect } = require('@playwright/test');
 const {
   CALCULATION_STRATEGY,
@@ -205,6 +206,7 @@ async function captureResultRegions(page) {
       return 'explicit-output';
     };
     const resultSelector = [
+      '[data-crypto-prices] [data-price-body]',
       'output', '[data-result]', '[data-results]', '[data-output]', '[data-result-rows]',
       '[role="status"]', '[role="alert"]',
       '[id*="result" i]', '[class*="result" i]',
@@ -636,10 +638,36 @@ async function runQuizWorkflow(page, before, pageTitle, pageHeading) {
   };
 }
 
+async function runCryptoMarketWorkflow(page, pageTitle, pageHeading) {
+  await page.waitForFunction(() => window.__cryptoPricesReady === true);
+  const rows = page.locator('.cp-market-row');
+  await expect(rows).toHaveCount(3);
+  const digits = async () => (await rows.first().innerText()).replace(/[^0-9]/g, '');
+  await expect.poll(digits).toContain('150000000');
+  const before = await captureResultRegions(page);
+  await page.locator('#currencySelect').selectOption('zar');
+  await expect.poll(digits).toContain('1800000');
+  await expect(page.locator('[data-export-json]')).toBeEnabled();
+  const after = await captureResultRegions(page);
+  const mutation = diffResultRegions(before, after, pageTitle, pageHeading);
+  expect(mutation.passed).toBe(true);
+  expect(mutation.expectedResults.some(item => item.value.replace(/[^0-9]/g, '').includes('1800000'))).toBe(true);
+  return {
+    strategy: REFERENCE_STRATEGY,
+    attemptedInputs: await recaptureAttemptedInputs(page, [{ selector: '#currencySelect', label: 'Devise', value: 'ZAR' }]),
+    activatedControl: null, workflowControlSelector: null, workflowOwnerSelector: null,
+    workflowControlOwnedByCalculator: false,
+    interactionType: 'selection', interactionSelector: '#currencySelect',
+    beforeResults: before, afterResults: after, resultMutation: mutation,
+    expectedResults: mutation.expectedResults, pageTitle, pageHeading
+  };
+}
+
 async function fillSyntheticWorkflow(page, rowIndex, row) {
   const scopeSelector = await page.locator('main').count() ? 'main' : 'body';
   const pageTitle = await page.title();
   const pageHeading = normalizeText(await page.locator('h1').first().innerText().catch(() => ''));
+  if (row.frenchRoute === '/fr/crypto/prices/') return runCryptoMarketWorkflow(page, pageTitle, pageHeading);
   const before = await captureResultRegions(page);
   if (row.englishId === 'crypto-quiz') {
     const quizWorkflow = await runQuizWorkflow(page, before, pageTitle, pageHeading);
@@ -745,7 +773,7 @@ async function fillSyntheticWorkflow(page, rowIndex, row) {
     };
 }
 
-function parseDelimitedCsv(text) {
+function parseDelimitedCsv(text, delimiter = ';') {
   const rows = [];
   let row = [];
   let cell = '';
@@ -759,7 +787,7 @@ function parseDelimitedCsv(text) {
       } else {
         quoted = !quoted;
       }
-    } else if (character === ';' && !quoted) {
+    } else if (character === delimiter && !quoted) {
       row.push(cell);
       cell = '';
     } else if ((character === '\r' || character === '\n') && !quoted) {
@@ -959,6 +987,16 @@ async function proveRequiredRow(browser, row, rowIndex) {
   page.on('request', (request) => requests.push({ url: request.url(), postData: request.postData() || '' }));
   await page.route('**/*', async (route) => {
     const url = new URL(route.request().url());
+    if (row.frenchRoute === '/fr/crypto/prices/' && url.origin === FINANCE_BASE_URL) {
+      if (url.pathname === '/.netlify/functions/crypto-prices') {
+        const currency = url.searchParams.get('currency') || 'ngn';
+        expect(['ngn', 'zar']).toContain(currency);
+        return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(cryptoSnapshot(currency)) });
+      }
+      if (url.pathname === '/.netlify/functions/crypto-image') {
+        return route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"/>' });
+      }
+    }
     if ((url.hostname === '127.0.0.1' || url.hostname === 'localhost')
       && !/^\/(?:api\/|\.netlify\/functions\/)/.test(url.pathname)) await route.continue();
     else await route.abort();
@@ -1170,6 +1208,35 @@ async function proveRequiredRow(browser, row, rowIndex) {
         scripts: Array.from(document.scripts).filter((script) => script.dataset.frFinanceJspdf).map((script) => script.src)
       })).catch(() => null);
       throw new Error(`${row.frenchRoute} ${format}: ${error.message}\n${JSON.stringify(debug)}`);
+    }
+  }
+
+  if (row.frenchRoute === '/fr/crypto/prices/') {
+    for (const format of ['json', 'csv']) {
+      const pending = page.waitForEvent('download');
+      await page.locator(`[data-export-${format}]`).click();
+      const download = await pending;
+      const bytes = fs.readFileSync(await download.path());
+      const text = bytes.toString('utf8');
+      if (format === 'json') {
+        const market = JSON.parse(text);
+        expect(market.currency).toBe('zar');
+        expect(market.source.name).toBe('CoinGecko');
+        expect(Number.isFinite(Date.parse(market.fetchedAt))).toBe(true);
+        expect(market.data.map(item => item.current_price)).toEqual([1800000, 30000, 17.5]);
+      } else {
+        const rows = parseDelimitedCsv(text, ',');
+        expect(rows).toContainEqual(['currency', 'ZAR']);
+        expect(rows).toContainEqual(['source', 'CoinGecko']);
+        const header = rows.findIndex(row => row[0] === 'rank');
+        expect(header).toBeGreaterThan(0);
+        const priceColumn = rows[header].indexOf('current_price');
+        expect(priceColumn).toBeGreaterThan(0);
+        expect(rows.slice(header + 1).map(row => Number(row[priceColumn]))).toEqual([1800000, 30000, 17.5]);
+      }
+      const action = actions.find(item => item.format === format);
+      expect(action).toBeTruthy();
+      action.oracle.assertions.push(`Native ${format} download parsed: ZAR, all three fixture prices and CoinGecko source`);
     }
   }
 
