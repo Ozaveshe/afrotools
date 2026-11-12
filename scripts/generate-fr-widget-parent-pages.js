@@ -132,19 +132,12 @@ function pageUrl(route) {
 }
 
 function iframeCode(widget, item) {
-  return `<iframe src="${SITE}${widget.iframePath}${item.id === "poultry-roi-estimator" ? "?lang=fr" : ""}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
-}
-
-function widgetShareImage(route) {
-  return route === "/fr/widgets/roi-volaille/"
-    ? { path: "/assets/img/tools/poultry-roi-calculator.webp", width: 600, height: 400 }
-    : { path: "/assets/img/og-default.png", width: 1200, height: 630 };
+  return `<iframe src="${SITE}${widget.iframePath}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
 }
 
 function pageTemplate(item, widget) {
   const route = `/fr/widgets/${item.slug}/`;
   const url = pageUrl(route);
-  const image = widgetShareImage(route);
   const embedCode = iframeCode(widget, item);
   const description = item.description;
 
@@ -160,9 +153,9 @@ function pageTemplate(item, widget) {
 <link rel="canonical" href="${url}">
 <meta property="og:title" content="${escapeHtml(item.title)}">
 <meta property="og:description" content="${escapeHtml(description)}">
-<meta property="og:image" content="${SITE}${image.path}">
-<meta property="og:image:width" content="${image.width}">
-<meta property="og:image:height" content="${image.height}">
+<meta property="og:image" content="${SITE}/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="${url}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
@@ -170,7 +163,7 @@ function pageTemplate(item, widget) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeHtml(item.title)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
-<meta name="twitter:image" content="${SITE}${image.path}">
+<meta name="twitter:image" content="${SITE}/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -463,20 +456,6 @@ function existingMetadata(html, route, isHub = false) {
     return tag.replace(json, next);
   });
   if (schemas !== 1) throw new Error(`Expected one matching page schema: ${route}`);
-  if (route === "/fr/widgets/roi-volaille/") {
-    const image = widgetShareImage(route);
-    const tags = {
-      'property="og:image"': SITE + image.path,
-      'property="og:image:width"': image.width,
-      'property="og:image:height"': image.height,
-      'name="twitter:image"': SITE + image.path,
-    };
-    for (const [key, value] of Object.entries(tags)) {
-      const tag = new RegExp('(<meta ' + key + ' content=")[^"]*(">)', 'g');
-      if ([...head.matchAll(tag)].length !== 1) throw new Error('Expected one ' + key + ' on ' + route);
-      head = head.replace(tag, (_, before, after) => before + value + after);
-    }
-  }
   return html.replace(originalHead, head);
 }
 
