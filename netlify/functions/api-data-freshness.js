@@ -358,7 +358,8 @@ async function buildScholarshipSummary(read) {
       isDegraded: true,
       isLimited,
       lastCheckedAt: toIso(meta.lastCheckedAt || meta.cachedAt || cached.timestamp || cached.cachedAt),
-      claimSafeLabel: count + ' Scholarship' + (count === 1 ? '' : 's'),
+      claimSafeLabel: count + ' scholarship ' + (count === 1 ? 'record' : 'records') +
+        ' in the ' + (isLimited ? 'limited, stale cache' : 'stale cache') + '; verify current deadlines with providers.',
       publicMinCount,
       status: count > 0 && isLimited ? 'limited' : 'degraded',
     };

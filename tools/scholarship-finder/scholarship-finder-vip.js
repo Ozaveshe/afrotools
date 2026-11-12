@@ -109,8 +109,8 @@
   function patchSourceState() {
     var heroMessage = byId('heroFreshnessMessage');
     var feedStatus = byId('feedStatus');
-    if (heroMessage && !heroMessage.hidden && /refresh/i.test(heroMessage.textContent || '')) {
-      fallbackMode = true;
+    if (feedStatus && feedStatus.dataset.feedMode) {
+      fallbackMode = feedStatus.dataset.feedMode === 'fallback';
     }
     if (fallbackMode) {
       if (heroMessage) {
@@ -157,7 +157,12 @@
 
   window.addEventListener('afroedu:scholarship-feed-updated', function (event) {
     var meta = event && event.detail ? event.detail : {};
-    fallbackMode = meta.mode === 'fallback' || meta.mode === 'cached' || !!meta.isDegraded;
+    fallbackMode = meta.mode === 'fallback';
+    var feedStatus = byId('feedStatus');
+    if (feedStatus && !fallbackMode && meta.message) {
+      feedStatus.textContent = [meta.label, meta.message].filter(Boolean).join(': ');
+      feedStatus.classList.toggle('warn', Boolean(meta.isDegraded || meta.isLimited || meta.stale));
+    }
     queuePatch();
   });
   document.addEventListener('input', queuePatch);
