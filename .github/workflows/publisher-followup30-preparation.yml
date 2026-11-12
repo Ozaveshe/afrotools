@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-followup30-20261112'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-followup30-owners-20261112'",
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 100,
       "env": {
@@ -48,6 +48,10 @@
         {
           "name": "Targeted source tests",
           "run": "node --test tests/product-health-evidence-scope.test.js tests/afrostream-image.test.js tests/afrostream-image-local-assets.test.js tests/fuel-market-observations.test.js tests/import-landed-cost-state.test.js tests/stock-observation-quality.test.js tests/scholarship-deadline-trust.test.js tests/scholarship-detail-view.test.js"
+        },
+        {
+          "name": "Regenerate changed source owners absent from the standard build",
+          "run": "node scripts/generate-cassava-processing-pages.js\nnode scripts/build-fr-agriculture-family.js --family cassava-processing\nnode scripts/build-sw-agriculture-family.js --family cassava-processing\nnode scripts/build-fr-agriculture-singleton.js --id poultry-roi-calculator\nnode scripts/generate-fuel-tracker-country-pages.js\nnpm run widgets:build\nnode scripts/generate-fr-widget-parent-pages.js"
         },
         {
           "name": "Build deploy artifact",
