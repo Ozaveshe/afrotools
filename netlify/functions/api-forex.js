@@ -11,7 +11,7 @@
  */
 
 const { getData } = require('./_shared/data-store');
-const { getOrFetch, cacheHeaders } = require('./_lib/cache');
+const { getOrFetch } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS_HEADERS = {
@@ -20,9 +20,6 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/json',
 };
-
-// Cache TTLs: CDN 10min, browser 5min, stale 15min
-const CACHE_OPTS = { browserTTL: 300, cdnTTL: 600, staleTTL: 900 };
 
 // Simple in-memory rate limiting (resets per function cold start)
 const rateLimitMap = new Map();
@@ -45,14 +42,10 @@ function checkRateLimit(ip) {
   return true;
 }
 
-// _reqCacheHdrs is set per-request after data fetch; success responses include cache headers
-var _reqCacheHdrs = null;
-
 function jsonResponse(statusCode, body, extraHeaders = {}) {
-  var base = (statusCode === 200 && _reqCacheHdrs) ? _reqCacheHdrs : CORS_HEADERS;
   return {
     statusCode,
-    headers: { ...base, ...extraHeaders },
+    headers: { ...CORS_HEADERS, ...extraHeaders },
     body: JSON.stringify(body),
   };
 }
@@ -89,14 +82,27 @@ exports.handler = async function (event) {
     return await handleHistorical(params.pair, params.history);
   }
 
+  // Current quotes are qualified against the request clock.
+  // Cache the raw observations inside the function, not the qualified response.
+  const currentResponse = (status, body) => jsonResponse(status, body, {
+    'Cache-Control': 'no-store',
+    'CDN-Cache-Control': 'no-store',
+    'Netlify-CDN-Cache-Control': 'no-store',
+  });
   // --- Load latest rates (with in-memory + Blobs cache) ---
-  const { data, fromCache } = await getOrFetch('forex-latest', 600000); // 10min memory TTL
-  if (!data || !data.rates) {
-    return jsonResponse(503, { error: 'Forex data unavailable. Please try again later.' });
+  const { data: cached, fromCache } = await getOrFetch('forex-latest', 600000);
+  let data = cached;
+  if (fromCache && cached?.rates) {
+    const { maxAgeHours } = require('./_shared/live-data-contracts').findContract('forex-latest');
+    const observedAt = require('./_shared/reference-fx').timestamp(cached.timestamp);
+    if (!observedAt || Date.now() - Date.parse(observedAt) > maxAgeHours * 3600000) {
+      // Recheck expired snapshots at most once per minute per warm runtime.
+      ({ data } = await getOrFetch('forex-latest', 60000));
+    }
   }
-
-  // Set cache headers for all 200 responses
-  _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
+  if (!data || !data.rates) {
+    return currentResponse(503, { error: 'Forex data unavailable. Please try again later.' });
+  }
 
   const qualified = require('./_shared/forex-response');
   const now = new Date().toISOString();
@@ -105,7 +111,7 @@ exports.handler = async function (event) {
   if (params.from && params.to) {
     const from = params.from.toUpperCase(), to = params.to.toUpperCase();
     const quote = qualified.pairResponse(data,from,to,now);
-    return jsonResponse(quote.status === 'available' ? 200 : quote.reason === 'invalid-currency' ? 404 : 503, {
+    return currentResponse(quote.status === 'available' ? 200 : quote.reason === 'invalid-currency' ? 404 : 503, {
       ...provenance,pair:from+'/'+to,rate:quote.rate,status:quote.status,reason:quote.reason,
       qualification:{base:quote.base,target:quote.target}});
   }
@@ -118,13 +124,13 @@ exports.handler = async function (event) {
       pairs[parts.join('/')] = quote.rate;
       qualification[parts.join('/')] = quote;
     }
-    return jsonResponse(200,{...provenance,pairs,qualification});
+    return currentResponse(200,{...provenance,pairs,qualification});
   }
   const base = (params.base || 'USD').toUpperCase();
   const baseQuote = qualified.pairResponse(data,base,'USD',now);
   const result = qualified.ratesResponse(data,base,now);
   const crypto = qualified.cryptoResponse(data.crypto,now);
-  return jsonResponse(baseQuote.status === 'available' ? 200 : baseQuote.reason === 'invalid-currency' ? 404 : 503,{
+  return currentResponse(baseQuote.status === 'available' ? 200 : baseQuote.reason === 'invalid-currency' ? 404 : 503,{
     ...provenance,base,...result,status:baseQuote.status,reason:baseQuote.reason,
     ...(base === 'USD' ? {crypto:crypto.quotes,crypto_qualification:crypto.observations,next_update:data.next_update} : {})
   });

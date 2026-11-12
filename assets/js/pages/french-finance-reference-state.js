@@ -2,8 +2,8 @@
   'use strict';
   var ROUTES = {
     '/fr/crypto/prices': ['État de référence des prix crypto', 'Actif à contrôler', [
-      ['btc', 'Bitcoin (BTC)', 'BTC sélectionné — prix live indisponible dans ce reçu local. Vérifiez une source de marché datée avant toute décision.'],
-      ['eth', 'Ethereum (ETH)', 'ETH sélectionné — prix live indisponible dans ce reçu local. Vérifiez une source de marché datée avant toute décision.']]],
+      ['btc', 'Bitcoin (BTC)', 'BTC sélectionné. Pour consulter son prix indicatif et la date du relevé, recherchez cet actif dans le tableau de marché ci-dessous.'],
+      ['eth', 'Ethereum (ETH)', 'ETH sélectionné. Pour consulter son prix indicatif et la date du relevé, recherchez cet actif dans le tableau de marché ci-dessous.']]],
     '/fr/crypto/stablecoins': ['Fiche de référence stablecoin', 'Stablecoin à examiner', [
       ['usdt', 'USDT', 'USDT — catégorie : stablecoin indexé sur le dollar ; statut live : indisponible. Réserves et liquidité restent à vérifier.'],
       ['usdc', 'USDC', 'USDC — catégorie : stablecoin indexé sur le dollar ; statut live : indisponible. Réserves et liquidité restent à vérifier.']]],

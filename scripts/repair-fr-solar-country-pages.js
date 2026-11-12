@@ -495,6 +495,40 @@ function frenchSolarCountryDisplayNames() {
 
 function localizeSolarRuntimeCopy(html) {
   const copy = new Map([
+    ["Monthly grid bill", "Facture mensuelle d’électricité"],
+    ["Monthly generator spend", "Dépenses mensuelles du groupe électrogène"],
+    ["Outage hours per day", "Heures de coupure par jour"],
+    ["Solar system size", "Puissance de l’installation solaire"],
+    ["Tariff per kWh", "Tarif par kWh"],
+    ["Fuel price per litre", "Prix du carburant par litre"],
+    ["Performance ratio", "Ratio de performance"],
+    ["Panel wattage", "Puissance des panneaux"],
+    ["Battery depth of discharge", "Profondeur de décharge de la batterie"],
+    ["Install cost per kW", "Coût d’installation par kW"],
+    ["Battery cost band", "Budget batterie"],
+    ["Annual maintenance percent", "Taux annuel d’entretien"],
+    ["Finance deposit percent", "Pourcentage d’apport"],
+    ["Annual finance interest", "Taux d’intérêt annuel"],
+    ["Finance term in months", "Durée du financement en mois"],
+    ["Monthly grid bill cannot be negative.", "La facture mensuelle d’électricité doit être positive ou nulle."],
+    ["Generator spend cannot be negative.", "Les dépenses du groupe électrogène doivent être positives ou nulles."],
+    ["Outage hours must be between 0 and 24.", "La durée des coupures doit être comprise entre 0 et 24 heures par jour."],
+    ["System size must be positive.", "La puissance doit être d’au moins 0,1 kW."],
+    ["Tariff cannot be negative.", "Le tarif doit être positif ou nul."],
+    ["Fuel price cannot be negative.", "Le prix du carburant doit être positif ou nul."],
+    ["Performance ratio should be between 0.40 and 0.95.", "Le ratio de performance doit être compris entre 0,40 et 0,95."],
+    ["Panel wattage should be between 250 W and 750 W.", "La puissance des panneaux doit être comprise entre 250 W et 750 W."],
+    ["Battery depth of discharge should be between 50% and 95%.", "La profondeur de décharge doit être comprise entre 50 % et 95 %."],
+    ["Install cost cannot be negative.", "Le coût d’installation doit être positif ou nul."],
+    ["Battery cost cannot be negative.", "Le budget batterie doit être positif ou nul."],
+    ["Maintenance should be between 0% and 20%.", "Le taux d’entretien doit être compris entre 0 % et 20 %."],
+    ["Finance deposit should be between 0% and 100%.", "L’apport doit être compris entre 0 % et 100 %."],
+    ["Finance interest should be between 0% and 80%.", "Le taux d’intérêt doit être compris entre 0 % et 80 %."],
+    ["Finance term should be between 1 and 120 months.", "La durée du financement doit être comprise entre 1 et 120 mois."],
+    ["Enter a number for ", "Saisissez une valeur numérique pour ce champ : "],
+    ["Fix ", "Corrigez les "],
+    [" highlighted fields before using this estimate.", " champs signalés avant d’utiliser cette estimation."],
+    ["Fix highlighted inputs before results can update.", "Corrigez les champs signalés pour actualiser les résultats."],
     ["Correct highlighted inputs to update this estimate.", "Corrigez les champs signalés pour actualiser cette estimation."],
     ["Correct highlighted inputs to compare system sizes.", "Corrigez les champs signalés pour comparer les tailles de système."],
     ["Correct highlighted inputs before sharing or exporting.", "Corrigez les champs signalés avant de partager ou d’exporter."],
@@ -505,16 +539,113 @@ function localizeSolarRuntimeCopy(html) {
     ["This size is outside the listed comparison sizes; the nearest listed ", "Cette taille ne figure pas dans la comparaison ; la ligne la plus proche de "],
     [" kW row is highlighted for comparison only.", " kW est mise en évidence uniquement pour comparaison."],
   ]);
+  const decisionCopy = {
+    "Too little data": "Données insuffisantes",
+    "Add bill or generator spend before trusting the recommendation.": "Indiquez votre facture d’électricité ou vos dépenses de carburant pour obtenir une recommandation.",
+    "Solar ROI needs at least one current cost: grid bill, generator spend, or both.": "Le calcul nécessite au moins un coût actuel : la facture d’électricité ou les dépenses du groupe électrogène.",
+    "Outage hours alone can show backup need, but not whether the system pays back.": "La durée des coupures renseigne sur le besoin de secours, mais ne suffit pas à estimer la rentabilité.",
+    "Quote needed before decision": "Devis nécessaire avant de décider",
+    "The numbers are close enough that a real quote should decide the next move.": "Demandez un devis pour départager les options.",
+    "Payback is not clearly strong or clearly weak under the current assumptions.": "Les hypothèses actuelles ne permettent pas de conclure sur le délai de retour.",
+    "Small changes in tariff, fuel price, battery cost, or install price can change the recommendation.": "Une variation du tarif, du prix du carburant, de la batterie ou de la pose peut modifier la recommandation.",
+    "The solar idea may work, but the payment pressure needs quote validation.": "Le projet solaire peut convenir, mais un devis doit confirmer le coût du financement.",
+    "The finance payment is high compared with estimated monthly relief.": "La mensualité du prêt est élevée par rapport aux économies mensuelles estimées.",
+    "Payback can change quickly once deposit, interest, and term are replaced with real lender terms.": "Le délai de retour peut changer sensiblement selon l’apport, le taux et la durée réelle du prêt.",
+    "Strong solar case": "Projet solaire prometteur",
+    "Solar looks commercially sensible if a written quote matches these assumptions.": "Le projet paraît rentable si un devis écrit confirme ces hypothèses.",
+    "Simple payback is in a practical range under the current cost assumptions.": "Le délai de retour simple paraît raisonnable avec les coûts retenus.",
+    "The model shows meaningful monthly relief from grid bill and generator reduction.": "Le modèle estime une baisse sensible des dépenses mensuelles d’électricité et de carburant.",
+    "Solar is good, battery optional": "Solaire intéressant, batterie facultative",
+    "Solar savings look useful, but a large battery may not be the first purchase.": "Les économies solaires semblent utiles. Une grande batterie peut attendre.",
+    "Payback is reasonable without treating backup as the whole decision.": "Le délai de retour reste raisonnable sans faire du secours le seul critère de décision.",
+    "Outage hours do not force an extended battery in this scenario.": "Dans ce scénario, la durée des coupures ne justifie pas une batterie de grande capacité.",
+    "Weak ROI but strong resilience case": "Faible rentabilité, mais besoin de secours important",
+    "The money case is weak, but backup value may still justify a smaller system.": "Les économies sont limitées, mais le besoin de secours peut justifier une installation plus petite.",
+    "Payback is long or unavailable under the current assumptions.": "Le délai de retour est long ou impossible à estimer avec les hypothèses actuelles.",
+    "Outage hours make resilience valuable even when bill savings are limited.": "La durée des coupures rend le secours utile même si les économies sur la facture sont limitées.",
+    "Battery-first backup case": "Batterie de secours à privilégier",
+    "Your pain is backup reliability first; full solar can come after quote validation.": "Le besoin immédiat est un secours fiable. Envisagez l’installation solaire complète après avoir vérifié un devis.",
+    "Outage hours or generator spend point to a strong backup need.": "La durée des coupures ou les dépenses du groupe électrogène indiquent un besoin de secours important.",
+    "The payback case is not yet strong enough to rush a full solar purchase.": "Le délai de retour ne justifie pas de précipiter l’achat d’une installation solaire complète.",
+  };
+  const reportCopy = new Map([
+    ["SOLAR ROI ESTIMATE - ", "ESTIMATION DE RENTABILITÉ SOLAIRE — "],
+    ["EXECUTIVE SUMMARY", "RÉSUMÉ"],
+    ["USER INPUTS", "DONNÉES SAISIES"],
+    ["Monthly grid bill: ", "Facture mensuelle d’électricité : "],
+    ["Generator spend: ", "Dépenses du groupe électrogène : "],
+    ["/month", " / mois"],
+    ["Outage hours: ", "Durée des coupures : "],
+    [" per day", " par jour"],
+    ["System size: ", "Puissance de l’installation : "],
+    ["Battery level: ", "Niveau de secours sur batterie : "],
+    ["Finance: ", "Financement : "],
+    ["ASSUMPTIONS", "HYPOTHÈSES"],
+    ["Tariff: ", "Tarif : "],
+    ["Fuel price: ", "Prix du carburant : "],
+    ["Solar yield: ", "Rendement solaire : "],
+    ["Performance ratio: ", "Ratio de performance : "],
+    ["Install cost: ", "Coût d’installation : "],
+    ["Maintenance: ", "Entretien : "],
+    ["%/year", " % par an"],
+    ["Source freshness: ", "Date de révision des sources : "],
+    ["Confidence: ", "Niveau de confiance : "],
+    ["RESULTS", "RÉSULTATS"],
+    ["System cost: ", "Coût de l’installation : "],
+    ["Monthly savings: ", "Économies mensuelles : "],
+    ["Payback: ", "Délai de retour : "],
+    ["10-year net savings: ", "Économies nettes sur 10 ans : "],
+    ["25-year net savings: ", "Économies nettes sur 25 ans : "],
+    ["First-year generation: ", "Production la première année : "],
+    ["PAYBACK TIMELINE", "ÉVOLUTION DES FLUX DE TRÉSORERIE"],
+    ["BATTERY RECOMMENDATION", "RECOMMANDATION POUR LA BATTERIE"],
+    ["Usable capacity: ", "Capacité utile : "],
+    ["Nominal estimate: ", "Capacité nominale estimée : "],
+    ["Backup is not the same as total daily energy.", "Le secours couvre les besoins pendant les coupures. La consommation totale de la journée se calcule séparément."],
+    ["GENERATOR SAVINGS", "ÉCONOMIES LIÉES AU GROUPE ÉLECTROGÈNE"],
+    ["Fuel avoided: ", "Carburant économisé : "],
+    ["Run-hours avoided: ", "Heures de fonctionnement évitées : "],
+    ["ROOF / PANEL ESTIMATE", "ESTIMATION POUR LA TOITURE ET LES PANNEAUX"],
+    ["Panel count: ", "Nombre de panneaux : "],
+    ["Panel wattage: ", "Puissance par panneau : "],
+    ["Roof area: ", "Surface de toiture : "],
+    ["Ask installer to inspect roof condition, shading, mounting clearance, and orientation before purchase.", "Avant l’achat, demandez à l’installateur de vérifier l’état de la toiture, l’ombrage, l’espace de montage et l’orientation."],
+    ["QUESTIONS TO ASK INSTALLER", "QUESTIONS À POSER À L’INSTALLATEUR"],
+    ["DISCLAIMERS", "LIMITES DE L’ESTIMATION"],
+    ["Planning estimate, not a quote. Replace defaults with written installer pricing, bills, fuel receipts, and lender terms.", "Estimation indicative. Pour affiner le résultat, utilisez un devis écrit, vos factures, vos reçus de carburant et les conditions du prêteur."],
+    ["Sources last reviewed: ", "Dernière révision des sources : "],
+    [". Confidence: ", ". Niveau de confiance : "],
+    ["Cash purchase in this estimate", "Achat comptant dans cette estimation"],
+    ["Finance included: ", "Financement inclus : "],
+    ["/mo, ", " / mois, "],
+    [" interest", " d’intérêts"],
+    ["Year ", "Année "],
+    [" cumulative, ", " en cumul, "],
+    [" annual cashflow", " de flux annuel"],
+  ]);
+  const reportFunctions = new Set(["reportPlainText", "financeLabel", "timelineRows"]);
   return html.replace(/(<script\b([^>]*)>)([\s\S]*?)(<\/script>)/gi, (whole, open, attributes, source, close) => {
     if (/\bsrc\s*=|application\/(?:ld\+json|json)/i.test(attributes) || !source.includes("var DEFAULTS=") || !source.includes("function invalidateReport(")) return whole;
+    const hasDecisionTranslation = source.includes("function (decision) { var copy = ");
     const edits = [];
-    function visit(node) {
+    function visit(node, inReport = false) {
       if (!node || typeof node !== "object") return;
-      if (node.type === "Literal" && copy.has(node.value)) edits.push({start:node.start,end:node.end,text:JSON.stringify(copy.get(node.value))});
+      inReport ||= node.type === "FunctionDeclaration" && reportFunctions.has(node.id.name);
+      if (node.type === "Literal") {
+        const translation = (inReport && reportCopy.get(node.value)) || copy.get(node.value);
+        if (translation) edits.push({start:node.start,end:node.end,text:JSON.stringify(translation)});
+      }
+      if (!hasDecisionTranslation && node.type === "CallExpression" && node.callee.type === "MemberExpression" &&
+          node.callee.object.name === "engine" && node.callee.property.name === "decisionEngine") {
+        const localize = "(function (decision) { var copy = " + JSON.stringify(decisionCopy) +
+          "; function translate(value) { return Object.prototype.hasOwnProperty.call(copy, value) ? copy[value] : value; }" +
+          " return {label:translate(decision.label), headline:translate(decision.headline), reasons:decision.reasons.map(translate)}; })(";
+        edits.push({start:node.start,end:node.start,text:localize},{start:node.end,end:node.end,text:")"});
+      }
       for (const [key,value] of Object.entries(node)) {
         if (["start","end","raw"].includes(key)) continue;
-        if (Array.isArray(value)) value.forEach(visit);
-        else if (value && typeof value === "object") visit(value);
+        if (Array.isArray(value)) value.forEach((child) => visit(child, inReport));
+        else if (value && typeof value === "object") visit(value, inReport);
       }
     }
     visit(acorn.parse(source, {ecmaVersion:"latest"}));
