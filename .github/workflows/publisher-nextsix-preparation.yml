@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-nextsix-generation2-20261112'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-nextsix-preservation3-20261112'",
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 100,
       "env": {
@@ -47,7 +47,7 @@
         },
         {
           "name": "Targeted source tests",
-          "run": "node --test tests/farm-budget-engine.test.js tests/export-docs-directory-engine.test.js tests/fr-agriculture-export-docs.test.js tests/fr-agriculture-farm-budget.test.js tests/swahili-product-surface.test.js"
+          "run": "node tests/agriculture-export-docs-generation.test.js\nnode scripts/repair-english-search-snippets.js --check\nnode --test tests/farm-budget-engine.test.js tests/export-docs-directory-engine.test.js tests/fr-agriculture-export-docs.test.js tests/fr-agriculture-farm-budget.test.js tests/swahili-product-surface.test.js"
         },
         {
           "name": "Build deploy artifact",

@@ -5,9 +5,10 @@
 'use strict';
 var fs = require('fs');
 var path = require('path');
+var countryFacts = require('./enrich-agriculture-country-pages');
+var englishSnippets = require('./repair-english-search-snippets');
 
 var outDir = path.join(__dirname, '..', 'agriculture', 'export-docs');
-if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 // Must match country-index.js exactly
 var COUNTRIES = [
@@ -80,7 +81,7 @@ function pageHtml(c) {
   var h1     = c.flag + ' ' + c.name + ' Agricultural Export Documentation Checklist';
   var heroSub = 'Select your product and destination to build a printable planning checklist for an agricultural export from ' + c.name + '. Confirm current requirements with the relevant authorities before shipping.';
 
-  return '<!DOCTYPE html>\n' +
+  var html = '<!DOCTYPE html>\n' +
 '<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">\n' +
 '<head>\n' +
 '<meta charset="UTF-8">\n' +
@@ -132,6 +133,7 @@ function pageHtml(c) {
 '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">\n' +
 '<link rel="stylesheet" href="/assets/css/tokens.min.css">\n' +
 '<link rel="stylesheet" href="/assets/css/global.min.css">\n' +
+'<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css">\n' +
 '\n' +
 '<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer><\/script>\n' +
 '<script src="/assets/js/components/footer.min.js" defer><\/script>\n' +
@@ -276,7 +278,7 @@ function pageHtml(c) {
 '<link rel="alternate" hreflang="x-default" href="' + url + '" />\n' +
 '</head>\n' +
 '\n' +
-'<body>\n' +
+'<body class="top-level-page-ui-refresh">\n' +
 '<afro-navbar theme="dark" active="tools"></afro-navbar>\n' +
 '\n' +
 '<!-- ─── HERO ─── -->\n' +
@@ -335,7 +337,7 @@ function pageHtml(c) {
 '      </div>\n' +
 '\n' +
 '    </div>\n' +
-'    <button class="ed-btn ed-btn-primary" id="edBtnGenerate">&#9989; Generate My Checklist</button>\n' +
+'    <button type="button" class="ed-btn ed-btn-primary" id="edBtnGenerate">&#9989; Generate My Checklist</button>\n' +
 '  </div>\n' +
 '\n' +
 '  <!-- Progress tracker -->\n' +
@@ -346,6 +348,7 @@ function pageHtml(c) {
 '\n' +
 '</div>\n' +
 '\n' +
+countryFacts.getCountryFacts('export-docs', c.slug) + '\n' +
 '<afro-footer></afro-footer>\n' +
 '\n' +
 '<script>var COUNTRY_CODE = \'' + c.code + '\';<\/script>\n' +
@@ -354,8 +357,11 @@ function pageHtml(c) {
 '<script src="/engines/agriculture-export-docs-controller.js"><\/script>\n' +
 '</body>\n' +
 '</html>\n';
+  return englishSnippets.apply(html, englishSnippets.metadataFor(c.slug));
 }
 
+function main() {
+if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 var count = 0;
 COUNTRIES.forEach(function (c) {
   var html = pageHtml(c);
@@ -366,3 +372,7 @@ COUNTRIES.forEach(function (c) {
 });
 
 console.log('\nDone. Generated ' + count + ' country pages.');
+
+}
+if (require.main === module) main();
+module.exports = { COUNTRIES: COUNTRIES, pageHtml: pageHtml };
