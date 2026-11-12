@@ -60,14 +60,15 @@ function generatePage(c) {
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
+  "@type": "WebPage",
   "name": "${c.name} Cassava Processing Profit Calculator",
   "url": "https://afrotools.com/agriculture/cassava-processing/${c.slug}",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "All",
   "description": "Calculate profits from processing cassava into ${topProdsText} in ${c.name}. Full cost analysis including raw material, labour, energy, packaging, and equipment depreciation.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
 }
 <\/script>
 

@@ -8,13 +8,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 |---|---:|
 | Public pages | 11551 |
 | Indexable pages | 7876 |
-| Permanent and temporary redirects | 3133 |
+| Permanent and temporary redirects | 3136 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
-| Documented fallbacks | 14992 |
+| Documented fallbacks | 14995 |
 | Routes eligible for primary sitemaps | 7876 |
 
 ## Locale Coverage
@@ -2369,6 +2369,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/compte-a-rebours-examen/` -> `/tools/exam-countdown/` (301, owner: _redirects)
 - `/tools/contract-generator/app.html` -> `/tools/contract-generator/app` (301, owner: _redirects)
 - `/tools/contrat-travail/` -> `/tools/employment-contract/` (301, owner: _redirects)
+- `/tools/cost-of-living-compare/` -> `/tools/cost-of-living/` (301, owner: _redirects)
 - `/tools/cover-letter-generator/app.html` -> `/tools/cover-letter-generator/app` (301, owner: _redirects)
 - `/tools/creator-analytics/app.html` -> `/tools/creator-analytics/app` (301, owner: _redirects)
 - `/tools/creator-bios/app.html` -> `/tools/creator-bios/app` (301, owner: _redirects)
@@ -2860,6 +2861,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/visa-checker/uganda.html` -> `/tools/visa-checker/uganda` (301, owner: _redirects)
 - `/tools/visa-checker/zambia.html` -> `/tools/visa-checker/zambia` (301, owner: _redirects)
 - `/tools/visa-checker/zimbabwe.html` -> `/tools/visa-checker/zimbabwe` (301, owner: _redirects)
+- `/tools/wedding-budget-african/` -> `/tools/wedding-budget/` (301, owner: _redirects)
 - `/tools/whatsapp-link-generator/` -> `/tools/whatsapp-link/` (301, owner: _redirects)
 - `/tools/workers-comp/algeria.html` -> `/tools/workers-comp/algeria` (301, owner: _redirects)
 - `/tools/workers-comp/angola.html` -> `/tools/workers-comp/angola` (301, owner: _redirects)
@@ -2923,6 +2925,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tunisia/tn-vat.html` -> `/tunisia/tn-vat` (301, owner: _redirects)
 - `/uganda/ug-paye.html` -> `/uganda/ug-paye` (301, owner: _redirects)
 - `/uganda/ug-vat.html` -> `/uganda/ug-vat` (301, owner: _redirects)
+- `/ussd` -> `/telecom/ussd-directory/` (301, owner: _redirects)
 - `/vat-calculator` -> `/tools/vat-calculator/` (301, owner: _redirects)
 - `/vault` -> `/dashboard/vault/` (301, owner: _redirects)
 - `/widgets/iframe/african-japa-calculator.html` -> `/widgets/iframe/african-japa-calculator` (301, owner: _redirects)
@@ -7913,15 +7916,18 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/cape-verde` -> `/fr/cabo-verde/` (_redirects:1408)
 - `/fr/comoros` -> `/fr/comores/` (_redirects:1410)
 - `/fr/mauritania` -> `/fr/mauritanie/` (_redirects:1412)
-- `/tools/rent-own-abroad` -> `/tools/rent-vs-buy/` (_redirects:1590)
-- `/tools/property-transfert-cost` -> `/tools/property-transfer-cost/` (_redirects:1592)
-- `/tools/ielts-toefl-converter` -> `/tools/ielts-calculator/` (_redirects:1594)
-- `/tools/oil-production` -> `/tools/oil-well-production/` (_redirects:1596)
-- `/tools/label-branding-cost` -> `/tools/made-in-africa-label/` (_redirects:1598)
-- `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:1600)
-- `/tools/return-migration` -> `/diaspora/` (_redirects:1602)
-- `/tools/double-taxation` -> `/salary-tax/` (_redirects:1604)
-- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:4010)
+- `/ussd/` -> `/telecom/ussd-directory/` (_redirects:1590)
+- `/tools/rent-own-abroad` -> `/tools/rent-vs-buy/` (_redirects:1592)
+- `/tools/property-transfert-cost` -> `/tools/property-transfer-cost/` (_redirects:1594)
+- `/tools/cost-of-living-compare` -> `/tools/cost-of-living/` (_redirects:1596)
+- `/tools/wedding-budget-african` -> `/tools/wedding-budget/` (_redirects:1598)
+- `/tools/ielts-toefl-converter` -> `/tools/ielts-calculator/` (_redirects:1600)
+- `/tools/oil-production` -> `/tools/oil-well-production/` (_redirects:1602)
+- `/tools/label-branding-cost` -> `/tools/made-in-africa-label/` (_redirects:1604)
+- `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:1606)
+- `/tools/return-migration` -> `/diaspora/` (_redirects:1608)
+- `/tools/double-taxation` -> `/salary-tax/` (_redirects:1610)
+- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:4016)
 - `/admin` -> `/404.html` (netlify.toml:178)
 - `/admin/` -> `/404.html` (netlify.toml:184)
 - `/afrotools-mission-control` -> `/404.html` (netlify.toml:196)

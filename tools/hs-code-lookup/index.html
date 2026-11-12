@@ -263,7 +263,7 @@
             <input aria-label="Search product name or HS code" type="text" id="searchInput" role="combobox" aria-autocomplete="list" aria-controls="acList" aria-expanded="false" class="search-input" placeholder="Search product name or HS code..." autocomplete="off" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
             <div class="autocomplete-list" id="acList" role="listbox" aria-label="HS code suggestions"></div>
           </div>
-          <div id="searchHint" style="font-size:0.8rem;color:#94A3B8;margin-top:4px">Try: rice, smartphone, palm oil, vehicle, cement, fertiliser, laptop, clothing</div>
+          <div id="searchHint" role="status" style="font-size:0.8rem;color:#94A3B8;margin-top:4px">Try: rice, smartphone, palm oil, vehicle, cement, fertiliser, laptop, clothing</div>
         </div>
       </div>
 
@@ -512,12 +512,17 @@ function setTab(id, btn) {
 /* ── Search ── */
 function onSearch(val) {
   closeAc();
-  if (!val || val.trim().length < 2) {
-    closeAc();
-    return;
-  }
+  currentCode = null;
+  document.getElementById('resultHero').classList.remove('on');
+  document.getElementById('dutySection').style.display = 'none';
+  document.getElementById('searchEmpty').style.display = '';
+  var hint = document.getElementById('searchHint');
+  hint.style.display = '';
+  hint.textContent = 'Try: rice, smartphone, palm oil, vehicle, cement, fertiliser, laptop, clothing';
+  if (!val || val.trim().length < 2) return;
   searchTimer = setTimeout(function() {
     var results = HsLookupEngine.searchByProduct(val);
+    if (!results.length) hint.textContent = 'No matching HS codes. Try a shorter product name or enter the code directly.';
     renderAc(results);
   }, 120);
 }

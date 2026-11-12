@@ -311,6 +311,10 @@ function htmlPage(row, rows) {
     ? `Fuel prices in ${row.name} | AfroFuel`
     : `Fuel prices in ${row.name}: petrol, diesel and LPG | AfroFuel`;
   const description = `Fuel price snapshot for ${row.name}, dated ${date}. View petrol, diesel and LPG references, then calculate generator costs with a locally verified price.`;
+  const fuelMarket = { TZ: 'tz-dar-es-salaam', BF: 'bf-national' }[row.code];
+  const fuelFinderHref = fuelMarket
+    ? `/tools/fuel-tracker/?market=${fuelMarket}#fuel-finder`
+    : '/tools/fuel-tracker/#fuel-finder';
   const compareHref = '#related-countries';
   const generatorHref = '/tools/backup-power-costs/';
   const ogImage = ogImageFor(slug);
@@ -534,7 +538,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
     <div class="fuel-links">
       <a class="fuel-link-card" href="/tools/backup-power-costs/">Generator fuel calculator<span>Enter your local price and measured fuel use.</span></a>
       <a class="fuel-link-card" href="/tools/route-fares/">Route fares<span>Check transport costs affected by fuel.</span></a>
-      <a class="fuel-link-card" href="/tools/fuel-tracker/#fuel-finder">Find a supported fuel reference<span>Check market coverage and dates, or enter your own price.</span></a>
+      <a class="fuel-link-card" href="${fuelFinderHref}">Find a supported fuel reference<span>Check market coverage and dates, or enter your own price.</span></a>
       <a class="fuel-link-card" href="/tools/solar-roi/">Solar ROI calculator<span>Compare solar payback against generator fuel spend.</span></a>
       <a class="fuel-link-card" href="/tools/cost-of-living/">Cost of living comparison<span>Put fuel and transport into a wider budget.</span></a>
     </div>

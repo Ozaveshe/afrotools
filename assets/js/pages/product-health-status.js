@@ -23,7 +23,7 @@
       var next = row.next_expected_check ? '<span>Next expected check: ' + escapeHtml(formatDate(row.next_expected_check)) + '</span>' : '';
       return '<article class="status-row" data-product-id="' + escapeHtml(row.id) + '">' +
         '<div class="status-name">' + escapeHtml(row.name) + '</div>' +
-        '<div><span class="status-badge" data-status="' + escapeHtml(status) + '">' + escapeHtml(api.LABELS[status]) + '</span></div>' +
+        '<div><span class="status-badge" data-status="' + escapeHtml(status) + '">' + escapeHtml(row.status_label || api.LABELS[status]) + '</span></div>' +
         '<div class="status-copy">' + escapeHtml(row.coverage || 'Coverage not reported.') + (row.reason ? '<strong>' + escapeHtml(row.reason) + '</strong>' : '') + '</div>' +
         '<div class="status-date"><time datetime="' + escapeHtml(api.toIso(row.last_verified) || '') + '">' + escapeHtml(formatDate(row.last_verified)) + '</time>' + next + '</div>' +
       '</article>';
@@ -35,7 +35,7 @@
       if (rows[i].id !== id) continue;
       rows[i] = Object.assign({}, rows[i], update);
       rows[i].status = api.normalizeStatus(rows[i].status);
-      rows[i].status_label = api.LABELS[rows[i].status];
+      rows[i].status_label = update.status_label || api.LABELS[rows[i].status];
       return;
     }
   }
@@ -50,8 +50,8 @@
     var state = counts.temporarily_unavailable ? 'temporarily_unavailable' : counts.stale ? 'stale' : counts.degraded ? 'degraded' : counts.partial_coverage ? 'partial_coverage' : counts.unknown ? 'unknown' : 'operational';
     var summary = document.getElementById('healthSummary');
     summary.dataset.state = state;
-    var known = rows.length - (counts.unknown || 0);
-    summary.querySelector('strong').textContent = api.LABELS[state] + ' — ' + known + ' of ' + rows.length + ' areas have verified evidence';
+    var attention = rows.length - (counts.operational || 0);
+    summary.querySelector('strong').textContent = attention ? attention + ' areas have limited, outdated or unavailable checks' : 'Available checks are current';
     summary.querySelector('span:last-child').textContent = liveAvailable
       ? 'Live checks were combined with the static source snapshot. Coverage and freshness remain separate.'
       : 'Live checks are unavailable; showing the source-derived snapshot without assuming runtime health.';
@@ -65,11 +65,14 @@
       if (!row) return;
       var status = api.normalizeStatus(row.status);
       if (status === api.STATUS.OPERATIONAL && (!row.updatedAt || !row.source || row.records_count === 0)) status = api.STATUS.UNKNOWN;
-      replaceRow(snapshot.products, map[key], {
+      var update = {
         status: status,
-        last_verified: row.updatedAt || null,
-        reason: status === api.STATUS.OPERATIONAL ? 'Live freshness evidence is within its product threshold.' : 'Live freshness evidence is ' + api.LABELS[status].toLowerCase() + '.'
-      });
+        status_label: status === api.STATUS.UNAVAILABLE ? 'Live refresh unavailable' : api.LABELS[status],
+        next_expected_check: null,
+        reason: status === api.STATUS.OPERATIONAL ? 'Live freshness evidence is within its product threshold.' : 'The live data check is ' + api.LABELS[status].toLowerCase() + '. Any saved source date below is retained; this does not establish current prices or a tool outage.'
+      };
+      if (api.toIso(row.updatedAt)) update.last_verified = row.updatedAt;
+      replaceRow(snapshot.products, map[key], update);
     });
 
     if (payload.scholarship) {
@@ -78,8 +81,8 @@
       replaceRow(snapshot.products, 'scholarships', {
         status: scholarshipStatus,
         last_verified: scholarship.lastCheckedAt || null,
-        coverage: scholarship.count > 0 ? scholarship.count + ' public scholarship opportunities available in the checked feed.' : 'No usable public scholarship rows were confirmed.',
-        reason: scholarshipStatus === api.STATUS.OPERATIONAL ? null : 'The public feed is limited, stale or unavailable.'
+        coverage: scholarship.claimSafeLabel || 'No scholarship cache records were confirmed.',
+        reason: 'This check covers the stored scholarship cache. Open Scholarship Finder to see available listings.'
       });
     }
 
@@ -103,6 +106,7 @@
     replaceRow(snapshot.products, 'afrostream', {
       status: status,
       last_verified: payload.generated_at,
+      next_expected_check: null,
       coverage: creators + ' published creators, ' + streams + ' historical stream rows and ' + news + ' published news items checked live.',
       reason: status === api.STATUS.OPERATIONAL ? null : (sourceErrors + ' source errors and ' + staleSources + ' stale sources remain isolated from historical content.')
     });
@@ -139,11 +143,20 @@
     var liveAvailable = false;
     if (results[0].status === 'fulfilled') liveAvailable = applyFreshness(snapshot, results[0].value) || liveAvailable;
     if (results[1].status === 'fulfilled') liveAvailable = applyAfroStream(snapshot, results[1].value.data) || liveAvailable;
+    var release = results[2].status === 'fulfilled' ? api.safeReleaseMetadata(results[2].value) : null;
+    if (release && release.production && release.commit && release.built_at) {
+      replaceRow(snapshot.platform, 'website', {
+        status: api.STATUS.PARTIAL,
+        status_label: 'Status endpoint reachable',
+        last_verified: new Date().toISOString(),
+        next_expected_check: null,
+        coverage: 'This browser received the production release record.',
+        reason: 'This checks the public status endpoint only; individual tools, search and authentication have separate checks.'
+      });
+    }
     renderRows(platformTarget, snapshot.platform);
     renderRows(productTarget, snapshot.products);
     updateSummary(snapshot, liveAvailable);
-
-    var release = results[2].status === 'fulfilled' ? api.safeReleaseMetadata(results[2].value) : null;
     var releaseNode = document.getElementById('releaseStatus');
     if (release && release.production && release.commit && release.built_at) {
       releaseNode.textContent = 'Production build ' + release.commit.slice(0, 7) + ' was created ' + formatDate(release.built_at) + '. Commit subjects and internal deploy details are not exposed.';

@@ -138,6 +138,7 @@
 @media(max-width:760px){.solar-report-grid{grid-template-columns:1fr}.solar-report-kv{grid-template-columns:1fr}}
 @media(max-width:520px){.solar-quote-cta-grid,.solar-installer-actions{display:grid;grid-template-columns:1fr}.solar-report-preview{padding:14px;overflow-x:auto}}
 @media print{
+  #afro-cookie-consent,.solar-mobile-summary{display:none!important}
   @page{margin:14mm}
   body{background:#fff;color:#111}
   afro-navbar,afro-footer,.solar-country-hero,.solar-country-calculator,#sources-title,#faq-country,#related-tools,#share-estimate,#related-countries{display:none!important}
@@ -400,7 +401,7 @@ window.addEventListener('load', function() {
 <p class="solar-country-privacy">Fonctionne dans votre navigateur. Aucun compte requis. Les entrées restent des estimations de planification sauf si vous choisissez de les partager ou exporter.</p>
 </div>
 <aside class="solar-country-results" aria-live="polite" aria-atomic="false" aria-labelledby="results-title">
-<h2 id="results-title">Solar decision snapshot</h2>
+<h2 id="results-title">Résumé de l’estimation solaire</h2>
 <p class="solar-status" id="resultStatus" role="status" aria-live="polite" aria-atomic="true">résultats update from the Djibouti defaults. Add your bill and generator spend for a sharper estimate.</p>
 <p class="solar-chart-text" id="chartTextEquivalent">Équivalent texte des graphiques : les cartes ci-dessous résument l'allègement mensuel, le délai de retour, les économies sur 10 ans, la couverture de secours, le carburant générateur évité et le risque d'accessibilité.</p>
 <div class="solar-result-grid">
@@ -668,11 +669,11 @@ function setupCountryPicker(prefix,currentSlug){
   open.addEventListener("click",function(){var country=findCountry(select.value)||current;storeSelectedCountry(country);trackSolarEvent("country_selected","country_picker",country?country.slug:DEFAULTS.countrySlug);});
   select.disabled=false;if(input)input.disabled=false;
 }
-function money(value){var n=Number(value)||0;return DEFAULTS.currencySymbol+n.toLocaleString("en-US",{maximumFractionDigits:0});}
-function moneyAccessible(value){var n=Number(value)||0;return DEFAULTS.currency+" "+n.toLocaleString("en-US",{maximumFractionDigits:0});}
-function years(value){return value&&Number.isFinite(value)?(value>=10?value.toFixed(0):value.toFixed(1))+" years":"No payback under these assumptions";}
+function money(value){var n=Number(value)||0;return DEFAULTS.currencySymbol+n.toLocaleString("fr-FR",{maximumFractionDigits:0});}
+function moneyAccessible(value){var n=Number(value)||0;return DEFAULTS.currency+" "+n.toLocaleString("fr-FR",{maximumFractionDigits:0});}
+function years(value){return value&&Number.isFinite(value)?value.toLocaleString("fr-FR",{minimumFractionDigits:value>=10?0:1,maximumFractionDigits:value>=10?0:1})+" ans":"Aucun retour sur investissement selon ces hypothèses";}
 function monthlyBatteryCost(kw,option){var profile=batteryProfiles[option]||batteryProfiles.essential;return option==="none"?0:num("batteryCost",DEFAULTS.batteryCost)*(kw/3)*(profile.costFactor||1);}
-var INSTALLER_CHECKLIST=["Confirm roof condition and shading.","Confirm panel wattage and warranty.","Confirm inverter type and surge capacity.","Confirm battery chemistry, usable kWh, depth of discharge, and warranty.","Confirm protection devices, earthing, and isolators.","Confirm installation price includes mounting, wiring, labour, and permits.","Confirm maintenance and after-sales support.","Confirm real energy consumption from bill or load profile.","Confirm financing total repayment.","Confirm payback assumptions."];
+var INSTALLER_CHECKLIST=["Vérifiez l’état de la toiture et l’ombrage.","Vérifiez la puissance et la garantie des panneaux.","Vérifiez le type d’onduleur et sa puissance de pointe.","Vérifiez la technologie, la capacité utile, la profondeur de décharge et la garantie de la batterie.","Vérifiez les protections, la mise à la terre et les sectionneurs.","Vérifiez que le devis comprend les supports, le câblage, la main-d’œuvre et les autorisations.","Vérifiez les conditions d’entretien et de service après-vente.","Vérifiez la consommation réelle sur la facture ou le profil de charge.","Vérifiez le montant total à rembourser.","Vérifiez les hypothèses du délai de retour."];
 var lastReport=null;
 var reportRevision=0;
 var REPORT_ACTION_IDS=["shareEstimateBtn","printEstimateBtn","whatsappSummaryBtn","txtReportBtn","printReportBtn","compareInstallerQuotesBtn","sendEstimateInstallerBtn","saveSolarEstimateBtn"];
@@ -732,12 +733,12 @@ function sponsorConfig(){var afro=window.AfroTools||{};return window.AfroToolsSo
 function trackSponsorSlot(eventName){trackSolarEvent(eventName);}
 function renderSponsorSlots(){var config=sponsorConfig();Array.prototype.forEach.call(document.querySelectorAll("[data-sponsor-slot]"),function(slot){var slotId=slot.getAttribute("data-sponsor-slot");var item=config&&config[slotId]||config&&config.default;if(!item||item.enabled===false)return;var title=item.title||item.headline||"";var text=item.text||item.description||"";if(!title&&!text)return;var label=slot.querySelector("[data-sponsor-label]");var titleEl=slot.querySelector("[data-sponsor-title]");var textEl=slot.querySelector("[data-sponsor-text]");var link=slot.querySelector("[data-sponsor-link]");if(label)label.textContent=item.label||"Sponsored";if(titleEl)titleEl.textContent=title;if(textEl)textEl.textContent=text;if(link){link.textContent=item.cta||"Learn more";link.href=item.href||"/sponsored-tools/";link.hidden=false;}slot.hidden=false;slot.classList.add("is-configured");if(!slot.dataset.impressionTracked){slot.dataset.impressionTracked="true";trackSponsorSlot("sponsor_slot_impression",slotId);}if(link&&!link.dataset.bound){link.dataset.bound="true";link.addEventListener("click",function(){trackSponsorSlot("sponsor_slot_clicked",slotId);});}});}
 function valueOrDash(value,suffix){return value||value===0?String(value)+(suffix||""):"--";}
-function financeLabel(report){return report.financeEnabled?"Finance included: "+money(report.financeMonthlyPayment)+"/mo, "+money(report.totalInterest)+" interest":"Cash purchase in this estimate";}
+function financeLabel(report){return report.financeEnabled?"Financement inclus : "+money(report.financeMonthlyPayment)+"/mo, "+money(report.totalInterest)+" d’intérêts":"Achat au comptant dans cette estimation";}
 function timelineRows(report){
   var years=[1,3,5,10,15,25];
   return years.map(function(year){
     var row=(report.cashflows||[])[year-1];
-    return "Year "+year+": "+(row?money(row.cumulativeProjectCashflow):"--")+" cumulative, "+(row?money(row.projectNetCashflow):"--")+" annual cashflow";
+    return "Année "+year+": "+(row?money(row.cumulativeProjectCashflow):"--")+" cumulés, "+(row?money(row.projectNetCashflow):"--")+" de flux de trésorerie annuel";
   });
 }
 function buildReport(){
@@ -745,80 +746,80 @@ function buildReport(){
   var r=lastReport;
   var rows=function(items){return items.map(function(item){return "<div><dt>"+esc(item[0])+"</dt><dd>"+esc(item[1])+"</dd></div>";}).join("");};
   var list=function(items){return "<ul class=\"solar-report-list\">"+items.map(function(item){return "<li>"+esc(item)+"</li>";}).join("")+"</ul>";};
-  return "<div class=\"solar-report-header\"><h3>Solar ROI estimate for "+esc(r.countryName)+"</h3><p>Executive summary: "+esc(r.executiveSummary)+"</p></div>"+
+  return "<div class=\"solar-report-header\"><h3>Estimation solaire – "+esc(r.countryName)+"</h3><p>Synthèse : "+esc(r.executiveSummary)+"</p></div>"+
     "<div class=\"solar-report-grid\">"+
-    "<section class=\"solar-report-box\"><h4>User inputs</h4><dl class=\"solar-report-kv\">"+rows([["Monthly grid bill",r.monthlyBill],["Generator spend",r.generatorSpend+"/month"],["Outage hours",r.outageHours+" per day"],["System size",r.systemKw+" kW"],["Battery level",r.batteryLabel],["Finance",financeLabel(r)]])+"</dl></section>"+
-    "<section class=\"solar-report-box\"><h4>Assumptions</h4><dl class=\"solar-report-kv\">"+rows([["Tariff",r.tariff],["Fuel price",r.fuelPrice],["Rendement solaire",r.solarYield],["Performance ratio",r.performanceRatio],["Install cost",r.installCostPerKw+"/kW"],["Maintenance",r.maintenancePct+"%/year"],["Source freshness",r.sourceFreshness],["Confidence",r.confidence]])+"</dl></section>"+
-    "<section class=\"solar-report-box\"><h4>Results</h4><dl class=\"solar-report-kv\">"+rows([["System cost",r.systemCost],["Monthly savings",r.monthlySavings],["Payback",r.payback],["10-year net savings",r.tenYearNet],["25-year net savings",r.twentyFiveYearNet],["First-year generation",r.firstYearGeneration]])+"</dl></section>"+
-    "<section class=\"solar-report-box\"><h4>Payback timeline</h4>"+list(timelineRows(r))+"</section>"+
-    "<section class=\"solar-report-box\"><h4>Battery recommendation</h4>"+list([r.batteryRecommendation,"Usable capacity: "+r.batteryUsable,"Nominal estimate: "+r.batteryNominal,"Backup is for essential loads, not total daily energy."])+"</section>"+
-    "<section class=\"solar-report-box\"><h4>Generator savings</h4><dl class=\"solar-report-kv\">"+rows([["Fuel avoided",r.generatorLitres],["Run-hours avoided",r.generatorHours],["Generator note",r.generatorNote]])+"</dl></section>"+
-    "<section class=\"solar-report-box\"><h4>Roof and panels</h4><dl class=\"solar-report-kv\">"+rows([["Panel count",r.panelCount],["Panel wattage",r.panelWatt],["Roof area",r.roofArea],["Installer check","Inspect roof condition, shading, mounting clearance, and orientation before purchase."]])+"</dl></section>"+
-    "<section class=\"solar-report-box\"><h4>Questions to ask installer</h4>"+list(INSTALLER_CHECKLIST)+"</section>"+
-    "<section class=\"solar-report-box\"><h4>Disclaimers</h4>"+list(["This is a planning estimate, not a quote.","Replace defaults with written installer pricing, utility bills, fuel receipts, and lender terms.","PVGIS, Global Solar Atlas, or installer design software should be used for roof-level production modelling.","Sources last reviewed: "+r.sourceFreshness+". Confidence: "+r.confidence+"."])+"</section>"+
+    "<section class=\"solar-report-box\"><h4>Données saisies</h4><dl class=\"solar-report-kv\">"+rows([["Facture mensuelle d’électricité",r.monthlyBill],["Dépenses du groupe électrogène",r.generatorSpend+"/mois"],["Coupures",r.outageHours+" par jour"],["Puissance du système",r.systemKw+" kW"],["Option de batterie",r.batteryLabel],["Financement",financeLabel(r)]])+"</dl></section>"+
+    "<section class=\"solar-report-box\"><h4>Hypothèses</h4><dl class=\"solar-report-kv\">"+rows([["Tarif",r.tariff],["Prix du carburant",r.fuelPrice],["Rendement solaire",r.solarYield],["Ratio de performance",r.performanceRatio],["Coût d’installation",r.installCostPerKw+"/kW"],["Entretien",r.maintenancePct+" %/an"],["Date des données sources",r.sourceFreshness],["Niveau de confiance",r.confidence]])+"</dl></section>"+
+    "<section class=\"solar-report-box\"><h4>Résultats</h4><dl class=\"solar-report-kv\">"+rows([["Coût du système",r.systemCost],["Économies mensuelles",r.monthlySavings],["Délai de retour",r.payback],["Économies nettes sur 10 ans",r.tenYearNet],["Économies nettes sur 25 ans",r.twentyFiveYearNet],["Production la première année",r.firstYearGeneration]])+"</dl></section>"+
+    "<section class=\"solar-report-box\"><h4>Échéancier de rentabilité</h4>"+list(timelineRows(r))+"</section>"+
+    "<section class=\"solar-report-box\"><h4>Recommandation pour la batterie</h4>"+list([r.batteryRecommendation,"Capacité utile : "+r.batteryUsable,"Capacité nominale estimée : "+r.batteryNominal,"L’autonomie de secours couvre les appareils essentiels et dépend de leur consommation."])+"</section>"+
+    "<section class=\"solar-report-box\"><h4>Économies sur le groupe électrogène</h4><dl class=\"solar-report-kv\">"+rows([["Carburant économisé",r.generatorLitres],["Heures de fonctionnement évitées",r.generatorHours],["Précisions sur le groupe électrogène",r.generatorNote]])+"</dl></section>"+
+    "<section class=\"solar-report-box\"><h4>Toiture et panneaux</h4><dl class=\"solar-report-kv\">"+rows([["Nombre de panneaux",r.panelCount],["Puissance par panneau",r.panelWatt],["Surface de toiture",r.roofArea],["Vérification par l’installateur","Avant l’achat, faites vérifier l’état et l’orientation de la toiture, l’ombrage et l’espace de montage."]])+"</dl></section>"+
+    "<section class=\"solar-report-box\"><h4>Questions à poser à l’installateur</h4>"+list(INSTALLER_CHECKLIST)+"</section>"+
+    "<section class=\"solar-report-box\"><h4>Limites de l’estimation</h4>"+list(["Cette estimation sert à la planification et ne constitue pas un devis.","Remplacez les valeurs par les devis écrits, les factures, les reçus de carburant et les conditions du prêteur.","Utilisez PVGIS, Global Solar Atlas ou un logiciel de dimensionnement pour estimer la production sur votre toiture.","Dernière vérification des sources : "+r.sourceFreshness+". Niveau de confiance : "+r.confidence+"."])+"</section>"+
     "</div>";
 }
 function reportPlainText(){
-  if(!lastReport)return "Solar ROI estimate not ready. Run the calculator first.";
+  if(!lastReport)return "L’estimation solaire est indisponible. Lancez d’abord le calcul.";
   var r=lastReport;
   return [
-    "SOLAR ROI ESTIMATE - "+r.countryName,
+    "ESTIMATION SOLAIRE – "+r.countryName,
     "",
-    "EXECUTIVE SUMMARY",
+    "SYNTHÈSE",
     r.executiveSummary,
     "",
-    "USER INPUTS",
-    "Monthly grid bill: "+r.monthlyBill,
-    "Generator spend: "+r.generatorSpend+"/month",
-    "Outage hours: "+r.outageHours+" per day",
-    "System size: "+r.systemKw+" kW",
-    "Battery level: "+r.batteryLabel,
-    "Finance: "+financeLabel(r),
+    "DONNÉES SAISIES",
+    "Facture mensuelle d’électricité : "+r.monthlyBill,
+    "Dépenses du groupe électrogène : "+r.generatorSpend+"/mois",
+    "Coupures : "+r.outageHours+" par jour",
+    "Puissance du système : "+r.systemKw+" kW",
+    "Option de batterie : "+r.batteryLabel,
+    "Financement : "+financeLabel(r),
     "",
-    "ASSUMPTIONS",
-    "Tariff: "+r.tariff,
-    "Fuel price: "+r.fuelPrice,
-    "Solar yield: "+r.solarYield,
-    "Performance ratio: "+r.performanceRatio,
-    "Install cost: "+r.installCostPerKw+"/kW",
-    "Maintenance: "+r.maintenancePct+"%/year",
-    "Source freshness: "+r.sourceFreshness,
-    "Confidence: "+r.confidence,
+    "HYPOTHÈSES",
+    "Tarif : "+r.tariff,
+    "Prix du carburant : "+r.fuelPrice,
+    "Rendement solaire : "+r.solarYield,
+    "Ratio de performance : "+r.performanceRatio,
+    "Coût d’installation : "+r.installCostPerKw+"/kW",
+    "Entretien : "+r.maintenancePct+" %/an",
+    "Date des données sources : "+r.sourceFreshness,
+    "Niveau de confiance : "+r.confidence,
     "",
-    "RESULTS",
-    "System cost: "+r.systemCost,
-    "Monthly savings: "+r.monthlySavings,
-    "Payback: "+r.payback,
-    "10-year net savings: "+r.tenYearNet,
-    "25-year net savings: "+r.twentyFiveYearNet,
-    "First-year generation: "+r.firstYearGeneration,
+    "RÉSULTATS",
+    "Coût du système : "+r.systemCost,
+    "Économies mensuelles : "+r.monthlySavings,
+    "Délai de retour : "+r.payback,
+    "Économies nettes sur 10 ans : "+r.tenYearNet,
+    "Économies nettes sur 25 ans : "+r.twentyFiveYearNet,
+    "Production la première année : "+r.firstYearGeneration,
     "",
-    "PAYBACK TIMELINE",
+    "ÉCHÉANCIER DE RENTABILITÉ",
     timelineRows(r).join("\n"),
     "",
-    "BATTERY RECOMMENDATION",
+    "RECOMMANDATION POUR LA BATTERIE",
     r.batteryRecommendation,
-    "Usable capacity: "+r.batteryUsable,
-    "Nominal estimate: "+r.batteryNominal,
-    "Backup is not the same as total daily energy.",
+    "Capacité utile : "+r.batteryUsable,
+    "Capacité nominale estimée : "+r.batteryNominal,
+    "L’autonomie de secours ne correspond pas à la consommation journalière totale.",
     "",
-    "GENERATOR SAVINGS",
-    "Fuel avoided: "+r.generatorLitres,
-    "Run-hours avoided: "+r.generatorHours,
+    "ÉCONOMIES SUR LE GROUPE ÉLECTROGÈNE",
+    "Carburant économisé : "+r.generatorLitres,
+    "Heures de fonctionnement évitées : "+r.generatorHours,
     r.generatorNote,
     "",
-    "ROOF / PANEL ESTIMATE",
-    "Panel count: "+r.panelCount,
-    "Panel wattage: "+r.panelWatt,
-    "Roof area: "+r.roofArea,
-    "Ask installer to inspect roof condition, shading, mounting clearance, and orientation before purchase.",
+    "ESTIMATION DE LA TOITURE ET DES PANNEAUX",
+    "Nombre de panneaux : "+r.panelCount,
+    "Puissance par panneau : "+r.panelWatt,
+    "Surface de toiture : "+r.roofArea,
+    "Avant l’achat, faites vérifier l’état et l’orientation de la toiture, l’ombrage et l’espace de montage.",
     "",
-    "QUESTIONS TO ASK INSTALLER",
+    "QUESTIONS À POSER À L’INSTALLATEUR",
     INSTALLER_CHECKLIST.map(function(item,index){return (index+1)+". "+item;}).join("\n"),
     "",
-    "DISCLAIMERS",
-    "Planning estimate, not a quote. Replace defaults with written installer pricing, bills, fuel receipts, and lender terms.",
-    "Sources last reviewed: "+r.sourceFreshness+". Confidence: "+r.confidence+"."
+    "LIMITES DE L’ESTIMATION",
+    "Cette estimation sert à la planification. Remplacez les valeurs par les devis écrits, les factures, les reçus de carburant et les conditions du prêteur.",
+    "Dernière vérification des sources : "+r.sourceFreshness+". Niveau de confiance : "+r.confidence+"."
   ].join("\n");
 }
 function whatsappSummary(){
@@ -901,11 +902,11 @@ function copyDataUpdate(){
   var text=dataUpdateText(suggestion);
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateDataUpdateStatus("Update details copied and saved in this browser.");trackSolarEvent("source_update_clicked");}).catch(function(){updateDataUpdateStatus("Copy was blocked. Use Save and open email draft instead.");});}else{updateDataUpdateStatus("Copy is not available in this browser. Use Save and open email draft instead.");}
 }
-function checklistText(){return ["Installer quote checklist - "+DEFAULTS.countryName,""].concat(INSTALLER_CHECKLIST.map(function(item,index){return (index+1)+". "+item;})).join("\n");}
+function checklistText(){return ["Liste de vérification du devis – "+DEFAULTS.countryName,""].concat(INSTALLER_CHECKLIST.map(function(item,index){return (index+1)+". "+item;})).join("\n");}
 function downloadTextFile(filename,text,successMessage){var blob=new Blob([text],{type:"text/plain;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},0);if(successMessage)updateReportStatus(successMessage);}
 function copyText(text,successMessage,eventName){var revision=reportRevision;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(revision!==reportRevision)return;updateReportStatus(successMessage);if(eventName)trackSolarEvent(eventName);}).catch(function(){if(revision!==reportRevision)return;updateReportStatus("Copy was blocked. Use TXT download or print instead.");});}else{updateReportStatus("Copy is not available in this browser. Use TXT download or print instead.");}}
 function copyInstallerChecklist(){var text=checklistText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateInstallerChecklistStatus("Installer checklist copied.");}).catch(function(){updateInstallerChecklistStatus("Copy was blocked. Use download instead.");});}else{updateInstallerChecklistStatus("Copy is not available in this browser. Use download instead.");}}
-function downloadTxtReport(){if(!ensureReport())return;downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-estimate.txt",reportPlainText(),"TXT report downloaded.");trackSolarEvent("txt_downloaded");}
+function downloadTxtReport(){if(!ensureReport())return;downloadTextFile("estimation-solaire-"+DEFAULTS.countrySlug+".txt",reportPlainText(),"Rapport TXT téléchargé.");trackSolarEvent("txt_downloaded");}
 function downloadInstallerChecklist(){downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-installer-checklist.txt",checklistText());updateInstallerChecklistStatus("Installer checklist downloaded.");}
 function systemSizeBand(value){var kw=Number(value);if(!Number.isFinite(kw)||kw<=0)return"unknown";if(kw<=1)return"0_1kw";if(kw<=3)return"1_3kw";if(kw<=5)return"3_5kw";if(kw<=10)return"5_10kw";return"10kw_plus";}
 function paybackBand(value){if(value==null||value==="")return"unknown";var years=Number(value);if(!Number.isFinite(years))return"unknown";if(years<=0)return"no_payback";if(years<=3)return"0_3_years";if(years<=5)return"3_5_years";if(years<=8)return"5_8_years";if(years<=12)return"8_12_years";return"12_years_plus";}
@@ -981,7 +982,7 @@ function renderSystemSizeComparison(baseInputs,selectedKw,batteryOption,maintena
     var panelCount=result.sizing&&result.sizing.selectedSystemPanelCount!=null?result.sizing.selectedSystemPanelCount:result.panelCount;
     var roofArea=result.sizing&&result.sizing.selectedSystemRoofAreaSqm!=null?result.sizing.selectedSystemRoofAreaSqm:result.roofAreaSqm;
     var isRecommended=size===recommended;
-    return "<tr"+(isRecommended?" class=\"is-recommended\"":"")+"><th scope=\"row\">"+size+" kW"+(isRecommended?" <span class=\"solar-size-badge\">"+esc(comparisonLabel)+"</span>":"")+"</th><td>"+esc(money(result.systemCost))+"</td><td>"+Math.round((result.firstYearGenerationKwh||0)/12).toLocaleString("en-US")+" kWh/mo</td><td>"+esc(money(monthlyNet))+"/mo</td><td>"+esc(years(result.simplePaybackYears))+"</td><td>"+panelCount+"</td><td>"+(roofArea||0).toFixed(1)+" m2</td><td>"+esc(batteryFitText(batteryOption,result))+"</td><td>"+esc(bestForSize(size))+"</td></tr>";
+    return "<tr"+(isRecommended?" class=\"is-recommended\"":"")+"><th scope=\"row\">"+size+" kW"+(isRecommended?" <span class=\"solar-size-badge\">"+esc(comparisonLabel)+"</span>":"")+"</th><td>"+esc(money(result.systemCost))+"</td><td>"+Math.round((result.firstYearGenerationKwh||0)/12).toLocaleString("fr-FR")+" kWh/mois</td><td>"+esc(money(monthlyNet))+"/mo</td><td>"+esc(years(result.simplePaybackYears))+"</td><td>"+panelCount+"</td><td>"+(roofArea||0).toFixed(1)+" m2</td><td>"+esc(batteryFitText(batteryOption,result))+"</td><td>"+esc(bestForSize(size))+"</td></tr>";
   }).join("");
   if(status)status.textContent="Compared 1, 2, 3, 5, 10 and 20 kW systems for "+DEFAULTS.countryName+". Taille du système choisie : "+selectedKw+" kW. "+(recommended===selectedKw?"La ligne choisie est mise en évidence.":"Cette taille ne figure pas dans la comparaison ; la ligne la plus proche de "+recommended+" kW est mise en évidence uniquement pour comparaison.");
 }
@@ -1043,7 +1044,7 @@ function run(focusFirstInvalid,source){
     fuelAvoidedLitresPerMonth:litresMonth
   });
   var batteryLabel=(profile&&profile.label)||batteryOption;
-  var backupFit=batteryOption==="none"?"No battery selected; generator or grid still covers outages.":"Selected battery should be checked against essential load and outage hours.";
+  var backupFit=batteryOption==="none"?"Sans batterie, le groupe électrogène ou le réseau reste nécessaire pendant les coupures.":"Vérifiez que la batterie choisie couvre les appareils essentiels pendant les coupures.";
   lastReport={
     countryName:DEFAULTS.countryName,
     countrySlug:DEFAULTS.countrySlug,
@@ -1070,22 +1071,22 @@ function run(focusFirstInvalid,source){
     paybackYearsRaw:result.simplePaybackYears,
     tenYearNet:money(result.tenYearNetSavings),
     twentyFiveYearNet:money(result.twentyFiveYearNetSavings),
-    firstYearGeneration:Math.round(result.firstYearGenerationKwh).toLocaleString("en-US")+" kWh",
+    firstYearGeneration:Math.round(result.firstYearGenerationKwh).toLocaleString("fr-FR")+" kWh",
     cashflows:result.annualCashflows||[],
     batteryRecommendation:backupFit,
     batteryUsable:batteryOption==="none"?"No battery":(result.suggestedBatteryUsableKwh||0).toFixed(1)+" kWh",
     batteryNominal:batteryOption==="none"?"No battery":(result.suggestedBatteryNominalKwh||0).toFixed(1)+" kWh",
     generatorLitres:(result.generatorLitresAvoided||0).toFixed((result.generatorLitresAvoided||0)>=100?0:1)+" litres/year",
     generatorHours:(result.generatorRunHoursAvoided||0).toFixed((result.generatorRunHoursAvoided||0)>=100?0:1)+" hours/year",
-    generatorNote:inputs.monthlyGeneratorFuelSpend>0?"Generator savings are based on entered monthly fuel spend and outage pattern.":"Add generator spend if backup fuel is part of the decision.",
+    generatorNote:inputs.monthlyGeneratorFuelSpend>0?"Les économies du groupe sont estimées à partir des dépenses de carburant et des coupures indiquées.":"Indiquez les dépenses du groupe électrogène si le coût du carburant compte dans votre décision.",
     panelCount:(result.panelCount||0)+" panels",
     panelWatt:panelWatt+" W",
     roofArea:(result.roofAreaSqm||0).toFixed(1)+" m2"
   };
   setReportActions(true);
-  set("rSystem",kw+" kW",Math.round(result.firstYearGenerationKwh/12).toLocaleString("en-US")+" kWh/month estimated generation.",kw+" kilowatts");
+  set("rSystem",kw+" kW",Math.round(result.firstYearGenerationKwh/12).toLocaleString("fr-FR")+" kWh/mois de production estimée.",kw+" kilowatts");
   set("rCost",money(result.systemCost),batteryOption==="none"?"Solar-only estimate.":"Includes "+profile.label.toLowerCase()+" battery comme hypothèse de planification.",moneyAccessible(result.systemCost));
-  set("rSavings",money(monthlyNet)+"/mo",monthlyNet>0?"Estimated monthly relief after maintenance allowance.":"No monthly cash relief under current assumptions.",moneyAccessible(monthlyNet)+" per month");
+  set("rSavings",money(monthlyNet)+"/mois",monthlyNet>0?"Économies mensuelles estimées après provision pour l’entretien.":"Aucune économie mensuelle selon ces hypothèses.",moneyAccessible(monthlyNet)+" par mois");
   set("rPayback",years(result.simplePaybackYears),result.simplePaybackYears?"Simple payback before final quote validation.":"No payback under these assumptions.",years(result.simplePaybackYears));
   set("rTenYear",money(result.tenYearNetSavings),"10-year project cashflow after capex.",moneyAccessible(result.tenYearNetSavings)+" over 10 years");
   set("rBackup",batteryOption==="none"?"No battery":(result.suggestedBatteryUsableKwh||0).toFixed(1)+" usable kWh",batteryOption==="none"?"Generator or grid still covers outages.":"Backup sized for essential-load planning, not whole-house energy.",batteryOption==="none"?"No battery":(result.suggestedBatteryUsableKwh||0).toFixed(1)+" usable kilowatt-hours");
@@ -1094,7 +1095,7 @@ function run(focusFirstInvalid,source){
   byId("rSystemChange").textContent="Installer should verify roof area, load profile, inverter surge and battery usable kWh.";
   byId("resultStatus").textContent=decision.headline+" "+decision.reasons.slice(0,2).join(" ");
   var mPayback=byId("mPayback");if(mPayback){mPayback.textContent=years(result.simplePaybackYears);mPayback.setAttribute("aria-label",years(result.simplePaybackYears));}
-  var mSavings=byId("mSavings");if(mSavings){mSavings.textContent=money(monthlyNet)+"/mo";mSavings.setAttribute("aria-label",moneyAccessible(monthlyNet)+" per month");}
+  var mSavings=byId("mSavings");if(mSavings){mSavings.textContent=money(monthlyNet)+"/mois";mSavings.setAttribute("aria-label",moneyAccessible(monthlyNet)+" par mois");}
   renderSystemSizeComparison(inputs,kw,batteryOption,maintenancePct,includeFinance);
   renderReport();
   if(!solarAnalyticsState.result||source==="calculate"||source==="preset"){solarAnalyticsState.result=true;trackSolarEvent("result_generated");}

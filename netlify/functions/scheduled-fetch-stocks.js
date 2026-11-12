@@ -96,7 +96,7 @@ async function fetchFromMarketStack() {
   var url = 'https://api.marketstack.com/v1/eod/latest?access_key=' + encodeURIComponent(key) +
     '&symbols=' + symbols.join(',');
 
-  var res = await fetchWithRetry(url, { redirect: 'error' });
+  var res = await fetchWithRetry(url, { redirect: 'error', retryRateLimit: false });
   var json = await res.json();
 
   if (json && json.error) throw stockProviderFailure('PROVIDER_ERROR_RESPONSE');
