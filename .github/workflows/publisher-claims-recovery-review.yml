@@ -1,0 +1,24 @@
+name: AfroTools claims recovery review
+on: create
+permissions:
+  contents: read
+jobs:
+  review:
+    if: github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'automation/daily-5pm-publish-deploy-gate-20261112-claims-recovery-review'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify scholarship API and feed source
+        run: node --test tests/scholarship-api-metadata.test.js tests/data-freshness-availability.test.js tests/scholarship-limited-feed-truth.test.js tests/scholarship-finder-vip.test.js
+      - run: npx playwright install chromium --with-deps
+      - name: Verify scholarship browser from composed source
+        run: npx playwright test tests/e2e/scholarship-finder-vip.spec.js --project=chromium --workers=2 --retries=0
+      - name: Check current claims eligibility
+        if: always()
+        run: node scripts/build-public-claims.js --check
