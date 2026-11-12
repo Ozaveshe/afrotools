@@ -49,6 +49,19 @@ for (const [family, count] of families) {
     for (const [file, html] of rendered) {
       const blocks = [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
         .map(match => JSON.parse(match[1]));
+      if (family === 'cassava-processing') {
+        const pages = blocks.filter(item => item['@type'] === 'WebPage');
+        assert.equal(pages.length, 1, file);
+        assert.ok(pages[0].name && pages[0].description, file);
+        const canonical = html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
+        assert.ok(canonical, file);
+        assert.equal(pages[0].url, canonical[1], file);
+        assert.equal(blocks.some(item => ['Product', 'WebApplication', 'SoftwareApplication'].includes(item['@type'])), false, file);
+        for (const item of blocks) {
+          for (const key of ['offers', 'aggregateRating', 'review']) assert.equal(Object.hasOwn(item, key), false, file);
+        }
+        continue;
+      }
       const apps = blocks.filter(item => item['@type'] === 'WebApplication');
       assert.equal(apps.length, 1, file);
       const app = apps[0];

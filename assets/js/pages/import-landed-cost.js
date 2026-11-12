@@ -9,6 +9,7 @@
 
   var rules = null;
   var fxSnapshot = null;
+  var liveFx = null;
   var currentInput = null;
   var currentResult = null;
   var optionalKeys = ['clearingAgent', 'portTerminal', 'storage', 'inlandHaulage', 'inspection', 'documentation', 'bankRemittance', 'miscellaneous'];
@@ -74,14 +75,45 @@
     select.innerHTML = '<option value="">Choose confirmed rate</option>' + bands.map(function (rate) { return '<option value="' + rate + '">' + rate + '%</option>'; }).join('') + '<option value="custom">Custom confirmed rate</option>';
     el('customDutyField').hidden = true;
   }
+  function referenceForPair(from, to) {
+    if (!liveFx || liveFx.base !== 'USD' || from === to) return fxSnapshot;
+    var now = Date.now();
+    var observations = [from, to].map(function (code) {
+      var quote = liveFx.qualification && liveFx.qualification[code];
+      if (code !== 'USD' && (!quote || quote.status !== 'available' || quote.base?.status !== 'available' || quote.base.rate !== 1 || quote.target?.status !== 'available')) return null;
+      var legs = code === 'USD' ? [{ observed_at: liveFx.as_of || liveFx.timestamp, source: liveFx.source }] : [quote.base, quote.target];
+      var rate = code === 'USD' ? 1 : liveFx.rates?.[code];
+      if (!Number.isFinite(rate) || rate <= 0 || (code !== 'USD' && (!Number.isFinite(quote.target.rate) || Math.abs(rate - quote.target.rate) > 0.0000005001))) return null;
+      if (legs.some(function (leg) {
+        var age = now - Date.parse(leg.observed_at);
+        return !leg.source || leg.source !== liveFx.source || !Number.isFinite(age) || age < 0 || age > 86400000;
+      })) return null;
+      return { rate: rate, date: Math.min.apply(null, legs.map(function (leg) { return Date.parse(leg.observed_at); })) };
+    });
+    if (observations.some(function (item) { return !item; })) return fxSnapshot;
+    return {
+      base: 'USD',
+      rates: { [from]: observations[0].rate, [to]: observations[1].rate },
+      timestamp: new Date(Math.min(observations[0].date, observations[1].date)).toISOString(),
+      source: liveFx.source
+    };
+  }
   function updateFxHelp() {
     var currentMarket = market();
-    if (!currentMarket || !fxSnapshot) return;
+    if (!currentMarket) return;
     var source = value('sourceCurrency');
-    var rate = engine.calculateFxRate(fxSnapshot, source, currentMarket.currency);
-    var stale = engine.isFxStale(fxSnapshot, rules, new Date().toISOString().slice(0, 10));
+    var reference = referenceForPair(source, currentMarket.currency);
+    var rate = reference && engine.calculateFxRate(reference, source, currentMarket.currency);
+    var stale = engine.isFxStale(reference, rules, new Date().toISOString());
     el('fxUnit').textContent = currentMarket.currency + ' per ' + source;
-    el('fxHelp').textContent = rate ? 'Reference ' + Number(rate).toLocaleString('en', { maximumFractionDigits: 6 }) + ' · ' + fxSnapshot.source + ' · ' + dateLabel(fxSnapshot.timestamp) + ' · ' + (stale ? 'stale—verify or override' : 'fresh') : 'No maintained reference pair. Enter a custom rate.';
+    el('fxHelp').textContent = rate ? 'Reference ' + Number(rate).toLocaleString('en', { maximumFractionDigits: 6 }) + ' · ' + reference.source + ' · ' + dateLabel(reference.timestamp) + ' · ' + (stale ? 'stale—verify or override' : 'fresh') : 'No maintained reference pair. Enter a custom rate.';
+  }
+  function resetPairQuote() {
+    var manualRate = el('fxRate');
+    var cleared = manualRate.value !== '';
+    manualRate.value = '';
+    updateFxHelp();
+    if (cleared) invalidateEstimate('Enter a new manual exchange rate for this currency pair, or use the reference rate.');
   }
   function showUnsupported(message, route) {
     resultNode.innerHTML = '<div class="ilc-result-body"><div class="ilc-notice ilc-notice--error"><strong>That workflow is not supported here.</strong><p>' + esc(message) + '</p>' + (route ? '<a class="idv-button idv-button-primary" href="' + esc(route) + '">Open vehicle import calculator</a>' : '') + '</div></div>';
@@ -95,8 +127,9 @@
       return line(labels[key], result.optionalCosts[key]);
     }).join('') || '<div class="ilc-line"><span>No optional local costs entered</span><strong>' + esc(money(0)) + '</strong></div>';
     var sourceLinks = result.sources.map(function (source) { return '<li><a href="' + esc(source.url) + '" target="_blank" rel="noopener">' + esc(source.title) + '</a></li>'; }).join('');
+    var referenceMissing = !result.fxReferenceTimestamp;
     var warnings = result.warnings.map(function (warning) {
-      var labels = { 'classification-unconfirmed': 'Duty classification is not confirmed.', 'other-charges-may-apply': 'Product-specific or declaration charges may still apply.', 'customs-value-override': 'The entered assessed customs value replaced CIF.', 'vat-uplift-applied': 'South Africa\'s 10% import-VAT uplift is included.', 'vat-uplift-origin-exception': 'The South Africa VAT uplift exception was applied for this origin.', 'stale-rule': 'This rule is outside its maintenance window—verify before use.', 'stale-fx': 'The bundled FX snapshot is outside its maintenance window—use a verified override.' };
+      var labels = { 'classification-unconfirmed': 'Duty classification is not confirmed.', 'other-charges-may-apply': 'Product-specific or declaration charges may still apply.', 'customs-value-override': 'The entered assessed customs value replaced CIF.', 'vat-uplift-applied': 'South Africa\'s 10% import-VAT uplift is included.', 'vat-uplift-origin-exception': 'The South Africa VAT uplift exception was applied for this origin.', 'stale-rule': 'This rule is outside its maintenance window—verify before use.', 'stale-fx': referenceMissing ? 'No reference exchange rate is available for this estimate.' : 'The bundled FX snapshot is outside its maintenance window—use a verified override.' };
       return labels[warning] || warning;
     });
     resultNode.innerHTML = '<div class="ilc-result-summary"><div class="idv-eyebrow">Estimated landed cost</div><h2 id="resultHeading">' + esc(result.country) + ' · ' + esc(result.destinationCurrency) + '</h2><strong class="ilc-total">' + esc(money(result.landedCostLocal)) + '</strong><span class="ilc-per-unit">' + esc(money(result.landedCostPerUnit)) + ' per unit · ' + result.quantity + ' unit' + (result.quantity === 1 ? '' : 's') + '</span></div>' +
@@ -113,7 +146,7 @@
     statusNode.textContent = 'Estimate calculated locally. No shipment amounts were sent or stored.';
   }
   function calculate() {
-    if (!rules || !fxSnapshot) { statusNode.textContent = 'Rules or FX data are not ready. Try again.'; return; }
+    if (!rules) { statusNode.textContent = 'Import rules are not ready. Try again.'; return; }
     var input = getInput();
     if (input.destination === 'unsupported') {
       analytics('import_unsupported_market', { market: 'other' });
@@ -121,7 +154,8 @@
       statusNode.textContent = 'Unsupported destination shown.';
       return;
     }
-    var output = engine.calculate(input, rules, { fxSnapshot: fxSnapshot });
+    var reference = referenceForPair(input.sourceCurrency, market()?.currency);
+    var output = engine.calculate(input, rules, { fxSnapshot: reference });
     if (!output.valid) {
       if (output.unsupported) showUnsupported(output.reason || 'This category needs a separate verified workflow.', output.route);
       else statusNode.textContent = 'Review these inputs: ' + output.errors.join(', ') + '.';
@@ -137,8 +171,9 @@
   function summary() {
     if (!currentResult) return '';
     var r = currentResult;
+    var reference = r.fxReferenceTimestamp ? r.fxReferenceSource + ', snapshot ' + r.fxReferenceTimestamp + ', ' + r.fxFreshness : 'unavailable';
     var sourceLines = r.sources.map(function (source) { return 'Official source: ' + source.title + ' — ' + source.url; });
-    return ['AfroTools Import & Landed Cost Estimate', 'Destination: ' + r.country, 'Origin: ' + r.origin, 'Supplier cost: ' + money(r.purchaseValueLocal), 'Freight: ' + money(r.freightLocal), 'Insurance: ' + money(r.insuranceLocal), 'Customs value: ' + money(r.customsValue), 'Duty: ' + money(r.duty), 'Excise: ' + money(r.excise), 'Levies: ' + money(r.totalLevies), 'VAT: ' + money(r.vat), 'Other government charges: ' + money(r.otherStatutory), 'Optional local costs: ' + money(r.optionalCostsTotal), 'Estimated landed cost: ' + money(r.landedCostLocal), 'Per unit: ' + money(r.landedCostPerUnit), 'FX rate: ' + r.fxRate + ' ' + r.destinationCurrency + ' per ' + r.sourceCurrency, 'FX reference: ' + r.fxReferenceSource + ', snapshot ' + r.fxReferenceTimestamp + ', ' + r.fxFreshness, 'Customs authority: ' + r.authority, 'Rule: ' + r.ruleVersion + ', effective ' + r.effectiveDate + ', verified ' + r.lastVerified].concat(sourceLines, ['Planning estimate only; confirm the declaration with the destination authority.']).join('\n');
+    return ['AfroTools Import & Landed Cost Estimate', 'Destination: ' + r.country, 'Origin: ' + r.origin, 'Supplier cost: ' + money(r.purchaseValueLocal), 'Freight: ' + money(r.freightLocal), 'Insurance: ' + money(r.insuranceLocal), 'Customs value: ' + money(r.customsValue), 'Duty: ' + money(r.duty), 'Excise: ' + money(r.excise), 'Levies: ' + money(r.totalLevies), 'VAT: ' + money(r.vat), 'Other government charges: ' + money(r.otherStatutory), 'Optional local costs: ' + money(r.optionalCostsTotal), 'Estimated landed cost: ' + money(r.landedCostLocal), 'Per unit: ' + money(r.landedCostPerUnit), 'FX rate: ' + r.fxRate + ' ' + r.destinationCurrency + ' per ' + r.sourceCurrency + (r.fxSource === 'user-override' ? ' (your override)' : ''), 'FX reference: ' + reference, 'Customs authority: ' + r.authority, 'Rule: ' + r.ruleVersion + ', effective ' + r.effectiveDate + ', verified ' + r.lastVerified].concat(sourceLines, ['Planning estimate only; confirm the declaration with the destination authority.']).join('\n');
   }
 
   // Invalidate before target-specific handlers show an unsupported-market/vehicle notice.
@@ -154,7 +189,7 @@
   el('destination').addEventListener('change', function () {
     var destination = value('destination');
     analytics('import_destination_selected', { destination: destination });
-    updateDutyBands(); updateFxHelp();
+    updateDutyBands(); resetPairQuote();
     if (destination === 'unsupported') {
       analytics('import_unsupported_market', { market: 'other' });
       showUnsupported('Choose Nigeria, Kenya, Ghana or South Africa. Other destinations need maintained country-specific rules.');
@@ -163,13 +198,14 @@
   });
   el('origin').addEventListener('change', function () { analytics('import_origin_selected', { origin: value('origin') }); });
   el('goodsType').addEventListener('change', function () { analytics('import_goods_type_selected', { goods_type: value('goodsType') }); if (value('goodsType') === 'vehicle') showUnsupported(rules.goodsTypes.vehicle.notes, rules.goodsTypes.vehicle.route); });
-  el('sourceCurrency').addEventListener('change', updateFxHelp);
+  el('sourceCurrency').addEventListener('change', resetPairQuote);
   el('dutyRate').addEventListener('change', function () { el('customDutyField').hidden = value('dutyRate') !== 'custom'; if (!el('customDutyField').hidden) el('customDutyRate').focus(); });
   el('resetImport').addEventListener('click', function () { form.reset(); updateDutyBands(); updateFxHelp(); invalidateEstimate('Reset. Nothing was stored or sent.'); });
   el('compareScenario').addEventListener('click', function () {
     if (!currentInput || !currentResult) return;
     var other = Object.assign({}, currentInput, { purchaseValue: value('scenarioPurchase') || currentInput.purchaseValue, freight: value('scenarioFreight') || currentInput.freight, fxRate: value('scenarioFx') || currentInput.fxRate });
-    var comparison = engine.compare(currentInput, other, rules, { fxSnapshot: fxSnapshot });
+    var reference = referenceForPair(currentInput.sourceCurrency, rules.markets[currentInput.destination]?.currency);
+    var comparison = engine.compare(currentInput, other, rules, { fxSnapshot: reference });
     if (!comparison.valid) { el('scenarioResult').textContent = 'Review scenario B inputs.'; return; }
     el('scenarioResult').innerHTML = '<div class="ilc-compare"><article><span>Scenario A</span><strong>' + esc(currencyFormat(comparison.left.landedCostLocal, comparison.left.destinationCurrency)) + '</strong></article><div class="ilc-compare-delta">' + (comparison.compatible ? (comparison.differenceLocal >= 0 ? '+' : '') + esc(currencyFormat(comparison.differenceLocal, comparison.left.destinationCurrency)) + '<br>(' + comparison.differencePercent.toFixed(2) + '%)' : 'Different rules and currencies') + '</div><article><span>Scenario B</span><strong>' + esc(currencyFormat(comparison.right.landedCostLocal, comparison.right.destinationCurrency)) + '</strong></article></div>';
     analytics('import_scenario_compared', { destination: currentInput.destination, compatible: comparison.compatible, fx_override: Number(other.fxRate) > 0 });
@@ -186,10 +222,18 @@
     analytics('import_export_completed', { format: 'pdf', destination: currentResult.destination });
   });
 
+  function loadReference(url) {
+    return fetch(url, { signal: AbortSignal.timeout(5000) }).then(function (response) {
+      if (!response.ok) return null;
+      return response.json();
+    }).catch(function () { return null; });
+  }
+
   Promise.all([
     fetch('/data/trade/import-rules.json').then(function (response) { if (!response.ok) throw new Error('rules'); return response.json(); }),
-    fetch('/data/forex/latest.json').then(function (response) { if (!response.ok) throw new Error('fx'); return response.json(); })
+    loadReference('/data/forex/latest.json'),
+    loadReference('/api/forex?base=USD')
   ]).then(function (payload) {
-    rules = payload[0]; fxSnapshot = payload[1]; updateDutyBands(); updateFxHelp(); statusNode.textContent = 'Ready. Choose a confirmed duty rate to calculate.';
-  }).catch(function () { statusNode.textContent = 'The maintained rules or FX snapshot could not be loaded. Please retry later.'; });
+    rules = payload[0]; fxSnapshot = payload[1]; liveFx = payload[2]; updateDutyBands(); updateFxHelp(); statusNode.textContent = fxSnapshot || liveFx ? 'Ready. Choose a confirmed duty rate to calculate.' : 'Reference exchange rates are unavailable. Enter a verified rate if converting currencies.';
+  }).catch(function () { statusNode.textContent = 'The maintained import rules could not be loaded. Please retry later.'; });
 }());

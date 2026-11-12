@@ -61,6 +61,7 @@ function renderFrenchAgriculturePage(options) {
     pageConfig,
     familyLabel = 'Outil agricole',
     familyRoute = '/fr/agriculture/',
+    useWebPageSchema = false,
   } = options;
   const canonical = `https://afrotools.com${row.french.route}`;
   const englishUrl = `https://afrotools.com${row.english.route}`;
@@ -82,11 +83,11 @@ function renderFrenchAgriculturePage(options) {
     : `Illustration de l’outil agricole : ${familyLabel}`;
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'WebApplication',
+    '@type': useWebPageSchema ? 'WebPage' : 'WebApplication',
     name: heading,
     url: canonical,
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'All',
+    applicationCategory: useWebPageSchema ? undefined : 'UtilityApplication',
+    operatingSystem: useWebPageSchema ? undefined : 'All',
     inLanguage: 'fr',
     isAccessibleForFree: true,
     description,
@@ -95,11 +96,11 @@ function renderFrenchAgriculturePage(options) {
       name: country.frenchName,
       identifier: country.code,
     } : undefined,
-    additionalProperty: [
+    additionalProperty: useWebPageSchema ? undefined : [
       { '@type': 'PropertyValue', name: 'sourceJurisdiction', value: country.code || 'Africa' },
       { '@type': 'PropertyValue', name: 'formulaJurisdiction', value: country.code || 'Africa' },
     ],
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    offers: useWebPageSchema ? undefined : { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     author: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' },
     image,
   };

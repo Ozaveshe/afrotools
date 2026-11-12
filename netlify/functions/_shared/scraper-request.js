@@ -15,7 +15,7 @@ function failure(code, status) {
 }
 
 async function fetchWithRetry(url, opts = {}) {
-  const {retries = 3, backoffMs = 1000, timeoutMs = DEFAULT_TIMEOUT_MS, signal:callerSignal, ...fetchOpts} = opts;
+  const {retries = 3, backoffMs = 1000, timeoutMs = DEFAULT_TIMEOUT_MS, signal:callerSignal, retryRateLimit = true, ...fetchOpts} = opts;
   if (!Number.isInteger(retries) || retries < 1 || retries > 5 || !Number.isFinite(backoffMs) || backoffMs < 0 ||
       !Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > MAX_TIMEOUT_MS) throw new Error('Invalid upstream request policy');
   const controller = new AbortController();
@@ -46,7 +46,7 @@ async function fetchWithRetry(url, opts = {}) {
           // Rejected bodies are never decoded/logged; cancellation is best effort.
           try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch (_) {}
           error = failure('UPSTREAM_HTTP_ERROR',response.status);
-          if (response.status !== 429 && response.status < 500) throw error;
+          if (response.status < 500 && (response.status !== 429 || !retryRateLimit)) throw error;
         } else {
           // Materialize under the same deadline before returning. Callers may
           // use any Response body method or clone without losing that bound.

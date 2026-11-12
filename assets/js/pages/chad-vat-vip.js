@@ -30,7 +30,11 @@
         rateKind: s.rateKind,
       });
       id("tdvError").textContent = "";
-      id("tdvMain").textContent = money(
+      var mainResult = id("tdvMain");
+      var amountRow = id(s.mode === "add" ? "tdvGross" : "tdvNet");
+      mainResult.previousElementSibling.textContent =
+        amountRow.previousElementSibling.textContent;
+      mainResult.textContent = money(
         s.mode === "add" ? s.result.gross : s.result.net,
       );
       id("tdvNet").textContent = money(s.result.net);
