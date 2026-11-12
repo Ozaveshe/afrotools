@@ -4,7 +4,8 @@ const {
   filterScholarships,
   getAuthClient,
   listSavedScholarships,
-  loadScholarshipFeed
+  loadScholarshipFeed,
+  formatScholarshipRecordLabel
 } = require('./_shared/scholarship-platform');
 
 const CORS_HEADERS = {
@@ -42,11 +43,6 @@ function paginate(list, params) {
     items: items,
     total: total
   };
-}
-
-function formatClaimSafeLabel(count) {
-  const value = Math.max(0, Math.floor(Number(count) || 0));
-  return value + ' Scholarship' + (value === 1 ? '' : 's');
 }
 
 function getScholarshipMode(item) {
@@ -195,7 +191,7 @@ function buildScholarshipSummary(items, meta, now = new Date()) {
     deadlineResolved: 0,
     noSinglePublicDeadline: 0,
     verifiedExactDeadline: 0,
-    claimSafeLabel: formatClaimSafeLabel(list.length),
+    claimSafeLabel: formatScholarshipRecordLabel(list.length, meta || {}),
     isLimited: !!(meta && meta.isLimited)
   };
 
