@@ -161,28 +161,21 @@
               <span class="slider-label">Annual Gross Salary</span>
               <span class="slider-val" id="sliderVal">K 150,000</span>
             </div>
-            <input aria-label="Annual gross salary slider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="150000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="150000" oninput="onSlider(this)">
             <div class="slider-limits"><span>K 50,000</span><span>K 5,000,000</span></div>
           </div>
 
-          <div class="field">
-            <label class="f-label" for="salaryInputPeriod">Salary input period</label>
-            <select class="f-input" id="salaryInputPeriod">
-              <option value="annual">Annual</option>
-              <option value="monthly">Monthly</option>
-            </select>
-          </div>
           <!-- INPUT -->
           <div class="field">
             <div class="f-label"><span class="f-label-text" id="salaryInputLabel">Annual gross salary (K)</span><span class="f-hint">Before any deductions</span></div>
             <div class="f-wrap">
               <span class="f-prefix">K</span>
-              <input aria-labelledby="salaryInputLabel" type="number" class="f-input" id="grossSalary" placeholder="150,000" min="0" step="0.01" value="150000" oninput="onInput(this)">
+              <input aria-labelledby="salaryInputLabel" type="number" class="f-input" id="grossSalary" placeholder="150,000" min="0" step="10000" value="150000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="field">
-            <label class="f-label" for="basicSalary" id="basicSalaryLabel">Annual basic salary for NHIMA (K)</label>
+            <label class="f-label" for="basicSalary">Annual basic salary for NHIMA (K)</label>
             <input type="number" class="f-input" id="basicSalary" min="0" step="0.01" aria-describedby="basicSalaryNote" placeholder="Leave blank if basic equals gross">
             <p class="f-note" id="basicSalaryNote">NHIMA uses basic salary, excluding allowances. If left blank, this estimate treats gross salary as basic salary.</p>
           </div>
@@ -598,40 +591,19 @@ const fmt = n => 'K\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-ZM');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SLIDER ────────────────────────────────────────────────────
-const salaryInputPeriod = document.getElementById('salaryInputPeriod');
-let salaryInputFactor = 1;
-salaryInputPeriod.addEventListener('change', () => {
-  const nextFactor = salaryInputPeriod.value === 'monthly' ? 12 : 1;
-  for (const id of ['grossSalary', 'basicSalary']) {
-    const field = document.getElementById(id);
-    if (field.value !== '') {
-      field.value = Number((Number(field.value) * salaryInputFactor / nextFactor).toFixed(2));
-    }
-  }
-  salaryInputFactor = nextFactor;
-  const label = nextFactor === 12 ? 'Monthly' : 'Annual';
-  document.getElementById('salaryInputLabel').textContent = label + ' gross salary (K)';
-  document.getElementById('basicSalaryLabel').textContent = label + ' basic salary for NHIMA (K)';
-  document.getElementById('grossSalary').placeholder = nextFactor === 12 ? '12,500' : '150,000';
-  const resultButton = Array.from(document.querySelectorAll('.per-btn')).find(button =>
-    button.textContent.trim().toLowerCase() === salaryInputPeriod.value);
-  setPeriod(salaryInputPeriod.value, resultButton);
-  clearTimeout(window._sliderDebounce);
-  calculate();
-});
 function onSlider(el) {
   const v = parseInt(el.value);
-  document.getElementById('grossSalary').value = Number((v / salaryInputFactor).toFixed(2));
+  document.getElementById('grossSalary').value = v;
   document.getElementById('sliderVal').textContent = fmt(v);
   updateSliderFill(el);
   clearTimeout(window._sliderDebounce);
   window._sliderDebounce = setTimeout(calculate, 280);
 }
 function onInput(el) {
-  const v = Math.min(Math.max((Number(el.value) || 0) * salaryInputFactor, 50000), 5000000);
+  const v = Math.min(Math.max(parseInt(el.value) || 0, 50000), 5000000);
   const s = document.getElementById('salarySlider');
   s.value = v;
-  document.getElementById('sliderVal').textContent = fmt((Number(el.value) || 0) * salaryInputFactor);
+  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
   updateSliderFill(s);
   clearTimeout(window._sliderDebounce);
   window._sliderDebounce = setTimeout(calculate, 280);
@@ -700,6 +672,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
 
 // ── MAIN CALCULATE ────────────────────────────────────────────
   function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
     document.getElementById('salarySlider').value = val;
     onSlider(document.getElementById('salarySlider'));
     document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
@@ -717,9 +690,9 @@ function calcAnnualPAYE(annualTaxableIncome) {
   }
 
   function calculate() {
-  const gross = Number(document.getElementById('grossSalary').value) * salaryInputFactor;
+  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
   if (!Number.isFinite(gross) || gross <= 0) {
-    clearCalculation('Enter a positive gross salary.');
+    clearCalculation('Enter a positive annual salary.');
     const el = document.getElementById('grossSalary');
     el.focus(); el.style.borderColor = '#e53e3e';
     el.setAttribute('placeholder', 'Enter a valid salary');
@@ -729,10 +702,10 @@ function calcAnnualPAYE(annualTaxableIncome) {
 
   const hasNAPSA = isOn('napsa');
   const basicInput = document.getElementById('basicSalary');
-  const basicAnnual = basicInput.value.trim() === '' ? gross : Number(basicInput.value) * salaryInputFactor;
+  const basicAnnual = basicInput.value.trim() === '' ? gross : Number(basicInput.value);
   const calculationStatus = document.getElementById('calculationStatus');
   if (!Number.isFinite(basicAnnual) || basicAnnual < 0 || basicAnnual > gross) {
-    clearCalculation('Basic salary must be between zero and gross salary.');
+    clearCalculation('Basic salary must be between zero and annual gross salary.');
     basicInput.focus();
     return;
   }
@@ -772,7 +745,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
     ? 'Calculated with gross salary treated as basic salary for NHIMA. Enter your basic salary if allowances are included in gross.'
     : 'Calculated with NHIMA based on the basic salary entered.';
 
-  document.getElementById('resAmount').textContent      = fmt(PERIOD === 'monthly' ? monthly(netAnnual) : netAnnual);
+  document.getElementById('resAmount').textContent      = fmt(netAnnual);
   document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/year · ${fmt(monthly(gross))}/month`;
   document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
@@ -1160,7 +1133,7 @@ document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==
 window._grossToNet = function(g) {
   var d=isOn('napsa')?Math.min(g*0.05,1861.80*12):0;
   var basicText=document.getElementById('basicSalary').value.trim();
-  var basic=basicText===''?g:Number(basicText) * salaryInputFactor;
+  var basic=basicText===''?g:Number(basicText);
   return g-(d+basic*0.01+calcAnnualPAYE(g).tax);
 };
 </script>
