@@ -132,7 +132,8 @@ function pageUrl(route) {
 }
 
 function iframeCode(widget, item) {
-  return `<iframe src="${SITE}${widget.iframePath}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
+  const localeQuery = item.id === "poultry-roi-estimator" ? "?lang=fr" : "";
+  return `<iframe src="${SITE}${widget.iframePath}${localeQuery}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
 }
 
 function pageTemplate(item, widget) {
@@ -201,7 +202,7 @@ function pageTemplate(item, widget) {
         <p class="commercial-copy">${escapeHtml(item.description)}</p>
         <div class="commercial-actions">
           <a class="btn btn-primary" href="${item.fullFrenchPath}">Ouvrir l'outil complet</a>
-          <a class="btn btn-secondary" href="#code-integration">Copier le code d'integration</a>
+          <a class="btn btn-secondary" href="#code-integration">Voir le code d’intégration</a>
           <a class="btn btn-ghost" href="/fr/widgets/">Tous les widgets francais</a>
         </div>
       </div>
@@ -237,7 +238,28 @@ function pageTemplate(item, widget) {
       <aside class="commercial-card" id="code-integration">
         <h2>Code d'integration</h2>
         <p class="fr-widget-note">Ce code pointe vers l'iframe technique. Ne liez pas cette iframe comme une page SEO; liez plutot cette page parent ou l'outil complet.</p>
-        <textarea class="fr-widget-code" readonly>${escapeHtml(embedCode)}</textarea>
+        <label for="fr-widget-embed">Code iframe</label>
+        <textarea id="fr-widget-embed" class="fr-widget-code" readonly>${escapeHtml(embedCode)}</textarea>
+        <button id="fr-widget-copy" class="btn btn-secondary" type="button" hidden>Copier le code</button>
+        <p id="fr-widget-copy-status" role="status"></p>
+        <script>
+(function () {
+  const code = document.getElementById("fr-widget-embed");
+  const button = document.getElementById("fr-widget-copy");
+  const status = document.getElementById("fr-widget-copy-status");
+  button.addEventListener("click", async function () {
+    try {
+      await navigator.clipboard.writeText(code.value);
+      status.textContent = "Code copié.";
+    } catch {
+      code.focus();
+      code.select();
+      status.textContent = "Code sélectionné. Copiez-le manuellement.";
+    }
+  });
+  button.hidden = false;
+}());
+        </script>
       </aside>
     </div>
   </section>

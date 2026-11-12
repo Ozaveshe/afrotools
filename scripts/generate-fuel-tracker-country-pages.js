@@ -314,7 +314,7 @@ function htmlPage(row, rows) {
   const fuelMarket = { TZ: 'tz-dar-es-salaam', BF: 'bf-national' }[row.code];
   const fuelFinderHref = fuelMarket
     ? `/tools/fuel-tracker/?market=${fuelMarket}#fuel-finder`
-    : '/tools/fuel-tracker/#fuel-finder';
+    : `/tools/fuel-tracker/?country=${encodeURIComponent(row.code)}#fuel-finder`;
   const compareHref = '#related-countries';
   const generatorHref = '/tools/backup-power-costs/';
   const ogImage = ogImageFor(slug);
