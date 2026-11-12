@@ -137,6 +137,12 @@ function toolLabel(tool) {
   return tool.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ").replace(/\bRoi\b/, "ROI");
 }
 
+function getCountryFacts(tool, slug) {
+  const data = countryData.get(slug);
+  return data ? factsSection(tool, data) : "";
+}
+
+function main() {
 // ── walk agriculture tool country pages ──
 const GENERIC_FAQ = "Use it as a planning step before you pay, submit, publish, travel, or choose a provider.";
 let enriched = 0, faqFixed = 0, skippedNoData = new Set(), alreadyDone = 0;
@@ -210,3 +216,8 @@ walkOthers(ROOT);
 
 console.log(`enriched: ${enriched} pages | FAQ sentence replaced on: ${faqFixed} pages | already enriched: ${alreadyDone}`);
 if (skippedNoData.size) console.log("no data for slugs:", [...skippedNoData].sort().join(", "));
+
+}
+
+if (require.main === module) main();
+module.exports = { getCountryFacts };
