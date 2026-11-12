@@ -64,7 +64,12 @@ exports.handler = async function(event) {
   // Route to handler
   switch (path) {
     case 'forex':
-      return handleForex(params, CORS);
+      return handleForex(params, {
+        ...CORS,
+        'Cache-Control': 'no-store',
+        'CDN-Cache-Control': 'no-store',
+        'Netlify-CDN-Cache-Control': 'no-store',
+      });
     case 'fuel':
       return handleFuel(params, CORS);
     case 'commodities':

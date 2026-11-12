@@ -133,7 +133,7 @@ function pendingSnapshotRuntime(locale, search = '') {
     async copy() { await node('fxCopy').events.click(); }, csv() { node('fxCsv').events.click(); } };
 }
 function delayedSnapshot(rates = { NGN: 1500, KES: 130, GHS: 15, EUR: 0.9, XOF: 600 }) {
-  return { schemaVersion: 1, base: 'USD', source: 'fawazahmed', timestamp: '2026-10-09T00:00:00Z', rates, retained_rate_codes: [] };
+  return { schemaVersion: 1, base: 'USD', source: 'fawazahmed', timestamp: new Date(now - 12 * 60 * 60 * 1000).toISOString(), rates, retained_rate_codes: [] };
 }
 async function assertQuoteCleared(h) {
   assert.equal(h.node('fxManualRate').value, '');
@@ -183,6 +183,15 @@ for (const locale of ['en', 'fr', 'sw']) {
   test(locale + ' genuine swap changes clear the quote and remain selected after late settlement', async () => {
     const h = pendingSnapshotRuntime(locale); h.manual(); h.node('fxActionStatus').textContent = 'old export status'; h.node('fxSwap').events.click(); assert.deepEqual(h.pair(), ['GHS', 'KES']); await assertQuoteCleared(h);
     await h.reply(delayedSnapshot()); assert.deepEqual(h.pair(), ['GHS', 'KES']);
+  });
+  test(locale + ' rejects an expired API quote and accepts the separately dated bundled reference', async () => {
+    const h = pendingSnapshotRuntime(locale);
+    const staleApi = { ...delayedSnapshot(), timestamp: new Date(now - 25 * 60 * 60 * 1000).toISOString() };
+    await h.reply(staleApi);
+    assert.deepEqual(h.requests.map(request => request.url), ['/api/forex?base=USD', '/data/forex/latest.json']);
+    assert.equal(h.node('fxConvert').disabled, true);
+    await h.reply(staleApi);
+    assert.equal(h.node('fxConvert').disabled, false);
   });
   test(locale + ' expired pending snapshots stay unavailable without destroying the manual pair', async () => {
     const h = pendingSnapshotRuntime(locale); h.manual(); const stale = { ...delayedSnapshot(), timestamp: '2026-09-01T00:00:00Z' }; await h.reply(stale); await h.reply(stale);

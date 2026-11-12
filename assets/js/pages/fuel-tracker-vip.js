@@ -6,7 +6,7 @@
   var engine=window.AfroTools.FuelTrackerEngine,copy=window.AfroTools.FuelMarketCopy,observations=window.AfroTools.FuelMarketObservations,locale=root.dataset.fuelMarketLocale;
   var markets=[],payload=null,selected=null,record=null,reference=false,historicalChosen=false,result=null,locationRequest=0,visitorActed=false;
   // A shared link may choose a known market once; it never requests location or supplies a price.
-  var requestedMarket=null;try{var requested=new URLSearchParams(window.location.search).getAll('market');if(requested.length===1&&/^[a-z0-9][a-z0-9-]{0,99}$/.test(requested[0]))requestedMarket=requested[0];}catch(_){}
+  var requestedMarket=null,requestedCountry=null;try{var params=new URLSearchParams(window.location.search),requested=params.getAll('market'),countryParams=params.getAll('country');if(countryParams.length===1&&/^[A-Z]{2}$/.test(countryParams[0]))requestedCountry=countryParams[0];if(requested.length===1&&/^[a-z0-9][a-z0-9-]{0,99}$/.test(requested[0]))requestedMarket=requested[0];}catch(_){}
   // A late scheduled feed must never replace a visitor's chosen price or calculation.
   ['input','change','click','keydown'].forEach(function(type){root.addEventListener(type,function(){visitorActed=true;},{once:true});});
   var byId=function(id){return root.querySelector('#'+id);};
@@ -69,8 +69,9 @@
   function load(url){return fetch(url,{cache:'no-store',credentials:'same-origin'}).then(function(response){if(!response.ok)throw Error('load');return response.json();});}
   function showMarkets(next,preservePlan,initial){
    var requested=initial&&!preservePlan&&requestedMarket?next.find(function(m){return m.market_id===requestedMarket&&engine.marketRecord(m,byId('fuel-type').value);}):null;
-   var select=byId('fuel-country'),chosenCountry=requested?requested.country_code:select.value,chosenMarket=requested?requested.market_id:byId('fuel-market').value,countries=[];
+   var select=byId('fuel-country'),chosenCountry=requested?requested.country_code:(initial&&!preservePlan&&requestedCountry)||select.value,chosenMarket=requested?requested.market_id:byId('fuel-market').value,countries=[];
    markets=next;select.replaceChildren();markets.forEach(function(m){if(!countries.includes(m.country_code)){countries.push(m.country_code);select.add(new Option(country(m.country_code,m.country_name),m.country_code));}});
+   if(requestedCountry&&chosenCountry===requestedCountry&&!countries.includes(chosenCountry)){countries.push(chosenCountry);select.add(new Option(country(chosenCountry,chosenCountry),chosenCountry));}
    if(countries.includes(chosenCountry))select.value=chosenCountry;
    select.disabled=false;marketOptions(chosenMarket,preservePlan);coverage();
   }
