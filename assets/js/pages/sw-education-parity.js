@@ -294,6 +294,14 @@
       });
       if (!matches.length) return { ok: false };
       const top = matches[0];
+      const meta = loaded.meta || {};
+      const sourceLabels = { live: "Malisho ya umma", cached: "Nakala iliyohifadhiwa", fallback: "Orodha ya akiba", curated: "Orodha iliyochaguliwa" };
+      const feedLabel = [
+        sourceLabels[meta.mode] || "Chanzo hakijathibitishwa",
+        meta.stale && "Taarifa za zamani",
+        meta.isDegraded && !meta.stale && "Usasishaji haupatikani",
+        meta.isLimited && "Ujumuishaji ni mdogo"
+      ].filter(Boolean).join(" · ");
       const categoryLabels = { "Strong Match": "Inalingana sana", "Good Match": "Inalingana vizuri", Possible: "Inawezekana", Unlikely: "Hailingani sana" };
       return {
         ok: true,
@@ -304,7 +312,7 @@
         topCategorySwahili: categoryLabels[top.category] || top.category,
         officialUrl: top.scholarship.application_url || top.scholarship.info_url || top.scholarship.source_url,
         feedMode: loaded.meta && loaded.meta.mode,
-        feedLabel: loaded.meta && loaded.meta.label,
+        feedLabel,
         feedCheckedAt: loaded.meta && (loaded.meta.lastCheckedAt || loaded.meta.cachedAt)
       };
     },

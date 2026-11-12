@@ -294,6 +294,14 @@
       });
       if (!matches.length) return { ok: false };
       const top = matches[0];
+      const meta = loaded.meta || {};
+      const sourceLabels = { live: "Flux public", cached: "Cache du flux", fallback: "Catalogue de secours", curated: "Catalogue sélectionné" };
+      const feedLabel = [
+        sourceLabels[meta.mode] || "Source non confirmée",
+        meta.stale && "Données anciennes",
+        meta.isDegraded && !meta.stale && "Actualisation indisponible",
+        meta.isLimited && "Couverture limitée"
+      ].filter(Boolean).join(" · ");
       const categoryLabels = { "Strong Match": "Forte", "Good Match": "Bonne", Possible: "Possible", Unlikely: "Faible" };
       return {
         ok: true,
@@ -304,7 +312,7 @@
         topCategoryFrench: categoryLabels[top.category] || top.category,
         officialUrl: top.scholarship.application_url || top.scholarship.info_url || top.scholarship.source_url,
         feedMode: loaded.meta && loaded.meta.mode,
-        feedLabel: loaded.meta && loaded.meta.label,
+        feedLabel,
         feedCheckedAt: loaded.meta && (loaded.meta.lastCheckedAt || loaded.meta.cachedAt)
       };
     },
