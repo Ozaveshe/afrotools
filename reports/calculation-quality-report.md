@@ -1,12 +1,12 @@
 # Calculation Quality Report
 
-As of: 2026-10-22
+As of: 2026-11-12
 
 ## Inventory
 
-- Total artifacts: 799
+- Total artifacts: 800
 - High risk: 552
-- Medium risk: 109
+- Medium risk: 110
 - Low risk: 138
 
 ## Traceability
@@ -35,7 +35,7 @@ As of: 2026-10-22
 ## External data
 
 - Registered datasets: 3
-- Stale: none
+- Stale: forex-live-rates
 - Incompatible: none
 
 ## Findings
@@ -43,3 +43,4 @@ As of: 2026-10-22
 - WARNING CURRENCY_OVERRIDE_REVIEW_REQUIRED formula-registry: 3 formula currency override remains explicitly review-required.
 - WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 205 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
 - WARNING SOURCE_REVIEW_REQUIRED formula-registry: 6 high-risk and 42 medium-risk formula records still require authoritative-source review.
+- WARNING STALE_EXTERNAL_DATA forex-live-rates: Stale exchange-rate estimate

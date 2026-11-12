@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-nextsix-20261112'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-nextsix-generation2-20261112'",
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 100,
       "env": {
@@ -42,8 +42,8 @@
           "run": "npm ci"
         },
         {
-          "name": "Freshness and current claims preflight",
-          "run": "npm run data:fallbacks:check\nnode scripts/build-public-claims.js --check"
+          "name": "Freshness and calculation inventory preflight",
+          "run": "npm run data:fallbacks:check\nnpm run calculation-quality:check\nnpm run test:calculation-quality"
         },
         {
           "name": "Targeted source tests",
@@ -86,6 +86,10 @@
             "path": "${{ runner.temp }}/cumulative-preparation",
             "retention-days": 3
           }
+        },
+        {
+          "name": "Install Chromium for native browser-backed source tests",
+          "run": "npx playwright install chromium --with-deps"
         },
         {
           "name": "Run complete native Verify source gates",
