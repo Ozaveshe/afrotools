@@ -2,6 +2,7 @@
   'use strict';
 
   var MAX_AGE_MS=7*24*60*60*1000;
+  var API_MAX_AGE_MS = 24 * 60 * 60 * 1000;
   var NAMES={USD:'US Dollar',EUR:'Euro',GBP:'British Pound',AED:'UAE Dirham',AOA:'Angolan Kwanza',BIF:'Burundian Franc',BWP:'Botswana Pula',CDF:'Congolese Franc',CVE:'Cape Verdean Escudo',DJF:'Djiboutian Franc',DZD:'Algerian Dinar',EGP:'Egyptian Pound',ERN:'Eritrean Nakfa',ETB:'Ethiopian Birr',GHS:'Ghanaian Cedi',GMD:'Gambian Dalasi',GNF:'Guinean Franc',KES:'Kenyan Shilling',KMF:'Comorian Franc',LRD:'Liberian Dollar',LSL:'Lesotho Loti',LYD:'Libyan Dinar',MAD:'Moroccan Dirham',MGA:'Malagasy Ariary',MRU:'Mauritanian Ouguiya',MUR:'Mauritian Rupee',MWK:'Malawian Kwacha',MZN:'Mozambican Metical',NAD:'Namibian Dollar',NGN:'Nigerian Naira',RWF:'Rwandan Franc',SCR:'Seychellois Rupee',SDG:'Sudanese Pound',SLE:'Sierra Leonean Leone',SOS:'Somali Shilling',SSP:'South Sudanese Pound',STN:'São Tomé and Príncipe Dobra',SZL:'Eswatini Lilangeni',TND:'Tunisian Dinar',TZS:'Tanzanian Shilling',UGX:'Ugandan Shilling',XAF:'Central African CFA Franc',XOF:'West African CFA Franc',ZAR:'South African Rand',ZMW:'Zambian Kwacha'};
   var state={rates:null,timestamp:null,source:null,usable:false,result:null,pairEdited:false};
   function byId(id){return document.getElementById(id)}
@@ -12,14 +13,13 @@
   function formatRate(value){if(value>=1000)return value.toLocaleString('en',{maximumFractionDigits:4});return value.toLocaleString('en',{maximumSignificantDigits:8})}
   function sourceName(raw){return String(raw||'').toLowerCase().indexOf('fawaz')>=0?'fawazahmed currency-api via AfroTools':(String(raw||'').toLowerCase()==='frankfurter'?'Frankfurter via AfroTools':String(raw||'').toLowerCase()==='exchangerate-api'?'ExchangeRate-API via AfroTools':'AfroTools shared FX dataset')}
   function parsedTimestamp(data){var value=data&&(data.as_of||data.timestamp||data.updatedAt);var stamp=value?new Date(value):null;return stamp&&Number.isFinite(stamp.getTime())?stamp:null}
-  function acceptable(data) { return !!acceptedSnapshot(data); }
-  function acceptedSnapshot(data) {
+  function acceptedSnapshot(data, maxAgeMs = MAX_AGE_MS) {
     var providers = ['exchangerate-api', 'frankfurter', 'fawazahmed'];
     function observation(rate, date, source) {
       var stamp = typeof date === 'string' ? new Date(date) : null;
       if (typeof rate !== 'number' || !Number.isFinite(rate) || rate <= 0 || !stamp || !Number.isFinite(stamp.getTime()) || providers.indexOf(source) < 0) return null;
       var age = Date.now() - stamp.getTime();
-      return age >= 0 && age <= MAX_AGE_MS ? { rate: rate, observed_at: stamp.toISOString(), source: source } : null;
+      return age >= 0 && age <= maxAgeMs ? { rate: rate, observed_at: stamp.toISOString(), source: source } : null;
     }
     if (!data || data.base !== 'USD' || !data.rates || typeof data.rates !== 'object' || Array.isArray(data.rates)) return null;
     var top = observation(1, data.as_of || data.timestamp, data.source);
@@ -44,13 +44,13 @@
     });
     if (!Object.keys(rates).length) return null;
     var oldest = Object.values(observations).map(function (item) { return item.observed_at; }).sort()[0];
-    return { base: 'USD', rates: rates, timestamp: oldest, source: data.source, observations: observations };
+    return { base: 'USD', rates: rates, timestamp: oldest, source: data.source, observations: observations, maxAgeMs: maxAgeMs };
   }
   function pairObservation(from, to) {
     var a = state.observations && state.observations[from], b = state.observations && state.observations[to];
     if (!a || !b) return null;
     var date = a.observed_at < b.observed_at ? a.observed_at : b.observed_at;
-    if (Date.now() - new Date(date).getTime() > MAX_AGE_MS) return null;
+    if (Date.now() - new Date(date).getTime() > state.maxAgeMs) return null;
     return { date: date, source: a.source === b.source ? sourceName(a.source) : sourceName(a.source) + ' + ' + sourceName(b.source) };
   }
 
@@ -73,9 +73,9 @@
     var providers=[state.observations[from].source,state.observations[to].source].filter(function(provider,index,list){return list.indexOf(provider)===index});
     providers.forEach(function(provider,index){var link=index===0?first:second,method=Object.prototype.hasOwnProperty.call(methods,provider)?methods[provider]:null;if(link&&method){link.href=method.url;link.textContent=method.label;link.hidden=false}});
   }
-  function renderSource(data){state.rates=data.rates;state.observations=data.observations;state.timestamp=parsedTimestamp(data);state.source=sourceName(data.source);state.usable=true;fillSelects(state.rates,true);setStatus('ready','Dated snapshot ready');byId('fxSourceLabel').textContent=state.source;byId('fxSourceDate').textContent='Rate date: '+new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(state.timestamp)+' UTC';updateControls()}
+  function renderSource(data,usingBundledSnapshot){state.rates=data.rates;state.observations=data.observations;state.maxAgeMs=data.maxAgeMs;state.timestamp=parsedTimestamp(data);state.source=sourceName(data.source);state.usable=true;fillSelects(state.rates,true);setStatus('ready',usingBundledSnapshot?'Live rates unavailable · using a dated reference snapshot':'Dated snapshot ready');byId('fxSourceLabel').textContent=state.source;byId('fxSourceDate').textContent='Rate date: '+new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(state.timestamp)+' UTC';updateControls()}
   function failClosed(reason){state.rates=null;state.timestamp=null;state.source=null;state.usable=false;fillSelects({NGN:1,KES:1,GHS:1,ZAR:1,EUR:1,GBP:1},true);setStatus(reason==='stale'?'stale':'error',reason==='stale'?'Snapshot too old':'Rates unavailable');byId('fxSourceLabel').textContent='Snapshot conversion paused';byId('fxSourceDate').textContent=reason==='stale'?'The available dataset is more than seven days old.':'No valid dated dataset was returned.';updateControls()}
-  async function load(){setStatus('loading','Checking rate date…');var sources=['/api/forex?base=USD','/data/forex/latest.json'];var sawStale=false;for(var i=0;i<sources.length;i++){try{var response=await fetch(sources[i],{cache:'no-cache',credentials:'same-origin'});if(!response.ok)continue;var data=await response.json();var accepted=acceptedSnapshot(data);if(accepted){renderSource(accepted);return}if(data&&data.rates)sawStale=true}catch(_){}}failClosed(sawStale?'stale':'error')}
+  async function load(){setStatus('loading','Checking rate date…');var sources=['/api/forex?base=USD','/data/forex/latest.json'];var sawStale=false;for(var i=0;i<sources.length;i++){try{var response=await fetch(sources[i],{cache:'no-cache',credentials:'same-origin'});if(!response.ok)continue;var data=await response.json();var accepted=acceptedSnapshot(data, i === 0 ? API_MAX_AGE_MS : MAX_AGE_MS);if(accepted){renderSource(accepted,i>0);return}if(data&&data.rates)sawStale=true}catch(_){}}failClosed(sawStale?'stale':'error')}
   function updateManualLabel(){byId('fxManualPair').textContent='1 '+byId('fxFrom').value+' = ? '+byId('fxTo').value;renderProvenance()}
   function updateControls(){var manual=mode()==='manual';byId('fxManualGroup').hidden=!manual;byId('fxManualRate').required=manual;byId('fxConvert').disabled=!manual&&!state.usable;byId('fxConvert').textContent=manual?'Convert with my rate':'Convert with dated rate';updateManualLabel();byId('fxEmpty').textContent=manual?'Enter the exact provider rate for this pair, then convert.':(state.usable?'Enter an amount and convert with the dated snapshot.':'A usable dated snapshot is required, or choose “My provider rate”.')}
   function clearErrors(){byId('fxAmountError').textContent='';byId('fxManualError').textContent=''}

@@ -40,7 +40,7 @@
   <header class="gv-hero"><div class="gv-wrap"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/government/">Government &amp; Civic</a> / Budget comparison</nav><h1>Compare the official figures you can trace.</h1><p>Enter two totals and two matching budget-line values from official documents. AfroTools does not publish built-in allocations, adjusted estimates, audit status, population figures, inflation adjustments, or claims about actual spending.</p></div></header>
   <main class="gv-main"><div class="gv-wrap gv-grid">
     <section class="gv-panel"><h2>Comparable figures</h2><form id="budget-form">
-      <div class="gv-field"><label for="budget-country">Official document route</label><select id="budget-country"></select></div>
+      <div class="gv-field"><label for="budget-country">Official document route</label><select id="budget-country"></select><a class="gv-official" id="budget-official" target="_blank" rel="noopener">Open official budget documents</a></div>
       <div class="gv-field"><label for="budget-label">Budget line label</label><input id="budget-label" maxlength="100" value="Education allocation"></div>
       <div class="gv-field"><label for="period-a">Earlier period label</label><input id="period-a" maxlength="40" value="Period A"></div>
       <div class="gv-field"><label for="total-a">Earlier total budget</label><input id="total-a" type="number" min="0" step="0.01" value="1000"></div>
@@ -50,7 +50,7 @@
       <div class="gv-field"><label for="line-b">Later budget-line amount</label><input id="line-b" type="number" min="0" step="0.01" value="150"></div>
       <div class="gv-actions"><button class="gv-primary" type="submit">Compare budget line</button><button class="gv-secondary" type="reset">Reset</button></div>
     </form><p class="gv-note">Use the same currency, accounting basis, government level, and budget stage for both periods. Figures are not stored or sent.</p></section>
-    <section class="gv-panel gv-result" id="budget-result" aria-live="polite"><h2 id="budget-result-title">Comparison</h2><div class="budget-metric" id="budget-change"></div><div class="budget-lines"><div><span id="share-a-label"></span><strong id="share-a"></strong></div><div><span id="share-b-label"></span><strong id="share-b"></strong></div><div><span>Share change</span><strong id="share-change"></strong></div><div><span>Nominal amount change</span><strong id="amount-change"></strong></div></div><p class="gv-status">Arithmetic comparison only - not proof of appropriation, release, expenditure, audit, performance, or inflation-adjusted change</p><a class="gv-official" id="budget-official" target="_blank" rel="noopener">Open official budget documents</a><p class="gv-note">Confirm publication date, document version, revised or supplementary budgets, units, currency, nominal or real basis, coverage, and whether each figure is proposed, approved, released, spent, or audited.</p></section>
+    <section class="gv-panel gv-result" id="budget-result" aria-live="polite"><h2 id="budget-result-title">Comparison</h2><div class="budget-metric" id="budget-change"></div><div class="budget-lines"><div><span id="share-a-label"></span><strong id="share-a"></strong></div><div><span id="share-b-label"></span><strong id="share-b"></strong></div><div><span>Share change</span><strong id="share-change"></strong></div><div><span>Nominal amount change</span><strong id="amount-change"></strong></div></div><p class="gv-status">Arithmetic comparison only - not proof of appropriation, release, expenditure, audit, performance, or inflation-adjusted change</p><p class="gv-note">Confirm publication date, document version, revised or supplementary budgets, units, currency, nominal or real basis, coverage, and whether each figure is proposed, approved, released, spent, or audited.</p></section>
   </div><div class="gv-wrap"><p id="budget-status" role="status" aria-live="polite"></p></div>
   <!-- AfroTools source confidence -->
   <div class="container afro-source-meta" data-source-meta-id="ledger-tool-budget-comparator" data-source-meta-compact="true"></div>
@@ -69,7 +69,7 @@
     'use strict';
     var sources=[
       ['NG','Nigeria','Budget Office of the Federation','https://budgetoffice.gov.ng/index.php/resources/internal-resources/budget-documents/2026-budget'],
-      ['KE','Kenya','National Treasury','https://www.treasury.go.ke/budget-summary-revenue-expenditure'],
+      ['KE','Kenya','National Treasury','https://bajetiyetu.treasury.go.ke/document-libraries/accordion'],
       ['ZA','South Africa','National Treasury','https://www.treasury.gov.za/documents/national%20budget/2026/default.aspx'],
       ['GH','Ghana','Ministry of Finance','https://mofep.gov.gh/publications/budget-statements/2026']
     ];
@@ -77,23 +77,29 @@
     country.innerHTML=sources.map(function(item){return '<option value="'+item[0]+'">'+item[1]+'</option>';}).join('');
     function number(id){return Number(document.getElementById(id).value);}
     function selected(){return sources.find(function(item){return item[0]===country.value;})||sources[0];}
+    function updateOfficialLink(){
+      var source=selected(),link=document.getElementById('budget-official');
+      link.textContent='Open '+source[2]+' budget documents';
+      link.href=source[3];
+    }
+    updateOfficialLink();
+    country.addEventListener('change',updateOfficialLink);
     form.addEventListener('submit',function(event){
       event.preventDefault();
       var totalA=number('total-a'),lineA=number('line-a'),totalB=number('total-b'),lineB=number('line-b'),label=document.getElementById('budget-label').value.trim(),periodA=document.getElementById('period-a').value.trim(),periodB=document.getElementById('period-b').value.trim();
       if(!label||!periodA||!periodB||![totalA,lineA,totalB,lineB].every(Number.isFinite)||totalA<=0||totalB<=0||lineA<0||lineB<0||lineA>totalA||lineB>totalB){
         result.classList.remove('gv-on');status.textContent='Enter labels, positive totals, and non-negative line amounts that do not exceed each total.';document.getElementById('total-a').focus();return;
       }
-      var shareA=lineA/totalA*100,shareB=lineB/totalB*100,change=lineA===0?(lineB===0?0:null):(lineB-lineA)/lineA*100,source=selected();
+      var shareA=lineA/totalA*100,shareB=lineB/totalB*100,change=lineA===0?(lineB===0?0:null):(lineB-lineA)/lineA*100;
       document.getElementById('budget-result-title').textContent=label;
       document.getElementById('budget-change').textContent=change===null?'No finite percentage change from a zero base':(change>=0?'+':'')+change.toFixed(2)+'% nominal line change';
       document.getElementById('share-a-label').textContent=periodA+' share of total';document.getElementById('share-a').textContent=shareA.toFixed(2)+'%';
       document.getElementById('share-b-label').textContent=periodB+' share of total';document.getElementById('share-b').textContent=shareB.toFixed(2)+'%';
       document.getElementById('share-change').textContent=(shareB-shareA>=0?'+':'')+(shareB-shareA).toFixed(2)+' percentage points';
       document.getElementById('amount-change').textContent=(lineB-lineA).toLocaleString('en-US',{maximumFractionDigits:2});
-      document.getElementById('budget-official').textContent='Open '+source[2];document.getElementById('budget-official').href=source[3];
       result.classList.add('gv-on');status.textContent='Budget-line arithmetic comparison prepared.';
     });
-    form.addEventListener('reset',function(){setTimeout(function(){country.value='NG';result.classList.remove('gv-on');status.textContent='Comparator reset.';country.focus();},0);});
+    form.addEventListener('reset',function(){setTimeout(function(){country.value='NG';updateOfficialLink();result.classList.remove('gv-on');status.textContent='Comparator reset.';country.focus();},0);});
   }());
   </script><script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>

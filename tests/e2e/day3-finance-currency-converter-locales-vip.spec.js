@@ -104,8 +104,14 @@ test('a failed API request falls back to the fresh committed snapshot', async ({
   await page.route('**/api/forex?base=USD', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{}' }));
   await page.route('**/data/forex/latest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fresh) }));
   await page.goto('/fr/tools/convertisseur-devises/');
-  await expect(page.locator('#fxStatus')).toHaveText('Snapshot daté prêt');
+  await expect(page.locator('#fxStatus')).toHaveText('Taux en direct indisponibles · utilisation de taux de référence datés');
   await expect(page.locator('#fxConvert')).toBeEnabled();
+  await page.locator('#fxFrom').selectOption('USD');
+  await page.locator('#fxTo').selectOption('NGN');
+  await page.locator('#fxAmount').fill('10');
+  await page.locator('#fxConvert').click();
+  await expect(page.locator('#fxResultValue')).toHaveText(/14[\s\u202f,.]?000/);
+  await expect(page.locator('#fxRateUsed')).toContainText('1 USD');
 });
 
 test('French route rejects a non-USD API base and accepts the valid USD fallback', async ({ page }) => {
@@ -120,9 +126,15 @@ test('French route rejects a non-USD API base and accepts the valid USD fallback
     body: JSON.stringify({ ...fresh, source: 'frankfurter' })
   }));
   await page.goto('/fr/tools/convertisseur-devises/');
-  await expect(page.locator('#fxStatus')).toHaveText('Snapshot daté prêt');
+  await expect(page.locator('#fxStatus')).toHaveText('Taux en direct indisponibles · utilisation de taux de référence datés');
   await expect(page.locator('#fxSourceLabel')).toContainText('frankfurter');
   await expect(page.locator('#fxConvert')).toBeEnabled();
+  await page.locator('#fxFrom').selectOption('USD');
+  await page.locator('#fxTo').selectOption('NGN');
+  await page.locator('#fxAmount').fill('10');
+  await page.locator('#fxConvert').click();
+  await expect(page.locator('#fxResultValue')).toHaveText(/14[\s\u202f,.]?000/);
+  await expect(page.locator('#fxRateUsed')).toContainText('1 USD');
 });
 
 test('French currency names, francophone corridors and stale-result invalidation stay coherent', async ({ page }) => {

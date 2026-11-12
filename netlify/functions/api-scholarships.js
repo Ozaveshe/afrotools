@@ -229,7 +229,11 @@ exports.handler = async function (event) {
 
   try {
     const feed = await loadScholarshipFeed();
-    const filtered = filterScholarships(feed.scholarships, params);
+    const matching = filterScholarships(feed.scholarships, params);
+    const now = new Date();
+    const filtered = params.deadline_status === 'open'
+      ? matching.filter((item) => getScholarshipStatus(item, now) === 'open')
+      : matching;
     const paged = paginate(filtered, params);
     const payload = {
       scholarships: paged.items,
@@ -247,7 +251,7 @@ exports.handler = async function (event) {
       isLimited: !!feed.meta.isLimited,
       error: feed.meta.error || ''
     };
-    payload.summary = buildScholarshipSummary(filtered, feed.meta);
+    payload.summary = buildScholarshipSummary(filtered, feed.meta, now);
     Object.assign(payload, buildScholarshipMetadata(filtered, feed.meta));
 
     const authResult = await getUserFromEvent(event);

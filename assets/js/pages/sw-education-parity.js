@@ -279,10 +279,11 @@
         scholarships: typeof feed.getFallbackScholarships === "function" ? feed.getFallbackScholarships() : [],
         meta: { mode: "fallback", label: "Orodha iliyochaguliwa ya akiba", isDegraded: true }
       };
+      let timeout;
       const loaded = await Promise.race([
-        feed.load(),
-        new Promise((resolve) => window.setTimeout(() => resolve(fallback), 1500))
-      ]);
+        feed.load().catch(() => fallback),
+        new Promise((resolve) => { timeout = window.setTimeout(() => resolve(fallback), 12000); })
+      ]).finally(() => window.clearTimeout(timeout));
       const scholarships = loaded && Array.isArray(loaded.scholarships) ? loaded.scholarships : [];
       const matches = api.match(scholarships, {
         gpa_value: input.gpaValue,
@@ -394,6 +395,19 @@
       card.append(name, value);
       metricsNode.appendChild(card);
     });
+    if (config.recipe === "scholarship" && result.officialUrl) {
+      try {
+        const url = new URL(result.officialUrl);
+        if (url.protocol === "https:" && !url.username && !url.password) {
+          const provider = document.createElement("a");
+          provider.href = url.href;
+          provider.textContent = "Fungua tovuti ya mpango";
+          metricsNode.appendChild(provider);
+        }
+      } catch (_) {
+        // A malformed provider URL leaves the local match visible.
+      }
+    }
     resultPanel.classList.add("show");
     statusNode.className = "status";
     statusNode.textContent = "Hali imekokotolewa ndani ya kivinjari. Hakiki makadirio na chanzo rasmi kabla ya kuchukua hatua.";
@@ -499,5 +513,63 @@
       }
     });
   });
+
+  if (config.recipe === "scholarship") {
+    const [title, action, loading, empty, failure, verify, limited, stale] = ["Ufadhili ulio wazi", "Onyesha ufadhili ulio wazi", "Inapakia ufadhili…", "Hakuna ufadhili ulio wazi katika orodha hii.", "Imeshindwa kupakia ufadhili. Jaribu tena.", "Thibitisha tarehe kwenye tovuti ya mpango.", "Orodha hii ina taarifa chache.", "Orodha iliyohifadhiwa au masasisho hayapatikani."];
+    const section = document.createElement("section");
+    section.setAttribute("aria-labelledby", "open-scholarships-title");
+    const heading = document.createElement("h2");
+    heading.id = "open-scholarships-title";
+    heading.textContent = title;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "primary";
+    button.textContent = action;
+    const status = document.createElement("p");
+    status.setAttribute("role", "status");
+    const list = document.createElement("ul");
+    section.append(heading, button, status, list);
+    form.before(section);
+    button.addEventListener("click", async () => {
+      if (button.getAttribute("aria-disabled") === "true") return;
+      button.setAttribute("aria-disabled", "true");
+      list.replaceChildren();
+      status.textContent = loading;
+      try {
+        const response = await fetch("/api/scholarships?deadline_status=open", { signal: AbortSignal.timeout(12000) });
+        if (!response.ok) throw new Error("feed");
+        const data = await response.json();
+        const rows = data.scholarships;
+        if (!Array.isArray(rows) || rows.length !== data.total || data.total !== data.summary?.open) {
+          throw new Error("feed");
+        }
+        for (const record of rows) {
+          const item = document.createElement("li");
+          const name = record.name || record.title;
+          const href = record.official_url || record.application_url || record.info_url || record.source_url;
+          item.textContent = name;
+          try {
+            const url = new URL(href);
+            if (url.protocol === "https:" && !url.username && !url.password) {
+              const link = document.createElement("a");
+              link.href = url.href;
+              link.textContent = name;
+              item.replaceChildren(link);
+            }
+          } catch (_) {
+            // Keep the programme name when its URL is unavailable.
+          }
+          list.appendChild(item);
+        }
+        status.textContent = [rows.length ? `${title} (${rows.length}). ${verify}` : empty,
+          data.isLimited && limited, (data.stale || data.isDegraded) && stale].filter(Boolean).join(" ");
+      } catch (_) {
+        status.textContent = failure;
+      } finally {
+        button.removeAttribute("aria-disabled");
+      }
+    });
+  }
+
   body.dataset.educationParityReady = "true";
 })();
