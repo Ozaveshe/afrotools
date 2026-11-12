@@ -238,6 +238,7 @@ function pageTemplate(item, widget) {
       <aside class="commercial-card" id="code-integration">
         <h2>Code d'integration</h2>
         <p class="fr-widget-note">Ce code pointe vers l'iframe technique. Ne liez pas cette iframe comme une page SEO; liez plutot cette page parent ou l'outil complet.</p>
+        <!-- fr-widget-embed-controls:start -->
         <label for="fr-widget-embed">Code iframe</label>
         <textarea id="fr-widget-embed" class="fr-widget-code" readonly>${escapeHtml(embedCode)}</textarea>
         <button id="fr-widget-copy" class="btn btn-secondary" type="button" hidden>Copier le code</button>
@@ -260,6 +261,7 @@ function pageTemplate(item, widget) {
   button.hidden = false;
 }());
         </script>
+        <!-- fr-widget-embed-controls:end -->
       </aside>
     </div>
   </section>
@@ -497,6 +499,30 @@ function refreshMetadata(resolved, checkOnly) {
   if (checkOnly && changed.length) process.exitCode = 1;
 }
 
+function refreshEmbedControls(html, item, widget) {
+  const blockPattern = /<!-- fr-widget-embed-controls:start -->[\s\S]*?<!-- fr-widget-embed-controls:end -->/g;
+  const textareaPattern = /<textarea\b(?=[^>]*\bclass=["'][^"']*\bfr-widget-code\b[^"']*["'])[^>]*>[\s\S]*?<\/textarea>/g;
+  const textareas = html.match(textareaPattern) || [];
+  if (textareas.length !== 1) throw new Error(`Expected one iframe code field: ${item.slug}`);
+  let encodedCode = textareas[0].replace(/^<textarea\b[^>]*>/, "").replace(/<\/textarea>$/, "");
+  if (item.id === "poultry-roi-estimator") {
+    const source = `${SITE}${widget.iframePath}`;
+    const oldSource = encodedCode.includes(`${source}?lang=fr`) ? `${source}?lang=fr` : source;
+    if (!encodedCode.includes(`${oldSource}&quot;`)) throw new Error("Unexpected poultry embed URL");
+    encodedCode = encodedCode.replace(`${oldSource}&quot;`, `${source}?lang=fr&quot;`);
+  }
+  const generated = pageTemplate(item, widget).match(blockPattern);
+  if (!generated || generated.length !== 1) throw new Error("Missing generated embed controls");
+  const block = generated[0].replace(escapeHtml(iframeCode(widget, item)), () => encodedCode);
+  const existingBlocks = html.match(blockPattern) || [];
+  if (existingBlocks.length > 1) throw new Error(`Duplicate embed blocks: ${item.slug}`);
+  if (!existingBlocks.length && html.includes('id="fr-widget-embed"')) throw new Error(`Unowned existing embed controls: ${item.slug}`);
+  let next = existingBlocks.length ? html.replace(blockPattern, () => block) : html.replace(textareaPattern, () => block);
+  const anchor = /(<a\b[^>]*\bhref=["']#code-integration["'][^>]*>)[\s\S]*?(<\/a>)/g;
+  if ((next.match(anchor) || []).length !== 1) throw new Error(`Expected one integration anchor: ${item.slug}`);
+  return next.replace(anchor, (_, open, close) => `${open}Voir le code d’intégration${close}`);
+}
+
 function main() {
   const resolved = FRENCH_WIDGET_PARENT_PAGES.map((item) => {
     const widget = widgetById(item.id);
@@ -510,6 +536,18 @@ function main() {
   if (!fs.existsSync(bespoke)) throw new Error("Missing bespoke French margin widget page");
   if (process.argv.includes("--metadata-only")) {
     refreshMetadata(resolved, process.argv.includes("--check"));
+    return;
+  }
+  if (process.argv.includes("--embed-controls-only")) {
+    let changed = 0;
+    for (const { item, widget } of resolved) {
+      if (item.slug === BESPOKE_PARENT_SLUG) continue;
+      const file = path.join(ROOT, "fr", "widgets", item.slug, "index.html");
+      const before = fs.readFileSync(file, "utf8");
+      const after = refreshEmbedControls(before, item, widget);
+      if (after !== before) { fs.writeFileSync(file, after, "utf8"); changed++; }
+    }
+    console.log(JSON.stringify({ embedControlsOnly: true, changed, existingHubPreserved: true, bespokeParentPagesPreserved: 1 }));
     return;
   }
 
