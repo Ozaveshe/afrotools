@@ -6102,6 +6102,83 @@
         "imageKey": "poultry-roi-calculator"
       }
     ],
+    "fr::agriculture": [
+      {
+        "id": "poultry-roi-calculator-fr",
+        "name": "Rentabilité de l’élevage de volailles",
+        "icon": "🐔",
+        "desc": "Estimez la rentabilité de votre élevage de poule...",
+        "href": "/fr/agriculture/poultry-roi/",
+        "category": "agriculture",
+        "lang": "fr",
+        "priority": 77,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "poultry-roi-calculator",
+        "imageId": "poultry-roi-calculator",
+        "imageKey": "poultry-roi-calculator"
+      },
+      {
+        "id": "profit-agricole-fr",
+        "name": "Profit agricole",
+        "icon": "FR",
+        "desc": "Estimez revenus, intrants, transport, pertes et ...",
+        "href": "/fr/tools/profit-agricole/",
+        "category": "agriculture",
+        "lang": "fr",
+        "priority": 70,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "agric-profit",
+        "imageId": "agric-profit",
+        "imageKey": "agric-profit"
+      },
+      {
+        "id": "rendement-culture-fr",
+        "name": "Rendement culture",
+        "icon": "FR",
+        "desc": "Estimez rendement, surface, prix de vente et éca...",
+        "href": "/fr/tools/rendement-culture/",
+        "category": "agriculture",
+        "lang": "fr",
+        "priority": 69,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crop-yield",
+        "imageId": "crop-yield",
+        "imageKey": "crop-yield"
+      },
+      {
+        "id": "calendrier-semis-fr",
+        "name": "Calendrier de semis",
+        "icon": "FR",
+        "desc": "Planifiez vos cultures avec le calendrier de sem...",
+        "href": "/fr/tools/calendrier-semis",
+        "category": "agriculture",
+        "lang": "fr",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "planting-calendar",
+        "imageId": "planting-calendar",
+        "imageKey": "planting-calendar"
+      },
+      {
+        "id": "calculateur-engrais-fr",
+        "name": "Calculateur d'engrais NPK",
+        "icon": "FR",
+        "desc": "Estimez localement les besoins N-P2O5-K2O, les s...",
+        "href": "/fr/tools/calculateur-engrais",
+        "category": "agriculture",
+        "lang": "fr",
+        "priority": 58,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "fertilizer-calc",
+        "imageId": "fertilizer-calc",
+        "imageKey": "fertilizer-calc"
+      }
+    ],
     "en::legal": [
       {
         "id": "business-registration",
@@ -9116,68 +9193,6 @@
         "sourceId": "faraid-inheritance",
         "imageId": "faraid-inheritance",
         "imageKey": "faraid-inheritance"
-      }
-    ],
-    "fr::agriculture": [
-      {
-        "id": "profit-agricole-fr",
-        "name": "Profit agricole",
-        "icon": "FR",
-        "desc": "Estimez revenus, intrants, transport, pertes et ...",
-        "href": "/fr/tools/profit-agricole/",
-        "category": "agriculture",
-        "lang": "fr",
-        "priority": 70,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "agric-profit",
-        "imageId": "agric-profit",
-        "imageKey": "agric-profit"
-      },
-      {
-        "id": "rendement-culture-fr",
-        "name": "Rendement culture",
-        "icon": "FR",
-        "desc": "Estimez rendement, surface, prix de vente et éca...",
-        "href": "/fr/tools/rendement-culture/",
-        "category": "agriculture",
-        "lang": "fr",
-        "priority": 69,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "crop-yield",
-        "imageId": "crop-yield",
-        "imageKey": "crop-yield"
-      },
-      {
-        "id": "calendrier-semis-fr",
-        "name": "Calendrier de semis",
-        "icon": "FR",
-        "desc": "Planifiez vos cultures avec le calendrier de sem...",
-        "href": "/fr/tools/calendrier-semis",
-        "category": "agriculture",
-        "lang": "fr",
-        "priority": 60,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "planting-calendar",
-        "imageId": "planting-calendar",
-        "imageKey": "planting-calendar"
-      },
-      {
-        "id": "calculateur-engrais-fr",
-        "name": "Calculateur d'engrais NPK",
-        "icon": "FR",
-        "desc": "Estimez localement les besoins N-P2O5-K2O, les s...",
-        "href": "/fr/tools/calculateur-engrais",
-        "category": "agriculture",
-        "lang": "fr",
-        "priority": 58,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "fertilizer-calc",
-        "imageId": "fertilizer-calc",
-        "imageKey": "fertilizer-calc"
       }
     ],
     "fr::language": [
