@@ -516,7 +516,13 @@ function main() {
   const frWidgetsDir = path.join(ROOT, "fr", "widgets");
   fs.mkdirSync(frWidgetsDir, { recursive: true });
 
-  fs.writeFileSync(path.join(frWidgetsDir, "index.html"), hubTemplate(resolved), "utf8");
+  const hubPath = path.join(frWidgetsDir, "index.html");
+  const parentsOnly = process.argv.includes("--parents-only");
+  if (parentsOnly) {
+    if (!fs.existsSync(hubPath)) throw new Error("Parent-only generation requires an existing French widgets hub");
+  } else {
+    fs.writeFileSync(hubPath, hubTemplate(resolved), "utf8");
+  }
 
   for (const entry of resolved) {
     if (entry.item.slug === BESPOKE_PARENT_SLUG) continue;
@@ -528,6 +534,7 @@ function main() {
   console.log(JSON.stringify({
     parentPagesGenerated: resolved.length - 1,
     bespokeParentPagesPreserved: 1,
+    existingHubPreserved: parentsOnly,
     routes: resolved.map(({ item }) => `/fr/widgets/${item.slug}/`),
   }, null, 2));
 }

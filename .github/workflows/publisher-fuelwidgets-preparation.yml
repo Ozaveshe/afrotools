@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-fuelwidgets-20261113'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-fuelwidgets-20261113-a2'",
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 100,
       "env": {
@@ -51,7 +51,7 @@
         },
         {
           "name": "Regenerate cumulative maintained fuel and widget outputs",
-          "run": "node scripts/generate-fuel-tracker-country-pages.js\nnpm run widgets:build\nnode scripts/generate-fr-widget-parent-pages.js"
+          "run": "node scripts/generate-fuel-tracker-country-pages.js\nnpm run widgets:build\nnode scripts/generate-fr-widget-parent-pages.js --parents-only\nnode tests/progressive-directories.test.js"
         },
         {
           "name": "Build deploy artifact",
