@@ -78,7 +78,7 @@ function pageHtml(c) {
   var desc   = 'Plan an agricultural export from ' + c.name + ': check licences, phytosanitary and origin documents, customs forms, and commodity requirements before shipment.';
   var url    = 'https://afrotools.com/agriculture/export-docs/' + c.slug;
   var h1     = c.flag + ' ' + c.name + ' Agricultural Export Documentation Checklist';
-  var heroSub = 'Select your product and destination to generate a complete, printable checklist of every document you need to export from ' + c.name + '. Covers ' + c.topExports + ' and more.';
+  var heroSub = 'Select your product and destination to build a printable planning checklist for an agricultural export from ' + c.name + '. Confirm current requirements with the relevant authorities before shipping.';
 
   return '<!DOCTYPE html>\n' +
 '<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">\n' +
@@ -164,7 +164,7 @@ function pageHtml(c) {
 '.ed-hero h1 { color: #fff; font-size: clamp(1.3rem, 5vw, 2rem); font-weight: 800; margin: 0 0 0.5rem; letter-spacing: -0.02em; line-height: 1.2; }\n' +
 '.ed-hero-sub { font-size: 0.98rem; opacity: 0.85; max-width: 620px; line-height: 1.55; }\n' +
 '.ed-stats-bar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; font-size: 0.82rem; }\n' +
-'.ed-stat-pill { background: rgba(255,255,255,0.15); padding: 0.3rem 0.7rem; border-radius: var(--ed-btn-radius); white-space: nowrap; font-weight: 500; }\n' +
+'.ed-stat-pill { background: rgba(255,255,255,0.15); padding: 0.3rem 0.7rem; border-radius: var(--ed-btn-radius); max-width: 100%; white-space: normal; overflow-wrap: anywhere; font-weight: 500; }\n' +
 '\n' +
 '/* Main layout */\n' +
 '.ed-main { max-width: 860px; margin: -1.5rem auto 3rem; padding: 0 1rem; }\n' +
@@ -222,6 +222,7 @@ function pageHtml(c) {
 '.ed-check-label { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; flex: 1; min-width: 0; }\n' +
 '.ed-checkbox { position: absolute; opacity: 0; width: 0; height: 0; }\n' +
 '.ed-check-box { width: 22px; height: 22px; border: 2px solid #D1D5DB; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; background: #fff; }\n' +
+'.ed-checkbox:focus-visible + .ed-check-box { outline: 3px solid var(--ed-blue); outline-offset: 3px; }\n' +
 '.ed-checkbox:checked + .ed-check-box { background: var(--ed-blue); border-color: var(--ed-blue); }\n' +
 '.ed-checkbox:checked + .ed-check-box::after { content: "\\2713"; color: #fff; font-size: 14px; font-weight: 800; }\n' +
 '.ed-item-name { font-size: 0.92rem; font-weight: 600; line-height: 1.4; }\n' +
@@ -291,7 +292,7 @@ function pageHtml(c) {
 '    <div class="ed-stats-bar" id="edStatsBar">\n' +
 '      <span class="ed-stat-pill">&#127760; ' + c.region + '</span>\n' +
 '      <span class="ed-stat-pill">&#128203; Export Docs Checklist</span>\n' +
-'      <span class="ed-stat-pill">&#127775; AfCFTA Ready</span>\n' +
+'      <span class="ed-stat-pill">&#127775; Trade eligibility: verify</span>\n' +
 '    </div>\n' +
 '  </div>\n' +
 '</section>\n' +
@@ -314,7 +315,7 @@ function pageHtml(c) {
 '      <div class="ed-field">\n' +
 '        <label class="ed-label" for="edSelDest">Export Destination</label>\n' +
 '        <select class="ed-select" id="edSelDest">\n' +
-'          <option value="africa">Within Africa (AfCFTA)</option>\n' +
+'          <option value="africa">Within Africa (check eligibility)</option>\n' +
 '          <option value="eu">European Union</option>\n' +
 '          <option value="us">United States</option>\n' +
 '          <option value="middle_east">Middle East / GCC</option>\n' +
@@ -350,7 +351,7 @@ function pageHtml(c) {
 '<script>var COUNTRY_CODE = \'' + c.code + '\';<\/script>\n' +
 '<script src="/data/agriculture/export-docs-data.js"><\/script>\n' +
 '<script src="/data/agriculture/country-index.js"><\/script>\n' +
-'<script src="/engines/export-docs-engine.js"><\/script>\n' +
+'<script src="/engines/agriculture-export-docs-controller.js"><\/script>\n' +
 '</body>\n' +
 '</html>\n';
 }
