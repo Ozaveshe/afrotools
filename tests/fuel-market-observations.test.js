@@ -13,8 +13,8 @@ const latest={countries:[{code:'UG',name:'Uganda',currency:'UGX',source:'globalp
 const copy=require('../assets/js/lib/fuel-market-copy');
 const {build}=require('../scripts/build-fuel-market-locales');
 const now='2026-10-23T12:00:00.000Z';
-// The live market inventory includes the coastal reference verified on November 11.
-const marketInventoryReviewTime='2026-11-11T12:00:00Z';
+// The live inventory includes dated Tanzania and Burkina Faso references reviewed on November 12.
+const marketInventoryReviewTime='2026-11-12T12:00:00Z';
 const valid={fuel_type:'petrol',price:100,currency:'NGN',unit:'litre',effective_date:'2026-10-09',last_verified_at:'2026-10-09',source_name:'Dated outlet report',source_url:'https://example.com/prices',date_basis:'observation'};
 test('a recent observation remains dated and calculable without claiming a new effective tariff',()=>{const status=observations.status(valid,now);assert.equal(status.available,true);assert.equal(status.basis,'dated-observation');assert.equal(engine.calculateFillCost({pricePerLitre:valid.price,quantity:20}).totalCost,2000);});
 test('historical and expired prices stay valid planning inputs, never current references',()=>{for(const record of [{...valid,effective_date:'2026-07-01',last_verified_at:'2026-07-01'},{...valid,valid_to:'2026-10-10'}]){const status=observations.status(record,now);assert.equal(status.valid,true);assert.equal(status.available,false);assert.equal(status.historical,true);assert.equal(status.basis,'historical-estimate');}});

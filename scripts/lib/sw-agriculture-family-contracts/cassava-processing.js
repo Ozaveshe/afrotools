@@ -105,6 +105,7 @@ html[data-theme="dark"] .cassava-app :is(a,button,input,select):focus-visible{ou
 <script src="/assets/js/pages/sw-agriculture-cassava-processing.js"></script>`;
   return renderSwahiliAgriculturePage({
     row,
+    useWebPageSchema: true,
     title: `Faida ya usindikaji wa mihogo — ${countryName} | AfroTools`,
     description: `Kadiria gharama, bidhaa, mapato na faida ya usindikaji wa mihogo nchini ${countryName} kwa sarafu na rejea za nchi hiyo.`,
     heading: `Usindikaji wa mihogo — ${countryName}`,

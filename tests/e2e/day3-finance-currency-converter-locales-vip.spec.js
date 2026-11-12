@@ -15,7 +15,7 @@ const routes = [
     path: '/fr/tools/convertisseur-devises/?from=USD&to=NGN',
     ready: 'Snapshot daté prêt',
     manual: 'Mon taux prestataire',
-    stale: 'Snapshot trop ancien',
+    stale: 'Taux de référence trop anciens',
     result: /175[\s\u202f,.]?700/,
     filename: 'afrotools-conversion-devises.csv',
     artifact: 'artifacts/currency-converter-fr-vip-375-dark.png'
@@ -25,7 +25,7 @@ const routes = [
     path: '/sw/zana/kibadilishaji-sarafu/?from=USD&to=NGN',
     ready: 'Snapshot yenye tarehe iko tayari',
     manual: 'Kiwango cha mtoa huduma',
-    stale: 'Snapshot ni ya zamani sana',
+    stale: 'Viwango vya marejeo vimepitwa na wakati',
     result: /175[\s,]?700/,
     filename: 'afrotools-ubadilishaji-sarafu.csv',
     artifact: 'artifacts/currency-converter-sw-vip-375-dark.png'

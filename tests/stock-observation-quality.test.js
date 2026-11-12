@@ -345,7 +345,7 @@ for (const status of [401, 429, 503]) test('actual request and collector retain 
   assert.equal(reads, 0); assert.match(message, new RegExp('UPSTREAM_HTTP_ERROR\\(' + status + '\\)'));
   assert.match(message, /AlphaVantage:INSUFFICIENT_DATED_OBSERVATIONS requested=5 qualified=0/);
   assert.match(message, /causes=UPSTREAM_HTTP_ERROR/); assert.match(message, /MarketStack:UPSTREAM_HTTP_ERROR/);
-  assert.equal(c.requests.length, status === 401 ? 6 : 8, 'original retry policy is preserved');
+  assert.equal(c.requests.length, status === 503 ? 8 : 6, 'MarketStack 429 stops immediately; transient 503 retains retries');
 });
 test('actual response decoding reports its fixed type without raw malformed JSON', async () => {
   const c = diagnosticCollector({ respond: async () => new Response(PRIVATE_DIAGNOSTIC_MARKER) });

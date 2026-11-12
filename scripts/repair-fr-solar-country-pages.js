@@ -495,6 +495,49 @@ function frenchSolarCountryDisplayNames() {
 
 function localizeSolarRuntimeCopy(html) {
   const copy = new Map([
+    [" years", " ans"],
+    ["en-US", "fr-FR"],
+    [" kWh/mo</td><td>", " kWh/mois</td><td>"],
+    [" kWh/month estimated generation.", " kWh/mois de production estimée."],
+    ["/mo", "/mois"],
+    [" per month", " par mois"],
+    ["No payback under these assumptions", "Aucun retour sur investissement selon ces hypothèses"],
+    ["Estimated monthly relief after maintenance allowance.", "Économies mensuelles estimées après provision pour l’entretien."],
+    ["No monthly cash relief under current assumptions.", "Aucune économie mensuelle selon ces hypothèses."],
+    ["SOLAR ROI ESTIMATE - ", "ESTIMATION SOLAIRE – "],
+    ["EXECUTIVE SUMMARY", "SYNTHÈSE"],
+    ["USER INPUTS", "DONNÉES SAISIES"],
+    ["ASSUMPTIONS", "HYPOTHÈSES"],
+    ["RESULTS", "RÉSULTATS"],
+    ["PAYBACK TIMELINE", "ÉCHÉANCIER DE RENTABILITÉ"],
+    ["BATTERY RECOMMENDATION", "RECOMMANDATION POUR LA BATTERIE"],
+    ["GENERATOR SAVINGS", "ÉCONOMIES SUR LE GROUPE ÉLECTROGÈNE"],
+    ["ROOF / PANEL ESTIMATE", "ESTIMATION DE LA TOITURE ET DES PANNEAUX"],
+    ["QUESTIONS TO ASK INSTALLER", "QUESTIONS À POSER À L’INSTALLATEUR"],
+    ["DISCLAIMERS", "LIMITES DE L’ESTIMATION"],
+    ["Source freshness: ", "Date des données sources : "],
+    ["TXT report downloaded.", "Rapport TXT téléchargé."],
+    ["Finance included: ", "Financement inclus : "],
+    [" interest", " d’intérêts"],
+    ["Cash purchase in this estimate", "Achat au comptant dans cette estimation"],
+    ["Year ", "Année "],
+    [" cumulative, ", " cumulés, "],
+    [" annual cashflow", " de flux de trésorerie annuel"],
+    ["No battery selected; generator or grid still covers outages.", "Sans batterie, le groupe électrogène ou le réseau reste nécessaire pendant les coupures."],
+    ["Selected battery should be checked against essential load and outage hours.", "Vérifiez que la batterie choisie couvre les appareils essentiels pendant les coupures."],
+    ["Generator savings are based on entered monthly fuel spend and outage pattern.", "Les économies du groupe sont estimées à partir des dépenses de carburant et des coupures indiquées."],
+    ["Add generator spend if backup fuel is part of the decision.", "Indiquez les dépenses du groupe électrogène si le coût du carburant compte dans votre décision."],
+    ["Installer quote checklist - ", "Liste de vérification du devis – "],
+    ["Confirm roof condition and shading.", "Vérifiez l’état de la toiture et l’ombrage."],
+    ["Confirm panel wattage and warranty.", "Vérifiez la puissance et la garantie des panneaux."],
+    ["Confirm inverter type and surge capacity.", "Vérifiez le type d’onduleur et sa puissance de pointe."],
+    ["Confirm battery chemistry, usable kWh, depth of discharge, and warranty.", "Vérifiez la technologie, la capacité utile, la profondeur de décharge et la garantie de la batterie."],
+    ["Confirm protection devices, earthing, and isolators.", "Vérifiez les protections, la mise à la terre et les sectionneurs."],
+    ["Confirm installation price includes mounting, wiring, labour, and permits.", "Vérifiez que le devis comprend les supports, le câblage, la main-d’œuvre et les autorisations."],
+    ["Confirm maintenance and after-sales support.", "Vérifiez les conditions d’entretien et de service après-vente."],
+    ["Confirm real energy consumption from bill or load profile.", "Vérifiez la consommation réelle sur la facture ou le profil de charge."],
+    ["Confirm financing total repayment.", "Vérifiez le montant total à rembourser."],
+    ["Confirm payback assumptions.", "Vérifiez les hypothèses du délai de retour."],
     ["Correct highlighted inputs to update this estimate.", "Corrigez les champs signalés pour actualiser cette estimation."],
     ["Correct highlighted inputs to compare system sizes.", "Corrigez les champs signalés pour comparer les tailles de système."],
     ["Correct highlighted inputs before sharing or exporting.", "Corrigez les champs signalés avant de partager ou d’exporter."],
@@ -505,20 +548,80 @@ function localizeSolarRuntimeCopy(html) {
     ["This size is outside the listed comparison sizes; the nearest listed ", "Cette taille ne figure pas dans la comparaison ; la ligne la plus proche de "],
     [" kW row is highlighted for comparison only.", " kW est mise en évidence uniquement pour comparaison."],
   ]);
+  const txtCopy = new Map([
+    ["Solar ROI estimate not ready. Run the calculator first.", "L’estimation solaire est indisponible. Lancez d’abord le calcul."],
+    ["Monthly grid bill: ", "Facture mensuelle d’électricité : "],
+    ["Generator spend: ", "Dépenses du groupe électrogène : "],
+    ["/month", "/mois"],
+    ["Outage hours: ", "Coupures : "],
+    [" per day", " par jour"],
+    ["System size: ", "Puissance du système : "],
+    ["Battery level: ", "Option de batterie : "],
+    ["Finance: ", "Financement : "],
+    ["Tariff: ", "Tarif : "],
+    ["Fuel price: ", "Prix du carburant : "],
+    ["Solar yield: ", "Rendement solaire : "],
+    ["Performance ratio: ", "Ratio de performance : "],
+    ["Install cost: ", "Coût d’installation : "],
+    ["Maintenance: ", "Entretien : "],
+    ["%/year", " %/an"],
+    ["Confidence: ", "Niveau de confiance : "],
+    ["System cost: ", "Coût du système : "],
+    ["Monthly savings: ", "Économies mensuelles : "],
+    ["Payback: ", "Délai de retour : "],
+    ["10-year net savings: ", "Économies nettes sur 10 ans : "],
+    ["25-year net savings: ", "Économies nettes sur 25 ans : "],
+    ["First-year generation: ", "Production la première année : "],
+    ["Usable capacity: ", "Capacité utile : "],
+    ["Nominal estimate: ", "Capacité nominale estimée : "],
+    ["Backup is not the same as total daily energy.", "L’autonomie de secours ne correspond pas à la consommation journalière totale."],
+    ["Fuel avoided: ", "Carburant économisé : "],
+    ["Run-hours avoided: ", "Heures de fonctionnement évitées : "],
+    ["Panel count: ", "Nombre de panneaux : "],
+    ["Panel wattage: ", "Puissance par panneau : "],
+    ["Roof area: ", "Surface de toiture : "],
+    ["Ask installer to inspect roof condition, shading, mounting clearance, and orientation before purchase.", "Avant l’achat, faites vérifier l’état et l’orientation de la toiture, l’ombrage et l’espace de montage."],
+    ["Planning estimate, not a quote. Replace defaults with written installer pricing, bills, fuel receipts, and lender terms.", "Cette estimation sert à la planification. Remplacez les valeurs par les devis écrits, les factures, les reçus de carburant et les conditions du prêteur."],
+    ["Sources last reviewed: ", "Dernière vérification des sources : "],
+    [". Confidence: ", ". Niveau de confiance : "],
+  ]);
+  const printHeadings = new Map([["User inputs", "Données saisies"], ["Assumptions", "Hypothèses"], ["Results", "Résultats"], ["Payback timeline", "Échéancier de rentabilité"], ["Battery recommendation", "Recommandation pour la batterie"], ["Generator savings", "Économies sur le groupe électrogène"], ["Roof and panels", "Toiture et panneaux"], ["Questions to ask installer", "Questions à poser à l’installateur"], ["Disclaimers", "Limites de l’estimation"]]);
+  const printCopy = new Map([["Battery level", "Option de batterie"], ["Generator note", "Précisions sur le groupe électrogène"], ["Installer check", "Vérification par l’installateur"], ["Source freshness", "Date des données sources"], ["Backup is for essential loads, not total daily energy.", "L’autonomie de secours couvre les appareils essentiels et dépend de leur consommation."], ["Inspect roof condition, shading, mounting clearance, and orientation before purchase.", "Avant l’achat, faites vérifier l’état et l’orientation de la toiture, l’ombrage et l’espace de montage."], ["This is a planning estimate, not a quote.", "Cette estimation sert à la planification et ne constitue pas un devis."], ["Replace defaults with written installer pricing, utility bills, fuel receipts, and lender terms.", "Remplacez les valeurs par les devis écrits, les factures, les reçus de carburant et les conditions du prêteur."], ["PVGIS, Global Solar Atlas, or installer design software should be used for roof-level production modelling.", "Utilisez PVGIS, Global Solar Atlas ou un logiciel de dimensionnement pour estimer la production sur votre toiture."]]);
+
+  function localizePrintLiteral(value) {
+    const exact = printCopy.get(value) ?? txtCopy.get(value) ?? txtCopy.get(value + ": ")?.replace(/ : $/, "");
+    if (exact !== undefined) return exact;
+    if (typeof value !== "string") return undefined;
+    const formatted = value.replace(/<h4>([^<]+)<\/h4>/g, (whole, title) =>
+      printHeadings.has(title) ? "<h4>" + printHeadings.get(title) + "</h4>" : whole)
+      .replace("Solar ROI estimate for ", "Estimation solaire – ")
+      .replace("Executive summary: ", "Synthèse : ");
+    return formatted === value ? undefined : formatted;
+  }
   return html.replace(/(<script\b([^>]*)>)([\s\S]*?)(<\/script>)/gi, (whole, open, attributes, source, close) => {
     if (/\bsrc\s*=|application\/(?:ld\+json|json)/i.test(attributes) || !source.includes("var DEFAULTS=") || !source.includes("function invalidateReport(")) return whole;
     const edits = [];
-    function visit(node) {
+    function visit(node, inTxt = false, inPrint = false) {
       if (!node || typeof node !== "object") return;
-      if (node.type === "Literal" && copy.has(node.value)) edits.push({start:node.start,end:node.end,text:JSON.stringify(copy.get(node.value))});
+      const isTxt = inTxt || (node.type === "FunctionDeclaration" && node.id?.name === "reportPlainText");
+      const isPrint = inPrint || (node.type === "FunctionDeclaration" && node.id?.name === "buildReport");
+      if (node.type === "Literal") {
+        const translation = (isTxt ? txtCopy.get(node.value) : isPrint ? localizePrintLiteral(node.value) : undefined) ?? copy.get(node.value);
+        if (translation !== undefined) edits.push({start:node.start,end:node.end,text:JSON.stringify(translation)});
+      }
       for (const [key,value] of Object.entries(node)) {
         if (["start","end","raw"].includes(key)) continue;
-        if (Array.isArray(value)) value.forEach(visit);
-        else if (value && typeof value === "object") visit(value);
+        if (Array.isArray(value)) value.forEach(child => visit(child, isTxt, isPrint));
+        else if (value && typeof value === "object") visit(value, isTxt, isPrint);
       }
     }
     visit(acorn.parse(source, {ecmaVersion:"latest"}));
     for (const edit of edits.sort((a,b)=>b.start-a.start)) source=source.slice(0,edit.start)+edit.text+source.slice(edit.end);
+    source = source.replace(/(function years\(value\)\{[^\n]*?)\(value>=10\?value\.toFixed\(0\):value\.toFixed\(1\)\)/,
+      '$1value.toLocaleString("fr-FR",{minimumFractionDigits:value>=10?0:1,maximumFractionDigits:value>=10?0:1})');
+    source = source.replace(
+      'downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-estimate.txt"',
+      'downloadTextFile("estimation-solaire-"+DEFAULTS.countrySlug+".txt"');
     return open+source+close;
   });
 }
@@ -528,6 +631,11 @@ function processHtml(html) {
   html = localizeFrenchSolarRoutes(html);
   html = localizeFrenchSolarCountryPickerHtml(html, frenchSolarCountryDisplayNames());
   html = localizeSolarRuntimeCopy(html);
+  html = html.replace(
+    /(<style id="solar-report-export-style">[\s\S]*?@media print\{)(?!\n  #afro-cookie-consent,\.solar-mobile-summary)/,
+    '$1\n  #afro-cookie-consent,.solar-mobile-summary{display:none!important}'
+  );
+  html = html.replace('>Solar decision snapshot</h2>', '>Résumé de l’estimation solaire</h2>');
   // Preserve distinct, visible names when repairing older translated pickers.
   html = html.replace(/(<label\b[^>]*for="solarCountryPageSearch"[^>]*>)[^<]*(<\/label>)/, '$1Rechercher un pays$2');
   html = html.replace(/(<label\b[^>]*for="solarCountryPageSelect"[^>]*>)[^<]*(<\/label>)/, '$1Sélectionner un pays$2');

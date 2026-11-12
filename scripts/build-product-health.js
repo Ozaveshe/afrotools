@@ -65,14 +65,14 @@ function buildSnapshot() {
   const platform = [
     item({
       id: 'website', name: 'Website', declaredStatus: 'partial',
-      lastVerified: sourceRegistry.updatedAt, cadenceDays: 30,
+      lastVerified: null,
       coverageTotal: 1, coverageVerified: 0,
       coverage: 'Static site and offline fallback are release-checked; live reachability is checked separately.',
-      reason: 'No live request is required to render this status page.', sourceKind: 'release_build'
+      reason: 'This saved snapshot does not establish current website reachability.', sourceKind: 'release_build'
     }),
     item({
       id: 'search-directory', name: 'Search and directory', declaredStatus: 'partial',
-      lastVerified: sourceRegistry.updatedAt, cadenceDays: 30,
+      lastVerified: null,
       coverageTotal: 2, coverageVerified: 1,
       coverage: 'Canonical registry and static directory available; live search hydration is not assumed.',
       sourceKind: 'canonical_registry'
