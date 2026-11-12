@@ -13,7 +13,7 @@ for(const [q,id] of [['salary Nigeria','ng-paye'],['PAYE Kenya','ke-paye'],['gen
 }
 test('country names are geography, not invented registry market coverage',()=>{
  const countries=JSON.parse(fs.readFileSync(path.join(root,'data/registry/countries.json'),'utf8'));
- assert.deepEqual(Array.from(ctx.FUEL_FINDER_COUNTRY_NAMES),countries.map(c=>c.displayNames.en));
+ assert.deepEqual(Object.entries(ctx.FUEL_FINDER_COUNTRY_NAMES),countries.map(c=>[c.id,c.displayNames.en]));
  const finder=ctx.AFRO_TOOLS.find(t=>t.id==='fuel-tracker');assert.equal(finder.countries.includes('MU'),false);
  assert.ok(ctx.score(finder,ctx.tokenise('fuel prices Nigeria'))>ctx.score(finder,ctx.tokenise('fuel prices Mauritius')),'existing country metadata is a relevance boost');
 });

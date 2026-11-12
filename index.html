@@ -2915,7 +2915,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // Geographic query recognition only; this is not a list of markets with price coverage.
     // Names mirror data/registry/countries.json; the finder still requires market selection or a manual price.
-    var FUEL_FINDER_COUNTRY_NAMES = ["Angola", "Burkina Faso", "Burundi", "Benin", "Botswana", "Congo - Kinshasa", "Central African Republic", "Congo - Brazzaville", "Côte d’Ivoire", "Cameroon", "Cape Verde", "Djibouti", "Algeria", "Egypt", "Eritrea", "Ethiopia", "Gabon", "Ghana", "Gambia", "Guinea", "Equatorial Guinea", "Guinea-Bissau", "Kenya", "Comoros", "Liberia", "Lesotho", "Libya", "Morocco", "Madagascar", "Mali", "Mauritania", "Mauritius", "Malawi", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Seychelles", "Sudan", "Sierra Leone", "Senegal", "Somalia", "South Sudan", "São Tomé & Príncipe", "Eswatini", "Chad", "Togo", "Tunisia", "Tanzania", "Uganda", "South Africa", "Zambia", "Zimbabwe"];
+    var FUEL_FINDER_COUNTRY_NAMES = {"AO":"Angola","BF":"Burkina Faso","BI":"Burundi","BJ":"Benin","BW":"Botswana","CD":"Congo - Kinshasa","CF":"Central African Republic","CG":"Congo - Brazzaville","CI":"Côte d’Ivoire","CM":"Cameroon","CV":"Cape Verde","DJ":"Djibouti","DZ":"Algeria","EG":"Egypt","ER":"Eritrea","ET":"Ethiopia","GA":"Gabon","GH":"Ghana","GM":"Gambia","GN":"Guinea","GQ":"Equatorial Guinea","GW":"Guinea-Bissau","KE":"Kenya","KM":"Comoros","LR":"Liberia","LS":"Lesotho","LY":"Libya","MA":"Morocco","MG":"Madagascar","ML":"Mali","MR":"Mauritania","MU":"Mauritius","MW":"Malawi","MZ":"Mozambique","NA":"Namibia","NE":"Niger","NG":"Nigeria","RW":"Rwanda","SC":"Seychelles","SD":"Sudan","SL":"Sierra Leone","SN":"Senegal","SO":"Somalia","SS":"South Sudan","ST":"São Tomé & Príncipe","SZ":"Eswatini","TD":"Chad","TG":"Togo","TN":"Tunisia","TZ":"Tanzania","UG":"Uganda","ZA":"South Africa","ZM":"Zambia","ZW":"Zimbabwe"};
     function isGlobalFuelFinder(tool) {
       return tool.id === 'fuel-tracker' || tool.sourceId === 'fuel-tracker';
     }
@@ -2924,11 +2924,28 @@ document.addEventListener('DOMContentLoaded', function() {
           !tokens.some(function(t){return /^(price|prices|tracker|finder)$/.test(t);})) return [];
       var query = ' ' + tokens.join(' ') + ' ';
       var countryTokens = [];
-      FUEL_FINDER_COUNTRY_NAMES.forEach(function(name) {
+      Object.values(FUEL_FINDER_COUNTRY_NAMES).forEach(function(name) {
         var country = normalizeSearchText(name);
         if (query.indexOf(' ' + country + ' ') !== -1) countryTokens = countryTokens.concat(country.split(' '));
       });
       return countryTokens;
+    }
+
+    function fuelFinderSearchHref(tool, tokens) {
+      var countryTokens = fuelFinderCountryTokens(tool, tokens);
+      if (!countryTokens.length) return tool.href;
+      var query = ' ' + tokens.join(' ') + ' ';
+      var matches = Object.keys(FUEL_FINDER_COUNTRY_NAMES).filter(function(code) {
+        var name = normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[code]);
+        return query.indexOf(' ' + name + ' ') !== -1;
+      });
+      var mostSpecific = matches.filter(function(code) {
+        var name = ' ' + normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[code]) + ' ';
+        return !matches.some(function(other) {
+          return other !== code && (' ' + normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[other]) + ' ').indexOf(name) !== -1;
+        });
+      });
+      return mostSpecific.length === 1 ? '/tools/fuel-tracker/?country=' + mostSpecific[0] + '#fuel-finder' : tool.href;
     }
 
     function generatedAliases(tool) {
@@ -3190,9 +3207,10 @@ document.addEventListener('DOMContentLoaded', function() {
           ? '<span class="sd-badge sd-badge-live">● Live</span>'
           : '<span class="sd-badge sd-badge-soon">Coming Soon</span>';
         var tag = isLive ? 'a' : 'div';
-        var href = isLive ? ' href="' + tool.href + '"' : '';
+        var resultHref = fuelFinderSearchHref(tool, tokens);
+        var href = isLive ? ' href="' + resultHref + '"' : '';
         if (tool.aiSuggested) badge = '<span class="sd-badge sd-badge-live">AI match</span>';
-        html += '<' + tag + class_attr(i) + href + ' data-href="' + (tool.href||'') + '" data-live="' + isLive + '">'
+        html += '<' + tag + class_attr(i) + href + ' data-href="' + (resultHref||'') + '" data-live="' + isLive + '">'
           + '<div class="sd-icon">' + esc(tool.icon||'🔧') + '</div>'
           + '<div class="sd-body">'
             + '<div class="sd-name">' + highlight(tool.name, tokens) + '</div>'

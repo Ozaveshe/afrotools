@@ -137,7 +137,7 @@ assert(fx.includes('Snapshot husitishwa baada ya siku 7'));
 assert(fx.includes('Hakuna viwango vya soko lisilo rasmi'));
 assert(fxController.includes("var sources = ['/api/forex?base=USD', '/data/forex/latest.json']"));
 // Observation acceptance and expiry are executed in currency-converter-observations.test.js.
-assert(fxController.includes("function acceptedSnapshot(data)"));
+assert(fxController.includes("function acceptedSnapshot(data, maxAgeMs = MAX_AGE_MS)"));
 assert(fxController.includes("if (!Object.keys(rates).length) return null"));
 assert(fxController.includes("failClosed(sawStale ? 'stale' : 'error')"));
 assert.strictEqual((fxController.match(/addEventListener\('submit', calculate\)/g) || []).length, 1, 'conversion submit listener must be idempotent');
