@@ -311,10 +311,12 @@ function htmlPage(row, rows) {
     ? `Fuel prices in ${row.name} | AfroFuel`
     : `Fuel prices in ${row.name}: petrol, diesel and LPG | AfroFuel`;
   const description = `Fuel price snapshot for ${row.name}, dated ${date}. View petrol, diesel and LPG references, then calculate generator costs with a locally verified price.`;
-  const fuelMarket = { TZ: 'tz-dar-es-salaam', BF: 'bf-national' }[row.code];
+  const fuelMarket = regionalReference
+    ? regionalReference.market.market_id
+    : { TZ: 'tz-dar-es-salaam', BF: 'bf-national' }[row.code];
   const fuelFinderHref = fuelMarket
     ? `/tools/fuel-tracker/?market=${fuelMarket}#fuel-finder`
-    : '/tools/fuel-tracker/#fuel-finder';
+    : `/tools/fuel-tracker/?country=${encodeURIComponent(row.code)}#fuel-finder`;
   const compareHref = '#related-countries';
   const generatorHref = '/tools/backup-power-costs/';
   const ogImage = ogImageFor(slug);

@@ -36,7 +36,8 @@
    byId('fuel-use-history').hidden=!s.historical;byId('fuel-history').hidden=!(record&&record.previous_record);byId('fuel-history-record').textContent=record&&record.previous_record?[money(record.previous_record.price,record.previous_record.currency)+' / L',record.previous_record.effective_date,record.previous_record.source_name,record.previous_record.source_url].join(' — '):'';
    var other=engine.marketRecord(selected,byId('fuel-type').value==='petrol'?'diesel':'petrol');
    byId('fuel-result-comparison').textContent=s.available&&status(other).available&&other.currency===record.currency?t('comparison',{fuel:t(other.fuel_type),difference:money(other.price-record.price,record.currency)}):t('noComparison');
-   byId('fuel-price').value=s.available?record.price:'';byId('fuel-currency').value=record&&record.currency||'USD';byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
+   byId('fuel-price').value=s.available?record.price:'';var entry=countryDirectory.get(byId('fuel-country').value);
+   byId('fuel-currency').value=record&&record.currency||entry&&entry.currency||'USD';byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
    event(s.available?'fuel_localized_result_shown':'fuel_unavailable_shown',{market_id:selected&&selected.market_id||'none',country_code:selected&&selected.country_code||'none',fuel_type:byId('fuel-type').value,data_granularity:selected&&selected.granularity||'none',location_used:false,result_shown:s.available,reason:s.available?'':s.stale?'stale':'missing'});
   }
   function marketOptions(preferred,preservePlan){var select=byId('fuel-market');select.replaceChildren();markets.filter(function(m){return m.country_code===byId('fuel-country').value&&engine.marketRecord(m,byId('fuel-type').value);}).sort(function(a,b){return Number(status(engine.marketRecord(b,byId('fuel-type').value)).available)-Number(status(engine.marketRecord(a,byId('fuel-type').value)).available);}).forEach(function(m){select.add(new Option(place(m)+' — '+t(m.granularity),m.market_id));});if(preferred&&Array.from(select.options).some(function(o){return o.value===preferred;}))select.value=preferred;select.disabled=!select.options.length;
@@ -79,10 +80,16 @@
   byId('fuel-fill-txt').addEventListener('click',function(){download('txt');});byId('fuel-fill-json').addEventListener('click',function(){download('json');});
   byId('fuel-use-location').addEventListener('click',function(){var request=++locationRequest;byId('fuel-location-status').textContent=t('waiting');event('fuel_location_requested',{location_used:true});if(!navigator.geolocation){byId('fuel-location-status').textContent=t('denied');event('fuel_location_unavailable',{reason:'unsupported'});return;}navigator.geolocation.getCurrentPosition(function(position){if(request!==locationRequest)return;var nearest=engine.nearestMarket(markets.filter(function(m){return typeof m.latitude==='number'&&typeof m.longitude==='number';}).sort(function(a,b){var ar=engine.marketRecord(a,byId('fuel-type').value),br=engine.marketRecord(b,byId('fuel-type').value),as=status(ar),bs=status(br);return Number(bs.available)-Number(as.available)||Number(bs.valid)-Number(as.valid)||String(br&&br.effective_date||'').localeCompare(String(ar&&ar.effective_date||''));}),position.coords.latitude,position.coords.longitude);if(!nearest||!Number.isFinite(nearest.distanceKm)){byId('fuel-location-status').textContent=t('denied');event('fuel_location_unavailable',{reason:'no_market'});return;}byId('fuel-country').value=nearest.market.country_code;marketOptions(nearest.market.market_id);byId('fuel-location-status').textContent=t('matched',{place:place(nearest.market),distance:Math.round(nearest.distanceKm)});event('fuel_location_granted',{location_used:true,market_id:nearest.market.market_id,country_code:nearest.market.country_code});},function(error){if(request!==locationRequest)return;byId('fuel-location-status').textContent=t('denied');event('fuel_location_denied',{reason:error&&error.code===1?'denied':'unavailable'});},{enableHighAccuracy:false,maximumAge:300000,timeout:10000});});
   function load(url){return fetch(url,{cache:'no-store',credentials:'same-origin'}).then(function(response){if(!response.ok)throw Error('load');return response.json();});}
+  var countryDirectory = new Map();
   function showMarkets(next,preservePlan,initial){
    var requested=initial&&!preservePlan&&requestedMarket?next.find(function(m){return m.market_id===requestedMarket&&engine.marketRecord(m,byId('fuel-type').value);}):null;
    var select=byId('fuel-country'),chosenCountry=requested?requested.country_code:(initial&&!preservePlan&&requestedCountry)||select.value,chosenMarket=requested?requested.market_id:byId('fuel-market').value,countries=[];
    markets=next;select.replaceChildren();markets.forEach(function(m){if(!countries.includes(m.country_code)){countries.push(m.country_code);select.add(new Option(country(m.country_code,m.country_name),m.country_code));}});
+   countryDirectory.forEach(function(entry,code){
+    if(countries.includes(code))return;
+    countries.push(code);
+    select.add(new Option(country(code,entry.name),code));
+   });
    if(requestedCountry&&chosenCountry===requestedCountry&&!countries.includes(chosenCountry)){countries.push(chosenCountry);select.add(new Option(country(chosenCountry,chosenCountry),chosenCountry));}
    if(countries.includes(chosenCountry))select.value=chosenCountry;
    select.disabled=false;marketOptions(chosenMarket,preservePlan);coverage();
@@ -96,10 +103,15 @@
   mode();Promise.allSettled([load('/data/fuel/markets.json'),load('/data/fuel/latest.json')]).then(async function(results){
    var data=results[0].status==='fulfilled'?results[0].value:null,latest=results[1].status==='fulfilled'?results[1].value:null;
    if(data&&!engine.validateDataset(data).valid)data=null;payload=data||{stale_after_days:MAX_AGE_DAYS};
+   if(latest&&Array.isArray(latest.countries)){
+    latest.countries.forEach(function(row){
+     if(row&&/^[A-Z]{2}$/.test(row.code)&&/^[A-Z]{3}$/.test(row.currency))countryDirectory.set(row.code,row);
+    });
+   }
    var defaults=observations.merge(data&&data.markets,latest);
    if(!defaults.length){
     var recovered=await scheduled;
-    defaults=observations.merge([],recovered);if(!defaults.length)throw Error('dataset');
+    defaults=observations.merge([],recovered);if(!defaults.length&&!countryDirectory.size)throw Error('dataset');
    }
    showMarkets(defaults,visitorActed,true);
    scheduled.then(function(feed){

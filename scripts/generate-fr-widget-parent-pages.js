@@ -132,7 +132,8 @@ function pageUrl(route) {
 }
 
 function iframeCode(widget, item) {
-  return `<iframe src="${SITE}${widget.iframePath}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
+  const localeQuery = item.id === "poultry-roi-estimator" ? "?lang=fr" : "";
+  return `<iframe src="${SITE}${widget.iframePath}${localeQuery}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
 }
 
 function pageTemplate(item, widget) {
@@ -201,7 +202,7 @@ function pageTemplate(item, widget) {
         <p class="commercial-copy">${escapeHtml(item.description)}</p>
         <div class="commercial-actions">
           <a class="btn btn-primary" href="${item.fullFrenchPath}">Ouvrir l'outil complet</a>
-          <a class="btn btn-secondary" href="#code-integration">Copier le code d'integration</a>
+          <a class="btn btn-secondary" href="#code-integration">Voir le code d’intégration</a>
           <a class="btn btn-ghost" href="/fr/widgets/">Tous les widgets francais</a>
         </div>
       </div>
@@ -237,7 +238,30 @@ function pageTemplate(item, widget) {
       <aside class="commercial-card" id="code-integration">
         <h2>Code d'integration</h2>
         <p class="fr-widget-note">Ce code pointe vers l'iframe technique. Ne liez pas cette iframe comme une page SEO; liez plutot cette page parent ou l'outil complet.</p>
-        <textarea class="fr-widget-code" readonly>${escapeHtml(embedCode)}</textarea>
+        <!-- fr-widget-embed-controls:start -->
+        <label for="fr-widget-embed">Code iframe</label>
+        <textarea id="fr-widget-embed" class="fr-widget-code" readonly>${escapeHtml(embedCode)}</textarea>
+        <button id="fr-widget-copy" class="btn btn-secondary" type="button" hidden>Copier le code</button>
+        <p id="fr-widget-copy-status" role="status"></p>
+        <script>
+(function () {
+  const code = document.getElementById("fr-widget-embed");
+  const button = document.getElementById("fr-widget-copy");
+  const status = document.getElementById("fr-widget-copy-status");
+  button.addEventListener("click", async function () {
+    try {
+      await navigator.clipboard.writeText(code.value);
+      status.textContent = "Code copié.";
+    } catch {
+      code.focus();
+      code.select();
+      status.textContent = "Code sélectionné. Copiez-le manuellement.";
+    }
+  });
+  button.hidden = false;
+}());
+        </script>
+        <!-- fr-widget-embed-controls:end -->
       </aside>
     </div>
   </section>
@@ -475,6 +499,30 @@ function refreshMetadata(resolved, checkOnly) {
   if (checkOnly && changed.length) process.exitCode = 1;
 }
 
+function refreshEmbedControls(html, item, widget) {
+  const blockPattern = /<!-- fr-widget-embed-controls:start -->[\s\S]*?<!-- fr-widget-embed-controls:end -->/g;
+  const textareaPattern = /<textarea\b(?=[^>]*\bclass=["'][^"']*\bfr-widget-code\b[^"']*["'])[^>]*>[\s\S]*?<\/textarea>/g;
+  const textareas = html.match(textareaPattern) || [];
+  if (textareas.length !== 1) throw new Error(`Expected one iframe code field: ${item.slug}`);
+  let encodedCode = textareas[0].replace(/^<textarea\b[^>]*>/, "").replace(/<\/textarea>$/, "");
+  if (item.id === "poultry-roi-estimator") {
+    const source = `${SITE}${widget.iframePath}`;
+    const oldSource = encodedCode.includes(`${source}?lang=fr`) ? `${source}?lang=fr` : source;
+    if (!encodedCode.includes(`${oldSource}&quot;`)) throw new Error("Unexpected poultry embed URL");
+    encodedCode = encodedCode.replace(`${oldSource}&quot;`, `${source}?lang=fr&quot;`);
+  }
+  const generated = pageTemplate(item, widget).match(blockPattern);
+  if (!generated || generated.length !== 1) throw new Error("Missing generated embed controls");
+  const block = generated[0].replace(escapeHtml(iframeCode(widget, item)), () => encodedCode);
+  const existingBlocks = html.match(blockPattern) || [];
+  if (existingBlocks.length > 1) throw new Error(`Duplicate embed blocks: ${item.slug}`);
+  if (!existingBlocks.length && html.includes('id="fr-widget-embed"')) throw new Error(`Unowned existing embed controls: ${item.slug}`);
+  let next = existingBlocks.length ? html.replace(blockPattern, () => block) : html.replace(textareaPattern, () => block);
+  const anchor = /(<a\b[^>]*\bhref=["']#code-integration["'][^>]*>)[\s\S]*?(<\/a>)/g;
+  if ((next.match(anchor) || []).length !== 1) throw new Error(`Expected one integration anchor: ${item.slug}`);
+  return next.replace(anchor, (_, open, close) => `${open}Voir le code d’intégration${close}`);
+}
+
 function main() {
   const resolved = FRENCH_WIDGET_PARENT_PAGES.map((item) => {
     const widget = widgetById(item.id);
@@ -490,11 +538,29 @@ function main() {
     refreshMetadata(resolved, process.argv.includes("--check"));
     return;
   }
+  if (process.argv.includes("--embed-controls-only")) {
+    let changed = 0;
+    for (const { item, widget } of resolved) {
+      if (item.slug === BESPOKE_PARENT_SLUG) continue;
+      const file = path.join(ROOT, "fr", "widgets", item.slug, "index.html");
+      const before = fs.readFileSync(file, "utf8");
+      const after = refreshEmbedControls(before, item, widget);
+      if (after !== before) { fs.writeFileSync(file, after, "utf8"); changed++; }
+    }
+    console.log(JSON.stringify({ embedControlsOnly: true, changed, existingHubPreserved: true, bespokeParentPagesPreserved: 1 }));
+    return;
+  }
 
   const frWidgetsDir = path.join(ROOT, "fr", "widgets");
   fs.mkdirSync(frWidgetsDir, { recursive: true });
 
-  fs.writeFileSync(path.join(frWidgetsDir, "index.html"), hubTemplate(resolved), "utf8");
+  const hubPath = path.join(frWidgetsDir, "index.html");
+  const parentsOnly = process.argv.includes("--parents-only");
+  if (parentsOnly) {
+    if (!fs.existsSync(hubPath)) throw new Error("Parent-only generation requires an existing French widgets hub");
+  } else {
+    fs.writeFileSync(hubPath, hubTemplate(resolved), "utf8");
+  }
 
   for (const entry of resolved) {
     if (entry.item.slug === BESPOKE_PARENT_SLUG) continue;
@@ -506,6 +572,7 @@ function main() {
   console.log(JSON.stringify({
     parentPagesGenerated: resolved.length - 1,
     bespokeParentPagesPreserved: 1,
+    existingHubPreserved: parentsOnly,
     routes: resolved.map(({ item }) => `/fr/widgets/${item.slug}/`),
   }, null, 2));
 }

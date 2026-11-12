@@ -139,8 +139,18 @@ function liteEntry(e) {
   };
 }
 function makeLiteIframe(e) {
-  return `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>${cleanText(e.title)} - AfroTools</title>\n<link rel="canonical" href="${absoluteUrl(e.fullToolLink)}">\n<meta name="robots" content="noindex, follow">\n<meta property="og:url" content="${siteOrigin}/widgets/iframe/${e.category}-${e.id}.html">\n<link rel="stylesheet" href="/widgets/css/widget-base.css">\n<style>\nbody{margin:0;padding:20px;background:#fff;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}\nbody.dark{background:#0a1628;color:#fafaf8}\n#widget-root{max-width:480px;margin:0 auto}\n.aw{box-shadow:none}\n.aw-footer{text-align:center;margin:12px auto 0;max-width:480px;padding-top:12px;border-top:1px solid rgba(128,128,128,.25)}\n.aw-footer a{font-size:11px;color:#0062CC;text-decoration:none;font-weight:700}\n</style>\n</head>\n<body>\n<div id="widget-root" class="aw aw--light"></div>\n<div class="aw-footer"><a href="${trackedToolUrl(e)}" target="_blank" rel="noopener noreferrer">Powered by AfroTools</a></div>\n<script src="/widgets/lite/widget-pack.js"><\/script>\n<script>\n(function(){\n  var params = new URLSearchParams(window.location.search);\n  var theme = params.get("theme") || "light";\n  var root = document.getElementById("widget-root");\n  if (theme === "dark") document.body.classList.add("dark");\n  root.className = "aw aw--" + theme;\n  window.AfroWidgets.renderLiteWidget(root, { widgetId: "${e.id}", theme: theme });\n  if ("ResizeObserver" in window) {\n    var ro = new ResizeObserver(function(){\n      window.parent.postMessage({ type: "afrotools:resize", height: document.body.scrollHeight }, "*");\n    });\n    ro.observe(document.body);\n  }\n})();\n<\/script>\n</body>\n</html>\n`;
+  return `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>${cleanText(e.title)} - AfroTools</title>\n<link rel="canonical" href="${absoluteUrl(e.fullToolLink)}">\n<meta name="robots" content="noindex, follow">\n<meta property="og:url" content="${siteOrigin}/widgets/iframe/${e.category}-${e.id}.html">\n<link rel="stylesheet" href="/widgets/css/widget-base.css">\n<style>\nbody{margin:0;padding:20px;background:#fff;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}\nbody.dark{background:#0a1628;color:#fafaf8}\n#widget-root{max-width:480px;margin:0 auto}\n.aw{box-shadow:none}\n.aw-footer{text-align:center;margin:12px auto 0;max-width:480px;padding-top:12px;border-top:1px solid rgba(128,128,128,.25)}\n.aw-footer a{font-size:11px;color:#0062CC;text-decoration:none;font-weight:700}\n</style>\n</head>\n<body>\n<div id="widget-root" class="aw aw--light"></div>\n<div class="aw-footer"><a href="${trackedToolUrl(e)}" target="_blank" rel="noopener noreferrer">Powered by AfroTools</a></div>\n<script src="/widgets/lite/widget-pack.js"><\/script>\n<script>\n(function(){\n  var params = new URLSearchParams(window.location.search);\n  var theme = params.get("theme") || "light";\n  var root = document.getElementById("widget-root");\n  var locale = params.get("lang") === "fr" && "${e.id}" === "poultry-roi-estimator" ? "fr" : "en";\n  if (locale === "fr") {\n    document.documentElement.lang = "fr";\n    document.title = "Rentabilité avicole - AfroTools";\n    var attribution = document.querySelector(".aw-footer a");\n    attribution.textContent = "Propulsé par AfroTools";\n    attribution.href = "/fr/agriculture/poultry-roi/?utm_source=widget&utm_medium=embed&utm_campaign=poultry-roi-estimator";\n  }\n  if (theme === "dark") document.body.classList.add("dark");\n  root.className = "aw aw--" + theme;\n  window.AfroWidgets.renderLiteWidget(root, { widgetId: "${e.id}", theme: theme, locale: locale });\n  if ("ResizeObserver" in window) {\n    var ro = new ResizeObserver(function(){\n      window.parent.postMessage({ type: "afrotools:resize", height: document.body.scrollHeight }, "*");\n    });\n    ro.observe(document.body);\n  }\n})();\n<\/script>\n</body>\n</html>\n`;
 }
+function refreshLiteRuntime(existing, generated, id) {
+  const scripts = (html) => (html.match(/<script\b[^>]*>[\s\S]*?<\/script>/g) || [])
+    .filter((script) => script.includes("window.AfroWidgets.renderLiteWidget"));
+  const before = scripts(existing), after = scripts(generated);
+  if (before.length !== 1 || after.length !== 1) throw new Error(`Expected one lite runtime for ${id}`);
+  return existing.replace(before[0], () => after[0]);
+}
+const runtimeOnly = process.argv.includes("--runtime-only");
+const selectedLiteId = (process.argv.find((arg) => arg.startsWith("--only=")) || "").slice(7);
+if (selectedLiteId && !litePack.specs.some((entry) => entry.id === selectedLiteId)) throw new Error(`Unknown lite widget: ${selectedLiteId}`);
 const current = require("./WIDGET-REGISTRY.js"),
   base = coreAdditions
     .concat(current.filter((e) => "lite-pack" !== e.source))
@@ -161,12 +171,15 @@ const entries = Array.from(byId.values()).sort((e, t) =>
 ),
   fs.existsSync(iframeDir) || fs.mkdirSync(iframeDir, { recursive: !0 }),
   litePack.specs.forEach((e) => {
+    if (selectedLiteId && e.id !== selectedLiteId) return;
+    const file = path.join(iframeDir, `${e.category}-${e.id}.html`);
+    const generated = makeLiteIframe(e);
     writeAtomic(
-      path.join(iframeDir, `${e.category}-${e.id}.html`),
-      makeLiteIframe(e),
+      file,
+      runtimeOnly ? refreshLiteRuntime(fs.readFileSync(file, "utf8"), generated, e.id) : generated,
     );
   }),
-  entries.forEach(updateIframeAttribution));
+  entries.filter((entry) => !selectedLiteId || entry.id === selectedLiteId).forEach(updateIframeAttribution));
 const counts = entries.reduce(
     (e, t) => ((e[t.category] = (e[t.category] || 0) + 1), e),
     {},

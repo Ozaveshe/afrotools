@@ -382,9 +382,10 @@ function visiblePage(row, rows, country) {
       <label>Type de carburant<select name="fuel_type"><option data-price="${row.petrol.price}" data-unit="L" value="petrol">Essence</option><option data-price="${row.diesel.price}" data-unit="L" value="diesel">Diesel</option><option data-price="${row.lpg.price}" data-unit="kg" value="lpg">GPL</option></select></label>
       <label><span data-fuel-quantity-label>Litres par jour</span><input name="litres_per_day" type="number" min="0" step="any" value="10" inputmode="decimal" aria-describedby="fuel-planner-help"></label>
       <label>Jours par mois<input name="days_per_month" type="number" min="1" max="31" step="1" value="26" inputmode="numeric"></label>
+      <label><span data-fuel-price-label>Prix local par litre (facultatif)</span><input name="local_price" type="number" min="0" step="any" inputmode="decimal" aria-describedby="fuel-planner-help"></label>
     </div>
     <output class="fuel-planner-output" data-fuel-planner-output aria-live="polite">Entrez une consommation pour obtenir une estimation.</output>
-    <div class="fuel-note" id="fuel-planner-help" style="margin-top:14px"><strong>Méthode :</strong> quantité par jour × jours par mois × prix du relevé. Utilisez des litres pour l’essence et le diesel, des kilogrammes pour le GPL. <strong>Source :</strong> ${source.link}. ${escapeHtml(source.label)} ; ligne datée du ${escapeHtml(date)}. <a href="/data/fuel/latest.json">Consulter le jeu de données</a>. Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat ou un devis.</div>
+    <div class="fuel-note" id="fuel-planner-help" style="margin-top:14px"><strong>Méthode :</strong> quantité par jour × jours par mois × prix local saisi ou prix du relevé. Utilisez des litres pour l’essence et le diesel, des kilogrammes pour le GPL. <strong>Source :</strong> ${source.link}. ${escapeHtml(source.label)} ; ligne datée du ${escapeHtml(date)}. <a href="/data/fuel/latest.json">Consulter le jeu de données</a>. Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat ou un devis.</div>
     <div class="fuel-source-row"><a href="#related-countries">Consulter les autres pays</a><a href="/fr/tools/couts-secours-energie/">Calculateur de groupe électrogène</a></div>
   </section>`;
 
