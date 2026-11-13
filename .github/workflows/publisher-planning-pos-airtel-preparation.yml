@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-planning-pos-airtel-20261113-a2'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-planning-pos-airtel-20261113-a3'",
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 100,
       "env": {
@@ -47,7 +47,7 @@
         },
         {
           "name": "Targeted source tests",
-          "run": "node --test tests/pos-agent-operating-break-even.test.js tests/airtel-kenya-tariff-boundaries.test.js tests/ai-intent-router.test.js tests/ai-orchestrator.test.js tests/fr-small-business-engine-parity.test.js tests/sw-small-business-engine-parity.test.js tests/mobile-money-quote-engine.test.js tests/mobile-money-tariff-source-review.test.js tests/mobile-money-fee-finder.test.js tests/domestic-worker-ai-contract.test.js tests/maternity-leave-ai-contract.test.js tests/day7-work-permit-cost.test.js tests/day7-work-permit-family-contract.test.js tests/fuel-market-observations.test.js tests/fuel-market-locales.test.js tests/api-fuel-market-references.test.js"
+          "run": "node --test tests/pos-agent-operating-break-even.test.js tests/airtel-kenya-tariff-boundaries.test.js tests/ai-intent-router.test.js tests/ai-orchestrator.test.js tests/fr-small-business-engine-parity.test.js tests/sw-small-business-engine-parity.test.js tests/mobile-money-quote-engine.test.js tests/mobile-money-tariff-source-review.test.js tests/mobile-money-fee-finder.test.js tests/domestic-worker-ai-contract.test.js tests/maternity-leave-ai-contract.test.js tests/day7-work-permit-cost.test.js tests/day7-work-permit-family-contract.test.js tests/fuel-market-observations.test.js tests/fuel-market-locales.test.js tests/api-fuel-market-references.test.js tests/contractor-vs-employee-ai-contract.test.js tests/retrenchment-ai-contract.test.js"
         },
         {
           "name": "Regenerate maintained tool owners",
@@ -64,7 +64,7 @@
         {
           "name": "Capture generated path inventory",
           "if": "always()",
-          "run": "out=\"$RUNNER_TEMP/preparation-inventory\"\nmkdir -p \"$out\"\ngit rev-parse HEAD HEAD^{tree} > \"$out/identity.txt\"\ngit diff --name-status HEAD > \"$out/changed-files.txt\"\ngit ls-files --others --exclude-standard > \"$out/untracked-paths.txt\""
+          "run": "out=\"$RUNNER_TEMP/preparation-inventory\"\nmkdir -p \"$out\"\ngit rev-parse HEAD HEAD^{tree} > \"$out/identity.txt\"\ngit diff --name-status HEAD > \"$out/changed-files.txt\"\ngit ls-files --others --exclude-standard > \"$out/untracked-paths.txt\"\ngit diff --binary --full-index HEAD -- tools/contractor-vs-employee/index.html tools/maternity-leave/index.html tools/retrenchment-calculator/index.html data/calculation-quality/formula-registry.json > \"$out/protected-routes.patch\"\ntest \"$(wc -c < \"$out/protected-routes.patch\")\" -le 2097152\n(cd \"$out\" && sha256sum identity.txt changed-files.txt untracked-paths.txt protected-routes.patch > SHA256SUMS)"
         },
         {
           "name": "Upload preparation path inventory",
