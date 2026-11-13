@@ -55,11 +55,14 @@ for(const locale of Object.keys(routes))for(const dependency of ['pages/mobile-m
   await expect(page.locator('#mm-result-list')).toBeEmpty();
   expect(navigations).toHaveLength(1);
 });
-test('tariff catalogue readiness retains an amount entered before loading',async({page})=>{
+for(const [provider,label] of [['airtel-kenya','Airtel Money Kenya'],['mtn-uganda','MTN']])
+test(provider+' tariff catalogue readiness retains the selected provider and amount entered before loading',async({page})=>{
   let release;const delayed=new Promise(resolve=>{release=resolve;});
   await page.route('**/data/fintech/mobile-money-tariffs.json',async route=>{await delayed;await route.continue();});
   try{
     await page.goto(routes.fr);
+    await expect(page.locator('#mm-provider')).toHaveValue('airtel-kenya');
+    await page.locator('#mm-provider').selectOption(provider);
     await page.locator('#mm-amount').fill('10000');
     await page.locator('#mm-amount').press('Enter');
     await expect(page.locator('#mm-tariff-form button')).toBeDisabled();
@@ -67,8 +70,9 @@ test('tariff catalogue readiness retains an amount entered before loading',async
     release();
     await expect(page.locator('#mm-tariff-form button')).toBeEnabled();
     await expect(page.locator('#mm-amount')).toHaveValue('10000');
+    await expect(page.locator('#mm-provider')).toHaveValue(provider);
     await page.locator('#mm-tariff-form button').click();
-    await expect(page.locator('#mm-tariff-result')).toContainText('MTN');
+    await expect(page.locator('#mm-tariff-result')).toContainText(label);
   }finally{release();}
 });
 test('initialization timeout reports failure without erasing a draft',async({page})=>{
