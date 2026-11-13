@@ -26,5 +26,5 @@ test('cash-in qualification, unavailable actions and dated evidence remain expli
  for(const providerId of ['mtn-uganda','airtel-tanzania'])assert.equal(engine.quoteTariff(catalog,{providerId,action:'bank',amount:1000}).available,false);
  const q=engine.quoteTariff(catalog,{providerId:'airtel-tanzania',action:'withdraw',amount:1000});
  assert.equal(q.sourcePeriod,'January–March 2026');assert.equal(q.effectiveDate,null);assert.equal(q.confidence,'official-dated-reference');assert.match(q.caveats.join(' '),/Current validity is unconfirmed/);
- assert.match(catalog.providers[0].caveats.join(' '),/Account-tier/);
+ assert.match(catalog.providers.find(p=>p.id==='mtn-uganda').caveats.join(' '),/Account-tier/);
 });

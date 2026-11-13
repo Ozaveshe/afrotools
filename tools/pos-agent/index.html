@@ -238,6 +238,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
         <div class="card-body">
           <div class="res-hero">
             <div class="big" id="monthly-profit">—</div>
+            <p>Daily attempted transactions to cover monthly operating costs: <strong id="pos-operating-break-even">—</strong></p>
             <div class="lbl">Monthly Net Profit</div>
           </div>
           <div class="result-grid">
@@ -457,6 +458,9 @@ function calculate() {
   var dailyRev = commPerTxn * effectiveDailyTxns;
   var monthlyRev = dailyRev * opDays;
   var monthlyCosts = monthlyRent + otherCosts;
+  var commissionPerAttempt = commPerTxn * (1 - failedRate / 100);
+  var operatingBreakEven = monthlyCosts === 0 ? 0 : commissionPerAttempt > 0
+    ? Math.ceil(monthlyCosts / (commissionPerAttempt * opDays)) : null;
   var monthlyProfit = monthlyRev - monthlyCosts;
   var profitMargin = monthlyRev > 0 ? (monthlyProfit / monthlyRev) * 100 : 0;
 
@@ -467,6 +471,8 @@ function calculate() {
   document.getElementById('results-section').style.display = 'block';
 
   document.getElementById('monthly-profit').textContent = fmt(monthlyProfit, sym);
+  document.getElementById('pos-operating-break-even').textContent = Number.isFinite(operatingBreakEven)
+    ? operatingBreakEven.toLocaleString('en-NG') : 'Unavailable at this commission';
   document.getElementById('daily-rev').textContent = fmt(dailyRev, sym);
   document.getElementById('monthly-rev').textContent = fmt(monthlyRev, sym);
   document.getElementById('monthly-costs').textContent = fmt(monthlyCosts, sym);
@@ -510,7 +516,7 @@ function copyToolSummary(text, statusId){
 function fallbackCopy(text){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
 function downloadToolSummary(text, filename, statusId){ var blob=new Blob([text],{type:'text/plain;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(a.href);},500); var s=document.getElementById(statusId); if(s) s.textContent='TXT summary downloaded.'; }
 
-function buildPosAgentSummary(){ return buildToolSummary('POS agent profitability summary', ['Country: '+valueOf('country'), 'Currency: '+COUNTRY_DATA[valueOf('country')].currency, 'Provider / evidence label: '+valueOf('provider'), 'Commission: '+commissionTerms(), 'Daily attempted transactions: '+valueOf('daily-txns'), 'Failure/reversal assumption: '+valueOf('failed-rate')+'%', 'Average transaction size: '+valueOf('avg-txn-size'), 'Operating days per month: '+valueOf('operating-days'), 'Device / setup cost: '+(valueOf('device-cost')||'0'), 'Float / working capital: '+(valueOf('float-capital')||'0'), 'Monthly rent: '+(valueOf('monthly-rent')||'0'), 'Other monthly costs: '+(valueOf('other-monthly-costs')||'0'), 'Monthly net profit: '+textOf('monthly-profit'), 'Daily commission revenue: '+textOf('daily-rev'), 'Monthly commission revenue: '+textOf('monthly-rev'), 'Monthly costs: '+textOf('monthly-costs'), 'Profit margin: '+textOf('profit-margin'), 'Monthly return on setup + float: '+textOf('roi-setup'), 'Capital payback: '+textOf('breakeven-days'), 'Note: planning estimate only; verify written provider terms, reversals, settlement, float and observed completed transactions.']); }
+function buildPosAgentSummary(){ return buildToolSummary('POS agent profitability summary', ['Country: '+valueOf('country'), 'Currency: '+COUNTRY_DATA[valueOf('country')].currency, 'Provider / evidence label: '+valueOf('provider'), 'Commission: '+commissionTerms(), 'Daily attempted transactions: '+valueOf('daily-txns'), 'Failure/reversal assumption: '+valueOf('failed-rate')+'%', 'Average transaction size: '+valueOf('avg-txn-size'), 'Operating days per month: '+valueOf('operating-days'), 'Device / setup cost: '+(valueOf('device-cost')||'0'), 'Float / working capital: '+(valueOf('float-capital')||'0'), 'Monthly rent: '+(valueOf('monthly-rent')||'0'), 'Other monthly costs: '+(valueOf('other-monthly-costs')||'0'), 'Monthly net profit: '+textOf('monthly-profit'), 'Daily commission revenue: '+textOf('daily-rev'), 'Monthly commission revenue: '+textOf('monthly-rev'), 'Monthly costs: '+textOf('monthly-costs'), 'Daily attempted transactions to cover operating costs: '+textOf('pos-operating-break-even'), 'Profit margin: '+textOf('profit-margin'), 'Monthly return on setup + float: '+textOf('roi-setup'), 'Capital payback: '+textOf('breakeven-days'), 'Note: planning estimate only; verify written provider terms, reversals, settlement, float and observed completed transactions.']); }
 function copyPosAgentSummary(){ if(!requireCurrentPosResult()) return; copyToolSummary(buildPosAgentSummary(),'pos-summary-status'); }
 function downloadPosAgentSummary(){ if(!requireCurrentPosResult()) return; downloadToolSummary(buildPosAgentSummary(),'pos-agent-summary.txt','pos-summary-status'); }
 
