@@ -1018,6 +1018,27 @@
       currencySupport: ['MULTI'],
     },
   );
+  // Keep established contracts independent of editable catalogue wording.
+  MAJOR_TOOL_OVERRIDES['work-permit-cost'] = {
+    requiredInputs: [input('country', 'Country', 'country', { required: true })],
+    optionalInputs: [],
+    privacyMode: 'browser_local',
+    aiCapabilities: ['route_only', 'prefill'],
+    outputTypes: ['number', 'table', 'checklist', 'json'],
+    sourcePolicy: 'official',
+    highStakesDomain: 'legal',
+    monetizationSurfaces: ['api'],
+  };
+  MAJOR_TOOL_OVERRIDES['freelancer-rate'] = {
+    requiredInputs: [],
+    optionalInputs: [],
+    privacyMode: 'browser_local',
+    aiCapabilities: ['route_only'],
+    outputTypes: ['table', 'json', 'report'],
+    sourcePolicy: 'reviewed',
+    highStakesDomain: 'none',
+    monetizationSurfaces: ['api', 'lead_opt_in'],
+  };
   // Quote receipts stay local regardless of words such as "provider" in copy.
   MAJOR_TOOL_OVERRIDES['remittance-compare'] = {
     privacyMode: 'browser_local',
