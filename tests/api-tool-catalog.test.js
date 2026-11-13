@@ -200,10 +200,13 @@ function validLink(overrides = {}) {
         getOrFetch: async () => ({
           fromCache: true,
           data: {
+            // Synthetic native-schema snapshot for service-scope assertions.
+            schemaVersion: 1,
             base: 'USD',
             rates: { NGN: 1500, KES: 130 },
-            source: 'Synthetic contract fixture',
-            timestamp: '2026-07-11T00:00:00.000Z',
+            source: 'exchangerate-api',
+            timestamp: new Date().toISOString(),
+            retained_rate_codes: [],
           },
         }),
         cacheHeaders: (_options, _fromCache, base) => ({ ...base, 'Cache-Control': 'public, max-age=300' }),

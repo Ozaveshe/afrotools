@@ -8,6 +8,8 @@ const markets=JSON.parse(JSON.stringify(currentMarkets));
 // These merge scenarios deliberately test an October feed, independently of current source updates.
 const ngFixture=markets.markets.find(m=>m.market_id==='ng-national');
 ngFixture.fuels=ngFixture.fuels.map(r=>({...r,price:r.fuel_type==='petrol'?1270:1620,effective_date:'2026-08-03',last_verified_at:'2026-08-09'}));
+const ugFixture=markets.markets.find(m=>m.market_id==='ug-national');
+ugFixture.fuels=['petrol','diesel'].map(fuel_type=>({fuel_type,price:fuel_type==='petrol'?6538:6603,currency:'UGX',unit:'litre',effective_date:'2026-08-03',last_verified_at:'2026-08-09',source_name:'GlobalPetrolPrices',source_url:'https://www.globalpetrolprices.com/Uganda/'+(fuel_type==='petrol'?'gasoline_prices/':'diesel_prices/'),confidence:'low',notes:'Synthetic pre-October national reference.'}));
 // Synthetic dated feed: this contract must not depend on a changing live-cache date.
 const latest={countries:[{code:'UG',name:'Uganda',currency:'UGX',source:'globalpetrolprices',source_url:'https://www.globalpetrolprices.com/Uganda/gasoline_prices/',last_updated:'2026-10-12',petrol:{price:5000,unit:'liter'}},{code:'BI',name:'Burundi',currency:'BIF',source:'globalpetrolprices',source_url:'https://www.globalpetrolprices.com/Burundi/gasoline_prices/',last_updated:'2026-10-12',petrol:{price:4000,unit:'liter'}}]};
 const copy=require('../assets/js/lib/fuel-market-copy');

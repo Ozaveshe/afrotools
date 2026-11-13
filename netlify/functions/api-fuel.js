@@ -12,6 +12,8 @@
  */
 
 const { getData } = require('./_shared/data-store');
+const marketData = require('../../data/fuel/markets.json');
+const marketObservations = require('../../assets/js/lib/fuel-market-observations');
 const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
 const { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
@@ -49,6 +51,46 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
     statusCode,
     headers: { ...base, ...extraHeaders },
     body: JSON.stringify(body),
+  };
+}
+
+function withPriceProvenance(country) {
+  const products = {};
+  for (const fuel of ['petrol', 'diesel', 'lpg']) {
+    const product = country[fuel];
+    if (!product) continue;
+    products[fuel] = {
+      observed_at: product.observed_at || null,
+      source_url: product.source_url || null,
+    };
+  }
+  return {
+    ...country,
+    price_provenance: {
+      country_snapshot_date: country.last_updated || null,
+      source_state: country.source_state || null,
+      products,
+    },
+  };
+}
+
+function requestedMarkets(params, countries) {
+  if (params.include !== 'markets') return {};
+  const countryCodes = new Set(countries.map(country => country.code));
+  const now = new Date().toISOString();
+  return {
+    markets: marketData.markets
+      .filter(market => countryCodes.has(market.country_code))
+      .map(market => ({
+        ...market,
+        fuels: market.fuels.map(fuel => {
+          const observation = marketObservations.status(fuel, now);
+          return {
+            ...fuel,
+            reference_status: observation.available ? 'available' : observation.historical ? 'historical' : 'unavailable',
+          };
+        }),
+      })),
   };
 }
 
@@ -136,6 +178,14 @@ exports.handler = async function (event) {
     return jsonResponse(503, { error: 'Fuel data unavailable. Please try again later.' });
   }
   _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
+  // Market availability is evaluated at request time and must not outlive its expiry.
+  if (params.include === 'markets') {
+    Object.assign(rlHeaders, {
+      'Cache-Control': 'no-store',
+      'CDN-Cache-Control': 'no-store',
+      'Netlify-CDN-Cache-Control': 'no-store',
+    });
+  }
 
   let countries = data.countries;
 
@@ -148,12 +198,14 @@ exports.handler = async function (event) {
     }
     return jsonResponse(200, {
       timestamp: data.timestamp,
+      collected_at: data.timestamp || null,
       source: data.source || country.source || '',
       source_state: data.source_state || country.source_state || '',
       source_note: data.source_note || country.source_note || '',
       served_from: data.served_from,
       as_of: data.as_of || data.timestamp || null,
-      country,
+      country: withPriceProvenance(country),
+      ...requestedMarkets(params, [country]),
     }, rlHeaders);
   }
 
@@ -205,6 +257,7 @@ exports.handler = async function (event) {
 
   return jsonResponse(200, {
     timestamp: data.timestamp,
+    collected_at: data.timestamp || null,
     source: data.source || '',
     source_state: data.source_state || '',
     source_note: data.source_note || '',
@@ -212,7 +265,8 @@ exports.handler = async function (event) {
     served_from: data.served_from,
     as_of: data.as_of || data.timestamp || null,
     summary,
-    countries,
+    countries: countries.map(withPriceProvenance),
+    ...requestedMarkets(params, countries),
   }, rlHeaders);
 };
 
