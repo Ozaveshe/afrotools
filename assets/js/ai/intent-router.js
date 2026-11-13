@@ -233,6 +233,7 @@
     rule("agriculture", "cocoa-tracker", ["cocoa", "cacao", "cocoa farm", "cocoa price", "cocoa farm gate", "cocoa farm-gate", "cocoa farm gate price", "farm gate cocoa", "farm-gate cocoa", "cocoa export", "quality premium"], ["finance"]),
     rule("agriculture", "storage-loss", ["storage loss", "post harvest", "post-harvest", "grain storage", "hermetic", "silo"], ["finance"]),
     rule("agriculture", "commodity-prices", ["commodity prices", "market price", "market prices", "farm gate price", "farm-gate price", "sell maize", "sell cocoa", "seasonal price"], ["finance"]),
+    rule("small-business", "pos-agent", ["pos agent", "pos business", "point of sale agent"], ["finance"]),
     rule("agriculture", "farm-profit-calculator", ["farm profit", "farm roi", "farm margin", "profitable", "profitability", "break even", "break-even"], ["finance"]),
     rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm", "rendement culture", "rendement mais", "rendement du mais", "estimer la recolte"], ["none"]),
     rule("agriculture", "farm-budget", ["farm budget", "farm costs", "farm expenses"], ["finance"]),

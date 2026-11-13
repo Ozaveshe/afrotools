@@ -138,7 +138,9 @@
         decision && decision._meta && decision._meta.retrievalSource;
       if (
         decision &&
-        ((decision.selectedToolId === "cv-builder" &&
+        ((decision.selectedToolId === "pos-agent" &&
+          decision.intentCategory === "small-business" && structuredSource === "rule") ||
+          (decision.selectedToolId === "cv-builder" &&
           structuredSource === "profession_role") ||
           (decision.selectedToolId === "passport-checklist" &&
             structuredSource === "explicit_passport") ||

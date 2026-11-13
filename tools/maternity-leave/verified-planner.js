@@ -72,6 +72,13 @@
       message || "Values changed. Calculate again before exporting.";
   }
 
+  country.addEventListener("change", function () {
+    ["plannedDays", "payRate", "leaveSource", "leaveSourceDate"].forEach(function (id) {
+      byId(id).value = "";
+    });
+    invalidate("Country changed. Enter the verified leave rule for the selected country.");
+  });
+
   byId("leaveForm").addEventListener("input", function () {
     if (summary) invalidate();
   });
@@ -103,6 +110,7 @@
     if (
       !currency ||
       !start ||
+      byId("payRate").value.trim() === "" ||
       !sourceLabel ||
       !sourceDate ||
       !Number.isFinite(sourceTime) ||

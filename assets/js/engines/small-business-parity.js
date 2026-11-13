@@ -117,7 +117,10 @@
     const perTransaction = commissionCap > 0 ? Math.min(averageTransaction * commissionPct / 100, commissionCap) : averageTransaction * commissionPct / 100;
     const monthlyRevenue = perTransaction * completed * days;
     const monthlyProfit = monthlyRevenue - monthlyCosts;
-    return ready({ completedDailyTransactions: completed, commissionPerTransaction: perTransaction, monthlyRevenue, monthlyCosts, monthlyProfit, marginPct: monthlyRevenue ? monthlyProfit / monthlyRevenue * 100 : 0, setupPaybackMonths: setup > 0 && monthlyProfit > 0 ? setup / monthlyProfit : null }, "Les commissions et frais saisis doivent être confirmés auprès du fournisseur.");
+    const dailyCommissionPerAttempt = perTransaction * (1 - failurePct / 100) * days;
+    const operatingBreakEvenDailyTransactions = monthlyCosts === 0 ? 0 : dailyCommissionPerAttempt > 0
+      ? Math.ceil(monthlyCosts / dailyCommissionPerAttempt) : null;
+    return ready({ completedDailyTransactions: completed, operatingBreakEvenDailyTransactions, commissionPerTransaction: perTransaction, monthlyRevenue, monthlyCosts, monthlyProfit, marginPct: monthlyRevenue ? monthlyProfit / monthlyRevenue * 100 : 0, setupPaybackMonths: setup > 0 && monthlyProfit > 0 ? setup / monthlyProfit : null }, "Les commissions et frais saisis doivent être confirmés auprès du fournisseur.");
   }
 
   function miniImport(input) {
