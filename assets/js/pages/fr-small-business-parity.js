@@ -47,6 +47,7 @@
     yearRevenue: "Encaissements sur 12 mois",
     yearEndBalance: "Solde fin d’année",
     negativeMonths: "Mois négatifs",
+    operatingBreakEvenDailyTransactions: "Tentatives de transaction par jour pour couvrir les charges",
     completedDailyTransactions: "Transactions réussies / jour",
     commissionPerTransaction: "Commission / transaction",
     monthlyCosts: "Coûts mensuels",

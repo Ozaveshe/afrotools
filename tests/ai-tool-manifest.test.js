@@ -13,6 +13,31 @@ const directoryEntries = JSON.parse(fs.readFileSync(directoryPath, "utf8"));
 const manifest = manifestApi.buildToolManifest(directoryEntries);
 const validation = manifestApi.validateToolManifest(manifest);
 
+// Catalogue wording must not change privacy, prefill or source contracts.
+const copyStableContracts = {
+  'work-permit-cost': {
+    requiredInputs: [{ name: 'country', label: 'Country', type: 'country', required: true, sensitive: false }],
+    optionalInputs: [], privacyMode: 'browser_local', aiCapabilities: ['route_only', 'prefill'],
+    outputTypes: ['number', 'table', 'checklist', 'json'], sourcePolicy: 'official',
+    highStakesDomain: 'legal', monetizationSurfaces: ['api']
+  },
+  'freelancer-rate': {
+    requiredInputs: [], optionalInputs: [], privacyMode: 'browser_local', aiCapabilities: ['route_only'],
+    outputTypes: ['table', 'json', 'report'], sourcePolicy: 'reviewed',
+    highStakesDomain: 'none', monetizationSurfaces: ['api', 'lead_opt_in']
+  }
+};
+for (const [id, contract] of Object.entries(copyStableContracts)) {
+  const record = directoryEntries.find(entry => entry.id === id);
+  for (const name of [record.name, 'Work Permit Cost Calculator', 'Freelancer Rate Estimator', 'Planning worksheet']) {
+    const entry = manifestApi.buildToolManifest([{ ...record, name }])[0];
+    for (const [field, expected] of Object.entries(contract)) {
+      assert.deepStrictEqual(entry[field], expected, `${id}.${field} must survive catalogue copy changes`);
+    }
+    assert.strictEqual(entry.title, name, 'Public catalogue title should remain editable');
+  }
+}
+
 const receiptComparator = manifest.find(entry => entry.id === 'remittance-compare');
 assert.strictEqual(receiptComparator.privacyMode, 'browser_local');
 assert.strictEqual(receiptComparator.sourcePolicy, 'user_input');

@@ -2,7 +2,9 @@ const {test,expect}=require('@playwright/test');
 test.describe('mobile money fee finder',()=>{
   test('calculates verified bands and exposes unavailable states',async({page})=>{
     await page.goto('/tools/mobile-money-fees/');
-    await expect(page.locator('#mm-provider option')).toHaveCount(2);
+    await expect(page.locator('#mm-provider option')).toHaveCount(3);
+    expect(await page.locator('#mm-provider option').evaluateAll(options=>options.map(option=>option.value))).toEqual(['airtel-kenya','mtn-uganda','airtel-tanzania']);
+    await page.locator('#mm-provider').selectOption('mtn-uganda');
     await page.locator('#mm-amount').fill('500');
     await page.locator('#mm-tariff-form button[type="submit"]').click();
     await expect(page.locator('#mm-tariff-result')).toContainText('100 UGX');
@@ -28,7 +30,8 @@ test.describe('mobile money fee finder',()=>{
   });
   test('keeps the French finder native through calculated and unavailable states',async({page})=>{
     await page.goto('/fr/tools/frais-mobile-money/');
-    await expect(page.locator('#mm-provider option').first()).toContainText('Ouganda');
+    await expect(page.locator('#mm-provider option[value="mtn-uganda"]')).toContainText('Ouganda');
+    await page.locator('#mm-provider').selectOption('mtn-uganda');
     await expect(page.locator('.rm-badges')).toContainText('Références officielles publiées');
     await expect(page.locator('#mm-a-type')).toContainText('Paiement marchand');
     await page.locator('#mm-amount').fill('500');

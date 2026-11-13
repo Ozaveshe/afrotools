@@ -33,11 +33,11 @@ assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",acti
 assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"deposit",amount:1000}).reason,"ACTION_NOT_VERIFIED");
 assert.strictEqual(engine.quoteTariff(catalog,{providerId:"unknown",action:"send",amount:1000}).reason,"PROVIDER_NOT_VERIFIED");
 {
-  const invalid=JSON.parse(JSON.stringify(catalog));invalid.providers[0].actions.send[1].min=2500;
+  const invalid=JSON.parse(JSON.stringify(catalog));invalid.providers.find(p=>p.id==='mtn-uganda').actions.send[1].min=2500;
   assert.throws(()=>engine.validateCatalog(invalid),/INVALID_TARIFF_BAND/);
 }
 {
-  const invalid=JSON.parse(JSON.stringify(catalog));invalid.providers[1].actions.withdraw[0].feeComponents.governmentLevy=9;
+  const invalid=JSON.parse(JSON.stringify(catalog));invalid.providers.find(p=>p.id==='airtel-tanzania').actions.withdraw[0].feeComponents.governmentLevy=9;
   assert.throws(()=>engine.validateCatalog(invalid),/INVALID_TARIFF_COMPONENT_TOTAL/);
 }
 console.log("mobile-money-quote-engine: ok");
