@@ -20,9 +20,10 @@ for(const locale of Object.keys(routes)){
   assert.ok(/20(?:,|\u202f| )000 UGX/.test(generated));
   assert.ok(generated.includes('590 TZS'));
 }
-assert.strictEqual(builder.CATALOG.providers.length,2);
+assert.deepStrictEqual(builder.CATALOG.providers.map(p=>p.id).sort(),['airtel-kenya','airtel-tanzania','mtn-uganda']);
 const french=builder.page('fr');
-assert.match(french, /Frais Mobile Money : MTN Uganda et Airtel Tanzania/);
+assert.match(french, /Frais Mobile Money : Kenya, Ouganda et Tanzanie/);
+assert.match(french, /data-provider-table="airtel-kenya"/);
 assert.match(french, /Vérifiez les frais publiés d’envoi, de retrait et de dépôt/);
 assert.match(french, />Ouganda - MTN MoMo \(UGX\)</);
 assert.match(french, />Tanzanie - Airtel Money \(TZS\)</);

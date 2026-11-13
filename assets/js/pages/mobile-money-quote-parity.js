@@ -105,16 +105,21 @@
   amountInput.max=String(window.MobileMoneyQuoteEngine.MAX_AMOUNT);
   let catalog=null;
   function localized(map,value){return map&&map[value]||value;}
-  function localizedRule(quote){const exact=localized(copy.ruleLabels,quote.rule);if(exact!==quote.rule)return exact;if(copy.publishedBand&&/^Published\s+\w+\s+fee for this amount band$/.test(quote.rule))return copy.publishedBand;return quote.rule;}
+  function localizedRule(quote){const exact=localized(copy.ruleLabels,quote.rule);if(exact!==quote.rule)return exact;if(copy.publishedBand&&/^Published\s+[a-z]+(?:-[a-z]+)*\s+fee for this amount band$/.test(quote.rule))return copy.publishedBand;return quote.rule;}
   function provider(){return catalog&&catalog.providers.find(function(item){return item.id===providerSelect.value;});}
   function format(value,code){return Number(value).toLocaleString(root.dataset.locale||'en',{maximumFractionDigits:2})+' '+code;}
   function metric(label,value){const box=document.createElement('div'),name=document.createElement('span'),strong=document.createElement('strong');box.className='rm-metric';name.textContent=label;strong.textContent=value;box.append(name,strong);return box;}
-  function updateActions(){const selected=provider();actionSelect.replaceChildren();if(!selected)return;Object.keys(selected.actions).forEach(function(action){const option=document.createElement('option');option.value=action;option.textContent=copy[action]||action;actionSelect.appendChild(option);});currency.textContent=selected.currency;amountInput.min=String(Math.min.apply(null,Object.keys(selected.actions).map(function(action){return selected.actions[action][0].min;})));}
+  function tariffActionLabel(action){
+    if(action==='send-same-network')return root.dataset.locale==='fr'?'Envoyer vers le même réseau':root.dataset.locale==='sw'?'Tuma kwa mtandao huohuo':'Send to the same network';
+    if(action==='send-other-network')return root.dataset.locale==='fr'?'Envoyer vers un autre réseau':root.dataset.locale==='sw'?'Tuma kwa mtandao mwingine':'Send to another network';
+    return copy[action]||action;
+  }
+  function updateActions(){const selected=provider();actionSelect.replaceChildren();if(!selected)return;Object.keys(selected.actions).forEach(function(action){const option=document.createElement('option');option.value=action;option.textContent=tariffActionLabel(action);actionSelect.appendChild(option);});currency.textContent=selected.currency;amountInput.min=String(Math.min.apply(null,Object.keys(selected.actions).map(function(action){return selected.actions[action][0].min;})));}
   function renderUnavailable(quote){const box=document.createElement('div'),heading=document.createElement('strong'),detail=document.createElement('p');box.className='mm-unavailable';heading.textContent=copy.unavailable||'Unavailable';detail.textContent=localized(copy.reasonLabels,quote.reason);box.append(heading,detail);if(quote.source){const link=document.createElement('a');link.href=quote.source.url;link.rel='noopener';link.textContent=localized(copy.sourceTitles,quote.source.title);box.append(link);}resultNode.replaceChildren(box);}
   function render(quote){
     if(!quote.available){renderUnavailable(quote);return;}
     const article=document.createElement('article'),heading=document.createElement('h3'),metrics=document.createElement('div'),source=document.createElement('a');
-    heading.textContent=localized(copy.countryLabels,quote.country)+' - '+quote.provider+' - '+(copy[quote.action]||quote.action);metrics.className='rm-metrics';
+    heading.textContent=localized(copy.countryLabels,quote.country)+' - '+quote.provider+' - '+tariffActionLabel(quote.action);metrics.className='rm-metrics';
     metrics.append(metric(copy.amount||'Amount',format(quote.amount,quote.currency)),metric(copy.fee||'Fee',format(quote.fee,quote.currency)),metric(copy.receive||'Recipient receives',format(quote.recipientReceives,quote.currency)),metric(quote.totalIncludesAllCharges===false?(copy.subtotalTaxExcluded||'Amount + published fee (tax excluded)'):(copy.debit||'Total debited'),format(quote.totalIncludesAllCharges===false?quote.amountPlusPublishedFee:quote.totalDebited,quote.currency)),metric(copy.band||'Band',quote.band.label),metric(copy.effective||'Effective date',quote.effectiveDate||copy.unknown),metric(copy.verified||'Last verified',quote.lastVerified));
     article.append(heading,metrics);
     const rule=document.createElement('p');rule.textContent=localizedRule(quote);article.append(rule);
@@ -138,5 +143,11 @@
   form.addEventListener('input',clearResult);
   form.addEventListener('change',clearResult);
   form.addEventListener('reset',function(){queueMicrotask(function(){updateActions();clearResult();});});
-  fetch('/data/fintech/mobile-money-tariffs.json').then(function(response){if(!response.ok)throw new Error('CATALOG_UNAVAILABLE');return response.json();}).then(function(data){window.MobileMoneyQuoteEngine.validateCatalog(data);catalog=data;updateActions();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.ready(form);status.textContent='';}).catch(function(){catalog=null;resultNode.replaceChildren();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.fail(form);status.textContent=copy.catalogUnavailable||copy.unavailable||'Tariff catalog unavailable.';form.querySelectorAll('input,select,button').forEach(function(control){control.disabled=true;});});
+  fetch('/data/fintech/mobile-money-tariffs.json').then(function(response){if(!response.ok)throw new Error('CATALOG_UNAVAILABLE');return response.json();}).then(function(data){window.MobileMoneyQuoteEngine.validateCatalog(data);catalog=data;
+    const previousProvider=providerSelect.value;
+    providerSelect.replaceChildren(...catalog.providers.map(function(item){
+      return new Option(localized(copy.countryLabels,item.country)+' - '+item.provider+' ('+item.currency+')',item.id);
+    }));
+    if(catalog.providers.some(function(item){return item.id===previousProvider;}))providerSelect.value=previousProvider;
+    updateActions();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.ready(form);status.textContent='';}).catch(function(){catalog=null;resultNode.replaceChildren();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.fail(form);status.textContent=copy.catalogUnavailable||copy.unavailable||'Tariff catalog unavailable.';form.querySelectorAll('input,select,button').forEach(function(control){control.disabled=true;});});
 }());

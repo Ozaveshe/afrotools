@@ -1288,6 +1288,18 @@ body.top-level-page-ui-refresh .dw-field input,body.top-level-page-ui-refresh .d
         setExportEnabled(true);
       }
 
+      var previousCountry = textValue("country");
+      function changeCountry() {
+        var selectedCountry = textValue("country");
+        if (selectedCountry === previousCountry) return;
+        previousCountry = selectedCountry;
+        ["legalFloor", "sourceLabel", "sourceDate"].forEach(function (id) {
+          document.getElementById(id).value = "";
+        });
+        currencyInput.dataset.edited = "";
+        updateCountry();
+      }
+
       function updateCountry() {
         var country = countryData[textValue("country")] || countryData.nigeria;
         if (!currencyInput.dataset.edited) currencyInput.value = country.currency;
@@ -1332,6 +1344,7 @@ body.top-level-page-ui-refresh .dw-field input,body.top-level-page-ui-refresh .d
 
       function loadSample() {
         document.getElementById("country").value = "nigeria";
+        previousCountry = textValue("country");
         currencyInput.value = "TST";
         currencyInput.dataset.edited = "true";
         document.getElementById("role").value = "elder-care";
@@ -1370,6 +1383,7 @@ body.top-level-page-ui-refresh .dw-field input,body.top-level-page-ui-refresh .d
 
       form.addEventListener("reset", function () {
         window.setTimeout(function () {
+          previousCountry = textValue("country");
           currencyInput.dataset.edited = "";
           updateCountry();
           invalidateResult("Form reset. Enter a new pay plan.");
@@ -1382,11 +1396,11 @@ body.top-level-page-ui-refresh .dw-field input,body.top-level-page-ui-refresh .d
       fields.forEach(function (field) {
         field.addEventListener("input", function () {
           if (field.id === "currency") currencyInput.dataset.edited = "true";
-          if (field.id === "country") updateCountry();
+          if (field.id === "country") changeCountry();
           invalidateResult();
         });
         field.addEventListener("change", function () {
-          if (field.id === "country") updateCountry();
+          if (field.id === "country") changeCountry();
           invalidateResult();
         });
       });
