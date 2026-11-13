@@ -262,7 +262,7 @@ x-api-key: afro_live_xxxxxxxxxxxxx
       <section id="fx">
         <h2>FX rates</h2>
         <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/fx/rates</code></header></div>
-        <p>Read current rates, single pairs, base conversions, and stored historical pairs where available.</p>
+        <p>Read dated exchange-rate references for a currency pair or base currency. Stored historical series are available for selected pairs.</p>
         <table class="param-table">
           <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
           <tbody>
@@ -272,14 +272,17 @@ x-api-key: afro_live_xxxxxxxxxxxxx
             <tr><td><code>days</code></td><td>number</td><td>No</td><td>Historical lookback when stored for the pair.</td></tr>
           </tbody>
         </table>
-<pre>curl "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN"</pre>
+<pre>curl "https://afrotools.com/api/v1/fx/rates?base=USD&amp;target=NGN"</pre>
+        <p>Read <code>rate</code> from the top-level response. If you pass <code>amount</code>, read <code>converted_amount</code>. The pair's <code>qualification</code> contains the source observations used.</p>
+        <p>HTTP 503 means a current quote is unavailable. An expired quote returns a null <code>rate</code> with reason <code>expired-fx-observation</code>. If <code>next_update</code> is present, use it as a guide for when to retry.</p>
       </section>
 
       <section id="fuel">
         <h2>Fuel prices</h2>
         <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/fuel/prices</code></header></div>
-        <p>Read petrol, diesel, and LPG prices where source coverage is available. Results include timestamps and source metadata.</p>
-<pre>curl "https://afrotools.com/api/v1/fuel/prices?country=NG"</pre>
+        <p>Look up dated fuel references where coverage is available. <code>collected_at</code> tells you when the dataset was collected. For a country product, read <code>price_provenance.products</code> for the observation date and source when supplied.</p>
+        <p>Add <code>include=markets</code> for available curated national or local market records. Check the market's <code>granularity</code> and the fuel's <code>reference_status</code> before using the price. An available reference is a dated estimate, and a historical reference is outside its validity window.</p>
+<pre>curl "https://afrotools.com/api/v1/fuel/prices?country=KE&amp;include=markets"</pre>
       </section>
 
       <section id="rates">
@@ -306,7 +309,7 @@ x-api-key: afro_live_xxxxxxxxxxxxx
 
       <section id="errors">
         <h2>Error format</h2>
-        <p>Errors return JSON with an <code>error</code> field and, where available, a stable <code>code</code>.</p>
+        <p>Errors return JSON. Check the HTTP status and read <code>error</code>, <code>code</code>, or the endpoint’s <code>status</code> and <code>reason</code> fields where provided.</p>
 <pre>{
   "error": "Invalid or missing API key",
   "code": "INVALID_API_KEY"

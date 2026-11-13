@@ -11,7 +11,8 @@ var { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-a
 var { getAllowedOrigin } = require('./utils/cors');
 var { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
 var { getData } = require('./_shared/data-store');
-var { getOrFetch, cacheHeaders } = require('./_lib/cache');
+var { getOrFetch } = require('./_lib/cache');
+var { pairResponse } = require('./_shared/forex-response');
 
 var CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -20,8 +21,6 @@ var CORS_HEADERS = {
   'Content-Type': 'application/json'
 };
 
-var CACHE_OPTS = { browserTTL: 300, cdnTTL: 600, staleTTL: 900 };
-var _reqCacheHdrs = null;
 
 function sandboxFxResponse(params) {
   params = params || {};
@@ -53,42 +52,15 @@ function sandboxFxResponse(params) {
 }
 
 function jsonResponse(statusCode, body, extraHeaders) {
-  var base = (statusCode === 200 && _reqCacheHdrs) ? _reqCacheHdrs : CORS_HEADERS;
   return {
     statusCode: statusCode,
-    headers: Object.assign({}, base, extraHeaders || {}),
+    headers: Object.assign({}, CORS_HEADERS, extraHeaders || {}),
     body: JSON.stringify(body)
   };
 }
 
 function normalizeCode(value) {
   return String(value || '').trim().toUpperCase();
-}
-
-function roundRate(value) {
-  return Math.round(value * 1000000) / 1000000;
-}
-
-function getRatesPayload(data) {
-  return data && data.rates && typeof data.rates === 'object' ? data.rates : null;
-}
-
-function convertPair(rates, defaultBase, base, target) {
-  var baseRate = base === defaultBase ? 1 : rates[base];
-  var targetRate = target === defaultBase ? 1 : rates[target];
-  if (!baseRate || !targetRate) return null;
-  return roundRate(targetRate / baseRate);
-}
-
-function buildBaseRates(rates, defaultBase, base) {
-  var baseRate = base === defaultBase ? 1 : rates[base];
-  if (!baseRate) return null;
-  var out = {};
-  Object.keys(rates).sort().forEach(function(code) {
-    out[code] = roundRate(rates[code] / baseRate);
-  });
-  out[defaultBase] = base === defaultBase ? 1 : roundRate(1 / baseRate);
-  return out;
 }
 
 async function historicalResponse(base, target, days, headers) {
@@ -157,64 +129,45 @@ exports.handler = async function (event) {
 
     var fetched = await getOrFetch('forex-latest', 600000);
     var data = fetched && fetched.data;
-    var rates = getRatesPayload(data);
-    if (!rates) return jsonResponse(503, { error: 'FX data unavailable. Please try again later.' }, rlHeaders);
+    const headers = Object.assign({}, rlHeaders, {
+      'Cache-Control': 'no-store',
+      'CDN-Cache-Control': 'no-store',
+      'Netlify-CDN-Cache-Control': 'no-store'
+    });
+    if (!data || !data.rates) return jsonResponse(503, { error: 'FX data unavailable. Please try again later.' }, headers);
 
-    _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fetched.fromCache, CORS_HEADERS);
-    var defaultBase = normalizeCode(data.base || 'USD') || 'USD';
-
-    if (base && target) {
-      var amount = parseFloat(params.amount) || 0;
-      var rate = convertPair(rates, defaultBase, base, target);
-      if (!rate) return jsonResponse(404, { error: 'Currency pair not found', base: base, target: target }, rlHeaders);
-      return jsonResponse(200, {
-        base: base,
-        target: target,
-        pair: base + '/' + target,
-        rate: rate,
-        amount: amount || undefined,
-        converted_amount: amount ? Math.round(amount * rate * 100) / 100 : undefined,
-        source: data.source || null,
-        updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
-        next_update: data.next_update || null
-      }, rlHeaders);
-    }
-
-    if (base) {
-      var baseRates = buildBaseRates(rates, defaultBase, base);
-      if (!baseRates) return jsonResponse(404, { error: 'Currency not found: ' + base }, rlHeaders);
-      return jsonResponse(200, {
-        base: base,
-        rates: baseRates,
-        source: data.source || null,
-        updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
-        next_update: data.next_update || null
-      }, rlHeaders);
-    }
-
-    if (target) {
-      var targetRates = {};
-      Object.keys(rates).sort().forEach(function(code) {
-        var value = convertPair(rates, defaultBase, code, target);
-        if (value) targetRates[code] = value;
-      });
-      targetRates[defaultBase] = convertPair(rates, defaultBase, defaultBase, target);
-      return jsonResponse(200, {
-        target: target,
-        rates: targetRates,
-        source: data.source || null,
-        updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
-        next_update: data.next_update || null
-      }, rlHeaders);
-    }
-
-    return jsonResponse(200, {
-      base: defaultBase,
-      rates: rates,
+    const now = new Date().toISOString();
+    const provenance = {
       source: data.source || null,
       updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
       next_update: data.next_update || null
-    }, rlHeaders);
+    };
+    const statusCode = quote => quote.status === 'available' ? 200 : quote.reason === 'invalid-currency' ? 404 : 503;
+    if (base && target) {
+      const amount = parseFloat(params.amount) || 0;
+      const quote = pairResponse(data, base, target, now);
+      return jsonResponse(statusCode(quote), {
+        base, target, pair: base + '/' + target,
+        rate: quote.rate,
+        amount: amount || undefined,
+        converted_amount: amount && quote.rate !== null ? Math.round(amount * quote.rate * 100) / 100 : undefined,
+        ...provenance, status: quote.status, reason: quote.reason,
+        qualification: { base: quote.base, target: quote.target }
+      }, headers);
+    }
+
+    const anchor = base || target || normalizeCode(data.base || 'USD') || 'USD';
+    const reverse = !base && Boolean(target);
+    const baseQuote = pairResponse(data, anchor, anchor, now);
+    const rates = {};
+    for (const currency of new Set([...Object.keys(data.rates).sort(), normalizeCode(data.base || 'USD')])) {
+      const quote = reverse ? pairResponse(data, currency, anchor, now) : pairResponse(data, anchor, currency, now);
+      if (quote.rate !== null) rates[currency] = quote.rate;
+    }
+    return jsonResponse(statusCode(baseQuote), {
+      ...(reverse ? { target: anchor } : { base: anchor }),
+      rates, ...provenance, status: baseQuote.status, reason: baseQuote.reason
+    }, headers);
   } catch (err) {
     console.error('[api-fx-rates] Error:', err.message);
     return jsonResponse(500, { error: 'FX data temporarily unavailable. Please try again later.' }, rlHeaders);

@@ -6,7 +6,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GET /api/v1/fuel/prices — Fuel Prices — AfroTools API Docs</title>
-<meta name="description" content="Get current fuel prices (petrol, diesel, kerosene, LPG) for any African country via the AfroFuel API.">
+<meta name="description" content="Get dated fuel price references for African countries and see available local market observations.">
 <meta name="theme-color" content="#0062CC">
 <link rel="canonical" href="https://afrotools.com/api/docs/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
@@ -28,7 +28,7 @@
     <div class="api-two-panel api-two-panel--wide-left">
       <div class="api-content__left">
         <h1 class="mt-0">Fuel Prices</h1>
-        <p class="api-subtitle">Get current fuel prices for a specific African country or all countries at once.</p>
+        <p class="api-subtitle">Look up fuel price references by country. Check when a price was observed and whether it applies nationally or to a specific market.</p>
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--get">GET</span>
@@ -36,59 +36,44 @@
         </div>
 
         <div class="api-callout api-callout--info">
-          <strong>Authentication required.</strong> Pass your API key via <code>x-api-key</code> header. <a href="/docs/api/authentication">Learn more</a>
+          <strong>API keys are optional for this endpoint.</strong> Send a live key in the <code>x-api-key</code> header for authenticated limits. Test keys return deterministic sandbox data. <a href="/docs/api/authentication">Learn more</a>
         </div>
 
         <h2>Request Parameters</h2>
         <table class="param-table">
-          <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+          <thead><tr><th scope="col">Parameter</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
           <tbody>
-            <tr>
-              <td><span class="param-name">country</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>ISO 3166-1 alpha-2 country code. Omit to get all countries.</td>
-            </tr>
-            <tr>
-              <td><span class="param-name">fuel_type</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Filter by fuel type: <code>petrol</code>, <code>diesel</code>, <code>kerosene</code>, or <code>lpg</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="param-name">currency</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Convert prices to a different currency (e.g., <code>USD</code>). Default: local currency.</td>
-            </tr>
-            <tr>
-              <td><span class="param-name">date</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Historical date (<code>YYYY-MM-DD</code>). Pro plan required.</td>
-            </tr>
+            <tr><td><code>country</code></td><td>string</td><td>Optional ISO 3166-1 alpha-2 code. Omit for a country list.</td></tr>
+            <tr><td><code>region</code></td><td>string</td><td>Optional list filter. Use <code>west</code>, <code>east</code>, <code>south</code>, <code>north</code> or <code>central</code>.</td></tr>
+            <tr><td><code>sort</code></td><td>string</td><td>Optional list order. Use <code>petrol_asc</code>, <code>petrol_desc</code>, <code>diesel_asc</code>, <code>diesel_desc</code> or <code>name</code>.</td></tr>
+            <tr><td><code>include</code></td><td>string</td><td>Set to <code>markets</code> to add published market references for the selected country or country list.</td></tr>
+            <tr><td><code>history</code></td><td>string</td><td>Use with <code>country</code> for a historical series where available. For example, <code>country=NG&amp;history=12m</code>.</td></tr>
           </tbody>
         </table>
 
-        <h2>Response Fields</h2>
+        <h2>Latest response fields</h2>
         <table class="param-table">
-          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <thead><tr><th scope="col">Field</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
           <tbody>
-            <tr><td><span class="param-name">country</span></td><td><span class="param-type">string</span></td><td>ISO country code.</td></tr>
-            <tr><td><span class="param-name">country_name</span></td><td><span class="param-type">string</span></td><td>Full country name.</td></tr>
-            <tr><td><span class="param-name">currency</span></td><td><span class="param-type">string</span></td><td>Currency of the prices.</td></tr>
-            <tr><td><span class="param-name">fuels</span></td><td><span class="param-type">object</span></td><td>Object with fuel type keys.</td></tr>
-            <tr><td><span class="param-name">fuels.*.price</span></td><td><span class="param-type">number</span></td><td>Current price per unit.</td></tr>
-            <tr><td><span class="param-name">fuels.*.unit</span></td><td><span class="param-type">string</span></td><td>Unit of measurement (litre or kg).</td></tr>
-            <tr><td><span class="param-name">fuels.*.change</span></td><td><span class="param-type">number</span></td><td>Change since last update.</td></tr>
-            <tr><td><span class="param-name">updated</span></td><td><span class="param-type">string</span></td><td>Date of last price update.</td></tr>
+            <tr><td><code>country / countries</code></td><td>object / array</td><td>Country records contain <code>code</code>, <code>name</code>, <code>currency</code> and product references such as <code>petrol.price</code> in local currency and <code>petrol.usd</code>, when present. Sandbox fixtures use <code>petrol.local</code>.</td></tr>
+            <tr><td><code>collected_at</code></td><td>string or null</td><td>Timestamp of the data collection. The age of an individual price depends on its own observation date.</td></tr>
+            <tr><td><code>price_provenance.country_snapshot_date</code></td><td>string or null</td><td>Snapshot date for a country record. This date can differ from the observation date of each product.</td></tr>
+            <tr><td><code>price_provenance.products.*</code></td><td>object</td><td>Includes <code>observed_at</code> and <code>source_url</code>. A null value means that the corresponding product detail was unavailable.</td></tr>
+            <tr><td><code>markets[]</code></td><td>array</td><td>Opt-in market records. Check the market name and <code>granularity</code> before using a price for a specific location.</td></tr>
+            <tr><td><code>markets[].fuels[].reference_status</code></td><td>string</td><td><code>available</code> is eligible as a dated reference. <code>historical</code> is outside its validity window. <code>unavailable</code> cannot be used as a price reference. Use the product source and dates for context.</td></tr>
           </tbody>
         </table>
+        <p>Market references may be empty for some countries. The sandbox and historical endpoints have separate response shapes.</p>
 
         <h2>Error Responses</h2>
         <table class="param-table">
-          <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
+          <thead><tr><th scope="col">Status</th><th scope="col">Description</th></tr></thead>
           <tbody>
-            <tr><td>400</td><td><span class="param-name">invalid_country</span></td><td>Country code not supported.</td></tr>
-            <tr><td>400</td><td><span class="param-name">invalid_fuel_type</span></td><td>Fuel type is not recognized.</td></tr>
-            <tr><td>401</td><td><span class="param-name">missing_api_key</span></td><td>No API key was provided.</td></tr>
-            <tr><td>429</td><td><span class="param-name">rate_limit_exceeded</span></td><td>Rate limit exceeded.</td></tr>
+            <tr><td>400</td><td>Unsupported region.</td></tr>
+            <tr><td>401</td><td>Supplied API key is invalid.</td></tr>
+            <tr><td>404</td><td>Country or historical series unavailable.</td></tr>
+            <tr><td>429</td><td>Rate limit exceeded.</td></tr>
+            <tr><td>503</td><td>Fuel dataset temporarily unavailable.</td></tr>
           </tbody>
         </table>
       </div>
@@ -110,7 +95,7 @@
   { headers: { "x-api-key": "afro_live_your_key_here" } }
 );
 const data = await res.json();
-console.log(`Petrol: ${data.data.fuels.petrol.price} NGN/litre`);</div>
+console.log(`Petrol: ${data.country?.petrol?.price ?? data.country?.petrol?.local ?? "unavailable"} NGN/litre`);</div>
           <div class="code-panel" data-lang="python">import requests
 
 resp = requests.get(
@@ -119,7 +104,7 @@ resp = requests.get(
     headers={"x-api-key": "afro_live_your_key_here"}
 )
 data = resp.json()
-print(f"Petrol: {data['data']['fuels']['petrol']['price']} NGN/litre")</div>
+print(f"Petrol: {data.get('country', {}).get('petrol', {}).get('price', data.get('country', {}).get('petrol', {}).get('local', 'unavailable'))} NGN/litre")</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.get(
@@ -129,7 +114,7 @@ const { data } = await axios.get(
     headers: { "x-api-key": "afro_live_your_key_here" }
   }
 );
-console.log(`Petrol: ${data.data.fuels.petrol.price} NGN/litre`);</div>
+console.log(`Petrol: ${data.country?.petrol?.price ?? data.country?.petrol?.local ?? "unavailable"} NGN/litre`);</div>
           <div class="code-panel" data-lang="php">$ch = curl_init("https://afrotools.com/api/v1/fuel/prices?country=NG");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "x-api-key: afro_live_your_key_here"
@@ -138,61 +123,18 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
 $data = json_decode($response, true);
-echo "Petrol: " . $data["data"]["fuels"]["petrol"]["price"] . " NGN/litre";</div>
+echo "Petrol: " . ($data["country"]["petrol"]["price"] ?? $data["country"]["petrol"]["local"] ?? "unavailable") . " NGN/litre";</div>
         </div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Response (200 OK)</div>
-        <div class="code-example">{
-  "success": true,
-  "data": {
-    "country": "NG",
-    "country_name": "Nigeria",
-    "currency": "NGN",
-    "fuels": {
-      "petrol": {
-        "price": 897.00,
-        "unit": "litre",
-        "change": 0
-      },
-      "diesel": {
-        "price": 1420.00,
-        "unit": "litre",
-        "change": -30.00
-      },
-      "kerosene": {
-        "price": 1250.00,
-        "unit": "litre",
-        "change": 0
-      },
-      "lpg": {
-        "price": 1150.00,
-        "unit": "kg",
-        "change": 50.00
-      }
-    },
-    "updated": "2026-03-10"
-  }
-}</div>
+        <div class="code-label">Market references for Kenya</div>
+        <div class="code-example">curl "https://afrotools.com/api/v1/fuel/prices?country=KE&amp;include=markets"</div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">All Countries (no country param)</div>
-        <div class="code-example"><span class="c"># Get fuel prices for all countries</span>
-curl "https://afrotools.com/api/v1/fuel/prices" \
-  -H "x-api-key: afro_test_abc123"</div>
-        <div class="code-example">{
-  "success": true,
-  "data": {
-    "countries": [
-      { "country": "NG", "currency": "NGN", "petrol": 897.00, ... },
-      { "country": "KE", "currency": "KES", "petrol": 217.36, ... },
-      { "country": "ZA", "currency": "ZAR", "petrol": 25.83, ... }
-    ],
-    "count": 54
-  }
-}</div>
+        <div class="code-label">All Countries</div>
+        <div class="code-example">curl "https://afrotools.com/api/v1/fuel/prices"</div>
       </div>
     </div>
   </main>

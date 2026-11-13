@@ -299,7 +299,7 @@ function hubTemplate(items) {
   const cards = items.map(({ item }) => `        <article class="fr-widget-tool-card">
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.description)}</p>
-          <a href="/fr/widgets/${item.slug}/">Ouvrir la page parent</a>
+          <a href="/fr/widgets/${item.slug}/" aria-label="Ouvrir : ${escapeHtml(item.title)}">Ouvrir</a>
         </article>`).join("\n");
 
   return `<!DOCTYPE html>
@@ -534,6 +534,29 @@ function main() {
 
   const bespoke = path.join(ROOT, "fr", "widgets", BESPOKE_PARENT_SLUG, "index.html");
   if (!fs.existsSync(bespoke)) throw new Error("Missing bespoke French margin widget page");
+  if (process.argv.includes("--hub-link-names-only")) {
+    const file = path.join(ROOT, "fr", "widgets", "index.html");
+    const before = fs.readFileSync(file, "utf8");
+    const titles = new Map(resolved.map(({ item }) => [`/fr/widgets/${item.slug}/`, null]));
+    for (const card of before.matchAll(/<article class="fr-widget-tool-card">([\s\S]*?)<\/article>/g)) {
+      const heading = card[1].match(/<h3>([^<>]+)<\/h3>/);
+      const route = card[1].match(/<a href="(\/fr\/widgets\/[^"\s]+\/)"/);
+      if (!heading || !route || !titles.has(route[1]) || titles.get(route[1]) !== null) throw new Error("Unexpected widget card structure");
+      // Preserve the existing French heading and its HTML entities in the accessible name.
+      titles.set(route[1], heading[1].replace(/"/g, "&quot;"));
+    }
+    const seen = new Set();
+    const after = before.replace(/<a href="(\/fr\/widgets\/[^"\s]+\/)"(?: aria-label="[^"]*")?>(?:Ouvrir la page parent|Ouvrir)<\/a>/g,
+      (match, route) => {
+        if (!titles.get(route) || seen.has(route)) throw new Error(`Unexpected widget hub card: ${route}`);
+        seen.add(route);
+        return `<a href="${route}" aria-label="Ouvrir : ${titles.get(route)}">Ouvrir</a>`;
+      });
+    if (seen.size !== titles.size) throw new Error(`Missing widget hub cards: ${seen.size}/${titles.size}`);
+    if (after !== before) fs.writeFileSync(file, after, "utf8");
+    console.log(JSON.stringify({ hubLinkNamesOnly: true, cards: seen.size, changed: after !== before }));
+    return;
+  }
   if (process.argv.includes("--metadata-only")) {
     refreshMetadata(resolved, process.argv.includes("--check"));
     return;

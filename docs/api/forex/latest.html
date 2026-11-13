@@ -28,7 +28,7 @@
     <div class="api-two-panel api-two-panel--wide-left">
       <div class="api-content__left">
         <h1 class="mt-0">Latest Rates</h1>
-        <p class="api-subtitle">Get the latest exchange rate between any two supported currencies.</p>
+        <p class="api-subtitle">Get a dated exchange-rate reference for a supported currency pair.</p>
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--get">GET</span>
@@ -36,7 +36,7 @@
         </div>
 
         <div class="api-callout api-callout--info">
-          <strong>Authentication required.</strong> Pass your API key via <code>x-api-key</code> header. <a href="/docs/api/authentication">Learn more</a>
+          <strong>API keys are optional.</strong> Supply an <code>x-api-key</code> header for authenticated limits. Test keys return deterministic sandbox data. <a href="/docs/api/authentication">Learn more</a>
         </div>
 
         <h2>Request Parameters</h2>
@@ -44,24 +44,24 @@
           <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
             <tr>
-              <td><span class="param-name">base</span> <span class="param-required">required</span></td>
+              <td><span class="param-name">base</span> <span class="param-optional">optional</span></td>
               <td><span class="param-type">string</span></td>
-              <td>Base currency code (e.g., <code>USD</code>, <code>EUR</code>, <code>GBP</code>, <code>BTC</code>).</td>
+              <td>Base currency code (e.g., <code>USD</code>, <code>EUR</code>, <code>GBP</code>).</td>
             </tr>
             <tr>
-              <td><span class="param-name">target</span> <span class="param-required">required</span></td>
+              <td><span class="param-name">target</span> <span class="param-optional">optional</span></td>
               <td><span class="param-type">string</span></td>
               <td>Quote currency code (e.g., <code>NGN</code>, <code>KES</code>, <code>ZAR</code>).</td>
             </tr>
             <tr>
               <td><span class="param-name">amount</span> <span class="param-optional">optional</span></td>
               <td><span class="param-type">number</span></td>
-              <td>Amount to convert. Default: <code>1</code>.</td>
+              <td>Amount to convert. Omit to get the rate without an amount conversion.</td>
             </tr>
             <tr>
-              <td><span class="param-name">date</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Historical date in <code>YYYY-MM-DD</code> format. Omit for latest. Pro plan required.</td>
+              <td><span class="param-name">days</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-type">integer</span></td>
+              <td>Request a stored historical series for a pair, for example <code>days=30</code>. Omit for the latest reference.</td>
             </tr>
           </tbody>
         </table>
@@ -72,14 +72,10 @@
           <tbody>
             <tr><td><span class="param-name">base</span></td><td><span class="param-type">string</span></td><td>Base currency code.</td></tr>
             <tr><td><span class="param-name">target</span></td><td><span class="param-type">string</span></td><td>Quote currency code.</td></tr>
-            <tr><td><span class="param-name">rate</span></td><td><span class="param-type">number</span></td><td>Mid-market exchange rate.</td></tr>
-            <tr><td><span class="param-name">bid</span></td><td><span class="param-type">number</span></td><td>Bid price (buy rate).</td></tr>
-            <tr><td><span class="param-name">ask</span></td><td><span class="param-type">number</span></td><td>Ask price (sell rate).</td></tr>
-            <tr><td><span class="param-name">amount</span></td><td><span class="param-type">number</span></td><td>Converted amount (if amount param was provided).</td></tr>
-            <tr><td><span class="param-name">change_24h</span></td><td><span class="param-type">number</span></td><td>Absolute change in last 24 hours.</td></tr>
-            <tr><td><span class="param-name">change_pct_24h</span></td><td><span class="param-type">number</span></td><td>Percentage change in last 24 hours.</td></tr>
-            <tr><td><span class="param-name">timestamp</span></td><td><span class="param-type">string</span></td><td>ISO 8601 timestamp of the rate.</td></tr>
-            <tr><td><span class="param-name">source</span></td><td><span class="param-type">string</span></td><td>Data source (e.g., CBN, SARB, CBK).</td></tr>
+            <tr><td><span class="param-name">rate</span></td><td><span class="param-type">number</span></td><td>Indicative reference rate, or null when the pair is unavailable.</td></tr>
+            <tr><td><span class="param-name">amount</span></td><td><span class="param-type">number</span></td><td>Input amount, when provided.</td></tr>
+            <tr><td><span class="param-name">updated_at</span></td><td><span class="param-type">string</span></td><td>Timestamp of the source snapshot. Check <code>qualification</code> for the observations used for a pair.</td></tr>
+            <tr><td><span class="param-name">source</span></td><td><span class="param-type">string</span></td><td>Source of the snapshot.</td></tr>
           </tbody>
         </table>
 
@@ -87,11 +83,10 @@
         <table class="param-table">
           <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td>400</td><td><span class="param-name">invalid_currency</span></td><td>Base or target currency codes are not supported.</td></tr>
-            <tr><td>400</td><td><span class="param-name">invalid_date</span></td><td>Date format is invalid or date is in the future.</td></tr>
-            <tr><td>401</td><td><span class="param-name">missing_api_key</span></td><td>No API key was provided.</td></tr>
-            <tr><td>403</td><td><span class="param-name">plan_required</span></td><td>Historical data requires Pro plan or above.</td></tr>
-            <tr><td>429</td><td><span class="param-name">rate_limit_exceeded</span></td><td>Rate limit exceeded.</td></tr>
+            <tr><td>401</td><td>Authentication</td><td>Supplied API key is invalid.</td></tr>
+            <tr><td>404</td><td>Unavailable resource</td><td>Unsupported currency or missing historical series.</td></tr>
+            <tr><td>429</td><td>Rate limit</td><td>Rate limit exceeded.</td></tr>
+            <tr><td>503</td><td>Rate unavailable</td><td>A live reference could not be qualified. For an expired observation, the response reports <code>expired-fx-observation</code> and omits any usable conversion. Retry after the provider refresh.</td></tr>
           </tbody>
         </table>
       </div>
@@ -113,7 +108,7 @@
   { headers: { "x-api-key": "afro_live_your_key_here" } }
 );
 const data = await res.json();
-console.log(`1 USD = ${data.data.rate} NGN`);</div>
+console.log(`1 USD = ${data.rate ?? "unavailable"} NGN`);</div>
           <div class="code-panel" data-lang="python">import requests
 
 resp = requests.get(
@@ -122,7 +117,7 @@ resp = requests.get(
     headers={"x-api-key": "afro_live_your_key_here"}
 )
 data = resp.json()
-print(f"1 USD = {data['data']['rate']} NGN")</div>
+print(f"1 USD = {data.get('rate', 'unavailable')} NGN")</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.get(
@@ -132,7 +127,7 @@ const { data } = await axios.get(
     headers: { "x-api-key": "afro_live_your_key_here" }
   }
 );
-console.log(`1 USD = ${data.data.rate} NGN`);</div>
+console.log(`1 USD = ${data.rate ?? "unavailable"} NGN`);</div>
           <div class="code-panel" data-lang="php">$ch = curl_init(
   "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN"
 );
@@ -143,45 +138,29 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
 $data = json_decode($response, true);
-echo "1 USD = " . $data["data"]["rate"] . " NGN";</div>
+echo "1 USD = " . ($data["rate"] ?? "unavailable") . " NGN";</div>
         </div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Response (200 OK)</div>
+        <div class="code-label">Illustrative pair response (200 OK)</div>
         <div class="code-example">{
-  "success": true,
-  "data": {
-    "base": "USD",
-    "target": "NGN",
-    "rate": 1580.25,
-    "bid": 1578.50,
-    "ask": 1582.00,
-    "change_24h": -0.35,
-    "change_pct_24h": -0.022,
-    "timestamp": "2026-03-15T10:30:00Z",
-    "source": "CBN"
-  }
+  "base": "USD",
+  "target": "NGN",
+  "rate": 1500,
+  "amount": 100,
+  "converted_amount": 150000,
+  "status": "available",
+  "reason": null
 }</div>
 
-        <hr class="api-divider api-divider--dark">
-
-        <div class="code-label">With Amount Conversion</div>
-        <div class="code-example"><span class="c"># Convert 1000 USD to NGN</span>
-curl "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN&amount=1000" \
-  -H "x-api-key: afro_test_abc123"</div>
+        <div class="code-label">Expired pair (503)</div>
         <div class="code-example">{
-  "success": true,
-  "data": {
-    "base": "USD",
-    "target": "NGN",
-    "rate": 1580.25,
-    "amount": 1580250.00,
-    "bid": 1578500.00,
-    "ask": 1582000.00,
-    "timestamp": "2026-03-15T10:30:00Z",
-    "source": "CBN"
-  }
+  "base": "USD",
+  "target": "NGN",
+  "rate": null,
+  "status": "unavailable",
+  "reason": "expired-fx-observation"
 }</div>
       </div>
     </div>
