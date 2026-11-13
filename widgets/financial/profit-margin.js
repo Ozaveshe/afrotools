@@ -20,7 +20,7 @@
   window.AfroWidgets = window.AfroWidgets || {};
   window.AfroWidgets.profit_margin = function (root, options) {
     options = options || {};
-    const ownIframe = window.location.pathname === "/widgets/iframe/financial-profit-margin.html";
+    const ownIframe = window.location.pathname.replace(/\.html$/, "") === "/widgets/iframe/financial-profit-margin";
     const language = options.lang || (ownIframe && new URLSearchParams(window.location.search).get("lang"));
     const locale = language === "fr" ? "fr" : "en";
     if (ownIframe && locale === "fr") {
