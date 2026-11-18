@@ -25,13 +25,21 @@
           error: "Fuel price data not available for this country."
         };
       }
-      var u = .8 * t, s = .28 * u, c = s * a, d = Math.round(c * l), h = Math.round(30 * d), f = Math.round(365 * d), p = Math.round(.05 * f), y = f + p, g = Math.round(u * a), A = g > 0 ? Math.round(d / g * 100) / 100 : 0, L = o.electricityTariff.residential, m = Math.round(g * L), v = m > 0 ? Math.round((d - m) / m * 100) : null, F = [];
+      var loadPercent = r.loadPercent == null ? 100 : Number(r.loadPercent);
+      if (!Number.isFinite(loadPercent) || loadPercent <= 0 || loadPercent > 100) {
+        return { error: "Enter a load above 0% and up to 100%." };
+      }
+      var powerFactor = 0.8, litresPerKwh = 0.28;
+      var u = powerFactor * t * loadPercent / 100, s = litresPerKwh * u, c = s * a;
+      var dailyKwh = u * a;
+      var d = Math.round(c * l), h = Math.round(30 * d), f = Math.round(365 * d), p = Math.round(.05 * f), y = f + p, g = Math.round(dailyKwh), A = r.loadPercent == null ? (g > 0 ? Math.round(d / g * 100) / 100 : 0) : Math.round(litresPerKwh * l * 100) / 100, L = o.electricityTariff.residential, m = Math.round(g * L), v = m > 0 ? Math.round((d - m) / m * 100) : null, F = [];
       return F.push(n.charAt(0).toUpperCase() + n.slice(1) + " price in " + o.name + ": " + i + l.toFixed(2) + "/litre."),
-      F.push("Your " + t + "kVA generator consumes ~" + s.toFixed(1) + " L/hr at typical load."),
+      F.push("Your " + t + "kVA generator consumes ~" + s.toFixed(1) + " L/hr at " + loadPercent + "% load."),
       null !== v && v > 0 && F.push("Generator power costs " + v + "% MORE than grid electricity in " + o.name + "."),
       F.push("Annual fuel cost: " + i + f.toLocaleString() + " + ~" + i + p.toLocaleString() + " maintenance."),
       A > 2 * L && F.push("Generator cost per kWh (" + i + A + ") is 2× grid rate — strong case for solar backup."),
       {
+        operatingModel: { powerFactor: powerFactor, loadPercent: loadPercent, litresPerKwh: litresPerKwh, dailyKwh: dailyKwh, dailyLitres: c },
         litrePerHour: s.toFixed(1) + " L/hr",
         dailyLitres: c.toFixed(1) + " L",
         dailyCost: i + d.toLocaleString(),

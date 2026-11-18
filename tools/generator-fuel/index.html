@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which fuel price should I enter?","acceptedAnswer":{"@type":"Answer","text":"Use today's diesel or petrol pump price, ideally from a recent receipt. The bundled country value is a dated planning default and can be restored with the reset button."}},{"@type":"Question","name":"How is generator fuel use estimated?","acceptedAnswer":{"@type":"Answer","text":"The quick planner uses generator size, daily run hours and a typical-load consumption curve. Actual litres depend on measured load, generator model, age, maintenance and fuel quality."}},{"@type":"Question","name":"What should I verify before running a generator?","acceptedAnswer":{"@type":"Answer","text":"Confirm the actual fuel price and consumption curve with a receipt, manual or technician. Follow ventilation, transfer-switch, noise, fire and carbon-monoxide safety requirements."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which fuel price should I enter?","acceptedAnswer":{"@type":"Answer","text":"Use today's diesel or petrol pump price, ideally from a recent receipt. The bundled country value is a dated planning default and can be restored with the reset button."}},{"@type":"Question","name":"How is generator fuel use estimated?","acceptedAnswer":{"@type":"Answer","text":"The planner multiplies generator kVA by a power factor of 0.8, the selected load fraction and daily run hours to estimate daily kWh. It allows 0.28 litres per kWh for either fuel type. Actual litres depend on measured load, generator model, age, maintenance and fuel quality."}},{"@type":"Question","name":"What should I verify before running a generator?","acceptedAnswer":{"@type":"Answer","text":"Confirm the actual fuel price and consumption curve with a receipt, manual or technician. Follow ventilation, transfer-switch, noise, fire and carbon-monoxide safety requirements."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/energy-focus.css?v=7680924d">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
@@ -131,7 +131,12 @@
       <input id="gfFuelPrice" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="gfFuelPriceBasisText gfFuelPriceError">
       <small class="gf-field-error" id="gfFuelPriceError" aria-live="polite"></small>
     </div>
+    <div class="gf-field">
+      <label for="gfLoad">Average operating load (%)</label>
+      <input id="gfLoad" name="loadPercent" type="number" min="0.01" max="100" step="any" value="100" required>
+    </div>
     <button class="gf-btn" type="button" id="gfCalculate">Estimate</button>
+    <span id="gfInputError" class="gf-field-error" role="status"></span>
   </div>
   <div class="gf-price-basis" id="gfFuelPriceBasis">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v16"/><path d="M6 10h9M4 21h13"/><path d="m15 7 3 3v7a2 2 0 0 0 4 0v-6l-2-2"/></svg>
@@ -194,24 +199,21 @@
       <span class="df-upgrade__kicker">Fuel budget brief</span>
       <h2>Turn run hours into an operating-cost checkpoint</h2>
       <p>Estimate fuel spend above, then replace the bundled planning price with today's pump price or a recent receipt before using the result for a weekly cash plan, maintenance discussion, or solar comparison.</p>
-      <p><strong>Sources &amp; verification methodology:</strong> the estimate uses bundled country energy data, selected generator size, daily run hours, fuel type, grid tariff assumptions, and a typical-load generator consumption curve. Verify current pump price, measured load, maintenance state, and technician guidance before acting. <strong>Disclaimer:</strong> not a fuel quote, safety certificate, emissions assessment, installation instruction, or equipment warranty.</p>
+      <p><strong>Sources &amp; verification methodology:</strong> the estimate uses bundled country energy data, selected generator size, daily run hours, fuel type, grid tariff assumptions, and a power factor of 0.8 and a planning consumption rate of 0.28 litres per kWh at the selected load. Verify current pump price, measured load, maintenance state, and technician guidance before acting. <strong>Disclaimer:</strong> not a fuel quote, safety certificate, emissions assessment, installation instruction, or equipment warranty.</p>
       <ul class="df-upgrade__bullets"><li><strong>Use a real price:</strong> enter the pump price from a recent receipt and keep its date with the exported estimate.</li><li><strong>Check consumption:</strong> compare the estimate with litres used during a known run period; generator model, age, load and maintenance can move the result.</li><li><strong>Operate safely:</strong> verify ventilation, transfer switching, noise, fire and carbon-monoxide controls with a qualified technician.</li></ul>
       <p class="df-upgrade__note"><strong>Bundled energy data reviewed 2026-03.</strong> The page labels that value as a planning default and keeps a user-entered pump price local to the browser.</p>
     </div>
-    <form class="df-form" data-df-form="generator-fuel">
-      <label>Generator size kVA<input name="generatorSize" type="number" value="5" min="0" step="any" aria-label="Generator size kVA"></label>
-      <label>Load percentage<input name="loadPercent" type="number" value="60" min="0" step="any" aria-label="Load percentage"></label>
-      <label>Run hours per day<input name="hours" type="number" value="6" min="0" step="any" aria-label="Run hours per day"></label>
-      <label>Fuel budget buffer percent<input name="buffer" type="number" value="15" min="0" step="any" aria-label="Fuel budget buffer percent"></label>
+    <form class="df-form" id="gfBriefForm">
+      <label>Fuel budget buffer percent<input id="gfBuffer" required name="buffer" type="number" value="15" min="0" step="any" aria-label="Fuel budget buffer percent"></label>
       <button type="submit">Create fuel brief</button>
-      <output class="df-result" data-df-result="generator-fuel" data-df-base="Generator Fuel Cost Calculator — enter your details above to see your result." aria-live="polite">Generator Fuel Cost Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="generator-fuel">Copy fuel brief</button><a class="df-action-link" href="#gfResults">View fuel estimate</a></div>
+      <output class="df-result" id="gfBrief" aria-live="polite"></output>
+      <div class="df-actions"><button type="button" id="gfBriefCopy">Copy fuel brief</button><a class="df-action-link" href="#gfResults">View fuel estimate</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq quality-verification-panel" data-tool-verification-panel aria-labelledby="generator-fuel-faq-title">
   <h2 id="generator-fuel-faq-title">Generator Fuel Cost Calculator FAQ</h2>
-  <div class="df-faq__grid"><details open><summary>Which fuel price should I enter?</summary><p>Use today's diesel or petrol pump price, ideally from a recent receipt. The bundled country value is a dated planning default and can be restored with the reset button.</p></details><details><summary>How is generator fuel use estimated?</summary><p>The quick planner uses generator size, daily run hours and a typical-load consumption curve. Actual litres depend on measured load, generator model, age, maintenance and fuel quality.</p></details><details><summary>What should I verify before running a generator?</summary><p>Confirm the actual fuel price and consumption curve with a receipt, manual or technician. Follow ventilation, transfer-switch, noise, fire and carbon-monoxide safety requirements.</p></details></div>
+  <div class="df-faq__grid"><details open><summary>Which fuel price should I enter?</summary><p>Use today's diesel or petrol pump price, ideally from a recent receipt. The bundled country value is a dated planning default and can be restored with the reset button.</p></details><details><summary>How is generator fuel use estimated?</summary><p>The planner multiplies generator kVA by a power factor of 0.8, the selected load fraction and daily run hours to estimate daily kWh. It allows 0.28 litres per kWh for either fuel type. Actual litres depend on measured load, generator model, age, maintenance and fuel quality.</p></details><details><summary>What should I verify before running a generator?</summary><p>Confirm the actual fuel price and consumption curve with a receipt, manual or technician. Follow ventilation, transfer-switch, noise, fire and carbon-monoxide safety requirements.</p></details></div>
 </section>
 <div style="max-width:960px;margin:0 auto;padding:0 20px 20px">
   <afro-business-cta
@@ -244,7 +246,6 @@
     if(!Number.isFinite(value))return "-";
     return symbol+value.toLocaleString(undefined,{maximumFractionDigits:2});
   }
-  function numberFromMoney(value){return parseFloat(String(value||"").replace(/[^0-9.]/g,""))||0;}
   function fuelData(){
     var cc=byId("gfCountry").value;var data=ENERGY_DATA.countries[cc];var fuel=byId("gfFuel").value;
     return{country:data,fuel:fuel,price:data&&data.fuel?Number(data.fuel[fuel])||0:0};
@@ -264,7 +265,7 @@
     return Promise.resolve();
   }
   function downloadCsv(){
-    if(!latestEstimate)estimate();
+    estimate();
     if(!latestEstimate)return;
     var r=latestEstimate;
     var rows=[
@@ -272,6 +273,13 @@
       ['country',r.country],
       ['generator_kva',r.generatorKva],
       ['run_hours_per_day',r.hoursPerDay],
+      ['load_percent',r.model.loadPercent],
+      ['power_factor',r.model.powerFactor],
+      ['litres_per_kwh',r.model.litresPerKwh],
+      ['daily_kwh',Number(r.model.dailyKwh.toFixed(6))],
+      ['daily_litres_unrounded',Number(r.model.dailyLitres.toFixed(6))],
+      ['budget_buffer_percent',r.buffer],
+      ['weekly_budget_with_buffer',r.weeklyBudget],
       ['fuel',r.fuel],
       ['fuel_price_per_litre',r.fuelPrice],
       ['fuel_price_basis',r.fuelPriceBasis],
@@ -301,37 +309,53 @@
     var cc=byId("gfCountry").value;
     var data=ENERGY_DATA.countries[cc];
     var input={genKVA:byId("gfKva").value,dailyHours:parseFloat(byId("gfHours").value)||0,fuelType:byId("gfFuel").value};
-    var defaultFuelPrice=data&&data.fuel?Number(data.fuel[input.fuelType])||0:0;
+    input.loadPercent=byId("gfLoad").valueAsNumber;
+    var buffer=byId("gfBuffer").valueAsNumber;
+    latestEstimate=null;
+    byId("gfInputError").textContent="";
+    byId("gfResults").classList.remove("on");
+    byId("gfBrief").textContent="";
+    byId("gfBriefCopy").disabled=true;
+    if(!byId("gfLoad").checkValidity() || !byId("gfBuffer").checkValidity()){
+      byId("gfBrief").textContent="Enter a load above 0% and up to 100%, and a non-negative budget buffer.";
+      byId("gfInputError").textContent=byId("gfBrief").textContent;
+      return;
+    }
     var fuelPrice=parseFloat(byId("gfFuelPrice").value)||0;
     if(fuelPrice<=0){byId("gfFuelPrice").setAttribute("aria-invalid","true");byId("gfFuelPriceError").textContent="Enter a fuel price above zero.";byId("gfResults").classList.remove("on");latestEstimate=null;byId("gfStatus").textContent="Estimate cleared. Enter a fuel price above zero.";byId("gfFuelPrice").focus();return;}
     byId("gfFuelPrice").removeAttribute("aria-invalid");byId("gfFuelPriceError").textContent="";
     var result=AfroTools.GeneratorFuelEngine.calculate(input,cc);
-    if(result.error){alert(result.error);return;}
-    var dailyKwh=parseFloat(result.dailyKWh)||0;
+    if(result.error){byId("gfInputError").textContent=result.error;return;}
+    var model=result.operatingModel;
+    var dailyKwh=model.dailyKwh;
+    var dailyLitres=Number(model.dailyLitres.toFixed(4))+" L";
     var gridMonthly=dailyKwh*(data.electricityTariff&&data.electricityTariff.residential||0)*30;
     var solarSize=Number(input.genKVA)>=10?"10kW":(Number(input.genKVA)>=5?"5kW":"3kW");
     var solarCost=data.solar&&data.solar.systems&&data.solar.systems[solarSize]?data.solar.systems[solarSize].total:null;
-    var priceFactor=defaultFuelPrice>0?fuelPrice/defaultFuelPrice:1;
-    var dailyFuelNumber=Math.round(numberFromMoney(result.dailyCost)*priceFactor);
-    var monthlyFuelNumber=Math.round(numberFromMoney(result.monthlyCost)*priceFactor);
-    var annualFuelNumber=Math.round(numberFromMoney(result.annualCost)*priceFactor);
-    var costPerKwhNumber=Math.round(numberFromMoney(result.costPerKWh)*priceFactor*100)/100;
+    var dailyFuelNumber=model.dailyLitres*fuelPrice;
+    var monthlyFuelNumber=dailyFuelNumber*30;
+    var annualFuelNumber=dailyFuelNumber*365;
+    var costPerKwhNumber=model.litresPerKwh*fuelPrice;
+    var weeklyBudget=moneyPrecise(dailyFuelNumber*7*(1+buffer/100),result.currencySymbol);
     var monthlyFuelDisplay=money(monthlyFuelNumber,result.currencySymbol);
     var payback=solarCost&&monthlyFuelNumber?Math.max(1,Math.round(solarCost/monthlyFuelNumber)):null;
     byId("gfMonthly").textContent=monthlyFuelDisplay;
-    byId("gfLitres").textContent=result.dailyLitres;
+    byId("gfLitres").textContent=dailyLitres;
     byId("gfKwh").textContent=moneyPrecise(costPerKwhNumber,result.currencySymbol)+"/kWh";
     byId("gfGridCost").textContent=gridMonthly?money(gridMonthly,result.currencySymbol):"Check tariff";
     var priceBasis=byId("gfFuelPrice").dataset.priceBasis==="user"?"user-entered pump price":"bundled "+ENERGY_DATA.lastUpdated+" planning price";
-    var advice=data.name+" estimate: "+input.dailyHours+" hours/day on a "+input.genKVA+" kVA generator uses "+result.dailyLitres+" per day and costs about "+monthlyFuelDisplay+" per month using a "+priceBasis+" of "+moneyPrecise(fuelPrice,result.currencySymbol)+"/litre. ";
+    var advice=data.name+" estimate: "+input.dailyHours+" hours/day on a "+input.genKVA+" kVA generator uses "+dailyLitres+" per day and costs about "+monthlyFuelDisplay+" per month using a "+priceBasis+" of "+moneyPrecise(fuelPrice,result.currencySymbol)+"/litre. ";
     if(gridMonthly)advice+="The same daily energy at residential grid tariff would be roughly "+money(gridMonthly,result.currencySymbol)+" per month, before fixed charges and outages. ";
     if(payback)advice+="A rough "+solarSize+" solar kit in this dataset costs about "+money(solarCost,result.currencySymbol)+", equal to about "+payback+" month(s) of this fuel spend. ";
-    advice+="Use the country calculator next for the full annual maintenance and cost-per-kWh breakdown.";
+    advice+="Daily fuel cost: "+moneyPrecise(dailyFuelNumber,result.currencySymbol)+".";
+    advice+=" Assumptions: "+model.loadPercent+"% load, "+model.powerFactor+" power factor and "+model.litresPerKwh+" L/kWh. Daily output: "+Number(dailyKwh.toFixed(4))+" kWh.";
     byId("gfReadout").textContent=advice;
+    byId("gfBrief").textContent=data.name+" · "+input.genKVA+" kVA · "+input.fuelType+" · "+input.dailyHours+" h/day at "+model.loadPercent+"% load. Fuel: "+Number(model.dailyLitres.toFixed(4))+" L/day at "+moneyPrecise(fuelPrice,result.currencySymbol)+"/L ("+priceBasis+"). Daily cost: "+moneyPrecise(dailyFuelNumber,result.currencySymbol)+". Weekly budget with "+buffer+"% buffer: "+weeklyBudget+". Power factor: "+model.powerFactor+"; consumption: "+model.litresPerKwh+" L/kWh.";
+    byId("gfBriefCopy").disabled=false;
     var countryRoute="/tools/generator-fuel/"+(routeMap[cc]||"nigeria")+"/";
     byId("gfCountryLink").href=countryRoute;
     byId("gfResults").classList.add("on");
-    latestEstimate={country:data.name,generatorKva:input.genKVA,hoursPerDay:input.dailyHours,fuel:input.fuelType,fuelPrice:moneyPrecise(fuelPrice,result.currencySymbol),fuelPriceBasis:priceBasis,datasetReviewed:ENERGY_DATA.lastUpdated,dailyFuelCost:money(dailyFuelNumber,result.currencySymbol),monthlyFuel:monthlyFuelDisplay,annualFuel:money(annualFuelNumber,result.currencySymbol),dailyLitres:result.dailyLitres,costPerKwh:moneyPrecise(costPerKwhNumber,result.currencySymbol),gridEquivalent:(gridMonthly?money(gridMonthly,result.currencySymbol):"check tariff"),countryRoute:countryRoute,readout:advice};
+    latestEstimate={model:model,buffer:buffer,weeklyBudget:weeklyBudget,country:data.name,generatorKva:input.genKVA,hoursPerDay:input.dailyHours,fuel:input.fuelType,fuelPrice:moneyPrecise(fuelPrice,result.currencySymbol),fuelPriceBasis:priceBasis,datasetReviewed:ENERGY_DATA.lastUpdated,dailyFuelCost:moneyPrecise(dailyFuelNumber,result.currencySymbol),monthlyFuel:monthlyFuelDisplay,annualFuel:money(annualFuelNumber,result.currencySymbol),dailyLitres:dailyLitres,costPerKwh:moneyPrecise(costPerKwhNumber,result.currencySymbol),gridEquivalent:(gridMonthly?money(gridMonthly,result.currencySymbol):"check tariff"),countryRoute:countryRoute,readout:advice};
     byId("gfCopy").onclick=function(){
       copyText("Generator fuel estimate\nCountry: "+latestEstimate.country+"\nGenerator: "+latestEstimate.generatorKva+" kVA\nRun hours: "+latestEstimate.hoursPerDay+"/day\nFuel: "+latestEstimate.fuel+"\nFuel price: "+latestEstimate.fuelPrice+"/litre ("+latestEstimate.fuelPriceBasis+")\nDataset reviewed: "+latestEstimate.datasetReviewed+"\nMonthly fuel: "+latestEstimate.monthlyFuel+"\nDaily litres: "+latestEstimate.dailyLitres+"\nGrid equivalent: "+latestEstimate.gridEquivalent+"\nReadout: "+latestEstimate.readout).then(function(){byId("gfCopy").textContent="Copied";byId("gfStatus").textContent="Estimate copied. No usage data was sent.";setTimeout(function(){byId("gfCopy").textContent="Copy estimate";},1400);});
     };
@@ -339,9 +363,11 @@
   if(byId("gfCalculate"))byId("gfCalculate").addEventListener("click",estimate);
   if(byId("gfCsv"))byId("gfCsv").addEventListener("click",downloadCsv);
   ["gfCountry","gfFuel"].forEach(function(id){var el=byId(id);if(el)el.addEventListener("change",function(){syncFuelPrice();estimate();});});
-  ["gfKva","gfHours"].forEach(function(id){var el=byId(id);if(el)el.addEventListener("change",estimate);});
+  ["gfKva","gfHours","gfLoad","gfBuffer"].forEach(function(id){var el=byId(id);if(el)el.addEventListener("change",estimate);});
   if(byId("gfFuelPrice")){byId("gfFuelPrice").addEventListener("input",function(){this.dataset.priceBasis="user";updateFuelPriceBasis(true);});byId("gfFuelPrice").addEventListener("change",estimate);}
   if(byId("gfFuelPriceReset"))byId("gfFuelPriceReset").addEventListener("click",function(){syncFuelPrice();estimate();byId("gfStatus").textContent="Bundled fuel-price default restored.";});
+  byId("gfBriefForm").addEventListener("submit",function(event){event.preventDefault();estimate();});
+  byId("gfBriefCopy").addEventListener("click",function(){estimate();if(latestEstimate)copyText(byId("gfBrief").textContent);});
   syncFuelPrice();
   estimate();
 }());
