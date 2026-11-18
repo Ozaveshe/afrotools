@@ -16,6 +16,7 @@ for (const app of apps) {
       const body = request.postData() || "";
       if (body.includes("Biashara ya Mfano") || request.url().includes("Biashara%20ya%20Mfano")) rawLeak.push(request.url());
     });
+    if (app.id === "coo-generator") await page.getByLabel("Maelezo ya bidhaa").fill("Kahawa ya majaribio");
     if (app.id === "hs-code-lookup") {
       await page.getByRole("searchbox").fill("kahawa");
       await page.locator("[name=code]").selectOption("0901.12");
@@ -41,7 +42,19 @@ for (const app of apps) {
       else if (format === "txt") expect(bytes.toString("utf8")).toContain("Chanzo:");
       else expect(bytes.subarray(0,4).toString("ascii")).toBe("%PDF");
     }
-    if (app.id === "demurrage-calculator") {
+    if (app.id === "coo-generator") {
+      await page.getByLabel("Maelezo ya bidhaa").fill("");
+    } else if (app.id === "export-docs-trade") {
+      await page.getByLabel("Soko la kwenda").selectOption("EU");
+      await expect(page.locator("[data-result]")).toBeHidden();
+      await page.locator("[data-trade-form] button[type=submit]").click();
+      await expect(page.locator("[data-output]")).toContainText("EUR.1");
+      await page.getByLabel("Soko la kwenda").selectOption("EAC");
+      await expect(page.locator("[data-result]")).toBeHidden();
+      expect(rawLeak).toEqual([]);
+      expect(errors).toEqual([]);
+      return;
+    } else if (app.id === "demurrage-calculator") {
       await page.getByLabel("Siku bandarini").fill("1.5");
     } else if (app.id === "payment-comparator") {
       await page.getByLabel("Kiasi kwa kila malipo (USD)").fill("0");
