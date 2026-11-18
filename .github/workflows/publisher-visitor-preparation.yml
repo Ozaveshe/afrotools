@@ -8,7 +8,7 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-visitor-backlog-20261118-a4'",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-visitor-backlog-20261118-a5'",
       "runs-on": "ubuntu-24.04",
       "timeout-minutes": 100,
       "env": {
@@ -51,7 +51,7 @@
         },
         {
           "name": "Targeted source tests",
-          "run": "node tests/lobola-cluster-contract.test.js\nnode tests/live-data-contracts.test.js"
+          "run": "node tests/lobola-cluster-contract.test.js\nnode tests/live-data-contracts.test.js\nnode --test tests/ci-artifact-orchestration.test.js tests/ci-birth-calculation-quality.test.js tests/ci-birth-leave.test.js tests/ci-regular-eight-union-contract.test.js tests/same-origin-frame-gate.test.js"
         },
         {
           "name": "Build deploy artifact",

@@ -33,7 +33,11 @@ test('owned CSP46 remains exact command/env/hash and is not invented historical 
 });
 test('moving historical regular8 reads changes no existing assertion or historical case',()=>{
  const current=fs.readFileSync(path.join(ROOT,'tests/ci-regular-eight-union-contract.test.js'),'utf8');const next="final=require('./fixtures/ci-original/same-origin-frames-predecessor-95c0e7f8.json');",old="final=require('../scripts/ci-artifact-groups.json');";
- assert.equal(current.split(next).length,2);assert.equal(c.sha(current.replace(next,old)),'12f0bdfab638378c2b841886b3b0315171fbff41e5217e7c9a6255f0ca4d323a');
+ const supportedProjection = "let text=require('./support/ci-runner-history').restoreRunnerAssertion(fs.readFileSync(path.join(ROOT,'tests/ci-artifact-orchestration.test.js'),'utf8'));";
+ const originalProjection = "let text=fs.readFileSync(path.join(ROOT,'tests/ci-artifact-orchestration.test.js'),'utf8');";
+ assert.equal(current.split(supportedProjection).length,2);
+ const historical=current.replace(supportedProjection,originalProjection);
+ assert.equal(historical.split(next).length,2);assert.equal(c.sha(historical.replace(next,old)),'12f0bdfab638378c2b841886b3b0315171fbff41e5217e7c9a6255f0ca4d323a');
 });
 test('dedicated real Playwright config sets worker/server headers and bounded fresh local execution',()=>{
  const {config,workerFlag}=loadConfig();assert.equal(workerFlag,'1');assert.equal(config.testDir,'./tests/e2e');assert.equal(config.testMatch,'same-origin-frame-policy.spec.js');
@@ -116,3 +120,14 @@ for(const [label,change]of [
  ['another historical gate moved',v=>{v.browser[3].group=2;}],
  ['owned CSP moved',v=>{v.browser[45].group=1;}]
 ])test('reviewed scheduling rejects '+label,()=>{const value=structuredClone(live);change(value);assert.throws(()=>predecessorIsExact(value));});
+
+test('supported runner history inverse rejects missing, duplicated or tampered reviewed assertion blocks',()=>{
+ const {restoreRunnerAssertion}=require('./support/ci-runner-history');
+ const source=fs.readFileSync(path.join(ROOT,'tests/ci-artifact-orchestration.test.js'),'utf8');
+ const restored=restoreRunnerAssertion(source);
+ assert.throws(()=>restoreRunnerAssertion(restored));
+ assert.throws(()=>restoreRunnerAssertion(source+source));
+ assert.throws(()=>restoreRunnerAssertion(source.replace("Array(5).fill('    runs-on: ubuntu-24.04')", "Array(4).fill('    runs-on: ubuntu-24.04')")));
+ // An unrelated edit remains visible to the original checksum, never normalized away.
+ assert.notEqual(c.sha(restoreRunnerAssertion(source+'// unrelated\n')),c.sha(restored));
+});

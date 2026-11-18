@@ -35,7 +35,7 @@ test('regular8 rejects missing duplicate tampered rehashed and wrong-ancestor de
  const wrong=structuredClone(final);wrong.browser.at(-1).originalYaml='      - name: Wrong\n\n';assert.throws(()=>recover(wrong,raw));
 });
 test('regular8 preserves every historical orchestration assertion body under pinned R18 projection',()=>{
- let text=fs.readFileSync(path.join(ROOT,'tests/ci-artifact-orchestration.test.js'),'utf8');assert.equal(text.split(pin.pinnedInventoryDeclaration).length,2);text=text.replace(pin.pinnedInventoryDeclaration,pin.oldInventoryDeclaration);assert.equal(sha(text),pin.originalOrchestrationSha256);
+ let text=require('./support/ci-runner-history').restoreRunnerAssertion(fs.readFileSync(path.join(ROOT,'tests/ci-artifact-orchestration.test.js'),'utf8'));assert.equal(text.split(pin.pinnedInventoryDeclaration).length,2);text=text.replace(pin.pinnedInventoryDeclaration,pin.oldInventoryDeclaration);assert.equal(sha(text),pin.originalOrchestrationSha256);
 });
 
 
