@@ -59,6 +59,8 @@
 /* ── Step dots (mobile) / step row (desktop) ── */
 .apo-step-dots{display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
 .apo-step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--bd);background:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--m);cursor:pointer;transition:all .2s;flex-shrink:0}
+.apo-step-dot:focus-visible{outline:3px solid var(--apo-dk);outline-offset:2px}
+.apo-step-title,#apo-complete-title{scroll-margin-top:6rem}
 .apo-step-dot.active{border-color:var(--apo);background:var(--apo-pale);color:var(--apo)}
 .apo-step-dot.done{border-color:var(--green);background:var(--green-pale);color:var(--green)}
 .apo-step-dot.skipped{border-color:#e2e8f0;background:#f8fafc;color:#94a3b8}
@@ -235,13 +237,13 @@
 <div class="apo-flow-layout" id="apo-flow-layout">
 
   <!-- Step dots -->
-  <div class="apo-step-dots" id="apo-step-dots"></div>
+  <div class="apo-step-dots" id="apo-step-dots" role="group" aria-label="Journey steps"></div>
 
   <!-- Step card -->
   <div class="apo-step-card" id="apo-step-card">
     <div class="apo-step-number" id="apo-step-number"></div>
     <div id="apo-step-badge"></div>
-    <h2 class="apo-step-title" id="apo-step-title"></h2>
+    <h2 class="apo-step-title" id="apo-step-title" tabindex="-1" aria-describedby="apo-step-number"></h2>
     <p class="apo-step-desc" id="apo-step-desc"></p>
     <div class="apo-step-prefill" id="apo-step-prefill"></div>
     <div class="apo-step-actions">
@@ -280,7 +282,7 @@
 <!-- Completion screen -->
 <div class="apo-complete" id="apo-complete">
   <div class="apo-complete-icon">🎉</div>
-  <h2 id="apo-complete-title">Journey Complete!</h2>
+  <h2 id="apo-complete-title" tabindex="-1" aria-describedby="apo-complete-desc">Journey Complete!</h2>
   <p id="apo-complete-desc">You've completed every step. Here's a summary of what you covered.</p>
   <div class="apo-complete-summary">
     <h3>Journey Summary</h3>
@@ -564,19 +566,26 @@
 
     // Step dots
     var dotsEl = document.getElementById('apo-step-dots');
-    dotsEl.innerHTML = state.steps.map(function (s, i) {
-      var cls = 'apo-step-dot';
-      if (i === state.currentStep) cls += ' active';
-      else if (state.stepStatuses[i] === 'done') cls += ' done';
-      else if (state.stepStatuses[i] === 'skipped') cls += ' skipped';
-      var label = state.stepStatuses[i] === 'done' ? '✓' : (i + 1);
-      return '<div class="' + cls + '" data-step="' + i + '">' + label + '</div>';
-    }).join('');
-    dotsEl.querySelectorAll('.apo-step-dot').forEach(function (dot) {
+    dotsEl.replaceChildren();
+    state.steps.forEach(function (journeyStep, index) {
+      var dot = document.createElement('button');
+      var status = state.stepStatuses[index];
+      dot.type = 'button';
+      dot.className = 'apo-step-dot';
+      dot.dataset.step = index;
+      dot.textContent = status === 'done' ? '✓' : index + 1;
+      dot.setAttribute('aria-label', 'Step ' + (index + 1) + ': ' + journeyStep.label + ', ' + status);
+      if (index === state.currentStep) {
+        dot.classList.add('active');
+        dot.setAttribute('aria-current', 'step');
+      } else if (status === 'done' || status === 'skipped') {
+        dot.classList.add(status);
+      }
       dot.addEventListener('click', function () {
-        state.currentStep = parseInt(dot.dataset.step, 10);
+        state.currentStep = index;
         renderStep();
       });
+      dotsEl.appendChild(dot);
     });
 
     // Step card
@@ -635,6 +644,7 @@
     document.getElementById('apo-ai-input').placeholder = 'Ask about ' + step.label.toLowerCase() + ' in ' + (state.country || 'Africa') + '...';
     document.getElementById('apo-ai-response').style.display = 'none';
     document.getElementById('apo-ai-response').textContent = '';
+    document.getElementById('apo-step-title').focus();
   }
 
   // ── Button handlers ───────────────────────────────────
@@ -693,6 +703,7 @@
     }).join('');
 
     persistProgress(state.steps.length);
+    document.getElementById('apo-complete-title').focus();
     engine.clearProgress(journeyId);
     engine.clearPreFill();
   }
