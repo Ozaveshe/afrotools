@@ -46,6 +46,30 @@ test.describe('Word Counter VIP', () => {
     expect(runtimeErrors).toEqual([]);
   });
 
+  test('uses matching word and character counts on screen and in TXT', async ({ page }) => {
+    await page.goto(route);
+    await page.waitForFunction(() => window.AFROTOOLS_WORD_COUNTER_VIP === true);
+    await page.locator('#textInput').fill('one two');
+    await page.locator('#goalToggle').click();
+
+    for (const [room, words, characters] of [
+      [0, '0 words available before the maximum.', '0 characters available before the maximum.'],
+      [1, '1 word available before the maximum.', '1 character available before the maximum.'],
+      [2, '2 words available before the maximum.', '2 characters available before the maximum.'],
+      [-1, '1 word over the maximum.', '1 character over the maximum.'],
+    ]) {
+      await page.locator('#maximumWords').fill(String(2 + room));
+      await page.locator('#maximumCharacters').fill(String(7 + room));
+      await expect(page.locator('#limitResult')).toHaveText(words + ' ' + characters);
+
+      const downloadPromise = page.waitForEvent('download');
+      await page.locator('#downloadReportBtn').click();
+      const download = await downloadPromise;
+      const report = require('node:fs').readFileSync(await download.path(), 'utf8');
+      expect(report.split(/\r?\n/)).toEqual(expect.arrayContaining(['- ' + words, '- ' + characters]));
+    }
+  });
+
   test('exports a summary without draft text and invokes print', async ({ page }) => {
     const writes = [];
     page.on('request', request => {

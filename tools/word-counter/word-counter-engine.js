@@ -138,6 +138,12 @@
     };
   }
 
+  function maximumMessage(remaining, unit) {
+    var count = Math.abs(remaining);
+    var noun = count === 1 ? unit : unit + 's';
+    return count + ' ' + noun + (remaining < 0 ? ' over the maximum.' : ' available before the maximum.');
+  }
+
   function evaluateLimits(stats, limits) {
     var input = limits || {};
     var minimum = parseLimit(input.minimumWords, 'Minimum words');
@@ -166,16 +172,10 @@
         : 'Minimum word target reached.');
     }
     if (maximumWords) {
-      var wordRoom = maximumWords - stats.words;
-      messages.push(wordRoom >= 0
-        ? wordRoom + ' words available before the maximum.'
-        : Math.abs(wordRoom) + (Math.abs(wordRoom) === 1 ? ' word' : ' words') + ' over the maximum.');
+      messages.push(maximumMessage(maximumWords - stats.words, 'word'));
     }
     if (maximumCharacters) {
-      var characterRoom = maximumCharacters - stats.characters;
-      messages.push(characterRoom >= 0
-        ? characterRoom + ' characters available before the maximum.'
-        : Math.abs(characterRoom) + ' characters over the maximum.');
+      messages.push(maximumMessage(maximumCharacters - stats.characters, 'character'));
     }
 
     var over = (maximumWords && stats.words > maximumWords)
