@@ -8,8 +8,8 @@
   },
   "jobs": {
     "prepare": {
-      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-visitor-backlog-20261118-a2'",
-      "runs-on": "ubuntu-latest",
+      "if": "github.repository == 'Ozaveshe/afrotools' && github.event.ref_type == 'branch' && github.event.ref == 'codex/publisher-visitor-backlog-20261118-a3'",
+      "runs-on": "ubuntu-24.04",
       "timeout-minutes": 100,
       "env": {
         "CONTEXT": "local",
@@ -40,6 +40,10 @@
         {
           "name": "Install dependencies",
           "run": "npm ci"
+        },
+        {
+          "name": "Install Chromium for native browser-backed source tests",
+          "run": "npx playwright install chromium --with-deps"
         },
         {
           "name": "Freshness and calculation inventory preflight",
@@ -86,10 +90,6 @@
             "path": "${{ runner.temp }}/cumulative-preparation",
             "retention-days": 3
           }
-        },
-        {
-          "name": "Install Chromium for native browser-backed source tests",
-          "run": "npx playwright install chromium --with-deps"
         },
         {
           "name": "Run complete native Verify source gates",
