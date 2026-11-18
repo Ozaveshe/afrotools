@@ -266,7 +266,7 @@ const globalExact = [
   ['Total Annual Makato', 'Jumla ya Makato ya Mwaka'],
   ['Monthly Mshahara Ghafi', 'Mshahara Ghafi wa Mwezi'],
   ['Tax Before Credit', 'Kodi Kabla ya Punguzo'],
-  ['Tax Credit (M11,640)', 'Punguzo la Kodi (M11,640)'],
+  ['Tax Credit (M12,240)', 'Punguzo la Kodi (M12,240)'],
   ['Annual PAYE', 'PAYE ya Mwaka'],
   ['Annual OTR Tax', 'Kodi ya OTR ya Mwaka'],
   ['OTR income tax', 'Kodi ya mapato ya OTR'],
@@ -583,7 +583,7 @@ const globalRegex = [
   [/CNSS contributions are calculated on salary subject to cotisation/g, 'Michango ya CNSS hukokotolewa juu ya mshahara unaostahili kuchangiwa'],
   [/nitachambua your LRA PAYE position for Lesotho\./g, 'nitachambua hali yako ya PAYE ya LRA kwa Lesotho.'],
   [/30% on amount above M74,040/g, '30% kwa kiasi kinachozidi M74,040'],
-  [/Calculated annually on gross salary\. Tax credit: M11,640\/yr applied after tax calculation\. No mandatory pension contributions\./g, 'Hukokotolewa kwa mwaka kwa mshahara ghafi. Mkopo wa kodi wa M11,640 kwa mwaka hutumika baada ya hesabu ya kodi. Hakuna michango ya lazima ya pensheni.'],
+  [/Calculated annually on gross salary\. Tax credit: M12,240\/yr applied after tax calculation\. No mandatory pension contributions\./g, 'Hukokotolewa kwa mwaka kwa mshahara ghafi. Mkopo wa kodi wa M12,240 kwa mwaka hutumika baada ya hesabu ya kodi. Hakuna michango ya lazima ya pensheni.'],
   [/Minimum IRSA when tax is due: MGA 3,000\/month\. CNaPS: 1% employee \+ 13% employer on salary up to MGA 2,101,440\/month in the standard general regime\./g, 'Kiwango cha chini cha IRSA wakati kodi inatakiwa: MGA 3,000 kwa mwezi. CNaPS: 1% ya mfanyakazi + 13% ya mwajiri kwenye mshahara hadi MGA 2,101,440 kwa mwezi katika mpango wa kawaida wa jumla.'],
   [/nitachambua your MRA PAYE position and give specific tips for Malawi\./g, 'nitachambua hali yako ya PAYE ya MRA na kutoa vidokezo maalum kwa Malawi.'],
   [/CNSS contribution is capped at MAD 6,000\/month \(MAD 72,000\/year\) and is tax-deductible from DGI taxable income\./g, 'Mchango wa CNSS una kikomo cha MAD 6,000 kwa mwezi (MAD 72,000 kwa mwaka) na unapunguzwa kwenye mapato yanayotozwa kodi ya DGI.'],
@@ -1269,9 +1269,9 @@ const equatorialGuineaExact = [
 
 const lesothoExact = [
   ['Tax Before Credit (M74,040 @ 20% + above @ 30%)', 'Kodi Kabla ya Punguzo (M74,040 @ 20% + juu ya hapo @ 30%)'],
-  ['Less: Tax Credit (M11,640)', 'Punguza: Punguzo la Kodi (M11,640)'],
-  ['Two-band progressive tax calculated annually on gross salary. Tax credit of M11,640 applied after tax calculation. No mandatory pension contributions.', 'Kodi ya hatua ya mabanda mawili hukokotolewa kwa mwaka kwenye mshahara ghafi. Punguzo la kodi la M11,640 hutumika baada ya hesabu ya kodi. Hakuna michango ya lazima ya pensheni.'],
-  ['Annual PAYE (after M11,640 credit):', 'PAYE ya Mwaka (baada ya punguzo la M11,640):'],
+  ['Less: Tax Credit (M12,240)', 'Punguza: Punguzo la Kodi (M12,240)'],
+  ['Two-band progressive tax calculated annually on gross salary. Tax credit of M12,240 applied after tax calculation. No mandatory pension contributions.', 'Kodi ya hatua ya mabanda mawili hukokotolewa kwa mwaka kwenye mshahara ghafi. Punguzo la kodi la M12,240 hutumika baada ya hesabu ya kodi. Hakuna michango ya lazima ya pensheni.'],
+  ['Annual PAYE (after M12,240 credit):', 'PAYE ya Mwaka (baada ya punguzo la M12,240):'],
 ];
 
 const maliExact = [

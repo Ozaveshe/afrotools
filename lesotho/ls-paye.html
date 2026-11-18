@@ -615,7 +615,7 @@ function calcAnnualPAYE(annualGross) {
   let annualTax = result.tax;
   const bandBreakdown = result.bandBreakdown;
 
-  const taxCredit = 12240;
+  const taxCredit = Math.min(annualTax, 12240);
   annualTax = Math.max(0, annualTax - taxCredit);
 
   const netAnnual = gross - annualTax;
