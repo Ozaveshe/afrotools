@@ -1,71 +1,160 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-15",
+  "updated_at": "2026-11-07",
   "default_freshness_days": 45,
-  "unsupported_country_codes": ["CI", "GH", "KE", "NG", "SN", "ZA", "ZM"],
+  "unsupported_country_codes": [
+    "CI",
+    "GH",
+    "KE",
+    "NG",
+    "SN",
+    "ZA",
+    "ZM"
+  ],
   "records": [
     {
-      "market_id": "ug-national-uedcl-q3-2026",
+      "market_id": "ug-national-uedcl-q4-2026",
       "country_code": "UG",
       "country_name": "Uganda",
       "provider_id": "uedcl",
       "provider_name": "Uganda Electricity Distribution Company Limited (UEDCL)",
-      "tariff_id": "ug-uedcl-domestic-standard-q3-2026",
+      "tariff_id": "ug-uedcl-domestic-standard-q4-2026",
       "tariff_name": "Domestic standard — Code 10.1",
       "customer_class": "domestic_standard",
       "meter_type": "prepaid_or_postpaid",
       "currency": "UGX",
       "billing_unit": "kWh",
-      "pricing_model": "flat",
-      "tiers": [{"from": 0, "up_to": null, "rate": 779.4, "label": "Domestic energy charge"}],
-      "fixed_charge": 0,
+      "pricing_model": "tiered",
+      "tiers": [
+        {
+          "from": 0,
+          "up_to": 80,
+          "rate": 779.4,
+          "label": "Standard domestic energy"
+        },
+        {
+          "from": 80,
+          "up_to": 150,
+          "rate": 412,
+          "label": "Cooking band: monthly kWh 81–150"
+        },
+        {
+          "from": 150,
+          "up_to": null,
+          "rate": 779.4,
+          "label": "Domestic energy above 150 monthly kWh"
+        }
+      ],
+      "fixed_charge": 3360,
       "levies": [],
-      "taxes": [],
+      "taxes": [
+        {
+          "id": "ug-vat",
+          "label": "VAT on energy and service charges",
+          "type": "percent",
+          "value": 18
+        }
+      ],
       "minimum_charge": 0,
       "prepaid_deductions": [],
-      "effective_date": "2026-07-01",
-      "valid_to": "2026-09-30",
-      "last_verified_at": "2026-08-15",
+      "effective_date": "2026-10-01",
+      "valid_to": "2026-12-31",
+      "last_verified_at": "2026-11-07",
       "max_age_days": 45,
-      "source_name": "Electricity Regulatory Authority — UEDCL Q3 2026 tariff schedule",
-      "source_url": "https://www.era.go.ug/download/schedule-of-end-user-electricity-tariffs-to-be-charged-by-uganda-electricity-distribution-company-limited-for-the-third-quarter-july-to-september-of-2026/",
+      "source_name": "Electricity Regulatory Authority — UEDCL Q4 2026 tariff schedule",
+      "source_url": "https://www.era.go.ug/download/schedule-of-electricity-end-user-tariffs-to-be-charged-by-uganda-electricity-distribution-company-limited-for-the-fourth-quarter-october-to-december-of-the-year-2026/",
       "granularity": "national_provider_class",
       "confidence": "high",
       "status": "official_current",
-      "notes": "Average domestic rate. Receipt totals can still differ because of arrears, debt recovery, or vending adjustments not included in the published energy rate."
+      "notes": "Standard domestic class does not apply the lifeline discount. Monthly bands reset each billing month. Energy rates exclude VAT; estimates add 18% VAT and UGX 3,360 per unpaid service-charge month. For prepaid purchases, enter units already bought and whether the monthly charge is still due.",
+      "component_sources": [
+        {
+          "component": "Monthly service charge, accrual, VAT and monthly band context",
+          "source_url": "https://www.era.go.ug/media/2025/07/UNDERSTANDING-ELECTRICITY-PRICES-FOR-DOMESTIC-CUSTOMERS-JUL-2025.pdf",
+          "document_date": "2025-07",
+          "checked_at": "2026-11-07"
+        },
+        {
+          "component": "18% VAT confirmation",
+          "source_url": "https://uedcl.co.ug/faqs/",
+          "checked_at": "2026-11-07"
+        }
+      ]
     },
     {
-      "market_id": "ug-national-uedcl-q3-2026",
+      "market_id": "ug-national-uedcl-q4-2026",
       "country_code": "UG",
       "country_name": "Uganda",
       "provider_id": "uedcl",
       "provider_name": "Uganda Electricity Distribution Company Limited (UEDCL)",
-      "tariff_id": "ug-uedcl-domestic-lifeline-q3-2026",
+      "tariff_id": "ug-uedcl-domestic-lifeline-q4-2026",
       "tariff_name": "Domestic lifeline eligible — Code 10.1",
       "customer_class": "domestic_lifeline",
       "meter_type": "prepaid_or_postpaid",
       "currency": "UGX",
       "billing_unit": "kWh",
-      "pricing_model": "lifeline_tiered",
+      "pricing_model": "tiered",
       "tiers": [
-        {"from": 0, "up_to": 15, "rate": 250, "label": "Lifeline — first 15 kWh"},
-        {"from": 15, "up_to": null, "rate": 779.4, "label": "Standard domestic rate after 15 kWh"}
+        {
+          "from": 0,
+          "up_to": 15,
+          "rate": 250,
+          "label": "Eligible lifeline: first 15 monthly kWh"
+        },
+        {
+          "from": 15,
+          "up_to": 80,
+          "rate": 779.4,
+          "label": "Standard domestic energy"
+        },
+        {
+          "from": 80,
+          "up_to": 150,
+          "rate": 412,
+          "label": "Cooking band: monthly kWh 81–150"
+        },
+        {
+          "from": 150,
+          "up_to": null,
+          "rate": 779.4,
+          "label": "Domestic energy above 150 monthly kWh"
+        }
       ],
-      "fixed_charge": 0,
+      "fixed_charge": 3360,
       "levies": [],
-      "taxes": [],
+      "taxes": [
+        {
+          "id": "ug-vat",
+          "label": "VAT on energy and service charges",
+          "type": "percent",
+          "value": 18
+        }
+      ],
       "minimum_charge": 0,
       "prepaid_deductions": [],
-      "effective_date": "2026-07-01",
-      "valid_to": "2026-09-30",
-      "last_verified_at": "2026-08-15",
+      "effective_date": "2026-10-01",
+      "valid_to": "2026-12-31",
+      "last_verified_at": "2026-11-07",
       "max_age_days": 45,
-      "source_name": "Electricity Regulatory Authority — UEDCL Q3 2026 tariff schedule",
-      "source_url": "https://www.era.go.ug/download/schedule-of-end-user-electricity-tariffs-to-be-charged-by-uganda-electricity-distribution-company-limited-for-the-third-quarter-july-to-september-of-2026/",
+      "source_name": "Electricity Regulatory Authority — UEDCL Q4 2026 tariff schedule",
+      "source_url": "https://www.era.go.ug/download/schedule-of-electricity-end-user-tariffs-to-be-charged-by-uganda-electricity-distribution-company-limited-for-the-fourth-quarter-october-to-december-of-the-year-2026/",
       "granularity": "national_provider_class",
       "confidence": "high",
       "status": "official_current",
-      "notes": "Only choose this class when the account qualifies: the regulator says the rolling six-month average must not exceed 100 kWh. The calculator does not infer eligibility."
+      "notes": "Lifeline eligibility requires a rolling six-month average not exceeding 100 kWh; this calculator does not infer eligibility. Monthly bands reset each billing month. Energy rates exclude VAT; estimates add 18% VAT and UGX 3,360 per unpaid service-charge month. For prepaid purchases, enter units already bought and whether the monthly charge is still due.",
+      "component_sources": [
+        {
+          "component": "Monthly service charge, accrual, VAT and monthly band context",
+          "source_url": "https://www.era.go.ug/media/2025/07/UNDERSTANDING-ELECTRICITY-PRICES-FOR-DOMESTIC-CUSTOMERS-JUL-2025.pdf",
+          "document_date": "2025-07",
+          "checked_at": "2026-11-07"
+        },
+        {
+          "component": "18% VAT confirmation",
+          "source_url": "https://uedcl.co.ug/faqs/",
+          "checked_at": "2026-11-07"
+        }
+      ]
     },
     {
       "market_id": "ug-national-uedcl-q3-2026",
@@ -80,7 +169,14 @@
       "currency": "UGX",
       "billing_unit": "kWh",
       "pricing_model": "flat",
-      "tiers": [{"from": 0, "up_to": null, "rate": 562.1, "label": "Commercial average energy charge"}],
+      "tiers": [
+        {
+          "from": 0,
+          "up_to": null,
+          "rate": 562.1,
+          "label": "Commercial average energy charge"
+        }
+      ],
       "fixed_charge": 0,
       "levies": [],
       "taxes": [],
@@ -111,8 +207,18 @@
       "billing_unit": "kWh",
       "pricing_model": "lifeline_tiered",
       "tiers": [
-        {"from": 0, "up_to": 75, "rate": 100, "label": "First 75 kWh"},
-        {"from": 75, "up_to": null, "rate": 350, "label": "Usage above 75 kWh"}
+        {
+          "from": 0,
+          "up_to": 75,
+          "rate": 100,
+          "label": "First 75 kWh"
+        },
+        {
+          "from": 75,
+          "up_to": null,
+          "rate": 350,
+          "label": "Usage above 75 kWh"
+        }
       ],
       "fixed_charge": 0,
       "levies": [],
@@ -143,7 +249,14 @@
       "currency": "TZS",
       "billing_unit": "kWh",
       "pricing_model": "flat",
-      "tiers": [{"from": 0, "up_to": null, "rate": 292, "label": "General-use energy charge"}],
+      "tiers": [
+        {
+          "from": 0,
+          "up_to": null,
+          "rate": 292,
+          "label": "General-use energy charge"
+        }
+      ],
       "fixed_charge": 0,
       "levies": [],
       "taxes": [],
