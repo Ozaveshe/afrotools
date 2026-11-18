@@ -37,7 +37,11 @@ for (const app of apps) {
       else if (format === "txt") expect(bytes.toString("utf8")).toContain("Chanzo:");
       else expect(bytes.subarray(0,4).toString("ascii")).toBe("%PDF");
     }
-    await page.locator("[name=scenario]").fill("{");
+    if (app.id === "demurrage-calculator") {
+      await page.getByLabel("Siku bandarini").fill("1.5");
+    } else {
+      await page.locator("[name=scenario]").fill("{");
+    }
     await page.locator("[data-trade-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
     await page.locator("[data-trade-form] button[type=reset]").click();
