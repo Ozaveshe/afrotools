@@ -53,6 +53,10 @@
   function calculate(e){
    e.preventDefault();invalidate();var input={pricePerLitre:byId('fuel-price').value,mode:byId('fuel-fill-mode').value,unit:byId('fuel-unit').value,quantity:byId('fuel-quantity').value,tankSize:byId('fuel-tank-size').value,currentLevelPct:byId('fuel-current-level').value};
    var required=input.mode==='tank'?['pricePerLitre','tankSize','currentLevelPct']:['pricePerLitre','quantity'];var currency=byId('fuel-currency').value.toUpperCase();
+   if(input.pricePerLitre.trim()===''){
+    var hint=status(record).historical?t('missingHistoricalPrice',{action:t('useHistory')}):t('missingPrice');
+    byId('fuel-price-help').textContent=hint;byId('fuel-fill-status').textContent=hint;byId('fuel-price').focus();return;
+   }
    if(required.some(function(k){return input[k].trim()===''||!Number.isFinite(Number(input[k]));})||!/^[A-Z]{3}$/.test(currency)){byId('fuel-fill-status').textContent=t('invalid');return;}
    var calc=engine.calculateFillCost(input);if(!calc.ok){byId('fuel-fill-status').textContent=t('invalid');return;}
    // Recheck at calculation time: a reference may expire while the page remains open.
