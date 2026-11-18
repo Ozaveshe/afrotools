@@ -236,7 +236,9 @@
       return api.calculate(numeric(input, ["directCost", "otherCost", "studyHours", "hourValue", "annualUplift", "studyMonths", "delayMonths", "horizonYears"]));
     },
     classroom(input, api) {
-      return api.calculate(numeric(Object.assign({ fixedArea: 0, administrativeMax: 0 }, input), ["roomLength", "roomWidth", "frontDepth", "rearDepth", "sideClearance", "aisleWidth", "aisleCount", "deskWidth", "rowPitch", "seatsPerUnit", "areaPerLearner", "actualLearners", "fixedArea", "administrativeMax"]));
+      const result = api.calculate(numeric(Object.assign({ fixedArea: 0, administrativeMax: 0 }, input), ["roomLength", "roomWidth", "frontDepth", "rearDepth", "sideClearance", "aisleWidth", "aisleCount", "deskWidth", "rowPitch", "seatsPerUnit", "areaPerLearner", "actualLearners", "fixedArea", "administrativeMax"]));
+      if (result.valid) result.limitingFactor = display(result.limitingFactor);
+      return result;
     },
     "course-load"(input, api) {
       return api.calculate({
@@ -371,6 +373,8 @@
       "admission or further study": "Kujiunga au kuendelea na masomo",
       "The receiving education institution, with SAQA evaluation where required": "Taasisi inayopokea, pamoja na tathmini ya SAQA inapohitajika",
       "Area per learner": "Eneo kwa mwanafunzi",
+      "Furniture layout": "Mpangilio wa samani",
+      "Administrative class-size limit": "Kikomo cha idadi ya wanafunzi kilichowekwa na uongozi",
       below: "Chini ya kiwango",
       "APA 7 draft. The engine preserves the capitalisation you enter; apply APA sentence case and source-specific exceptions before submitting.": "Rasimu ya APA 7. Injini huhifadhi herufi ulizoingiza; hakiki kanuni za APA na masharti ya chanzo kabla ya kuwasilisha."
     };

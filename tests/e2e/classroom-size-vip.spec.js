@@ -8,3 +8,25 @@ for(const width of[320,360])test(`has no overflow at ${width}px`,async({page})=>
 test("keeps dark 375px layout readable at 200 percent",async({page})=>{await page.setViewportSize({width:375,height:900});await page.goto(route,{waitUntil:"commit"});await page.waitForFunction(()=>window.AFROTOOLS_CLASSROOM_VIP===true);await page.waitForFunction(()=>window.AfroTools&&window.AfroTools.darkMode);await page.evaluate(()=>{window.AfroTools.darkMode.set("dark");document.documentElement.style.fontSize="200%"});const state=await page.evaluate(()=>{const panel=document.querySelector(".cv-panel");return[document.documentElement.scrollWidth,document.documentElement.clientWidth,getComputedStyle(panel).backgroundColor,getComputedStyle(panel.querySelector("h2")).color]});expect(state[0]).toBeLessThanOrEqual(state[1]+1);expect(state[2]).not.toBe(state[3]);fs.mkdirSync("artifacts/day5-classroom-size-vip",{recursive:true});await page.screenshot({path:"artifacts/day5-classroom-size-vip/mobile-dark-375-200.png",fullPage:true})});
 test("gives every control an accessible name",async({page})=>{await page.goto(route,{waitUntil:"commit"});await page.waitForFunction(()=>window.AFROTOOLS_CLASSROOM_VIP===true);const unnamed=await page.evaluate(()=>Array.from(document.querySelectorAll("main input,main textarea,main button")).filter(element=>!element.closest("label")&&!element.getAttribute("aria-label")&&!element.textContent.trim()).length);expect(unnamed).toBe(0)});
 });
+
+test("Swahili classroom downloads preserve the constraint key and match the displayed label", async ({ page }) => {
+  await page.goto("/sw/zana/ukubwa-wa-darasa/");
+  const form = page.locator("[data-education-form]");
+  for (const [area, key, label, capacity] of [
+    ["1.5", "areaCapacity", "Eneo kwa mwanafunzi", 24],
+    ["0.5", "layoutCapacity", "Mpangilio wa samani", 56],
+  ]) {
+    await form.locator('[name="areaPerLearner"]').fill(area);
+    await form.locator('[type="submit"]').click();
+    await expect(page.locator("[data-education-metrics]")).toContainText(label);
+    const pending = page.waitForEvent("download");
+    await page.locator('[data-action="json"]').click();
+    const download = await pending;
+    expect(download.suggestedFilename()).toBe("classroom-size-sw.json");
+    const report = JSON.parse(fs.readFileSync(await download.path(), "utf8"));
+    expect(report.locale).toBe("sw");
+    expect(report.result).toMatchObject({
+      planningCapacity: capacity, difference: capacity - 32, limitingFactorKey: key, limitingFactor: label
+    });
+  }
+});

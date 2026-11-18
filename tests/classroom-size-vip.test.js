@@ -4,3 +4,16 @@ test("requires measured dimensions, modules and area limit",()=>{assert.equal(en
 test("rejects clearances that remove the furniture footprint",()=>{const result=engine.calculate({...fixture,frontDepth:5,rearDepth:5});assert.equal(result.valid,false);assert.match(result.error,/no positive furniture footprint/)});
 test("calculates transparent area and furniture constraints",()=>{const result=engine.calculate(fixture);assert.equal(result.valid,true);assert.equal(result.grossArea,63);assert.equal(result.clearLength,6.7);assert.equal(result.clearWidth,6);assert.equal(result.furnitureWidth,5.1);assert.equal(result.rows,6);assert.equal(result.unitsPerRow,4);assert.equal(result.layoutCapacity,48);assert.equal(result.netArea,32.17);assert.equal(result.areaCapacity,21);assert.equal(result.planningCapacity,21);assert.equal(result.limitingFactor,"Area per learner");assert.equal(result.difference,-11)});
 test("optional administrative maximum can become the limiting factor",()=>{const result=engine.calculate({...fixture,areaPerLearner:.5,administrativeMax:20,actualLearners:0});assert.equal(result.planningCapacity,20);assert.equal(result.limitingFactor,"Administrative class-size limit");assert.equal(result.utilisation,null)});
+
+test("exports the limiting constraint key while retaining the English engine label", () => {
+  for (const [settings, key, label] of [
+    [{}, "areaCapacity", "Area per learner"],
+    [{ areaPerLearner: 0.5, administrativeMax: 0 }, "layoutCapacity", "Furniture layout"],
+    [{ administrativeMax: 12 }, "administrativeMax", "Administrative class-size limit"],
+  ]) {
+    const result = engine.calculate({ ...fixture, ...settings });
+    assert.equal(result.limitingFactorKey, key);
+    assert.equal(result.limitingFactor, label);
+    assert.equal(result.planningCapacity, result[key]);
+  }
+});
