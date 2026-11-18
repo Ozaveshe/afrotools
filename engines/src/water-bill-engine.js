@@ -2,6 +2,36 @@
   "use strict";
   window.AfroTools = window.AfroTools || {}, window.AfroTools.WaterBillEngine = {
     calculate: function(e, r) {
+      if (r === 'GH') {
+        var volume = Number(e.monthlyUsage);
+        var peopleGH = Number(e.householdSize == null ? 4 : e.householdSize);
+        var customer = e.customerType || 'residential';
+        if (e.monthlyUsage == null || String(e.monthlyUsage).trim() === '' ||
+            !Number.isFinite(volume) || volume < 0 || !Number.isInteger(peopleGH) || peopleGH < 1 ||
+            ['residential', 'commercial'].indexOf(customer) < 0) {
+          return { error: 'Enter nonnegative monthly usage, a positive whole household size and a supported customer type.' };
+        }
+        // PURC's exclusive residential bands apply the qualifying rate to all consumption.
+        var unitRate = customer === 'commercial' ? 32.051425 : volume <= 5 ? 5.985381 : 10.589413;
+        var service = customer === 'commercial' ? 20 : 10;
+        var water = volume * unitRate;
+        var levy = water * 0.03;
+        var totalGH = water + levy + service;
+        if (!Number.isFinite(totalGH)) return { error: 'Usage exceeds the supported calculation range.' };
+        function cedis(value) {
+          return 'GH₵' + value.toLocaleString('en-GH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+        return {
+          monthlyBill: cedis(totalGH), energyCharge: cedis(water), fixedCharge: cedis(service),
+          levyCharge: cedis(levy), ratePerM3: 'GH₵' + unitRate.toFixed(6),
+          dailyUsageLitres: (volume * (1000 / 30)).toFixed(1) + ' L',
+          perPersonPerDay: (volume * (1000 / 30) / peopleGH).toFixed(1) + ' L/person',
+          observations: ['Ghana Water Limited metered tariff effective 1 October 2026, until reviewed by PURC.',
+            'The 3% levy applies to the water charge. Totals use unrounded charges before rounding to pesewas.',
+            'Daily usage assumes a 30-day month. Previous balances and account-specific adjustments are excluded.'],
+          countryName: 'Ghana', currencySymbol: 'GH₵'
+        };
+      }
       if (r === 'ET') {
         if (e.tariffMode === 'addis-149-year5') {
           var usage149 = Number(e.monthlyUsage), fee149 = Number(e.customFee);

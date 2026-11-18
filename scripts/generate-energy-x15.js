@@ -283,6 +283,9 @@ document.getElementById("rNetBenefit").textContent=r.netMonthlyBenefit;`,
 
 // ─── HTML TEMPLATE ─────────────────────────────────────────────────────────────
 function makePage(tool, country) {
+  if (tool.slug === 'water-bill' && country.code === 'GH') {
+    return fs.readFileSync(path.join(__dirname, 'templates', 'ghana-water-bill.html'), 'utf8');
+  }
   // Ethiopia has no maintained provider/class water schedule. Its source-owned
   // custom-rate page must not inherit the legacy national-rate template.
   if (tool.slug === 'water-bill' && country.code === 'ET') {
@@ -418,6 +421,12 @@ ${countryCards}
 }
 
 let total = 0;
+if (process.argv.includes('--ghana-water-only')) {
+  const tool = TOOLS.find(tool => tool.slug === 'water-bill');
+  const country = COUNTRIES.find(country => country.code === 'GH');
+  fs.writeFileSync(path.join(ROOT, 'tools/water-bill/ghana/index.html'), makePage(tool, country));
+  process.exit(0);
+}
 if (process.argv.includes('--ethiopia-water-only')) {
   const tool = TOOLS.find(tool => tool.slug === 'water-bill');
   const country = COUNTRIES.find(country => country.code === 'ET');
