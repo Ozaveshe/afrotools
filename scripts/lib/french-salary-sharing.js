@@ -58,4 +58,3 @@ function refreshFrenchSalarySharing(html, route) {
 }
 
 module.exports = { refreshFrenchSalarySharing };
-
