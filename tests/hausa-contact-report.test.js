@@ -10,6 +10,7 @@ const { contactPath, reportParams } = require('../assets/js/lib/hausa-contact-re
 const origin = 'https://afrotools.com';
 const tools = new Map([
   ['/ha/kayan-aiki/cgt-najeriya/', 'ng-cgt'],
+  ['/ha/kayan-aiki/cit-najeriya/', 'ng-cit'],
   ['/ha/najeriya/harajin-albashi/', 'ng-paye-ha'],
   ['/ha/kayan-aiki/takardar-albashi/', 'payslip-generator'],
   ['/ha/kayan-aiki/kalkuletan-paystack/', 'paystack-calculator']
@@ -27,7 +28,9 @@ test('each published Hausa report identifies its tool and returns to its source 
     assert.ok(anchor, relative);
     const url = parsedHref(anchor[0]);
     assert.equal(url.pathname, contactPath);
-    assert.deepEqual(Object.fromEntries(url.searchParams), { topic: 'calculation-error', tool, return_to: route });
+    assert.equal(url.searchParams.get('topic'), 'calculation-error');
+    assert.equal(url.searchParams.get('tool'), tool);
+    assert.equal(url.searchParams.get('return_to'), route);
     assert.equal(rewriteSensitiveLinks(anchor[0], relative), anchor[0]);
   }
 });
@@ -53,6 +56,11 @@ test('fresh and bookmarked bridge links resolve to the same report context', () 
     assert.equal(params.get('return_to'), returnTo);
     assert.equal(params.has('amp;tool'), false);
   }
+  const legacy = new URLSearchParams({ destination: '/contact/?subject=ng-cit-calculation-error', return_to: returnTo });
+  const legacyParams = reportParams(contactPath + '?' + legacy, origin);
+  assert.equal(legacyParams.get('tool'), 'ng-cit');
+  assert.equal(legacyParams.get('subject'), 'ng-cit-calculation-error');
+  assert.equal(legacyParams.get('return_to'), returnTo);
   assert.equal(reportParams(contactPath, origin), null);
   assert.equal(reportParams(contactPath + '?destination=https://example.org/contact/', origin), null);
 });

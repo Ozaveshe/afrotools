@@ -19,6 +19,12 @@
       }
       if (outer.has('return_to')) params.set('return_to', outer.get('return_to'));
     }
+    // Older calculation tools put the tool id and topic in a single subject.
+    const legacySubject = /^([a-z0-9]+(?:-[a-z0-9]+)*)-calculation-error$/.exec(params.get('subject') || '');
+    if (!params.has('topic') && legacySubject) {
+      params.set('topic', 'calculation-error');
+      if (!params.has('tool')) params.set('tool', legacySubject[1]);
+    }
     return params.get('topic') === 'calculation-error' ? params : null;
   }
 
