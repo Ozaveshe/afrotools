@@ -60,8 +60,9 @@
     return t < .15 ? "germination" : t < .45 ? "vegetative" : t < .75 ? "flowering" : "maturity";
   }
   function c(r, o, a, i, m) {
+    var netVolume = r * a * o * 10;
     for (var f = Object.keys(e), l = [], c = 0; c < f.length; c++) {
-      var g = f[c], u = e[g], h = n(r / u * a / 1e3 * o * 1e4), d = n(r * a / 1e3 * o * 1e4), p = Math.max(0, h - d), y = s(h, m);
+      var g = f[c], u = e[g], h = n(netVolume / u), d = n(netVolume), p = Math.max(0, h - d), y = s(h, m);
       l.push({
         method: g,
         label: t[g],
