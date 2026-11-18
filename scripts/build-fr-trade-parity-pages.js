@@ -141,7 +141,7 @@ const pages = [
     dataScripts: ["/data/trade/b2b-payments-data.js", "/engines/payment-comparator-engine.js"],
     fields: [
       field("Montant à envoyer (USD)", "amount", { type: "number", min: 0, step: .01, required: true }),
-      field("Fréquence du scénario", "frequency", { type: "select", blank: false, choices: [["monthly", "Mensuelle"], ["weekly", "Hebdomadaire"], ["daily", "Quotidienne"]] }),
+      field("Fréquence du scénario", "frequency", { type: "select", blank: false, choices: [["monthly", "Une fois par mois (12/an)"], ["four_per_month", "Quatre fois par mois (48/an)"], ["weekly_52", "Une fois par semaine (52/an)"], ["operating_days_20", "20 jours d’activité par mois (240/an)"]] }),
       field("Prestataire du scénario", "scenarioProvider", { type: "select", blank: false, choices: [] })
     ],
     sources: [["PAPSS", "https://papss.com/"], ["Banque centrale ou prestataire concerné", "/data/trade/official-sources.json"]],
@@ -538,6 +538,7 @@ ${page.sw ? `<link rel="alternate" hreflang="sw" href="https://afrotools.com${pa
           </div>
           <p class="fr-trade-status" data-trade-status tabindex="-1" role="status" aria-live="polite">Renseignez les champs puis lancez le calcul.</p>
         </form>
+        ${page.tool === "payment-comparator" ? '<label class="fr-trade-button fr-trade-button--secondary">Rouvrir un scénario JSON<input type="file" accept="application/json,.json" data-import-json></label>' : ""}
         <section class="fr-trade-result" data-trade-result tabindex="-1" aria-labelledby="result-title" hidden>
           <h2 class="fr-trade-print-title">${page.name}</h2>
           <h2 id="result-title">Résultat et contrôles</h2>
