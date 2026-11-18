@@ -1411,6 +1411,32 @@ function buildJsFormula(
       "Private draft only. Confirm every identity, amount, deduction authority, statutory treatment and local issue requirement before relying on the document.";
   }
 
+  if (artifactPath === "assets/js/engines/uganda-electricity-billing.js") {
+    const tariffs = readJson(path.join(root, "data/energy/electricity-tariffs.json"));
+    const standard = tariffs.records.find((record) =>
+      record.country_code === "UG" &&
+      record.provider_id === "uedcl" &&
+      record.customer_class === "domestic_standard" &&
+      record.status === "official_current",
+    );
+    if (!standard) throw new Error("Missing reviewed UEDCL domestic tariff");
+    const references = [
+      { source_url: standard.source_url, component: standard.source_name },
+      ...standard.component_sources,
+    ];
+    jurisdictions = ["UG"];
+    sourceJurisdictions = ["UG"];
+    currency = "UGX";
+    lastVerified = standard.last_verified_at;
+    sources = references.map((reference) => ({
+      registryId: null,
+      title: reference.component,
+      url: reference.source_url,
+      kind: "authority-link",
+      authorityStatus: "source-reviewed",
+    }));
+  }
+
   const canonicalCurrency = countryCode
     ? currencyForCountry(countries, countryCode)
     : currency;

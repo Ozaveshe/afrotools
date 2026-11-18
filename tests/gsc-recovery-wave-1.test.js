@@ -50,6 +50,7 @@ const routes = {
     file: "blog/igbo-market-days/index.html",
     hreflang: {
       en: "https://afrotools.com/blog/igbo-market-days/",
+      fr: "https://afrotools.com/fr/blog/igbo-market-days/",
       "x-default": "https://afrotools.com/blog/igbo-market-days/"
     }
   },
