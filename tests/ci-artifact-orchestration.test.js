@@ -60,7 +60,17 @@ test('mechanically preserves all current commands/env/specs/workers and Verify/s
   const original = readOriginalWorkflow(inventory);
   assert.equal(c.sha(original), inventory.originalWorkflowSha256);
   const current = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'utf8').replaceAll('\r\n', '\n');
-  assert.ok(current.includes(inventory.originalVerifyYaml)); assert.ok(current.includes(inventory.originalSmokeYaml));
+  // Retain the genuine historical fixture; permit only the supported OS pin.
+  // Commands, environment, timeout and all remaining block bytes stay exact.
+  for (const block of [inventory.originalVerifyYaml, inventory.originalSmokeYaml]) {
+    const oldRunner = '    runs-on: ubuntu-latest\n';
+    const supportedRunner = '    runs-on: ubuntu-24.04\n';
+    assert.equal(block.split(oldRunner).length, 2, 'Historical block must contain exactly one original runner');
+    const expected = block.replace(oldRunner, supportedRunner);
+    assert.equal(expected.replace(supportedRunner, oldRunner), block, 'Runner inverse must recover every original byte');
+    assert.ok(current.includes(expected), 'Only the explicit runner pin may differ from the original Verify/smoke block');
+  }
+  assert.deepEqual(current.match(/^    runs-on: .+$/gm), Array(5).fill('    runs-on: ubuntu-24.04'), 'All five native job definitions require the supported pinned runner');
   const body = original.split('  build:\n')[1].split('  e2e:\n')[0];
   const blocks = body.match(/      - name: .*?(?=\n      - name:|$)/gs);
   assert.equal(blocks.length, inventory.producer.length + inventory.browser.length);
