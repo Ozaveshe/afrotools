@@ -445,13 +445,20 @@
           <div style="margin-bottom:14px">
             <label class="f-label" for="countrySelect">Country</label>
             <select class="f-select" id="countrySelect">
-              <option value="KE">🇰🇪 Kenya (KRA) — IDF 3.5%, RDL 2.5%, VAT 16%</option>
+              <option value="KE">🇰🇪 Kenya (KRA) — IDF 2.5%, RDL 2%, VAT 16%</option>
               <option value="TZ">🇹🇿 Tanzania (TRA) — IDF 1%, RDL 1.5%, VAT 18%</option>
               <option value="UG">🇺🇬 Uganda (URA) — IDF 2%, Infra 1.5%, WHT 6%, VAT 18%</option>
               <option value="RW">🇷🇼 Rwanda (RRA) — IDS 1.5%, AU Levy 0.2%, VAT 18%</option>
               <option value="BI">🇧🇮 Burundi (OBR) — Transaction Tax 1%, VAT 18%</option>
             </select>
-            <p class="compare-note" style="margin:8px 0 0">National levy defaults are planning assumptions. Confirm current customs, VAT, IDF, RDL, IDS and remission treatment before submitting an entry.</p>
+            <fieldset id="kenyaFees" style="margin:12px 0;padding:12px">
+                <legend>Kenya import fees for home use</legend>
+                <p>Both charges apply to customs value by default. Select a fee only if you have confirmed the shipment qualifies for that specific exemption.</p>
+                <label><input type="checkbox" id="exemptIdf"> IDF exemption confirmed (Second Schedule, Part A)</label><br>
+                <label><input type="checkbox" id="exemptRdl"> RDL exemption confirmed (Second Schedule, Part B)</label>
+                <p class="compare-note">This scenario assumes standard-rated VAT and no excise. Check the tariff line and entry documents for other VAT or excise treatment. <a id="kenyaFeeLaw" href="https://new.kenyalaw.org/akn/ke/act/2016/29">Miscellaneous Fees and Levies Act, sections 7–8</a> · <a href="https://www.kra.go.ke/finance-act-2026-what-it-means-for-you/">KRA 2026 exemption updates</a></p>
+              </fieldset>
+              <p class="compare-note" style="margin:8px 0 0">National levy defaults are planning assumptions. Confirm current customs, VAT, IDF, RDL, IDS and remission treatment before submitting an entry.</p>
           </div>
           <button type="button" class="btn-primary" id="calcBtn">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
@@ -545,6 +552,7 @@
                 <tbody id="compareBody"></tbody>
               </table>
             </div>
+            <p class="compare-note">The comparison uses standard national fees, including both Kenyan charges. Shipment-specific exemptions apply only in the landed-cost calculator.</p>
             <p class="compare-note" id="compareNote"></p>
           </div>
         </div>
@@ -620,7 +628,7 @@
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="../../engines/eac-cet-engine.js?v=3f4c52fa"></script>
+<script src="../../engines/eac-cet-engine.js?v=3961070f"></script>
 <script>
 (function () {
   'use strict';
@@ -628,6 +636,15 @@
   var engine = EacCetEngine;
   var selectedProduct = null;
   var lastBrief = null;
+  function resetEstimate() {
+    lastBrief = null;
+    document.getElementById('resultBlock').classList.remove('on');
+    document.getElementById('kenyaFees').hidden = document.getElementById('countrySelect').value !== 'KE';
+  }
+  ['countrySelect', 'exemptIdf', 'exemptRdl', 'cifValue', 'cetRateInput'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', resetEstimate);
+  });
+  resetEstimate();
 
   /* ── Tab switching ─────────────────────────────────── */
   var tabs    = document.querySelectorAll('.tab');
@@ -731,7 +748,8 @@
         var name    = item.dataset.name;
         var hs      = item.dataset.hs;
         var cat     = item.dataset.cat;
-        selectedProduct = { name: name, hsRange: hs, cetRate: rate, category: cat };
+        resetEstimate();
+      selectedProduct = { name: name, hsRange: hs, cetRate: rate, category: cat };
         document.getElementById('cetRateInput').value = rate;
         var bar = document.getElementById('selectedProductBar');
         bar.classList.remove('hidden');
@@ -776,7 +794,7 @@
       return;
     }
 
-    var result = engine.calculate({ cifValue: cif, cetRate: rate, countryCode: country });
+    var result = engine.calculate({ cifValue: cif, cetRate: rate, countryCode: country, kenyaExemptions: { idf: document.getElementById('exemptIdf').checked, rdl: document.getElementById('exemptRdl').checked } });
     lastBrief = {
       country: country,
       cif: cif,
@@ -815,6 +833,9 @@
   document.getElementById('copyBriefBtn').addEventListener('click', function () {
     if (!lastBrief) return;
     var text = 'EAC CET landed-cost planning brief\nCountry: ' + lastBrief.country + '\nCIF: ' + fmt(lastBrief.cif) + '\nCET rate: ' + lastBrief.rate + '%\nTotal landed cost: ' + fmt(lastBrief.total) + '\nEffective rate above CIF: ' + fmtPct(lastBrief.effectiveRate) + '\nVerify HS classification, origin, valuation, current gazette notices, national levies, VAT, permits, and remission eligibility before filing.';
+    if (lastBrief.country === 'KE') {
+      text += '\n' + lastBrief.breakdown.slice(2).map(function (item) { return item.name + ': ' + fmt(item.amount); }).join('\n') + '\n' + document.getElementById('kenyaFeeLaw').href;
+    }
     copyText(text).then(function () {
       document.getElementById('copyBriefBtn').textContent = 'Copied';
       setTimeout(function () { document.getElementById('copyBriefBtn').textContent = 'Copy landed-cost brief'; }, 1300);

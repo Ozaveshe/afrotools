@@ -1,3 +1,4 @@
+const fs = require('node:fs/promises');
 const { test, expect } = require('@playwright/test');
 
 test('Addis dated schedule validates inputs, minimum, classes and returning to flat mode', async ({ page }) => {
@@ -8,10 +9,26 @@ test('Addis dated schedule validates inputs, minimum, classes and returning to f
   await page.locator('#monthlyUsage').fill('0');
   await page.locator('#calcBtn').click();
   await expect(page.locator('#waterError')).toContainText('other charges');
+  await expect(page.getByRole('alert')).toHaveText('Enter your other charges in ETB. Enter 0 if there are none.');
+  await expect(page.locator('#customFee')).toBeFocused();
+  await expect(page.locator('#customFee')).toHaveAccessibleDescription(/Enter 0/);
+  await expect(page.locator('#customFee')).toHaveAttribute('aria-invalid', 'true');
   await page.locator('#customFee').fill('0');
+  await expect(page.locator('#customFee')).not.toHaveAttribute('aria-invalid', 'true');
   await page.locator('#calcBtn').click();
   await expect(page.locator('#rBill')).toHaveText('ETB 66.51');
   await expect(page.locator('#rDaily')).toHaveText('0.0 L');
+  await page.locator('#monthlyUsage').fill('2');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#rBill')).toHaveText('ETB 66.51');
+  await expect(page.locator('#rDaily')).toHaveText('66.7 L');
+  const downloading = page.waitForEvent('download');
+  await page.locator('#downloadWater').click();
+  const download = await downloading;
+  const report = await fs.readFile(await download.path(), 'utf8');
+  expect(report).toContain('Actual monthly consumption: 2 m³');
+  expect(report).toContain('Billable usage: 3 m³');
+  expect(report).toContain('https://aajs.gov.et/');
   await page.locator('#monthlyUsage').fill('15');
   await expect(page.locator('#results')).not.toHaveClass(/\bon\b/);
   await page.locator('#calcBtn').click();
@@ -24,6 +41,13 @@ test('Addis dated schedule validates inputs, minimum, classes and returning to f
   await expect(page.locator('#addisClassField')).toBeHidden();
   await page.locator('#customRate').fill('12.5');
   await page.locator('#householdSize').fill('4');
+  await page.locator('#customFee').fill('');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#customFee')).toBeFocused();
+  await expect(page.locator('#customFee')).toHaveAccessibleDescription(/Enter 0/);
+  await page.locator('#customFee').fill('0');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#rBill')).toHaveText('ETB 187.50');
   await page.locator('#customFee').fill('7.25');
   await page.locator('#calcBtn').click();
   await expect(page.locator('#rBill')).toHaveText('ETB 194.75');
