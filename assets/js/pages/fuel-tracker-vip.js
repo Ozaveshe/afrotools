@@ -93,6 +93,14 @@
    if(requestedCountry&&chosenCountry===requestedCountry&&!countries.includes(chosenCountry)){countries.push(chosenCountry);select.add(new Option(country(chosenCountry,chosenCountry),chosenCountry));}
    if(countries.includes(chosenCountry))select.value=chosenCountry;
    select.disabled=false;marketOptions(chosenMarket,preservePlan);coverage();
+   var lookup=byId('fuel-interactive-lookup'),directory=byId('fuel-static-reference');
+   if(lookup && lookup.hidden){
+    lookup.hidden=false;
+    // Keep the reader's place if they are already using the dated directory.
+    if(markets.length && directory && !directory.contains(document.activeElement))directory.open=false;
+   }
+   var coveragePanel=byId('fuel-interactive-coverage');
+   if(coveragePanel)coveragePanel.hidden=!markets.length;
   }
   function scheduledFeed(){
    if(typeof AbortController!=='function')return Promise.resolve(null);
@@ -100,7 +108,10 @@
    return fetch('/api/fuel-prices',{cache:'no-store',credentials:'omit',signal:controller.signal}).then(function(response){if(!response.ok)throw Error('feed');return response.json();}).then(function(data){return data&&Array.isArray(data.countries)?data:null;}).catch(function(){return null;}).finally(function(){clearTimeout(timer);});
   }
   var scheduled=scheduledFeed();
-  mode();Promise.allSettled([load('/data/fuel/markets.json'),load('/data/fuel/latest.json')]).then(async function(results){
+  mode();
+  var fillPanel=byId('fuel-interactive-fill');
+  if(fillPanel)fillPanel.hidden=false;
+  Promise.allSettled([load('/data/fuel/markets.json'),load('/data/fuel/latest.json')]).then(async function(results){
    var data=results[0].status==='fulfilled'?results[0].value:null,latest=results[1].status==='fulfilled'?results[1].value:null;
    if(data&&!engine.validateDataset(data).valid)data=null;payload=data||{stale_after_days:MAX_AGE_DAYS};
    if(latest&&Array.isArray(latest.countries)){
