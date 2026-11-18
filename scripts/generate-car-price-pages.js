@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
+const { createHash } = require("node:crypto");
 const { addHelperScript, addSourceHook } = require("./apply-source-confidence-hooks");
 
 const root = path.join(__dirname, "..");
+const carDirectoryVersion = createHash("md5").update(fs.readFileSync(path.join(root, "assets/js/cars-directory.js"))).digest("hex").slice(0, 8);
 const bundleManifestPath = path.join(root, "assets/js/bundles/manifest.json");
 const bundleManifest = fs.existsSync(bundleManifestPath)
   ? JSON.parse(fs.readFileSync(bundleManifestPath, "utf8"))
@@ -386,6 +388,7 @@ function schema(meta, routePath) {
 
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
+  const hasLocalSample = ["vehicle", "import-vs-local"].includes(meta.pageType) && marketObservation(meta.countryObj, meta.vehicleObj);
   const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
   const askingVehicle = meta.pageType === "model"
     ? meta.listVehicles.find(hasExamples)
@@ -432,7 +435,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
   <script src="/assets/js/lib/share-state.js" defer></script>
   <script src="/assets/js/lib/car-import-cost-engine.js" defer></script>
   <script src="/assets/js/lib/car-price-intelligence.js" defer></script>
-  <script src="/assets/js/cars-directory.js" defer></script>
+  <script src="/assets/js/cars-directory.js${hasLocalSample ? "?v=" + carDirectoryVersion : ""}" defer></script>
 ${routePath === "cars" ? '<script src="/assets/js/pages/car-catalog-search.js" defer></script>' : ''}
 </body>
 </html>
