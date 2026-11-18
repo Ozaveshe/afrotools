@@ -25,7 +25,6 @@
     "technical": "Techniques : ",
     "workplace": "Workplace: ",
     "tools": "Outils : ",
-    "notePrefix": "Note: ",
     "modalTitle": "Version ATS simple",
     "modalDescription": "One column, standard headings, selectable text, no tables, photos, icons, or decorative layout.",
     "editor": "Editable ATS CV text",
@@ -61,7 +60,6 @@
     "technical": "Techniques : ",
     "workplace": "Professionnelles : ",
     "tools": "Outils : ",
-    "notePrefix": "Remarque : ",
     "modalTitle": "Version simple pour ATS",
     "modalDescription": "Une colonne, des rubriques standard et du texte sélectionnable, sans tableaux, photos, icônes ni mise en page décorative.",
     "editor": "Texte du CV ATS à modifier",
@@ -97,7 +95,6 @@
     "technical": "Ufundi: ",
     "workplace": "Kazini: ",
     "tools": "Zana: ",
-    "notePrefix": "Maelezo: ",
     "modalTitle": "Toleo rahisi la ATS",
     "modalDescription": "Safu moja, vichwa vya kawaida na maandishi yanayoweza kuchaguliwa, bila majedwali, picha, aikoni au mapambo.",
     "editor": "Maandishi ya CV ya ATS yanayoweza kuhaririwa",
@@ -137,7 +134,7 @@
         var t = n().data || {}, e = [];
         return e.push(r([ t.fn, t.ln ], " ") || t.name || copy.name), e.push(o(t.title || copy.target)),
         e.push(r([ t.email, o(t.phone) ? r([ t.phoneCode, t.phone ], " ") : "", t.altPhone, t.loc || t.location, t.linkedin || t.li, t.github, t.web, t.portfolio ])),
-        e.push(copy.notePrefix + a), l(e, copy.summary, t.summary), l(e, copy.experience, (t.exps || t.experience || []).map(function(t) {
+        l(e, copy.summary, t.summary), l(e, copy.experience, (t.exps || t.experience || []).map(function(t) {
             return o(r([ t.t, t.title, t.c, t.company, t.l, t.s, t.e, t.d, t.desc ], " ")) ? [ r([ t.t || t.title || copy.role, t.c || t.company || t.org, t.l || t.loc || t.location ], " - "), i(t), (e = t.d || t.desc || t.description,
             String(e || "").split(/\n+/).map(function(t) {
                 return o(t.replace(/^\s*(?:[-*]|\u2022|\d+\.)\s*/, ""));

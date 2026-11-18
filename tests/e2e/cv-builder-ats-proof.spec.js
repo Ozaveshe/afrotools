@@ -196,6 +196,8 @@ test('CV Builder ATS proof panel and synthetic export paths stay local-first', a
   const parsed = await parsePdf(atsPdf, testInfo.outputPath.bind(testInfo));
   expect(parsed.text).toContain('Ayo Synthetic');
   expect(parsed.text).toContain('Operations Analyst');
+  expect(parsed.text).not.toContain('Use this for job portals');
+  await expect(page.locator('[data-export-ats-text]')).not.toHaveValue(/Use this for job portals/);
 
   await page.locator('.cv-export-modal [data-export-close]').click();
   await expect(page.locator('.cv-export-modal-overlay.open')).toHaveCount(0);
