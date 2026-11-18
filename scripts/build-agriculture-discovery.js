@@ -18,6 +18,9 @@ const rows = sandbox.AFRO_TOOLS
   .sort((left, right) => String(left.name).localeCompare(String(right.name)));
 const report = taxonomy.getReport(rows);
 
+// Preserve published short fragments unless a tools family shares a taxonomy key.
+const familyKeys = new Set(report.buckets.flatMap((bucket) => bucket.familyStats.map((family) => family.key)));
+
 function escapeHtml(value) {
   return String(value == null ? '' : value)
     .replace(/&/g, '&amp;')
@@ -54,7 +57,9 @@ function renderFamily(family) {
     if (rightCountry === 'Pan-African') return 1;
     return leftCountry.localeCompare(rightCountry);
   });
-  const anchor = `family-${String(family.key).replace(/^tools\//, '').replace(/[^a-z0-9-]/g, '-')}`;
+  const shortKey = family.key.replace(/^tools\//, '');
+  const anchorKey = shortKey !== family.key && familyKeys.has(shortKey) ? family.key : shortKey;
+  const anchor = `family-${anchorKey.replace(/[^a-z0-9-]/g, '-')}`;
   return `
             <section class="agri-directory-family" id="${anchor}">
               <h3>${escapeHtml(familyLabel(family.key))}</h3>
@@ -153,6 +158,12 @@ ${report.buckets.map(renderBucket).join('\n')}
 </body>
 </html>
 `;
+
+const ids = new Set();
+for (const [, id] of html.matchAll(/\sid="([^"]+)"/g)) {
+  if (ids.has(id)) throw new Error(`Duplicate agriculture directory ID: ${id}`);
+  ids.add(id);
+}
 
 if (process.argv.includes('--check')) {
   if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== html) {
