@@ -45,7 +45,7 @@ const CONFLICT_TYPE_LABELS = {
 };
 
 const SECTION_LINKS = [
-  ["/tools/africa-conflict/conflicts/", "Conflicts"],
+  ["/tools/africa-conflict/conflicts", "Conflicts"],
   ["/tools/africa-conflict/map/", "Map"],
   ["/tools/africa-conflict/actors/", "Actors"],
   ["/tools/africa-conflict/displacement/", "Displacement"],
@@ -202,7 +202,7 @@ function buildSchemas(conflict, description) {
         "@type": "ListItem",
         position: 3,
         name: "Conflicts",
-        item: `${SITE_ORIGIN}/tools/africa-conflict/conflicts/`
+        item: `${SITE_ORIGIN}/tools/africa-conflict/conflicts`
       },
       {
         "@type": "ListItem",
@@ -357,7 +357,7 @@ function buildDossierPageHtml(conflict, manifest) {
   <section class="acd-static-hero">
     <div class="acd-static-inner">
       <nav class="acd-static-breadcrumb" aria-label="breadcrumb">
-        <a href="/">AfroTools</a><span>/</span><a href="/tools/">Tools</a><span>/</span><a href="/tools/africa-conflict/">Africa Conflict</a><span>/</span><a href="/tools/africa-conflict/conflicts/">Conflicts</a><span>/</span><span>${escapeHtml(conflict.name)}</span>
+        <a href="/">AfroTools</a><span>/</span><a href="/tools/">Tools</a><span>/</span><a href="/tools/africa-conflict/">Africa Conflict</a><span>/</span><a href="/tools/africa-conflict/conflicts">Conflicts</a><span>/</span><span>${escapeHtml(conflict.name)}</span>
       </nav>
       <div class="acd-static-kicker">Static conflict dossier</div>
       <h1>${escapeHtml(conflict.name)}</h1>
@@ -369,7 +369,7 @@ function buildDossierPageHtml(conflict, manifest) {
         <span class="acd-static-badge">Updated ${escapeHtml(formatDate(conflict.updated_at || conflict.created_at))}</span>
       </div>
       <div class="acd-static-actions">
-        <a class="acd-btn acd-btn-primary" href="/tools/africa-conflict/conflicts/">All conflicts</a>
+        <a class="acd-btn acd-btn-primary" href="/tools/africa-conflict/conflicts">All conflicts</a>
         <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/map/">Open map</a>
         <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology/">Methodology</a>
       </div>
@@ -465,7 +465,7 @@ function buildConflictHubIndexHtml(manifest) {
     `${manifest.wave.conflict_count} static Africa Conflict dossier routes backed by the live Supabase conflict inventory.`,
     158
   );
-  const pageUrl = `${SITE_ORIGIN}/tools/africa-conflict/conflicts/`;
+  const pageUrl = `${SITE_ORIGIN}/tools/africa-conflict/conflicts`;
   const conflicts = manifest.conflicts.filter((conflict) => conflict.generated_in_wave);
   const webPageSchema = {
     "@context": "https://schema.org",

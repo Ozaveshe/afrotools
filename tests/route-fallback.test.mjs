@@ -123,6 +123,7 @@ function check(label, actual, expected) {
 // ── 1. Real routes are never redirected away ────────────────────────────────
 let redirectedRealRoutes = 0;
 for (const route of served) {
+  if (route === '/tools/africa-conflict/conflicts/') continue; // Explicit slash alias tested below.
   if (route.endsWith('.html')) continue; // canonical form is the extensionless/dir route
   const { status, location } = await request(route);
   if (status !== 200 && status !== 404) {
@@ -131,6 +132,19 @@ for (const route of served) {
   }
 }
 check('no real route is redirected away', redirectedRealRoutes, 0);
+
+const conflictIndex = 'https://afrotools.com/tools/africa-conflict/conflicts';
+const filterQuery = '?view=all&filter=a%2Fb&filter=c';
+for (const method of ['GET', 'HEAD']) {
+  const alias = await routeFallback(new Request(conflictIndex + '/' + filterQuery, { method }), {
+    next() { throw new Error('Conflict index slash alias reached the static rewrite'); }
+  });
+  check('conflict index ' + method + ' preserves query', [alias.status, alias.headers.get('Location')], [301, conflictIndex + filterQuery]);
+}
+for (const suffix of [filterQuery, '/index.html', '/sudan-civil-war/']) {
+  const response = await routeFallback(new Request(conflictIndex + suffix), { next: async () => new Response(null, { status: 200 }) });
+  check('conflict index owner/dossier stays reachable: ' + suffix, [response.status, response.headers.get('Location')], [200, null]);
+}
 
 // ── 2. Phantom cross-locale paths resolve to the owning locale ──────────────
 // Each case is a shape that Search Console reported as "Not found (404)".

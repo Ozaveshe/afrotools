@@ -114,6 +114,13 @@ export default async (request, context) => {
   const url = new URL(request.url);
   const path = url.pathname;
 
+  // The flat All Conflicts page owns this route. Static redirect matching
+  // normalizes terminal slashes, so distinguish the alias on the raw URL.
+  if (path === '/tools/africa-conflict/conflicts/' && (request.method === 'GET' || request.method === 'HEAD')) {
+    url.pathname = '/tools/africa-conflict/conflicts';
+    return permanentRedirect(url);
+  }
+
   if (isApiEndpoint(path)) {
     const response = await context.next({ sendConditionalRequest: true });
     const headers = new Headers(response.headers);
