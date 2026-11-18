@@ -64,6 +64,9 @@
     var toolId = config.toolId;
     var controller = null;
     var swapped = false;
+    var requestSequence = 0;
+    var lastResult = null;
+    var copySequence = 0;
     var card = document.createElement('section');
     card.className = 'card vip-cloud';
     card.id = 'liveTranslateCard';
@@ -74,9 +77,9 @@
       '<div data-external-translation-consent-host></div>',
       '<div class="vip-cloud-grid">',
       '<div><label for="translateInput" id="translateInputLabel">English text</label><textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…"></textarea></div>',
-      '<div><div id="translateOutputLabel" class="vip-cloud-label">Igbo output</div><div id="translateOutput" role="region" aria-labelledby="translateOutputLabel">Cloud translation appears here after you opt in.</div></div>',
+      '<div><div id="translateOutputLabel" class="vip-cloud-label">Igbo output</div><div id="translateOutput" tabindex="0" role="region" aria-labelledby="translateOutputLabel">Cloud translation appears here after you opt in.</div></div>',
       '</div>',
-      '<div class="vip-cloud-actions"><button type="button" id="translateBtn" disabled>Translate</button><button type="button" id="swapBtn" aria-label="Swap source and target languages">Swap</button><button type="button" id="clearTranslateBtn">Clear</button><span id="translateStatus" role="status" aria-live="polite"></span></div>'
+      '<div class="vip-cloud-actions"><button type="button" id="translateBtn" disabled>Translate</button><button type="button" id="swapBtn" aria-label="Swap source and target languages">Swap</button><button type="button" id="copyTranslateBtn" disabled>Copy translation</button><button type="button" id="clearTranslateBtn">Clear</button><span id="translateStatus" role="status" aria-live="polite"></span></div>'
     ].join('');
     container.insertBefore(card, document.getElementById('wotd'));
     consent.render(card.querySelector('[data-external-translation-consent-host]'), {
@@ -90,18 +93,31 @@
     var inputLabel = document.getElementById('translateInputLabel');
     var button = document.getElementById('translateBtn');
     var status = document.getElementById('translateStatus');
+    var copyButton = document.getElementById('copyTranslateBtn');
 
     function setBusy(busy) {
       button.disabled = busy || !consent.hasConsent(toolId);
       button.textContent = busy ? 'Translating…' : 'Translate';
     }
     function abortRequest() {
+      requestSequence += 1;
       if (controller) controller.abort();
       controller = null;
     }
+    function currentResult() {
+      return lastResult && lastResult.input === input.value && lastResult.swapped === swapped;
+    }
+    function updateLanguageLabels() {
+      inputLabel.textContent = swapped ? 'Igbo text' : 'English text';
+      outputLabel.textContent = swapped ? 'English output' : 'Igbo output';
+      input.setAttribute('lang', swapped ? config.target : config.source);
+      output.setAttribute('lang', swapped ? config.source : config.target);
+    }
     function clearResult(message) {
       abortRequest();
-      output.textContent = 'Cloud translation appears here after you opt in.';
+      lastResult = null;
+      copyButton.disabled = true;
+      output.textContent = consent.hasConsent(toolId) ? 'Translation will appear here.' : 'Cloud translation appears here after you opt in.';
       status.textContent = message || '';
       setBusy(false);
     }
@@ -116,21 +132,27 @@
       input.focus();
     });
     document.getElementById('swapBtn').addEventListener('click', function () {
+      var translated = currentResult() ? lastResult.text : null;
       swapped = !swapped;
-      inputLabel.textContent = swapped ? 'Igbo text' : 'English text';
-      outputLabel.textContent = swapped ? 'English output' : 'Igbo output';
-      clearResult('');
+      if (translated !== null) input.value = translated;
+      updateLanguageLabels();
+      clearResult(translated !== null
+        ? 'Translation moved to the input. Choose Translate to translate it back.'
+        : 'Languages swapped. Your text has been kept; check the input language before translating.');
+      input.focus();
     });
     document.getElementById('translateSearch').addEventListener('click', function () {
       var text = document.getElementById('search').value.trim();
       if (!text) return;
       swapped = false;
-      inputLabel.textContent = 'English text';
-      outputLabel.textContent = 'Igbo output';
+      updateLanguageLabels();
       input.value = text;
       clearResult('Text filled from your phrase search. Review it and choose whether to opt in before translating.');
       input.focus();
       card.scrollIntoView({ block: 'start' });
+    });
+    input.addEventListener('input', function () {
+      clearResult('Text changed. Choose Translate when your current text is ready.');
     });
     input.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' && !event.shiftKey) {
@@ -139,21 +161,61 @@
       }
     });
     button.addEventListener('click', runTranslation);
+    copyButton.addEventListener('click', async function () {
+      if (!currentResult()) return;
+      var result = lastResult;
+      var sequence = requestSequence;
+      var copyId = ++copySequence;
+      copyButton.disabled = true;
+      function stillCurrent() {
+        return sequence === requestSequence && result === lastResult && copyId === copySequence && currentResult();
+      }
+      try {
+        if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(result.text);
+        if (stillCurrent()) status.textContent = 'Translation copied.';
+      } catch (error) {
+        if (!stillCurrent()) return;
+        var selected = false;
+        try {
+          var selection = window.getSelection();
+          var range = document.createRange();
+          range.selectNodeContents(output);
+          selection.removeAllRanges();
+          selection.addRange(range);
+          output.focus();
+          selected = true;
+        } catch (selectionError) { /* Manual text selection remains available. */ }
+        status.textContent = selected
+          ? 'Automatic copy failed. Translation selected; use your device’s Copy command.'
+          : 'Automatic copy failed. Select the translation and use your device’s Copy command.';
+      } finally {
+        if (stillCurrent()) copyButton.disabled = false;
+      }
+    });
 
     async function runTranslation() {
       if (!consent.requireConsent(toolId, 'Cloud translation is off. Review the notice and opt in first.')) {
-        status.textContent = 'No text was sent. Cloud translation needs your explicit opt-in.';
+        clearResult('No text was sent. Cloud translation needs your explicit opt-in.');
         return;
       }
-      var text = input.value.trim();
+      var sourceInput = input.value;
+      var text = sourceInput.trim();
       if (!text) {
-        output.textContent = 'Enter text above to translate.';
+        clearResult('Enter text above to translate.');
         input.focus();
         return;
       }
       abortRequest();
       controller = typeof AbortController === 'function' ? new AbortController() : null;
       var requestController = controller;
+      var sequence = requestSequence;
+      var requestSwapped = swapped;
+      lastResult = null;
+      copyButton.disabled = true;
+      function isCurrent() {
+        return sequence === requestSequence && input.value === sourceInput && swapped === requestSwapped && consent.hasConsent(toolId);
+      }
       setBusy(true);
       output.textContent = 'Translating…';
       status.textContent = 'Sending the text you selected to the external translation service.';
@@ -171,27 +233,35 @@
             allowFallback: false
           })
         });
+        if (!isCurrent()) return;
         var data = await response.json().catch(function () { return {}; });
-        if (!response.ok || !data.translatedText) {
+        if (!isCurrent()) return;
+        if (!response.ok || typeof data.translatedText !== 'string' || !data.translatedText.trim()) {
           output.textContent = 'Cloud translation is unavailable. The local phrasebook still works.';
           status.textContent = data.message || data.error || 'No external translation was returned.';
           return;
         }
+        lastResult = { text: data.translatedText, input: sourceInput, swapped: requestSwapped };
         output.textContent = data.translatedText;
+        copyButton.disabled = false;
         status.textContent = (data.provider || 'External provider') +
           (data.unchanged ? ' · unchanged; verify this result' : '') +
           ' · temporary uncached result';
       } catch (error) {
+        if (!isCurrent()) return;
         if (error && error.name === 'AbortError') status.textContent = 'Cloud translation request cancelled.';
         else {
           output.textContent = 'Cloud translation is unavailable. The local phrasebook still works.';
           status.textContent = 'Connection error. No result was stored.';
         }
       } finally {
-        if (controller === requestController) controller = null;
-        setBusy(false);
+        if (sequence === requestSequence) {
+          controller = null;
+          setBusy(false);
+        }
       }
     }
+    updateLanguageLabels();
     setBusy(false);
   }
 
