@@ -57,6 +57,7 @@
         error: "Country not found"
       };
     }
+    if (o.completedYearsOnly) a = Math.max(0, Math.floor(a));
     var n = ("undefined" != typeof EMPLOYER_COST_RULES ? EMPLOYER_COST_RULES[t] : {}).symbol || "", s = 0, i = "";
     if (o.monthsPerYear) {
       s = r * a * o.monthsPerYear, i = o.monthsPerYear + " months per year x " + a + " years";

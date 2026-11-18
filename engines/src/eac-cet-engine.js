@@ -206,11 +206,13 @@ var EacCetEngine = function() {
   }, r = {
     KE: [ {
       name: "Import Declaration Fee (IDF)",
-      rate: 3.5,
+      exemption: "idf",
+      rate: 2.5,
       base: "cif"
     }, {
       name: "Railway Development Levy (RDL)",
-      rate: 2.5,
+      exemption: "rdl",
+      rate: 2,
       base: "cif"
     }, {
       name: "VAT",
@@ -668,25 +670,28 @@ var EacCetEngine = function() {
       note: "Applied to CIF value"
     });
     var c = 0, l = null;
+    var exemptions = n === "KE" ? e.kenyaExemptions || {} : {};
     s.forEach(function(e) {
       if (e.isVat) {
         l = e;
       } else {
-        var t = a * e.rate / 100;
+        var exempt = e.exemption && exemptions[e.exemption] === true;
+        var rate = exempt ? 0 : e.rate;
+        var t = a * rate / 100;
         c += t, o.push({
-          name: e.name + " (" + e.rate + "%)",
+          name: e.name + (exempt ? " (confirmed exemption)" : " (" + rate + "%)"),
           amount: t,
-          rate: e.rate,
-          note: e.note || ""
+          rate: rate,
+          note: exempt ? "Shipment exemption selected by user" : e.note || ""
         });
       }
     });
     var d = 0;
-    l && (d = (a + i + c) * l.rate / 100, o.push({
+    l && (d = (a + i + (n === "KE" ? 0 : c)) * l.rate / 100, o.push({
       name: l.name + " (" + l.rate + "%)",
       amount: d,
       rate: l.rate,
-      note: "Applied on CIF + duty + levies"
+      note: n === "KE" ? "Standard-rated goods: CIF + CET duty. Assumes no excise or other additions." : "Applied on CIF + duty + levies"
     }));
     var h = a + i + c + d;
     return {
