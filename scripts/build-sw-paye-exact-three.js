@@ -523,6 +523,7 @@ function calculate() {
     totalEmployerCostMonthly: value.employerCostMonthly,
   };
   publishResult('Ghafi pamoja na NSSF ya mwajiri ' + fmt(empNSSF) + '.', gross, netMonthly, monthlyPAYE);
+  renderSelectedPeriod(PERIOD);
 }
 <!-- sw-paye-exact-three:controller:end -->`;
 }

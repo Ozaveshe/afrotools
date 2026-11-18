@@ -506,6 +506,7 @@ body.tool-page #resultsCard .sw-paye-action-row button.act-btn { border-color: #
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Shiriki Matokeo
           </button>
+          <span role="status" id="ugShareStatus"></span>
         </div>
       </div>
     </div>
@@ -771,6 +772,7 @@ function calculate() {
     totalEmployerCostMonthly: value.employerCostMonthly,
   };
   publishResult('Ghafi pamoja na NSSF ya mwajiri ' + fmt(empNSSF) + '.', gross, netMonthly, monthlyPAYE);
+  renderSelectedPeriod(PERIOD);
 }
 <!-- sw-paye-exact-three:controller:end -->
 function publishResult(employerCopy, gross, netMonthly, monthlyPAYE) {
@@ -816,8 +818,13 @@ function setPeriod(period, btn) {
   PERIOD = period;
   document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
+  renderSelectedPeriod(period);
+}
+function renderSelectedPeriod(period) {
   if (RESULT) {
     var isMonthly = period === 'monthly';
+    document.querySelector('#resultsCard .res-hero-label').textContent = isMonthly ? 'Mshahara Halisi wa Mwezi' : 'Mshahara Halisi wa Mwaka';
+    document.querySelector('#resultsCard .res-hero-period').textContent = isMonthly ? 'Kwa mwezi nchini Uganda' : 'Kwa mwaka nchini Uganda';
     var net = isMonthly ? RESULT.netMonthly : RESULT.annualNet;
     var gr = isMonthly ? RESULT.gross : RESULT.annualGross;
     document.getElementById('resAmount').textContent = fmt(net);
@@ -914,30 +921,49 @@ function generatePdf() {
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
+function sharePeriodAmounts() {
+  const annual = PERIOD === 'annual';
+  const amount = value => 'UGX ' + Math.round(value).toLocaleString('sw-UG') + (annual ? '/mwaka' : '/mwezi');
+  return {
+    net: amount(annual ? RESULT.annualNet : RESULT.netMonthly),
+    gross: amount(annual ? RESULT.annualGross : RESULT.gross),
+    paye: amount(annual ? RESULT.annualTax : RESULT.monthlyPAYE)
+  };
+}
+
 function whatsappShare() {
   if (!RESULT) return;
+  const amounts = sharePeriodAmounts();
   AfroTools.shareState.whatsappShare({
     headline: 'Mshahara Wangu Halisi',
-    mainValue: 'UGX ' + Math.round(RESULT.netMonthly).toLocaleString() + '/mwezi',
+    mainValue: amounts.net,
     subValues: [
-      { label: 'Ghafi', value: 'UGX ' + Math.round(RESULT.gross).toLocaleString() + '/mwezi' },
-      { label: 'PAYE', value: 'UGX ' + Math.round(RESULT.monthlyPAYE).toLocaleString() + '/mwezi' },
+      { label: 'Ghafi', value: amounts.gross },
+      { label: 'PAYE', value: amounts.paye },
       { label: 'Kiwango', value: pct(RESULT.effectiveRate) }
     ],
     toolId: 'ug-paye-sw'
   });
 }
 
-function shareResult() {
+async function shareResult() {
   if (!RESULT) return;
-  const text = 'Mgawanyo wa PAYE wangu Uganda: Ghafi UGX ' + Math.round(RESULT.gross).toLocaleString() + '/mwezi \u2192 Halisi UGX ' + Math.round(RESULT.netMonthly).toLocaleString() + '/mwezi (kiwango halisi ' + pct(RESULT.effectiveRate) + '). Imehesabiwa kwenye afrotools.com/sw/uganda/kikokotoo-kodi-mshahara';
-  if (navigator.share) {
-    navigator.share({title:'Kodi Yangu ya Mshahara Uganda',text,url:'https://afrotools.com/sw/uganda/kikokotoo-kodi-mshahara'});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-    const btn = document.getElementById('ugShareBtn');
-    btn.textContent = '\u2713 Imenakiliwa!';
-    setTimeout(()=>btn.textContent='Shiriki Matokeo',2500);
+  const amounts = sharePeriodAmounts();
+  const url = 'https://afrotools.com/sw/uganda/kikokotoo-kodi-mshahara/';
+  const text = `Kodi Yangu ya Mshahara Uganda — Ghafi: ${amounts.gross}. Halisi: ${amounts.net}. Kiwango halisi: ${pct(RESULT.effectiveRate)}. ${url}`;
+  const status = document.getElementById('ugShareStatus');
+  status.textContent = '';
+  try {
+    if (typeof navigator.share === 'function') {
+      await navigator.share({ title: 'Kodi Yangu ya Mshahara Uganda', text, url });
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      status.textContent = 'Muhtasari umenakiliwa.';
+    } else {
+      status.textContent = 'Imeshindikana kushiriki. Unaweza kupakua PDF.';
+    }
+  } catch (error) {
+    if (error.name !== 'AbortError') status.textContent = 'Imeshindikana kushiriki. Unaweza kupakua PDF.';
   }
 }
 
