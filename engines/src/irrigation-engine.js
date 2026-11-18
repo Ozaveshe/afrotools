@@ -60,7 +60,7 @@
     return t < .15 ? "germination" : t < .45 ? "vegetative" : t < .75 ? "flowering" : "maturity";
   }
   function c(r, o, a, i, m) {
-    for (var f = [ "flood", "furrow", "sprinkler", "drip" ], l = [], c = 0; c < f.length; c++) {
+    for (var f = Object.keys(e), l = [], c = 0; c < f.length; c++) {
       var g = f[c], u = e[g], h = n(r / u * a / 1e3 * o * 1e4), d = n(r * a / 1e3 * o * 1e4), p = Math.max(0, h - d), y = s(h, m);
       l.push({
         method: g,
@@ -215,7 +215,20 @@
           countryData: u
         });
       }
-      var N = g.month - 1, R = g.growthStage || "flowering", T = f(D, R), k = H[N] || 4, x = b[N] || 0, C = m(x), z = C / 30, A = a(k * T), L = a(Math.max(0, A - z)), F = a(L / E), O = i(F / 1e3 * v * 1e4), V = i(O * S.typical), J = n(30 * O), W = n(J - L / 1e3 * v * 1e4 * 30), B = s(J, u);
+      var monthIndex = g.month - 1;
+      var stage = g.growthStage || "flowering";
+      var coefficient = f(D, stage);
+      var eto = H[monthIndex] || 4;
+      var rainfall = b[monthIndex] || 0;
+      var effectiveRainfall = m(rainfall);
+      var days = 30;
+      var dailyRainfall = effectiveRainfall / days;
+      var cropDemand = eto * coefficient;
+      var netDepth = Math.max(0, cropDemand - dailyRainfall);
+      var grossDepth = netDepth / E;
+      var dailyVolume = grossDepth * v * 10; // 1 mm on 1 hectare is 10 cubic metres.
+      var methods = c(netDepth, v, days, _, u);
+      var selectedMethod = methods.find(function(method) { return method.isCurrent; });
       return {
         error: !1,
         mode: "single",
@@ -223,27 +236,27 @@
         regionName: d.name,
         farmSizeHa: v,
         month: g.month,
-        monthName: r[N],
-        growthStage: R,
+        monthName: r[monthIndex],
+        growthStage: stage,
         irrigationMethod: _,
         methodLabel: t[_],
-        eto: k,
-        kc: a(T),
-        etc: A,
-        rainfall_mm: x,
-        effectiveRainfall_mm: i(C),
-        dailyEffectiveRainfall: a(z),
-        nir: L,
-        gir: F,
+        eto: eto,
+        kc: a(coefficient),
+        etc: a(cropDemand),
+        rainfall_mm: rainfall,
+        effectiveRainfall_mm: i(effectiveRainfall),
+        dailyEffectiveRainfall: a(dailyRainfall),
+        nir: a(netDepth),
+        gir: a(grossDepth),
         efficiency: E,
         efficiencyPercent: n(100 * E),
-        dailyVolume_m3: O,
-        perEvent_m3: V,
-        monthVolume_m3: J,
-        waterLost_m3: Math.max(0, W),
+        dailyVolume_m3: i(dailyVolume),
+        perEvent_m3: i(dailyVolume * S.typical),
+        monthVolume_m3: selectedMethod.waterUsed_m3,
+        waterLost_m3: selectedMethod.waterWasted_m3,
         irrigationInterval: S,
-        costEstimate: B,
-        methodComparison: c(L, v, 30, _, u)
+        costEstimate: selectedMethod.cost,
+        methodComparison: methods
       };
     },
     METHOD_EFFICIENCY: e,
