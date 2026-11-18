@@ -51,6 +51,13 @@
     var verified = strictDate(record && record.last_verified_at);
     if (record && record.last_verified_at) valid = valid && Number.isFinite(verified) && verified <= now;
     var basis = 'effective-date', anchor = effective;
+    if (record && record.observation_year != null) {
+      var year = record.observation_year;
+      // The survey day is unknown. Use the earliest possible day to avoid overstating freshness.
+      anchor = strictDate(String(year) + '-01-01');
+      valid = valid && record.date_basis === 'snapshot' && Number.isInteger(year) && anchor <= effective;
+      basis = 'observation-year';
+    }
     var evidence = record && record.current_price_verification;
     var eligible = record && record.date_basis === 'effective' && ['regulated-retail', 'regulated-retail-cap'].includes(record.price_kind);
     if (evidence && eligible) {
