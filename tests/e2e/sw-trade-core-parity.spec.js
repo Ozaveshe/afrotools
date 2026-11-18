@@ -16,6 +16,10 @@ for (const app of apps) {
       const body = request.postData() || "";
       if (body.includes("Biashara ya Mfano") || request.url().includes("Biashara%20ya%20Mfano")) rawLeak.push(request.url());
     });
+    if (app.id === "hs-code-lookup") {
+      await page.getByRole("searchbox").fill("kahawa");
+      await page.locator("[name=code]").selectOption("0901.12");
+    }
     await page.locator("[data-trade-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeVisible();
     const result = await page.evaluate(() => window.__SW_TRADE_CORE_TEST__.getLatest());
@@ -39,6 +43,8 @@ for (const app of apps) {
     }
     if (app.id === "demurrage-calculator") {
       await page.getByLabel("Siku bandarini").fill("1.5");
+    } else if (app.id === "hs-code-lookup") {
+      await page.getByRole("searchbox").fill("zzzzzz");
     } else {
       await page.locator("[name=scenario]").fill("{");
     }
