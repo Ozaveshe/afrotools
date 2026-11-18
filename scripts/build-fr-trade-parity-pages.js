@@ -395,17 +395,17 @@ const pages = [
     title: "Suivi ZLECAf par corridor | AfroTools", name: "Suivi ZLECAf",
     description: "Vérifiez l’état du corridor et la réduction indicative de catégorie A avec le même registre ZLECAf que l’application anglaise.",
     eyebrow: "ZLECAf · corridor", lead: "Comparez les états de ratification, dépôt de barème et commerce guidé des deux pays avant de chiffrer une préférence.",
-    intro: "Le registre est daté et ne remplace pas le tarif officiel. Une préférence exige aussi la ligne tarifaire, la règle d’origine et le certificat corrects.",
-    dataScripts: ["/data/trade/afcfta-schedule.js"],
+    intro: "Choisissez le pays importateur comme « Reporter », le pays d’origine comme « Partner », puis recherchez la ligne nationale et la règle d’origine dans les sources officielles ci-dessous.",
+    dataScripts: ["/data/trade/afcfta-schedule.js", "/assets/js/lib/afcfta-corridor.js"],
     fields: [
       field("Pays d’origine", "originCountry", { type: "select", blank: false, choices: [] }),
       field("Pays de destination", "destinationCountry", { type: "select", blank: false, choices: [] }),
       field("Code SH (facultatif)", "hsCode", { placeholder: "8517.12" }),
-      field("Catégorie tarifaire", "tariffCategory", { type: "select", blank: false, choices: [["A", "Catégorie A"], ["B", "Catégorie B"], ["C", "Catégorie C"]] }),
-      field("Droit NPF de référence (%)", "baseDuty", { type: "number", min: 0, step: .01, value: 0 }),
+      field("Catégorie supposée pour la simulation", "tariffCategory", { type: "select", blank: false, choices: [["A", "Catégorie A"], ["B", "Catégorie B"], ["C", "Catégorie C"]] }),
+      field("Droit NPF de référence (%, facultatif)", "baseDuty", { type: "number", min: 0, step: .01 }),
       field("Année du scénario", "scenarioYear", { type: "number", min: 2021, max: 2033, step: 1, value: 2026 })
     ],
-    sources: [["Secrétariat de la ZLECAf", "https://au-afcfta.org/"], ["Registre ZLECAf AfroTools", "/data/trade/afcfta-schedule.js"]],
+    sources: [["Tarif officiel de la ZLECAf par ligne", "https://etariff.au-afcfta.org/mapsearch"], ["Offres tarifaires et règles d’origine (CNUCED)", "https://afcfta.unctad.org/tariffs"], ["Registre ZLECAf AfroTools", "/data/trade/afcfta-schedule.js"]],
     warning: "Le résultat est un signal de planification. Vérifiez la concession officielle, la règle d’origine, le certificat et l’activation du corridor.",
     faq: [["Un corridor actif garantit-il zéro droit ?", "Non. La ligne doit être libéralisée, l’origine satisfaite et la preuve acceptée."], ["Que signifie la catégorie C ?", "Elle couvre les lignes exclues de la libéralisation; le droit de référence continue normalement de s’appliquer."]]
   },
@@ -530,7 +530,7 @@ ${page.sw ? `<link rel="alternate" hreflang="sw" href="https://afrotools.com${pa
       <section class="fr-trade-card" aria-labelledby="workflow-title">
         <h2 id="workflow-title">Préparer le résultat</h2>
         <p class="fr-trade-intro">${page.intro}</p>
-        <form class="fr-trade-form" data-trade-form>
+        ${page.tool === "afcfta-tracker" ? '<label class="fr-trade-button fr-trade-button--secondary">Rouvrir un scénario JSON<input type="file" accept="application/json,.json" data-import-json aria-label="Rouvrir un scénario JSON"></label>' : ""}<form class="fr-trade-form" data-trade-form>
           <div class="fr-trade-fields">${page.fields.join("\n")}</div>
           <div class="fr-trade-actions">
             <button class="fr-trade-button fr-trade-button--primary" type="submit">Calculer et vérifier</button>

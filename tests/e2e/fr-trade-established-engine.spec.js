@@ -311,7 +311,7 @@ test("AfCFTA tracker: French corridor equals the accepted schedule owner", async
   const proof = await page.evaluate(() => {
     const origin = AFCFTA_DATA.memberStates.NG;
     const destination = AFCFTA_DATA.memberStates.KE;
-    const reduction = origin.reductionSchedule.catA[2026];
+    const reduction = destination.reductionSchedule.catA[2026];
     const effective = 20 * (1 - reduction / 100);
     return {
       active: origin.tradingStatus === "active_GTI" && destination.tradingStatus === "active_GTI",
@@ -321,6 +321,10 @@ test("AfCFTA tracker: French corridor equals the accepted schedule owner", async
   expect(proof.active).toBe(true);
   expect(proof.text).toContain(String(proof.reduction));
   expect(proof.text).toContain(String(proof.effective));
+  await page.locator('[name="destinationCountry"]').selectOption("GH");
+  await page.locator("[data-trade-form]").evaluate((form) => form.requestSubmit());
+  await expect(page.locator("[data-trade-result]")).toContainText("Absente du registre");
+  await expect(page.locator("[data-trade-result]")).not.toContainText("Simulation sur votre droit NPF");
   await page.locator('[name="destinationCountry"]').selectOption("NG");
   await page.locator("[data-trade-form]").evaluate((form) => form.requestSubmit());
   await expect(page.locator("[data-trade-status]")).toHaveAttribute("data-state", "error");

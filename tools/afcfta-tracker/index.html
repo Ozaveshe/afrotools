@@ -227,10 +227,11 @@
             </div>
           </div>
           <div style="margin-bottom:12px">
-            <label class="f-label" for="corrHS">HS Code (optional — check product eligibility)</label>
-            <input type="text" class="f-input" id="corrHS" placeholder="e.g. 8517.12 or leave blank for all categories" style="max-width:320px">
+            <label class="f-label" for="corrHS">HS code (optional)</label>
+            <input type="text" class="f-input" id="corrHS" placeholder="e.g. 8517.12 or leave blank for the country schedule" style="max-width:320px">
           </div>
           <button type="button" class="btn-primary" onclick="checkCorridor()">Check Corridor</button>
+          <p>To confirm the product duty and origin rule, open the <a href="https://etariff.au-afcfta.org/mapsearch">official AfCFTA e-Tariff Book</a> or <a href="https://afcfta.unctad.org/tariffs">UNCTAD tariff-line search</a>. Select the importing country as reporter and the origin as partner.</p>
         </div>
       </div>
       <div class="corridor-result" id="corridorResult">
@@ -303,6 +304,7 @@
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script src="/data/trade/afcfta-schedule.js?v=43e3f421"></script>
+<script src="/assets/js/lib/afcfta-corridor.js"></script>
 <script>
 var CURRENT_YEAR = 2026;
 
@@ -356,9 +358,13 @@ function checkCorridor(){
   document.getElementById('corrResultTitle').textContent='Corridor: '+os.name+' → '+ds.name;
   var bothActive=os.tradingStatus==='active_GTI'&&ds.tradingStatus==='active_GTI';
   var hs=document.getElementById('corrHS').value.trim();
-  // Current year Cat A reduction
-  var catASchedule=os.reductionSchedule&&os.reductionSchedule.catA;
-  var catAReduction=catASchedule?catASchedule[CURRENT_YEAR]:60;
+  var facts = AfCftaCorridor.assess(ds, 'A', CURRENT_YEAR, hs);
+  if (!facts.validCode) {
+    var field = document.getElementById('corrHS');
+    field.setCustomValidity('Enter a 4, 6, 8, 10 or 12 digit HS code, such as 0901 or 0901.11.');
+    field.reportValidity();
+    return;
+  }
   var html='<div class="cr-header">' +
     '<div class="cr-country"><div class="cr-flag">'+(os.flag||'')+'</div><div class="cr-name">'+os.name+'</div></div>' +
     '<div class="cr-arrow">→</div>' +
@@ -373,22 +379,22 @@ function checkCorridor(){
   html+='<div style="font-size:.85rem;font-weight:700;color:'+(ds.tradingStatus==='active_GTI'?'#16a34a':ds.tradingStatus==='preparing'?'#b45309':'#dc2626')+'">'+(ds.tradingStatus==='active_GTI'?'✅ Active GTI':ds.tradingStatus==='preparing'?'⏳ Preparing':'❌ Not Started')+'</div>';
   if(ds.scheduleFiled) html+='<div style="font-size:.75rem;color:#64748B;margin-top:4px">Tariff schedule filed ✓</div>';
   html+='</div></div>';
+  html+='<div style="font-size:.82rem;color:#166534">General Category A reduction for imports into '+ds.name+' in '+CURRENT_YEAR+': <strong>'+(facts.reduction===null?'No figure in the local register':facts.reduction+'%')+'</strong>. Product duty requires a verified tariff line.</div>';
   if(bothActive){
     html+='<div style="background:#DCFCE7;border:1px solid #86EFAC;border-radius:8px;padding:14px;margin-bottom:12px">';
     html+='<div style="font-size:.85rem;font-weight:700;color:#15803d;margin-bottom:6px">✅ AfCFTA Preference Screened on This Corridor</div>';
-    html+='<div style="font-size:.82rem;color:#166534">Category A planning reduction: <strong>'+catAReduction+'%</strong> as of '+CURRENT_YEAR+' on applicable lines. Verify the product concession before quoting.</div>';
     html+='<div style="font-size:.82rem;color:#166534;margin-top:4px">Category B: sensitive goods follow a longer schedule. Confirm whether this line is sensitive or excluded.</div>';
     html+='</div>';
   } else {
     html+='<div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:14px;margin-bottom:12px">';
     html+='<div style="font-size:.85rem;font-weight:700;color:#b45309">⚠️ AfCFTA Preference Not Confirmed on This Corridor</div>';
-    html+='<div style="font-size:.82rem;color:#92400e;margin-top:4px">One or both countries are not marked active in this local planning dataset. Price the MFN fallback until an official schedule confirms otherwise.</div>';
+    html+='<div style="font-size:.82rem;color:#92400e;margin-top:4px">One or both countries are not marked active in this local planning dataset. Verify the applicable tariff with the importing customs authority.</div>';
     html+='</div>';
   }
   // Sensitive products
-  var sp=(os.sensitiveProducts||[]).concat(ds.sensitiveProducts||[]).filter(function(v,i,a){return a.indexOf(v)===i;});
+  var sp=facts.sensitive;
   if(sp.length){
-    html+='<div style="margin-top:12px"><div style="font-size:.72rem;font-weight:700;color:#64748B;text-transform:uppercase;margin-bottom:6px">Sensitive / Category C Products on This Corridor</div>';
+    html+='<div style="margin-top:12px"><div style="font-size:.72rem;font-weight:700;color:#64748B;text-transform:uppercase;margin-bottom:6px">Matching sensitivity reference in the importing market</div>';
     html+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
     sp.forEach(function(p){html+='<span style="font-size:.75rem;background:#FEE2E2;color:#b91c1c;padding:3px 8px;border-radius:4px">'+p+'</span>';});
     html+='</div></div>';
@@ -398,7 +404,7 @@ function checkCorridor(){
   // AI panel
   var aiHtml='<div class="ai-panel-title">📊 AfroTools Corridor Insights</div>';
   if(bothActive){
-    aiHtml+='<div class="ai-obs tip"><span>💡</span><span>'+os.name+'–'+ds.name+' is screened as active in this dataset. Treat the '+catAReduction+'% Category A reduction as a planning signal until the official tariff book, customs authority and origin evidence confirm the line.</span></div>';
+    aiHtml+='<div class="ai-obs tip"><span>💡</span><span>'+os.name+'–'+ds.name+' is screened as active in this dataset. Check the importing country’s tariff offer and the product-specific origin rule before quoting duty.</span></div>';
   } else {
     aiHtml+='<div class="ai-obs warn"><span>⚠️</span><span>This corridor is not confirmed for AfCFTA preference in the local dataset. Monitor the AfCFTA Secretariat and the national trade or customs authority for activation updates.</span></div>';
   }
@@ -406,6 +412,13 @@ function checkCorridor(){
   document.getElementById('corrAiPanel').innerHTML=aiHtml;
   document.getElementById('corridorResult').classList.add('on');
 }
+
+['corrOrigin','corrDest','corrHS'].forEach(function(id){
+  var field=document.getElementById(id);
+  function clearCorridor(){ document.getElementById('corridorResult').classList.remove('on'); document.getElementById('corrHS').setCustomValidity(''); }
+  field.addEventListener('input',clearCorridor);
+  field.addEventListener('change',clearCorridor);
+});
 
 // Timeline
 function buildTimeline(){
