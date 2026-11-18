@@ -388,6 +388,7 @@ function schema(meta, routePath) {
 
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
+  const isBrowsePage = ["root", "country", "make", "model"].includes(meta.pageType);
   const hasLocalSample = ["vehicle", "import-vs-local"].includes(meta.pageType) && marketObservation(meta.countryObj, meta.vehicleObj);
   const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
   const askingVehicle = meta.pageType === "model"
@@ -435,7 +436,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
   <script src="/assets/js/lib/share-state.js" defer></script>
   <script src="/assets/js/lib/car-import-cost-engine.js" defer></script>
   <script src="/assets/js/lib/car-price-intelligence.js" defer></script>
-  <script src="/assets/js/cars-directory.js${hasLocalSample ? "?v=" + carDirectoryVersion : ""}" defer></script>
+  <script src="/assets/js/cars-directory.js${isBrowsePage || hasLocalSample ? "?v=" + carDirectoryVersion : ""}" defer></script>
 ${routePath === "cars" ? '<script src="/assets/js/pages/car-catalog-search.js" defer></script>' : ''}
 </body>
 </html>

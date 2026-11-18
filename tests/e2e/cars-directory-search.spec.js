@@ -42,6 +42,27 @@ test('car directory accepts shopper punctuation and compact model spelling witho
   await page.locator('#carsFilterForm').screenshot({ path: testInfo.outputPath('directory-filters.png') });
 });
 
+test('an empty search preserves the selected market and offers a working next step', async ({ page }) => {
+  for (const [path, market, destination] of [
+    ['/cars/', 'ghana', '/tools/car-import-cost/ghana/'],
+    ['/cars/ghana/toyota/', 'ghana', '/tools/car-import-cost/ghana/'],
+    ['/cars/south-africa/', 'south-africa', '/cars/#cars-expanded-title'],
+  ]) {
+    await page.goto(path);
+    const form = page.locator('#carsFilterForm');
+    await form.locator('[name="country"]').selectOption(market);
+    await form.locator('[name="q"]').fill('nonexistent synthetic vehicle');
+    await form.getByRole('button', { name: 'Compare cars' }).click();
+    const empty = page.locator('.cars-empty-state');
+    await expect(empty.getByRole('link')).toHaveAttribute('href', destination);
+    await empty.getByRole('button', { name: 'Clear search filters' }).press('Enter');
+    await expect(form.locator('[name="country"]')).toHaveValue(market);
+    await expect(form.locator('[name="q"]')).toHaveValue('');
+    await expect(page.locator('.cars-browse-card').first()).toBeVisible();
+    await expect(page.locator('#carsBrowse')).toBeFocused();
+  }
+});
+
 test('unsourced car profile and CSV do not imply observed local demand or confidence', async ({ page }, testInfo) => {
   await page.goto('/cars/nigeria/mercedes-benz/g-wagon/2022/');
   await expect(page.locator('#carsReport h1')).toHaveText('2022 Mercedes-Benz G-Wagon in Nigeria');
