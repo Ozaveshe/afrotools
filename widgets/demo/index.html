@@ -444,6 +444,7 @@
     $('widget-category').innerHTML = '<option value="all">All categories</option>' + categories.map(function (category) {
       return '<option value="' + category + '">' + labelFor(category) + ' (' + counts[category] + ')</option>';
     }).join('');
+    $('widget-category').value = state.category;
     $('widget-tabs').innerHTML = ['all'].concat(categories.slice(0, 11)).map(function (category) {
       var label = category === 'all' ? 'All' : labelFor(category);
       var count = category === 'all' ? widgets.length : counts[category];
@@ -578,6 +579,8 @@
       if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoPublished();
       return;
     }
+    var requestedCategory = new URLSearchParams(location.search).get('category');
+    if (widgets.some(function (widget) { return widget.category === requestedCategory; })) state.category = requestedCategory;
     renderStats();
     renderCategoryControls();
     renderGrid();

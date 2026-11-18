@@ -63,6 +63,11 @@ assert(fs.existsSync(HEADERS_FILE), '_headers file is missing');
 const blocks = fs.existsSync(HEADERS_FILE) ? parseHeaders(fs.readFileSync(HEADERS_FILE, 'utf8')) : {};
 
 const globalBlock = blocks['/*'] || {};
+assert(globalBlock['cross-origin-resource-policy'] === 'same-site', 'Keep the default resource policy same-site');
+for (const pattern of ['/widgets/embed.js', '/widgets/WIDGET-REGISTRY.js', '/widgets/:category/*.js', '/widgets/css/widget-base.css']) {
+  assert(blocks[pattern]?.['cross-origin-resource-policy'] === 'cross-origin', pattern + ' must load on publisher sites');
+}
+assert(blocks['/widgets/css/widget-base.css']?.['access-control-allow-origin'] === '*', 'Publishers must be able to fetch widget CSS');
 const globalCsp = globalBlock['content-security-policy'] || '';
 
 // 1. Global clickjacking protection.
