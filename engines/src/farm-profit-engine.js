@@ -53,6 +53,11 @@
       priceMultiplier: 3.5
     }
   };
+  function chemicalCost(input, countryDefault) {
+    var amount = parseFloat(input);
+    return Number.isFinite(amount) ? amount : countryDefault || 0;
+  }
+
   window.AfroTools.FarmProfitEngine = {
     calculate: function(r, a, o) {
       var t = a, i = o;
@@ -80,8 +85,11 @@
       }
       var g = p * d, v = parseFloat(r.postHarvestLossPct) || 0, h = g * (v / 100), b = g - h, F = {};
       F.seeds = parseFloat(r.seedCost) || 0, F.fertilizer = parseFloat(r.fertilizerCost) || 0;
-      var M = parseFloat(r.herbicideCostPerHa) || (i.agrochemicals ? i.agrochemicals.herbicide_perHa : 0) || 0, H = parseFloat(r.pesticideCostPerHa) || (i.agrochemicals ? i.agrochemicals.pesticide_perHa : 0) || 0, y = parseFloat(r.fungicideCostPerHa) || (i.agrochemicals ? i.agrochemicals.fungicide_perHa : 0) || 0;
-      F.agrochemicals = (M + H + y) * l, r.laborMode;
+      var chemicalDefaults = i.agrochemicals || {};
+      var herbicide = chemicalCost(r.herbicideCostPerHa, chemicalDefaults.herbicide_perHa);
+      var pesticide = chemicalCost(r.pesticideCostPerHa, chemicalDefaults.pesticide_perHa);
+      var fungicide = chemicalCost(r.fungicideCostPerHa, chemicalDefaults.fungicide_perHa);
+      F.agrochemicals = (herbicide + pesticide + fungicide) * l, r.laborMode;
       var C = parseFloat(r.laborManDaysPerHa) || (i.labor ? i.labor.manDaysPerHa_simplified : 100) || 100, R = parseFloat(r.laborDailyWage) || (i.labor ? i.labor.dailyWageRate : 0) || 0, T = parseFloat(r.familyLaborPct) || 0, _ = i.labor && i.labor.familyLaborDiscount || .5, z = C * l, k = z * (1 - T / 100) * R, S = z * (T / 100) * R * _;
       F.labor = k + S, F.laborBreakdown = {
         hired: k,
