@@ -119,13 +119,14 @@ var TradeFinanceEngine = function() {
   }
   return {
     calculate: a,
-    compareAll: function(e, n) {
+    compareAll: function(e, n, options) {
       return [ "lc_sight", "lc_usance", "tt_advance", "cad", "open_account", "sblc" ].map(function(r) {
         var t = a({
           instrumentId: r,
           tradeValue: e,
           countryCode: n,
-          tenorDays: 90
+          tenorDays: options?.tenorDays ?? 90,
+          confirmed: options?.confirmed
         });
         return {
           id: r,
