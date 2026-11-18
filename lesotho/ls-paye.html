@@ -897,7 +897,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Lesotho PAYE breakdown: Gross M${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home M${Math.round(RESULT.netAnnual).toLocaleString()}/yr (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/lesotho/ls-paye`;
+  const monthly = PERIOD === 'monthly';
+  const period = monthly ? 'month' : 'year';
+  const gross = monthly ? RESULT.monthlyGross : RESULT.gross;
+  const net = monthly ? RESULT.monthlyNet : RESULT.netAnnual;
+  const text = `My Lesotho PAYE breakdown: Gross ${fmt(gross)}/${period} → Take-home ${fmt(net)}/${period} (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/lesotho/ls-paye`;
   if (navigator.share) {
     navigator.share({title:'My Lesotho PAYE',text,url:'https://afrotools.com/lesotho/ls-paye'});
   } else if (navigator.clipboard) {
