@@ -229,6 +229,29 @@
       privacy:{processing:'local',accountRequired:false,emailRequired:false},englishOwnerRoute:config.englishRoute};
   }
 
+  function algeriaSalarySnapshot(config) {
+    var result = global.RESULT;
+    var gross = document.getElementById('grossSalary');
+    var cnas = document.querySelector('[data-tog="cnas"]');
+    var card = document.getElementById('resultsCard');
+    if (!result || !gross || !cnas || !card || !isVisible(card) ||
+        !card.classList.contains('on') || Number(gross.value) !== result.gross ||
+        cnas.classList.contains('on') !== (result.cnasRate > 0)) {
+      throw new Error('Relancez le calcul avant d’exporter ce salaire.');
+    }
+    var rows = Array.from(card.querySelectorAll('#resContent .res-row')).map(function (row) {
+      return { label: clean(row.querySelector('.res-row-lbl').textContent),
+        value: clean(row.querySelector('.res-row-val').textContent) };
+    });
+    rows.push({ label: 'Taux effectif d’imposition', value: clean(card.querySelector('#effRateDisplay').textContent) });
+    return { schema: 'afrotools.fr.finance.export.v1', route: global.location.pathname,
+      title: 'Calcul du salaire net annuel en Algérie', generatedAt: new Date().toISOString(),
+      inputs: [{ label: 'Salaire brut annuel (DZD)', value: String(result.gross) },
+        { label: 'Cotisation CNAS', value: result.cnasRate > 0 ? 'Incluse' : 'Exclue' }],
+      results: rows, privacy: { processing: 'local', accountRequired: false, emailRequired: false },
+      englishOwnerRoute: config.englishRoute };
+  }
+
   function homeLoanSnapshot(config) {
     var region = document.getElementById('hl-result');
     var owner = global.HomeLoanFile;
@@ -260,6 +283,7 @@
   function snapshot(config) {
     if (config.englishId === 'home-loan-eligibility') return homeLoanSnapshot(config);
     if (config.englishId === 'fuel-tracker') return fuelSnapshot(config);
+    if (config.englishId === 'dz-paye') return algeriaSalarySnapshot(config);
     var data = {
       schema: 'afrotools.fr.finance.export.v1',
       route: global.location.pathname.replace(/\/index\.html$/, '/'),
