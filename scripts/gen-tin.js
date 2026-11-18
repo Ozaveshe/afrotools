@@ -6,7 +6,8 @@ let count=0;
 
 for(const cc in C){
   const c=C[cc], t=T[cc];
-  if(!t)continue;
+  // Rwanda maintains applicant-specific RDB, RCA and RRA instructions in its country page.
+  if(!t || cc === "RW")continue;
   const title='TIN Registration — '+c.name+' | AfroTools';
   const desc='Review the tax identifier, authority, documents, cost and steps listed for '+c.name+'; verify the current process with the official tax authority.';
   const url='https://afrotools.com/tools/tin-guide/'+c.slug;
