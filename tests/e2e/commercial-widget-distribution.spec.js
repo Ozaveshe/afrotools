@@ -107,3 +107,28 @@ test('legacy embed page points buyers to the gallery', async ({ page }) => {
   await expect(page).toHaveURL(/\/widgets\/demo\/$/);
   await expect(page.locator('#widget-search')).toBeVisible();
 });
+test('generator widget matches the country engine at the same operating power', async ({ page }) => {
+  const fs = require('node:fs');
+  const vm = require('node:vm');
+  const country = { name: 'Nigeria', currencySymbol: 'NGN ', fuel: { diesel: 1000, petrol: 1000 }, electricityTariff: { residential: 100 } };
+  const context = { window: {}, ENERGY_DATA: { countries: { NG: country } } };
+  vm.runInNewContext(fs.readFileSync(require.resolve('../../engines/src/generator-fuel-engine.js'), 'utf8'), context);
+  await page.goto('/widgets/iframe/engineering-generator-fuel.html');
+  await page.locator('[id$="-kva"]').fill('10');
+  await page.locator('[id$="-load"]').fill('50');
+  await page.locator('[id$="-hrs"]').fill('8');
+  await page.locator('[id$="-days"]').fill('20');
+  await page.locator('[id$="-price"]').fill('1000');
+  for (const fuelType of ['diesel', 'petrol']) {
+    const reference = context.window.AfroTools.GeneratorFuelEngine.calculate({ genKVA: 5, dailyHours: 8, fuelType }, 'NG');
+    await page.locator('[id$="-fuel"]').selectOption(fuelType);
+    await page.getByRole('button', { name: 'Calculate Fuel Costs' }).click();
+    const result = page.locator('[id$="-results"]');
+    const dailyCost = Number(reference.dailyCost.replace(/[^0-9.]/g, ''));
+    await expect(result).toContainText('NGN ' + (20 * dailyCost).toLocaleString('en-US'));
+    await expect(result).toContainText((20 * parseFloat(reference.dailyKWh)) + ' kWh');
+    await expect(result).toContainText('8.96');
+    await expect(result).toContainText('NGN 280.00');
+    await expect(result).toContainText('0.8 power factor and 0.28 L/kWh at 50% load');
+  }
+});
