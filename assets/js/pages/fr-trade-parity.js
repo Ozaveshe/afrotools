@@ -490,7 +490,8 @@
         ["Option la moins coûteuse", providers[0].shortName],
         ["Frais estimés", money(providers[0].estimatedFee, "USD")],
         ["Coût total", money(providers[0].totalCost, "USD")],
-        ["Frais mensuels du scénario", money(scenario.monthlyFee, "USD")],
+        ["Paiements par an", String(scenario.paymentsPerYear)],
+        ["Frais mensuels moyens du scénario", money(scenario.monthlyFee, "USD")],
         ["Frais annuels du scénario", money(scenario.annualFee, "USD")]
       ],
       providers.map(function (item) {
@@ -1013,12 +1014,17 @@
         if (!payload || payload.tool !== tool || payload.locale !== "fr" || !payload.inputs || !payload.report) {
           throw new Error("Format JSON AfroTools non reconnu pour ce parcours.");
         }
+        if (tool === "payment-comparator") {
+          var schedule = window.PaymentComparatorEngine.getSchedule(payload.inputs.frequency);
+          if (!schedule) throw new Error("Fréquence de paiement non reconnue.");
+          payload.inputs.frequency = schedule.id;
+        }
         Array.prototype.forEach.call(form.elements, function (field) {
           if (!field.name || !Object.prototype.hasOwnProperty.call(payload.inputs, field.name)) return;
           if (field.type === "checkbox") field.checked = Boolean(payload.inputs[field.name]);
           else field.value = String(payload.inputs[field.name]);
         });
-        render(payload.report);
+        render(tool === "payment-comparator" ? paymentComparator() : payload.report);
         status.dataset.state = "success";
         status.textContent = "Export JSON rouvert localement. Vérifiez les champs et le résultat avant utilisation.";
       } catch (error) {

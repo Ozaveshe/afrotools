@@ -194,7 +194,9 @@
           <label class="field-label">Frequency</label>
           <select class="field-select" id="scnFreq" onchange="runScenario()" aria-label="Scn Freq">
             <option value="monthly">Monthly (12/yr)</option>
-            <option value="weekly">Weekly (48/yr)</option>
+            <option value="four_per_month">Four per month (48/year)</option>
+            <option value="weekly_52">Once a week (52/year)</option>
+            <option value="operating_days_20">20 operating days per month (240/year)</option>
           </select>
         </div>
         <div class="field-group">
@@ -353,17 +355,22 @@ function buildScenarioSelect() {
 }
 
 function runScenario() {
-  var amount   = parseFloat(document.getElementById('scnAmount').value) || 5000;
+  var amount   = document.getElementById('scnAmount').valueAsNumber;
   var freq     = document.getElementById('scnFreq').value;
   var provider = document.getElementById('scnProvider').value;
   var res = PaymentComparatorEngine.calculateScenario(amount, freq, provider);
-  if (!res) return;
-  var txnsPerYear = freq === 'weekly' ? 48 : 12;
+  if (!res) {
+    latestPaymentScenario = null;
+    document.getElementById('scenarioResult').textContent = 'Enter a positive payment amount and choose a provider and schedule.';
+    document.getElementById('scenarioCompare').replaceChildren();
+    return;
+  }
+  var txnsPerYear = res.paymentsPerYear;
   latestPaymentScenario = { amount: amount, frequency: freq, provider: provider, transactionsPerYear: txnsPerYear, result: res };
   var html = '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:20px">';
   html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">';
   html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--brand)">' + fmtUSD2(res.perTxnFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Per Transaction</div></div>';
-  html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800">' + fmtUSD2(res.monthlyFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Monthly Fee</div></div>';
+  html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800">' + fmtUSD2(res.monthlyFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Average monthly fee</div></div>';
   html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#FF3B30">' + fmtUSD(res.annualFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Annual Fee</div></div>';
   html += '</div></div>';
   document.getElementById('scenarioResult').innerHTML = html;
@@ -420,6 +427,7 @@ function downloadPaymentCsv() {
     rows.push(['scenario_provider',latestPaymentScenario.result.providerName]);
     rows.push(['scenario_amount_usd',latestPaymentScenario.amount]);
     rows.push(['scenario_frequency',latestPaymentScenario.frequency]);
+    rows.push(['scenario_payments_per_year',latestPaymentScenario.transactionsPerYear]);
     rows.push(['scenario_annual_fee_usd',latestPaymentScenario.result.annualFee.toFixed(2)]);
   }
   var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');

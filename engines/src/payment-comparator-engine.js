@@ -25,6 +25,11 @@ var PaymentComparatorEngine = function() {
       return e.estimatedFee - t.estimatedFee;
     });
   }
+  function getSchedule(id) {
+    const counts = { monthly: 12, four_per_month: 48, weekly_52: 52, operating_days_20: 240 };
+    const key = id === "weekly" ? "four_per_month" : id === "daily" ? "operating_days_20" : id;
+    return Object.prototype.hasOwnProperty.call(counts, key) ? { id: key, paymentsPerYear: counts[key] } : null;
+  }
   return {
     compareAll: t,
     getCheapest: function(e, a) {
@@ -38,21 +43,18 @@ var PaymentComparatorEngine = function() {
         return t.africaCoverage && t.africaCoverage.toLowerCase().includes(e.toLowerCase());
       });
     },
-    calculateScenario: function(e, t, a) {
-      var r = "weekly" === t ? 4 * e : "daily" === t ? 20 * e : e, n = 12 * r, o = B2BPaymentsData.getById(a);
-      if (!o) {
-        return null;
-      }
-      var i = B2BPaymentsData.calculateFee(a, e), s = i.estimatedFee * ("weekly" === t ? 4 : "daily" === t ? 20 : 1), c = 12 * s;
+    getSchedule: getSchedule,
+    calculateScenario: function(amount, frequency, providerId) {
+      const schedule = getSchedule(frequency);
+      const provider = B2BPaymentsData.getById(providerId);
+      if (!Number.isFinite(amount) || amount <= 0 || !schedule || !provider) return null;
+      const fee = B2BPaymentsData.calculateFee(providerId, amount);
+      const annualVolume = amount * schedule.paymentsPerYear;
+      const annualFee = fee.estimatedFee * schedule.paymentsPerYear;
       return {
-        providerId: a,
-        providerName: o.name,
-        perTxnFee: i.estimatedFee,
-        perTxnPct: i.feePct,
-        monthlyVolume: r,
-        monthlyFee: s,
-        annualVolume: n,
-        annualFee: c
+        providerId: providerId, providerName: provider.name, frequency: schedule.id,
+        paymentsPerYear: schedule.paymentsPerYear, perTxnFee: fee.estimatedFee, perTxnPct: fee.feePct,
+        monthlyVolume: annualVolume / 12, monthlyFee: annualFee / 12, annualVolume: annualVolume, annualFee: annualFee
       };
     },
     getObservations: function(t, a) {

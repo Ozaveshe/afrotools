@@ -133,7 +133,7 @@ test("Commodity Tracker: French country summary equals the accepted engine", asy
 test("Payment Comparator: French ranking and scenario equal the accepted engine", async ({ page }) => {
   await page.goto("/fr/tools/comparateur-paiements/");
   await page.locator('[name="amount"]').fill("10000");
-  await page.locator('[name="frequency"]').selectOption("weekly");
+  await page.locator('[name="frequency"]').selectOption("four_per_month");
   await page.locator('[name="scenarioProvider"]').selectOption("papss");
   await page.locator("[data-trade-form]").evaluate((form) => form.requestSubmit());
   const proof = await page.evaluate(() => {
