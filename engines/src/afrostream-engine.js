@@ -271,8 +271,14 @@
       _raw: r
     };
   }
-  function p(r) {
-    return r ? r._raw && r._raw.subscribers ? r._raw.subscribers : r.subscribers || r.subs || r.followers || 0 : 0;
+  function liveFollowerCount(stream, creator) {
+    var profile = creator && (creator._raw || creator) || {};
+    var counts = [stream.creator_followers, profile.total_followers, profile.subscribers, profile.followers, profile.subs];
+    for (var count of counts) {
+      if ((typeof count === "number" || (typeof count === "string" && count.trim())) &&
+          Number.isSafeInteger(Number(count)) && Number(count) >= 0) return Number(count);
+    }
+    return null;
   }
   function v(r) {
     return r && (r.avatar || c(r._raw || r)) || "";
@@ -323,7 +329,7 @@
           platform: t[(r.platform || "").toLowerCase()] || "yt",
           cat: i(r.category),
           viewers: r.viewer_count || 0,
-          subs: p(e),
+          subs: liveFollowerCount(r, e),
           avatar: c(r) || v(e) || null,
           title: r.title,
           date: r.stream_date,

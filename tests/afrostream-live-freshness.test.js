@@ -24,6 +24,16 @@ for (const file of ['engines/src/afrostream-engine.js','engines/afrostream-engin
     assert.ok(calls.some(url=>url.includes('live=true')));
     assert.ok(calls.some(url=>url.includes('live=false')));
   });
+  test(file + ': live follower counts distinguish structured evidence, zero and unknown', async () => {
+    const values = [8000, 0, null, null, null];
+    const rows = values.map((count, index) => ({ creator_name: 'Creator ' + index, creator_followers: count,
+      platform: 'Twitch', is_live: true, stream_date: new Date().toISOString(), url: 'https://twitch.tv/channel' + index }));
+    const app = engine(file, async url => new Response(JSON.stringify({ success: true, data: url.includes('live=true') ? rows : [] })));
+    const creators = [{ name: 'Creator 1', total_followers: 90 }, { name: 'Creator 3', total_followers: 600 },
+      { name: 'Creator 4', _raw: {}, subs: 0 }];
+    const {live} = await app.loadStreams(creators);
+    assert.deepEqual(Array.from(live, stream => stream.subs), [8000, 0, null, 600, null]);
+  });
   test(file + ': an unavailable provider is distinct from a successfully checked empty live feed',async()=>{
     const empty=engine(file,async()=>new Response(JSON.stringify({success:true,data:[]})));
     assert.equal((await empty.loadStreams([])).live.length,0);

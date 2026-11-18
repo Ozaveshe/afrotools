@@ -615,7 +615,6 @@ function hydrateLiveStreamRuntimeMetrics(stream){
   var key = normalizeName(stream.name);
   var creator = CREATORS.filter(function(cr){ return normalizeName(cr.name) === key; })[0];
   if(creator){
-    stream.subs = Math.max(parseNum(stream.subs), parseNum(creator.followers), parseNum(creator.subs));
     stream.avatar = stream.avatar || creator.avatar || '';
     stream.cover = stream.cover || creator.cover || '';
     if(stream.country == null || stream.country < 0) stream.country = creator.country;
@@ -1309,10 +1308,10 @@ function renderLive(streams){
           '<span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span>' +
           '<span class="as-category">'+(CATEGORIES[s.cat]||'Creator')+'</span>' +
           '<span>'+c.flag+'</span>' +
-          '<span style="color:var(--as-primary);font-weight:600;font-size:.7rem">'+fmtK(s.subs)+' followers</span>' +
+          (s.subs == null ? '' : '<span style="color:var(--as-primary);font-weight:600;font-size:.7rem">'+fmtK(s.subs)+' followers</span>') +
         '</div>' +
         '<div class="as-live-actions">' +
-          (s.url ? '<a href="'+escapeAttr(href)+'"'+target+' class="as-live-open">Open stream</a>' : '<span></span>') +
+          (s.url ? '<a href="'+escapeAttr(href)+'"'+target+' class="as-live-open">Watch on '+escapeHtml(p.name)+'</a>' : '<span></span>') +
           briefButton('Copy media kit note', {
             name: s.name || 'Unknown Creator',
             platform: p.name,

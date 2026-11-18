@@ -59,7 +59,7 @@ async function enrichStreamsWithCreators(rows) {
     out.avatar_url = out.avatar_url || creator.avatar || '';
     out.cover_url = out.cover_url || creator.cover || '';
     out.creator_country = out.creator_country || creator.country || '';
-    out.creator_followers = out.creator_followers || creator.total_followers || creator.subscribers || null;
+    out.creator_followers = out.creator_followers ?? creator.total_followers ?? creator.subscribers ?? null;
     out.creator_primary_platform = out.creator_primary_platform || creator.primary_platform || '';
     if (!out.country) out.country = creator.country || '';
     return out;
