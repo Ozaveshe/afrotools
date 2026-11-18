@@ -61,8 +61,22 @@
 <div class="wrap">
   <div class="icon">📡</div>
   <h1>You're Offline</h1>
-  <p>No connection is available for this page. Previously opened calculators may work offline. Live data and online features need a connection.</p>
-  <a href="/" class="btn" onclick="location.reload();return false;">Try Again</a>
+  <p>Previously opened calculators may work offline. Reconnect to open other pages or use features that need live data.</p>
+  <a href="/" class="btn" id="offline-action">Go to AfroTools home</a>
+  <script>
+    const action = document.getElementById('offline-action');
+    if (/^\/(?:fr\/)?offline(?:\.html)?\/?$/.test(location.pathname)) {
+      document.querySelector('h1').textContent = 'Offline recovery';
+      if (location.pathname.startsWith('/fr/')) action.href = '/fr/';
+    } else {
+      action.textContent = 'Try Again';
+      action.href = location.href;
+      action.addEventListener('click', function (event) {
+        event.preventDefault();
+        location.reload();
+      });
+    }
+  </script>
   <p class="note">AfroTools — Africa's Everything Platform</p>
 </div>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
