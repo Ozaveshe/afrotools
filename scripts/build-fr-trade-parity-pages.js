@@ -364,7 +364,7 @@ const pages = [
     dataScripts: ["/data/trade/port-demurrage.js", "/engines/demurrage-engine.js"],
     fields: [
       field("Port", "portCode", { type: "select", blank: false, choices: [] }),
-      field("Type de conteneur", "containerType", { type: "select", blank: false, choices: [["20ft", "20 pieds"], ["40ft", "40 pieds"], ["40ftHC", "40 pieds HC"]] }),
+      field("Type de conteneur", "containerType", { type: "select", blank: false, choices: [["20ft", "20 pieds"], ["40ft", "40 pieds"]] }),
       field("Jours au port", "daysAtPort", { type: "number", min: 0, step: 1, required: true }),
       field("Unités locales pour 1 USD", "fxRate", { type: "number", min: 0.000001, step: .000001, value: 1 })
     ],
@@ -551,7 +551,7 @@ ${page.sw ? `<link rel="alternate" hreflang="sw" href="https://afrotools.com${pa
             <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="csv">CSV</button>
             <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="json">JSON</button>
             <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="txt">TXT</button>${page.tool === "landed-cost" ? '<button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="copy">Copier le résultat</button><button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="print">Imprimer le résultat</button>' : ""}
-            ${page.tool === "export-documents" ? '<label class="fr-trade-button fr-trade-button--secondary">Rouvrir JSON<input type="file" accept="application/json,.json" data-import-json aria-label="Rouvrir un export JSON"></label>' : ""}
+${page.tool === "export-documents" ? '            <label class="fr-trade-button fr-trade-button--secondary">Rouvrir JSON<input type="file" accept="application/json,.json" data-import-json aria-label="Rouvrir un export JSON"></label>' : ""}
           </div>
         </section>
       </section>

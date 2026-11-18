@@ -277,28 +277,59 @@
     );
   }
 
+  var portNamesFr = {
+    NGAPP: "Port d’Apapa", NGTCN: "Port de Tin Can Island", KEMBA: "Port de Mombasa",
+    ZADUR: "Port de Durban", ZACPT: "Port du Cap", GHTMA: "Port de Tema",
+    TZDAR: "Port de Dar es Salaam", EGALX: "Port d’Alexandrie", EGPSD: "Port-Saïd",
+    CIABJ: "Port d’Abidjan", CMDLA: "Port de Douala", DJJIB: "Port de Djibouti",
+    MACAS: "Port de Casablanca", TNTUN: "Port de Radès", MZMPM: "Port de Maputo", SNDKR: "Port de Dakar"
+  };
+  var portFeeLabels = {
+    "Customs Examination Fee": ["Examen douanier", "Inspection physique par les douanes nigérianes"],
+    "Scanning Fee": ["Passage au scanner", "Contrôle du conteneur au terminal"],
+    "Terminal Delivery Order (TDO)": ["Bon de livraison du terminal", "Document de sortie du conteneur"],
+    "Terminal Delivery Order": ["Bon de livraison du terminal", "Document de sortie du conteneur"],
+    "KPA Port Levy": ["Redevance portuaire KPA", "Redevance de l’autorité portuaire du Kenya"],
+    "ICD Nairobi Transport": ["Transport vers le terminal intérieur de Nairobi", "Si le conteneur est acheminé vers ce terminal"],
+    "TNPA Port Levy": ["Redevance portuaire TNPA", "Redevance de l’autorité portuaire Transnet"],
+    "GCNet Processing Fee": ["Traitement GCNet", "Traitement du dossier par GCNet"],
+    "TRA Processing Fee": ["Traitement TRA", "Redevance de l’administration fiscale tanzanienne"],
+    "GOEIC Inspection Fee": ["Inspection GOEIC", "Contrôle des importations et exportations"],
+    "BIVAC Inspection Fee": ["Inspection BIVAC", "Contrôle avant expédition, si nécessaire"],
+    "COTECNA Inspection Fee": ["Inspection Cotecna", "Contrôle avant l’arrivée"],
+    "ADII Processing Fee": ["Traitement ADII", "Frais de l’administration des douanes"],
+    "BADIS Processing Fee": ["Traitement BADIS", "Redevance de manutention portuaire"]
+  };
+
   function demurrageCalculator() {
-    if (!window.DemurrageEngine) throw new Error("Le moteur de surestaries n’est pas disponible.");
-    var result = window.DemurrageEngine.calculateDemurrage(
-      value("portCode"), value("containerType"), number("daysAtPort"), number("fxRate", 1)
-    );
-    if (!result) throw new Error("Choisissez un port pris en charge.");
-    return report(
-      "Estimation des surestaries",
-      "Calcul par paliers du moteur portuaire partagé. Vérifiez la franchise et la grille contractuelle.",
-      [
-        ["Port", result.portName],
-        ["Jours gratuits", String(result.freeDays)],
-        ["Jours payants", String(result.paidDays)],
-        ["Total estimé", money(result.totalUSD, "USD")]
-      ],
-      result.breakdown.map(function (item) {
-        return [item.tier, String(item.daysInTier), money(item.ratePerDay, item.currency), money(item.cost, item.currency)];
-      }).concat(result.additionalBreakdown.map(function (item) {
-        return [item.name, "", money(item.amount, item.currency), item.description];
-      })),
-      window.DemurrageEngine.getObservations(result).map(function (item) { return item.text || String(item); })
-    );
+    var portCode = value("portCode");
+    var container = value("containerType");
+    var port = window.PORT_DEMURRAGE && window.PORT_DEMURRAGE.ports[portCode];
+    if (!port || !window.DemurrageEngine) throw new Error("Choisissez un port pris en charge.");
+    if (!port.demurrageRates[container] || !port.storageRates[container]) {
+      throw new Error("Aucun tarif enregistré pour ce type de conteneur. Demandez un devis au terminal.");
+    }
+    var fx = port.currency === "USD" ? 1 : number("fxRate");
+    if (fx <= 0) throw new Error("Indiquez le nombre de " + port.currency + " pour 1 USD.");
+    var result = window.DemurrageEngine.calculateDemurrage(portCode, container, number("daysAtPort"), fx);
+    var rows = result.breakdown.map(function (tier) {
+      return [tier.tier.replace(/^Days /, "Surestaries · jours "), tier.daysInTier + " × " + money(tier.ratePerDay, tier.currency), money(tier.cost / fx, "USD")];
+    });
+    var storageRate = port.storageRates[container].perDay;
+    rows.push(["Stockage au terminal", result.paidDays + " × " + money(storageRate, port.currency), money(result.paidDays * storageRate / fx, "USD")]);
+    result.additionalBreakdown.forEach(function (fee) {
+      var label = portFeeLabels[fee.name] || ["Frais portuaires complémentaires", "Se reporter à la grille du terminal"];
+      rows.push([label[0], label[1] + " · " + money(fee.amount, fee.currency), money(fee.amountUSD, "USD")]);
+    });
+    var notes = [
+      result.paidDays ? "Les surestaries et le stockage sont calculés après la franchise de " + result.freeDays + " jours."
+        : "Le conteneur est encore en franchise. Des frais fixes peuvent rester dus.",
+      "Le total est arrondi au dollar. Vérifiez la franchise, le stockage et les frais applicables sur votre contrat."
+    ];
+    if (port.currency !== "USD") notes.push("Conversion utilisée : 1 USD = " + decimal(fx) + " " + port.currency + ".");
+    return report("Estimation des surestaries", "Détail des surestaries, du stockage et des frais complémentaires. Les montants de la dernière colonne sont en dollars américains.",
+      [["Port", portNamesFr[portCode] || result.portName], ["Jours gratuits", String(result.freeDays)],
+       ["Jours payants", String(result.paidDays)], ["Total estimé", money(result.totalUSD, "USD")]], rows, notes);
   }
 
   function incotermsCalculator() {
@@ -819,6 +850,16 @@
         table.tabIndex = 0;
         table.setAttribute("aria-label", "Détail du coût rendu");
       }
+      if (tool === "demurrage-calculator") {
+        table.setAttribute("aria-label", "Détail des charges portuaires");
+        var heading = table.createTHead().insertRow();
+        ["Poste", "Base de calcul", "Montant en USD"].forEach(function (label) {
+          var cell = document.createElement("th");
+          cell.scope = "col";
+          cell.textContent = label;
+          heading.appendChild(cell);
+        });
+      }
       var body = document.createElement("tbody");
       reportData.rows.forEach(function (row) {
         var tr = document.createElement("tr");
@@ -1132,9 +1173,26 @@
       fxSelect.addEventListener("change", updateRate);
     }
     if (tool === "demurrage-calculator" && window.DemurrageEngine) {
+      var portCountries = new Intl.DisplayNames(["fr"], { type: "region" });
       fillSelect("portCode", window.DemurrageEngine.getAllPorts(), "code", function (item) {
-        return (item.flag ? item.flag + " " : "") + item.name + " — " + item.country;
+        return (portNamesFr[item.code] || item.name) + " — " + portCountries.of(item.code.slice(0, 2));
       });
+      var portSelect = form.elements.namedItem("portCode");
+      function updatePortRate() {
+        var port = window.PORT_DEMURRAGE.ports[portSelect.value];
+        var rate = form.elements.namedItem("fxRate");
+        if (!port) return;
+        form.querySelector('label[for="fxRate"]').textContent = port.currency === "USD" ? "Taux de change (tarifs en USD)" : port.currency + " pour 1 USD";
+        rate.required = port.currency !== "USD";
+        if (rate.dataset.currency !== port.currency) rate.value = rate.required ? "" : "1";
+        rate.dataset.currency = port.currency;
+      }
+      updatePortRate();
+      portSelect.addEventListener("change", updatePortRate);
+      form.addEventListener("reset", function () { window.setTimeout(updatePortRate, 0); });
+      function clearPortEstimate() { lastReport = null; result.hidden = true; }
+      form.addEventListener("change", clearPortEstimate);
+      form.addEventListener("input", clearPortEstimate);
     }
     if (tool === "incoterms-calculator" && window.IncotermsEngine) {
       var terms = window.IncotermsEngine.getAllTerms();
