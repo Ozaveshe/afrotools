@@ -7,6 +7,10 @@
   var markets=[],payload=null,selected=null,record=null,reference=false,historicalChosen=false,result=null,locationRequest=0,visitorActed=false;
   // A shared link may choose a known market once; it never requests location or supplies a price.
   var requestedMarket=null,requestedCountry=null;try{var params=new URLSearchParams(window.location.search),requested=params.getAll('market'),countryParams=params.getAll('country');if(countryParams.length===1&&/^[A-Z]{2}$/.test(countryParams[0]))requestedCountry=countryParams[0];if(requested.length===1&&/^[a-z0-9][a-z0-9-]{0,99}$/.test(requested[0]))requestedMarket=requested[0];}catch(_){}
+  var fuelParams = new URLSearchParams(window.location.search).getAll('fuel');
+  if (fuelParams.length === 1 && (fuelParams[0] === 'petrol' || fuelParams[0] === 'diesel')) {
+   document.getElementById('fuel-type').value = fuelParams[0];
+  }
   // A late scheduled feed must never replace a visitor's chosen price or calculation.
   ['input','change','click','keydown'].forEach(function(type){root.addEventListener(type,function(){visitorActed=true;},{once:true});});
   var byId=function(id){return root.querySelector('#'+id);};
