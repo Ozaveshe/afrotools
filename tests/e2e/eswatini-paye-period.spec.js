@@ -40,6 +40,9 @@ test('Eswatini PAYE keeps annual and monthly results aligned in both calculation
     contentType: 'application/javascript',
     body: 'window.Chart = class { destroy() {} };'
   }));
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', { value: async payload => { window.capturedShare = payload; } });
+  });
   await page.goto('/eswatini/sz-paye');
 
   const label = page.locator('.res-hero-label');
@@ -55,6 +58,11 @@ test('Eswatini PAYE keeps annual and monthly results aligned in both calculation
   await clickStableButton(page, page.locator('.per-btn').nth(1));
   await expect(label).toHaveText('Monthly Take-Home Pay');
   await expect(amount).toContainText('35,581');
+  await page.locator('#szShareBtn').press('Enter');
+  const monthlyShare = await page.evaluate(() => window.capturedShare);
+  expect(monthlyShare.text).toMatch(/Gross E\s*50,000\/month/);
+  expect(monthlyShare.text).toMatch(/Take-home E\s*35,581\/month/);
+  expect(monthlyShare.url).toBe('https://afrotools.com/eswatini/sz-paye');
   await clickStableButton(page, page.locator('.calc-btn'));
   await expect(amount).toContainText('35,581');
   expect(await page.evaluate(() => window.PERIOD)).toBe('monthly');

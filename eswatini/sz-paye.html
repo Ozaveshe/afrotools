@@ -1097,7 +1097,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Eswatini PAYE breakdown: Gross E${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home E${Math.round(RESULT.netAnnual).toLocaleString()}/yr (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/eswatini/sz-paye`;
+  const monthly = PERIOD === 'monthly';
+  const period = monthly ? 'month' : 'year';
+  const gross = monthly ? RESULT.monthlyGross : RESULT.gross;
+  const net = monthly ? RESULT.monthlyNet : RESULT.netAnnual;
+  const text = `My Eswatini PAYE breakdown: Gross ${fmt(gross)}/${period} → Take-home ${fmt(net)}/${period} (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/eswatini/sz-paye`;
   if (navigator.share) {
     navigator.share({title:'My Eswatini PAYE',text,url:'https://afrotools.com/eswatini/sz-paye'});
   } else if (navigator.clipboard) {
