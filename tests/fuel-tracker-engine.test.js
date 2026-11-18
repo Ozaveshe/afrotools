@@ -37,8 +37,8 @@ const currentRecord = { ...engine.marketRecord(markets.markets.find((market) => 
 assert.equal(engine.recordStatus(currentRecord, '2026-08-13', 45).available, true);
 assert.equal(engine.recordStatus(currentRecord, '2026-08-02', 45).available, false);
 assert.equal(engine.recordStatus({ ...currentRecord, last_verified_at: '2026-08-14' }, '2026-08-13', 45).available, false);
-const staleRecord = engine.marketRecord(markets.markets.find((market) => market.market_id === 'ke-nairobi-2026-10'), 'petrol').previous_record;
-assert.equal(engine.recordStatus(staleRecord, '2026-08-13', 45).stale, true);
+const staleRecord = engine.marketRecord(markets.markets.find((market) => market.country_code === 'KE' && market.locality_name === 'Nairobi'), 'petrol').previous_record;
+assert.equal(engine.recordStatus(staleRecord, '2026-11-18', 45).stale, true);
 const litreFill = engine.calculateFillCost({ pricePerLitre: 1000, mode: 'quantity', unit: 'litre', quantity: 20 });
 assert.equal(litreFill.ok, true);
 assert.equal(litreFill.totalCost, 20000);
