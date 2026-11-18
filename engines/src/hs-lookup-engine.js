@@ -64,7 +64,7 @@ var HsLookupEngine = function() {
       var n = t(e, r);
       n && a.push(n);
     }), a.sort(function(e, t) {
-      return (e.dutyTypical || 999) - (t.dutyTypical || 999);
+      return (e.dutyTypical ?? Infinity) - (t.dutyTypical ?? Infinity);
     }), a;
   }
   return {
@@ -122,32 +122,10 @@ var HsLookupEngine = function() {
       if (!n) {
         return [];
       }
-      var i = [], c = n.chapter ? n.chapter.padStart(2, "0") : t.substring(0, 2), s = r(t, Object.keys(COUNTRY_DUTY_RATES));
-      if (s.length > 0 && null !== s[0].dutyTypical) {
-        var o = s[0];
-        a && o.country !== COUNTRY_DUTY_RATES[a]?.name && i.push({
-          type: "tip",
-          text: "Lowest duty on this product: " + o.dutyTypical + "% in " + o.flag + " " + o.country + ". Consider routing via trade bloc arrangements."
-        });
-      }
-      i.push({
+      return [{
         type: "info",
-        text: "AfCFTA preferential rates are being phased in across 54 countries. Check your country's tariff offer schedule for possible reduced rates."
-      });
-      var u = {
-        27: "Petroleum products may attract additional fuel levies not reflected in customs duty rates.",
-        87: "Vehicle imports often attract excise duty and age restrictions on top of customs duty.",
-        61: "Secondhand clothing (mitumba/okrika) may be subject to flat-rate or per-kg duty in some countries.",
-        62: "Woven apparel typically attracts the highest duty bands (40–45% in South Africa).",
-        30: "Essential medicines are often duty-free or attract 0% under bilateral health agreements.",
-        85: "Solar panels (HS 8541.49) are duty-free in Kenya and Rwanda under green energy policies.",
-        31: "Fertilisers are typically duty-free across Africa to support food security.",
-        10: "Rice (1006.30) attracts high protection in East Africa — up to 75% in Kenya and Tanzania."
-      };
-      return u[c] && i.push({
-        type: "warn",
-        text: u[c]
-      }), i;
+        text: "The table groups goods by HS chapter " + n.chapter + ". Confirm the national tariff line, origin, effective date and any additional charges with the importing customs authority."
+      }];
     }
   };
 }();
