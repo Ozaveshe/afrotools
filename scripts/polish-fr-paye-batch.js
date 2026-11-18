@@ -1941,6 +1941,7 @@ for (const page of pages) {
   html = replaceAllExact(html, commonPairs);
   html = replaceAllExact(html, postPolishWave2ByFile[page.file] || []);
   html = replaceAllExact(html, postPolishWave3ByFile[page.file] || []);
+  html = require('./lib/french-salary-sharing').refreshFrenchSalarySharing(html, page.file.replace(/^fr\//, '').replace(/\.html$/, ''));
   fs.writeFileSync(filePath, html);
 }
 

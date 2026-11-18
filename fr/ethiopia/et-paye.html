@@ -271,7 +271,7 @@ window.addEventListener('load', function() {
           <button type="button" class="act-btn act-share" id="etPartagerBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager le résultat
-          </button>
+          </button><span id="shareResultStatus" role="status"></span>
         </div>
       </div>
     </div>
@@ -793,11 +793,11 @@ function renderRows(R, period) {
   return `
     <div class="res-section">
       <div class="res-section-title">Revenu brut</div>
-      ${row(`Brut annuel Salary${lbl}`, fmt(gross))}
+      ${row(isAnnual ? 'Salaire brut annuel' : 'Salaire brut mensuel', fmt(gross))}
     </div>
     <div class="res-section">
       <div class="res-section-title">Déductions</div>
-      ${R.pension > 0 ? row(`Pension Fund (${pct(R.pensionRate)})`, fmt(pension), 'c-red') : ''}
+      ${R.pension > 0 ? row(`Cotisation de retraite du salarié (${R.pensionRate.toLocaleString('fr-FR', { style: 'percent' })})`, fmt(pension), 'c-red') : ''}
       ${row(`Revenu imposable${lbl}`, fmt(isAnnual ? R.annualBrut - R.annualPension : R.gross - R.pension), 'c-mut')}
     </div>
     <div class="res-section">
@@ -1019,15 +1019,41 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 // ── partager ─────────────────────────────────────────────────────
 function shareResult() {
-  if (!résultat) return;
-  const text = `Mon PAYE Éthiopie récapitulatif : Brut ETB ${Math.round(résultat.gross).toLocaleString()}/mo → Net ETB ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/ethiopia/et-paye`;
-  if (navigator.partager) {
-    navigator.partager({title:'Mon PAYE Éthiopie',text,url:'https://afrotools.com/fr/ethiopia/et-paye'});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-    const btn = document.getElementById('etPartagerBtn');
-    btn.textContent = '✓ Copié !';
-    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager le résultat`,2500);
+  return shareFrenchResult("Éthiopie", "ETB", "https://afrotools.com/fr/ethiopia/et-paye");
+}
+
+async function shareFrenchResult(country, currency, url) {
+  if (!RESULT) {
+    document.getElementById('grossSalary').focus();
+    return;
+  }
+  const status = document.getElementById('shareResultStatus');
+  status.textContent = '';
+  const annual = PERIOD === 'annual';
+  const period = annual ? 'annuel' : 'mensuel';
+  const money = value => Math.round(value).toLocaleString('fr-FR') + ' ' + currency;
+  const title = 'Simulation de salaire — ' + country;
+  const gross = annual ? RESULT.gross * 12 : RESULT.gross;
+  const net = annual ? RESULT.annualNet : RESULT.netMonthly;
+  const tax = annual ? RESULT.annualTax : RESULT.monthlyPAYE;
+  const rate = RESULT.effectiveRate.toLocaleString('fr-FR', { style: 'percent', maximumFractionDigits: 2 });
+  const text = [title, 'Salaire brut ' + period + ' : ' + money(gross),
+    'Salaire net ' + period + ' : ' + money(net), 'PAYE ' + period + ' : ' + money(tax),
+    'Taux effectif : ' + rate].join('\n');
+  if (typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ title, text, url });
+      return;
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+    }
+  }
+  const copy = text + '\n' + url;
+  try {
+    await navigator.clipboard.writeText(copy);
+    status.textContent = 'Résultat copié.';
+  } catch {
+    window.prompt('Copiez le résultat de la simulation.', copy);
   }
 }
 

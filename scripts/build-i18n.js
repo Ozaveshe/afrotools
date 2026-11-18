@@ -992,7 +992,12 @@ function findMatchingClosingTag(html, openStart, tagName) {
   return -1;
 }
 
-function applyFrenchPayeFallbacks(input) {
+function applyFrenchPayeFallbacks(html) {
+  return html.split(/(<!--[\s\S]*?-->|<script\b[^>]*>[\s\S]*?<\/script>|<style\b[^>]*>[\s\S]*?<\/style>)/gi)
+    .map((part, index) => index % 2 ? part : translateFrenchPayeMarkup(part)).join('');
+}
+
+function translateFrenchPayeMarkup(input) {
   let output = input;
 
   output = output
@@ -1071,8 +1076,16 @@ function applyFrenchPayeFallbacks(input) {
     ['Share', 'Partager'],
   ];
 
-  output = applyExactPairs(output, pairs);
-  return output;
+  const tokens = /<!--[\s\S]*?-->|<(?:[^>"']|"[^"]*"|'[^']*')*>|[^<]+|</g;
+  return output.replace(tokens, token => {
+    if (!token.startsWith('<')) return applyExactPairs(token, pairs);
+    if (token.startsWith('<!--')) return token;
+    return token.replace(/(\s+)([\w:-]+)(\s*=\s*)(["'])([\s\S]*?)\4/g,
+      (match, space, name, equals, quote, value) => {
+        if (!/^(?:title|alt|aria-label|placeholder|data-tool-name|content)$/i.test(name)) return match;
+        return space + name + equals + quote + applyExactPairs(value, pairs) + quote;
+      });
+  });
 }
 
 function processHTML(html, lang, pagePath) {
@@ -1536,6 +1549,7 @@ function processHTML(html, lang, pagePath) {
   const cleanPagePath = pagePath.replace(/^\//, '').replace(/\/$/, '');
   if (lang === 'fr' && /(?:^|\/)[^/]*(?:-paye|salary-tax)$/i.test(cleanPagePath)) {
     processed = applyFrenchPayeFallbacks(processed);
+    processed = require('./lib/french-salary-sharing').refreshFrenchSalarySharing(processed, cleanPagePath);
   }
 
   // 11. Update internal navigation links to include language prefix
