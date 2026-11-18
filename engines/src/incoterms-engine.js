@@ -86,7 +86,7 @@ var IncotermsEngine = function() {
     getAfricaTopTerms: function() {
       return [ {
         code: "CIF",
-        reason: "Most common for African imports. CIF value = customs duty base in all African countries."
+        reason: "The seller pays for main carriage and insurance to the named destination port. Check local customs valuation rules."
       }, {
         code: "FOB",
         reason: "Standard for African commodity exports and most procurement contracts."
