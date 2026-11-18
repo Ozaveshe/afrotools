@@ -8,6 +8,7 @@ const { routes } = require('../scripts/build-fuel-market-locales');
 const latest = require('../data/fuel/latest.json');
 const markets = require('../data/fuel/markets.json');
 const observations = require('../assets/js/lib/fuel-market-observations');
+const copy = require('../assets/js/lib/fuel-market-copy');
 
 for (const [locale, route] of Object.entries(routes)) {
   test(locale + ' delivers the maintained country prices and sources in the initial HTML', () => {
@@ -23,6 +24,18 @@ for (const [locale, route] of Object.entries(routes)) {
       const products = records.filter(market => market.country_code === code).flatMap(market => market.fuels)
         .filter(record => observations.status(record, asOf, markets.stale_after_days).valid);
       assert.equal((body.match(/<li>/g) || []).length, products.length, code);
+      for (const fuel of ['petrol', 'diesel']) {
+        const choices = products.filter(record => record.fuel_type === fuel);
+        const preferred = choices.find(record => observations.status(record, asOf, markets.stale_after_days).available) || choices[0];
+        const label = copy.get(locale, fuel) + ' · ';
+        if (preferred) {
+          const first = body.split('<strong>' + label)[1].split('</li>')[0];
+          assert.ok(first.startsWith(preferred.currency + ' ' + amounts.format(preferred.price) + '/L</strong>'), code + ' ' + fuel);
+          assert.ok(first.includes(preferred.source_url.replaceAll('&', '&amp;')), code + ' ' + fuel);
+        } else {
+          assert.ok(body.includes('<p>' + label + copy.get(locale, 'unavailable') + '</p>'), code + ' ' + fuel);
+        }
+      }
       for (const record of products) {
         assert.ok(body.includes(record.currency + ' ' + amounts.format(record.price) + '/L'), code);
         assert.ok(body.includes(record.source_url.replaceAll('&', '&amp;')), code);

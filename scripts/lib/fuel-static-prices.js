@@ -29,9 +29,7 @@ module.exports = function staticPrices(locale, escape) {
     return `<time datetime="${escape(day)}">${escape(day)}</time>`;
   }
 
-  function product(record) {
-    const state = observations.status(record, asOf, markets.stale_after_days);
-    if (!state.valid) return '';
+  function product(record, state) {
     const dates = [];
     if (record.observation_year) dates.push(surveyYear + ' ' + escape(record.observation_year));
     if (record.date_basis === 'survey-period') {
@@ -49,16 +47,32 @@ module.exports = function staticPrices(locale, escape) {
 
   let opened = false;
   const groups = [...countries.keys()].sort((a, b) => names.of(a).localeCompare(names.of(b), locale)).map(code => {
-    const entries = countries.get(code).map(m => {
-      const items = m.fuels.map(product).filter(Boolean);
-      if (!items.length) return '';
+    const available = [];
+    const archived = [];
+    const fuels = new Set();
+    for (const m of countries.get(code)) {
+      const current = [], previous = [];
+      for (const record of m.fuels) {
+        const state = observations.status(record, asOf, markets.stale_after_days);
+        if (!state.valid) continue;
+        fuels.add(record.fuel_type);
+        (state.available ? current : previous).push(product(record, state));
+      }
+      if (current.length) available.push([m, current]);
+      if (previous.length) archived.push([m, previous]);
+    }
+    // The interactive market selector puts available records first for each fuel.
+    // Preserve source order within each tier, including markets with a mix of dates.
+    const entries = [...available, ...archived].map(([m, items]) => {
       const scope = escape(t(m.granularity));
       const place = m.granularity === 'national' ? scope : escape(m.locality_name) + ' · ' + scope;
       return `<h3>${place}</h3>${m.coverage_note ? `<p lang="en">${escape(m.coverage_note)}</p>` : ''}<ul>${items.join('\n')}</ul>`;
-    }).filter(Boolean);
+    });
     const initiallyOpen = !opened && entries.length > 0;
     if (initiallyOpen) opened = true;
-    return `<details data-country="${escape(code)}"${initiallyOpen ? ' open' : ''}><summary>${escape(names.of(code))}</summary>${entries.join('\n') || '<p>' + escape(t('unavailable')) + '</p>'}</details>`;
+    const missing = ['petrol','diesel'].filter(fuel => !fuels.has(fuel))
+      .map(fuel => `<p>${escape(t(fuel))} · ${escape(t('unavailable'))}</p>`);
+    return `<details data-country="${escape(code)}"${initiallyOpen ? ' open' : ''}><summary>${escape(names.of(code))}</summary>${entries.concat(missing).join('\n')}</details>`;
   });
   return `<details id="fuel-static-reference" open><summary>${heading}</summary><p>${checked} ${time(asOf)}. ${advice}</p>${groups.join('\n')}</details>`;
 };
