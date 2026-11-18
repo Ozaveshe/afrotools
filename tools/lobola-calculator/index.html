@@ -182,7 +182,7 @@
       .negotiation-grid{grid-template-columns:1fr 1fr}
     }
     @media(max-width:480px){.stat-row,.negotiation-grid{grid-template-columns:1fr}.copy-plan{width:100%}.btn-row,.result-actions{flex-direction:column}.btn{width:100%}}
-    @media print{afro-navbar,afro-footer,afro-newsletter-cta,.tool-hero,.btn-row,.result-actions{display:none!important}.wrap{max-width:100%;padding:0}.card,.content-section,.context-card,.breakdown,.payment-section,.negotiation-section{box-shadow:none;break-inside:avoid}}
+    @media print{afro-navbar,afro-footer,afro-newsletter-cta,.tool-hero,.btn-row,.result-actions,.lobola-private-notes{display:none!important}.wrap{max-width:100%;padding:0}.card,.content-section,.context-card,.breakdown,.payment-section,.negotiation-section{box-shadow:none;break-inside:avoid}}
     [data-lobola-print-summary]{display:none}
     @media print{
       body[data-lobola-printing]{background:#fff!important;color:#111!important}
@@ -433,7 +433,7 @@
           <div class="field"><label for="timelineMonths">Target timeline (months)</label><input type="number" id="timelineMonths" value="6" min="1" max="48" inputmode="numeric"></div>
         </div>
         <div class="field"><label for="giftItems">Gifts, items, or expectations to discuss</label><textarea id="giftItems" placeholder="Example: blankets, groceries, family travel, meeting costs, witnesses, instalment dates"></textarea></div>
-        <div class="field"><label for="familyNotes">Private family notes</label><textarea id="familyNotes" placeholder="Add questions, assumptions, family preferences, or what still needs to be confirmed."></textarea></div>
+        <div class="field lobola-private-notes"><label for="familyNotes">Private family notes</label><textarea id="familyNotes" aria-describedby="familyNotesPrivacy" placeholder="Add questions, assumptions, family preferences, or what still needs to be confirmed."></textarea><small id="familyNotesPrivacy">Notes stay in this page and are excluded from copied, downloaded and shared summaries.</small></div>
       </div>
     </details>
     <div class="btn-row">
@@ -838,6 +838,7 @@ function calculate() {
     currency: currencyCode,
     cattleCount: cattleCount,
     cattlePrice: cattlePrice,
+    familyExpectation: familyExpectation,
     totalValue: totalValue,
     livestockValue: livestockValue,
     giftValue: giftValue,
@@ -893,7 +894,7 @@ function renderNegotiationPlan(data) {
   var monthly = Math.ceil(remaining / data.timelineMonths);
   var discussionNotes = [];
   if (data.giftItems) discussionNotes.push('Items to discuss: ' + data.giftItems);
-  if (data.familyNotes) discussionNotes.push('Notes: ' + data.familyNotes);
+
   var actions = [
     'Open the conversation with elders or appointed negotiators, not as a couple-only price discussion.',
     'Budget ' + money(data.symbol, fullBudget) + ' including gifts, ceremony costs, and a ' + data.giftBuffer + '% contingency buffer.',
@@ -904,10 +905,11 @@ function renderNegotiationPlan(data) {
   ];
   lastLobolaBrief = [
     'Lobola preparation brief',
-    data.country + ' | ' + data.region + ' | ' + data.cattleCount + ' cattle at ' + data.symbol + ' ' + fmt(data.cattlePrice) + ' per head.',
+    data.country + ' | ' + data.region + ' | ' + (data.familyExpectation > 0
+      ? 'Agreed base cash amount: ' + money(data.symbol, data.familyExpectation) + ' ' + data.currency + ' (replaces the livestock reference).'
+      : data.cattleCount + ' cattle at ' + data.symbol + ' ' + fmt(data.cattlePrice) + ' per head.'),
     'Estimate: ' + money(data.symbol, data.totalValue) + ' ' + data.currency + ' | Low: ' + money(data.symbol, data.lowScenario) + ' | High: ' + money(data.symbol, data.highScenario) + '.',
     'Gifts/items: ' + (data.giftItems || 'Not specified yet') + '.',
-    'Notes: ' + (data.familyNotes || 'No notes added yet') + '.',
     actions.join(' ')
   ].join('\n');
   lastLobolaPlan = {
@@ -932,7 +934,7 @@ function renderNegotiationPlan(data) {
       '<div class="negotiation-card"><div class="negotiation-k">Initial contribution</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, deposit)) + '</div></div>' +
       '<div class="negotiation-card"><div class="negotiation-k">Monthly target</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, monthly)) + '</div></div>' +
       '<div class="negotiation-card"><div class="negotiation-k">Remaining</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, remaining)) + '</div></div>' +
-    '</div><ul class="brief-list">' + actions.concat(discussionNotes).map(function(action){ return '<li>' + escapeHtml(action) + '</li>'; }).join('') + '</ul>';
+    '</div><ul class="brief-list">' + actions.concat(discussionNotes).map(function(action){ return '<li>' + escapeHtml(action) + '</li>'; }).join('') + (data.familyNotes ? '<li class="lobola-private-notes">Notes: ' + escapeHtml(data.familyNotes) + '</li>' : '') + '</ul>';
 }
 
 function renderResultActions() {
