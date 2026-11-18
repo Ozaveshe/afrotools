@@ -4,9 +4,9 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gratuity &amp; Severance Calculator Malawi 2026 | AfroTools</title>
-<meta name="description" content="Calculate end-of-service gratuity or severance pay in Malawi. Statutory formulas, contractual defaults, and legal references.">
+<meta name="description" content="Estimate Malawi statutory severance or pension-exempt gratuity using your qualifying circumstances, pay and completed service.">
 <meta property="og:title" content="Gratuity &amp; Severance Calculator Malawi 2026 | AfroTools">
-<meta property="og:description" content="Calculate end-of-service gratuity or severance pay in Malawi. Statutory formulas, contractual defaults, and legal references.">
+<meta property="og:description" content="Estimate Malawi statutory severance or pension-exempt gratuity using your qualifying circumstances, pay and completed service.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Gratuity &amp; Severance Calculator Malawi 2026 | AfroTools">
-<meta name="twitter:description" content="Calculate end-of-service gratuity or severance pay in Malawi. Statutory formulas, contractual defaults, and legal references.">
+<meta name="twitter:description" content="Estimate Malawi statutory severance or pension-exempt gratuity using your qualifying circumstances, pay and completed service.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Gratuity &amp; Severance Calculator Malawi 2026 | AfroTools","url":"https://afrotools.com/tools/gratuity-calculator/malawi/","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"HR & Payroll","item":"https://afrotools.com/hr-payroll/"},{"@type":"ListItem","position":3,"name":"Gratuity &amp; Severance Calculator","item":"https://afrotools.com/tools/gratuity-calculator/"},{"@type":"ListItem","position":4,"name":"Malawi","item":"https://afrotools.com/tools/gratuity-calculator/malawi/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,59 +29,46 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/gratuity-calculator/malawi/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/malawi/kikokotoo-kiinua-mgongo/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/gratuity-calculator/malawi/">
+<style>#download[hidden]{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar theme="dark" active="hr-payroll"></afro-navbar>
 <section class="hr-tool-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/hr-payroll/">HR &amp; Payroll</a> <span>›</span> <a href="/tools/gratuity-calculator/">Gratuity &amp; Severance Calculator</a> <span>›</span> Malawi</nav>
 <h1>🇲🇼 Malawi <em>Gratuity &amp; Severance Calculator</em></h1>
-<p class="hr-tool-hero-sub">Calculate end-of-service gratuity or severance pay in Malawi. Statutory formulas, contractual defaults, and legal references.</p>
+<p class="hr-tool-hero-sub">Estimate Malawi statutory severance or pension-exempt gratuity using your qualifying circumstances, pay and completed service.</p>
 </div></section>
 <main class="hr-main">
-<div class="hr-card"><div class="hr-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>💵</span><h2>Gratuity &amp; Severance Calculator</h2><span class="hr-card-toggle">&#x25BE;</span></div>
-<div class="hr-card-body">
+<section class="hr-card"><div class="hr-card-body">
+<form id="estimate">
+<h2>Estimate one statutory payment</h2>
+<p>Choose the payment and confirm which conditions apply to this period of service.</p>
 <div class="hr-form-grid">
-<div class="hr-field"><label class="hr-f-label" for="lastSalary">Last Monthly Salary</label><div class="hr-input-wrap"><span class="hr-prefix" id="currPrefix"></span><input class="hr-f-input" type="number" id="lastSalary" placeholder="e.g. 500000" inputmode="numeric"></div></div>
-<div class="hr-field"><label class="hr-f-label" for="yearsOfService">Years of Service</label><input class="hr-f-input" type="number" id="yearsOfService" placeholder="e.g. 5" inputmode="numeric"></div>
+<div class="hr-field"><label class="hr-f-label" for="basis">Payment and circumstances</label>
+<select id="basis" class="hr-f-input" required>
+<option value="">Select circumstances</option>
+<option value="severance">Severance — qualifying termination</option>
+<option value="gratuity">Gratuity — confirmed pension exemption</option>
+<option value="unknown">Other circumstances or unsure</option>
+</select></div>
+<div class="hr-field"><label class="hr-f-label" for="lastSalary" id="wageLabel">Monthly pay (MWK)</label><input class="hr-f-input" type="number" min="0.01" step="0.01" inputmode="decimal" id="lastSalary" required></div>
+<div class="hr-field"><label class="hr-f-label" for="yearsOfService">Completed years of continuous service</label><input class="hr-f-input" type="number" min="0" step="1" inputmode="numeric" id="yearsOfService" required></div>
+<div class="hr-field"><label class="hr-f-label" for="extraMonths">Additional completed months (0–11)</label><input class="hr-f-input" type="number" min="0" max="11" step="1" inputmode="numeric" id="extraMonths" value="0" required></div>
 </div>
-<button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>
-</div></div>
-<div class="hr-results" id="results"></div>
-<section class="hr-seo-section">
-<h2>Malawi Gratuity &amp; Severance Calculator — What You Need to Know</h2>
-<p>Use this free tool to calculate and understand HR obligations in Malawi. Based on published labour laws and official contribution rates.</p>
-<p><strong>Disclaimer:</strong> Estimates based on available data. Always verify with official sources and consult qualified professionals for employment decisions.</p>
+<p id="eligibility">Read the eligibility conditions below before estimating a payment.</p>
+<button class="hr-calc-btn" id="calcBtn" type="submit">Calculate</button>
+</form></div></section>
+<section class="hr-results" aria-live="polite" id="results"><h2 id="resultTitle"></h2><p id="amount"></p><p id="explanation"></p><button type="button" id="download" hidden>Download estimate (.txt)</button></section>
+<section class="hr-seo-section"><h2>Which payment applies?</h2>
+<p><strong>Severance under section 35.</strong> Select this for redundancy, retrenchment, an employer’s economic, technical, structural or operational requirements, or unfair dismissal. Section 35 also addresses employer insolvency or death. Ordinary fixed-term expiry, completion of a specified task, probation and fair misconduct dismissal are excluded. Check the exceptions for re-employment offers, partnership dissolution and succession under sections 35(5) and (7).</p>
+<p>Enter the current monthly wage under section 35(2), including eligible housing and transport benefits. Work expenses and employer pension contributions are generally excluded. The first five completed years earn two weeks each, years six to ten earn three each, and later years earn four each. Service below one completed year earns no weeks under this schedule.</p>
+<p><strong>Gratuity under section 35A.</strong> On retirement, termination or death, a confirmed employer exemption from pension provision and at least three continuous months with the employer in a given year are required. Use the final month’s salary and completed months. The statutory rate is 5% for each month. Confirm the exemption with your employer. Salary alone does not establish it.</p>
+<p>Estimate one payment at a time. Pension balances, contractual gratuity, notice pay, compensation and transitional entitlements accrued before the 2011 change need separate assessment.</p>
+<p><a id="law" href="https://businessmalawi.com/files/Malawi-Employment-Amendment-Act-No-27-of-2010.pdf">Malawi Employment (Amendment) Act No. 27 of 2010, sections 35 and 35A and First Schedule (PDF)</a> · <a id="case" href="https://media.malawilii.org/media/judgment/4687/source_file/gondwe-v-opportunity-international-bank-limited-2021-mwhc-268-13-august-2021.pdf">High Court weekly wage calculation in Gondwe (2021, PDF)</a></p>
 </section>
 </main>
 <afro-footer></afro-footer>
-<script src="/data/hr/employer-cost-data.js?v=4e6f471f"></script>
-<script src="/data/hr/severance-data.js?v=210e625e"></script>
-<script src="/engines/employee-cost-engine.js?v=4f12ca29"></script>
-
-<script>
-!function(){
-"use strict";
-var CC='MW';
-var E=window.AfroTools.HREngine;
-function fv(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}
-var rules=(typeof EMPLOYER_COST_RULES!=='undefined')?EMPLOYER_COST_RULES[CC]:null;
-if(rules){var p=document.getElementById('currPrefix');if(p)p.textContent=rules.symbol||'';}
-document.getElementById("calcBtn").addEventListener("click",function(){
-
-var r=E.calculateSeverance(CC,fv('lastSalary'),fv('yearsOfService'));
-if(r.error){alert(r.error);return;}
-var h='<div class="hr-res-hero"><div class="hr-res-hero-label">Estimated Severance / Gratuity</div>';
-h+='<div class="hr-res-hero-amount">'+r.formatted+'</div>';
-h+='<div class="hr-res-hero-sub">Method: '+r.method+'</div></div>';
-h+='<div class="hr-info"><strong>Formula:</strong> '+r.formula+'<br><strong>Calculation:</strong> '+(r.detail||'See notes')+'</div>';
-if(r.law)h+='<div class="hr-info" style="margin-top:.5rem"><strong>Law:</strong> '+r.law+'</div>';
-if(r.notes)h+='<div class="hr-warn"><strong>Note:</strong> '+r.notes+'</div>';
-
-document.getElementById('results').innerHTML=h;
-document.getElementById('results').classList.add('on');
-});
-}();
-</script>
+<script src="/tools/gratuity-calculator/malawi/estimate.js" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>

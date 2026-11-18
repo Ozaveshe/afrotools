@@ -514,12 +514,16 @@ def main():
         total += 1
 
         # Country pages
+        before_countries = total
         for code, cslug, cname, flag in countries:
+            # This country form is maintained alongside its statutory eligibility rules.
+            if slug == "gratuity-calculator" and code == "MW":
+                continue
             cp = os.path.join(BASE, "tools", slug, cslug, "index.html")
             write_file(cp, gen_country_page(tool, code, cslug, cname, flag))
             total += 1
 
-        print(f"  {slug}: hub + {len(countries)} country pages")
+        print(f"  {slug}: hub + {total - before_countries} generated country pages")
 
     print(f"\nDone! Generated {total} pages for {len(TOOLS)} tools.")
 
