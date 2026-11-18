@@ -3,7 +3,6 @@ const path = require('path');
 
 const ROOT = process.cwd();
 const REVIEW_DATE = '28 April 2026';
-const COMPETITOR_REVIEW_DATE = '28 April 2026';
 
 const sourceBank = {
   cacLookup: ['Official CAC public search', 'https://icrp.cac.gov.ng/public-search/'],
@@ -51,65 +50,6 @@ const sourceBank = {
   nisVisa: ['Nigeria Immigration Service visas', 'https://immigration.gov.ng/nigerian-visa/'],
   gisVisa: ['Ghana Immigration Service visas', 'https://gis.gov.gh/visas/'],
   kenyaEvisa: ['Kenya electronic visa information', 'https://ebusiness.go.ke/about-evisa.html'],
-};
-
-const competitorMatrix = {
-  company: {
-    label: 'LegalZoom, Firstbase, Stripe Atlas and registry portals',
-    patterns: [
-      'Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.',
-      'The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.',
-      'They make official portal verification visible so users can tell a government fee from an agent or bundled service fee.',
-    ],
-  },
-  privacy: {
-    label: 'Termly, OneTrust and enterprise consent platforms',
-    patterns: [
-      'Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.',
-      'They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.',
-      'They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding.',
-    ],
-  },
-  documents: {
-    label: 'Rocket Lawyer, Wonder.Legal, LawDepot, PandaDoc and Docusign CLM',
-    patterns: [
-      'Document tools use guided questionnaires, clause libraries, approval notes, e-signing or print-ready exports rather than plain text templates only.',
-      'Contract lifecycle tools keep a single source of truth for parties, evidence, risk flags, approval status and renewal or action dates.',
-      'Good template products make lawyer review moments explicit when the facts are risky or jurisdiction-specific.',
-    ],
-  },
-  employment: {
-    label: 'Deel, Oyster and global HR compliance platforms',
-    patterns: [
-      'Employment compliance platforms start with worker classification and country-specific minimums before generating contracts or HR records.',
-      'They manage contracts, invoices, leave, payroll inputs and compliance reminders in one dashboard.',
-      'The best flows keep misclassification and statutory-minimum risks visible instead of burying them in generic template language.',
-    ],
-  },
-  property: {
-    label: 'Rentometer, AirDNA, Zillow Rental Manager and BuildZoom',
-    patterns: [
-      'Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.',
-      'Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.',
-      'Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision.',
-    ],
-  },
-  travel: {
-    label: 'iVisa, Atlys, Sherpa and official immigration portals',
-    patterns: [
-      'Visa tools win when they combine document checklists, official-source verification, status tracking and downloadable application records.',
-      'The better services distinguish government fees from service charges and warn users about fake portals or unsupported travel purposes.',
-      'Enterprise travel tools reuse documents across trips and surface action-required states instead of leaving users with a static fee estimate.',
-    ],
-  },
-  personal: {
-    label: 'Legal-aid portals, Rocket Lawyer and LawDepot personal-law flows',
-    patterns: [
-      'Personal-law tools work best when they gather facts, documents, urgency and eligibility before pointing people to a court, lawyer or aid office.',
-      'They provide a portable case note or printable pack because users often move between family, court, registry and advice channels.',
-      'They make escalation triggers prominent for contested facts, safety concerns, court deadlines or vulnerable parties.',
-    ],
-  },
 };
 
 const profiles = {
@@ -1033,34 +973,7 @@ function sourceText(keys) {
   }).join('\n');
 }
 
-function competitorKey(slug, profile) {
-  const text = `${slug} ${profile.hubGroup || ''} ${profile.title}`.toLowerCase();
-  if (/(tenancy|rental|rent|tenant|lease)/.test(slug)) return 'property';
-  if (/(privacy|data|cookie|consent|breach|dpa|dpia|popia|ndpa|gdpr|transfer)/.test(text)) return 'privacy';
-  if (/(employment|worker|contractor|minimum wage|leave|overtime|staff|labour|labor)/.test(text)) return 'employment';
-  if (/(visa|passport|travel|vaccination|immigration)/.test(text)) return 'travel';
-  if (/(property|tenancy|rental|rent|tenant|lease|land|title|building|survey|valuation|short-let|housing|mortgage|construction|agent|deposit|service charge|plot)/.test(text)) return 'property';
-  if (/(nda|agreement|contract|resolution|shareholder|partnership|template|clause)/.test(text)) return 'documents';
-  if (/(will|estate|inheritance|divorce|child|bail|court|legal aid|affidavit|statutory|power of attorney|maintenance)/.test(text)) return 'personal';
-  return 'company';
-}
-
-function competitorInsight(slug, profile) {
-  return competitorMatrix[competitorKey(slug, profile)] || competitorMatrix.documents;
-}
-
-function competitorImplementation(slug, profile) {
-  const nextTool = profile.related && profile.related[0] ? profile.related[0][0] : 'the next linked tool';
-  return [
-    `This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.`,
-    `The app-specific checklist is not generic: it starts with "${profile.checklist[0]}".`,
-    `Saved workflows can be resumed from the dashboard and handed off to ${nextTool} when the matter naturally continues.`,
-    `Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.`,
-  ];
-}
-
 function buildWorkflowConfig(slug, profile) {
-  const competitor = competitorInsight(slug, profile);
   return {
     slug,
     title: profile.name ? profile.name.replace(/&#x?[0-9a-f]+;|&[a-z]+;/gi, '').trim() || titleCase(slug) : titleCase(slug),
@@ -1070,12 +983,6 @@ function buildWorkflowConfig(slug, profile) {
     evidence: profile.checklist,
     redFlags: profile.redFlags,
     related: (profile.related || []).slice(0, 4).map(([label, href]) => ({ label, href })),
-    competitor: {
-      group: competitorKey(slug, profile),
-      label: competitor.label,
-      patterns: competitor.patterns,
-      implemented: competitorImplementation(slug, profile),
-    },
   };
 }
 
@@ -1112,41 +1019,6 @@ function buildUpgrade(profile) {
     '  </div>',
     '</section>',
     '<!-- LEGAL-DEEP-IMPROVEMENT:END -->',
-    '',
-  ].join('\n');
-}
-
-function buildCompetitorUpgrade(slug, profile) {
-  const insight = competitorInsight(slug, profile);
-  const implemented = competitorImplementation(slug, profile);
-  return [
-    '<!-- LEGAL-COMPETITOR-CHECK:START -->',
-    '<section class="leg-competitor" aria-labelledby="legal-competitor-heading">',
-    `  <div class="leg-action-kicker">Competitor check - ${htmlEscape(COMPETITOR_REVIEW_DATE)}</div>`,
-    '  <div class="leg-competitor-head">',
-    `    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>`,
-    `    <p>Benchmarked against ${htmlEscape(insight.label)}. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>`,
-    '  </div>',
-    '  <div class="leg-competitor-grid">',
-    '    <div>',
-    '      <h3>Observed feature pattern</h3>',
-    `      <ul>${list(insight.patterns)}</ul>`,
-    '    </div>',
-    '    <div>',
-    '      <h3>Implemented on this app</h3>',
-    `      <ul>${list(implemented)}</ul>`,
-    '    </div>',
-    '    <div>',
-    '      <h3>Best next move</h3>',
-    `      <ul>${list([
-      profile.decisions[0],
-      profile.checklist[0],
-      profile.redFlags[0],
-    ])}</ul>`,
-    '    </div>',
-    '  </div>',
-    '</section>',
-    '<!-- LEGAL-COMPETITOR-CHECK:END -->',
     '',
   ].join('\n');
 }
@@ -1313,16 +1185,6 @@ function upsertActionPack(html, section) {
   );
 }
 
-function upsertCompetitorCheck(html, section) {
-  return upsertMarkedSection(
-    html,
-    section,
-    '<!-- LEGAL-COMPETITOR-CHECK:START -->',
-    '<!-- LEGAL-COMPETITOR-CHECK:END -->',
-    ['<!-- LEGAL-ACTION-PACK:START -->', '<!-- LEGAL-DEEP-IMPROVEMENT:START -->', '<section class="leg-seo"', '<div class="leg-seo"', '<afro-related-tools', '<afro-footer', '</main>', '</body>']
-  );
-}
-
 function upsertWorkflowCopilot(html, section) {
   return upsertMarkedSection(
     html,
@@ -1458,7 +1320,7 @@ function updateTool(slug, profile) {
   next = repairGeneratedPrintHtmlLeaks(next);
   next = upsertWorkflowCopilot(next, buildWorkflowCopilot(slug, profile));
   next = upsertSection(next, buildUpgrade(profile));
-  next = upsertCompetitorCheck(next, buildCompetitorUpgrade(slug, profile));
+  next = next.replace(/<!-- LEGAL-COMPETITOR-CHECK:START -->[\s\S]*?<!-- LEGAL-COMPETITOR-CHECK:END -->\r?\n?/g, '');
   next = upsertActionPack(next, buildActionPack(slug, profile));
   next = ensureWorkflowScript(next);
   next = ensureActionCopyScript(next);
@@ -1549,7 +1411,7 @@ const hubJourneyMap = [
   '  <div class="leg-journey-head">',
   '    <span class="leg-intake-kicker">Connected legal workflows</span>',
   '    <h2 id="legal-journey-heading">Move across apps without losing the matter file</h2>',
-  '    <p>Competitor review showed the strongest legal products keep users inside a workflow: questionnaire, evidence, status, export, reminders and the next related action. This map turns the legal hub into that kind of workspace while keeping AfroTools free at the first result.</p>',
+  '    <p>Choose the task that matches your matter to find the relevant tools, documents and next steps.</p>',
   '  </div>',
   '  <div class="leg-journey-grid">',
   legalJourneyMap,

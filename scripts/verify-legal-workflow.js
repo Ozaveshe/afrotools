@@ -85,11 +85,11 @@ for (const href of uniqueLinks) {
     continue;
   }
   const data = JSON.parse(match[1]);
+  assert(!data.competitor && !html.includes('id="legal-competitor-heading"'), "Internal benchmark content on " + href);
   if (!data.slug || !data.workflowTitle || !data.decision ||
       !Array.isArray(data.evidence) || data.evidence.length < 3 ||
       !Array.isArray(data.redFlags) || data.redFlags.length < 3 ||
-      !Array.isArray(data.related) || data.related.length < 1 ||
-      !data.competitor || !Array.isArray(data.competitor.implemented) || data.competitor.implemented.length < 2) {
+      !Array.isArray(data.related) || data.related.length < 1) {
     thinWorkflowData.push(`${href}: incomplete workflow data`);
   }
 }

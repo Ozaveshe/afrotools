@@ -109,8 +109,8 @@
     function h(e, t) {
         var n = (e.evidence || []).filter(function(e) {
             return -1 === t.evidence.indexOf(e);
-        }), o = t.risks.length ? "Escalate before filing, signing, publishing, or relying on the output." : "No listed red flags selected.", r = e.competitor && e.competitor.label ? e.competitor.label : "reviewed competitor tools";
-        return [ i(e.workflowTitle || e.title || "Legal workflow") + " handoff note", "Tool: " + i(e.slug || window.location.pathname), "Coverage: " + i(e.coverage || "Check page coverage label"), "Matter: " + (t.matter || "Not named"), "Country or regime: " + (t.country || "Not specified"), "Target date: " + (t.date || "Not set"), "Status: " + t.status, "", "Competitor lens:", "- Benchmarked against " + r + " on 28 April 2026.", "", "Decision this supports:", "- " + i(e.decision || "Review the app output and supporting evidence before acting."), "", "Evidence checked:", t.evidence.length ? t.evidence.map(function(e) {
+        }), o = t.risks.length ? "Escalate before filing, signing, publishing, or relying on the output." : "No listed red flags selected.";
+        return [ i(e.workflowTitle || e.title || "Legal workflow") + " handoff note", "Tool: " + i(e.slug || window.location.pathname), "Coverage: " + i(e.coverage || "Check page coverage label"), "Matter: " + (t.matter || "Not named"), "Country or regime: " + (t.country || "Not specified"), "Target date: " + (t.date || "Not set"), "Status: " + t.status, "", "Decision this supports:", "- " + i(e.decision || "Review the app output and supporting evidence before acting."), "", "Evidence checked:", t.evidence.length ? t.evidence.map(function(e) {
             return "- " + e;
         }).join("\n") : "- None marked yet", "", "Evidence still missing:", n.length ? n.map(function(e) {
             return "- " + e;
