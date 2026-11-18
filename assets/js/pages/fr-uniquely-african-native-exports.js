@@ -220,12 +220,21 @@
       resultSelector: "#summary-output",
       missing: ["json"],
       payload: function () {
+        var result = window.AfroToolsFrenchMarketDaysPayload;
+        var knownDate = value("#known-date");
+        var count = Number(value("#count"));
+        if (!result || !knownDate || result.date !== knownDate ||
+            !Number.isInteger(count) || count < 3 || count > 20 ||
+            !Array.isArray(result.upcomingDates) || result.upcomingDates.length !== count) {
+          return null;
+        }
         return {
           route: "/fr/tools/jours-marche/",
           country: value("#country"),
           market: value("#market-name"),
           cycle: value("#cycle"),
-          knownDate: value("#known-date"),
+          knownDate: knownDate,
+          upcomingDates: result.upcomingDates.slice(),
           nextDates: text("#next-output"),
           summary: text("#summary-output")
         };
@@ -284,7 +293,7 @@
       return null;
     }
     var payload = contract.payload();
-    if (!hasMeaningfulResult(payload)) {
+    if (!payload || !hasMeaningfulResult(payload)) {
       status("Calculez d’abord un résultat avant de l’exporter.", true);
       return null;
     }
