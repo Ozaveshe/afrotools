@@ -6,7 +6,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 2 | 312 |
+| fr | 161 | 3 | 311 |
 | sw | 138 | 1 | 336 |
 
 ## By surface class
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 31 | 0 | 1 | 28 | 0 | 4 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 348 | 40 | 0 | 308 | 21 | 0 | 327 |
+| editorial | 348 | 40 | 1 | 307 | 21 | 0 | 327 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -290,7 +290,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/how-to-invest-treasury-bills-kenya/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/how-to-invest-treasury-bills-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/how-to-invest-treasury-bills-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
-| /blog/igbo-market-days/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/igbo-market-days/ | editorial | fr | /fr/blog/igbo-market-days/ | under-standard | FAQ schema missing |
 | /blog/igbo-market-days/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/import-cost-checklist-african-small-business/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/import-cost-checklist-african-small-business/ | editorial | sw | — | missing | no localized route or owner file |

@@ -1,6 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
 const route = '/tools/electricity-tariff/';
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => { window.__AFROTOOLS_ELECTRICITY_AS_OF__ = '2026-11-07'; });
+});
 
 test('current provider workflow calculates both directions and shows source freshness', async ({ page }) => {
   const errors = [];
@@ -14,15 +17,15 @@ test('current provider workflow calculates both directions and shows source fres
   await expect(page.locator('#electricityProvider')).toContainText('UEDCL');
   await expect(page.locator('#electricityTariff')).toContainText('Domestic standard');
   await page.getByRole('button', { name: 'Calculate electricity estimate' }).click();
-  await expect(page.locator('#electricityPrimary')).toContainText('12.83 kWh');
-  await expect(page.locator('#electricityFreshness')).toContainText('verified 2026-08-15');
+  await expect(page.locator('#electricityPrimary')).toContainText(/6[.,]56 kWh/);
+  await expect(page.locator('#electricityFreshness')).toContainText('verified 2026-11-07');
   await expect(page.getByRole('link', { name: /Open Electricity Regulatory Authority/ })).toBeVisible();
 
   await page.getByLabel('Units → bill').check();
-  await page.locator('#electricityTariff').selectOption('ug-uedcl-domestic-lifeline-q3-2026');
+  await page.locator('#electricityTariff').selectOption('ug-uedcl-domestic-lifeline-q4-2026');
   await page.locator('#electricityAmount').fill('30');
   await page.getByRole('button', { name: 'Calculate electricity estimate' }).click();
-  await expect(page.locator('#electricityPrimary')).toContainText('15,441');
+  await expect(page.locator('#electricityPrimary')).toContainText('22,185');
   expect(errors).toEqual([]);
 });
 
@@ -48,7 +51,7 @@ test('unsupported country fails closed and custom rate stays local', async ({ pa
 
 test('expired records show the exact stale state instead of an automatic result', async ({ browser }) => {
   const context = await browser.newContext();
-  await context.addInitScript(() => { window.__AFROTOOLS_ELECTRICITY_AS_OF__ = '2026-10-01'; });
+  await context.addInitScript(() => { window.__AFROTOOLS_ELECTRICITY_AS_OF__ = '2027-01-01'; });
   const page = await context.newPage();
   await page.goto(route);
   await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY === true);
@@ -87,9 +90,61 @@ for (const locale of [
     await expect(page.getByRole('heading', { name: locale.heading, level: 1 })).toBeVisible();
     await expect(page.locator('#electricityCountry')).toHaveValue('UG');
     await page.locator('.electricity-button').click();
-    await expect(page.locator('#electricityPrimary')).toContainText('12.83 kWh');
-    await expect(page.locator('#electricityFreshness')).toContainText('2026-08-15');
+    await expect(page.locator('#electricityPrimary')).toContainText(/6[.,]56 kWh/);
+    await expect(page.locator('#electricityFreshness')).toContainText('2026-11-07');
     await expect(page.locator('#electricitySource')).toHaveAttribute('href', /era\.go\.ug/);
     expect(errors).toEqual([]);
   });
 }
+
+
+test('Uganda monthly context supports repeat purchases and hides irrelevant controls', async ({ page }) => {
+  await page.goto(route);
+  await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY === true);
+  await page.locator('#electricityPreviousUnits').fill('80');
+  await page.locator('#electricityServiceMonths').fill('0');
+  await page.locator('#electricityAmount').fill('4861.6');
+  await page.getByRole('button', { name: 'Calculate electricity estimate' }).click();
+  await expect(page.locator('#electricityPrimary')).toContainText('10 kWh');
+  await expect(page.locator('#electricityBreakdown')).toContainText('741.6');
+  await page.locator('#electricityServiceMonths').fill('-1');
+  await expect(page.locator('#electricityResult')).toBeHidden();
+  await page.getByRole('button', { name: 'Calculate electricity estimate' }).click();
+  await expect(page.locator('#electricityStatus')).toContainText('non-negative whole number');
+  await page.getByLabel('Units → bill').check();
+  await expect(page.locator('#electricityPreviousUnits')).toBeHidden();
+  await page.locator('#electricityCountry').selectOption('TZ');
+  await expect(page.locator('#electricityUgandaFields')).toBeHidden();
+  await page.locator('#electricityAmount').fill('100');
+  await page.getByRole('button', { name: 'Calculate electricity estimate' }).click();
+  await expect(page.locator('#electricityPrimary')).toContainText('16,250');
+});
+
+test('French electricity scenario restores Q4 billing mode, tariff and monthly service charges', async ({ page }) => {
+  await page.goto('/fr/tools/tarifs-electricite/');
+  await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY);
+  const billMode = page.locator('[name="electricityMode"][value="units_to_bill"]');
+  const prepaidMode = page.locator('[name="electricityMode"][value="money_to_units"]');
+  await billMode.check();
+  const tariff = 'ug-uedcl-domestic-lifeline-q4-2026';
+  await page.locator('#electricityTariff').selectOption(tariff);
+  await page.locator('#electricityAmount').fill('30');
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('[data-fr-energy-export]').click();
+  const stream = await (await downloadPromise).createReadStream();
+  const chunks = [];
+  for await (const chunk of stream) chunks.push(chunk);
+  const scenario = JSON.parse(Buffer.concat(chunks));
+  expect(scenario.inputs).toMatchObject({ electricityMode: 'units_to_bill', tariff, amount: '30', electricityServiceMonths: '1' });
+  for (const savedMode of ['units_to_bill', true]) {
+    await prepaidMode.check();
+    await page.locator('#electricityServiceMonths').fill('0');
+    scenario.inputs.electricityMode = savedMode;
+    await page.locator('[data-fr-energy-import]').setInputFiles({
+      name: 'scenario.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(scenario))
+    });
+    await expect(billMode).toBeChecked();
+    await page.locator('.electricity-button').click();
+    await expect(page.locator('#electricityPrimary')).toContainText('22,185.18');
+  }
+});
