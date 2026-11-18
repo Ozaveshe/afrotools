@@ -43,6 +43,8 @@ for (const app of apps) {
     }
     if (app.id === "demurrage-calculator") {
       await page.getByLabel("Siku bandarini").fill("1.5");
+    } else if (app.id === "lc-calculator" || app.id === "trade-finance-comparator") {
+      await page.getByLabel("Thamani ya biashara (USD)").fill("0");
     } else if (app.id === "hs-code-lookup") {
       await page.getByRole("searchbox").fill("zzzzzz");
     } else {
