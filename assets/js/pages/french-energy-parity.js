@@ -21,6 +21,9 @@
     ["Commercial low voltage — Code 10.2 average","Professionnels basse tension — moyenne code 10.2"],
     ["Uses the published average commercial rate. Time-of-use peak, shoulder and off-peak pricing is outside this first release.","Utilise le tarif moyen publié pour les professionnels. La tarification selon les périodes de pointe, intermédiaires et creuses n’est pas couverte par cette version."],
     ["Commercial average energy charge","Coût moyen de l’énergie pour les professionnels"],
+    [" TANESCO D1 low-usage domestic and T1 general-use classes from EWURA’s published schedule.", " catégories TANESCO D1 domestique à faible consommation et T1 usage général selon la grille publiée par l’EWURA."],
+    ["Ethiopia (custom rate)", "Éthiopie (tarif personnalisé)"],
+    ["Additional receipt deductions not already included in the tariff. Do not enter 18% again for Uganda domestic VAT.", "Déductions supplémentaires du reçu qui ne sont pas déjà incluses dans le tarif. Ne saisissez pas de nouveau les 18 % de TVA pour un compte domestique en Ouganda."],
     ["D1 low-usage domestic","D1 résidentiel à faible consommation"],
     ["D1 is for domestic customers averaging less than 75 kWh per month. Select this class only when TANESCO assigns it to the account.","D1 concerne les clients résidentiels dont la consommation moyenne est inférieure à 75 kWh par mois. Sélectionnez cette catégorie uniquement si TANESCO l’attribue au compte."],
     ["First 75 kWh","75 premiers kWh"],
@@ -78,18 +81,28 @@
     ["Immediate tariff examples", "Exemples tarifaires immédiats"],
     ["These crawlable examples use the same maintained records as the calculator and make the class assumptions explicit.", "Ces exemples indexables utilisent les mêmes données tenues à jour que le calculateur et précisent les hypothèses de catégorie."],
     ["Uganda standard: UGX 10,000", "Ouganda standard : 10 000 UGX"],
-    ["At UEDCL’s Q3 2026 domestic standard rate of UGX 779.4/kWh, UGX 10,000 buys about ", "Au tarif domestique standard UEDCL du troisième trimestre 2026 de 779,4 UGX/kWh, 10 000 UGX achètent environ "],
+    ["Uganda domestic billing context", "Facturation domestique en Ouganda"],
+    ["Units already purchased this month (kWh)", "Unités déjà achetées ce mois-ci (kWh)"],
+    ["Use 0 for the first purchase; later purchases continue the same monthly tariff bands.", "Saisissez 0 pour le premier achat ; les achats suivants continuent les mêmes paliers mensuels."],
+    ["Unpaid monthly service charges", "Nombre de frais mensuels de service impayés"],
+    ["UGX 3,360 per month before VAT. Use 1 for this month only, 0 if already paid, or the number of unpaid months shown by UEDCL. A full monthly bill normally includes one charge.", "3 360 UGX par mois hors TVA. Saisissez 1 pour ce mois uniquement, 0 si déjà payé, ou le nombre de mois impayés indiqué par UEDCL. Une facture mensuelle complète comprend normalement un frais de service."],
+    ["Uganda domestic estimates include 18% VAT on energy and service charges. Do not add this VAT or the same service charge again under receipt deductions. Confirm lifeline eligibility with UEDCL; no eligibility is inferred.", "Les estimations domestiques en Ouganda incluent une TVA de 18 % sur l’énergie et les frais de service. Ne rajoutez pas cette TVA ni les mêmes frais dans les déductions. Confirmez votre admissibilité au tarif social auprès d’UEDCL ; elle n’est pas déduite automatiquement."],
+    ["Official explanation of service charges and VAT", "Explication officielle des frais de service et de la TVA"],
+    ["For a Q4 2026 non-lifeline account with no units bought yet, one unpaid service charge and no other deductions, UGX 10,000 buys about ", "Premier achat du mois, sans tarif social ni autres déductions : 10 000 UGX donnent environ "],
+    ["6.56 kWh", "6,56 kWh"],
+    [" after the UGX 3,360 charge and 18% VAT.", " après un frais de service de 3 360 UGX et 18 % de TVA (T4 2026)."],
+    ["For an eligible UEDCL account, 30 monthly kWh cost UGX 15,441 for energy. Adding one UGX 3,360 service charge and 18% VAT gives ", "Compte admissible au tarif social : 30 kWh coûtent 15 441 UGX en énergie. Avec un frais de service de 3 360 UGX et 18 % de TVA : "],
+    ["UGX 22,185.18", "22 185,18 UGX"],
+    [", excluding other account adjustments.", ", hors autres ajustements du compte."],
+    [" UEDCL Q4 2026 domestic standard and eligible lifeline classes, including the cooking band, service charge and VAT. Commercial automatic estimates remain paused until their full billing components are verified. ", " catégories domestiques UEDCL du T4 2026, avec palier cuisine, frais de service et TVA. Le calcul commercial reste suspendu faute de vérification de tous les frais. "],
     [" before receipt-specific deductions.", " avant les déductions propres au reçu."],
     ["Uganda lifeline: 30 kWh", "Ouganda tarif social : 30 kWh"],
-    ["For an eligible UEDCL lifeline account, the first 15 kWh at UGX 250 and the next 15 kWh at UGX 779.4 total about ", "Pour un compte UEDCL admissible au tarif social, les 15 premiers kWh à 250 UGX et les 15 suivants à 779,4 UGX totalisent environ "],
     ["Tanzania D1: 100 kWh", "Tanzanie D1 : 100 kWh"],
     ["For a TANESCO D1 account, 75 kWh at TZS 100 plus 25 kWh at TZS 350 totals ", "Pour un compte TANESCO D1, 75 kWh à 100 TZS plus 25 kWh à 350 TZS totalisent "],
     ["Coverage and limitations", "Couverture et limites"],
     ["Automatic at release", "Calcul automatique au lancement"],
     ["Uganda:", "Ouganda :"],
-    [" UEDCL Q3 2026 domestic standard, eligible domestic lifeline and commercial average classes. ", " catégories UEDCL du troisième trimestre 2026 : domestique standard, tarif social domestique admissible et moyenne commerciale. "],
     ["Tanzania:", "Tanzanie :"],
-    [" TANESCO D1 low-usage domestic and T1 general-use classes from EWURA’s published schedule.", " catégories TANESCO D1 domestique à faible consommation et T1 usage général selon la grille publiée par l’EWURA."],
     ["Custom-rate only", "Tarif personnalisé uniquement"],
     ["Nigeria, Ghana, Kenya, South Africa, Zambia, Côte d'Ivoire and Senegal are not auto-calculated until exact current provider/class schedules are parsed and reviewed. A regulator homepage or national benchmark is not enough.", "Le Nigeria, le Ghana, le Kenya, l’Afrique du Sud, la Zambie, la Côte d’Ivoire et le Sénégal ne sont pas calculés automatiquement tant que les grilles exactes et actuelles par fournisseur et catégorie ne sont pas analysées et vérifiées. La page d’accueil d’un régulateur ou une moyenne nationale ne suffit pas."],
     ["Bills and token receipts may include taxes, levies, fixed charges, minimum charges, arrears, debt recovery, meter corrections or time-of-use pricing. Enter receipt deductions where known and verify the result before paying or disputing a charge.", "Les factures et reçus de recharge peuvent inclure taxes, prélèvements, frais fixes, minimums, arriérés, recouvrement de dette, corrections de compteur ou tarification horaire. Saisissez les déductions connues et vérifiez le résultat avant de payer ou de contester un montant."],
@@ -592,6 +605,10 @@
     document.querySelectorAll("main input, main select, main textarea, .tool-main input, .tool-main select, .tool-main textarea").forEach(function (field, index) {
       if (field.type === "file" || field.type === "password" || field.disabled) return;
       var key = field.name || field.id || "champ-" + (index + 1);
+      if (key === "electricityMode" && field.type === "radio") {
+        if (field.checked) values[key] = field.value;
+        return;
+      }
       if (field.type === "checkbox" || field.type === "radio") values[key] = Boolean(field.checked);
       else values[key] = field.value;
     });
@@ -602,7 +619,15 @@
     Object.keys(values || {}).forEach(function (key) {
       var field = document.querySelector('[name="' + CSS.escape(key) + '"],#' + CSS.escape(key));
       if (!field || field.type === "file" || field.type === "password") return;
-      if (field.type === "checkbox" || field.type === "radio") field.checked = Boolean(values[key]);
+      if (key === "electricityMode" && field.type === "radio") {
+        // Older exports stored whether the last radio (units to bill) was checked.
+        var mode = typeof values[key] === "boolean"
+          ? (values[key] ? "units_to_bill" : "money_to_units")
+          : values[key];
+        field = document.querySelector('input[name="electricityMode"][value="' + CSS.escape(String(mode)) + '"]');
+        if (!field) return;
+        field.checked = true;
+      } else if (field.type === "checkbox" || field.type === "radio") field.checked = Boolean(values[key]);
       else field.value = values[key];
       field.dispatchEvent(new Event("input", { bubbles: true }));
       field.dispatchEvent(new Event("change", { bubbles: true }));
