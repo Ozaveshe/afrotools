@@ -348,6 +348,17 @@ function inlineFunction(file, name) {
   }
   throw Error('Actual inline function not found: ' + file + ' ' + name);
 }
+test('generated discovery cards describe the pending dish and suppress unreviewed difficulty', () => {
+  const held = engine.projectPendingRecipeMethod(row(...targets[0]));
+  const card = generator.renderStaticRecipeCard(held, {});
+  assert.match(card, /aria-label="View dish information: ikivuguto-rw"/);
+  assert.match(card, /card-cta">View dish information /);
+  assert.doesNotMatch(card, /<small>Difficulty<\/small>|Open recipe/);
+  const ordinary = generator.renderStaticRecipeCard(row('ordinary', '11111111-1111-4111-8111-111111111111'), {});
+  assert.match(ordinary, /aria-label="Open recipe: ordinary"/);
+  assert.match(ordinary, /<small>Difficulty<\/small>/);
+});
+
 for (const surface of ['featured','country','collection']) for (const [kind, input] of [
   ...targets.map(args => [args[0], engine.projectAttributedRecipe({ ...row(...args), is_featured: true, country_code: 'NG' })]),
   ['ordinary', { ...row('ordinary-dish','11111111-1111-4111-8111-111111111111'), country_code: 'NG' }]

@@ -666,6 +666,8 @@ function renderRecipeFallbackMarkup(recipe, compact) {
 }
 
 function renderStaticRecipeCard(recipe, recipeImages) {
+  const methodPending = attributedRecipes.isPendingRecipeMethod(recipe);
+  const action = methodPending ? "View dish information" : "Open recipe";
   const media = resolveRecipeMedia(recipe, recipeImages);
   const imageSrc = media && media.pageImage ? String(media.pageImage) : "";
   const hasImage = Boolean(isUsableRecipeImage(imageSrc));
@@ -681,7 +683,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
     ? `<span class="ak-static-recipe-card-thumb"><img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async"${recipeImageAttributes(imageSrc, 640, 480, true)}></span>`
     : renderRecipeFallbackMarkup(recipe, true);
 
-  return `<a class="ak-static-recipe-card${hasImage ? " has-thumb" : " has-fallback"}" href="${escapeHtml(href)}" aria-label="Open recipe: ${escapeHtml(recipe.name)}">
+  return `<a class="ak-static-recipe-card${hasImage ? " has-thumb" : " has-fallback"}" href="${escapeHtml(href)}" aria-label="${action}: ${escapeHtml(recipe.name)}">
     ${thumb}
     <span class="ak-static-recipe-card-body">
       <span class="ak-static-recipe-card-badges">
@@ -693,11 +695,11 @@ function renderStaticRecipeCard(recipe, recipeImages) {
       <span class="ak-static-recipe-card-meta">
         ${staticCardMeta("time", "Time", time)}
         ${staticCardMeta("servings", "Servings", servings)}
-        ${staticCardMeta("difficulty", "Difficulty", titleCaseLabel(recipe.difficulty || "medium"))}
+        ${staticCardMeta("difficulty", "Difficulty", methodPending ? "" : titleCaseLabel(recipe.difficulty || "medium"))}
         ${staticCardMeta("diet", "Diet", diet)}
         ${staticCardMeta("country", "Region", region)}
       </span>
-      <span class="ak-static-recipe-card-cta">Open recipe ${akIcon("action", "ak-static-card-icon")}</span>
+      <span class="ak-static-recipe-card-cta">${action} ${akIcon("action", "ak-static-card-icon")}</span>
     </span>
   </a>`.replace(/[ \t]+$/gm, '');
 }
