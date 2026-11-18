@@ -84,6 +84,7 @@
 <link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/">
+<script src="/assets/js/lib/localized-fuel-search.js?v=2f50281c"></script>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -1422,7 +1423,8 @@
       return entry.tool;
     });
 
-    var results = manual.concat(registryResults).filter(function(tool, index, list) {
+    var fuelResult = window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(query, 'sw', window.AFRO_TOOLS.filter(matchesFilters));
+    var results = (fuelResult ? [fuelResult] : manual.concat(registryResults)).filter(function(tool, index, list) {
       var key = String(tool.href || tool.id || '').replace(/\/$/, '');
       return list.findIndex(function(candidate) {
         return String(candidate.href || candidate.id || '').replace(/\/$/, '') === key;

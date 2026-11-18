@@ -146,7 +146,7 @@ a{text-decoration:none;color:inherit;}
 .nl-btn:hover{background:#0059B3;}
 
 @media(max-width:640px){
-  .filter-bar{padding:10px 16px;}
+  .filter-bar{padding:10px 16px;position:static;}
   .filter-inner{gap:8px;}
   .search-wrap{max-width:100%;flex:1 0 100%;}
   .tools-grid{grid-template-columns:1fr;}
@@ -248,6 +248,7 @@ a{text-decoration:none;color:inherit;}
 <link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/">
+<script src="/assets/js/lib/localized-fuel-search.js?v=2f50281c"></script>
 </head>
 <script>
 window.addEventListener('load', function() {
@@ -2388,6 +2389,8 @@ const frenchPublishedIds = new Set(Array.from(document.querySelectorAll('#toolsG
 // FRENCH_DIRECTORY_DIRECT_SEARCH_START
 function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
   if (!terms.length) return tools;
+  const finder = typeof window !== 'undefined' && window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(terms.join(' '), 'fr', tools);
+  if (finder) return [finder];
   const direct = tools.filter(tool => {
     const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
     return terms.every(term => text.includes(term));
