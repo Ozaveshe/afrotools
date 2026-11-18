@@ -824,6 +824,7 @@
 
   function render(reportData) {
     lastReport = reportData;
+    if (tool === "demurrage-calculator") lastReportInputs = JSON.stringify(currentPayload().inputs);
     if (tool === "landed-cost") {
       clearManualCopy();
       lastReportInputs = JSON.stringify(currentPayload().inputs);
@@ -1190,7 +1191,12 @@
       updatePortRate();
       portSelect.addEventListener("change", updatePortRate);
       form.addEventListener("reset", function () { window.setTimeout(updatePortRate, 0); });
-      function clearPortEstimate() { lastReport = null; result.hidden = true; }
+      function clearPortEstimate() {
+        if (lastReport && lastReportInputs !== JSON.stringify(currentPayload().inputs)) {
+          lastReport = null;
+          result.hidden = true;
+        }
+      }
       form.addEventListener("change", clearPortEstimate);
       form.addEventListener("input", clearPortEstimate);
     }
