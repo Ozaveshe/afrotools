@@ -32,3 +32,37 @@ for (const route of ['/pro/', '/pricing/']) {
     expect(errors).toEqual([]);
   });
 }
+
+test('the signed-out Pro choice survives comparison, currency selection and the sign-in return', async ({ page, baseURL }) => {
+  const origin = new URL(baseURL).origin;
+  await page.route('**/*', route => {
+    const request = route.request();
+    return request.method() === 'GET' && new URL(request.url()).origin === origin
+      ? route.continue() : route.abort();
+  });
+  await page.goto('/pricing/');
+  await expect(page.locator('.free-cta')).toHaveAttribute('href', '/tools/');
+  await expect(page.locator('.compare-cards-mobile')).toBeVisible();
+  await expect(page.locator('.compare-table')).toBeHidden();
+  await expect(page.locator('.pro-cta')).toHaveAttribute('href', '/pro/#monthly-plan');
+  await page.getByRole('switch', { name: 'Annual billing' }).focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('#proPrice')).toContainText('$30 USD');
+  await page.getByRole('link', { name: 'Review annual Pro plan' }).press('Enter');
+  await expect(page).toHaveURL(origin + '/pro/#annual-plan');
+  await expect(page.locator('#annual-plan')).toBeInViewport();
+  await page.locator('#currency-select').selectOption('kes');
+  const displayed = await page.locator('#annual-plan .price').innerText();
+  await page.locator('#btn-annual').press('Enter');
+  await expect(page).toHaveURL(/\/auth\/\?/);
+  const signIn = new URL(page.url());
+  expect(signIn.searchParams.get('intent')).toBe('pro-checkout');
+  const next = new URL(signIn.searchParams.get('next'), origin);
+  expect(next.pathname).toBe('/pro/');
+  expect(next.hash).toBe('#annual-plan');
+  expect(next.searchParams.get('currency')).toBe('kes');
+  expect(next.searchParams.get('next')).toBe('/pro/workspace/');
+  await page.goto(next.href);
+  await expect(page.locator('#currency-select')).toHaveValue('kes');
+  await expect(page.locator('#annual-plan .price')).toHaveText(displayed);
+});

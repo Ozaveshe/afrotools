@@ -211,7 +211,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     <span class="card-badge pro-badge">PRO</span>
     <h2>Pro</h2>
     <p class="card-desc" data-claim-key="pro.current-capabilities" data-claim-variant="summary">Pro access follows the current app-readiness and entitlement matrix; preview features are labelled.</p>
-    <div class="price" id="proPrice"><span data-registry-plan="product:monthly" data-registry-field="title">$5</span> <span data-registry-plan="product:monthly" data-registry-field="suffix">/month</span></div>
+    <div class="price" id="proPrice" aria-live="polite" aria-atomic="true"><span data-registry-plan="product:monthly" data-registry-field="title">$5</span> USD <span data-registry-plan="product:monthly" data-registry-field="suffix">/month</span></div>
     <p class="price-sub" id="proPriceSub"><span data-registry-plan="product:monthly" data-registry-field="detail">Billed monthly.</span></p>
     <ul>
       <li>Everything in guest core</li>
@@ -221,7 +221,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       <li>Account and workspace state where the active app supports it</li>
       <li>Separate API plans on the API pricing page</li>
     </ul>
-    <a href="/pro/" class="cta-btn pro-cta">Start Pro Checkout</a>
+    <a href="/pro/#monthly-plan" class="cta-btn pro-cta">Review monthly Pro plan</a>
   </div>
 </section>
 
@@ -289,6 +289,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   const toggle = document.getElementById('billingToggle');
   const price = document.getElementById('proPrice');
   const sub = document.getElementById('proPriceSub');
+  const planLink = document.querySelector('.pro-cta');
   const mLabel = document.querySelector('.monthly-label');
   const yLabel = document.querySelector('.yearly-label');
   let yearly = false;
@@ -311,7 +312,10 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     }
     var plans = window.AfroProPlan.displayMap().usd;
     document.querySelector('.save-badge').textContent = 'SAVE ' + Math.round((1 - plans.annual.amount / (plans.monthly.amount * 12)) * 100) + '%';
-    price.innerHTML = plan.label + ' <span>' + plan.suffix + '</span>';
+    const interval = yearly ? 'annual' : 'monthly';
+    planLink.href = '/pro/#' + interval + '-plan';
+    planLink.textContent = 'Review ' + interval + ' Pro plan';
+    price.innerHTML = plan.label + ' USD <span>' + plan.suffix + '</span>';
     sub.textContent = plan.detail;
   }
 

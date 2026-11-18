@@ -110,7 +110,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .pricing-section h2{font-size:clamp(24px,4vw,36px);font-weight:760;text-align:center;margin:0 0 12px;color:#111827;letter-spacing:0}
 .pricing-section .subtitle{text-align:center;font-size:16px;color:#6B7280;margin:0 0 48px;line-height:1.6}
 .pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
-.p-card{background:#fff;border-radius:18px;padding:40px 32px;border:1.5px solid #E5E7EB;position:relative}
+.p-card{scroll-margin-top:6rem;background:#fff;border-radius:18px;padding:40px 32px;border:1.5px solid #E5E7EB;position:relative}
 .p-card.featured{border-color:var(--color-primary);box-shadow:0 8px 40px rgba(0,98,204,.15)}
 .p-card.featured::before{content:'BEST VALUE';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--color-primary),#005cc5);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;padding:5px 20px;border-radius:100px}
 .p-card-name{font-size:14px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
@@ -454,8 +454,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   </div>
   <div class="pricing-grid">
     <!-- Monthly -->
-    <div class="p-card">
-      <div class="p-card-name">Monthly</div>
+    <div class="p-card" id="monthly-plan" role="group" tabindex="-1" aria-labelledby="monthly-plan-name">
+      <div class="p-card-name" id="monthly-plan-name">Monthly</div>
       <div class="price"><span data-registry-plan="product:monthly" data-registry-field="title">$5</span> <span data-registry-plan="product:monthly" data-registry-field="suffix">/month</span></div>
       <p class="price-detail"><span data-registry-plan="product:monthly" data-registry-field="detail">Billed monthly.</span></p>
       <ul>
@@ -468,11 +468,11 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <li>Early-access local preview workspaces</li>
         <li>Email support</li>
       </ul>
-      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=/pro/" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Pro Checkout</a>
+      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=%2Fpro%2F%23monthly-plan" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Pro Checkout</a>
     </div>
     <!-- Annual -->
-    <div class="p-card featured">
-      <div class="p-card-name">Annual</div>
+    <div class="p-card featured" id="annual-plan" role="group" tabindex="-1" aria-labelledby="annual-plan-name">
+      <div class="p-card-name" id="annual-plan-name">Annual</div>
       <div class="price"><span data-registry-plan="product:annual" data-registry-field="title">$30</span> <span data-registry-plan="product:annual" data-registry-field="suffix">/year</span></div>
       <p class="price-detail"><span data-registry-plan="product:annual" data-registry-field="detail">$2.50/mo - save 50% vs monthly</span></p>
       <ul>
@@ -485,7 +485,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <li>Early-access local preview workspaces</li>
         <li>Priority email support</li>
       </ul>
-      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=/pro/" class="card-cta cta-annual" id="btn-annual" role="button">Start Pro Checkout</a>
+      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=%2Fpro%2F%23annual-plan" class="card-cta cta-annual" id="btn-annual" role="button">Start Pro Checkout</a>
     </div>
   </div>
 </section>
@@ -685,6 +685,18 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   var annualPrice = document.querySelector('.pricing-grid .p-card.featured .price');
   var annualDetail = document.querySelector('.pricing-grid .p-card.featured .price-detail');
 
+  var returnRoute = window.AfroProReturn.current();
+  function planSignInUrl(interval) {
+    var params = new URLSearchParams({ next: returnRoute, currency: currencySelect.value });
+    var next = '/pro/?' + params.toString() + '#' + interval + '-plan';
+    return '/auth/?mode=signup&intent=pro-checkout&next=' + encodeURIComponent(next);
+  }
+
+  function updatePlanLinks() {
+    document.getElementById('btn-monthly').href = planSignInUrl('monthly');
+    document.getElementById('btn-annual').href = planSignInUrl('annual');
+  }
+
   function updatePricing() {
     var c = currencySelect.value;
     var monthly = priceFor(c, 'monthly');
@@ -694,16 +706,22 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     monthlyDetail.textContent = monthly.detail;
     annualPrice.innerHTML = annual.label + ' <span>' + annual.suffix + '</span>';
     annualDetail.textContent = annual.detail;
+    updatePlanLinks();
   }
 
+  var requestedCurrency = new URLSearchParams(location.search).get('currency');
+  if (requestedCurrency !== currencySelect.value &&
+      Array.from(currencySelect.options).some(function(option) { return option.value === requestedCurrency; })) {
+    currencySelect.value = requestedCurrency;
+    updatePricing();
+  } else {
+    updatePlanLinks();
+  }
   currencySelect.addEventListener('change', updatePricing);
   if (window.AfroTools && window.AfroTools.analytics) {
     window.AfroTools.analytics.trackProPricing('pro-index');
   }
 
-  var returnRoute = window.AfroProReturn.current();
-  var checkoutReturn = '/pro/?next=' + encodeURIComponent(returnRoute);
-  var loginReturn = '/auth/?mode=signup&intent=pro-checkout&next=' + encodeURIComponent(checkoutReturn);
   // Checkout via Paystack
   async function startCheckout(interval) {
     var currency = currencySelect.value;
@@ -717,12 +735,12 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 
     // Require login to subscribe
     if (!window.AfroAuth || !window.AfroAuth.isLoggedIn || !window.AfroAuth.isLoggedIn()) {
-      window.location.href = loginReturn;
+      window.location.href = planSignInUrl(interval);
       return;
     }
     var token = window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : null;
     if (!token) {
-      window.location.href = loginReturn;
+      window.location.href = planSignInUrl(interval);
       return;
     }
 
