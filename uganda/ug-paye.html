@@ -1314,14 +1314,25 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 }
 
 // ── WHATSAPP SHARE ───────────────────────────────────────────
+function sharePeriodAmounts(result, period) {
+  const annual = period === 'annual';
+  const amount = value => 'UGX ' + Math.round(value).toLocaleString() + (annual ? '/yr' : '/mo');
+  return {
+    net: amount(annual ? result.annualNet : result.netMonthly),
+    gross: amount(annual ? result.annualGross : result.gross),
+    paye: amount(annual ? result.annualTax : result.monthlyPAYE)
+  };
+}
+
 function whatsappShare() {
   if (!RESULT) return;
+  const amounts = sharePeriodAmounts(RESULT, PERIOD);
   AfroTools.shareState.whatsappShare({
     headline: 'My Take-Home Pay',
-    mainValue: 'UGX ' + Math.round(RESULT.netMonthly).toLocaleString() + '/mo',
+    mainValue: amounts.net,
     subValues: [
-      { label: 'Gross', value: 'UGX ' + Math.round(RESULT.gross).toLocaleString() + '/mo' },
-      { label: 'PAYE', value: 'UGX ' + Math.round(RESULT.monthlyPAYE).toLocaleString() + '/mo' },
+      { label: 'Gross', value: amounts.gross },
+      { label: 'PAYE', value: amounts.paye },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ],
     toolId: 'ug-paye'
@@ -1337,7 +1348,8 @@ async function shareResult() {
   const button = document.getElementById('ugShareBtn');
   const status = document.getElementById('ugShareStatus');
   const current = () => revision === exportRevision && attempt === shareAttempt && RESULT === result && button.isConnected;
-  const text = `My Uganda PAYE breakdown: Gross UGX ${Math.round(result.gross).toLocaleString()}/mo → Take-home UGX ${Math.round(result.netMonthly).toLocaleString()}/mo (${pct(result.effectiveRate)} effective rate). Calculated at afrotools.com/uganda/ug-paye`;
+  const amounts = sharePeriodAmounts(result, PERIOD);
+  const text = `My Uganda PAYE breakdown: Gross ${amounts.gross} → Take-home ${amounts.net} (${pct(result.effectiveRate)} effective rate). Calculated at afrotools.com/uganda/ug-paye`;
   const canShare = typeof navigator.share === 'function';
   try {
     if (canShare) {
