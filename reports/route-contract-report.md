@@ -7,7 +7,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7878 |
 | Permanent and temporary redirects | 3188 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
@@ -15,7 +15,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
 | Documented fallbacks | 15046 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7878 |
 
 ## Locale Coverage
 
@@ -4615,7 +4615,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:525041d77f05: en=`/tools/business-insurance/tanzania`; x-default=`/tools/business-insurance/tanzania`
 - equivalence:5258be1e2e80: en=`/agriculture/irrigation/senegal`, fr=`/fr/agriculture/irrigation/senegal`, sw=`/sw/kilimo/umwagiliaji/senegal/`; x-default=`/agriculture/irrigation/senegal`
 - equivalence:525e701e6b78: en=`/for-schools/`, fr=`/fr/pour-ecoles/`, sw=`/sw/kwa-shule/`; x-default=`/for-schools/`
-- equivalence:5276780b5cd6: en=`/blog/naira-in-words/`; x-default=`/blog/naira-in-words/`
 - equivalence:52a5b1a18d42: en=`/agriculture/crop-yield/congo-brazzaville`, fr=`/fr/agriculture/crop-yield/congo-brazzaville`, sw=`/sw/kilimo/mavuno/congo/`; x-default=`/agriculture/crop-yield/congo-brazzaville`
 - equivalence:52aa1f8c3f8f: fr=`/fr/widgets/louer-vs-acheter-widget/`; x-default=`/fr/widgets/louer-vs-acheter-widget/`
 - equivalence:52b5d91f0378: en=`/jamb/government/1994/`; x-default=`/jamb/government/1994/`
@@ -7389,6 +7388,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fa332e674a45: en=`/tools/kcse-calculator/`, fr=`/fr/tools/calculateur-kcse/`, sw=`/sw/zana/kikokotoo-kcse/`; x-default=`/tools/kcse-calculator/`
 - equivalence:fa3423e163cf: en=`/botswana/bw-vat`, fr=`/fr/botswana/bw-vat`, sw=`/sw/botswana/kikokotoo-vat/`; x-default=`/botswana/bw-vat`
 - equivalence:fa5ebe463a89: en=`/tools/freelancer-rate/egypt/`, fr=`/fr/tools/calculateur-de-tarif-independant-egypte/`; x-default=`/tools/freelancer-rate/egypt/`
+- equivalence:fa8a1ec45786: en=`/blog/naira-in-words/`, fr=`/fr/blog/naira-in-words/`; x-default=`/blog/naira-in-words/`
 - equivalence:fa8b7cc83bc7: en=`/tools/afrokitchen/recipes/jollof-rice-lr/`; x-default=`/tools/afrokitchen/recipes/jollof-rice-lr/`
 - equivalence:faa1fa30e466: en=`/tools/maternity-leave/liberia/`; x-default=`/tools/maternity-leave/liberia/`
 - equivalence:faa52a1ba0f3: en=`/tools/retrenchment-calculator/cameroon/`, sw=`/sw/cameroon/kikokotoo-malipo-ya-kuachishwa-kazi/`; x-default=`/tools/retrenchment-calculator/cameroon/`
