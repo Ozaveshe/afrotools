@@ -686,25 +686,25 @@ function invalidateReport(){
   var comparisonStatus=byId("systemSizeComparisonStatus");if(comparisonStatus)comparisonStatus.textContent="Corrigez les champs signalés pour comparer les tailles de système.";
 }
 function set(id,main,text,accessible){var el=byId(id);if(el){el.textContent=main;el.setAttribute("aria-label",accessible||main);}var tx=byId(id+"Text");if(tx&&text)tx.textContent=text;}
-function confidenceText(payback){if(!payback)return DEFAULTS.confidence+" confidence";if(payback<=5)return DEFAULTS.confidence+" confidence, strong case";if(payback<=8)return DEFAULTS.confidence+" confidence, quote-sensitive";return DEFAULTS.confidence+" confidence, resilience-led";}
+function confidenceText(payback){var level={High:"élevée",Medium:"moyenne",Low:"faible"}[DEFAULTS.confidence]||"à vérifier";if(!payback)return "Fiabilité des hypothèses : "+level+"";if(payback<=5)return "Fiabilité des hypothèses : "+level+" ; délai d’amortissement court";if(payback<=8)return "Fiabilité des hypothèses : "+level+" ; résultat sensible au devis";return "Fiabilité des hypothèses : "+level+" ; intérêt surtout lié au secours électrique";}
 function esc(value){return String(value==null?"":value).replace(/[&<>"']/g,function(ch){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];});}
 var FIELD_RULES={
-  monthlyBill:{label:"Monthly grid bill",min:0,message:"Monthly grid bill cannot be negative."},
-  generatorSpend:{label:"Monthly generator spend",min:0,message:"Generator spend cannot be negative."},
-  outageHours:{label:"Outage hours per day",min:0,max:24,message:"Outage hours must be between 0 and 24."},
-  systemKW:{label:"Solar system size",min:.1,message:"System size must be positive."},
-  tariffPerKwh:{label:"Tariff per kWh",min:0,message:"Tariff cannot be negative."},
-  fuelPrice:{label:"Fuel price per litre",min:0,message:"Fuel price cannot be negative."},
+  monthlyBill:{label:"Facture mensuelle d’électricité",min:0,message:"La facture mensuelle d’électricité doit être positive ou nulle."},
+  generatorSpend:{label:"Dépenses mensuelles du groupe électrogène",min:0,message:"Les dépenses de carburant doivent être positives ou nulles."},
+  outageHours:{label:"Durée quotidienne des coupures",min:0,max:24,message:"La durée des coupures doit être comprise entre 0 et 24 heures par jour."},
+  systemKW:{label:"Puissance de l’installation",min:.1,message:"La puissance de l’installation doit être supérieure à zéro."},
+  tariffPerKwh:{label:"Tarif du kWh",min:0,message:"Le tarif doit être positif ou nul."},
+  fuelPrice:{label:"Prix du litre de carburant",min:0,message:"Le prix du carburant doit être positif ou nul."},
   solarYield:{label:"Rendement solaire",min:1,max:9,message:"Le rendement solaire doit être compris entre 1 et 9 heures de soleil utiles par jour."},
-  performanceRatio:{label:"Performance ratio",min:.4,max:.95,message:"Performance ratio should be between 0.40 and 0.95."},
-  panelWatt:{label:"Panel wattage",min:250,max:750,message:"Panel wattage should be between 250 W and 750 W."},
-  batteryDodPct:{label:"Battery depth of discharge",min:50,max:95,message:"Battery depth of discharge should be between 50% and 95%."},
-  installCostPerKw:{label:"Install cost per kW",min:0,message:"Install cost cannot be negative."},
-  batteryCost:{label:"Battery cost band",min:0,message:"Battery cost cannot be negative."},
-  maintenancePct:{label:"Annual maintenance percent",min:0,max:20,message:"Maintenance should be between 0% and 20%."},
-  depositPct:{label:"Finance deposit percent",min:0,max:100,message:"Finance deposit should be between 0% and 100%."},
-  interestPct:{label:"Annual finance interest",min:0,max:80,message:"Finance interest should be between 0% and 80%."},
-  loanMonths:{label:"Finance term in months",min:1,max:120,message:"Finance term should be between 1 and 120 months."}
+  performanceRatio:{label:"Ratio de performance",min:.4,max:.95,message:"Le ratio de performance doit être compris entre 0,40 et 0,95."},
+  panelWatt:{label:"Puissance du panneau",min:250,max:750,message:"La puissance du panneau doit être comprise entre 250 et 750 W."},
+  batteryDodPct:{label:"Profondeur de décharge de la batterie",min:50,max:95,message:"La profondeur de décharge doit être comprise entre 50 % et 95 %."},
+  installCostPerKw:{label:"Coût installé par kW",min:0,message:"Le coût d’installation doit être positif ou nul."},
+  batteryCost:{label:"Coût de la batterie",min:0,message:"Le coût de la batterie doit être positif ou nul."},
+  maintenancePct:{label:"Taux annuel d’entretien",min:0,max:20,message:"Le taux annuel d’entretien doit être compris entre 0 % et 20 %."},
+  depositPct:{label:"Taux d’apport initial",min:0,max:100,message:"L’apport initial doit être compris entre 0 % et 100 %."},
+  interestPct:{label:"Taux d’intérêt annuel",min:0,max:80,message:"Le taux d’intérêt doit être compris entre 0 % et 80 %."},
+  loanMonths:{label:"Durée du crédit en mois",min:1,max:120,message:"La durée du crédit doit être comprise entre 1 et 120 mois."}
 };
 function setFieldError(id,message){var el=byId(id);var error=byId(id+"Error");if(el){el.setAttribute("aria-invalid",message?"true":"false");}if(error)error.textContent=message||"";}
 function validateInputs(focusFirst){
@@ -712,7 +712,7 @@ function validateInputs(focusFirst){
   Object.keys(FIELD_RULES).forEach(function(id){
     var rule=FIELD_RULES[id];var el=byId(id);if(!el)return;
     var value=Number(el.value);var message="";
-    if(!el.value.trim()||(el.validity&&el.validity.badInput)||!Number.isFinite(value)){message="Enter a number for "+rule.label.toLowerCase()+".";}
+    if(!el.value.trim()||(el.validity&&el.validity.badInput)||!Number.isFinite(value)){message="Saisissez une valeur numérique pour le champ suivant : "+rule.label.toLowerCase()+".";}
     else if(rule.min!=null&&value<rule.min){message=rule.message;}
     else if(rule.max!=null&&value>rule.max){message=rule.message;}
     setFieldError(id,message);
@@ -721,8 +721,8 @@ function validateInputs(focusFirst){
   var summary=byId("calcErrorSummary");
   if(errors.length){
     invalidateReport();
-    if(summary)summary.textContent=errors.length===1?errors[0].message:"Fix "+errors.length+" highlighted fields before using this estimate.";
-    var status=byId("resultStatus");if(status)status.textContent="Fix highlighted inputs before results can update.";
+    if(summary)summary.textContent=errors.length===1?errors[0].message:"Corrigez les "+errors.length+" champs signalés avant d’utiliser cette estimation.";
+    var status=byId("resultStatus");if(status)status.textContent="Corrigez les champs signalés pour actualiser les résultats.";
     if(focusFirst){var first=byId(errors[0].id);var details=first&&first.closest?first.closest("details"):null;if(details)details.open=true;if(first&&first.focus)first.focus();}
     return false;
   }
@@ -905,9 +905,9 @@ function copyDataUpdate(){
 function checklistText(){return ["Liste de vérification du devis – "+DEFAULTS.countryName,""].concat(INSTALLER_CHECKLIST.map(function(item,index){return (index+1)+". "+item;})).join("\n");}
 function downloadTextFile(filename,text,successMessage){var blob=new Blob([text],{type:"text/plain;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},0);if(successMessage)updateReportStatus(successMessage);}
 function copyText(text,successMessage,eventName){var revision=reportRevision;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(revision!==reportRevision)return;updateReportStatus(successMessage);if(eventName)trackSolarEvent(eventName);}).catch(function(){if(revision!==reportRevision)return;updateReportStatus("Copy was blocked. Use TXT download or print instead.");});}else{updateReportStatus("Copy is not available in this browser. Use TXT download or print instead.");}}
-function copyInstallerChecklist(){var text=checklistText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateInstallerChecklistStatus("Installer checklist copied.");}).catch(function(){updateInstallerChecklistStatus("Copy was blocked. Use download instead.");});}else{updateInstallerChecklistStatus("Copy is not available in this browser. Use download instead.");}}
+function copyInstallerChecklist(){var text=checklistText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){updateInstallerChecklistStatus("Liste de vérification du devis copiée.");}).catch(function(){updateInstallerChecklistStatus("Copy was blocked. Use download instead.");});}else{updateInstallerChecklistStatus("Copy is not available in this browser. Use download instead.");}}
 function downloadTxtReport(){if(!ensureReport())return;downloadTextFile("estimation-solaire-"+DEFAULTS.countrySlug+".txt",reportPlainText(),"Rapport TXT téléchargé.");trackSolarEvent("txt_downloaded");}
-function downloadInstallerChecklist(){downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-installer-checklist.txt",checklistText());updateInstallerChecklistStatus("Installer checklist downloaded.");}
+function downloadInstallerChecklist(){downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-installer-checklist.txt",checklistText());updateInstallerChecklistStatus("Liste de vérification du devis téléchargée.");}
 function systemSizeBand(value){var kw=Number(value);if(!Number.isFinite(kw)||kw<=0)return"unknown";if(kw<=1)return"0_1kw";if(kw<=3)return"1_3kw";if(kw<=5)return"3_5kw";if(kw<=10)return"5_10kw";return"10kw_plus";}
 function paybackBand(value){if(value==null||value==="")return"unknown";var years=Number(value);if(!Number.isFinite(years))return"unknown";if(years<=0)return"no_payback";if(years<=3)return"0_3_years";if(years<=5)return"3_5_years";if(years<=8)return"5_8_years";if(years<=12)return"8_12_years";return"12_years_plus";}
 var currentSolarMode="beginner";
@@ -1043,6 +1043,8 @@ function run(focusFirstInvalid,source){
     systemAffordability:monthlyNet<0?"high pressure":"manageable",
     fuelAvoidedLitresPerMonth:litresMonth
   });
+  var localizedScenario=({"The solar idea may work, but the payment pressure needs quote validation.":["Financement à vérifier","La mensualité du crédit est élevée par rapport aux économies prévues.","Demandez deux devis écrits, au comptant et à crédit, puis comparez le montant total à rembourser."],"Solar looks commercially sensible if a written quote matches these assumptions.":["Projet solaire favorable","Le délai d’amortissement estimé est court et les économies de carburant contribuent au gain mensuel.","Demandez un devis pour la puissance et la batterie retenues, puis refaites le calcul avec les prix proposés."],"Solar savings look useful, but a large battery may not be the first purchase.":["Solaire intéressant, batterie facultative","Les économies estimées justifient d’étudier le solaire. Les coupures indiquées ne nécessitent pas forcément une grande batterie.","Comparez un devis sans batterie et un devis avec une petite batterie réservée aux appareils essentiels."],"The money case is weak, but backup value may still justify a smaller system.":["Rentabilité faible, secours utile","Le délai d’amortissement est long ou indéterminé. Les coupures peuvent néanmoins justifier une alimentation de secours.","Mesurez la consommation des appareils essentiels et demandez un devis pour un onduleur et une batterie adaptés."],"Your pain is backup reliability first; full solar can come after quote validation.":["Alimentation de secours en priorité","La durée des coupures ou le coût du groupe électrogène justifient d’examiner le secours sur batterie.","Faites chiffrer l’onduleur et la batterie pour les appareils indispensables, en vérifiant la puissance nécessaire au démarrage."],"The numbers are close enough that a real quote should decide the next move.":["Devis nécessaire pour décider","Le résultat varie avec le tarif électrique, le carburant et le prix de l’installation.","Obtenez un devis détaillé et reprenez le calcul avec vos factures récentes."],"Add bill or generator spend before trusting the recommendation.":["Données de dépenses insuffisantes","La durée des coupures seule ne permet pas d’estimer le délai d’amortissement.","Saisissez une facture mensuelle d’électricité ou les dépenses mensuelles de carburant du groupe électrogène."]})[decision.headline]||["Devis à vérifier","Vérifiez les hypothèses du calcul.","Demandez un devis détaillé avant de décider."];
+  var decisionSummary=localizedScenario[1]+" "+localizedScenario[2];
   var batteryLabel=(profile&&profile.label)||batteryOption;
   var backupFit=batteryOption==="none"?"Sans batterie, le groupe électrogène ou le réseau reste nécessaire pendant les coupures.":"Vérifiez que la batterie choisie couvre les appareils essentiels pendant les coupures.";
   lastReport={
@@ -1050,7 +1052,7 @@ function run(focusFirstInvalid,source){
     countrySlug:DEFAULTS.countrySlug,
     confidence:DEFAULTS.confidence,
     sourceFreshness:DEFAULTS.lastReviewed,
-    executiveSummary:decision.headline+" "+decision.reasons.slice(0,2).join(" "),
+    executiveSummary:decisionSummary,
     systemKw:kw,
     monthlyBill:money(monthlyBill),
     generatorSpend:money(inputs.monthlyGeneratorFuelSpend),
@@ -1087,13 +1089,13 @@ function run(focusFirstInvalid,source){
   set("rSystem",kw+" kW",Math.round(result.firstYearGenerationKwh/12).toLocaleString("fr-FR")+" kWh/mois de production estimée.",kw+" kilowatts");
   set("rCost",money(result.systemCost),batteryOption==="none"?"Solar-only estimate.":"Includes "+profile.label.toLowerCase()+" battery comme hypothèse de planification.",moneyAccessible(result.systemCost));
   set("rSavings",money(monthlyNet)+"/mois",monthlyNet>0?"Économies mensuelles estimées après provision pour l’entretien.":"Aucune économie mensuelle selon ces hypothèses.",moneyAccessible(monthlyNet)+" par mois");
-  set("rPayback",years(result.simplePaybackYears),result.simplePaybackYears?"Simple payback before final quote validation.":"No payback under these assumptions.",years(result.simplePaybackYears));
+  set("rPayback",years(result.simplePaybackYears),result.simplePaybackYears?"Délai d’amortissement simple à confirmer avec un devis.":"No payback under these assumptions.",years(result.simplePaybackYears));
   set("rTenYear",money(result.tenYearNetSavings),"10-year project cashflow after capex.",moneyAccessible(result.tenYearNetSavings)+" over 10 years");
   set("rBackup",batteryOption==="none"?"No battery":(result.suggestedBatteryUsableKwh||0).toFixed(1)+" usable kWh",batteryOption==="none"?"Generator or grid still covers outages.":"Backup sized for essential-load planning, not whole-house energy.",batteryOption==="none"?"No battery":(result.suggestedBatteryUsableKwh||0).toFixed(1)+" usable kilowatt-hours");
   set("rFuel",litresMonth.toFixed(litresMonth>=10?0:1)+" L/mo",(result.generatorRunHoursAvoided/12||0).toFixed(1)+" generator hours/month avoided.",litresMonth.toFixed(litresMonth>=10?0:1)+" litres per month");
-  set("rRisk",decision.label,confidenceText(result.simplePaybackYears),decision.label);
-  byId("rSystemChange").textContent="Installer should verify roof area, load profile, inverter surge and battery usable kWh.";
-  byId("resultStatus").textContent=decision.headline+" "+decision.reasons.slice(0,2).join(" ");
+  set("rRisk",localizedScenario[0],confidenceText(result.simplePaybackYears),localizedScenario[0]);
+  byId("rSystemChange").textContent="Faites vérifier la surface du toit, les besoins électriques, la puissance de pointe de l’onduleur et la capacité utile de la batterie.";
+  byId("resultStatus").textContent=decisionSummary;
   var mPayback=byId("mPayback");if(mPayback){mPayback.textContent=years(result.simplePaybackYears);mPayback.setAttribute("aria-label",years(result.simplePaybackYears));}
   var mSavings=byId("mSavings");if(mSavings){mSavings.textContent=money(monthlyNet)+"/mois";mSavings.setAttribute("aria-label",moneyAccessible(monthlyNet)+" par mois");}
   renderSystemSizeComparison(inputs,kw,batteryOption,maintenancePct,includeFinance);
@@ -1132,10 +1134,10 @@ var printBtn=byId("printEstimateBtn");if(printBtn)printBtn.addEventListener("cli
 var whatsappBtn=byId("whatsappSummaryBtn");if(whatsappBtn)whatsappBtn.addEventListener("click",copyWhatsAppSummary);
 var txtBtn=byId("txtReportBtn");if(txtBtn)txtBtn.addEventListener("click",downloadTxtReport);
 var printReportBtn=byId("printReportBtn");if(printReportBtn)printReportBtn.addEventListener("click",function(){printSolarEstimate(true);});
-var checklistBtn=byId("copyChecklistBtn");if(checklistBtn)checklistBtn.addEventListener("click",function(){copyText(checklistText(),"Installer checklist copied.");});
+var checklistBtn=byId("copyChecklistBtn");if(checklistBtn)checklistBtn.addEventListener("click",function(){copyText(checklistText(),"Liste de vérification du devis copiée.");});
 var copyInstallerBtn=byId("copyInstallerChecklistBtn");if(copyInstallerBtn)copyInstallerBtn.addEventListener("click",copyInstallerChecklist);
 var downloadInstallerBtn=byId("downloadInstallerChecklistBtn");if(downloadInstallerBtn)downloadInstallerBtn.addEventListener("click",downloadInstallerChecklist);
-var requestQuoteChecklistBtn=byId("requestQuoteChecklistBtn");if(requestQuoteChecklistBtn)requestQuoteChecklistBtn.addEventListener("click",function(){trackSolarQuoteCta("quote_cta_clicked");downloadInstallerChecklist();updateQuoteCtaStatus("Quote checklist downloaded. No account required.");});
+var requestQuoteChecklistBtn=byId("requestQuoteChecklistBtn");if(requestQuoteChecklistBtn)requestQuoteChecklistBtn.addEventListener("click",function(){trackSolarQuoteCta("quote_cta_clicked");downloadInstallerChecklist();updateQuoteCtaStatus("Liste de vérification du devis téléchargée.");});
 var compareInstallerQuotesBtn=byId("compareInstallerQuotesBtn");if(compareInstallerQuotesBtn)compareInstallerQuotesBtn.addEventListener("click",function(){trackSolarQuoteCta("quote_cta_clicked");copyQuoteComparison();});
 var sendEstimateInstallerBtn=byId("sendEstimateInstallerBtn");if(sendEstimateInstallerBtn)sendEstimateInstallerBtn.addEventListener("click",function(){trackSolarQuoteCta("quote_cta_clicked");sendEstimateToInstaller();});
 var saveSolarEstimateBtn=byId("saveSolarEstimateBtn");if(saveSolarEstimateBtn)saveSolarEstimateBtn.addEventListener("click",function(){trackSolarQuoteCta("quote_cta_clicked");saveSolarEstimate();});
