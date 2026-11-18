@@ -65,7 +65,12 @@ for (const app of apps) {
     } else if (app.id === "hs-code-lookup") {
       await page.getByRole("searchbox").fill("zzzzzz");
     } else {
-      await page.locator("[name=scenario]").fill("{");
+      const amountField = {
+        "fx-import-impact": "usdAmount",
+        "shipping-estimator": "weightKg",
+        "incoterms-calculator": "freight"
+      }[app.id];
+      await page.locator('[data-trade-form] [name="' + amountField + '"]').fill("-1");
     }
     await page.locator("[data-trade-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
