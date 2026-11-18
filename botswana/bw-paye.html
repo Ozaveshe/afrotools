@@ -581,9 +581,7 @@ function calcAnnualPAYE(annualIncome) {
   const effectiveRate = gross > 0 ? annualPAYE / gross : 0;
   const monthly = v => v / 12;
   RESULT = { gross, annual: gross, annualPAYE, bandBreakdown: result.bandBreakdown, netAnnual, effectiveRate, monthlyGross: monthly(gross), monthlyNet: monthly(netAnnual), monthlyTax: monthly(annualPAYE), employerCost: 0, totalEmployerCost: gross };
-  document.getElementById('resAmount').textContent = fmt(netAnnual);
-  document.getElementById('resGross').textContent = `Gross: ${fmt(gross)}/year · ${fmt(monthly(gross))}/month`;
-  document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
+  renderPayPeriod();
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
@@ -613,7 +611,31 @@ function renderRows(R, period) {
     <div class="res-section">${row('Total Deductions', fmt(paye), 'c-red')}<div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;
 }
 
-function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?(RESULT.monthlyNet||RESULT.netAnnual/12):RESULT.netAnnual;var gr=isM?(RESULT.monthlyGross||RESULT.gross/12):RESULT.gross;document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
+function selectedPayPeriod() {
+  const monthly = PERIOD === 'monthly';
+  return {
+    period: monthly ? 'month' : 'year',
+    gross: monthly ? RESULT.monthlyGross : RESULT.gross,
+    net: monthly ? RESULT.monthlyNet : RESULT.netAnnual
+  };
+}
+function renderPayPeriod() {
+  if (!RESULT) return;
+  const view = selectedPayPeriod();
+  document.querySelector('.res-hero-label').textContent = PERIOD === 'monthly' ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay';
+  document.getElementById('resAmount').textContent = fmt(view.net);
+  const otherGross = PERIOD === 'monthly' ? RESULT.gross : RESULT.monthlyGross;
+  const otherPeriod = PERIOD === 'monthly' ? 'year' : 'month';
+  document.getElementById('resGross').textContent = `Gross: ${fmt(view.gross)}/${view.period} · ${fmt(otherGross)}/${otherPeriod}`;
+  document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
+}
+function setPeriod(period, btn) {
+  PERIOD = period;
+  document.querySelectorAll('.per-btn').forEach(button => button.classList.remove('on'));
+  btn.classList.add('on');
+  renderPayPeriod();
+}
+
 function toggleBands(header) { const body = header.nextElementSibling; const arr = header.querySelector('.tog-arrow'); body.classList.toggle('open'); arr.classList.toggle('open'); }
 function setChart(type, btn) { CHART_TYPE = type; document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on')); btn.classList.add('on'); renderChart(type); }
 
@@ -704,7 +726,8 @@ function generatePdf() {
 
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Botswana PAYE breakdown: Gross P${Math.round(RESULT.gross).toLocaleString()}/year → Take-home P${Math.round(RESULT.netAnnual).toLocaleString()}/year (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/botswana/bw-paye`;
+  const view = selectedPayPeriod();
+  const text = `My Botswana PAYE breakdown: Gross ${fmt(view.gross)}/${view.period} → Take-home ${fmt(view.net)}/${view.period} (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/botswana/bw-paye`;
   if (navigator.share) { navigator.share({title:'My Botswana PAYE',text,url:'https://afrotools.com/botswana/bw-paye'});
   } else if (navigator.clipboard) { navigator.clipboard.writeText(text); const btn = document.getElementById('bwShareBtn'); btn.textContent = '✓ Copied!'; setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500); }
 }

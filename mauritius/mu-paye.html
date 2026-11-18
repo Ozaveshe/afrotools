@@ -753,9 +753,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
     totalEmployerCostMonthly: gross + empSocial + trainingLevy,
   };
 
-  document.getElementById('resAmount').textContent      = fmt(netMonthly);
-  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annual(gross))}/year`;
-  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
+  renderPayPeriod();
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
@@ -813,24 +811,31 @@ function renderRows(R, period) {
 }
 
 // ── PERIOD ────────────────────────────────────────────────────
+function selectedPayPeriod() {
+  const monthly = PERIOD === 'monthly';
+  return {
+    period: monthly ? 'month' : 'year',
+    gross: monthly ? RESULT.gross : RESULT.annualGross,
+    net: monthly ? RESULT.netMonthly : RESULT.annualNet
+  };
+}
+function renderPayPeriod() {
+  if (!RESULT) return;
+  const view = selectedPayPeriod();
+  document.querySelector('.res-hero-label').textContent = PERIOD === 'monthly' ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay';
+  document.getElementById('resAmount').textContent = fmt(view.net);
+  const otherGross = PERIOD === 'monthly' ? RESULT.annualGross : RESULT.gross;
+  const otherPeriod = PERIOD === 'monthly' ? 'year' : 'month';
+  document.getElementById('resGross').textContent = `Gross: ${fmt(view.gross)}/${view.period} · ${fmt(otherGross)}/${otherPeriod}`;
+  document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
+}
 function setPeriod(period, btn) {
   PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.per-btn').forEach(button => button.classList.remove('on'));
   btn.classList.add('on');
-  if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
-    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
-    document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Gross: ' + fmt(gr) + '/month'
-      : 'Gross: ' + fmt(gr) + '/year';
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
-  }
+  renderPayPeriod();
 }
 
-// ── BANDS TOGGLE ──────────────────────────────────────────────
 function toggleBands(header) {
   const body = header.nextElementSibling;
   const arr  = header.querySelector('.tog-arrow');
@@ -1067,7 +1072,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // ── SHARE ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Mauritius PAYE breakdown: Gross MUR ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home MUR ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/mauritius/mu-paye`;
+  const view = selectedPayPeriod();
+  const text = `My Mauritius PAYE breakdown: Gross ${fmt(view.gross)}/${view.period} → Take-home ${fmt(view.net)}/${view.period} (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/mauritius/mu-paye`;
   if (navigator.share) {
     navigator.share({title:'My Mauritius PAYE',text,url:'https://afrotools.com/mauritius/mu-paye'});
   } else if (navigator.clipboard) {

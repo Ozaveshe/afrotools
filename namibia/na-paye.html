@@ -406,12 +406,36 @@ function calcAnnualSSC(gross){const monthlyGross=Math.max(0,gross)/12;if(monthly
   }
 
   function calculate(){const gross=parseFloat(document.getElementById('grossSalary').value)||0;if(!gross||gross<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}
-const ssc=calcAnnualSSC(gross);const sscAnnual=ssc.employee;const taxableIncome=gross;const result=calcAnnualPAYE(taxableIncome);const annualPAYE=result.tax;const netAnnual=gross-sscAnnual-annualPAYE;const effectiveRate=gross>0?annualPAYE/gross:0;const monthly=v=>v/12;const employerSSC=ssc.employer;const totalEmployerCost=gross+employerSSC;RESULT={gross,annual:gross,sscAnnual,annualPAYE,bandBreakdown:result.bandBreakdown,netAnnual,effectiveRate,monthlyGross:monthly(gross),monthlyNet:monthly(netAnnual),monthlyTax:monthly(annualPAYE),monthlySSC:ssc.monthlyEmployee,empSSCMonthly:ssc.monthlyEmployer,employerSSC,totalEmployerCost,taxableIncome,monthlyTaxableIncome:monthly(taxableIncome)};document.getElementById('resAmount').textContent=fmt(netAnnual);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year | ${fmt(monthly(gross))}/month`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('effRateDisplay').textContent=pct(effectiveRate);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(effectiveRate*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');
+const ssc=calcAnnualSSC(gross);const sscAnnual=ssc.employee;const taxableIncome=gross;const result=calcAnnualPAYE(taxableIncome);const annualPAYE=result.tax;const netAnnual=gross-sscAnnual-annualPAYE;const effectiveRate=gross>0?annualPAYE/gross:0;const monthly=v=>v/12;const employerSSC=ssc.employer;const totalEmployerCost=gross+employerSSC;RESULT={gross,annual:gross,sscAnnual,annualPAYE,bandBreakdown:result.bandBreakdown,netAnnual,effectiveRate,monthlyGross:monthly(gross),monthlyNet:monthly(netAnnual),monthlyTax:monthly(annualPAYE),monthlySSC:ssc.monthlyEmployee,empSSCMonthly:ssc.monthlyEmployer,employerSSC,totalEmployerCost,taxableIncome,monthlyTaxableIncome:monthly(taxableIncome)};renderPayPeriod();document.getElementById('effRateDisplay').textContent=pct(effectiveRate);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(effectiveRate*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');
   // Benchmark wiring
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.monthlyNet); }renderChart(CHART_TYPE);var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/(PERIOD==='monthly'?12:1))+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>Gross + employer SSC (0.9% of monthly wages, capped at N$99/mo) '+fmt(RESULT.employerSSC/(PERIOD==='monthly'?12:1))+'/'+(PERIOD==='monthly'?'mo':'yr')+'.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis ->';document.getElementById('aiStatus').textContent=`Gross: ${fmt(gross)}/year | Take-home: ${fmt(netAnnual)}/year | PAYE: ${fmt(annualPAYE)}/year | Effective: ${pct(effectiveRate)}`;}
 function renderRows(R,period){const isMonthly=period==='monthly';const gross=isMonthly?R.monthlyGross:R.annual;const ssc=isMonthly?R.monthlySSC:R.sscAnnual;const paye=isMonthly?R.monthlyTax:R.annualPAYE;const net=isMonthly?R.monthlyNet:R.netAnnual;const taxable=isMonthly?R.monthlyTaxableIncome:R.taxableIncome;const lbl=isMonthly?'/month':'/year';const row=(l,v,cls='')=>`<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;return`<div class="res-section"><div class="res-section-title">Gross Income</div>${row(`Gross Salary${lbl}`,fmt(gross))}</div><div class="res-section"><div class="res-section-title">Deductions</div>${row('SSC (0.9%, capped at N$99/mo)',fmt(ssc),'c-red')}${row(`Taxable income${lbl}`,fmt(taxable),'c-mut')}</div><div class="res-section"><div class="res-section-title">PAYE (NamRA)</div>${row(`Income tax (PAYE)${lbl}`,fmt(paye),'c-red')}</div><div class="res-section">${row('Total Deductions',fmt(isMonthly?R.monthlySSC+R.monthlyTax:R.sscAnnual+R.annualPAYE),'c-red')}<div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;}
-function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?(RESULT.monthlyNet||RESULT.netAnnual/12):RESULT.netAnnual;var gr=isM?(RESULT.monthlyGross||RESULT.gross/12):RESULT.gross;document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
+function selectedPayPeriod() {
+  const monthly = PERIOD === 'monthly';
+  return {
+    period: monthly ? 'month' : 'year',
+    gross: monthly ? RESULT.monthlyGross : RESULT.gross,
+    net: monthly ? RESULT.monthlyNet : RESULT.netAnnual
+  };
+}
+function renderPayPeriod() {
+  if (!RESULT) return;
+  const view = selectedPayPeriod();
+  document.querySelector('.res-hero-label').textContent = PERIOD === 'monthly' ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay';
+  document.getElementById('resAmount').textContent = fmt(view.net);
+  const otherGross = PERIOD === 'monthly' ? RESULT.gross : RESULT.monthlyGross;
+  const otherPeriod = PERIOD === 'monthly' ? 'year' : 'month';
+  document.getElementById('resGross').textContent = `Gross: ${fmt(view.gross)}/${view.period} · ${fmt(otherGross)}/${otherPeriod}`;
+  document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
+}
+function setPeriod(period, btn) {
+  PERIOD = period;
+  document.querySelectorAll('.per-btn').forEach(button => button.classList.remove('on'));
+  btn.classList.add('on');
+  renderPayPeriod();
+}
+
 function toggleBands(header){const body=header.nextElementSibling;const arr=header.querySelector('.tog-arrow');body.classList.toggle('open');arr.classList.toggle('open');}
 function setChart(type,btn){CHART_TYPE=type;document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderChart(type);}
 function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
@@ -422,7 +446,8 @@ function closePdfModal(){document.getElementById('pdfModal').classList.remove('o
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
 async function submitPdf(e){e.preventDefault();const email=document.getElementById('pdfEmail').value;if(!email)return;try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email,country:'Namibia',country_code:'NA',tool:'paye',tool_id:'na-paye',currency:'NAD',gross_salary:RESULT.gross}).toString()});}catch(e){}
 document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
-function shareResult(){if(!RESULT)return;const text=`My Namibia PAYE: Gross N$${Math.round(RESULT.gross).toLocaleString()}/year ? Take-home N$${Math.round(RESULT.netAnnual).toLocaleString()}/year (${pct(RESULT.effectiveRate)} effective). Calculated at afrotools.com/namibia/na-paye`;if(navigator.share){navigator.share({title:'My Namibia PAYE',text,url:'https://afrotools.com/namibia/na-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('naShareBtn');btn.textContent='? Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);}}
+function shareResult(){if(!RESULT)return;const view = selectedPayPeriod();
+  const text = `My Namibia PAYE breakdown: Gross ${fmt(view.gross)}/${view.period} → Take-home ${fmt(view.net)}/${view.period} (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/namibia/na-paye`;if(navigator.share){navigator.share({title:'My Namibia PAYE',text,url:'https://afrotools.com/namibia/na-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('naShareBtn');btn.textContent='? Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);}}
 async function getAI(){
   if(!RESULT) return;
   document.getElementById('aiBtn').disabled=true;
