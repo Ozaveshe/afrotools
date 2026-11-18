@@ -241,7 +241,10 @@ var h='<div class="hr-res-hero"><div class="hr-res-hero-label">Estimated Severan
 h+='<div class="hr-res-hero-amount">'+r.formatted+'</div>';
 h+='<div class="hr-res-hero-sub">Method: '+r.method+'</div></div>';
 h+='<div class="hr-info"><strong>Formula:</strong> '+r.formula+'<br><strong>Calculation:</strong> '+(r.detail||'See notes')+'</div>';
-if(r.law)h+='<div class="hr-info" style="margin-top:.5rem"><strong>Law:</strong> '+r.law+'</div>';
+if(r.law){
+  var authority=CC==='KE'?'<a href="https://new.kenyalaw.org/akn/ke/act/2007/11/eng@2024-03-22#sec_40">'+r.law+'</a>':r.law;
+  h+='<div class="hr-info" style="margin-top:.5rem"><strong>Law:</strong> '+authority+'</div>';
+}
 if(r.notes)h+='<div class="hr-warn"><strong>Note:</strong> '+r.notes+'</div>';
 """,
     "maternity": """
@@ -514,12 +517,16 @@ def main():
         total += 1
 
         # Country pages
+        before_countries = total
         for code, cslug, cname, flag in countries:
+            # This country form is maintained alongside its statutory eligibility rules.
+            if slug == "gratuity-calculator" and code == "MW":
+                continue
             cp = os.path.join(BASE, "tools", slug, cslug, "index.html")
             write_file(cp, gen_country_page(tool, code, cslug, cname, flag))
             total += 1
 
-        print(f"  {slug}: hub + {len(countries)} country pages")
+        print(f"  {slug}: hub + {total - before_countries} generated country pages")
 
     print(f"\nDone! Generated {total} pages for {len(TOOLS)} tools.")
 
