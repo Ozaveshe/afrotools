@@ -108,7 +108,7 @@ function widgetById(id) {
 }
 
 function ensureRouteExists(route) {
-  const clean = route.replace(/^\/+|\/+$/g, "");
+  const clean = route.split("#")[0].replace(/^\/+|\/+$/g, "");
   const indexPath = path.join(ROOT, clean, "index.html");
   const htmlPath = path.join(ROOT, `${clean}.html`);
   return fs.existsSync(indexPath) || fs.existsSync(htmlPath);
