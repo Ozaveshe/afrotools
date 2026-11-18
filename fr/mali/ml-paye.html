@@ -886,7 +886,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-ml-paye-mali-2026-07-03.pdf',
+    get filename() { return 'afrotools-ml-paye-mali-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Mali PAYE Summary',
     subtitle: 'DGI ITS and INPS estimate',
     country: 'Mali',

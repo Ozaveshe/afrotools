@@ -864,7 +864,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-lr-paye-liberia-2026-07-21.pdf',
+    get filename() { return 'afrotools-lr-paye-liberia-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Liberia PAYE Summary',
     subtitle: 'LRA PAYE and NASSCORP estimate',
     country: 'Liberia',

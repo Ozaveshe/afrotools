@@ -904,7 +904,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-td-paye-chad-2026-07-03.pdf',
+    get filename() { return 'afrotools-td-paye-chad-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Chad PAYE Summary',
     subtitle: 'DGI IRPP and CNPS estimate',
     country: 'Chad',

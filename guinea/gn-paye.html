@@ -890,7 +890,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-gn-paye-guinea-2026-07-03.pdf',
+    get filename() { return 'afrotools-gn-paye-guinea-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Guinea PAYE Summary',
     subtitle: 'PAYE and CNSS estimate',
     country: 'Guinea',

@@ -872,7 +872,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-cd-paye-dr-congo-2026-07-03.pdf',
+    get filename() { return 'afrotools-cd-paye-dr-congo-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'DR Congo PAYE Summary',
     subtitle: 'DGI PAYE and INSS estimate',
     country: 'DR Congo',

@@ -455,6 +455,9 @@
     }
     write('AFROTOOLS', true, 14);
     write(data.title, true, 12);
+    write("Date du rapport : " + new Date(data.generatedAt).toLocaleDateString("fr-FR", {
+      day: "numeric", month: "long", year: "numeric"
+    }), false, 9);
     y += 3;
     write('Donnees saisies', true, 11);
     data.inputs.slice(0, 14).forEach(function (item) { write(item.label + ' : ' + item.value); });
@@ -529,7 +532,9 @@
     }
     var data = snapshot(config);
     var text = summaryText(data);
-    var filenameBase = 'afrotools-' + slug(data.title) + '-' + new Date().toISOString().slice(0, 10);
+    var filenameBase = 'afrotools-' + slug(data.title) + '-' + (format === 'pdf'
+      ? new Date(data.generatedAt).toLocaleDateString('sv-SE')
+      : data.generatedAt.slice(0, 10));
     var filename = '';
     status.textContent = 'Préparation de l’export local…';
     if (format === 'copy') {

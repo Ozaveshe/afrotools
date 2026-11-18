@@ -894,7 +894,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-bf-paye-burkina-faso-2026-07-03.pdf',
+    get filename() { return 'afrotools-bf-paye-burkina-faso-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Burkina Faso PAYE Summary',
     subtitle: 'DGI IUTS and CNSS estimate',
     country: 'Burkina Faso',

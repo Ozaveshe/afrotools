@@ -959,7 +959,7 @@ async function downloadPdfSummary(){
   if(!RESULT || !window.AfroTools?.pdf) return;
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename:'afrotools-tz-paye-tanzania-2026-07-03.pdf',
+    get filename() { return 'afrotools-tz-paye-tanzania-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title:'Tanzania PAYE Summary',
     subtitle:'Monthly employment tax estimate',
     country:'Tanzania',

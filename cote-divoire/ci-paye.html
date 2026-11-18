@@ -842,7 +842,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-ci-paye-cote-divoire-2026-07-03.pdf',
+    get filename() { return 'afrotools-ci-paye-cote-divoire-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: "Cote d'Ivoire PAYE Summary",
     subtitle: 'ITS, RICF and CNPS estimate',
     country: "Cote d'Ivoire",

@@ -547,7 +547,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-gq-paye-equatorial-guinea-2026-07-03.pdf',
+    get filename() { return 'afrotools-gq-paye-equatorial-guinea-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Equatorial Guinea PAYE Summary',
     subtitle: 'IRPF and social security estimate',
     country: 'Equatorial Guinea',

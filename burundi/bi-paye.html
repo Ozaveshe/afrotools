@@ -882,7 +882,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-bi-paye-burundi-2026-07-03.pdf',
+    get filename() { return 'afrotools-bi-paye-burundi-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Burundi PAYE Summary',
     subtitle: 'OBR IPR and INSS estimate',
     country: 'Burundi',

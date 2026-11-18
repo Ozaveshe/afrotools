@@ -789,7 +789,7 @@ async function downloadPdfSummary(){
   if(!RESULT || !window.AfroTools?.pdf) return;
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename:'afrotools-sd-paye-sudan-2026-07-03.pdf',
+    get filename() { return 'afrotools-sd-paye-sudan-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title:'Sudan PAYE Summary',
     subtitle:'Monthly employment tax estimate',
     country:'Sudan',

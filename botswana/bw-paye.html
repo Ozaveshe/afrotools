@@ -650,7 +650,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-bw-paye-botswana-2026-07-03.pdf',
+    get filename() { return 'afrotools-bw-paye-botswana-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Botswana PAYE Summary',
     subtitle: 'BURS income tax estimate',
     country: 'Botswana',

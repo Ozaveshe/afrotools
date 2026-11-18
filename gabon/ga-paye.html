@@ -932,7 +932,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-ga-paye-gabon-2026-07-03.pdf',
+    get filename() { return 'afrotools-ga-paye-gabon-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Gabon PAYE Summary',
     subtitle: 'IRPP, family quotient and CNSS estimate',
     country: 'Gabon',

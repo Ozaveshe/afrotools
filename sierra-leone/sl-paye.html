@@ -883,7 +883,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-sl-paye-sierra-leone-2026-07-03.pdf',
+    get filename() { return 'afrotools-sl-paye-sierra-leone-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Sierra Leone PAYE Summary',
     subtitle: 'NRA PAYE and NASSIT estimate',
     country: 'Sierra Leone',

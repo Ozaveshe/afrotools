@@ -880,7 +880,7 @@ async function downloadPdfSummary(){
   if(!RESULT || !window.AfroTools?.pdf) return;
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename:'afrotools-zw-paye-zimbabwe-2026-07-03.pdf',
+    get filename() { return 'afrotools-zw-paye-zimbabwe-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title:'Zimbabwe PAYE Summary',
     subtitle:'Annual employment tax estimate',
     country:'Zimbabwe',

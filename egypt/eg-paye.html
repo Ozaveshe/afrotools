@@ -953,7 +953,7 @@ async function downloadPdfSummary() {
     bandRows.push(['Bracket exclusion adjustment', fmt(R.exclusionExtra)]);
   }
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-eg-paye-egypt-2026-07-03.pdf',
+    get filename() { return 'afrotools-eg-paye-egypt-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Egypt PAYE Summary',
     subtitle: 'Income tax, bracket exclusion and payroll deduction estimate',
     country: 'Egypt',

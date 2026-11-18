@@ -938,7 +938,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-ne-paye-niger-2026-07-03.pdf',
+    get filename() { return 'afrotools-ne-paye-niger-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Niger PAYE Summary',
     subtitle: 'DGI IRPP and CNSS estimate',
     country: 'Niger',

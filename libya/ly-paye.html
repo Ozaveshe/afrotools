@@ -440,7 +440,7 @@ async function downloadPdfSummary() {
   if (!RESULT || !window.AfroTools?.pdf) return;
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-ly-paye-libya-2026-07-03.pdf',
+    get filename() { return 'afrotools-ly-paye-libya-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Libya PAYE Summary',
     subtitle: 'Income tax, social security, SUF, and stamp duty estimate',
     country: 'Libya',

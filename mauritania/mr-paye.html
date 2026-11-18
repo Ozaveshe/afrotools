@@ -783,7 +783,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-mr-paye-mauritania-2026-07-21.pdf',
+    get filename() { return 'afrotools-mr-paye-mauritania-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Mauritania PAYE Summary',
     subtitle: 'DGI ITS and CNSS estimate',
     country: 'Mauritania',

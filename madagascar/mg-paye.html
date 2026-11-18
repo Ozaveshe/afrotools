@@ -448,7 +448,7 @@ async function downloadPdfSummary() {
   if (!RESULT || !window.AfroTools?.pdf) return;
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-mg-paye-madagascar-2026-07-03.pdf',
+    get filename() { return 'afrotools-mg-paye-madagascar-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Madagascar PAYE Summary',
     subtitle: 'IRSA, CNaPS, and take-home pay estimate',
     country: 'Madagascar',

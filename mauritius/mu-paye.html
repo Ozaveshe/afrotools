@@ -893,7 +893,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-mu-paye-mauritius-2026-07-03.pdf',
+    get filename() { return 'afrotools-mu-paye-mauritius-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Mauritius PAYE Summary',
     subtitle: 'MRA PAYE, CSG/NSF, and employer cost estimate',
     country: 'Mauritius',

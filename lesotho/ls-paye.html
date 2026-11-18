@@ -756,7 +756,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-ls-paye-lesotho-2026-07-03.pdf',
+    get filename() { return 'afrotools-ls-paye-lesotho-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Lesotho PAYE Summary',
     subtitle: 'LRA/RSL PAYE and tax credit estimate',
     country: 'Lesotho',

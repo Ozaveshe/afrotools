@@ -910,7 +910,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-gw-paye-guinea-bissau-2026-07-03.pdf',
+    get filename() { return 'afrotools-gw-paye-guinea-bissau-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Guinea-Bissau PAYE Summary',
     subtitle: 'PAYE and INSS estimate',
     country: 'Guinea-Bissau',

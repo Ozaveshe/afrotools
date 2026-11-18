@@ -845,7 +845,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-sc-paye-seychelles-2026-07-03.pdf',
+    get filename() { return 'afrotools-sc-paye-seychelles-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Seychelles PAYE Summary',
     subtitle: 'SRC PAYE and SPF estimate',
     country: 'Seychelles',

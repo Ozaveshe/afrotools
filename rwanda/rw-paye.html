@@ -871,7 +871,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-rw-paye-rwanda-2026-07-03.pdf',
+    get filename() { return 'afrotools-rw-paye-rwanda-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Rwanda PAYE Summary',
     subtitle: 'RRA PAYE, RSSB, maternity, CBHI and occupational-hazard estimate',
     country: 'Rwanda',

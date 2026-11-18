@@ -879,7 +879,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-et-paye-ethiopia-2026-07-03.pdf',
+    get filename() { return 'afrotools-et-paye-ethiopia-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Ethiopia PAYE Summary',
     subtitle: 'ERCA PAYE and pension estimate',
     country: 'Ethiopia',

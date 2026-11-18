@@ -947,7 +947,7 @@ async function downloadPdfSummary() {
     `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
   ]);
   await window.AfroTools.pdf.generate({
-    filename: 'afrotools-sz-paye-eswatini-2026-07-03.pdf',
+    get filename() { return 'afrotools-sz-paye-eswatini-' + new Date().toLocaleDateString('sv-SE') + '.pdf'; },
     title: 'Eswatini PAYE Summary',
     subtitle: 'Independent annual PAYE and ENPF planning estimate',
     disclaimer: 'General E8,200 rebate only. Additional age relief, partial payroll periods, retirement and redundancy are excluded. Use the official ERS payroll workbook for payroll calculations: https://ers.org.sz/IncomeForms',
