@@ -283,6 +283,9 @@ document.getElementById("rNetBenefit").textContent=r.netMonthlyBenefit;`,
 
 // ─── HTML TEMPLATE ─────────────────────────────────────────────────────────────
 function makePage(tool, country) {
+  if (tool.slug === 'water-bill' && country.code === 'ZA') {
+    return fs.readFileSync(path.join(__dirname, 'templates', 'south-africa-water-bill.html'), 'utf8');
+  }
   if (tool.slug === 'water-bill' && country.code === 'GH') {
     return fs.readFileSync(path.join(__dirname, 'templates', 'ghana-water-bill.html'), 'utf8');
   }
@@ -421,6 +424,12 @@ ${countryCards}
 }
 
 let total = 0;
+if (process.argv.includes('--south-africa-water-only')) {
+  const tool = TOOLS.find(tool => tool.slug === 'water-bill');
+  const country = COUNTRIES.find(country => country.code === 'ZA');
+  fs.writeFileSync(path.join(ROOT, 'tools/water-bill/south-africa/index.html'), makePage(tool, country));
+  process.exit(0);
+}
 if (process.argv.includes('--ghana-water-only')) {
   const tool = TOOLS.find(tool => tool.slug === 'water-bill');
   const country = COUNTRIES.find(country => country.code === 'GH');
