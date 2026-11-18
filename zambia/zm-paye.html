@@ -6,10 +6,10 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZRA PAYE Calculator Zambia 2026 | Net Pay & NAPSA | AfroTools</title>
-<meta name="description" content="Zambia PAYE calculator 2026: estimate take-home pay using ZRA bands, the NAPSA cap and NHIMA on basic salary. Free PDF export.">
+<meta name="description" content="Enter annual gross and basic salary to see monthly or annual take-home pay, ZRA PAYE, NAPSA and NHIMA deductions in Zambia for 2026. Download your breakdown.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title"       content="ZRA PAYE Calculator Zambia 2026 | Net Pay & NAPSA | AfroTools">
-<meta property="og:description" content="Free ZRA PAYE calculator: 0%–37% progressive tax per ZRA bands, NAPSA 5% (capped). Net pay + free PDF.">
+<meta property="og:description" content="Enter annual gross and basic salary to see monthly or annual take-home pay, ZRA PAYE, NAPSA and NHIMA deductions in Zambia for 2026. Download your breakdown.">
 <meta property="og:type"        content="website">
 <meta property="og:url" content="https://afrotools.com/zambia/zm-paye">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/zm-paye.webp">
@@ -17,7 +17,7 @@
 <meta property="og:site_name"   content="AfroTools">
 <meta name="twitter:card"       content="summary_large_image">
 <meta name="twitter:title"      content="ZRA PAYE Calculator Zambia 2026 | Net Pay & NAPSA | AfroTools">
-<meta name="twitter:description" content="ZRA progressive tax 0%–37%, NAPSA 5% employee (capped K1,861.80/mo). 2026 rates.">
+<meta name="twitter:description" content="Enter annual gross and basic salary to see monthly or annual take-home pay, ZRA PAYE, NAPSA and NHIMA deductions in Zambia for 2026. Download your breakdown.">
 <meta name="robots"             content="index, follow">
 <meta name="author"             content="AfroTools">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zambia","item":"https://afrotools.com/zambia/"},{"@type":"ListItem","position":3,"name":"Zambia PAYE Calculator","item":"https://afrotools.com/zambia/zm-paye"}]}</script>
@@ -207,15 +207,15 @@
       <!-- RESULTS -->
       <div class="card results-card" id="resultsCard">
         <div class="res-hero">
-          <div class="res-hero-label">Annual Take-Home Pay</div>
+          <div class="res-hero-label" id="resLabel">Annual Take-Home Pay</div>
           <div class="res-hero-amount" id="resAmount">K 0</div>
           <div class="res-hero-period">After PAYE &amp; all deductions</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('annual',this)">Annual</button>
-            <button type="button" class="per-btn" onclick="setPeriod('monthly',this)">Monthly</button>
+            <button type="button" class="per-btn on" aria-pressed="true" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn" aria-pressed="false" onclick="setPeriod('monthly',this)">Monthly</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -745,9 +745,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
     ? 'Calculated with gross salary treated as basic salary for NHIMA. Enter your basic salary if allowances are included in gross.'
     : 'Calculated with NHIMA based on the basic salary entered.';
 
-  document.getElementById('resAmount').textContent      = fmt(netAnnual);
-  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/year · ${fmt(monthly(gross))}/month`;
-  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
+  renderSelectedPeriod();
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
@@ -803,21 +801,27 @@ function renderRows(R, period) {
 }
 
 // ── PERIOD ────────────────────────────────────────────────────
+function selectedPeriod(result) {
+  return PERIOD === 'monthly'
+    ? { label: 'Monthly', unit: 'month', gross: result.monthlyGross, net: result.monthlyNet, tax: result.monthlyTax }
+    : { label: 'Annual', unit: 'year', gross: result.gross, net: result.netAnnual, tax: result.annualPAYE };
+}
+
+function renderSelectedPeriod() {
+  const view = selectedPeriod(RESULT);
+  document.getElementById('resLabel').textContent = view.label + ' Take-Home Pay';
+  document.getElementById('resAmount').textContent = fmt(view.net);
+  document.getElementById('resGross').textContent = 'Gross: ' + fmt(view.gross) + '/' + view.unit;
+  document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
+}
+
 function setPeriod(period, btn) {
   PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? (RESULT.monthlyNet || RESULT.netAnnual / 12) : RESULT.netAnnual;
-    var gr = isMonthly ? (RESULT.monthlyGross || RESULT.gross / 12) : RESULT.gross;
-    document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Gross: ' + fmt(gr) + '/month'
-      : 'Gross: ' + fmt(gr) + '/year';
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
-  }
+  document.querySelectorAll('.per-btn').forEach(button => {
+    button.classList.toggle('on', button === btn);
+    button.setAttribute('aria-pressed', String(button === btn));
+  });
+  if (RESULT) renderSelectedPeriod();
 }
 
 // ── BANDS TOGGLE ──────────────────────────────────────────────
@@ -878,16 +882,17 @@ function renderChart(type) {
 async function downloadPdfSummary(){
   if(!RESULT || !window.AfroTools?.pdf) return;
   const R = RESULT;
+  const view = selectedPeriod(R);
   await window.AfroTools.pdf.generate({
     filename:'afrotools-zm-paye-zambia-2026.pdf',
     title:'Zambia PAYE Summary',
-    subtitle:'Annual employment tax estimate',
+    subtitle:view.label + ' employment tax estimate',
     country:'Zambia',
     currency:'ZMW',
     summary:[
-      {label:'Annual take-home',value:fmt(R.netAnnual)},
-      {label:'Annual gross',value:fmt(R.gross)},
-      {label:'PAYE',value:fmt(R.annualPAYE)},
+      {label:view.label + ' take-home',value:fmt(view.net)},
+      {label:view.label + ' gross',value:fmt(view.gross)},
+      {label:view.label + ' PAYE',value:fmt(view.tax)},
       {label:'Effective rate',value:pct(R.effectiveRate)}
     ],
     sections:[
@@ -1040,7 +1045,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // ── SHARE ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Zambia PAYE breakdown: Gross K${Math.round(RESULT.gross).toLocaleString()}/year → Take-home K${Math.round(RESULT.netAnnual).toLocaleString()}/year (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/zambia/zm-paye`;
+  const view = selectedPeriod(RESULT);
+  const text = `My Zambia PAYE breakdown: Gross ${fmt(view.gross)}/${view.unit} → Take-home ${fmt(view.net)}/${view.unit} (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/zambia/zm-paye`;
   if (navigator.share) {
     navigator.share({title:'My Zambia PAYE',text,url:'https://afrotools.com/zambia/zm-paye'});
   } else if (navigator.clipboard) {
