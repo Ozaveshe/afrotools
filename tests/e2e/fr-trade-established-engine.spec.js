@@ -255,6 +255,11 @@ test("Demurrage: French tiers equal the accepted port engine", async ({ page }) 
   });
   expect(proof.text).toContain(String(proof.total));
   expect(proof.text).toContain(String(proof.paid));
+  await expect(page.locator('[name="containerType"] option[value="40ftHC"]')).toHaveCount(0);
+  const storage = page.getByRole("row", { name: /Stockage au terminal/ });
+  await expect(storage).toContainText("210");
+  await expect(page.locator("[data-trade-result]")).toContainText("Examen douanier");
+  await expect(page.locator("[data-trade-result]")).not.toContainText("Customs Examination Fee");
   await page.locator('[name="portCode"]').evaluate((select) => {
     select.innerHTML = '<option value="BAD">BAD</option>';
     select.value = "BAD";
