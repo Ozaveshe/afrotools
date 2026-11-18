@@ -33,11 +33,13 @@ if(visitorForm) {
   form.addEventListener("reset",clearEstimate);
 }
 function writeSummaryPages(pdf, text) {
-  pdf.setFontSize(11);
-  var lines = pdf.splitTextToSize(text, 495);
-  for (var offset = 0; offset < lines.length; offset += 48) {
+  var margin = 48;
+  var lines = pdf.splitTextToSize(text, pdf.internal.pageSize.getWidth() - 2 * margin);
+  var lineHeight = pdf.getFontSize() * pdf.getLineHeightFactor();
+  var pageLines = Math.max(1, Math.floor((pdf.internal.pageSize.getHeight() - 2 * margin - lineHeight) / lineHeight));
+  for (var offset = 0; offset < lines.length; offset += pageLines) {
     if (offset) pdf.addPage();
-    pdf.text(lines.slice(offset, offset + 48), 48, 52);
+    pdf.text(lines.slice(offset, offset + pageLines), margin, margin + pdf.getFontSize());
   }
 }
 function save(blob,ext){var a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download="afrotools-"+cfg.id+"."+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},5000);}function summary(){return cfg.name+"\n\n"+(visitorForm?visitorForm.rows(latest).map(function(row){return row.join(": ");}).join("\n"):JSON.stringify(latest,null,2))+"\n\nChanzo: "+cfg.source+"\nMakadirio ya kupanga; thibitisha taarifa zinazobadilika.";}
