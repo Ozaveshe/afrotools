@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const registryApi = require('./lib/canonical-registry');
+const { contactPath, reportParams } = require('../assets/js/lib/hausa-contact-report');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -115,9 +116,18 @@ function bridgeForHref(href) {
 function rewriteSensitiveLinks(html, relative) {
   const returnTo = routeForFile(relative);
   return html.replace(/\bhref=(["'])(\/[^"']*)\1/gi, (match, quote, href) => {
-    const bridge = bridgeForHref(href);
+    // Decode the HTML attribute once before embedding its URL as a query value.
+    const target = href.replace(/&(?:amp|#0*38|#x0*26);/gi, '&');
+    if (target.startsWith('/contact/?') || target.startsWith(contactPath + '?')) {
+      const params = reportParams(target, 'https://afrotools.com');
+      if (params) {
+        if (!params.has('return_to')) params.set('return_to', returnTo);
+        return `href=${quote}${contactPath}?${escapeHtml(params.toString())}${quote}`;
+      }
+    }
+    const bridge = bridgeForHref(target);
     if (!bridge) return match;
-    const destination = encodeURIComponent(href);
+    const destination = encodeURIComponent(target).replace(/'/g, '%27');
     return `href=${quote}${bridge.route}?destination=${destination}&amp;return_to=${encodeURIComponent(returnTo)}${quote}`;
   });
 }
