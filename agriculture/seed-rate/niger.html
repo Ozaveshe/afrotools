@@ -512,7 +512,10 @@
     var isVeg = cropData.propagation === 'vegetative';
 
     // Show/hide seed-specific fields
-    var seedFields = ['fldQuality', 'fldRowSpacing', 'fldPlantSpacing', 'fldSeedsHole'];
+    var seedFields = ['fldQuality', 'fldSeedsHole'];
+    ['selConditions', 'selIntercrop', 'selMethod'].forEach(function (id) {
+      $(id).closest('.field').style.display = isVeg ? 'none' : '';
+    });
     seedFields.forEach(function (id) {
       var el = $(id);
       if (el) el.style.display = isVeg ? 'none' : '';
@@ -532,12 +535,11 @@
       methodSel.appendChild(o);
     });
 
-    if (!isVeg) {
-      // Pre-fill spacing
-      var spacing = override.spacing || cropData.defaultSpacing || {};
-      if (spacing.row_cm) $('inpRowSpacing').value = spacing.row_cm;
-      if (spacing.plant_cm && spacing.plant_cm !== 'continuous') $('inpPlantSpacing').value = spacing.plant_cm;
+    var spacing = override.spacing || cropData.defaultSpacing || {};
+    $('inpRowSpacing').value = spacing.row_cm || '';
+    $('inpPlantSpacing').value = spacing.plant_cm === 'continuous' ? '' : (spacing.plant_cm || '');
 
+    if (!isVeg) {
       // Pre-fill seeds per hole
       var sph = override.seedsPerHole || cropData.seedsPerHole || 1;
       $('inpSeedsHole').value = sph;
@@ -562,16 +564,17 @@
   window.calculate = function () {
     invalidateSeedResult();
     var cropId = $('selCrop').value;
+    var vegetative = SD[cropId] && SD[cropId].propagation === 'vegetative';
     var inputs = {
       cropId: cropId,
       plantingMethod: $('selMethod').value,
       seedQuality: $('selQuality').value,
       fieldConditions: $('selConditions').value,
       farmSizeHa: Number($('inpFarm').value),
-      intercrop: $('selIntercrop').value,
+      intercrop: vegetative ? 'sole' : $('selIntercrop').value,
       rowSpacing_cm: optionalNumber('inpRowSpacing'),
       plantSpacing_cm: optionalNumber('inpPlantSpacing'),
-      seedsPerHole: optionalNumber('inpSeedsHole')
+      seedsPerHole: vegetative ? null : optionalNumber('inpSeedsHole')
     };
 
     var r = ENG.calculate(inputs, SD, CC, CD);
@@ -602,6 +605,7 @@
     }
     $('rPopCard').style.display = r.targetPopHa ? '' : 'none';
     if (r.targetPopHa) {
+      document.querySelector('#rPopCard .rate-card-label').textContent = 'Plant population / ha';
       $('rPop').textContent = fmtN(r.targetPopHa, 0);
     }
 
@@ -683,24 +687,27 @@
     $('rTotal').textContent = fmtN(r.totalPlants, 0);
     $('rTotalLabel').textContent = 'Total ' + matLabel + ' for your farm';
 
-    if (r.materialWeight) {
+    if (r.materialWeight && r.materialWeight.unit === 'kg') {
       $('rBagsCard').style.display = '';
       $('rBags').textContent = fmtN(r.materialWeight.total, 0) + ' ' + r.materialWeight.unit;
-      $('rBagsLabel').textContent = 'Total material weight';
+      $('rBagsLabel').textContent = 'Area-based weight estimate';
     } else {
       $('rBagsCard').style.display = 'none';
     }
 
     $('rPopCard').style.display = '';
-    $('rPop').textContent = fmtN(r.spacingArea_m2, 1) + ' m²';
+    $('rPop').textContent = fmtN(r.spacingArea_m2, 4) + ' m²';
     document.querySelector('#rPopCard .rate-card-label').textContent = 'Area per plant';
 
     $('costSection').style.display = 'none';
     $('plantingGuide').style.display = 'none';
     $('vegGuide').style.display = '';
+    $('spacingDiagram').style.display = '';
+    buildSpacingDiagram(r.rowSpacing_cm, r.plantSpacing_cm);
     var il = $('vegInfoList');
     il.innerHTML = '';
     var vItems = [
+      ['Layout assumption', 'One planting unit per position on the full planted area; spacing is editable.'],
       ['Planting material', matLabel],
       ['Row spacing', r.rowSpacing_cm + ' cm'],
       ['Plant spacing', r.plantSpacing_cm + ' cm'],
@@ -708,7 +715,7 @@
       ['Total for ' + r.farmSizeHa + ' ha', fmtN(r.totalPlants, 0) + ' ' + matLabel]
     ];
     if (r.materialWeight && r.materialWeight.unit === 'kg') {
-      vItems.push(['Total weight needed', fmtN(r.materialWeight.total, 0) + ' kg']);
+      vItems.push(['Reference weight for this area', fmtN(r.materialWeight.total, 0) + ' kg']);
       vItems.push(['Weight per hectare', fmtN(r.materialWeight.perHa, 0) + ' kg/ha']);
     }
     vItems.forEach(function (item) {
@@ -720,7 +727,16 @@
     // Notes
     if (r.overrideNotes || r.notes) {
       $('notesBox').style.display = '';
-      $('notesBox').innerHTML = '<div class="info-box">&#128161; ' + (r.overrideNotes || r.notes) + '</div>';
+      var note = document.createElement('div');
+      note.className = 'info-box';
+      note.textContent = r.overrideNotes || r.notes;
+      if (r.spacingSource) {
+        var source = document.createElement('a');
+        source.href = r.spacingSource;
+        source.textContent = 'Ghana field study: default spacing';
+        note.append(' ', source);
+      }
+      $('notesBox').replaceChildren(note);
     } else {
       $('notesBox').style.display = 'none';
     }

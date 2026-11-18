@@ -101,9 +101,12 @@
       });
     },
     _vegetative: function(e, a, t, o) {
-      var s, i = o.farmSizeHa, l = a.spacing || e.defaultSpacing || {}, c = parseFloat(t.rowSpacing_cm) || (l.row_cm ? parseFloat(l.row_cm) : 100), d = parseFloat(t.plantSpacing_cm) || (l.plant_cm ? parseFloat(l.plant_cm) : 100);
-      s = a.plantsPerHa ? a.plantsPerHa : e.plantsPerHa ? Math.round((e.plantsPerHa.min + e.plantsPerHa.max) / 2) : c && d ? n(1e4 / (c / 100 * d / 100)) : 1e4;
-      var g = n(s * i), p = r(c / 100 * d / 100), m = null, u = a.materialLabel || e.materialLabel || "plants";
+      var i = o.farmSizeHa, spacing = a.spacing || e.defaultSpacing || {};
+      var rowCm = Number(t.rowSpacing_cm || spacing.row_cm || 100);
+      var withinRowCm = Number(t.plantSpacing_cm || spacing.plant_cm || 100);
+      var areaPerPosition = rowCm * withinRowCm / 10000;
+      var positionsPerHa = 10000 / areaPerPosition;
+      var g = n(positionsPerHa * i), m = null, u = a.materialLabel || e.materialLabel || "plants";
       if (e.seedYamPerHa_kg) {
         var _ = a.seedYamPerHa_kg || (e.seedYamPerHa_kg.min + e.seedYamPerHa_kg.max) / 2;
         m = {
@@ -119,7 +122,7 @@
           unit: "kg"
         };
       } else if (e.settsPerHa) {
-        var v = (e.settsPerHa.min + e.settsPerHa.max) / 2;
+        var v = positionsPerHa;
         m = {
           perHa: n(v),
           total: n(v * i),
@@ -130,10 +133,11 @@
         propagation: "vegetative",
         plantingMaterial: e.plantingMaterial,
         materialLabel: u,
-        rowSpacing_cm: c,
-        plantSpacing_cm: d,
-        spacingArea_m2: p,
-        plantsPerHa: s,
+        rowSpacing_cm: rowCm,
+        plantSpacing_cm: withinRowCm,
+        spacingArea_m2: areaPerPosition,
+        plantsPerHa: n(positionsPerHa),
+        spacingSource: a.spacingSource || null,
         totalPlants: g,
         materialWeight: m,
         notes: e.notes || null
