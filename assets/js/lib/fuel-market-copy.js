@@ -7,6 +7,8 @@
     'market-reference':['Dated market reference — verify at the pump','Référence de marché datée — à vérifier à la pompe','Rejea ya soko yenye tarehe — hakiki kwenye kituo'],
     'snapshot-estimate':['Dated source snapshot — planning estimate','Instantané daté de la source — estimation de budget','Taswira ya chanzo yenye tarehe — makadirio ya kupanga'],
     'period-average':['Monthly city survey average — planning reference','Moyenne mensuelle de l’enquête urbaine — référence de budget','Wastani wa utafiti wa jiji wa mwezi — rejea ya kupanga'],
+    surveyYear:['Survey year','Année de l’enquête','Mwaka wa utafiti'],
+    'monthly-retail-survey':['Monthly retail price survey','Enquête mensuelle sur les prix de détail','Utafiti wa kila mwezi wa bei za rejareja'],
     surveyPeriod:['Survey period','Période de l’enquête','Kipindi cha utafiti'],
     referenceDate:['Reference date (see price basis)','Date de référence (voir l’origine du prix)','Tarehe ya rejea (angalia msingi wa bei)'],
     snapshotDate:['Snapshot date','Date de l’instantané','Tarehe ya taswira'],
