@@ -2,10 +2,60 @@
   'use strict';
 
   var COUNTRY_META = {
-    ET: { name: 'Ethiopia', currency: 'ETB' },
-    CI: { name: "Côte d'Ivoire", currency: 'XOF' }, GH: { name: 'Ghana', currency: 'GHS' }, KE: { name: 'Kenya', currency: 'KES' },
-    NG: { name: 'Nigeria', currency: 'NGN' }, SN: { name: 'Senegal', currency: 'XOF' }, TZ: { name: 'Tanzania', currency: 'TZS' },
-    UG: { name: 'Uganda', currency: 'UGX' }, ZA: { name: 'South Africa', currency: 'ZAR' }, ZM: { name: 'Zambia', currency: 'ZMW' }
+    AO: { name: "Angola", currency: 'AOA' },
+    BF: { name: "Burkina Faso", currency: 'XOF' },
+    BI: { name: "Burundi", currency: 'BIF' },
+    BJ: { name: "Benin", currency: 'XOF' },
+    BW: { name: "Botswana", currency: 'BWP' },
+    CD: { name: "Congo - Kinshasa", currency: 'CDF' },
+    CF: { name: "Central African Republic", currency: 'XAF' },
+    CG: { name: "Congo - Brazzaville", currency: 'XAF' },
+    CI: { name: "Côte d’Ivoire", currency: 'XOF' },
+    CM: { name: "Cameroon", currency: 'XAF' },
+    CV: { name: "Cape Verde", currency: 'CVE' },
+    DJ: { name: "Djibouti", currency: 'DJF' },
+    DZ: { name: "Algeria", currency: 'DZD' },
+    EG: { name: "Egypt", currency: 'EGP' },
+    ER: { name: "Eritrea", currency: 'ERN' },
+    ET: { name: "Ethiopia", currency: 'ETB' },
+    GA: { name: "Gabon", currency: 'XAF' },
+    GH: { name: "Ghana", currency: 'GHS' },
+    GM: { name: "Gambia", currency: 'GMD' },
+    GN: { name: "Guinea", currency: 'GNF' },
+    GQ: { name: "Equatorial Guinea", currency: 'XAF' },
+    GW: { name: "Guinea-Bissau", currency: 'XOF' },
+    KE: { name: "Kenya", currency: 'KES' },
+    KM: { name: "Comoros", currency: 'KMF' },
+    LR: { name: "Liberia", currency: 'LRD' },
+    LS: { name: "Lesotho", currency: 'LSL' },
+    LY: { name: "Libya", currency: 'LYD' },
+    MA: { name: "Morocco", currency: 'MAD' },
+    MG: { name: "Madagascar", currency: 'MGA' },
+    ML: { name: "Mali", currency: 'XOF' },
+    MR: { name: "Mauritania", currency: 'MRU' },
+    MU: { name: "Mauritius", currency: 'MUR' },
+    MW: { name: "Malawi", currency: 'MWK' },
+    MZ: { name: "Mozambique", currency: 'MZN' },
+    NA: { name: "Namibia", currency: 'NAD' },
+    NE: { name: "Niger", currency: 'XOF' },
+    NG: { name: "Nigeria", currency: 'NGN' },
+    RW: { name: "Rwanda", currency: 'RWF' },
+    SC: { name: "Seychelles", currency: 'SCR' },
+    SD: { name: "Sudan", currency: 'SDG' },
+    SL: { name: "Sierra Leone", currency: 'SLE' },
+    SN: { name: "Senegal", currency: 'XOF' },
+    SO: { name: "Somalia", currency: 'SOS' },
+    SS: { name: "South Sudan", currency: 'SSP' },
+    ST: { name: "São Tomé & Príncipe", currency: 'STN' },
+    SZ: { name: "Eswatini", currency: 'SZL' },
+    TD: { name: "Chad", currency: 'XAF' },
+    TG: { name: "Togo", currency: 'XOF' },
+    TN: { name: "Tunisia", currency: 'TND' },
+    TZ: { name: "Tanzania", currency: 'TZS' },
+    UG: { name: "Uganda", currency: 'UGX' },
+    ZA: { name: "South Africa", currency: 'ZAR' },
+    ZM: { name: "Zambia", currency: 'ZMW' },
+    ZW: { name: "Zimbabwe", currency: 'ZWG' }
   };
   var ugandaBilling = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.ugandaElectricityBilling;
   var ugandaFields = document.getElementById('electricityUgandaFields');
@@ -58,6 +108,17 @@
     });
   }
 
+  // Country guides and imported scenarios may refer to a custom-rate market.
+  var regionNames = typeof Intl.DisplayNames === 'function'
+    ? new Intl.DisplayNames([document.documentElement.lang || 'en'], { type: 'region' }) : null;
+  Object.keys(COUNTRY_META).forEach(function (code) {
+    if (!country.querySelector('option[value="' + code + '"]')) {
+      country.add(new Option(regionNames ? regionNames.of(code) : COUNTRY_META[code].name, code));
+    }
+  });
+  var requested = (new URLSearchParams(window.location.search).get('country') || '').toUpperCase();
+  if (Object.prototype.hasOwnProperty.call(COUNTRY_META, requested)) country.value = requested;
+
   function countryState() {
     var rows = engine.recordsForCountry(dataset, country.value);
     var current = rows.filter(function (record) { return engine.recordStatus(record, asOf, dataset.default_freshness_days).available; });
@@ -88,6 +149,9 @@
       track('electricity_unsupported_market', { country_code: country.value, market_state: 'unsupported' });
     }
     var meta = COUNTRY_META[country.value];
+    if (!Array.from(customCurrency.options).some(function (option) { return option.value === meta.currency; })) {
+      customCurrency.add(new Option(meta.currency, meta.currency));
+    }
     customCurrency.value = meta.currency;
     updateCustomCurrency();
     track('electricity_country_selected', { country_code: country.value, automatic_coverage: Boolean(state.current.length) });
@@ -252,8 +316,6 @@
     var validation = engine.validateDataset(value);
     if (!validation.valid) throw new Error(validation.errors.join(' '));
     dataset = value;
-    var requested = new URLSearchParams(window.location.search).get('country');
-    if (requested && COUNTRY_META[requested.toUpperCase()]) country.value = requested.toUpperCase();
     updateProviders();
     window.AFROTOOLS_ELECTRICITY_READY = true;
   }).catch(function () {

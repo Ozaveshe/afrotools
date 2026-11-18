@@ -15,9 +15,6 @@ const REGISTRY_PATH = path.join(ROOT, 'assets', 'js', 'components', 'tool-regist
 const COUNTRIES = require('../data/registry/countries.json');
 const ANALYTICS_LOADER = canonicalLoaderTag(analyticsVersion());
 const ANALYTICS_BOOTSTRAP = earlyBootstrapTag(bootstrapVersion(), analyticsVersion());
-const FRENCH_COUNTRY_NAMES = new Map(
-  COUNTRIES.map((country) => [country.routeSlug, country.displayNames?.fr || country.title])
-);
 const FAMILIES = [
   { slug: 'tarifs-electricite', label: "tarif d’électricité" },
   { slug: 'compteur-prepaye', label: 'unités de compteur prépayé' }
@@ -25,7 +22,10 @@ const FAMILIES = [
 
 function bridge(family, countrySlug) {
   const canonical = `https://afrotools.com/fr/tools/${family.slug}/`;
-  const countryName = FRENCH_COUNTRY_NAMES.get(countrySlug) || countrySlug.replace(/-/g, ' ');
+  const registrySlug = countrySlug === 'republic-of-congo' ? 'congo' : countrySlug;
+  const country = COUNTRIES.find(row => row.routeSlug === registrySlug);
+  if (!country) throw new Error('Unknown electricity guide country: ' + countrySlug);
+  const countryName = country.displayNames?.fr || country.title;
   return `<!doctype html>
 <html lang="fr">
 <head>
@@ -46,7 +46,7 @@ ${ANALYTICS_BOOTSTRAP}
 <h1>Estimation d’électricité — ${countryName}</h1>
 <p>Cette ancienne page pays utilisait une moyenne nationale de planification. Elle a été retirée afin qu’un tarif ancien ou attribué au mauvais fournisseur ne paraisse pas actuel.</p>
 <p>Le calculateur principal exige un fournisseur, une catégorie et une source à jour. En l’absence de données vérifiées, il propose un tarif personnalisé qui reste dans le navigateur.</p>
-<p><a class="en-btn" href="/fr/tools/${family.slug}/">Ouvrir le calculateur principal</a></p>
+<p><a class="en-btn" href="/fr/tools/${family.slug}/?country=${country.isoCode}">Ouvrir le calculateur principal</a></p>
 </div></section></main>
 <afro-footer></afro-footer>
 ${ANALYTICS_LOADER}

@@ -19,3 +19,16 @@ assert(!html.includes('all 54 African countries'));
 assert(!/href="\/tools\/electricity-tariff\/[^"?]+\/"/.test(html));
 
 console.log('Canonical Electricity Cost & Prepaid Units root contract verified.');
+const registry = require('../data/registry/countries.json');
+const controller = fs.readFileSync(path.join(root, 'assets/js/pages/electricity-cost-prepaid-units.js'), 'utf8');
+for (const country of registry) {
+  assert(controller.includes(country.isoCode + ': { name: ' + JSON.stringify(country.displayNames.en) + ", currency: '" + country.currency + "' }"),
+    country.isoCode + ' must have its registered currency in the custom-rate calculator');
+  const slug = country.isoCode === 'CG' ? 'republic-of-congo' : country.routeSlug;
+  for (const family of ['tools/electricity-tariff', 'tools/prepaid-meter', 'fr/tools/tarifs-electricite', 'fr/tools/compteur-prepaye']) {
+    const guide = fs.readFileSync(path.join(root, family, slug, 'index.html'), 'utf8');
+    const target = family.startsWith('fr/') ? family : 'tools/electricity-tariff';
+    assert(guide.match(/<a class="en-btn"[^>]+>/)[0].includes('href="/' + target + '/?country=' + country.isoCode + '"'),
+      family + '/' + slug + ' must open the matching country');
+  }
+}

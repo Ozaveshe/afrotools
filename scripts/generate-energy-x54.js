@@ -1853,7 +1853,6 @@ function resultDisclaimerHTML(tool) {
 function makeRetiredElectricityCountryPage(tool, country) {
   const canonical = `https://afrotools.com/tools/${tool.slug}/${country.slug}/`;
   const isPrepaid = tool.slug === "prepaid-meter";
-  const etCustomJourney = country.code === 'ET' && !isPrepaid;
   const title = `${country.name} ${isPrepaid ? "Prepaid Units" : "Electricity Tariff"} Guide Moved | AfroTools`;
   const description = `Use the canonical Electricity Cost & Prepaid Units calculator for ${country.name}. Automatic estimates are shown only for current provider-and-class tariffs.`;
   return `<!doctype html>
@@ -1874,7 +1873,7 @@ function makeRetiredElectricityCountryPage(tool, country) {
 <h1>${country.flag} ${escapeHtml(country.name)} electricity estimate</h1>
 <p>This former country calculator used a broad national planning default. It has been retired so a stale or provider-mismatched rate cannot look current.</p>
 <p>The canonical calculator supports money to prepaid units and kWh to bill. If no current ${escapeHtml(country.name)} provider-and-class schedule is maintained, it fails closed and offers a local-only custom-rate calculation.</p>
-<p><a class="en-btn" style="white-space:normal;max-width:100%;text-align:center" href="/tools/electricity-tariff/${etCustomJourney ? '?country=ET' : ''}">Open Electricity Cost &amp; Prepaid Units</a></p>
+<p><a class="en-btn" style="white-space:normal;max-width:100%;text-align:center" href="/tools/electricity-tariff/?country=${country.code}">Open Electricity Cost &amp; Prepaid Units</a></p>
 <p>This URL remains available for old bookmarks, but it is noindex and links to the single transactional calculator.</p>
 </div></section></main>
 <afro-footer></afro-footer>
