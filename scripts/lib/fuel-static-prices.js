@@ -29,6 +29,22 @@ module.exports = function staticPrices(locale, escape) {
     return `<time datetime="${escape(day)}">${escape(day)}</time>`;
   }
 
+  function note(record) {
+    if (!record.notes) return '';
+    const date = new Date(record.effective_date + 'T00:00:00Z');
+    if (locale !== 'en' && record.price_kind === 'weekly-national-benchmark' && Number.isFinite(date.getTime())) {
+      const format = { day: 'numeric', month: 'long', timeZone: 'UTC' };
+      const product = record.fuel_type === 'petrol' ? 'gasoline' : record.fuel_type;
+      const englishDate = new Intl.DateTimeFormat('en-GB', format).format(date);
+      const standard = `Weekly national ${product} benchmark for ${englishDate}. Confirm the pump price locally.`;
+      if (record.notes === standard) {
+        const dateLabel = new Intl.DateTimeFormat(locale, { ...format, year: 'numeric' }).format(date);
+        return '<p>' + escape(copy.get(locale, 'weeklyPumpBenchmark', { fuel: t(record.fuel_type), date: dateLabel })) + '</p>';
+      }
+    }
+    return '<p lang="en">' + escape(record.notes) + '</p>';
+  }
+
   function product(record, state) {
     const dates = [];
     if (record.observation_year) dates.push(surveyYear + ' ' + escape(record.observation_year));
@@ -42,7 +58,7 @@ module.exports = function staticPrices(locale, escape) {
     if (state.freshnessBasis === 'official-verification') dates.push(t('verified') + ' ' + time(record.last_verified_at));
     if (state.historical) dates.push(historical);
     const price = escape(record.currency) + ' ' + numbers.format(record.price) + '/L';
-    return `<li><strong>${escape(t(record.fuel_type))} · ${price}</strong><br>${dates.join(' · ')} · ${escape(t(record.confidence))}<br><a href="${escape(record.source_url)}">${escape(record.source_name)}</a>${record.notes ? `<p lang="en">${escape(record.notes)}</p>` : ''}</li>`;
+    return `<li><strong>${escape(t(record.fuel_type))} · ${price}</strong><br>${dates.join(' · ')} · ${escape(t(record.confidence))}<br><a href="${escape(record.source_url)}">${escape(record.source_name)}</a>${note(record)}</li>`;
   }
 
   let opened = false;
