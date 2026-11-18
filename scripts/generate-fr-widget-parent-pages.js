@@ -201,7 +201,7 @@ function pageTemplate(item, widget) {
         <h1 class="commercial-title">${escapeHtml(item.title)}</h1>
         <p class="commercial-copy">${escapeHtml(item.description)}</p>
         <div class="commercial-actions">
-          <a class="btn btn-primary" href="${item.fullFrenchPath}">Ouvrir l'outil complet</a>
+          <a class="btn btn-primary" href="${item.fullFrenchPath}">${item.fullFrenchLabel ? escapeHtml(item.fullFrenchLabel) : "Ouvrir l'outil complet"}</a>
           <a class="btn btn-secondary" href="#code-integration">Voir le code d’intégration</a>
           <a class="btn btn-ghost" href="/fr/widgets/">Tous les widgets francais</a>
         </div>
@@ -230,7 +230,7 @@ function pageTemplate(item, widget) {
           <p>${escapeHtml(item.primaryUse)}</p>
         </div>
         <ul class="fr-widget-detail-list">
-          <li><strong>Experience principale</strong><span>Envoyez les utilisateurs vers <a href="${item.fullFrenchPath}">la page complete en francais</a> quand ils doivent calculer, comparer ou sauvegarder un resultat.</span></li>
+          <li><strong>Experience principale</strong><span>${item.fullFrenchLabel ? `<a href="${item.fullFrenchPath}">${escapeHtml(item.fullFrenchLabel)}</a>` : `Envoyez les utilisateurs vers <a href="${item.fullFrenchPath}">la page complete en francais</a> quand ils doivent calculer, comparer ou sauvegarder un resultat.`}</span></li>
           <li><strong>Integration legere</strong><span>Utilisez le code ci-dessous pour placer un module compact dans un article, une page pays ou un guide business.</span></li>
           <li><strong>Limite a garder visible</strong><span>${escapeHtml(item.caution)}</span></li>
         </ul>
