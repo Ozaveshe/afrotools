@@ -365,37 +365,40 @@
     var destination = AFCFTA_DATA.memberStates[value("destinationCountry")];
     if (!origin || !destination) throw new Error("Choisissez deux pays pris en charge.");
     if (value("originCountry") === value("destinationCountry")) throw new Error("Choisissez deux pays différents.");
-    var year = Math.max(2021, Math.min(2033, Math.floor(number("scenarioYear", 2026))));
+    var year = Number(value("scenarioYear"));
+    if (!Number.isInteger(year) || year < 2021 || year > 2033) throw new Error("Choisissez une année de 2021 à 2033.");
     var category = value("tariffCategory");
-    var generalA = Math.max(0, Math.min(100, (year - 2020) * 10));
-    var generalB = year < 2026 ? 0 : Math.max(0, Math.min(100, (year - 2025) * 12.5));
-    var schedule = origin.reductionSchedule || {};
-    var reduction = category === "A"
-      ? (schedule.catA && schedule.catA[year] !== undefined ? schedule.catA[year] : generalA)
-      : category === "B"
-        ? (schedule.catB && schedule.catB[year] !== undefined ? schedule.catB[year] : generalB)
-        : 0;
+    if (!["A","B","C"].includes(category)) throw new Error("Choisissez une catégorie du scénario.");
+    var hs = value("hsCode").trim();
+    var facts = window.AfCftaCorridor.assess(destination,category,year,hs);
+    if (!facts.validCode) throw new Error("Saisissez 4, 6, 8, 10 ou 12 chiffres pour le code SH, par exemple 0901 ou 0901.11.");
     var active = origin.tradingStatus === "active_GTI" && destination.tradingStatus === "active_GTI";
-    var baseDuty = number("baseDuty");
-    var effectiveDuty = active && category !== "C" ? baseDuty * (1 - reduction / 100) : baseDuty;
-    var sensitive = (origin.sensitiveProducts || []).concat(destination.sensitiveProducts || []).filter(function (item, index, list) {
-      return list.indexOf(item) === index;
-    });
+    var base = value("baseDuty");
+    var productLabels = {Milk:"Lait", Sugar:"Sucre", Rice:"Riz", Maize:"Maïs", Wheat:"Blé", Textiles:"Textiles", Poultry:"Volaille", Cement:"Ciment", Vehicles:"Véhicules", Clothing:"Vêtements", Steel:"Acier", "Used clothing":"Friperie"};
+    var statusLabels = {active_GTI:"Commerce guidé actif", preparing:"En préparation", not_started:"Non commencé"};
+    var metrics = [
+      ["Corridor", origin.name + " → " + destination.name],
+      ["État", active ? "Actif dans le registre" : "Préférence non confirmée"],
+      ["Réduction générale · " + destination.name + " · catégorie " + category + " · " + year, facts.reduction === null ? "Absente du registre pour cette année et cette catégorie" : decimal(facts.reduction, " %")],
+      ["Droit applicable au produit", "À vérifier dans le tarif officiel"],
+      ["Code SH", hs || "Non saisi"]
+    ];
+    if (active && facts.reduction !== null && Number(base) > 0) {
+      metrics.push(["Simulation sur votre droit NPF, sous réserve de la catégorie sélectionnée", decimal(Number(base) * (1 - facts.reduction / 100), " %")]);
+    }
     return report(
       "Évaluation du corridor ZLECAf",
-      active ? "Les deux pays sont marqués actifs dans le registre local. La préférence reste soumise à la ligne tarifaire et à l’origine." : "La préférence n’est pas confirmée dans le registre local pour ce corridor.",
+      "Le barème général du pays importateur concerne la catégorie sélectionnée. La concession de la ligne et l’origine doivent être confirmées séparément.",
+      metrics,
       [
-        ["Corridor", origin.name + " → " + destination.name],
-        ["État", active ? "Actif dans le registre" : "Préférence non confirmée"],
-        ["Réduction de planification", decimal(reduction, " %")],
-        ["Droit indicatif après réduction", decimal(effectiveDuty, " %")],
-        ["Code SH", value("hsCode") || "Non saisi"]
-      ],
-      [
-        [origin.name, origin.ratified ? "Ratifié" : "Non ratifié", origin.scheduleFiled ? "Barème déposé" : "Barème non déposé", origin.tradingStatus],
-        [destination.name, destination.ratified ? "Ratifié" : "Non ratifié", destination.scheduleFiled ? "Barème déposé" : "Barème non déposé", destination.tradingStatus]
-      ].concat(sensitive.map(function (item) { return ["Produit sensible signalé", item]; })),
-      ["Confirmez la concession de la ligne, la règle d’origine et le certificat auprès des autorités des deux pays."]
+        [origin.name, origin.ratified ? "Ratifié" : "Non ratifié", origin.scheduleFiled ? "Barème déposé" : "Barème non déposé", statusLabels[origin.tradingStatus] || origin.tradingStatus],
+        [destination.name, destination.ratified ? "Ratifié" : "Non ratifié", destination.scheduleFiled ? "Barème déposé" : "Barème non déposé", statusLabels[destination.tradingStatus] || destination.tradingStatus]
+      ].concat(facts.sensitive.map(function (item) {
+        var label = item.replace(/^(.+) \(HS /, function (_, name) { return (productLabels[name] || name) + " (SH "; });
+        return ["Produit sensible correspondant dans le registre du pays importateur", label];
+      })),
+      ["Recherchez la ligne nationale et la règle d’origine dans le tarif officiel : https://etariff.au-afcfta.org/mapsearch",
+       "Offres par pays importateur, partenaire et code SH : https://afcfta.unctad.org/tariffs"]
     );
   }
 
@@ -1049,6 +1052,7 @@
 
   function reopenJson(file) {
     if (!file) return;
+    if (tool === "afcfta-tracker") { lastReport = null; lastReportInputs = null; result.hidden = true; }
     var reader = new FileReader();
     reader.addEventListener("load", function () {
       try {
@@ -1066,7 +1070,10 @@
           if (field.type === "checkbox") field.checked = Boolean(payload.inputs[field.name]);
           else field.value = String(payload.inputs[field.name]);
         });
-        render(tool === "payment-comparator" ? paymentComparator() : payload.report);
+        var reopenedReport = payload.report;
+        if (tool === "payment-comparator") reopenedReport = paymentComparator();
+        if (tool === "afcfta-tracker") reopenedReport = afcftaTracker();
+        render(reopenedReport);
         status.dataset.state = "success";
         status.textContent = "Export JSON rouvert localement. Vérifiez les champs et le résultat avant utilisation.";
       } catch (error) {
@@ -1213,6 +1220,9 @@
       if (form.elements.namedItem("compareCode").options.length > 1) form.elements.namedItem("compareCode").selectedIndex = 1;
     }
     if (tool === "afcfta-tracker" && typeof AFCFTA_DATA !== "undefined") {
+      function clearCorridorReport() { lastReport = null; lastReportInputs = null; result.hidden = true; }
+      form.addEventListener("input", clearCorridorReport);
+      form.addEventListener("change", clearCorridorReport);
       var states = Object.keys(AFCFTA_DATA.memberStates).map(function (code) {
         return Object.assign({ code: code }, AFCFTA_DATA.memberStates[code]);
       }).filter(function (item) { return item.ratified; });

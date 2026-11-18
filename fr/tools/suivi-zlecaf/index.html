@@ -115,13 +115,13 @@
     <div class="fr-trade-layout">
       <section class="fr-trade-card" aria-labelledby="workflow-title">
         <h2 id="workflow-title">Préparer le résultat</h2>
-        <p class="fr-trade-intro">Le registre est daté et ne remplace pas le tarif officiel. Une préférence exige aussi la ligne tarifaire, la règle d’origine et le certificat corrects.</p>
-        <form class="fr-trade-form" data-trade-form>
+        <p class="fr-trade-intro">Choisissez le pays importateur comme « Reporter », le pays d’origine comme « Partner », puis recherchez la ligne nationale et la règle d’origine dans les sources officielles ci-dessous.</p>
+        <label class="fr-trade-button fr-trade-button--secondary">Rouvrir un scénario JSON<input type="file" accept="application/json,.json" data-import-json aria-label="Rouvrir un scénario JSON"></label><form class="fr-trade-form" data-trade-form>
           <div class="fr-trade-fields"><div class="fr-trade-field"><label for="originCountry">Pays d’origine</label><select id="originCountry" name="originCountry"></select></div>
 <div class="fr-trade-field"><label for="destinationCountry">Pays de destination</label><select id="destinationCountry" name="destinationCountry"></select></div>
 <div class="fr-trade-field"><label for="hsCode">Code SH (facultatif)</label><input id="hsCode" name="hsCode" type="text" placeholder="8517.12" inputmode="text"></div>
-<div class="fr-trade-field"><label for="tariffCategory">Catégorie tarifaire</label><select id="tariffCategory" name="tariffCategory"><option value="A">Catégorie A</option><option value="B">Catégorie B</option><option value="C">Catégorie C</option></select></div>
-<div class="fr-trade-field"><label for="baseDuty">Droit NPF de référence (%)</label><input id="baseDuty" name="baseDuty" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+<div class="fr-trade-field"><label for="tariffCategory">Catégorie supposée pour la simulation</label><select id="tariffCategory" name="tariffCategory"><option value="A">Catégorie A</option><option value="B">Catégorie B</option><option value="C">Catégorie C</option></select></div>
+<div class="fr-trade-field"><label for="baseDuty">Droit NPF de référence (%, facultatif)</label><input id="baseDuty" name="baseDuty" type="number" min="0" step="0.01" inputmode="decimal"></div>
 <div class="fr-trade-field"><label for="scenarioYear">Année du scénario</label><input id="scenarioYear" name="scenarioYear" type="number" min="2021" step="1" value="2026" inputmode="decimal"></div></div>
           <div class="fr-trade-actions">
             <button class="fr-trade-button fr-trade-button--primary" type="submit">Calculer et vérifier</button>
@@ -158,7 +158,7 @@
         <section class="fr-trade-card">
           <h2>Sources à consulter</h2>
           <p class="fr-trade-note fr-trade-note--source">Registre de référence revu en mai 2026. Les tarifs commerciaux et valeurs variables doivent être vérifiés à la date de l’opération.</p>
-          <ul class="fr-trade-list"><li><a href="https://au-afcfta.org/" rel="noopener noreferrer">Secrétariat de la ZLECAf</a></li><li><a href="/data/trade/afcfta-schedule.js?v=43e3f421">Registre ZLECAf AfroTools</a></li></ul>
+          <ul class="fr-trade-list"><li><a href="https://etariff.au-afcfta.org/mapsearch" rel="noopener noreferrer">Tarif officiel de la ZLECAf par ligne</a></li><li><a href="https://afcfta.unctad.org/tariffs" rel="noopener noreferrer">Offres tarifaires et règles d’origine (CNUCED)</a></li><li><a href="/data/trade/afcfta-schedule.js">Registre ZLECAf AfroTools</a></li></ul>
         </section>
       </aside>
     </div>
@@ -168,9 +168,10 @@
   </main>
   <afro-footer></afro-footer>
 <script src="/data/trade/afcfta-schedule.js?v=43e3f421"></script>
+<script src="/assets/js/lib/afcfta-corridor.js"></script>
   <script src="/engines/trade-utility-engine.js?v=2e42429d"></script>
   <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
-  <script src="/assets/js/pages/fr-trade-parity.js?v=2c54aa88"></script>
+  <script src="/assets/js/pages/fr-trade-parity.js"></script>
   <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>
