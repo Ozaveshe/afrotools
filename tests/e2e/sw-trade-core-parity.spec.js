@@ -54,6 +54,8 @@ for (const app of apps) {
       expect(rawLeak).toEqual([]);
       expect(errors).toEqual([]);
       return;
+    } else if (app.id === "afcfta-tracker") {
+      await page.getByLabel("Msimbo wa bidhaa (HS)").fill("abcd");
     } else if (app.id === "demurrage-calculator") {
       await page.getByLabel("Siku bandarini").fill("1.5");
     } else if (app.id === "hs-code-lookup") {
