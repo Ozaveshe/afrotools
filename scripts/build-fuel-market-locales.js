@@ -9,10 +9,10 @@ function build(html,locale){
  html=html.replace(/<section class="fuel-card fuel-supported"[\s\S]*?<\/section>/,'<section class="fuel-card fuel-supported"><h2>Supported price coverage</h2><p>Choose a supported country above. The market selector distinguishes dated city references from country benchmarks. The coverage table lists the loaded source-backed observations; no city or station coverage is inferred from a country benchmark.</p></section>');
 
  html=html.replace(/and withhold stale prices/g,'and show dated prices for honest planning').replace(/Stale or incomplete prices are unavailable\./g,'Historical prices remain visible for explicitly labelled planning estimates; incomplete records remain unavailable.').replace(/Stale prices are unavailable/g,'Historical prices are labelled for planning');
- if(html.includes(start))html=html.replace(/<!-- FUEL_MARKET_START -->[\s\S]*?<!-- FUEL_MARKET_END -->/,block);
- else if(locale==='en')html=html.replace(/<section class="fuel-card fuel-finder"[\s\S]*?(?=<section class="fuel-card fuel-supported")/,block+'\n');
- else if(locale==='sw')html=html.replace(/(?=<section class="swt-card" aria-labelledby="snapshot-title")/,block+'\n');
- else html=html.replace(/(<section class="hero">[\s\S]*?<\/section>)/,'$1\n'+block);
+ if(html.includes(start))html=html.replace(/<!-- FUEL_MARKET_START -->[\s\S]*?<!-- FUEL_MARKET_END -->/,()=>block);
+ else if(locale==='en')html=html.replace(/<section class="fuel-card fuel-finder"[\s\S]*?(?=<section class="fuel-card fuel-supported")/,()=>block+'\n');
+ else if(locale==='sw')html=html.replace(/(?=<section class="swt-card" aria-labelledby="snapshot-title")/,()=>block+'\n');
+ else html=html.replace(/(<section class="hero">[\s\S]*?<\/section>)/,hero=>hero+'\n'+block);
  if(!html.includes(block))throw Error('Fuel finder insertion failed: '+locale);
  html=html.replace(/<script[^>]*src="\/assets\/js\/(?:pages\/(?:fuel-tracker-vip|fuel-market-finder)|lib\/(?:fuel-market-copy|fuel-market-observations)|engines\/fuel-tracker-engine)\.js(?:\?[^"]*)?"[^>]*><\/script>\s*/g,'');
  html=html.replace(/<link[^>]*href="\/assets\/css\/fuel-tracker-vip\.css(?:\?[^"]*)?"[^>]*>\s*/g,'');
