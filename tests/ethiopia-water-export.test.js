@@ -9,7 +9,11 @@ function worksheet() {
   assert.ok(script, 'exercise actual maintained page controller');
   const elements = new Map();
   const element = id => {
-    if (!elements.has(id)) elements.set(id, { value: '', textContent: '', style: {}, listeners: {}, classList: { add() {}, remove() {} }, addEventListener(event, fn) { this.listeners[event] = fn; } });
+    if (!elements.has(id)) elements.set(id, { value: '', textContent: '', style: {}, listeners: {}, attributes: {},
+      setAttribute(name, value) { this.attributes[name] = value; },
+      removeAttribute(name) { delete this.attributes[name]; },
+      focus() { this.focused = true; },
+      classList: { add() {}, remove() {} }, addEventListener(event, fn) { this.listeners[event] = fn; } });
     return elements.get(id);
   };
   const downloads = [], pending = new Map();
@@ -46,7 +50,7 @@ for (const fixture of [
   assert.ok(r.text.includes(`Billable usage: ${fixture.billable} m³`));
   assert.ok(r.text.includes(`Daily consumption: ${fixture.daily} L (assumes a 30-day month; uses actual consumption, not the billable minimum)`));
   assert.match(r.text, /8 July 2026 to 7 July 2027/);
-  assert.match(r.text, /Source: https:\/\/www\.aajs\.gov\.et\/uploads\/Publication\/149-2015-2024-09-25-66f40296e8daa\.pdf/);
+  assert.match(r.text, /Source: https:\/\/aajs\.gov\.et\/uploads\/Publication\/149-2015-2024-09-25-66f40296e8daa\.pdf/);
   assert.match(r.text, /later adjustments and current provider implementation are not confirmed/);
   assert.match(r.text, /not added automatically/);
   assert.doesNotMatch(r.text, /account number|customer name|address|phone|email/i);

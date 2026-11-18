@@ -81,7 +81,15 @@
   var fields = ['monthlyUsage','householdSize','customRate','customFee'];
   fields.push('tariffMode','customerType');
   var results = document.getElementById('results');
-  function invalidate(){ latest=''; results.classList.remove('on'); document.getElementById('waterError').textContent=''; }
+  var fee = document.getElementById('customFee');
+  var error = document.getElementById('waterError');
+  function invalidate(){
+    latest='';
+    results.classList.remove('on');
+    error.textContent='';
+    fee.removeAttribute('aria-invalid');
+    fee.removeAttribute('aria-describedby');
+  }
   fields.forEach(function(id){document.getElementById(id).addEventListener('input',invalidate);});
   document.getElementById('tariffMode').addEventListener('change',function(){
     invalidate();
@@ -95,7 +103,17 @@
     invalidate();
     var input={}; fields.forEach(function(id){input[id]=document.getElementById(id).value;});
     var r=window.AfroTools.WaterBillEngine.calculate(input,'ET');
-    if(r.error){document.getElementById('waterError').textContent=r.error;return;}
+    if(r.error){
+      if(input.customFee.trim()==='' && !window.AfroTools.WaterBillEngine.calculate(Object.assign({},input,{customFee:0}),'ET').error){
+        error.textContent='Enter your other charges in ETB. Enter 0 if there are none.';
+        fee.setAttribute('aria-invalid','true');
+        fee.setAttribute('aria-describedby','waterError');
+        fee.focus();
+      } else {
+        error.textContent=r.error;
+      }
+      return;
+    }
     if(input.tariffMode==='addis-149-year5'){
       function money(n){return 'ETB '+n.toFixed(2);}
       document.getElementById('rBill').textContent=money(r.total);
