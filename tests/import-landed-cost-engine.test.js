@@ -153,3 +153,9 @@ assert.strictEqual(engine.calculate(base('NG', { dutyRate: 100.01 }), rules, opt
 assert.strictEqual(engine.calculate(base('NG', { purchaseValue: -1 }), rules, options).valid, false);
 
 console.log('import-landed-cost-engine.test.js passed');
+
+const thirdCountry = engine.calculate(base('NG', {origin:'CN', purchaseValue:1000, freight:100, insurance:10, fxRate:1500, dutyRate:20}), rules, options);
+const regional = engine.calculate(base('NG', {origin:'GH', ngCommunityTreatment:'excluded', purchaseValue:1000, freight:100, insurance:10, fxRate:1500, dutyRate:20}), rules, options);
+close(thirdCountry.totalLevies - regional.totalLevies, 8325, 'Community levy exclusion');
+close(thirdCountry.vat - regional.vat, 624.38, 'VAT adjusts with the levy');
+close(thirdCountry.duty, regional.duty, 'User-confirmed duty survives levy exclusion');

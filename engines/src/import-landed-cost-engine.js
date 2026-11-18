@@ -167,12 +167,15 @@
 
     var levyItems = (market.levies || []).map(function (levy) {
       var base = money(componentTotal(levy.base, componentValues));
+      var treatment = values.ngCommunityTreatment || (values.origin === "GH" ? "excluded" : "standard");
+      var excluded = values.destination === "NG" && levy.id === "etls" && treatment === "excluded";
+      var rate = excluded ? 0 : levy.rate;
       return {
         id: levy.id,
         name: levy.name,
-        rate: levy.rate,
+        rate: rate,
         base: base,
-        amount: money(base * number(levy.rate) / 100),
+        amount: money(base * number(rate) / 100),
         description: levy.description || ""
       };
     });

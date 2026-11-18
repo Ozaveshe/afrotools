@@ -58,7 +58,7 @@
     var input = {
       destination: value('destination'), origin: value('origin'), goodsType: value('goodsType'),
       sourceCurrency: value('sourceCurrency'), purchaseValue: value('purchaseValue'), freight: value('freight'), insurance: value('insurance'),
-      quantity: value('quantity'), fxRate: value('fxRate'), dutyRate: duty,
+      ngCommunityTreatment: value('ngCommunityTreatment'), quantity: value('quantity'), fxRate: value('fxRate'), dutyRate: duty,
       customsValueOverrideLocal: value('customsValueOverrideLocal'), exciseRate: value('exciseRate'), exciseFixedLocal: value('exciseFixedLocal'),
       otherStatutoryLocal: value('otherStatutoryLocal'), classificationConfirmed: el('classificationConfirmed').checked
     };
@@ -68,7 +68,16 @@
   function optionCostsUsed(input) {
     return optionalKeys.some(function (key) { return Number(input[key]) > 0; });
   }
+  function resetCommunityTreatment() {
+    var enabled = value('destination') === 'NG';
+    var select = el('ngCommunityTreatment');
+    select.disabled = !enabled;
+    select.required = enabled;
+    el('ngCommunityField').hidden = !enabled;
+    select.value = value('origin') === 'GH' ? 'excluded' : value('origin') === 'OTHER' ? '' : 'standard';
+  }
   function updateDutyBands() {
+    resetCommunityTreatment();
     var select = el('dutyRate');
     var currentMarket = market();
     var bands = currentMarket && currentMarket.duty ? currentMarket.duty.commonBands : [];
@@ -138,7 +147,7 @@
       '<section class="ilc-group"><h3>Optional local and logistics costs</h3>' + optionalLines + '</section>' +
       '<div class="ilc-metrics"><div class="ilc-metric"><span>Effective import burden</span><strong>' + result.effectiveImportBurden.toFixed(2) + '%</strong></div><div class="ilc-metric"><span>Taxes / purchase price</span><strong>' + result.taxesAsPurchasePercent.toFixed(2) + '%</strong></div><div class="ilc-metric"><span>FX rate used</span><strong>' + Number(result.fxRate).toLocaleString('en', { maximumFractionDigits: 6 }) + '</strong></div><div class="ilc-metric"><span>FX impact vs reference</span><strong>' + esc(money(result.fxImpactLocal || 0)) + '</strong></div></div>' +
       (warnings.length ? '<div class="ilc-notice"><strong>Check before relying on this estimate</strong><ul><li>' + warnings.map(esc).join('</li><li>') + '</li></ul></div>' : '') +
-      '<div class="ilc-source-meta"><strong>' + esc(result.authority) + '</strong><br>Rule ' + esc(result.ruleVersion) + ' · effective ' + esc(dateLabel(result.effectiveDate)) + ' · verified ' + esc(dateLabel(result.lastVerified)) + ' · confidence ' + esc(result.confidence) + '<br>FX: ' + esc(result.fxSource === 'user-override' ? 'your override; reference ' : 'reference ') + esc(result.fxReferenceSource) + ' snapshot · ' + esc(dateLabel(result.fxReferenceTimestamp)) + ' · ' + esc(result.fxFreshness) + '<ul>' + sourceLinks + '</ul><p>Planning estimate only. Confirm classification, current rates, valuation, exemptions and declaration charges with the authority or a licensed customs professional.</p></div></div>';
+      '<div class="ilc-source-meta"><strong>' + esc(result.authority) + '</strong><br>Rule ' + esc(result.ruleVersion) + ' · effective ' + esc(dateLabel(result.effectiveDate)) + ' · verified ' + esc(dateLabel(result.lastVerified)) + ' · confidence ' + esc(result.confidence) + '<br>FX: ' + esc(result.fxSource === 'user-override' ? 'your override; reference ' : 'reference ') + esc(result.fxReferenceSource) + ' snapshot · ' + esc(dateLabel(result.fxReferenceTimestamp)) + ' · ' + esc(result.fxFreshness) + '<ul>' + sourceLinks + '</ul><ul><li>' + result.limitations.map(esc).join('</li><li>') + '</li></ul><p>Planning estimate only. Confirm classification, current rates, valuation, exemptions and declaration charges with the authority or a licensed customs professional.</p></div></div>';
     resultNode.hidden = false;
     el('scenarioSection').hidden = false;
     el('exportActions').hidden = false;
@@ -172,8 +181,11 @@
     if (!currentResult) return '';
     var r = currentResult;
     var reference = r.fxReferenceTimestamp ? r.fxReferenceSource + ', snapshot ' + r.fxReferenceTimestamp + ', ' + r.fxFreshness : 'unavailable';
+    var levyLines = r.levyItems.map(function (levy) {
+      return levy.name + ' (' + levy.rate + '% of ' + money(levy.base) + '): ' + money(levy.amount);
+    });
     var sourceLines = r.sources.map(function (source) { return 'Official source: ' + source.title + ' — ' + source.url; });
-    return ['AfroTools Import & Landed Cost Estimate', 'Destination: ' + r.country, 'Origin: ' + r.origin, 'Supplier cost: ' + money(r.purchaseValueLocal), 'Freight: ' + money(r.freightLocal), 'Insurance: ' + money(r.insuranceLocal), 'Customs value: ' + money(r.customsValue), 'Duty: ' + money(r.duty), 'Excise: ' + money(r.excise), 'Levies: ' + money(r.totalLevies), 'VAT: ' + money(r.vat), 'Other government charges: ' + money(r.otherStatutory), 'Optional local costs: ' + money(r.optionalCostsTotal), 'Estimated landed cost: ' + money(r.landedCostLocal), 'Per unit: ' + money(r.landedCostPerUnit), 'FX rate: ' + r.fxRate + ' ' + r.destinationCurrency + ' per ' + r.sourceCurrency + (r.fxSource === 'user-override' ? ' (your override)' : ''), 'FX reference: ' + reference, 'Customs authority: ' + r.authority, 'Rule: ' + r.ruleVersion + ', effective ' + r.effectiveDate + ', verified ' + r.lastVerified].concat(sourceLines, ['Planning estimate only; confirm the declaration with the destination authority.']).join('\n');
+    return ['AfroTools Import & Landed Cost Estimate', 'Destination: ' + r.country, 'Origin: ' + r.origin, 'Supplier cost: ' + money(r.purchaseValueLocal), 'Freight: ' + money(r.freightLocal), 'Insurance: ' + money(r.insuranceLocal), 'Customs value: ' + money(r.customsValue), 'Duty: ' + money(r.duty), 'Excise: ' + money(r.excise), 'Levies: ' + money(r.totalLevies), ...levyLines, 'VAT: ' + money(r.vat), 'Other government charges: ' + money(r.otherStatutory), 'Optional local costs: ' + money(r.optionalCostsTotal), 'Estimated landed cost: ' + money(r.landedCostLocal), 'Per unit: ' + money(r.landedCostPerUnit), 'FX rate: ' + r.fxRate + ' ' + r.destinationCurrency + ' per ' + r.sourceCurrency + (r.fxSource === 'user-override' ? ' (your override)' : ''), 'FX reference: ' + reference, 'Customs authority: ' + r.authority, 'Rule: ' + r.ruleVersion + ', effective ' + r.effectiveDate + ', verified ' + r.lastVerified].concat(r.limitations, sourceLines, ['Planning estimate only; confirm the declaration with the destination authority.']).join('\n');
   }
 
   // Invalidate before target-specific handlers show an unsupported-market/vehicle notice.
@@ -196,7 +208,7 @@
       statusNode.textContent = 'Unsupported destination shown.';
     }
   });
-  el('origin').addEventListener('change', function () { analytics('import_origin_selected', { origin: value('origin') }); });
+  el('origin').addEventListener('change', function () { resetCommunityTreatment(); analytics('import_origin_selected', { origin: value('origin') }); });
   el('goodsType').addEventListener('change', function () { analytics('import_goods_type_selected', { goods_type: value('goodsType') }); if (value('goodsType') === 'vehicle') showUnsupported(rules.goodsTypes.vehicle.notes, rules.goodsTypes.vehicle.route); });
   el('sourceCurrency').addEventListener('change', resetPairQuote);
   el('dutyRate').addEventListener('change', function () { el('customDutyField').hidden = value('dutyRate') !== 'custom'; if (!el('customDutyField').hidden) el('customDutyRate').focus(); });
@@ -216,7 +228,12 @@
     if (!currentResult || !window.jspdf || !window.jspdf.jsPDF) { statusNode.textContent = 'PDF support is unavailable; use Print instead.'; return; }
     var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
     doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.text('Import & Landed Cost Estimate', 48, 58);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.text(doc.splitTextToSize(summary(), 500), 48, 85, { lineHeightFactor: 1.45 });
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); var lines = doc.splitTextToSize(summary(), 500);
+    // A4 points, leaving space for the heading and bottom margin on every page.
+    for (var start = 0; start < lines.length; start += 48) {
+      if (start) doc.addPage();
+      doc.text(lines.slice(start, start + 48), 48, 85, { lineHeightFactor: 1.45 });
+    }
     doc.save('afrotools-import-landed-cost-estimate.pdf');
     statusNode.textContent = 'Private PDF downloaded locally.';
     analytics('import_export_completed', { format: 'pdf', destination: currentResult.destination });
