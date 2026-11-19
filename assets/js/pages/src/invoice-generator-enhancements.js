@@ -491,7 +491,53 @@
         l("paymentLink") && e.push(invoiceCopy("Payment link: ") + l("paymentLink")), l("mobileMoney") && e.push(invoiceCopy("Mobile money/WhatsApp: ") + l("mobileMoney")),
         l("bankDetails") && e.push(l("bankDetails")), e;
     }
+    var recipientLabels = {
+        en: ["Recipient VAT / tax ID", "optional"],
+        fr: ["N° de TVA / identifiant fiscal du client", "facultatif"],
+        sw: ["Namba ya VAT / utambulisho wa kodi wa mteja", "si lazima"],
+        ha: ["Lambar VAT / harajin abokin ciniki", "na zaɓi"]
+    };
+    function recipientLabel() {
+        return recipientLabels[document.documentElement.lang.split("-")[0]] || recipientLabels.en;
+    }
+    function recipientLine() {
+        var id = l("recipientTaxId").trim();
+        return id ? recipientLabel()[0] + ": " + id : "";
+    }
+    function mountRecipientField() {
+        var email = o("clientEmail"), detail = o("pClientDetail");
+        if (!email || !detail || o("recipientTaxId")) return;
+        var field = document.createElement("div"), label = document.createElement("label");
+        var input = document.createElement("input"), preview = document.createElement("div");
+        field.className = "field";
+        input.type = "text";
+        input.id = label.htmlFor = "recipientTaxId";
+        input.className = email.className;
+        input.autocomplete = "off";
+        label.className = "f-label";
+        label.textContent = recipientLabel()[0] + " (" + recipientLabel()[1] + ")";
+        field.append(label, input);
+        email.closest(".field").after(field);
+        preview.id = "pRecipientTaxId";
+        preview.className = detail.className;
+        preview.style.overflowWrap = "anywhere";
+        detail.after(preview);
+        input.addEventListener("input", w);
+        // Address-book entries contain contact details only. Clear the old buyer's ID.
+        document.addEventListener("click", function(event) {
+            if (event.target.closest("#btnNewInvoice,[data-starter-action='new-invoice'],[data-starter-action='receipt'],[data-starter-action='estimate']")) {
+                g("pRecipientTaxId", recipientLine());
+            }
+            if (event.target.closest(".btn-remove")) return;
+            if (event.target.closest("[data-starter-action='saved-client']") && !document.querySelector(".client-item")) return;
+            if (event.target.closest("#btnClearClient,.client-item,[data-starter-action='saved-client']")) {
+                input.value = "";
+                w();
+            }
+        });
+    }
     function w() {
+        g("pRecipientTaxId", recipientLine());
         invoiceMissingDescription(false);
         var payment = invoicePaymentState(), check = o("markPaid");
         if (check) check.checked = payment.paid;
@@ -514,10 +560,12 @@
     }
     function x() {
         var e = {};
-        return window.AfroInvoiceState && "function" == typeof window.AfroInvoiceState.gatherState && (e = window.AfroInvoiceState.gatherState() || {}),
+        if (window.AfroInvoiceState && typeof window.AfroInvoiceState.gatherState === "function") e = window.AfroInvoiceState.gatherState() || {};
         e.po = l("poNumber"), e.pm = l("paymentMethod"), e.pl = l("paymentLink"), e.mm = l("mobileMoney"),
         e.bd = l("bankDetails"), e.ap = l("amountPaid"), e.wh = l("withholdingPercent"),
-        e.v = 2, e;
+        e.v = 2;
+        if (recipientLine()) e.recipientTaxId = l("recipientTaxId").trim();
+        return e;
     }
     function F(e) {
         return !!(window.AfroInvoiceState && window.AfroInvoiceState.restoreState(e));
@@ -526,6 +574,7 @@
     // an unrelated JSON object or object-valued field is not an invoice backup.
     function invoiceStateShapeValid(state) {
         if (!state || typeof state !== "object" || Array.isArray(state) || !Array.isArray(state.items) || !state.items.length) return false;
+        if (state.recipientTaxId !== undefined && typeof state.recipientTaxId !== "string") return false;
         if (![ "cn", "cl", "in" ].every(function(key) { return Object.prototype.hasOwnProperty.call(state, key); })) return false;
         var fields = [ "cn", "ba", "be", "bp", "ti", "cl", "cc", "ca", "ce", "in", "id", "dd", "dt", "cu", "pt", "tt", "tr", "dp", "nt", "mp", "tpl", "po", "pm", "pl", "mm", "bd", "ap", "wh" ];
         function scalar(value) { return typeof value === "string" || typeof value === "number" && Number.isFinite(value); }
@@ -604,7 +653,9 @@
         url.search = "";
         url.hash = "";
         if (include) {
-            var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(x())))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+            var sharedState = x();
+            delete sharedState.recipientTaxId;
+            var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(sharedState)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
             url.searchParams.set(n, encoded);
         }
         var title = invoiceCopy("Invoice") + (include ? " " + (l("invoiceNumber") || "") : "");
@@ -740,7 +791,7 @@
                 putOnlyUsedFonts: true,
                 compress: true
             }), currency = d(), totals = y(), position = 18;
-            var userText = [ "companyName", "clientName", "invoiceNumber", "businessAddress", "businessEmail", "businessPhone", "taxID", "clientCompany", "clientAddress", "clientEmail", "notes" ].map(l).concat(h().map(function(item) {
+            var userText = [ "companyName", "clientName", "invoiceNumber", "businessAddress", "businessEmail", "businessPhone", "taxID", "clientCompany", "clientAddress", "clientEmail", "recipientTaxId", "notes" ].map(l).concat(h().map(function(item) {
                 return item.desc;
             }), b()).join("\n");
             invoicePdfUseFonts(pdf, fonts, userText);
@@ -810,7 +861,7 @@
             position += 6;
             font("normal", 8.5, muted);
             var seller = [ l("companyName"), l("businessAddress"), l("businessEmail"), l("businessPhone"), l("taxID") ? invoiceCopy("Tax ID: ") + l("taxID") : "" ].filter(Boolean).join("\n");
-            var buyer = [ l("clientName"), l("clientCompany"), l("clientAddress"), l("clientEmail") ].filter(Boolean).join("\n");
+            var buyer = [ l("clientName"), l("clientCompany"), l("clientAddress"), l("clientEmail"), recipientLine() ].filter(Boolean).join("\n");
             var left = split(seller, 78), right = split(buyer, 78);
             for (var row = 0; row < Math.max(left.length, right.length); row++) {
                 room(4.3);
@@ -1111,6 +1162,7 @@
         });
     }
     function q() {
+        mountRecipientField();
         document.addEventListener("click", function(event) {
             var action = event.target.closest && event.target.closest("#btnPDF,#btnPDFMobile,#btnPrint,#btnExportJson,#btnShare,#btnReminder");
             if (!action) return;
@@ -1162,6 +1214,7 @@
                     if (!invoiceStateShapeValid(e)) return false;
                     var n = "function" == typeof t && t(e);
                     if (!n) return false;
+                    c("recipientTaxId", e.recipientTaxId || "");
                     return c("poNumber", e && e.po || ""), c("paymentMethod", e && e.pm || "bank"),
                     c("paymentLink", e && e.pl || ""), c("mobileMoney", e && e.mm || ""), c("bankDetails", e && e.bd || ""),
                     c("amountPaid", e && e.ap || "0"), c("withholdingPercent", e && e.wh || "0"),
