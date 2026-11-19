@@ -41,6 +41,7 @@ module.exports = function staticPrices(locale, escape) {
     if (record.valid_to) dates.push(t('validTo') + ' ' + time(record.valid_to));
     if (state.freshnessBasis === 'official-verification') dates.push(t('verified') + ' ' + time(record.last_verified_at));
     if (state.historical) dates.push(historical);
+    if (record.price_kind === 'existing-stock-retail') dates.push(escape(t('existingStock')));
     const price = escape(record.currency) + ' ' + numbers.format(record.price) + '/L';
     return `<li><strong>${escape(t(record.fuel_type))} · ${price}</strong><br>${dates.join(' · ')} · ${escape(t(record.confidence))}<br><a href="${escape(record.source_url)}">${escape(record.source_name)}</a>${record.notes ? `<p lang="en">${escape(record.notes)}</p>` : ''}</li>`;
   }

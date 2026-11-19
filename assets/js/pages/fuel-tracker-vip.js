@@ -36,6 +36,7 @@
    byId('fuel-use-history').hidden=!s.historical;byId('fuel-history').hidden=!(record&&record.previous_record);byId('fuel-history-record').textContent=record&&record.previous_record?[money(record.previous_record.price,record.previous_record.currency)+' / L',record.previous_record.effective_date,record.previous_record.source_name,record.previous_record.source_url].join(' — '):'';
    var other=engine.marketRecord(selected,byId('fuel-type').value==='petrol'?'diesel':'petrol');
    byId('fuel-result-comparison').textContent=s.available&&status(other).available&&other.currency===record.currency?t('comparison',{fuel:t(other.fuel_type),difference:money(other.price-record.price,record.currency)}):t('noComparison');
+   if(s.valid&&record.price_kind==='existing-stock-retail')byId('fuel-result-note').textContent+=' '+t('existingStock');
    byId('fuel-price').value=s.available?record.price:'';var entry=countryDirectory.get(byId('fuel-country').value);
    byId('fuel-currency').value=record&&record.currency||entry&&entry.currency||'USD';byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
    event(s.available?'fuel_localized_result_shown':'fuel_unavailable_shown',{market_id:selected&&selected.market_id||'none',country_code:selected&&selected.country_code||'none',fuel_type:byId('fuel-type').value,data_granularity:selected&&selected.granularity||'none',location_used:false,result_shown:s.available,reason:s.available?'':s.stale?'stale':'missing'});
