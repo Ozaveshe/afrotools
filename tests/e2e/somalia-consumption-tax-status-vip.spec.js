@@ -41,6 +41,7 @@ test('Somalia evidence reference supports mobile, dark, reduced motion, zoom, ke
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.keyboard.press('Tab');
   expect(await page.evaluate(() => document.activeElement && document.activeElement !== document.body)).toBe(true);
+  await page.locator('#soMerchantPayment').fill('200');
   const pending = page.waitForEvent('download');
   await page.locator('#soPdf').click();
   const download = await pending;
@@ -49,7 +50,7 @@ test('Somalia evidence reference supports mobile, dark, reduced motion, zoom, ke
   expect(buffer.subarray(0, 5).toString()).toBe('%PDF-');
   const parsed = await pdfParse(buffer);
   expect(parsed.text).toContain('Somalia VAT status & consumption-tax evidence');
-  expect(parsed.text).toContain('national');
+  expect(parsed.text).toContain('190.00');
 });
 
 test('Somalia evidence reference durable visual proof', async ({ browser }) => {

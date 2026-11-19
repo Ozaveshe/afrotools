@@ -66,11 +66,21 @@
     document.getElementById('soPdf').onclick = function() {
       if (!window.jspdf) return;
       var pdf = new window.jspdf.jsPDF();
-      pdf.text(t.title, 20, 20); pdf.text(pdf.splitTextToSize(t.lead, 170), 20, 32);
+      pdf.text(t.title, 20, 20); pdf.text(pdf.splitTextToSize(t.status, 170), 20, 32);
       pdf.text(t.current, 20, 58); pdf.text(pdf.splitTextToSize(t.currentBody, 170), 20, 68);
       pdf.text(t.historical, 20, 96); pdf.text(pdf.splitTextToSize(t.historicalBody, 170), 20, 106);
       pdf.text(t.low, 20, 134); pdf.text(t.lowCharge, 25, 144); pdf.text(t.high, 20, 156); pdf.text(t.highCharge, 25, 166);
-      pdf.text(pdf.splitTextToSize(t.note, 170), 20, 184); pdf.save('somalia-consumption-tax-evidence-status.pdf');
+      pdf.text(pdf.splitTextToSize(t.note, 170), 20, 184); pdf.addPage();
+      pdf.setFontSize(14);
+      pdf.text(pdf.splitTextToSize(merchant[0], 170), 20, 22);
+      pdf.setFontSize(11);
+      pdf.text(pdf.splitTextToSize(merchant[1], 170), 20, 45);
+      if (result.textContent) {
+        pdf.text(merchant[2] + ' : ' + format.format(payment.valueAsNumber), 20, 85);
+        pdf.text(pdf.splitTextToSize(result.textContent, 170), 20, 98);
+      }
+      pdf.textWithLink(merchant[5], 20, 135, { url: section.querySelector('a').href });
+      pdf.save('somalia-consumption-tax-evidence-status.pdf');
       document.getElementById('soStatus').textContent = t.pdf + '.';
     };
     engine.getStatus();
