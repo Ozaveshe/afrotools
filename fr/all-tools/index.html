@@ -2387,6 +2387,12 @@ function applySearchSuggestion(query){
 const frenchPublishedIds = new Set(Array.from(document.querySelectorAll('#toolsGrid [data-directory-record][data-id]'), node => node.dataset.id));
 
 // FRENCH_DIRECTORY_DIRECT_SEARCH_START
+function frenchDirectoryIntent(terms) {
+  const query = terms.join(' ');
+  if (/^(?:creer|generer|faire|etablir)(?: une| la| des)? factures?$/.test(query)) return 'generateur-factures-fr';
+  if (/^(?:(?:calculateur|calculatrice|calculer|calcul|budget|estimation)(?: (?:de la|de|du|pour la|la|le))? )?(?:dot|lobola)$/.test(query) || query === 'calculateur de budget lobola') return 'calculateur-lobola-fr';
+  return '';
+}
 function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
   if (!terms.length) return tools;
   const finder = typeof window !== 'undefined' && window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(terms.join(' '), 'fr', tools);
@@ -2395,7 +2401,13 @@ function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch
     const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
     return terms.every(term => text.includes(term));
   });
-  return direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  const matches = direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  const preferredId = frenchDirectoryIntent(terms);
+  if (preferredId) {
+    const preferred = tools.find(tool => tool.id === preferredId);
+    if (preferred && !matches.includes(preferred)) return [preferred, ...matches];
+  }
+  return matches;
 }
 // FRENCH_DIRECTORY_DIRECT_SEARCH_END
 function renderTools(){
@@ -2449,7 +2461,8 @@ function renderTools(){
       return (order[a.status]||1) - (order[b.status]||1);
     });
   } else {
-    tools.sort((a,b) => (b.priority||0) - (a.priority||0));
+    const preferredId = frenchDirectoryIntent(searchTerms);
+    tools.sort((a,b) => (preferredId ? Number(b.id === preferredId) - Number(a.id === preferredId) : 0) || (b.priority||0) - (a.priority||0));
   }
 
   // Update counts using the same registry rows this page actually renders.
