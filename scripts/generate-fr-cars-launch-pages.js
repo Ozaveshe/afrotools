@@ -441,6 +441,22 @@ function frenchLiquidity(label) {
   }[label] || String(label || "estimée").toLowerCase();
 }
 
+function frenchVehiclePhoto(ctx) {
+  const altByVehicle = {
+    "toyota-camry-2012": ["Toyota Camry SE blanche de 2012, génération XV50", 1825, 1093],
+    "toyota-camry-2018": ["Toyota Camry rouge de 2018, génération XV70", 1737, 733]
+  };
+  const reviewed = altByVehicle[ctx.vehicle.id];
+  if (!reviewed) return "";
+  const asset = priceData.mediaLibrary.assets.find(item => item.id === ctx.media.hero.id);
+  if (!asset || asset.modelReview?.vehicleId !== ctx.vehicle.id || asset.visualReview?.status !== "reviewed" ||
+      asset.licenseId !== "PD-self" || !asset.rightsHolder || !asset.sourceUrl || !asset.licenseUrl) return "";
+  const [alt, width, height] = reviewed;
+  const resized = "/.netlify/images?url=" + encodeURIComponent(asset.imageUrl) + "&amp;fm=webp&amp;w=";
+  return `<figure style="margin:1rem 0"><img src="${escapeHtml(asset.imageUrl)}" srcset="${resized}480 480w, ${resized}960 960w" sizes="(max-width:720px) 88vw, 550px" alt="${escapeHtml(alt)}" width="${width}" height="${height}" loading="lazy" decoding="async" style="display:block;max-width:100%;height:auto">
+          <figcaption>Exemplaire nord-américain. La version et l’état du véhicule proposé localement peuvent différer. Photo de <a href="${escapeHtml(asset.sourceUrl)}">${escapeHtml(asset.rightsHolder)}</a> · <a href="${escapeHtml(asset.licenseUrl)}">domaine public</a>.</figcaption></figure>`;
+}
+
 function frenchVehicleProfile(vehicle) {
   const body = {
     sedan: "berline",
@@ -1036,7 +1052,7 @@ function renderModelPage(page) {
       </table></div>
       <div class="fr-cars-grid">
         <article class="fr-cars-card">
-          <h2>Profil véhicule</h2>
+          <h2>Profil véhicule</h2>${frenchVehiclePhoto(ctx)}
           <p>${escapeHtml(frenchVehicleProfile(ctx.vehicle))}</p>
         </article>
         <article class="fr-cars-card">
