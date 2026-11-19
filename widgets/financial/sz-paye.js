@@ -1,1 +1,46 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.sz_paye=function(a,e){e=e||{};var t=function(a){return"E"+Math.round(a).toLocaleString("en")},s=[{limit:1e5,rate:.2},{limit:5e4,rate:.25},{limit:5e4,rate:.3},{limit:1/0,rate:.33}];a.innerHTML='<div class="aw-title">🇸🇿 Eswatini PAYE Calculator</div><div class="aw-field"><label class="aw-label">Monthly Gross Salary (SZL)</label><input class="aw-input" id="awSzGross" type="text" inputmode="numeric" placeholder="e.g. 10,000"></div><button class="aw-btn aw-btn--primary" id="awSzCalc">Calculate PAYE</button><div id="awSzResult"></div>'+(e.footerHTML||""),a.querySelector("#awSzCalc").addEventListener("click",function(){var e=parseFloat((a.querySelector("#awSzGross").value||"").replace(/[^0-9.]/g,""))||0;if(e){var i=function(a){for(var e=Math.min(.05*a,2580),t=0,i=a,n=0;n<s.length&&!(i<=0);n++){var l=s[n],r=Math.min(i,isFinite(l.limit)?l.limit:i);t+=r*l.rate,i-=r}return{gross:a,snpf:e,tax:t=Math.max(0,t-8200),net:a-e-t,effectiveRate:a>0?t/a*100:0}}(12*e);a.querySelector("#awSzResult").innerHTML='<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home (SRA 2025/26)</div><div class="aw-result-main">'+t(i.net/12)+'</div></div><div style="margin-top:12px"><div class="aw-result-row"><span>Monthly Gross</span><span>'+t(e)+'</span></div><div class="aw-result-row"><span>ENPF (5%, cap E215/mo)</span><span>-'+t(i.snpf/12)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span>PAYE (after E8,200 rebate)</span><span style="color:#dc2626">-'+t(i.tax/12)+'</span></div><div class="aw-result-row"><span>Effective Rate</span><span>'+i.effectiveRate.toFixed(1)+'%</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#0062CC">'+t(i.net/12)+'</span></div><div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#0062CC">'+t(i.net)+"</span></div></div>"}}),a.querySelector("#awSzGross").addEventListener("keydown",function(e){"Enter"===e.key&&a.querySelector("#awSzCalc").click()})}}();
+(function () {
+  'use strict';
+  window.AfroWidgets = window.AfroWidgets || {};
+  window.AfroWidgets.sz_paye = function (root, options) {
+    const money = new Intl.NumberFormat('en', { maximumFractionDigits: 2 });
+    const format = amount => 'E' + money.format(amount);
+    const bands = [[100000, 0.20], [50000, 0.25], [50000, 0.30], [Infinity, 0.33]];
+    root.innerHTML = '<div class="aw-title">Eswatini PAYE Calculator</div>' +
+      '<p>Estimate a regular 2026 payslip using the general E8,200 annual rebate and employee ENPF. The additional over-60 rebate is excluded.</p>' +
+      '<form><div class="aw-field"><label class="aw-label" for="awSzGross">Monthly gross salary (SZL)</label>' +
+      '<input class="aw-input" id="awSzGross" type="text" inputmode="decimal" placeholder="e.g. 10,000"></div>' +
+      '<button class="aw-btn aw-btn--primary" id="awSzCalc" type="submit">Calculate PAYE</button></form>' +
+      '<div id="awSzResult" aria-live="polite"></div>' + ((options && options.footerHTML) || '');
+    const input = root.querySelector('#awSzGross');
+    const output = root.querySelector('#awSzResult');
+    input.addEventListener('input', () => { output.textContent = ''; });
+    root.querySelector('form').addEventListener('submit', event => {
+      event.preventDefault();
+      const entered = input.value.trim();
+      const salary = Number(entered.replace(/,/g, ''));
+      if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,2})?$/.test(entered) || !Number.isFinite(salary * 12) || salary <= 0) {
+        output.textContent = 'Enter a positive monthly gross salary in emalangeni.';
+        input.focus();
+        return;
+      }
+      const enpf = Math.min(salary * 0.05, 215);
+      const taxable = salary - enpf;
+      let remaining = taxable * 12;
+      let annualTax = 0;
+      for (const [width, rate] of bands) {
+        const portion = Math.min(remaining, width);
+        annualTax += portion * rate;
+        remaining -= portion;
+      }
+      const paye = Math.max(0, annualTax - 8200) / 12;
+      const net = salary - enpf - paye;
+      const row = (label, value) => '<div class="aw-result-row"><span>' + label + '</span><span>' + value + '</span></div>';
+      output.innerHTML = '<div class="aw-result-box"><div class="aw-result-label">Monthly take-home pay</div>' +
+        '<div class="aw-result-main">' + format(net) + '</div></div>' +
+        row('Monthly gross', format(salary)) + row('Employee ENPF', format(enpf)) +
+        row('Monthly taxable pay', format(taxable)) + row('Monthly PAYE', format(paye)) +
+        row('Effective PAYE rate', (100 * paye / salary).toFixed(1) + '%') +
+        row('Net for 12 identical months', format(12 * net));
+    });
+  };
+})();

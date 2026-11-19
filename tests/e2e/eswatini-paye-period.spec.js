@@ -139,3 +139,15 @@ test('Swahili Eswatini PAYE keeps localized annual and monthly results aligned',
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(errors).toEqual([]);
 });
+
+test('Eswatini widget deducts employee ENPF before taxing the monthly salary', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/widgets/iframe/financial-eswatini-paye');
+  await page.getByLabel('Monthly gross salary (SZL)').fill('10,000');
+  await page.getByRole('button', { name: 'Calculate PAYE' }).click();
+  const result = page.locator('#awSzResult');
+  await expect(result.locator('.aw-result-main')).toHaveText('E8,438.75');
+  await expect(result.locator('.aw-result-row').filter({ hasText: 'Monthly taxable pay' })).toContainText('E9,785');
+  await expect(result.locator('.aw-result-row').filter({ hasText: 'Monthly PAYE' })).toContainText('E1,346.25');
+  await expect(result.locator('.aw-result-row').filter({ hasText: '12 identical months' })).toContainText('E101,265');
+});
