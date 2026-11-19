@@ -1152,7 +1152,9 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
 
   const featured = galleryImages[0];
   const supporting = galleryImages.slice(1);
-  const imageLabel = galleryImages.every(image => artworkByPath.has(image.src) || reusedArtworkByPath.has(image.src)) ? 'illustrations' : 'photos';
+  const imageLabel = galleryImages.every(image => artworkByPath.has(image.src) || reusedArtworkByPath.has(image.src))
+    ? 'illustrations'
+    : galleryImages.some(image => image.credit?.source === 'ai_generated_illustration') ? 'images' : 'photos';
 
   return `<section class="ak-photo-gallery" aria-label="${escapeHtml(recipe.name)} ${imageLabel}">
         <div class="ak-photo-gallery-head">
@@ -1187,6 +1189,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
                 .map((image) => {
                   const credit = image.credit || {};
                   const source = credit.source || "image source";
+                if (source === "ai_generated_illustration") return escapeHtml(credit.photographer);
                   const photographer = credit.photographer || source;
                   const photographerUrl = credit.photographerUrl || "";
                   return photographerUrl
