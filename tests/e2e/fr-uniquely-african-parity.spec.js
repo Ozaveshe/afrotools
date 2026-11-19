@@ -92,7 +92,7 @@ const nativeEnglishMutations = {
   "mobile-money-fees": { "#mm-b-sender": "40" },
   "burial-cost": { "#fb-care": "2000" },
   "naira-to-words": { "#amount": "7800.50" },
-  "amount-words-ke": { "#amount": "8200.25" },
+  "amount-words-ke": { "#amount": "1.995" },
   "amount-words-gh": { "#amount": "9250.25" },
   "susu-tracker": { "#contribution": "400" },
   "whatsapp-link": { "#phoneNumber": "7087654321" },

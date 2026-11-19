@@ -75,6 +75,8 @@
     var field = contract.fields.find(function (item) { return item.key === result.field; });
     var label = field ? field.label : "Taarifa";
     var messages = {
+      converter_unavailable: "Kigeuzi hakijapakiwa. Pakia ukurasa tena.",
+      invalid_kes_amount: "Weka kiasi cha KES kuanzia sifuri hadi 999,999,999,999.99. Tumia nukta kutenganisha senti, kwa mfano 1,250.75.",
       positive_required: label + " lazima iwe kubwa kuliko sifuri.",
       distinct_supported_cities_required: "Chagua miji miwili tofauti iliyopo kwenye orodha.",
       distinct_supported_countries_required: "Chagua nchi mbili tofauti zilizopo kwenye orodha.",
@@ -288,6 +290,14 @@
   }
 
   async function calculate(input) {
+    if (contract.id === "amount-words-ke") {
+      const converter = root.AfroTools?.engines?.amountWordsInput;
+      if (!converter || !root.AfroTools.engines.kenyaChequeWords) return {status:"invalid", field:"amount", code:"converter_unavailable"};
+      const amount = converter.parse(input.amount, "999999999999");
+      if (!amount.valid) return {status:"invalid", field:"amount", code:"invalid_kes_amount"};
+      return {status:"ok", values:{amount:Number(amount.canonical), canonical:amount.canonical,
+        words:root.AfroTools.engines.kenyaChequeWords(amount), mainUnit:amount.major, subUnit:amount.minor}, rows:[], statuses:[]};
+    }
     var prepared = { input:input };
     if (contract.id === "afroatlas") prepared = prepareAtlas(input);
     else if (contract.id === "afropoints") prepared = preparePoints(input);
@@ -306,6 +316,16 @@
     if (contract.id === "afroatlas" && root.AfroAtlas) { var countries = root.AfroAtlas.getAllCountries(); populateSelect("countryA", countries, countryCode, "name"); populateSelect("countryB", countries, countryCode, "name"); document.querySelector('[data-ua-field="countryA"]').value = "nigeria"; document.querySelector('[data-ua-field="countryB"]').value = "ghana"; }
     else if (contract.id === "afropoints" && root.AfroPointsEngine) { populateSelect("category", root.AfroPointsEngine.CATEGORIES, "id", "label"); var category = document.querySelector('[data-ua-field="category"]'); if (category) category.value = "staple_price"; }
     else if (contract.id === "afrokitchen" && root.AfroKitchenEngine) { populateSelect("recipe", root.AfroKitchenEngine.SEED_RECIPES, "slug", function (recipe) { return recipe.name + " — " + recipe.country_name; }); var recipe = document.querySelector('[data-ua-field="recipe"]'); if (recipe) recipe.value = "nigerian-jollof-rice"; }
+  }
+
+  if (contract.id === "amount-words-ke") {
+    form.addEventListener("input", function () {
+      lastPayload = null;
+      clearInvalid();
+      document.querySelector("[data-ua-result]").hidden = true;
+      document.querySelector("[data-ua-exports]").replaceChildren();
+      document.querySelector("[data-ua-metrics]").replaceChildren();
+    });
   }
 
   form.addEventListener("submit", async function (event) {

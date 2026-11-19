@@ -46,7 +46,7 @@ textarea{min-height:76px;resize:vertical}
 .aw-btn.primary{background:var(--aw-blue);border-color:var(--aw-blue);color:#fff}
 .aw-btn:focus-visible{outline:3px solid rgba(36,87,214,.25);outline-offset:2px}
 .aw-result{border:1px solid #dce6f3;background:#f8fbff;border-radius:8px;padding:16px;min-height:150px}
-.aw-words{font-size:1.15rem;line-height:1.65;font-weight:900;color:#0f172a;text-transform:uppercase}
+.aw-words{font-size:1.15rem;line-height:1.65;font-weight:900;color:#0f172a;}
 .aw-line{margin-top:12px;border:1px solid #e3eaf4;background:#fff;border-radius:8px;padding:12px;color:#334155;line-height:1.6}
 .aw-pills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
 .aw-pill{border:1px solid #e3eaf4;border-radius:8px;background:#fff;padding:11px}
@@ -99,7 +99,7 @@ textarea{min-height:76px;resize:vertical}
       <h2>Convertir le montant</h2>
       <div class="aw-grid">
         <label class="aw-field"><span>Montant KES</span><input id="amount" inputmode="decimal" value="125750.50" aria-label="Montant KES"></label>
-        <label class="aw-field"><span>Style de sortie</span><select id="style"><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></label>
+        <label class="aw-field"><span>Style de sortie</span><select id="style"><option value="upper">Majuscules</option><option value="title">Initiales en majuscules</option><option value="sentence">Casse de phrase</option></select></label>
         <label class="aw-field"><span>Bénéficiaire</span><input id="payee" value="ABC Supplies Ltd"></label>
         <label class="aw-field"><span>Usage</span><select id="mode"><option value="cheque">Chèque</option><option value="invoice">Facture</option><option value="rent">Loyer ou bail</option><option value="transfer">Instruction bancaire</option></select></label>
       </div>
@@ -109,7 +109,7 @@ textarea{min-height:76px;resize:vertical}
         <button class="aw-btn" type="button" id="sampleBtn">Exemple</button>
         <button class="aw-btn" type="button" id="copyBtn">Copier</button>
         <button class="aw-btn" type="button" id="downloadBtn">Télécharger TXT</button>
-        <button class="aw-btn" type="button" id="saveBtn">Sauver localement</button>
+        <button class="aw-btn" type="button" id="saveBtn">Enregistrer sur cet appareil</button>
       </div>
       <div class="aw-status" id="status" aria-live="polite"></div>
     </form>
@@ -156,60 +156,102 @@ textarea{min-height:76px;resize:vertical}
 </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/amount-words-input.js"></script>
+<script src="/assets/js/engines/kenya-cheque-words.js"></script>
+<script src="/assets/js/pages/fr-amount-words-input.js"></script>
 <script>
 (function(){
-  var ones=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
-  var tens=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
   var lastSummary='';
-  function words(n){
-    n=Math.floor(n);
-    if(n===0) return 'Zero';
-    if(n<20) return ones[n];
-    if(n<100) return tens[Math.floor(n/10)] + (n%10? '-' + ones[n%10] : '');
-    if(n<1000) return ones[Math.floor(n/100)] + ' Hundred' + (n%100? ' and ' + words(n%100) : '');
-    if(n<1000000) return words(n/1000) + ' Thousand' + (n%1000? ' ' + words(n%1000) : '');
-    if(n<1000000000) return words(n/1000000) + ' Million' + (n%1000000? ' ' + words(n%1000000) : '');
-    return words(n/1000000000) + ' Billion' + (n%1000000000? ' ' + words(n%1000000000) : '');
-  }
-  function clean(value){
-    value=String(value||'').replace(/,/g,'').replace(/[^0-9.]/g,'');
-    var dot=value.indexOf('.');
-    if(dot!==-1) value=value.slice(0,dot+1)+value.slice(dot+1).replace(/\./g,'');
-    return Number(value||0);
-  }
-  function amountWords(amount){
-    var whole=Math.floor(amount);
-    var cents=Math.round((amount-whole)*100);
-    var out=whole ? 'Kenya Shillings ' + words(whole) : '';
-    if(cents){ out += (out ? ' and ' : '') + 'Cents ' + words(cents); }
-    if(!out) out='Zero Kenya Shillings';
-    return out + ' Only';
-  }
   function style(text){
     var mode=document.getElementById('style').value;
     if(mode==='upper') return text.toUpperCase();
     if(mode==='sentence') return text.charAt(0).toUpperCase()+text.slice(1).toLowerCase();
     return text;
   }
-  function build(){
-    var amount=clean(document.getElementById('amount').value);
-    var line=style(amountWords(amount));
-    var figure='KES '+amount.toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2});
-    var payee=document.getElementById('payee').value.trim();
-    var mode=document.getElementById('mode').value;
-    var note=document.getElementById('note').value.trim();
-    var prefix=payee ? 'Pay ' + payee + ': ' : '';
-    var useText={cheque:'Cheque line',invoice:'Invoice amount',rent:'Rent or lease amount',transfer:'Bank transfer instruction'}[mode];
-    var docLine=prefix + useText + ' - ' + line + ' (' + figure + ')' + (note ? ' | Ref: ' + note : '');
-    lastSummary=['AfroTools KES amount in words','Amount: '+figure,'Words: '+line,'Document line: '+docLine,'Avertissement: formatting help only, non officiel. Verify bank or contract format before signing.'].join('\n');
-    document.getElementById('result').innerHTML='<div class="aw-words">'+line+'</div><div class="aw-line">'+docLine+'</div><div class="aw-pills"><div class="aw-pill"><strong>'+figure+'</strong><span>amount</span></div><div class="aw-pill"><strong>'+(Math.round((amount%1)*100))+'</strong><span>cents</span></div><div class="aw-pill"><strong>'+mode+'</strong><span>use case</span></div></div>';
-    document.getElementById('status').textContent='Conversion ready.';
+  const form = document.getElementById('amountForm');
+  const amountInput = document.getElementById('amount');
+  const result = document.getElementById('result');
+  const status = document.getElementById('status');
+  const actionIds = ['copyBtn', 'downloadBtn', 'saveBtn'];
+  const documentLabels = { cheque:'Cheque line', invoice:'Invoice amount', rent:'Rent or lease amount', transfer:'Bank transfer instruction' };
+
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    node.className = className;
+    node.textContent = text;
+    return node;
   }
-  document.getElementById('amountForm').addEventListener('submit',function(e){e.preventDefault();build();});
-  document.getElementById('sampleBtn').addEventListener('click',function(){document.getElementById('amount').value='86750.25';document.getElementById('payee').value='Nairobi Logistics Ltd';document.getElementById('mode').value='invoice';document.getElementById('note').value='Invoice 2026-017';build();});
-  document.getElementById('copyBtn').addEventListener('click',function(){if(!lastSummary)build();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(lastSummary).then(function(){document.getElementById('status').textContent='Resume copie.';}).catch(function(){document.getElementById('status').textContent='Copie bloquee. Utilisez le telechargement.';});}else{document.getElementById('status').textContent='Clipboard indisponible. Utilisez le telechargement.';}});
-  document.getElementById('downloadBtn').addEventListener('click',function(){if(!lastSummary)build();var blob=new Blob([lastSummary],{type:'text/plain'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='afrotools-kes-montant-lettres.txt';a.click();URL.revokeObjectURL(url);document.getElementById('status').textContent='TXT telecharge.';});
-  document.getElementById('saveBtn').addEventListener('click',function(){if(!lastSummary)build();try{localStorage.setItem('afrotools:montant-lettres-ke:last',lastSummary);document.getElementById('status').textContent='Sauvegarde locale faite.';}catch(err){document.getElementById('status').textContent='Sauvegarde locale indisponible.';}});
+
+  function build() {
+    const api = window.AfroTools;
+    const parsed = api?.frAmountWordsInput?.parse(amountInput.value, '999999999999');
+    const valid = Boolean(parsed?.valid && api?.engines?.kenyaChequeWords);
+    const jsonButton = document.querySelector('[data-native-export="json"]');
+    if (jsonButton) jsonButton.disabled = !valid;
+    actionIds.forEach(id => { document.getElementById(id).disabled = !valid; });
+    amountInput.setAttribute('aria-invalid', String(!valid && !!amountInput.value.trim()));
+    result.replaceChildren();
+    lastSummary = '';
+    if (!valid) {
+      status.textContent = parsed ? (amountInput.value.trim() ? parsed.error : 'Saisissez un montant en KES.') :
+        'Le convertisseur est indisponible. Rechargez la page pour réessayer.';
+      return false;
+    }
+    const line = style(api.engines.kenyaChequeWords(parsed));
+    const figure = 'KES ' + parsed.figure;
+    const payee = document.getElementById('payee').value.trim();
+    const mode = document.getElementById('mode').value;
+    const note = document.getElementById('note').value.trim();
+    const docLine = (payee ? 'Pay ' + payee + ': ' : '') + documentLabels[mode] + ' - ' +
+      line + ' (' + figure + ')' + (note ? ' | Ref: ' + note : '');
+    const pills = element('div', 'aw-pills', '');
+    [[figure, 'Montant'], [parsed.minor, 'Cents']].forEach(([value, label]) => {
+      const pill = element('div', 'aw-pill', '');
+      pill.append(element('strong', '', value), element('span', '', label));
+      pills.append(pill);
+    });
+    result.append(element('div', 'aw-words', line), element('div', 'aw-line', docLine), pills);
+    lastSummary = ['Montant : ' + figure, 'En lettres (anglais) : ' + line, 'Ligne du document : ' + docLine].join('\n');
+    status.textContent = parsed.rounded ? 'Montant arrondi à ' + figure + '.' :
+      'Montant prêt. La ligne du chèque est rédigée en anglais.';
+    return true;
+  }
+
+  form.addEventListener('submit', event => { event.preventDefault(); build(); });
+  form.addEventListener('input', build);
+  form.addEventListener('change', build);
+  document.getElementById('sampleBtn').addEventListener('click', () => {
+    amountInput.value = '86750.25';
+    document.getElementById('payee').value = 'Nairobi Logistics Ltd';
+    document.getElementById('mode').value = 'invoice';
+    document.getElementById('note').value = 'Invoice 2026-017';
+    build();
+  });
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    if (!build()) return;
+    try {
+      await navigator.clipboard.writeText(lastSummary);
+      status.textContent = 'Résumé copié.';
+    } catch {
+      status.textContent = 'Copie indisponible. Téléchargez le résumé au format TXT.';
+    }
+  });
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    if (!build()) return;
+    const url = URL.createObjectURL(new Blob([lastSummary], { type:'text/plain;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'montant-kes-en-lettres.txt';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    if (!build()) return;
+    try {
+      localStorage.setItem('afrotools:montant-lettres-ke:last', lastSummary);
+      status.textContent = 'Résumé enregistré sur cet appareil.';
+    } catch { status.textContent = 'Enregistrement indisponible dans ce navigateur.'; }
+  });
   build();
 }());
 </script>

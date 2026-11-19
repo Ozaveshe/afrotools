@@ -98,7 +98,7 @@
     },
     "amount-words-ke": {
       action: '#amountForm button[type="submit"]',
-      fields: [{ selector: "#amount", numericText: true, min: 0 }],
+      fields: [{ selector: "#amount", amountWordsMaximum: "999999999999" }],
       clear: ["#result"],
       message: "Saisissez un montant numérique valide en shillings kényans."
     },

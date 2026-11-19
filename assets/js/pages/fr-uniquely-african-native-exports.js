@@ -100,7 +100,8 @@
       payload: function () {
         return {
           route: "/fr/tools/montant-lettres-ke/",
-          amount: value("#amount"),
+          amount: window.AfroTools.frAmountWordsInput.parse(value("#amount"), "999999999999").canonical,
+          inputAmount: value("#amount"),
           mode: value("#mode"),
           style: value("#style"),
           result: text("#result")

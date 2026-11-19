@@ -160,6 +160,7 @@ function fieldHtml(field) {
     const options = (field.options || []).map((option) => `<option value="${esc(option.value)}"${String(option.value) === String(field.value) ? " selected" : ""}>${esc(option.label)}</option>`).join("");
     control = `<select ${attrs.join(" ")}>${options}</select>`;
   } else {
+    if (field.inputMode) attrs.push(`inputmode="${esc(field.inputMode)}"`);
     if (field.min != null) attrs.push(`min="${esc(field.min)}"`);
     if (field.max != null) attrs.push(`max="${esc(field.max)}"`);
     if (field.step != null) attrs.push(`step="${esc(field.step)}"`);
@@ -170,6 +171,7 @@ function fieldHtml(field) {
 }
 
 function delegateScript(id) {
+  if (id === "amount-words-ke") return '<script src="/assets/js/engines/amount-words-input.js"></script><script src="/assets/js/engines/kenya-cheque-words.js"></script>';
   const scripts = { afroatlas: "/engines/afroatlas-engine.js", afropoints: "/engines/afropoints-engine.js", afrokitchen: "/engines/afrokitchen-engine.js", "africa-conflict": "/engines/africa-conflict-engine.js", afroprices: "/engines/afroprices-engine.js" };
   return scripts[id] ? `<script src="${scripts[id]}"></script>` : "";
 }
