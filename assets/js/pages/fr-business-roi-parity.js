@@ -55,15 +55,19 @@
     ], [["Concentration", decimal(plan.focusSeconds / 60, 0) + " min"], ["Pause courte", decimal(plan.shortBreakSeconds / 60, 0) + " min"]]);
   }
 
+  function selectedLabel(name) {
+    return form.elements.namedItem(name).selectedOptions[0].textContent;
+  }
+
   function unitConverter() {
     var group = value("group");
     var output = group === "temperature" ?
       engine.convertTemperature({ value: number("value"), from: value("from"), to: value("to") }) :
       engine.convertUnit({ group: group, value: number("value"), from: value("from"), to: value("to") });
     return report("Conversion", "Conversion déterministe effectuée par le moteur partagé.", [
-      ["Valeur source", decimal(number("value"), 6) + " " + value("from")],
-      ["Résultat", decimal(output, 8) + " " + value("to")]
-    ], [["Famille", group], ["Facteur effectif", number("value") !== 0 ? decimal(output / number("value"), 10) : "Non défini"]]);
+      ["Valeur source", decimal(number("value"), 6) + " " + selectedLabel("from")],
+      ["Résultat", decimal(output, 8) + " " + selectedLabel("to")]
+    ], [["Famille", selectedLabel("group")], ["Facteur effectif", number("value") !== 0 ? decimal(output / number("value"), 10) : "Non défini"]]);
   }
 
   function budget() {
@@ -423,6 +427,11 @@
   if (tool === "time-zone") {
     var now = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
     form.elements.localDateTime.value = now.toISOString().slice(0, 16);
+  }
+  if (tool === "unit-converter" && window.location.hash === "#superficie") {
+    form.elements.group.value = "area";
+    form.elements.from.value = "hectare";
+    form.elements.to.value = "sqm";
   }
   if (tool === "working-days") {
     form.elements.start.value = "2026-07-27";
