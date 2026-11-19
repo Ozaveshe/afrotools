@@ -7,7 +7,7 @@ let count=0;
 for(const cc in C){
   const c=C[cc], t=T[cc];
   // These country pages maintain authority-specific applicant instructions.
-  if(!t || cc === "RW" || cc === "TZ")continue;
+  if(!t || ["MW", "RW", "TZ"].includes(cc))continue;
   const title='TIN Registration — '+c.name+' | AfroTools';
   const desc='Review the tax identifier, authority, documents, cost and steps listed for '+c.name+'; verify the current process with the official tax authority.';
   const url='https://afrotools.com/tools/tin-guide/'+c.slug;
