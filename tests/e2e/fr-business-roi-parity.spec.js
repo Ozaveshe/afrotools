@@ -5,7 +5,7 @@ const manifest = require("../../data/localization/fr-business-roi-parity.json");
 
 const cases = {
   "pomodoro": { values: { focusMinutes: "20", shortBreakMinutes: "4", longBreakMinutes: "12", sessions: "3" }, expected: ["20:00", "3", "80 min"], invalid: { focusMinutes: "1" }, boundary: "1:00" },
-  "unit-converter": { values: { group: "area", value: "2", from: "plot_ng", to: "sqm" }, expected: ["929,0304", "sqm"], invalid: { group: "length", from: "kg", to: "m" } },
+  "unit-converter": { values: { group: "area", value: "2", from: "plot_ng", to: "sqm" }, expected: ["929,0304 m²"], invalid: { group: "length", from: "kg", to: "m" } },
   "budget-planner": { values: { currency: "XOF", incomeMain: "1000", incomeOther: "500", housing: "400", food: "150", transport: "100", family: "50", wants: "200", savings: "100" }, expected: ["1 500", "1 000", "500"], invalid: { incomeMain: "0", incomeOther: "0" } },
   "countdown-timer": { values: { eventName: "Lancement synthétique", eventDate: "2026-08-05", eventTime: "09:00" }, expected: ["Lancement synthétique"], invalid: { eventDate: "" } },
   "time-zone": { values: { localDateTime: "2026-07-29T10:00", fromZone: "Africa/Abidjan", toZone: "Africa/Nairobi" }, expected: ["13:00", "2026-07-29T10:00:00.000Z"], invalid: { localDateTime: "" } },
