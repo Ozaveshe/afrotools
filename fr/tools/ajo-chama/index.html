@@ -448,7 +448,17 @@ Grace | 1</textarea>
   el('copyBtn').addEventListener('click', copy);
   el('csvBtn').addEventListener('click', csv);
   el('saveBtn').addEventListener('click', save);
-  restore();
+  if (new URLSearchParams(location.search).get('groupe') === 'stokvel') {
+    el('groupName').value = 'Exemple de stokvel';
+    el('currency').value = 'ZAR';
+    el('contribution').value = '500';
+    el('startDate').value = SavingsRotationDates.civilDate(new Date());
+    el('members').value = Array.from({length: 10}, (_, index) => 'Membre ' + (index + 1)).join('\n');
+    el('reserveRate').value = '0';
+    el('lateFee').value = '0';
+  } else {
+    restore();
+  }
   plan();
 })();
 </script>
