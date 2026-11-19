@@ -32,12 +32,35 @@
       }
     };
     var t = copy[lang];
+    var merchant = {
+      en: ['Mogadishu merchant payment estimate', 'The Revenue Directorate reports a 5% ETAS deduction on merchant mobile-money payments in 2025. Enter a payment to model that scenario in the same currency.', 'Payment received', 'Estimated deduction', 'Merchant proceeds', '2025 revenue report'],
+      fr: ['Estimer un paiement marchand à Mogadiscio', 'En 2025, la Direction des recettes a relevé une retenue ETAS de 5 % sur les paiements mobiles marchands. Saisissez un paiement pour simuler ce cas dans la même devise.', 'Paiement reçu', 'Retenue estimée', 'Montant net marchand', 'Rapport sur les recettes 2025'],
+      sw: ['Kadiria malipo ya mfanyabiashara Mogadishu', 'Mamlaka ya mapato iliripoti makato ya ETAS ya 5% kwenye malipo ya simu kwa akaunti za wafanyabiashara mwaka 2025. Weka kiasi cha malipo ili kukadiria makato kwa sarafu ileile.', 'Malipo yaliyopokelewa', 'Makato yanayokadiriwa', 'Kiasi kinachobaki', 'Ripoti ya mapato ya 2025']
+    }[lang];
     document.querySelector('main').innerHTML =
       '<div class="gnv-shell"><section class="gnv-hero"><div class="gnv-kicker">Federal Government of Somalia · reviewed 23 July 2026</div><h1>' + t.title + '</h1><p class="gnv-lede">' + t.lead + '</p></section><div class="gnv-grid"><div>' +
       '<section class="gnv-card"><p class="gnv-error" role="status" aria-live="polite">' + t.status + '</p><h2>' + t.current + '</h2><p class="gnv-note">' + t.currentBody + '</p></section>' +
       '<section class="gnv-card"><h2>' + t.historical + '</h2><p class="gnv-note">' + t.historicalBody + '</p><dl><dt>' + t.low + '</dt><dd>' + t.lowCharge + '</dd><dt>' + t.high + '</dt><dd>' + t.highCharge + '</dd></dl></section>' +
       '<section class="gnv-card"><h2>' + t.boundaries + '</h2><ul class="gnv-list"><li>' + t.b1 + '</li><li>' + t.b2 + '</li><li>' + t.b3 + '</li><li>' + t.b4 + '</li></ul><p class="gnv-note">' + t.note + '</p><div class="gnv-actions"><button class="gnv-button gnv-primary" id="soPdf" type="button">' + t.pdf + '</button><button class="gnv-button" id="soShare" type="button">' + t.share + '</button></div><div id="soStatus" class="gnv-status" role="status" aria-live="polite"></div></section></div>' +
       '<aside class="gnv-card" data-tool-verification-panel data-tool-id="so-vat"><h2>' + t.verify + '</h2><p class="gnv-note"><strong>Reviewed: 23 July 2026</strong><br><a href="https://mof.gov.so/publications/fiscal-year-2026-budget-policy-framework-paper">Federal MoF · FY2026 Budget Policy Framework</a><br><a href="https://mof.gov.so/publications/xeer-nidaamiyaha-canshuurta-gedis-layda-turnover-tax">Federal MoF · 2023 Turnover Tax policy</a><br><a href="https://mof.gov.so/publications/inland-revenue">Federal MoF · Inland Revenue publications</a></p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Somalia%20consumption-tax%20evidence%20error">' + t.report + '</a></p></aside></div></div>';
+    var section = document.createElement('section');
+    section.className = 'gnv-card';
+    section.innerHTML = '<h2>' + merchant[0] + '</h2><p>' + merchant[1] + '</p><label>' + merchant[2] +
+      ' <input id="soMerchantPayment" type="number" min="0" step="0.01"></label><p><output id="soMerchantResult" for="soMerchantPayment"></output></p>' +
+      '<a href="https://revenuedirectorate.gov.so/sites/default/files/Annual%20Revenue%20Performance_2025_FINAL11.pdf">' + merchant[5] + '</a>';
+    document.querySelector('.gnv-grid > div').prepend(section);
+    var payment = section.querySelector('input');
+    var result = section.querySelector('output');
+    var format = new Intl.NumberFormat(lang, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    payment.addEventListener('input', function () {
+      var cents = Math.round(payment.valueAsNumber * 100);
+      result.textContent = '';
+      if (!payment.validity.valid || !Number.isSafeInteger(cents)) return;
+      var deduction = Math.round(cents / 20);
+      result.textContent = merchant[3] + ' : ' + format.format(deduction / 100) + ' · ' +
+        merchant[4] + ' : ' + format.format((cents - deduction) / 100);
+    });
+
     document.title = t.title + ' | AfroTools';
     document.getElementById('soShare').onclick = async function() { var url = location.origin + location.pathname; try { if (navigator.share) await navigator.share({ title: document.title, url: url }); else await navigator.clipboard.writeText(url); } catch (error) {} };
     document.getElementById('soPdf').onclick = function() {

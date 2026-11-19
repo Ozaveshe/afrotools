@@ -16,7 +16,11 @@ for (const [route, title, heading] of routes) test(`${route} is a fail-closed ev
   await page.goto(route);
   await expect(page.locator('.gnv-hero h1')).toHaveText(title);
   await expect(page.getByRole('heading', { name: heading })).toBeVisible();
-  await expect(page.locator('input[type="number"]')).toHaveCount(0);
+  await page.locator('#soMerchantPayment').fill('200');
+  await expect(page.locator('#soMerchantResult')).toContainText(/10[.,]00/);
+  await expect(page.locator('#soMerchantResult')).toContainText(/190[.,]00/);
+  await page.locator('#soMerchantPayment').fill('');
+  await expect(page.locator('#soMerchantResult')).toBeEmpty();
   await expect(page.locator('body')).not.toContainText('1.1700');
   await expect(page.locator('body')).not.toContainText('SRTD');
   expect(await page.locator('[data-tool-verification-panel] a[href*="mof.gov.so"]').evaluateAll(links =>
