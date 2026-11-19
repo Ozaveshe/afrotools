@@ -214,6 +214,15 @@ countries.forEach(c => {
   // Replace template-only Nigeria facts with the country dataset used by the engine.
   html = html.replace(/<section class="seo-content agri-country-facts"[\s\S]*?<\/section>/, factsSection(c, countryData));
 
+  if (c.code === 'BJ') {
+    html = html.replace("<div class=\"sources-footer\">", "<div class=\"sources-footer\"><p><strong>Benin seed cotton before ginning.</strong> In 2025/26, growers harvested 533,590 tonnes on 510,897 ha, averaging 1,044 kg/ha. The 1,300 kg/ha comparison is the national campaign target announced for 2025/26. Farm estimates apply scenario multipliers. Revenue assumes first-grade seed cotton at the 2026/27 purchase price of 300 FCFA/kg. Second grade was listed at 250 FCFA/kg.</p><a href=\"https://aprocotci.org/wp-content/uploads/2025/07/Bulletin-INFOS-PR-PICA-N%C2%B056-Avril-2025-2.pdf#page=3\">2025/26 campaign target, p. 3</a> · <a href=\"https://prpica.org/wp-content/uploads/2026/07/Newsletter-PR-PICA-N%C2%B063-May-June-2026.pdf#page=5\">2026/27 prices and final 2025/26 harvest, pp. 5–6</a>");
+    html = html.replace("Potential Yield</span>", "Comparison yield</span>");
+    html = html.replace("Yield gap vs potential", "Shortfall vs comparison");
+    html = html.replace("Potential (t/ha)", "Comparison (t/ha)");
+    html = html.replace("Based on current local market prices in", "Based on planning prices in");
+    html = html.replace("$('gapText').textContent = 'Your estimate", "$('gapText').textContent = r.cropId === 'cotton'\n      ? 'Seed cotton before ginning. The 2025/26 national average was 1,044 kg/ha. Compare your scenario with the 2025/26 campaign target of 1,300 kg/ha.'\n      : 'Your estimate");
+  }
+
   const expectedIdentity = [
     [`<span aria-current="page">${c.name}</span>`, 'visible breadcrumb'],
     [`"position":4,"name":"${c.name}"`, 'breadcrumb JSON-LD'],

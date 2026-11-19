@@ -376,13 +376,13 @@
         <div class="bar-group">
           <div class="bar-row"><span class="bar-label">Your Estimate</span><div class="bar-track"><div class="bar-fill estimate" id="barEstimate"></div></div></div>
           <div class="bar-row"><span class="bar-label">National Avg</span><div class="bar-track"><div class="bar-fill national" id="barNational"></div></div></div>
-          <div class="bar-row"><span class="bar-label">Potential Yield</span><div class="bar-track"><div class="bar-fill potential" id="barPotential"></div></div></div>
+          <div class="bar-row"><span class="bar-label">Comparison yield</span><div class="bar-track"><div class="bar-fill potential" id="barPotential"></div></div></div>
         </div>
 
         <!-- Stats Grid -->
         <div class="rates-grid">
           <div class="rate-card"><div class="rate-card-val" id="rTotalYield">--</div><div class="rate-card-label">Total yield for your farm</div></div>
-          <div class="rate-card"><div class="rate-card-val" id="rYieldGap">--</div><div class="rate-card-label">Yield gap vs potential</div></div>
+          <div class="rate-card"><div class="rate-card-val" id="rYieldGap">--</div><div class="rate-card-label">Shortfall vs comparison</div></div>
           <div class="rate-card"><div class="rate-card-val" id="rFarmSize">--</div><div class="rate-card-label">Farm size (ha)</div></div>
         </div>
 
@@ -402,7 +402,7 @@
           <div class="rev-card mid"><div class="rev-label">Expected</div><div class="rev-value" id="rRevMid">--</div></div>
           <div class="rev-card"><div class="rev-label">High</div><div class="rev-value" id="rRevHigh">--</div></div>
         </div>
-        <p style="font-size:0.72rem;color:var(--color-text-muted);text-align:center;margin-top:8px;">Based on current local market prices in <span id="rCurrency">XOF</span></p>
+        <p style="font-size:0.72rem;color:var(--color-text-muted);text-align:center;margin-top:8px;">Based on planning prices in <span id="rCurrency">XOF</span></p>
       </div>
     </div>
 
@@ -429,7 +429,7 @@
       <p style="font-size:0.85rem;color:var(--color-text-muted);line-height:1.6;" id="countryInfo"></p>
       <h3 style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3D5A80;margin:20px 0 10px;">Major Crops &amp; National Average Yields</h3>
       <table class="info-table" id="cropTable">
-        <thead><tr><th>Crop</th><th>Avg Yield (t/ha)</th><th>Potential (t/ha)</th><th>Season</th></tr></thead>
+        <thead><tr><th>Crop</th><th>Avg Yield (t/ha)</th><th>Comparison (t/ha)</th><th>Season</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -447,7 +447,7 @@
   </div>
 
   <!-- Sources -->
-  <div class="sources-footer">
+  <div class="sources-footer"><p><strong>Benin seed cotton before ginning.</strong> In 2025/26, growers harvested 533,590 tonnes on 510,897 ha, averaging 1,044 kg/ha. The 1,300 kg/ha comparison is the national campaign target announced for 2025/26. Farm estimates apply scenario multipliers. Revenue assumes first-grade seed cotton at the 2026/27 purchase price of 300 FCFA/kg. Second grade was listed at 250 FCFA/kg.</p><a href="https://aprocotci.org/wp-content/uploads/2025/07/Bulletin-INFOS-PR-PICA-N%C2%B056-Avril-2025-2.pdf#page=3">2025/26 campaign target, p. 3</a> · <a href="https://prpica.org/wp-content/uploads/2026/07/Newsletter-PR-PICA-N%C2%B063-May-June-2026.pdf#page=5">2026/27 prices and final 2025/26 harvest, pp. 5–6</a>
     Data Sources: FAOSTAT (FAO), HarvestStat Africa, Institut National de la Statistique et de l'Analyse Economique, World Bank, CGIAR.<br>
     Yield estimates are indicative &mdash; actual results vary by farm conditions. Last updated: 2026.
   </div>
@@ -471,7 +471,7 @@
 
 <!-- ─── DATA & ENGINE ─── -->
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
-<script src="/data/agriculture/bj-agri-data.js?v=3f86a3ca"></script>
+<script src="/data/agriculture/bj-agri-data.js?v=6f2f2848"></script>
 <script src="/engines/crop-yield-engine.js?v=dba23ede"></script>
 
 <script>
@@ -602,7 +602,9 @@
 
     var gP = Math.min(100, 100-r.yieldGapPercent);
     $('gapFill').style.width = gP+'%';
-    $('gapText').textContent = 'Your estimate is at '+gP+'% of achievable potential ('+fmtN(r.potentialYield)+' t/ha). '+r.yieldGapPercent+'% yield gap can be narrowed with improved practices.';
+    $('gapText').textContent = r.cropId === 'cotton'
+      ? 'Seed cotton before ginning. The 2025/26 national average was 1,044 kg/ha. Compare your scenario with the 2025/26 campaign target of 1,300 kg/ha.'
+      : 'Your estimate is at '+gP+'% of achievable potential ('+fmtN(r.potentialYield)+' t/ha). '+r.yieldGapPercent+'% yield gap can be narrowed with improved practices.';
 
     $('rRevLow').textContent = fmtCurr(r.revenueEstimate.low);
     $('rRevMid').textContent = fmtCurr(r.revenueEstimate.mid);

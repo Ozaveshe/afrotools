@@ -303,6 +303,7 @@ function render(row, context = {}) {
   if (!row.country) return renderHub(row, context);
   const presentation = pagePresentation(row);
   const displayName = presentation.shortName || presentation.name;
+  const isBenin = row.country.code === 'BJ';
   const description = `Estimez le rendement par hectare, la récolte totale et une fourchette de revenus pour ${presentation.name}, à partir du référentiel agricole ${row.country.code}.`;
   const artwork = row.artwork.file;
   const config = {
@@ -313,7 +314,7 @@ function render(row, context = {}) {
     englishRoute: row.english.routeKey,
     frenchRoute: row.french.routeKey,
     currencyOwner: `data/agriculture/${row.country.code.toLowerCase()}-agri-data.js`,
-    cropNames: CROP_NAMES,
+    cropNames: isBenin ? { ...CROP_NAMES, cotton: 'Coton graine' } : CROP_NAMES,
     soilNames: SOIL_NAMES,
     regionNames: presentation.regions,
     seasonNames: presentation.seasons,
@@ -354,13 +355,13 @@ function render(row, context = {}) {
     <div class="result-hero"><div class="result-value" id="yieldPerHa">—</div><div>tonnes estimées par hectare</div></div>
     <div class="result-grid">
       <div class="metric"><strong id="totalYield">—</strong><span>Récolte totale estimée</span></div>
-      <div class="metric"><strong id="yieldGap">—</strong><span>Écart par rapport au potentiel</span></div>
+      <div class="metric"><strong id="yieldGap">—</strong><span>${isBenin ? "Écart sous le repère" : "Écart par rapport au potentiel"}</span></div>
       <div class="metric"><strong id="farmSizeResult">—</strong><span>Superficie calculée</span></div>
     </div>
     <div class="compare" aria-label="Comparaison des rendements">
       <div class="compare-row"><strong>Votre estimation</strong><div class="bar"><span id="estimateBar"></span></div></div>
       <div class="compare-row"><strong>Moyenne nationale</strong><div class="bar"><span id="nationalBar"></span></div></div>
-      <div class="compare-row"><strong>Potentiel agronomique</strong><div class="bar"><span id="potentialBar"></span></div></div>
+      <div class="compare-row"><strong>${isBenin ? "Rendement de comparaison" : "Potentiel agronomique"}</strong><div class="bar"><span id="potentialBar"></span></div></div>
     </div>
     <h3 style="margin-top:22px">Fourchette de revenus</h3>
     <div class="result-grid">
@@ -394,7 +395,8 @@ function render(row, context = {}) {
 </section>
 <section class="card crop-reference-card" aria-labelledby="cropTableTitle">
   <h2 id="cropTableTitle">Cultures du référentiel ${escapeHtml(displayName)}</h2>
-  <div class="table-wrap"><table class="data-table crop-reference-table"><thead><tr><th>Culture</th><th>Rendement moyen (t/ha)</th><th>Potentiel (t/ha)</th><th>Période de plantation</th></tr></thead><tbody id="cropRows"></tbody></table></div>
+    ${isBenin ? "<p><strong>Coton graine du Bénin, avant égrenage.</strong> En 2025/26, la récolte de 533 590 tonnes sur 510 897 ha a donné un rendement moyen de 1 044 kg/ha. Le repère de 1 300 kg/ha correspond à l’objectif national annoncé pour 2025/26. Les coefficients du scénario font varier le rendement estimé. Le revenu suppose du coton de premier choix, au prix de 300 FCFA/kg pour 2026/27. Le deuxième choix est coté à 250 FCFA/kg. <a href=\"https://aprocotci.org/wp-content/uploads/2025/07/Bulletin-INFOS-PR-PICA-N%C2%B056-Avril-2025-2.pdf#page=3\">Objectif de campagne 2025/26, p. 3</a> · <a href=\"https://prpica.org/wp-content/uploads/2026/07/Bulletin-INFOS-PR-PICA-N%C2%B063-mai-juin-2026.pdf#page=5\">Prix 2026/27 et récolte définitive 2025/26, p. 5–6</a></p>" : ''}
+  <div class="table-wrap"><table class="data-table crop-reference-table"><thead><tr><th>Culture</th><th>Rendement moyen (t/ha)</th><th>${isBenin ? "Repère (t/ha)" : "Potentiel (t/ha)"}</th><th>Période de plantation</th></tr></thead><tbody id="cropRows"></tbody></table></div>
 </section>
 <section class="card" aria-labelledby="nextTitle">
   <h2 id="nextTitle">Poursuivre votre préparation agricole</h2>
@@ -427,7 +429,7 @@ function render(row, context = {}) {
   function reportText(){
     if(!latest)return '';
     var r=latest.result;
-    return ['AfroTools — estimation de rendement',cfg.countryName,'Culture : '+cropName(r.cropId,r.cropName),'Région : '+(cfg.regionNames[latest.input.regionId]||r.regionName),'Superficie : '+number(r.farmSizeHa)+' ha','Rendement estimé : '+number(r.estimatedYieldPerHa)+' t/ha','Récolte totale : '+number(r.totalEstimatedYield)+' '+r.yieldUnit,'Écart de rendement : '+r.yieldGapPercent+' %','Revenu bas : '+currency(r.revenueEstimate.low),'Revenu central : '+currency(r.revenueEstimate.mid),'Revenu haut : '+currency(r.revenueEstimate.high),'','Sources : '+cfg.sourceLabel,'Fraîcheur : référentiel statique indiqué comme mis à jour en '+cfg.dataReviewed+'; aucune donnée en direct.','Limite : estimation indicative à confirmer localement.','Confidentialité : calcul local dans ce navigateur.'].join('\\n');
+    return ['AfroTools — estimation de rendement',cfg.countryName,'Culture : '+cropName(r.cropId,r.cropName),'Région : '+(cfg.regionNames[latest.input.regionId]||r.regionName),'Superficie : '+number(r.farmSizeHa)+' ha','Rendement estimé : '+number(r.estimatedYieldPerHa)+' t/ha','Récolte totale : '+number(r.totalEstimatedYield)+' '+r.yieldUnit,${isBenin ? "'Écart sous le repère : '+r.yieldGapPercent" : "'Écart de rendement : '+r.yieldGapPercent"}+' %','Revenu bas : '+currency(r.revenueEstimate.low),'Revenu central : '+currency(r.revenueEstimate.mid),'Revenu haut : '+currency(r.revenueEstimate.high),'','Sources : '+cfg.sourceLabel,'Fraîcheur : référentiel statique indiqué comme mis à jour en '+cfg.dataReviewed+'; aucune donnée en direct.','Limite : estimation indicative à confirmer localement.','Confidentialité : calcul local dans ce navigateur.'].join('\\n');
   }
   function copyText(text){
     if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text);
@@ -483,6 +485,7 @@ function render(row, context = {}) {
     byId('revenueMid').textContent=currency(result.revenueEstimate.mid);
     byId('revenueHigh').textContent=currency(result.revenueEstimate.high);
     byId('revenueNote').textContent='Fourchette calculée avec le prix local statique du référentiel, en '+result.revenueEstimate.currency+'. Il ne s’agit pas d’un prix de marché en direct.';
+${isBenin ? "    if (result.cropId === 'cotton') byId('revenueNote').textContent += ' Coton graine : moyenne nationale de 1 044 kg/ha en 2025/26, objectif de campagne de 1 300 kg/ha pour 2025/26. Hypothèse de revenu : premier choix à 300 FCFA/kg (2026/27).';" : ''}
     var recommendations=byId('recommendations');recommendations.innerHTML='';
     (result.recommendations||[]).forEach(function(item){var li=document.createElement('li');li.textContent=recommendationText(item)+' Impact indicatif : '+String(item.impact||'').replace('yield potential','potentiel de rendement');recommendations.appendChild(li);});
     byId('recommendationBlock').hidden=!result.recommendations||!result.recommendations.length;
