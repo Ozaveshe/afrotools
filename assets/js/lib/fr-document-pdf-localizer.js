@@ -914,6 +914,8 @@
   function rewriteRoutes(doc, routeMap) {
     if (!routeMap) return;
     doc.querySelectorAll('a[href]').forEach(function (link) {
+      // A declared destination language belongs to the link, including source references.
+      if ((link.getAttribute('hreflang') || '').trim()) return;
       var raw = link.getAttribute('href');
       if (!raw || !raw.startsWith('/')) return;
       var path = raw.split(/[?#]/)[0];

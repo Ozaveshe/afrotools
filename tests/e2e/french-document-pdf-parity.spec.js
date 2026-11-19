@@ -80,6 +80,11 @@ for (const app of config.apps) {
     );
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+    if (app.id !== 'document-pdf') {
+      const source = page.getByRole('link', { name: 'outil anglais accepté', exact: true });
+      await expect(source).toHaveAttribute('hreflang', 'en');
+      await expect(source).toHaveAttribute('href', app.englishRoute);
+    }
     await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
     await expect(page.locator('body')).toHaveClass(/fr-document-pdf-native|top-level-page-ui-refresh/);
     await expect(page.locator('iframe[src*="/tools/"], iframe[data-src*="/tools/"]')).toHaveCount(0);
