@@ -30,7 +30,7 @@
   <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
   <meta name="tool-id" content="whatsapp-link">
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="/assets/vendor/qrcode/qrcode.min.js"></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -145,7 +145,7 @@
     .link-display a:hover { text-decoration: underline; }
     .preview-grid { display: grid; grid-template-columns: 1fr 200px; gap: 1.5rem; align-items: start; }
     .qr-box { text-align: center; }
-    .qr-box canvas { border: 1.5px solid var(--border); border-radius: 10px; padding: 8px; background: #fff; max-width: 100%; }
+    .qr-box canvas { width: 200px; height: auto; border: 1.5px solid var(--border); border-radius: 10px; padding: 8px; background: #fff; max-width: 100%; }
     .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: .65rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .3s; z-index: 999; }
     .copy-toast.show { opacity: 1; }
     .bulk-results { max-height: 400px; overflow-y: auto; }
@@ -318,11 +318,12 @@
         <div class="actions-row">
           <button type="button" class="btn btn-primary btn-sm" onclick="copyLink()">Copy Link</button>
           <a id="openLink" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open in WhatsApp</a>
-          <button type="button" class="btn btn-outline btn-sm" onclick="downloadQR()">Download QR</button>
+          <button type="button" class="btn btn-outline btn-sm" id="downloadQrButton" onclick="downloadQR()" disabled>Download QR</button>
         </div>
       </div>
       <div class="qr-box">
-        <canvas id="qrCanvas"></canvas>
+        <canvas id="qrCanvas" role="img" aria-label="QR code for the generated WhatsApp link" hidden></canvas>
+        <span id="qrStatus" role="status"></span>
       </div>
     </div>
   </div>
@@ -460,9 +461,7 @@ function generateLink() {
   document.getElementById('openLink').href = link;
   document.getElementById('resultCoach').innerHTML = '<strong>Share-ready checklist</strong> Number: ' + currentNormalizedNumber + '. Message is URL-encoded. Test once before adding to an ad, poster, receipt, or profile bio.';
   document.getElementById('resultArea').classList.add('show');
-  if (typeof QRCode !== 'undefined') {
-    QRCode.toCanvas(document.getElementById('qrCanvas'), link, { width: 180, margin: 1, color: { dark: '#0f1419', light: '#ffffff' } });
-  }
+  renderQR(link);
 }
 
 function generateBulk() {
@@ -501,8 +500,39 @@ function copyLink() {
   navigator.clipboard.writeText(currentLink).then(() => showToast('Link copied!'));
 }
 
+function renderQR(link) {
+  const canvas = document.getElementById('qrCanvas');
+  const download = document.getElementById('downloadQrButton');
+  const status = document.getElementById('qrStatus');
+  canvas.hidden = true;
+  download.disabled = true;
+  status.textContent = '';
+  if (typeof QRCode === 'undefined') {
+    status.textContent = 'The QR encoder could not load. You can still copy the link.';
+    return;
+  }
+  try {
+    const holder = document.createElement('div');
+    new QRCode(holder, { text: link, width: 256, height: 256, correctLevel: QRCode.CorrectLevel.M });
+    const symbol = holder.querySelector('canvas');
+    // Leave at least four modules of white space around even the smallest symbol.
+    const border = 50;
+    canvas.width = symbol.width + 2 * border;
+    canvas.height = symbol.height + 2 * border;
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(symbol, border, border);
+    canvas.hidden = false;
+    download.disabled = false;
+  } catch {
+    status.textContent = 'A QR code could not be generated. Shorten the message or copy the link.';
+  }
+}
+
 function downloadQR() {
   const canvas = document.getElementById('qrCanvas');
+  if (canvas.hidden) return;
   const a = document.createElement('a');
   a.download = 'whatsapp-qr.png';
   a.href = canvas.toDataURL('image/png');
