@@ -1184,7 +1184,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
     category: "Sante",
     title: "Widget reste a charge sante",
     description: "Comparer cout de soins, couverture d'assurance et reste a charge estimatif.",
-    fullFrenchPath: "/fr/health/insurance/",
+    fullFrenchPath: "/fr/tools/comparateur-assurance-sante/",
     englishSource: "widgets/iframe/health-insurance-gap-health",
     primaryUse: "Pages assurance, guides sante, contenus famille et ressources de planification medicale.",
     caution: "Verifier franchises, plafonds et exclusions directement dans le contrat.",
