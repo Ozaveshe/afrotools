@@ -114,6 +114,27 @@ for (const countryCode of engines.listCountryCodes()) {
     Object.prototype.hasOwnProperty.call(band, 'taxInBand')
   )), 'Production PAYE bands retain the legacy range fields for v1 compatibility');
 
+  for (const [grossAnnual, grossTax, appliedTaxCredit, netTax] of [
+    [24000, 4800, 4800, 0],
+    [61200, 12240, 12240, 0],
+    [120000, 28224, 12240, 15984],
+  ]) {
+    const response = await handler({
+      httpMethod: 'GET',
+      path: '/api/v1/tax/lesotho/paye',
+      headers: { 'x-api-key': 'afro_live_test_partner_key' },
+      queryStringParameters: { grossAnnual: String(grossAnnual) },
+    });
+    assert.strictEqual(response.statusCode, 200, response.body);
+    const body = JSON.parse(response.body);
+    assert.strictEqual(body._meta.sandbox, false);
+    assert.deepStrictEqual(body.tax.reliefs, { taxCredit: 12240 });
+    assert.strictEqual(body.tax.grossTax, grossTax);
+    assert.strictEqual(body.tax.appliedTaxCredit, appliedTaxCredit);
+    assert.strictEqual(body.tax.netTax, netTax);
+    assert.strictEqual(body.result.netAnnual, grossAnnual - netTax);
+  }
+
   const countryRouteResponse = await handler({
     httpMethod: 'GET',
     path: '/api/v1/tax/nigeria/paye',

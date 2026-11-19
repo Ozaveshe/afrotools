@@ -28,6 +28,7 @@ base.calculate = function(params) {
   const diff = result.tax.netTax - netTax;
 
   result.tax.reliefs = { taxCredit: TAX_CREDIT };
+  result.tax.appliedTaxCredit = grossTax - netTax;
   result.tax.netTax = netTax;
   result.deductions.totalDeductions = Math.round(result.deductions.totalDeductions - diff);
   result.result.netAnnual = Math.round(result.result.netAnnual + diff);
