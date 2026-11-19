@@ -451,6 +451,7 @@ output('sw/index.html', withAnalyticsLoader(homePage()
   .replaceAll('Fungua zana za developer', 'Fungua zana za wasanidi programu')
   .replaceAll('Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka', 'Nchi na lugha ni vitu tofauti. Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka')));
 repair('sw/zana-zote/index.html', [
+  [/<!-- sw-app-catalog:start -->[\s\S]*?<!-- sw-app-catalog:end -->/, () => require('./build-sw-all-tools-catalog').renderSwAppCatalog()],
   [/data-registry-count="tools\.locale\.sw\.published">\d+</g, `data-registry-count="tools.locale.sw.published">${swTools}<`],
   [/Vikokotoo 2,606\+ bure vya/g, `${swTools} rekodi zilizochapishwa za`],
   [/zana nyingine 2,606\+ za Afrika kwa Kiswahili/g, `rekodi ${swTools} zilizochapishwa kwa Kiswahili`],
@@ -872,7 +873,7 @@ for (const [rel, pattern] of prohibitedClaims) {
 
 const requiredPatterns = [
   ['sw/index.html', new RegExp(`data-registry-count="tools\\.locale\\.sw\\.published">${swTools}<`)],
-  ['sw/zana-zote/index.html', new RegExp(`data-registry-count="tools\\.locale\\.sw\\.published">${swTools}<`)],
+  ['sw/zana-zote/index.html', /data-sw-tool="gh-ssnit"/],
   ['sw/zana/kibadilishaji-sarafu/index.html', /data-currency-locale-vip="sw"/],
   ['sw/zana/kibadilishaji-sarafu/index.html', /currency-converter-locales-vip\.js/],
   ['sw/zana/kibadilishaji-sarafu/index.html', /Snapshot husitishwa baada ya siku 7/],
