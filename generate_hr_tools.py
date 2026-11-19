@@ -517,7 +517,7 @@ def main():
         before_countries = total
         for code, cslug, cname, flag in countries:
             # This country form is maintained alongside its statutory eligibility rules.
-            if slug == "gratuity-calculator" and code == "MW":
+            if slug == "gratuity-calculator" and code in {"MW", "SO"}:
                 continue
             cp = os.path.join(BASE, "tools", slug, cslug, "index.html")
             write_file(cp, gen_country_page(tool, code, cslug, cname, flag))
