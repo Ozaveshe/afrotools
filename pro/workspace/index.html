@@ -213,6 +213,19 @@
       .pc-activity,.pc-vault-row{grid-template-columns:1fr}
       .pc-row-actions{justify-content:flex-start}
     }
+    .pc-public-updates { display: none; }
+    html[data-pro-gate="locked"] .pc-public-updates {
+      display: block;
+      width: min(760px, calc(100% - 32px));
+      margin: 16px auto 0;
+    }
+    .pc-public-updates a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--pc-blue);
+      text-decoration: underline;
+    }
   </style>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
 <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=41ac4b4f">
@@ -223,6 +236,9 @@
 <link rel="canonical" href="https://afrotools.com/pro/workspace/">
 </head>
 <body class="top-level-page-ui-refresh">
+  <nav class="pc-public-updates" aria-label="Public updates">
+    <a href="/changelog/">Read public release notes</a>
+  </nav>
   <main class="pc-shell pro-gated-content">
     <aside class="pc-sidebar" aria-label="Pro dashboard navigation">
       <div class="pc-brand">
