@@ -294,7 +294,40 @@ function regionalPetrolCard(reference) {
         </section>`;
 }
 
+function cityFuelReferences(countryCode) {
+  if (!['SO', 'DJ'].includes(countryCode)) return [];
+  const data = readJson(path.join(ROOT, 'data', 'fuel', 'markets.json'));
+  const source = countryCode === 'SO' ? 'https://qiimaha.gov.so/' : 'https://data.humdata.org/dataset/wfp-food-prices-for-djibouti';
+  return data.markets.filter(market => market.country_code === countryCode && market.granularity === 'city')
+    .map(market => ({
+      market,
+      prices: market.fuels.filter(record => record.source_url === source && ['petrol', 'diesel'].includes(record.fuel_type) && record.unit === 'litre' && record.price > 0)
+    }))
+    .filter(entry => entry.prices.length);
+}
+
+function cityFuelCard(entries) {
+  if (!entries.length) return '';
+  const first = entries[0].prices[0];
+  const links = entries.map(({ market, prices }) => {
+    const details = prices.map(record => {
+      const fuel = record.fuel_type === 'petrol' ? 'Petrol' : 'Diesel';
+      const date = record.date_basis === 'survey-period' ? new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(record.effective_date + 'T00:00:00Z')) : formatDate(record.effective_date);
+      return `${fuel} ${escapeHtml(record.currency)} ${escapeHtml(formatNumber(record.price))}/L (${escapeHtml(date)})`;
+    }).join(' · ');
+    return `<li><a href="/tools/fuel-tracker/?market=${encodeURIComponent(market.market_id)}#fuel-finder">Calculate a fill in ${escapeHtml(market.locality_name)}</a><br>${details}</li>`;
+  }).join('\n');
+  return `<section class="fuel-price-card fuel-regional-reference" aria-labelledby="city-fuel-heading">
+          <h2 id="city-fuel-heading">Fuel prices by city</h2>
+          <p>Choose a city to estimate your fill using its dated market price, or enter the price at your pump.</p>
+          <ul>${links}</ul>
+          <p><a href="${escapeHtml(first.source_url)}">${escapeHtml(first.source_name)}</a></p>
+        </section>`;
+}
+
 function htmlPage(row, rows) {
+  const cityReferences = cityFuelReferences(row.code);
+  const hasCityReferences = cityReferences.length > 0;
   const regionalReference = regionalPetrolReference(row);
   const slug = countrySlug(row);
   const url = `${BASE_URL}/tools/fuel-tracker/${slug}/`;
@@ -310,10 +343,12 @@ function htmlPage(row, rows) {
   const title = row.name.length >= 20
     ? `Fuel prices in ${row.name} | AfroFuel`
     : `Fuel prices in ${row.name}: petrol, diesel and LPG | AfroFuel`;
-  const description = `Fuel price snapshot for ${row.name}, dated ${date}. View petrol, diesel and LPG references, then calculate generator costs with a locally verified price.`;
+  const description = hasCityReferences
+    ? `Compare dated city fuel prices in ${row.name} and calculate a fill using a market reference or your local pump price.`
+    : `Fuel price snapshot for ${row.name}, dated ${date}. View petrol, diesel and LPG references, then calculate generator costs with a locally verified price.`;
   const fuelMarket = regionalReference
     ? regionalReference.market.market_id
-    : { TZ: 'tz-dar-es-salaam', BF: 'bf-national' }[row.code];
+    : (hasCityReferences ? cityReferences[0].market.market_id : { TZ: 'tz-dar-es-salaam', BF: 'bf-national' }[row.code]);
   const fuelFinderHref = fuelMarket
     ? `/tools/fuel-tracker/?market=${fuelMarket}#fuel-finder`
     : `/tools/fuel-tracker/?country=${encodeURIComponent(row.code)}#fuel-finder`;
@@ -472,7 +507,7 @@ function htmlPage(row, rows) {
   .fuel-faq summary { cursor: pointer; padding: 16px 18px; font-weight: 900; }
   .fuel-faq details p { padding: 0 18px 18px; margin: 0; }
   .fuel-note { padding: 16px 18px; border-radius: 8px; background: #eef6ef; color: #415247; border: 1px solid rgba(35,92,57,.12); }
-${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-columns: 1fr; }\n  .fuel-regional-reference h2 { color: #142018; margin-top: 0; }\n  .fuel-regional-reference .fuel-btn { min-height: 44px; }\n' : ''}  @media (max-width: 760px) {
+${regionalReference || hasCityReferences ? '  .fuel-country-grid--with-reference { grid-template-columns: 1fr; }\n  .fuel-regional-reference h2 { color: #142018; margin-top: 0; }\n  .fuel-regional-reference .fuel-btn { min-height: 44px; }\n' : ''}  @media (max-width: 760px) {
     .fuel-country-shell { width: min(100% - 24px, 1120px); }
     .fuel-country-hero { padding-top: 36px; }
     .fuel-country-grid, .fuel-panels, .fuel-links { grid-template-columns: 1fr; }
@@ -490,11 +525,11 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
       <a href="/tools/fuel-tracker/">AfroFuel</a><span>/</span>
       <span>${escapeHtml(row.name)}</span>
     </nav>
-    <div class="fuel-country-grid${regionalReference ? ' fuel-country-grid--with-reference' : ''}">
+    <div class="fuel-country-grid${regionalReference || hasCityReferences ? ' fuel-country-grid--with-reference' : ''}">
       <div>
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>${escapeHtml(region)} fuel prices</span></div>
-        <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}
-        <p class="fuel-lede">${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
+        <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}${cityFuelCard(cityReferences)}
+        <p class="fuel-lede">${regionalReference || hasCityReferences ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
         <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
         <p class="fuel-date">Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
