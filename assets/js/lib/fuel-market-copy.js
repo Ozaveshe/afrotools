@@ -2,6 +2,9 @@
   'use strict';
   // Display labels only. Market identifiers, source names and user values never pass through this dictionary.
   var rows={
+    zaNoDieselPump:['No diesel pump quote in this market','Aucun prix du gazole à la pompe pour ce marché','Hakuna bei ya dizeli ya kituoni katika soko hili'],
+    zaDieselWholesale:['South Africa publishes wholesale diesel prices by zone and sulphur grade. Choose the month of your trip and check the retail price at the station.','En Afrique du Sud, les prix de gros du gazole sont publiés par zone et teneur en soufre. Choisissez le mois du trajet et vérifiez le prix de détail à la station.','Afrika Kusini huchapisha bei za jumla za dizeli kulingana na eneo na kiwango cha salfa. Chagua mwezi wa safari yako na uhakikishe bei ya rejareja kituoni.'],
+    zaDieselSchedule:['Official monthly diesel schedules (DMPR)','Barèmes mensuels officiels du gazole (DMPR)','Viwango rasmi vya dizeli vya kila mwezi (DMPR)'],
     'brand-reference':['Dated brand price — confirm the current pump price','Prix daté de l’enseigne — confirmez le prix actuel à la pompe','Bei ya kampuni yenye tarehe — hakiki bei ya sasa ya kituo'],
     brand:['Brand price reference','Prix de référence de l’enseigne','Rejea ya bei ya kampuni'],
     'market-reference':['Dated market reference — verify at the pump','Référence de marché datée — à vérifier à la pompe','Rejea ya soko yenye tarehe — hakiki kwenye kituo'],

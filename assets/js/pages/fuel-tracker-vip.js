@@ -5,6 +5,10 @@
   var root=document.querySelector('[data-fuel-market-locale]');if(!root)return;
   var engine=window.AfroTools.FuelTrackerEngine,copy=window.AfroTools.FuelMarketCopy,observations=window.AfroTools.FuelMarketObservations,locale=root.dataset.fuelMarketLocale;
   var markets=[],payload=null,selected=null,record=null,reference=false,historicalChosen=false,result=null,locationRequest=0,visitorActed=false;
+  var lastZaPetrolMarket = '';
+  function isZaDiesel() {
+   return byId('fuel-country').value === 'ZA' && byId('fuel-type').value === 'diesel';
+  }
   // A shared link may choose a known market once; it never requests location or supplies a price.
   var requestedMarket=null,requestedCountry=null;try{var params=new URLSearchParams(window.location.search),requested=params.getAll('market'),countryParams=params.getAll('country');if(countryParams.length===1&&/^[A-Z]{2}$/.test(countryParams[0]))requestedCountry=countryParams[0];if(requested.length===1&&/^[a-z0-9][a-z0-9-]{0,99}$/.test(requested[0]))requestedMarket=requested[0];}catch(_){}
   // A late scheduled feed must never replace a visitor's chosen price or calculation.
@@ -42,6 +46,14 @@
     link.textContent = t('enterPumpQuote', { currency: currency });
     link.addEventListener('click', function () { byId('fuel-price').focus(); });
     note.appendChild(link);
+    if (isZaDiesel()) {
+     var schedule = document.createElement('a');
+     schedule.href = 'https://www.dmpr.gov.za/Branches/Petroleum-Resources/Fuel-Prices';
+     schedule.target = '_blank';
+     schedule.rel = 'noopener noreferrer';
+     schedule.textContent = t('zaDieselSchedule');
+     note.append(' ' + t('zaDieselWholesale') + ' ', schedule);
+    }
    }
    byId('fuel-result-validTo').textContent=record&&record.valid_to||'—';
    byId('fuel-result-date-label').textContent=t(dateLabel(record));byId('fuel-result-effective').textContent=referenceDate(record);byId('fuel-result-verified-label').textContent=t(record&&record.date_basis==='snapshot'?'priceObservation':'verified');byId('fuel-result-verified').textContent=record&&record.date_basis==='snapshot'?t('unknownObservation'):record&&record.last_verified_at||'—';sourceLink(byId('fuel-result-source'),record);
@@ -54,8 +66,15 @@
    byId('fuel-currency').value=currency;byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
    event(s.available?'fuel_localized_result_shown':'fuel_unavailable_shown',{market_id:selected&&selected.market_id||'none',country_code:selected&&selected.country_code||'none',fuel_type:byId('fuel-type').value,data_granularity:selected&&selected.granularity||'none',location_used:false,result_shown:s.available,reason:s.available?'':s.stale?'stale':'missing'});
   }
-  function marketOptions(preferred,preservePlan){var select=byId('fuel-market');select.replaceChildren();markets.filter(function(m){return m.country_code===byId('fuel-country').value&&engine.marketRecord(m,byId('fuel-type').value);}).sort(function(a,b){return Number(status(engine.marketRecord(b,byId('fuel-type').value)).available)-Number(status(engine.marketRecord(a,byId('fuel-type').value)).available);}).forEach(function(m){select.add(new Option(place(m)+' — '+t(m.granularity),m.market_id));});if(preferred&&Array.from(select.options).some(function(o){return o.value===preferred;}))select.value=preferred;select.disabled=!select.options.length;
+  function marketOptions(preferred,preservePlan){var select=byId('fuel-market');
+   if (isZaDiesel() && preferred && markets.some(function(m) {
+    return m.country_code === 'ZA' && m.market_id === preferred && engine.marketRecord(m, 'petrol');
+   })) lastZaPetrolMarket = preferred;
+   if (!preferred && byId('fuel-country').value === 'ZA' && byId('fuel-type').value === 'petrol') preferred = lastZaPetrolMarket;
+   select.replaceChildren();markets.filter(function(m){return m.country_code===byId('fuel-country').value&&engine.marketRecord(m,byId('fuel-type').value);}).sort(function(a,b){return Number(status(engine.marketRecord(b,byId('fuel-type').value)).available)-Number(status(engine.marketRecord(a,byId('fuel-type').value)).available);}).forEach(function(m){select.add(new Option(place(m)+' — '+t(m.granularity),m.market_id));});if(preferred&&Array.from(select.options).some(function(o){return o.value===preferred;}))select.value=preferred;select.disabled=!select.options.length;
+   if (select.disabled && isZaDiesel()) select.add(new Option(t('zaNoDieselPump'), ''));
    if(preservePlan){
+    if (select.disabled && isZaDiesel() && byId('fuel-result-note').querySelector('a[href^="https://www.dmpr.gov.za/"]')) return;
     // Keep the existing plan and source basis; selecting a newly enrolled market applies its price explicitly.
     var placeholder=new Option('— '+t('market')+' —','');placeholder.disabled=true;select.add(placeholder,0);select.value='';
     if(!selected){byId('fuel-result-place').textContent=t('market');byId('fuel-result-price').textContent=t('manual');byId('fuel-result-note').textContent=t('fillIntro');}
@@ -85,6 +104,7 @@
   byId('fuel-country').addEventListener('change',function(){
    locationRequest++;
    var country=this.value;
+   lastZaPetrolMarket = '';
    var fuel=byId('fuel-type');
    var alternative=fuel.value==='petrol'?'diesel':'petrol';
    var countryMarkets=markets.filter(function(m){return m.country_code===country;});
@@ -100,7 +120,8 @@
   function load(url){return fetch(url,{cache:'no-store',credentials:'same-origin'}).then(function(response){if(!response.ok)throw Error('load');return response.json();});}
   var countryDirectory = new Map();
   function showMarkets(next,preservePlan,initial){
-   var requested=initial&&!preservePlan&&requestedMarket?next.find(function(m){return m.market_id===requestedMarket&&engine.marketRecord(m,byId('fuel-type').value);}):null;
+   var requested=initial&&!preservePlan&&requestedMarket?next.find(function(m){return m.market_id===requestedMarket && (engine.marketRecord(m,byId('fuel-type').value) ||
+    (m.country_code === 'ZA' && byId('fuel-type').value === 'diesel' && engine.marketRecord(m, 'petrol')));}):null;
    var select=byId('fuel-country'),chosenCountry=requested?requested.country_code:(initial&&!preservePlan&&requestedCountry)||select.value,chosenMarket=requested?requested.market_id:byId('fuel-market').value,countries=[];
    markets=next;select.replaceChildren();markets.forEach(function(m){if(!countries.includes(m.country_code)){countries.push(m.country_code);select.add(new Option(country(m.country_code,m.country_name),m.country_code));}});
    countryDirectory.forEach(function(entry,code){
