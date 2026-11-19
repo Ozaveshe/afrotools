@@ -426,6 +426,22 @@ function injectSchema(html, schema) {
 function processFile(file, stats) {
   const original = fs.readFileSync(file, "utf8");
   let html = normalizeJsonLd(original, stats);
+  // Individual dishes are recipe or editorial profile pages. The searchable Kitchen hub is the app.
+  const kitchenDishPage = /^tools\/afrokitchen\/recipes\/[^/]+\/index\.html$/.test(normalizeRel(file));
+  if (kitchenDishPage) {
+    const generatedSchema = new RegExp(`<!-- ${GENERATED_MARKER} -->\\s*${JSON_LD_RE.source}`, "gi");
+    html = html.replace(generatedSchema, (block, attrs, json) => {
+      try {
+        if (ownTypes(JSON.parse(json)).includes("WebApplication")) {
+          stats.webApplicationsRemoved += 1;
+          return "";
+        }
+      } catch {
+        // The existing validation reports malformed JSON-LD.
+      }
+      return block;
+    });
+  }
   let blocks = parseJsonLd(html);
   const editorialPage = /<html\b[^>]*\bdata-editorial-page(?:\s|[=>])/i.test(html);
 
@@ -434,7 +450,7 @@ function processFile(file, stats) {
     blocks = parseJsonLd(html);
   }
 
-  if (!editorialPage && shouldAddWebApplication(blocks)) {
+  if (!kitchenDishPage && !editorialPage && shouldAddWebApplication(blocks)) {
     const schema = webApplicationSchema(file, html);
     if (schema) {
       html = injectSchema(html, schema);
@@ -556,6 +572,7 @@ function main() {
   const stats = {
     filesChanged: 0,
     webApplicationsAdded: 0,
+    webApplicationsRemoved: 0,
     faqPagesAdded: 0,
     faqPagesRemoved: 0,
     faqPagesSynchronized: 0,

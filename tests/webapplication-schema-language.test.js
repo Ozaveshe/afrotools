@@ -58,3 +58,19 @@ test('editorial structured data is not recast as a WebApplication', () => {
   assert.equal(shouldAddWebApplication(blocksFor({ '@type': 'WebApplication' })), false);
   assert.equal(shouldAddWebApplication(blocksFor({ '@type': 'FAQPage' })), true);
 });
+
+
+test('AfroKitchen dish pages keep their editorial types and the hub keeps its application', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const typesAt = (route) => parseJsonLd(fs.readFileSync(path.join(__dirname, '../tools/afrokitchen', route, 'index.html'), 'utf8'))
+    .map(block => block.value?.['@type']);
+  assert.ok(typesAt('').includes('WebApplication'));
+  const recipe = typesAt('recipes/abacha-ng');
+  assert.ok(recipe.includes('Recipe'));
+  assert.ok(recipe.includes('BreadcrumbList'));
+  assert.ok(!recipe.includes('WebApplication'));
+  const profile = typesAt('recipes/ikivuguto-rw');
+  assert.ok(!profile.includes('WebApplication'));
+  assert.ok(!profile.includes('Recipe'));
+});
