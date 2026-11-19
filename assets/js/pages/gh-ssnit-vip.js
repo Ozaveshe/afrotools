@@ -4,6 +4,12 @@
   var engine = window.GH_SSNIT;
   if (!root || !engine) return;
 
+  var dateInput = document.getElementById('ss-date');
+  var today = new Date().toLocaleDateString('sv-SE');
+  dateInput.defaultValue = today < engine.RULES.effectiveFrom ? engine.RULES.effectiveFrom
+    : today > engine.RULES.effectiveTo ? engine.RULES.effectiveTo : today;
+  dateInput.value = dateInput.defaultValue;
+
   var locale = root.dataset.locale || 'en';
   var messages = {
     en: {
@@ -12,7 +18,7 @@
       average: 'The best-36-month average must be zero or positive.',
       months: 'Contribution months must be a whole number from 0 to 720.',
       age: 'Retirement age must be from 55 to 60.',
-      date: 'This verified calculator supports contribution dates from 1 January through 23 July 2026.',
+      date: 'This verified calculator supports contribution dates from 1 January through 31 December 2026.',
       ready: 'Estimate ready. No input left this browser.',
       changed: 'Inputs changed. Calculate again.',
       copied: 'Estimate copied locally.',
@@ -28,7 +34,7 @@
       average: 'La moyenne des 36 meilleurs mois doit être nulle ou positive.',
       months: 'Le nombre de mois cotisés doit être un entier de 0 à 720.',
       age: 'L’âge de retraite doit être compris entre 55 et 60 ans.',
-      date: 'Ce calculateur vérifié couvre les cotisations du 1er janvier au 23 juillet 2026.',
+      date: 'Ce calculateur vérifié couvre les cotisations du 1er janvier au 31 décembre 2026.',
       ready: 'Estimation prête. Aucune donnée n’a quitté ce navigateur.',
       changed: 'Données modifiées. Recalculez.',
       copied: 'Estimation copiée localement.',
@@ -44,7 +50,7 @@
       average: 'Wastani wa miezi 36 bora uwe sifuri au zaidi.',
       months: 'Miezi ya michango iwe namba kamili kutoka 0 hadi 720.',
       age: 'Umri wa kustaafu uwe kutoka 55 hadi 60.',
-      date: 'Kikokotoo hiki kilichothibitishwa kinatumia tarehe kutoka 1 Januari hadi 23 Julai 2026.',
+      date: 'Kikokotoo hiki kilichothibitishwa kinatumia tarehe kutoka 1 Januari hadi 31 Desemba 2026.',
       ready: 'Makadirio yako tayari. Hakuna ingizo lililoondoka kwenye kivinjari hiki.',
       changed: 'Ingizo limebadilika. Kokotoa tena.',
       copied: 'Makadirio yamenakiliwa kwenye kifaa.',
@@ -102,6 +108,15 @@
     if (result.benefit.status === 'below_minimum_months') return messages.short;
     return messages.missing;
   }
+  function minimumNote(result) {
+    if (!result.tier1MinimumAdjustmentPerWorker) return '';
+    var note = {
+      en: 'SSNIT sets the 2026 Tier 1 minimum at GH₵79.40 per worker. Its published minimum exceeds the rounded 13.5% calculation by ',
+      fr: 'Le minimum 2026 publié par la SSNIT pour le niveau 1 est de 79,40 GHS par salarié. Il dépasse le calcul arrondi à 13,5 % de ',
+      sw: 'Kwa 2026, SSNIT imeweka kiwango cha chini cha daraja la kwanza kuwa GHS 79.40 kwa kila mfanyakazi. Tofauti kati ya kiwango hicho na hesabu ya 13.5% baada ya kuzungusha ni '
+    };
+    return note[locale] + money(result.tier1MinimumAdjustmentPerWorker) + '.';
+  }
   function summary() {
     return [
       root.dataset.pdfTitle,
@@ -112,7 +127,8 @@
       root.dataset.tier2Label + ': ' + money(current.payroll.tier2Remittance),
       root.dataset.rightLabel + ': ' + percent(current.benefit.pensionRight),
       root.dataset.pensionLabel + ': ' + (current.benefit.estimatedMonthlyPension === null ? root.dataset.withheldLabel : money(current.benefit.estimatedMonthlyPension)),
-      benefitMessage(current)
+      benefitMessage(current),
+      minimumNote(current)
     ].join('\n');
   }
 
@@ -141,7 +157,7 @@
     set('ss-pension-result', result.benefit.estimatedMonthlyPension === null
       ? root.dataset.withheldLabel
       : money(result.benefit.estimatedMonthlyPension));
-    set('ss-adjustment', root.dataset['adjustment' + result.salaryAdjustment.replace(/(^|_)([a-z])/g, function (_, __, letter) { return letter.toUpperCase(); })]);
+    set('ss-adjustment', root.dataset['adjustment' + result.salaryAdjustment.replace(/(^|_)([a-z])/g, function (_, __, letter) { return letter.toUpperCase(); })] + ' ' + minimumNote(result));
     set('ss-benefit-note', benefitMessage(result));
     results.hidden = false;
     enable(true);
@@ -192,6 +208,7 @@
       ['employee_deduction', current.payroll.employeeDeduction],
       ['employer_contribution', current.payroll.employerContribution],
       ['tier_1_remittance', current.payroll.tier1Remittance],
+      ['tier_1_minimum_adjustment_per_worker', current.tier1MinimumAdjustmentPerWorker],
       ['tier_2_remittance', current.payroll.tier2Remittance],
       ['contribution_months', current.benefit.contributionMonths],
       ['pension_right', current.benefit.pensionRight],
@@ -234,7 +251,7 @@
           ]
         }],
         source: engine.RULES.source + ' · reviewed ' + engine.RULES.verifiedThrough,
-        disclaimer: root.dataset.pdfDisclaimer
+        disclaimer: [root.dataset.pdfDisclaimer, minimumNote(current)].filter(Boolean).join(' ')
       });
       status.textContent = messages.exported;
     } else {

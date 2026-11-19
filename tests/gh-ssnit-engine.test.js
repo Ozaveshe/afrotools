@@ -31,6 +31,13 @@ assert.strictEqual(standard.benefit.status, 'full_pension_estimate');
 const minimum = engine.calculate({ ...base, basicSalary: 100 });
 assert.strictEqual(minimum.insurableSalary, 587.80);
 assert.strictEqual(minimum.salaryAdjustment, 'minimum_applied');
+for (const salary of [400, 587.80, 588]) {
+  const estimate = engine.calculate({ ...base, basicSalary: salary, employeeCount: 2 });
+  assert.strictEqual(estimate.perWorker.tier1Remittance, 79.40);
+  assert.strictEqual(estimate.payroll.tier1Remittance, 158.80);
+  assert.ok(estimate.tier1MinimumAdjustmentPerWorker > 0);
+}
+assert.strictEqual(engine.calculate({ ...base, basicSalary: 600 }).perWorker.tier1Remittance, 81);
 
 const maximum = engine.calculate({ ...base, basicSalary: 100000, employeeCount: 2 });
 assert.strictEqual(maximum.insurableSalary, 69000);
@@ -45,6 +52,12 @@ const short = engine.calculate({ ...base, contributionMonths: 179 });
 assert.strictEqual(short.benefit.estimatedMonthlyPension, null);
 assert.strictEqual(short.benefit.status, 'below_minimum_months');
 
+for (const date of ['2026-11-19', '2026-12-31']) {
+  assert.deepStrictEqual(engine.calculate({ ...base, contributionDate: date }).perWorker, standard.perWorker);
+}
+for (const date of ['2027-01-01', '2026-02-31']) {
+  assert.strictEqual(engine.calculate({ ...base, contributionDate: date }).error, 'unsupported_date');
+}
 assert.strictEqual(engine.calculate({ ...base, contributionDate: '2025-12-31' }).error, 'unsupported_date');
 assert.strictEqual(engine.calculate({ ...base, basicSalary: 0 }).error, 'invalid_salary');
 assert.strictEqual(engine.calculate({ ...base, employeeCount: 1.5 }).error, 'invalid_employee_count');
@@ -70,4 +83,7 @@ assert(
 );
 assert.strictEqual(compatibilityLow.t1Total + compatibilityLow.tier2, compatibilityLow.grandTotal);
 
-console.log('Ghana SSNIT engine: 29 checks passed');
+assert.strictEqual(compatibilityLow.t1Total, 79.40);
+assert.strictEqual(globalThis.SSNITEngine.calcContributions(400).t1Total, 79.40);
+assert.strictEqual(globalThis.SSNITEngine.calcContributions(0).t1Total, 0);
+console.log('Ghana SSNIT engine checks passed');

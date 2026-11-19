@@ -4,8 +4,10 @@
   var RULES = Object.freeze({
     scheme: 'Ghana SSNIT / three-tier pension scheme (2026)',
     effectiveFrom: '2026-01-01',
-    verifiedThrough: '2026-07-23',
+    verifiedThrough: '2026-11-19',
+    effectiveTo: '2026-12-31',
     minimumInsurableMonthly: 587.80,
+    minimumTier1Monthly: 79.40,
     maximumInsurableMonthly: 69000,
     employeeRate: 0.055,
     employerRate: 0.13,
@@ -31,7 +33,8 @@
   function dateSupported(value) {
     return /^\d{4}-\d{2}-\d{2}$/.test(value) &&
       value >= RULES.effectiveFrom &&
-      value <= RULES.verifiedThrough;
+      value <= RULES.effectiveTo &&
+      Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
   }
 
   function pensionRight(months) {
@@ -74,7 +77,7 @@
     var perWorker = {
       employeeDeduction: roundMoney(insurableSalary * RULES.employeeRate),
       employerContribution: roundMoney(insurableSalary * RULES.employerRate),
-      tier1Remittance: roundMoney(insurableSalary * RULES.tier1Rate),
+      tier1Remittance: Math.max(RULES.minimumTier1Monthly, roundMoney(insurableSalary * RULES.tier1Rate)),
       tier2Remittance: roundMoney(insurableSalary * RULES.tier2Rate)
     };
     perWorker.totalContribution = roundMoney(
@@ -111,6 +114,7 @@
         : basicSalary > RULES.maximumInsurableMonthly
           ? 'maximum_applied'
           : 'none',
+      tier1MinimumAdjustmentPerWorker: roundMoney(perWorker.tier1Remittance - roundMoney(insurableSalary * RULES.tier1Rate)),
       perWorker: perWorker,
       payroll: {
         employeeDeduction: roundMoney(perWorker.employeeDeduction * employeeCount),
@@ -151,13 +155,14 @@
         RULES.maximumInsurableMonthly,
         Math.max(0, Number(basicSalary) || 0)
       );
+      if (salary > 0) salary = Math.max(salary, RULES.minimumInsurableMonthly);
       var employee = roundMoney(salary * RULES.employeeRate);
       var employerTier1 = roundMoney(salary * 0.08);
       // Compatibility field: `nhia` is a 2.5% sub-allocation within the
       // 13.5% Tier 1 remittance. It is not an additional contribution.
       var nhiaAllocation = roundMoney(salary * 0.025);
       var tier2 = roundMoney(salary * RULES.tier2Rate);
-      var tier1Total = roundMoney(employee + employerTier1);
+      var tier1Total = salary > 0 ? Math.max(RULES.minimumTier1Monthly, roundMoney(salary * RULES.tier1Rate)) : 0;
       var ssnitRetained = roundMoney(tier1Total - nhiaAllocation);
       return {
         t1Emp: employee,
