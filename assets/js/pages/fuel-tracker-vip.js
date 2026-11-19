@@ -29,15 +29,29 @@
    byId('fuel-result-confidence').textContent=t(s.valid?s.basis:'unavailable');
    byId('fuel-result-confidence').className='fuel-confidence '+(s.available?record.confidence:'warn');
    byId('fuel-result-price').textContent=s.valid?money(record.price,record.currency)+' / L':t('unavailable');
-   byId('fuel-result-note').textContent=t(s.valid?s.basis:'withheld')+(record&&record.price_kind==='official-maximum-retail'?' — '+t('cap'):'');byId('fuel-result-validTo').textContent=record&&record.valid_to||'—';
+   var entry = countryDirectory.get(byId('fuel-country').value);
+   var currency = record && record.currency || entry && entry.currency || 'USD';
+   var note = byId('fuel-result-note');
+   if (s.valid) {
+    note.textContent = t(s.basis) + (record.price_kind === 'official-maximum-retail' ? ' — ' + t('cap') : '');
+   } else {
+    var code = byId('fuel-country').value;
+    note.textContent = t('noPumpQuote', { place: selected ? place(selected) : country(code, code), fuel: t(byId('fuel-type').value) }) + ' ';
+    var link = document.createElement('a');
+    link.href = '#fuel-price';
+    link.textContent = t('enterPumpQuote', { currency: currency });
+    link.addEventListener('click', function () { byId('fuel-price').focus(); });
+    note.appendChild(link);
+   }
+   byId('fuel-result-validTo').textContent=record&&record.valid_to||'—';
    byId('fuel-result-date-label').textContent=t(dateLabel(record));byId('fuel-result-effective').textContent=referenceDate(record);byId('fuel-result-verified-label').textContent=t(record&&record.date_basis==='snapshot'?'priceObservation':'verified');byId('fuel-result-verified').textContent=record&&record.date_basis==='snapshot'?t('unknownObservation'):record&&record.last_verified_at||'—';sourceLink(byId('fuel-result-source'),record);
    byId('fuel-result-coverage').textContent=selected?t(selected.granularity):'—';
    byId('fuel-original-notes').textContent=[selected&&selected.coverage_note,record&&record.notes].filter(Boolean).join(' ');
    byId('fuel-use-history').hidden=!s.historical;byId('fuel-history').hidden=!(record&&record.previous_record);byId('fuel-history-record').textContent=record&&record.previous_record?[money(record.previous_record.price,record.previous_record.currency)+' / L',record.previous_record.effective_date,record.previous_record.source_name,record.previous_record.source_url].join(' — '):'';
    var other=engine.marketRecord(selected,byId('fuel-type').value==='petrol'?'diesel':'petrol');
    byId('fuel-result-comparison').textContent=s.available&&status(other).available&&other.currency===record.currency?t('comparison',{fuel:t(other.fuel_type),difference:money(other.price-record.price,record.currency)}):t('noComparison');
-   byId('fuel-price').value=s.available?record.price:'';var entry=countryDirectory.get(byId('fuel-country').value);
-   byId('fuel-currency').value=record&&record.currency||entry&&entry.currency||'USD';byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
+   byId('fuel-price').value=s.available?record.price:'';
+   byId('fuel-currency').value=currency;byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
    event(s.available?'fuel_localized_result_shown':'fuel_unavailable_shown',{market_id:selected&&selected.market_id||'none',country_code:selected&&selected.country_code||'none',fuel_type:byId('fuel-type').value,data_granularity:selected&&selected.granularity||'none',location_used:false,result_shown:s.available,reason:s.available?'':s.stale?'stale':'missing'});
   }
   function marketOptions(preferred,preservePlan){var select=byId('fuel-market');select.replaceChildren();markets.filter(function(m){return m.country_code===byId('fuel-country').value&&engine.marketRecord(m,byId('fuel-type').value);}).sort(function(a,b){return Number(status(engine.marketRecord(b,byId('fuel-type').value)).available)-Number(status(engine.marketRecord(a,byId('fuel-type').value)).available);}).forEach(function(m){select.add(new Option(place(m)+' — '+t(m.granularity),m.market_id));});if(preferred&&Array.from(select.options).some(function(o){return o.value===preferred;}))select.value=preferred;select.disabled=!select.options.length;
