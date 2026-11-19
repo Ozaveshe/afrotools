@@ -33,19 +33,31 @@
         return { ok: true, data: `WIFI:T:${security};S:${escapeWifi(ssid)};P:${escapeWifi(password)};;` };
       }
       case 'vcard': {
-        const name = String(values.name || '');
+        const name = escapeVCard(String(values.name || '').trim());
         if (!name) return { ok: false, error: 'required_fields' };
-        const phone = String(values.phone || '');
-        const email = String(values.email || '');
-        const org = String(values.org || '');
-        return {
-          ok: true,
-          data: `BEGIN:VCARD\nVERSION:3.0\nFN:${escapeVCard(name)}\n${phone ? `TEL:${escapeVCard(phone)}\n` : ''}${email ? `EMAIL:${escapeVCard(email)}\n` : ''}${org ? `ORG:${escapeVCard(org)}\n` : ''}END:VCARD`
-        };
+        // The form captures one name. Keep its ordering intact in a single N component.
+        const lines = ['BEGIN:VCARD', 'VERSION:3.0', `FN:${name}`, `N:;${name};;;`];
+        if (values.phone) lines.push(`TEL:${escapeVCard(values.phone)}`);
+        if (values.email) lines.push(`EMAIL:${escapeVCard(values.email)}`);
+        if (values.org) lines.push(`ORG:${escapeVCard(values.org)}`);
+        lines.push('END:VCARD', '');
+        return { ok: true, data: lines.join('\r\n') };
       }
       default:
         return { ok: false, error: 'unsupported_mode' };
     }
+  }
+
+  function pngCanvas(canvas, qr, background) {
+    const margin = Math.ceil(4 * canvas.width / qr.getModuleCount());
+    const output = canvas.ownerDocument.createElement('canvas');
+    output.width = canvas.width + 2 * margin;
+    output.height = canvas.height + 2 * margin;
+    const context = output.getContext('2d');
+    context.fillStyle = background;
+    context.fillRect(0, 0, output.width, output.height);
+    context.drawImage(canvas, margin, margin);
+    return output;
   }
 
   function buildSvg(qr, darkColor, lightColor) {
@@ -69,5 +81,5 @@
     ].join('');
   }
 
-  return { escapeVCard, escapeWifi, buildPayload, buildSvg };
+  return { escapeVCard, escapeWifi, buildPayload, buildSvg, pngCanvas };
 });

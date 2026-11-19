@@ -241,7 +241,8 @@
     q('downloadPNG').addEventListener('click', () => {
       const canvas = q('qrcode').querySelector('canvas');
       if (!canvas) return;
-      canvas.toBlob(blob => { if (blob) downloadBlob(blob, 'png'); }, 'image/png');
+      const artwork = window.AfroTools.QrPayload.pngCanvas(canvas, qrcodeInstance._oQRCode, q('lightColor').value);
+      artwork.toBlob(blob => { if (blob) downloadBlob(blob, 'png'); }, 'image/png');
     });
 
     q('downloadSVG').addEventListener('click', () => {

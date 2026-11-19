@@ -30,6 +30,7 @@
 <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
 <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
 <script src="/assets/vendor/qrcode/qrcode.min.js?v=517b55d3"></script>
+<script src="/assets/js/engines/qr-payload-engine.js"></script>
 <style>
   :root { --qr-blue:#2563eb; --qr-ink:#111827; --qr-soft:#f5f7fb; --qr-line:#dbe4f0; }
   body { background:#f8fafc; color:var(--qr-ink); font-family:"DM Sans", system-ui, sans-serif; }
@@ -274,11 +275,11 @@
   const logoInput = document.getElementById('logoFile');
   let currentMode = 'url';
   let currentPayload = '';
+  let generatedQR = null;
 
   function $(id) { return document.getElementById(id); }
   function clean(value) { return String(value || '').trim(); }
   function escapeWifi(value) { return clean(value).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/:/g, '\\:').replace(/"/g, '\\"'); }
-  function escapeVcard(value) { return clean(value).replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n'); }
 
   function setMode(mode) {
     currentMode = mode;
@@ -295,17 +296,11 @@
       const pass = escapeWifi($('wifiPass').value);
       return ssid ? `WIFI:T:${security};S:${ssid};P:${pass};;` : '';
     }
-    const name = escapeVcard($('vName').value);
-    if (!name) return '';
-    return [
-      'BEGIN:VCARD',
-      'VERSION:3.0',
-      `FN:${name}`,
-      clean($('vPhone').value) ? `TEL:${escapeVcard($('vPhone').value)}` : '',
-      clean($('vEmail').value) ? `EMAIL:${escapeVcard($('vEmail').value)}` : '',
-      clean($('vOrg').value) ? `ORG:${escapeVcard($('vOrg').value)}` : '',
-      'END:VCARD'
-    ].filter(Boolean).join('\n');
+    const result = window.AfroTools.QrPayload.buildPayload({
+      mode: 'vcard', name: $('vName').value, phone: clean($('vPhone').value),
+      email: clean($('vEmail').value), org: clean($('vOrg').value)
+    });
+    return result.ok ? result.data : '';
   }
 
   function overlayLogo() {
@@ -331,17 +326,18 @@
 
   function generate() {
     currentPayload = getPayload();
+    generatedQR = null;
+    host.replaceChildren();
     if (!currentPayload) {
       status.textContent = 'Ajoutez un lien, un texte, un réseau WiFi ou un contact avant de generer.';
       return;
     }
-    host.innerHTML = '';
     if (!window.QRCode) {
       host.innerHTML = '<p class="qr-empty">Le module QR local n est pas charge. Copiez le contenu et rechargez la page pour réessayer.</p>';
       status.textContent = 'Apercu QR indisponible, mais le contenu est pret a copier.';
       return;
     }
-    new window.QRCode(host, {
+    generatedQR = new window.QRCode(host, {
       text: currentPayload,
       width: 240,
       height: 240,
@@ -388,12 +384,13 @@
 
   $('downloadPng').addEventListener('click', function () {
     const canvas = host.querySelector('canvas');
-    if (!canvas) {
+    if (!canvas || !generatedQR) {
       status.textContent = 'Creez d abord un QR code avant le telechargement.';
       return;
     }
     const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
+    const artwork = window.AfroTools.QrPayload.pngCanvas(canvas, generatedQR._oQRCode, generatedQR._htOption.colorLight);
+    link.href = artwork.toDataURL('image/png');
     link.download = `afrotools-qr-${currentMode}.png`;
     link.click();
     status.textContent = 'Telechargement PNG prepare.';

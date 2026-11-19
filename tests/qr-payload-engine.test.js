@@ -15,8 +15,18 @@ assert.deepStrictEqual(
 );
 assert.deepStrictEqual(
   engine.buildPayload({ mode: 'vcard', name: 'Amina; Njeri', phone: '+254700000000', email: 'amina@example.test', org: 'Soko, Ltd' }),
-  { ok: true, data: 'BEGIN:VCARD\nVERSION:3.0\nFN:Amina\\; Njeri\nTEL:+254700000000\nEMAIL:amina@example.test\nORG:Soko\\, Ltd\nEND:VCARD' }
+  { ok: true, data: 'BEGIN:VCARD\r\nVERSION:3.0\r\nFN:Amina\\; Njeri\r\nN:;Amina\\; Njeri;;;\r\nTEL:+254700000000\r\nEMAIL:amina@example.test\r\nORG:Soko\\, Ltd\r\nEND:VCARD\r\n' }
 );
+
+const mononym = 'Ọlá';
+assert.strictEqual(engine.buildPayload({ mode: 'vcard', name: mononym }).data,
+  `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${mononym}\r\nN:;${mononym};;;\r\nEND:VCARD\r\n`);
+const multilineName = 'N\\Ko;é,李\r\nORG:Example';
+const escapedName = 'N\\\\Ko\\;é\\,李\\nORG:Example';
+const contact = engine.buildPayload({ mode: 'vcard', name: multilineName }).data;
+assert.deepStrictEqual(contact.split('\r\n'), [
+  'BEGIN:VCARD', 'VERSION:3.0', 'FN:' + escapedName, 'N:;' + escapedName + ';;;', 'END:VCARD', ''
+]);
 
 const matrix = {
   getModuleCount: () => 2,

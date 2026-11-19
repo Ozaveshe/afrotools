@@ -14,6 +14,12 @@ function observe(page) {
   return proof;
 }
 
+function assertPngQuietZone(dimensions, svg) {
+  const modules = Number(svg.match(/viewBox="0 0 (\d+) /)[1]) - 8;
+  const side = 256 + 2 * Math.ceil(4 * 256 / modules);
+  expect(dimensions).toEqual({ width: side, height: side });
+}
+
 async function buffer(download) {
   const stream = await download.createReadStream();
   const chunks = [];
@@ -37,7 +43,7 @@ test('shared payload engine preserves exact text, WiFi and vCard semantics in bo
     expect(results).toEqual({
       text: { ok: true, data: 'Habari Afrika' },
       wifi: { ok: true, data: 'WIFI:T:WPA;S:Duka\\:Kuu;P:siri\\;1234;;' },
-      vcard: { ok: true, data: 'BEGIN:VCARD\nVERSION:3.0\nFN:Amina\\; Njeri\nTEL:+254700000000\nEMAIL:amina@example.test\nORG:Soko\\, Ltd\nEND:VCARD' }
+      vcard: { ok: true, data: 'BEGIN:VCARD\r\nVERSION:3.0\r\nFN:Amina\\; Njeri\r\nN:;Amina\\; Njeri;;;\r\nTEL:+254700000000\r\nEMAIL:amina@example.test\r\nORG:Soko\\, Ltd\r\nEND:VCARD\r\n' }
     });
     await page.locator('[data-mode="text"]').click();
     await page.locator('#textInput').fill('Habari Afrika');
@@ -47,13 +53,27 @@ test('shared payload engine preserves exact text, WiFi and vCard semantics in bo
     await page.locator('#downloadPNG').click();
     const png = await pngEvent;
     expect(png.suggestedFilename()).toBe(route.startsWith('/sw/') ? 'maandishi-qr.png' : 'text-qr.png');
-    expect(pngDimensions(await buffer(png))).toEqual({ width: 256, height: 256 });
+    const pngSize = pngDimensions(await buffer(png));
     const svgEvent = page.waitForEvent('download');
     await page.locator('#downloadSVG').click();
     const svg = await svgEvent;
     expect(svg.suggestedFilename()).toBe(route.startsWith('/sw/') ? 'maandishi-qr.svg' : 'text-qr.svg');
-    expect((await buffer(svg)).toString('utf8')).toMatch(/width="1024" height="1024"/);
+    const svgText = (await buffer(svg)).toString('utf8');
+    expect(svgText).toMatch(/width="1024" height="1024"/);
+    assertPngQuietZone(pngSize, svgText);
   }
+});
+
+test('QR image encoder preserves contact names as exact UTF-8 bytes', async ({ page }) => {
+  await page.goto('/tools/qr-generator/', { waitUntil: 'domcontentloaded' });
+  const encoded = await page.evaluate(() => {
+    const name = 'Adé; 李𐐀, N\\Ko';
+    const payload = window.AfroTools.QrPayload.buildPayload({ mode: 'vcard', name }).data;
+    const qr = new QRCode(document.createElement('div'), { text: payload, correctLevel: QRCode.CorrectLevel.M });
+    const bytes = Uint8Array.from(qr._oQRCode.dataList[0].parsedData);
+    return { raw: Array.from(bytes), expected: Array.from(new TextEncoder().encode(payload)) };
+  });
+  expect(encoded.raw).toEqual(encoded.expected);
 });
 
 test('Swahili owner validates stale state and reopens exact PNG and SVG exports', async ({ page }) => {
@@ -90,7 +110,7 @@ test('Swahili owner validates stale state and reopens exact PNG and SVG exports'
   await page.locator('#downloadPNG').click();
   const png = await pngEvent;
   expect(png.suggestedFilename()).toBe('wifi-qr.png');
-  expect(pngDimensions(await buffer(png))).toEqual({ width: 256, height: 256 });
+  const pngSize = pngDimensions(await buffer(png));
 
   const svgEvent = page.waitForEvent('download');
   await page.locator('#downloadSVG').click();
@@ -98,6 +118,7 @@ test('Swahili owner validates stale state and reopens exact PNG and SVG exports'
   expect(svg.suggestedFilename()).toBe('wifi-qr.svg');
   const svgText = (await buffer(svg)).toString('utf8');
   expect(svgText).toMatch(/^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 \d+ \d+" width="1024" height="1024"/);
+  assertPngQuietZone(pngSize, svgText);
   expect(svgText).toContain('fill="#112233"');
   expect(svgText).toContain('fill="#fefefe"');
   expect((svgText.match(/M\d+ \d+h1v1h-1z/g) || []).length).toBeGreaterThan(100);

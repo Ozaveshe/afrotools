@@ -1153,16 +1153,7 @@
     const canvas = document.querySelector('#qrcode canvas');
     if (!canvas) return;
     const link = document.createElement('a');
-    // Preserve the rendered modules and add the same four-module quiet zone as SVG.
-    const modules = qrcodeInstance._oQRCode.getModuleCount();
-    const margin = Math.ceil(4 * canvas.width / modules);
-    const artwork = document.createElement('canvas');
-    artwork.width = canvas.width + margin * 2;
-    artwork.height = canvas.height + margin * 2;
-    const context = artwork.getContext('2d');
-    context.fillStyle = generatedQR.light;
-    context.fillRect(0, 0, artwork.width, artwork.height);
-    context.drawImage(canvas, margin, margin);
+    const artwork = window.AfroTools.QrPayload.pngCanvas(canvas, qrcodeInstance._oQRCode, generatedQR.light);
     link.href = artwork.toDataURL('image/png');
     link.download = generatedQR.filename + '.png';
     document.body.appendChild(link);
