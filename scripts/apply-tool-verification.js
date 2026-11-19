@@ -501,6 +501,26 @@ function applyEswatiniPayeEvidence(manifest) {
   ];
 }
 
+function applyEgyptPayeEvidence(manifest) {
+  const entry = manifest.tools['eg-paye'];
+  if (!entry) return;
+  entry.source_urls = [
+    "https://www.eta.gov.eg/sites/default/files/2024-03/law_no.7-2024.pdf",
+    "https://eta.gov.eg/ar/payroll-forms",
+    "https://www.nosi.gov.eg/ar/news/Pages/2025-11-30.aspx"
+  ];
+  entry.source_titles = [
+    "Egyptian Tax Authority: Income Tax Law 7 of 2024",
+    "Egyptian Tax Authority: payroll forms",
+    "NOSI: insurable wage limits for 2025 and 2026"
+  ];
+  entry.law_or_version = "Income Tax Law 91 of 2005, amended by Law 7 of 2024. The calculator uses the 2025 insurance ceiling of EGP 14,500 per month. From January 2026 the published ceiling is EGP 16,700.";
+  entry.last_verified = "2026-11-19";
+  entry.verified_by = "AfroTools: source links and insurance ceilings reviewed";
+  const highIncomeLimitation = "Use the ETA payroll forms for high incomes: the calculator’s treatment of excluded lower bands has not been validated. Insurance rates, minimum insurable pay and disability relief require separate eligibility checks.";
+  entry.known_limitations = [...new Set([highIncomeLimitation, ...entry.known_limitations])];
+}
+
 const PANEL_COPY = {
   en: {
     kicker: 'Official evidence',
@@ -583,9 +603,36 @@ const ESWATINI_VERIFICATION_FR = new Map([
   ['Retirement, redundancy, special reliefs and filing calculations require the official ERS guidance or a qualified adviser.', 'La retraite, le licenciement économique, les allègements particuliers et les calculs destinés aux déclarations nécessitent les instructions officielles de l’ERS ou un conseiller qualifié.']
 ]);
 
+const EGYPT_VERIFICATION_FR = new Map([
+  [
+    "Egyptian Tax Authority: Income Tax Law 7 of 2024",
+    "Autorité fiscale égyptienne : loi 7 de 2024 sur le revenu"
+  ],
+  [
+    "Egyptian Tax Authority: payroll forms",
+    "Autorité fiscale égyptienne : formulaires de paie"
+  ],
+  [
+    "NOSI: insurable wage limits for 2025 and 2026",
+    "NOSI : plafonds et planchers du salaire assurable pour 2025 et 2026"
+  ],
+  [
+    "Income Tax Law 91 of 2005, amended by Law 7 of 2024. The calculator uses the 2025 insurance ceiling of EGP 14,500 per month. From January 2026 the published ceiling is EGP 16,700.",
+    "Loi 91 de 2005 sur le revenu, modifiée par la loi 7 de 2024. Le calculateur utilise le plafond 2025 de 14 500 EGP par mois. Depuis janvier 2026, le plafond publié est de 16 700 EGP."
+  ],
+  [
+    "Use the ETA payroll forms for high incomes: the calculator’s treatment of excluded lower bands has not been validated. Insurance rates, minimum insurable pay and disability relief require separate eligibility checks.",
+    "Pour les revenus élevés, utilisez les formulaires de paie officiels : le traitement des tranches exclues par le calculateur reste à valider. Les taux de cotisation, le salaire assurable minimum et les conditions liées au handicap doivent être vérifiés séparément."
+  ],
+  [
+    "AfroTools: source links and insurance ceilings reviewed",
+    "AfroTools : sources et plafonds du salaire assurable vérifiés"
+  ]
+]);
+
 function localizeVerificationValue(value, lang) {
   if (lang !== 'fr') return value;
-  return ESWATINI_VERIFICATION_FR.get(String(value || '')) || FR_VERIFICATION_VALUES.get(String(value || '')) || value;
+  return EGYPT_VERIFICATION_FR.get(String(value || '')) || ESWATINI_VERIFICATION_FR.get(String(value || '')) || FR_VERIFICATION_VALUES.get(String(value || '')) || value;
 }
 
 function buildPanel(entry, lang = 'en') {
@@ -600,7 +647,7 @@ function buildPanel(entry, lang = 'en') {
   // an owned French translation, use the already translated, calculation-type
   // contract rather than leaking a large English block onto a French route.
   const methodology = lang === 'fr' ? methodologyFor(kind) : entry.methodology_markdown;
-  const knownLimitations = lang === 'fr' && entry.tool_id !== 'sz-paye' ? limitationsFor(kind) : entry.known_limitations;
+  const knownLimitations = lang === 'fr' && !['sz-paye', 'eg-paye'].includes(entry.tool_id) ? limitationsFor(kind) : entry.known_limitations;
   const testCases = lang === 'fr' ? testCasesFor(kind) : entry.test_cases;
   const riskLabel = lang === 'fr'
     ? ({ critical: 'critique', high: 'élevé', medium: 'moyen', low: 'faible' }[entry.risk_level] || entry.risk_level)
@@ -783,6 +830,7 @@ function main() {
 
   const manifest = buildManifest(allTargetFiles);
   applyEswatiniPayeEvidence(manifest);
+  applyEgyptPayeEvidence(manifest);
   for (const file of redirectAliasFiles) {
     const html = removeOldVerificationPanels(fs.readFileSync(file, 'utf8'));
     const toolId = toolIdFor(file, html);
@@ -826,4 +874,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { applyEswatiniPayeEvidence, applyPanelToFile, buildManifest, shouldKeepToolSource };
+module.exports = { applyEgyptPayeEvidence, applyEswatiniPayeEvidence, applyPanelToFile, buildManifest, shouldKeepToolSource };
