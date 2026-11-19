@@ -2,6 +2,7 @@
 !function(e, t) {
     "use strict";
     var n = "invoice-draft", a = "afro_invoice_draft", i = null, o = null, r = "", c = !1, u = !1;
+    var lastLocalState = "";
     function s() {
         return e.AfroWorkspace || null;
     }
@@ -17,15 +18,26 @@
     }
     function v() {
         var e = l();
-        return e && "function" == typeof e.gatherState ? {
-            state: e.gatherState(),
-            updatedAt: (new Date).toISOString()
-        } : null;
+        if (!e || typeof e.gatherState !== "function") return null;
+        var state = e.gatherState(), recipient = t.getElementById("recipientTaxId");
+        if (recipient && recipient.value.trim()) state.recipientTaxId = recipient.value.trim();
+        return { state: state, updatedAt: (new Date).toISOString() };
+    }
+    function persistChangedDraft() {
+        var draft = v();
+        if (!draft) return;
+        var snapshot = JSON.stringify(draft.state);
+        // A tab that only displayed an older invoice must not replace a newer draft.
+        if (snapshot === lastLocalState) return;
+        d(draft);
+        lastLocalState = snapshot;
     }
     function y(e) {
         var t = e || v();
         if (!t || !t.state) return null;
-        var a = t.state, i = a.in || a.cn || "Invoice Draft", o = [];
+        var cloudState = Object.assign({}, t.state);
+        delete cloudState.recipientTaxId;
+        var a = cloudState, i = a.in || a.cn || "Invoice Draft", o = [];
         return a.cl && o.push(a.cl), a.cu && o.push(a.cu), a.id && o.push(a.id), {
             itemType: n,
             itemKey: "current",
@@ -33,7 +45,7 @@
             title: i,
             summary: o.join(" | "),
             href: "/tools/invoice-generator/",
-            payload: t,
+            payload: Object.assign({}, t, { state: cloudState }),
             meta: {
                 currency: a.cu || "",
                 invoiceNumber: a.in || ""
@@ -49,8 +61,9 @@
     }
     function g() {
         clearTimeout(i), i = setTimeout(function() {
-            var e = v();
-            e && (d(e), clearTimeout(o), o = setTimeout(m, 1200));
+            persistChangedDraft();
+            clearTimeout(o);
+            o = setTimeout(m, 1200);
         }, 800);
     }
     async function m() {
@@ -111,16 +124,17 @@
         s() && l() && (function() {
             if ("1" !== t.body.dataset.invoiceWorkspaceBound) {
                 t.body.dataset.invoiceWorkspaceBound = "1";
+                var initial = v();
+                if (initial && t.body.dataset.invoiceSharedRestored !== "1" && !(new URLSearchParams(e.location.search)).has("cn")) lastLocalState = JSON.stringify(initial.state);
                 var n = t.querySelector(".inv-page");
                 n && (n.addEventListener("input", g), n.addEventListener("change", g));
                 t.addEventListener("afro-invoice-restored", g);
                 var a = t.getElementById("btnNewInvoice");
                 a && a.addEventListener("click", function() {
                     setTimeout(g, 0);
-                }), e.addEventListener("beforeunload", function() {
-                    var e = v();
-                    e && d(e);
                 });
+                e.addEventListener("pagehide", persistChangedDraft);
+                e.addEventListener("beforeunload", persistChangedDraft);
             }
         }(), S().then(function() {
             c && (g(), e.setInterval(m, 5e3), e.addEventListener("focus", function() {
