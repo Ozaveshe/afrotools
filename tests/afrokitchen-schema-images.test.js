@@ -84,3 +84,17 @@ test('known measured duration regression remains a complete pair and independent
   const schema=recipeSchema(page({...recipe('jollof-rice-ng'),prep_time_minutes:30,cook_time_minutes:65,total_time_minutes:95}));
   assert.deepEqual([schema.prepTime,schema.cookTime,schema.totalTime],['PT30M','PT65M','PT95M']);
 });
+
+test('reviewed Jollof photos keep their individual descriptions in the cover, gallery and recipe payload', () => {
+  const html = page(recipe('jollof-rice-ng'));
+  const gallery = html.match(/<section class="ak-photo-gallery"[\s\S]*?<\/section>/)[0];
+  const descriptions = Array.from(gallery.matchAll(/<img [^>]*alt="([^"]+)"/g), match => match[1]);
+  const payload = JSON.parse(html.match(/window\.__AK_STATIC_RECIPE = (.*?);<\/script>/)[1]);
+  assert.equal(descriptions.length, 3);
+  assert.deepEqual(descriptions, payload.gallery_images.map(image => image.alt));
+  assert.match(descriptions[0], /drumstick/);
+  assert.match(descriptions[1], /white plate/);
+  assert.match(descriptions[2], /metal pot/);
+  assert.ok(html.match(/<img class="ak-cookbook-cover-photo"[^>]*>/)[0].includes(descriptions[0]));
+  assert.match(html, /<summary>Cooking notes, 3 photos &amp; serving ideas<\/summary>/);
+});
