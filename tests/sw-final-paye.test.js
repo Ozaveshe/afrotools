@@ -57,6 +57,18 @@ for (const [id,file,englishRoute,profileControls] of rows) {
   const enPath=englishRoute.replace(/^\//,'').replace(/\/$/,'');const direct=path.join(ROOT,`${enPath}.html`);const owner=fs.existsSync(direct)?direct:path.join(ROOT,enPath,'index.html');const english=fs.readFileSync(owner,'utf8');const canonical=html.match(/<link rel="canonical" href="([^"]+)"/i)[1];assert.ok(english.includes(`hreflang="sw" href="${canonical}"`),`${id}: reciprocal English hreflang`);
 }
 
+const southAfricaOptions = { gross: 2000000, retirement: 500000, medMembers: 3, ageGroup: '75plus' };
+for (const [taxYear, deduction, credit, ageRebate] of [
+  ['2025/26', 350000, 11688, 29824],
+  ['2026/27', 430000, 12072, 30834],
+]) {
+  const result = engine.calculatePaye('za-paye', { ...southAfricaOptions, taxYear });
+  assert.strictEqual(result.taxYear, taxYear);
+  assert.strictEqual(result.taxable, southAfricaOptions.gross - deduction);
+  assert.strictEqual(result.components.medicalCredit, credit);
+  assert.strictEqual(result.relief, ageRebate + credit);
+}
+
 const controller=fs.readFileSync(path.join(ROOT,'assets/js/pages/sw-final-paye.js'),'utf8');
 assert.match(controller,/aiConsent[\s\S]*consent\.checked[\s\S]*fetch\('\/.netlify\/functions\/ai-advisor'/, 'AI transport is behind explicit consent');
 assert.match(controller,/'X-AfroTools-AI-Consent':'accepted'[\s\S]*aiConsent:'accepted'/, 'AI transport uses the server consent contract');

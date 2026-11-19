@@ -31,7 +31,7 @@
 
   var PAYE_PROFILES = {
     'ng-paye': { country: 'Nigeria', currency: 'NGN', period: 'annual', bands: [[800000,0],[3000000,.15],[12000000,.18],[25000000,.21],[50000000,.23],[null,.25]], source: 'https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf', reviewed: '2026-03-01', options: ['regime','pension','nhf','nhis','annualRent','lifeAssurance','mortgageInterest'] },
-    'za-paye': { country: 'Afrika Kusini', currency: 'ZAR', period: 'annual', bands: [[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[null,.45]], source: 'https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/', reviewed: '2026-01-01', options: ['ageGroup','retirement','medMembers','uif'] },
+    'za-paye': { country: 'Afrika Kusini', currency: 'ZAR', period: 'annual', bands: [[245100,.18],[383100,.26],[530200,.31],[695800,.36],[887000,.39],[1878600,.41],[null,.45]], source: 'https://www.sars.gov.za/guide-for-employers-in-respect-of-employees-tax-2027/', reviewed: '2026-11-19', options: ['ageGroup','retirement','medMembers','uif'] },
     'ma-paye': { country:'Moroko',currency:'MAD',period:'annual',owner:'morocco-paye.js',source:'https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf',reviewed:'2026-09-15',confidence:'tax-code-with-contribution-assumptions',options:['cnss','amo','dependents'] },
     'dz-paye': { country: 'Aljeria', currency: 'DZD', period: 'annual', bands: [[240000,0],[480000,.20],[960000,.30],[null,.35]], employeeRate: .09, employeeCap: null, rebate: 0, source: 'https://www.mfdgi.gov.dz/', reviewed: '2026-04-06' },
     'tn-paye': { country: 'Tunisia', currency: 'TND', period: 'annual', owner:'tunisia-paye.js', source:'https://jibaya.tn/wp-content/uploads/2026/03/11.pdf', reviewed:'2026-09-15', confidence:'statutory-with-deductibility-assumption', options:['jobLossDeductible'] },
@@ -93,15 +93,23 @@
         tax = taxResult.tax;
       }
     } else if (id === 'za-paye') {
+      var taxYear = input.taxYear || '2026/27';
+      if (taxYear !== '2026/27' && taxYear !== '2025/26') throw new RangeError('Unknown South African tax year');
+      var historical = taxYear === '2025/26';
+      if (historical) profile = Object.assign({}, profile, {
+        bands: [[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[null,.45]],
+        source: 'https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/',
+        reviewed: '2026-01-01'
+      });
       components.uif = input.uif === false ? 0 : Math.min(gross, 212544) * .01;
       contribution = components.uif;
-      var retirement = Math.min(Math.max(0, finite(input.retirement)), gross * .275, 350000);
+      var retirement = Math.min(Math.max(0, finite(input.retirement)), gross * .275, historical ? 350000 : 430000);
       taxable = Math.max(0, gross - retirement);
       taxResult = progressiveTax(taxable, profile.bands);
-      var rebates = { under65:17235, '65to74':26679, '75plus':29824 };
+      var rebates = historical ? { under65:17235, '65to74':26679, '75plus':29824 } : { under65:17820, '65to74':27585, '75plus':30834 };
       var ageGroup = input.ageGroup || 'under65';
       var medMembers = Math.max(0, Math.floor(finite(input.medMembers)));
-      var medicalMonthly = medMembers > 0 ? 364 + (medMembers > 1 ? 364 : 0) + Math.max(0, medMembers - 2) * 246 : 0;
+      var medicalMonthly = Math.min(2, medMembers) * (historical ? 364 : 376) + Math.max(0, medMembers - 2) * (historical ? 246 : 254);
       relief = (rebates[ageGroup] || rebates.under65) + medicalMonthly * 12;
       tax = Math.max(0, taxResult.tax - relief);
       components.retirement = retirement;
@@ -130,7 +138,9 @@
       }
       postTax = Math.max(0, gross - contribution - tax) * finite(profile.postTaxRate);
     }
-    return { id:id, country:profile.country, currency:profile.currency, period:profile.period, gross:gross, contribution:contribution, components:components, relief:relief, taxable:taxable, tax:tax, postTax:postTax, net:Math.max(0,gross-contribution-tax-postTax), effectiveRate:gross ? (tax+postTax)/gross : 0, breakdown:taxResult.breakdown, source:profile.source, reviewed:profile.reviewed, confidence:profile.confidence || 'verified-snapshot' };
+    var result = { id:id, country:profile.country, currency:profile.currency, period:profile.period, gross:gross, contribution:contribution, components:components, relief:relief, taxable:taxable, tax:tax, postTax:postTax, net:Math.max(0,gross-contribution-tax-postTax), effectiveRate:gross ? (tax+postTax)/gross : 0, breakdown:taxResult.breakdown, source:profile.source, reviewed:profile.reviewed, confidence:profile.confidence || 'verified-snapshot' };
+    if (id === 'za-paye') result.taxYear = taxYear;
+    return result;
   }
 
   return { progressiveTax:progressiveTax, PAYE_PROFILES:PAYE_PROFILES, calculatePaye:calculatePaye };
