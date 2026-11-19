@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=49c3516d">
 <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
+<script src="/assets/js/components/footer.min.js?v=b398574b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -253,7 +253,7 @@ window.addEventListener('load', function() {
           </button>
           <button type="button" class="act-btn act-share" id="snPartagerBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Partager le resultat
+            <span>Partager le lien</span>
           </button>
         </div>
           <salary-benchmark country-code="SN" currency="XOF"></salary-benchmark>
@@ -960,16 +960,22 @@ async function downloadPdfSummary() {
 }
 
 // ── SHARE ─────────────────────────────────────────────────────
-function shareResult() {
+async function shareResult() {
   if (!RESULT) return;
-  const text = `My Senegal PAYE breakdown: Gross XOF ${Math.round(RESULT.gross).toLocaleString('fr-SN')}/yr → Take-home XOF ${Math.round(RESULT.netAnnual).toLocaleString('fr-SN')}/yr (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/senegal/sn-paye`;
+  const url = 'https://afrotools.com/fr/senegal/calculateur-salaire-net';
+  const title = 'Calculateur de salaire net au Sénégal';
   if (navigator.share) {
-    navigator.share({title:'My Senegal PAYE',text,url:'https://afrotools.com/senegal/sn-paye'});
+    try {
+      await navigator.share({title, text: title + ' sur AfroTools', url});
+    } catch (error) {
+      if (error.name !== 'AbortError') throw error;
+    }
   } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(url);
     const btn = document.getElementById('snPartagerBtn');
-    btn.textContent = '✓ Copied!';
-    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager le resultat`,2500);
+    const label = btn.querySelector('span');
+    label.textContent = 'Lien copié !';
+    setTimeout(() => { label.textContent = 'Partager le lien'; }, 2500);
   }
 }
 

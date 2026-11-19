@@ -120,9 +120,9 @@ for (const [locale, routes] of Object.entries(locales)) {
       expect(geometry.wrapper.overflow).toBe('visible');
       expect(geometry.wrapper.tabindex).toBeNull();
       expect(geometry.wrapper.scrollHeight).toBe(geometry.wrapper.clientHeight);
-      expect(geometry.rows[0].cells.map(c=>c.text)).toEqual(['long-grain parboiled rice','6','cups']);
-      expect(geometry.rows.at(-1).cells.map(c=>c.text)).toEqual(['butter','2','tablespoon']);
-      const stock=geometry.rows.find(row=>row.cells[0].text==='chicken stock or water');
+      expect(geometry.rows[0].cells.map(c=>c.text)).toEqual(locale === 'fr' ? ['riz long grain étuvé','6','tasses'] : ['mchele mrefu uliochemshwa kwa mvuke kabla ya kukobolewa','6','vikombe']);
+      expect(geometry.rows.at(-1).cells.map(c=>c.text)).toEqual(locale === 'fr' ? ['beurre','2','c. à soupe'] : ['siagi','2','vijiko vya chakula']);
+      const stock=geometry.rows.find(row=>row.cells[0].text === (locale === 'fr' ? 'bouillon de poulet ou eau' : 'mchuzi wa kuku au maji'));
       expect(stock.cells[1].text.replace(/\s/g,'')).toBe(locale==='fr'?'1500':'1,500');
       expect(stock.cells[2].text).toBe('ml');
       for (const row of geometry.rows) {
@@ -134,7 +134,7 @@ for (const [locale, routes] of Object.entries(locales)) {
           expect(cell.bounds.right).toBeLessThanOrEqual(geometry.bounds.right+1);
           if(i) expect(cell.bounds.left).toBeGreaterThanOrEqual(row.cells[i-1].bounds.right-1);
           expect(cell.scrollWidth).toBeLessThanOrEqual(cell.clientWidth+1);
-          if(i===2 && ['teaspoon','tablespoon'].includes(cell.text)) expect(cell.textBounds).toHaveLength(1);
+          if(i===2 && ['ml','g'].includes(cell.text)) expect(cell.textBounds).toHaveLength(1);
           for(const rect of cell.textBounds) {
             expect(rect.left).toBeGreaterThanOrEqual(cell.bounds.left-1);
             expect(rect.right).toBeLessThanOrEqual(cell.bounds.right+1);
@@ -195,7 +195,7 @@ for (const [locale, routes] of Object.entries(locales)) {
       const download=await pending;
       expect(await download.failure()).toBeNull();
       const text=fs.readFileSync(await download.path(),'utf8');
-      expect(text).toContain('long-grain parboiled rice: 6 cups');
+      expect(text).toContain(locale === 'fr' ? 'riz long grain étuvé: 6 tasses' : 'mchele mrefu uliochemshwa kwa mvuke kabla ya kukobolewa: 6 vikombe');
       await target.fill('0');
       await page.locator('.ua-primary').click();
       await usableFocus(target);

@@ -128,6 +128,9 @@ function contentId(locale, row){
 }
 function decorateDiscovery(html, locale, row){
   let output = html.includes('name="afrotools-source-owner"') ? html : html.replace('<head>', '<head><meta name="afrotools-source-owner" content="scripts/build-localized-discovery-pages.js">');
+  if (locale === 'sw' && row[0] === '/uniquely-african/' && !output.includes('href="/sw/zana-za-kipekee-afrika/"')) {
+    output = output.replace('</div></header>', '<p><a href="/sw/zana-za-kipekee-afrika/">Fungua orodha ya zana za maisha ya kila siku Afrika</a></p></div></header>');
+  }
   if (row[0] === '/business-enquiry/') {
     for (const source of ['/assets/js/lib/b2b-choice-contract.js', '/assets/js/components/localized-enquiry-context.js']) {
       if (!output.includes(source)) output = output.replace('</body>', `<script src="${source}" defer></script></body>`);

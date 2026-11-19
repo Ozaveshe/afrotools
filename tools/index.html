@@ -29,7 +29,7 @@
   <script src="/assets/js/data/african-countries.js?v=0d872b4b" defer></script>
   <script src="/assets/js/components/country-selector.js?v=a55dcf5d" defer></script>
   <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=b398574b" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased}
@@ -132,6 +132,8 @@
     .no-results p{font-size:.85rem;color:#64748b}
     .no-results .btn{margin-top:var(--space-4,16px)}
 
+    .directory-results-jump:not(:focus){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+    .directory-results-jump:focus{display:inline-block;margin:8px 0;padding:8px 12px;outline:2px solid currentColor;outline-offset:2px}
     #directory-result-summary{margin:0 20px 18px;color:var(--color-text-secondary,#64748b);font-size:.85rem}
     [data-theme="dark"] .stat-pill,
     [data-theme="dark"] .search-bar,
@@ -325,6 +327,7 @@
     <input type="text" id="tool-search" placeholder="Search the tool directory..." aria-label="Search tools" autocomplete="off">
     <kbd>Ctrl+K</kbd>
   </div>
+  <a class="directory-results-jump" href="#tools-container">Skip filters and go to tool results</a>
 </div>
 
 <div class="filter-wrap">
@@ -364,7 +367,7 @@
 
 <div class="wrap">
   <p id="directory-result-summary" role="status" aria-live="polite"></p>
-  <div id="tools-container">
+  <div id="tools-container" role="region" aria-label="Tool results" tabindex="-1">
     <!-- TOOL_DIRECTORY_FALLBACK_START -->
 <p class="directory-note">Static fallback generated from the validated canonical AfroTools registry. Filters and search enhance this list when JavaScript loads; without JavaScript, every published canonical record below remains crawlable.</p>
   <section class="tools-section static-tool-section" data-static-category="african">

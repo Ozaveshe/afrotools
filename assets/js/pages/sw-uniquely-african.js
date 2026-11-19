@@ -215,13 +215,115 @@
     return { input:input };
   }
 
+  var ingredientNames = {
+    "long-grain parboiled rice": "mchele mrefu uliochemshwa kwa mvuke kabla ya kukobolewa",
+    "fresh Roma tomatoes": "nyanya safi za Roma",
+    "red bell peppers (tatashe)": "pilipili hoho nyekundu (tatashe)",
+    "scotch bonnet peppers (ata rodo)": "pilipili za Scotch Bonnet (ata rodo)",
+    "onion": "kitunguu maji",
+    "tomato paste": "nyanya zilizokolezwa",
+    "vegetable oil or groundnut oil": "mafuta ya mboga au ya karanga",
+    "bay leaves": "majani ya laureli",
+    "dried thyme": "majani ya taim yaliyokaushwa",
+    "curry powder": "unga wa kari",
+    "seasoning cubes (Maggi/Knorr)": "vibonge vya mchuzi (Maggi/Knorr)",
+    "salt": "chumvi",
+    "chicken stock or water": "mchuzi wa kuku au maji",
+    "butter": "siagi",
+    "white maize flour (unga)": "unga wa mahindi meupe",
+    "water": "maji",
+    "sukuma wiki (collard greens)": "sukuma wiki",
+    "vegetable oil or cooking fat": "mafuta ya mboga au mafuta mengine ya kupikia",
+    "tomatoes": "nyanya",
+    "Royco seasoning": "kiungo cha Royco",
+    "chicken": "kuku",
+    "red onions": "vitunguu maji vyekundu",
+    "berbere spice blend": "mchanganyiko wa viungo vya berbere",
+    "niter kibbeh (Ethiopian spiced butter)": "niter kibbeh (siagi ya Ethiopia yenye viungo)",
+    "garlic": "kitunguu saumu",
+    "fresh ginger": "tangawizi mbichi",
+    "hard-boiled eggs": "mayai yaliyochemshwa hadi kuiva",
+    "water or chicken stock": "maji au mchuzi wa kuku",
+    "lemon juice": "maji ya limau",
+    "black pepper": "pilipili manga nyeusi",
+    "minced beef or lamb": "nyama ya ng’ombe au kondoo iliyosagwa",
+    "onions": "vitunguu maji",
+    "turmeric": "manjano",
+    "white bread": "mkate mweupe",
+    "apricot jam": "jamu ya aprikoti",
+    "vinegar": "siki",
+    "raisins or sultanas": "zabibu kavu au sultana",
+    "eggs": "mayai",
+    "milk": "maziwa",
+    "whole white fish (thiof/grouper)": "samaki mzima mwenye nyama nyeupe (thiof/chewa)",
+    "parsley": "parsili",
+    "scotch bonnet pepper": "pilipili aina ya Scotch Bonnet",
+    "vegetable oil": "mafuta ya mboga",
+    "dried fish (gédj)": "samaki waliokaushwa (gédj)",
+    "tamarind ball": "donge la ukwaju",
+    "cassava": "muhogo",
+    "carrots": "karoti",
+    "cabbage": "kabichi",
+    "eggplant": "bilinganya",
+    "broken rice (riz brisé)": "mchele uliovunjika (riz brisé)",
+    "Egyptian rice": "mchele wa Misri",
+    "brown lentils": "dengu za kahawia",
+    "elbow macaroni": "makaroni yaliyopinda",
+    "chickpeas (canned)": "njegere aina ya chana za koponi",
+    "crushed tomatoes": "nyanya zilizopondwa",
+    "white vinegar": "siki nyeupe",
+    "cumin": "jira",
+    "chili flakes": "vipande vidogo vya pilipili kavu",
+    "vegetable oil for frying": "mafuta ya mboga ya kukaangia",
+    "preserved lemons": "malimau yaliyohifadhiwa kwa chumvi",
+    "green olives": "zeituni za kijani",
+    "ground ginger": "unga wa tangawizi",
+    "saffron threads": "nyuzi za zafarani",
+    "olive oil": "mafuta ya zeituni",
+    "fresh coriander": "dhania mbichi",
+    "rice": "mchele",
+    "black-eyed peas or red beans": "kunde au maharagwe mekundu",
+    "dried sorghum leaf stalks (waakye leaves)": "mabua yaliyokaushwa ya majani ya mtama (majani ya waakye)",
+    "baking soda": "bikaribonati ya sodiamu"
+  };
+  var ingredientUnits = {
+    "cup": ["kikombe", "vikombe"],
+    "cups": ["kikombe", "vikombe"],
+    "piece": ["kipande", "vipande"],
+    "pieces": ["kipande", "vipande"],
+    "large": "ukubwa mkubwa",
+    "medium": "ukubwa wa kati",
+    "teaspoon": ["kijiko cha chai", "vijiko vya chai"],
+    "tablespoon": ["kijiko cha chakula", "vijiko vya chakula"],
+    "tablespoons": ["kijiko cha chakula", "vijiko vya chakula"],
+    "large bunch": ["fungu kubwa", "mafungu makubwa"],
+    "bunch": ["fungu", "mafungu"],
+    "cubes": ["kibonge", "vibonge"],
+    "whole": ["mzima", "wazima"],
+    "cloves": "punje",
+    "slices": ["kipande", "vipande"]
+  };
+
+  function kitchenUnit(unit, amount) {
+    var label = ingredientUnits[unit];
+    if (!label) return unit;
+    if (!Array.isArray(label)) return label;
+    return label[Math.abs(amount) <= 1 ? 0 : 1];
+  }
+
   function prepareKitchen(input) {
     var kitchen = root.AfroKitchenEngine;
     if (!kitchen || !Array.isArray(kitchen.SEED_RECIPES)) return { error:{ status:"invalid", field:"recipe", code:"records_required" } };
     var recipe = kitchen.SEED_RECIPES.find(function (item) { return item.slug === input.recipe; });
     if (!recipe) return { error:{ status:"invalid", field:"recipe", code:"ingredient_required" } };
     delegateState.recipe = recipe; input.originalServings = recipe.default_servings;
-    input.ingredients = (recipe.ingredients || []).map(function (ingredient) { return { name:ingredient.name, amount:ingredient.amount, unit:ingredient.unit }; });
+    input.ingredients = (recipe.ingredients || []).map(function (ingredient) {
+      return {
+        name: ingredientNames[ingredient.name] || ingredient.name,
+        amount: ingredient.amount,
+        unit: kitchenUnit(ingredient.unit, ingredient.amount)
+      };
+    });
     var node = document.querySelector('[data-ua-field="originalServings"]'); if (node) node.value = recipe.default_servings;
     return { input:input };
   }
@@ -294,7 +396,14 @@
     else if (contract.id === "afrokitchen") prepared = prepareKitchen(input);
     else if (contract.id === "africa-conflict") prepared = await prepareConflict(input);
     else if (contract.id === "afroprices") prepared = await preparePrices(input);
-    return prepared.error || engine.calculate(contract.id, prepared.input);
+    if (prepared.error) return prepared.error;
+    var result = engine.calculate(contract.id, prepared.input);
+    if (contract.id === "afrokitchen" && result.status === "ok") {
+      result.rows.forEach(function (row, index) {
+        row.unit = kitchenUnit(delegateState.recipe.ingredients[index].unit, row.scaledAmount);
+      });
+    }
+    return result;
   }
 
   function populateSelect(key, items, valueKey, labelKey) {

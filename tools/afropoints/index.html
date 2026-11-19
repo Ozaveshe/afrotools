@@ -506,7 +506,7 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
+<script src="/assets/js/components/footer.min.js?v=b398574b" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=63f50905"></script>
 <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
@@ -639,7 +639,7 @@
       var limitNote = dailyPace > AP.DAILY_LIMIT ? 'This pace is above the daily limit. Reduce weekly target or spread reports across days.' : 'This pace fits the daily submission limit.';
       var focus = cat.consensus > 1 ? cat.consensus + ' nearby confirmations usually strengthen this data type.' : 'This data type can be useful from a single strong report, but proof still matters.';
 
-      planText = 'AfroPoints plan\n' +
+      var nextPlanText = 'AfroPoints plan\n' +
         'Goal: ' + AP.formatPoints(target) + ' pts\n' +
         'Current: ' + AP.formatPoints(current) + ' pts\n' +
         'Report type: ' + cat.label + '\n' +
@@ -647,6 +647,10 @@
         'Reports needed: ' + reportsNeeded + '\n' +
         'Weekly pace: ' + weekly + ' reports for about ' + weeks + ' week(s)\n' +
         'Quality habit: ' + proofNote();
+
+      // A number field also fires change on blur. Keep the pressed action mounted.
+      if (nextPlanText === planText) return;
+      planText = nextPlanText;
 
       result.innerHTML =
         '<div class="ap-planner-metrics">' +
