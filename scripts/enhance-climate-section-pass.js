@@ -226,7 +226,7 @@ const TOOLS = [
     group: "Carbon and Environment",
     pills: ["AQI category", "PM2.5 proxy", "Health guidance"],
     button: "Estimate AQI exposure",
-    intro: "The old page was a country selector. This turns it into a practical exposure planner with health group and indoor-fuel context.",
+    intro: "Use a station report for local conditions. The exposure planner below estimates a scenario from your inputs.",
     fields: [
       countryField,
       { id: "location", label: "Location pattern", type: "select", options: [["capital", "City/capital average"], ["industrial", "Industrial district"], ["roadside", "Roadside/market corridor"], ["periurban", "Peri-urban"], ["rural", "Rural/background"]] },
@@ -234,7 +234,7 @@ const TOOLS = [
       { id: "health", label: "Sensitive group", type: "select", options: [["general", "General adult"], ["child", "Child"], ["elderly", "Older adult"], ["asthma", "Asthma/respiratory"], ["pregnant", "Pregnancy"]] },
       { id: "exposureHours", label: "Outdoor exposure", type: "number", unit: "hrs/day", value: 6 },
       { id: "indoorFuel", label: "Indoor cooking fuel", type: "select", options: [["clean", "Mostly clean/electric"], ["lpg", "LPG"], ["charcoal", "Charcoal"], ["wood", "Wood/biomass"], ["kerosene", "Kerosene"]] },
-      { id: "pm25", label: "Known PM2.5", type: "number", unit: "ug/m3", value: 0, help: "Optional. Enter sensor reading to override preset AQI." }
+      { id: "pm25", label: "Known PM2.5", type: "number", unit: "ug/m3", value: 0, help: "Enter a PM2.5 concentration in µg/m³ if available. An AQI number is a different unit. Leave 0 to use the preset." }
     ],
     sources: SHARED_SOURCES.air,
     faqs: [
@@ -692,6 +692,18 @@ ${nextTools.map((next) => `<a class="cl-workflow-link" href="/tools/${esc(next.s
 }
 
 function methodologyHtml(tool) {
+  const localPdfNotice = `<div><strong>Local PDF</strong><span>Generated in this browser with the bundled PDF engine. No email, account, or network submission is required.</span></div>`;
+  if (tool.slug === "air-quality") return `<section class="cl-method-card-wide" aria-labelledby="station-lookup">
+<div>
+<h2 id="station-lookup">Check air quality near you</h2>
+<p>Find a nearby station on the World Air Quality Index map. Open its report and check the station name, data provider and last update. Conditions can differ across a city.</p>
+</div>
+<div>
+<p><a href="https://aqicn.org/station/@546313/">Dolphin Estate station, Lagos</a> · <a href="https://aqicn.org/map/nairobi/">Nairobi stations</a> · <a href="https://aqicn.org/map/kampala/">Kampala stations</a> · <a href="https://aqicn.org/city/all/">Search another city</a></p>
+<p>If a station is offline or its last update is old, check another nearby station. Without a recent report, current local air quality is unknown. You can still explore a preset below.</p>
+<div class="cl-method-list">${localPdfNotice}</div>
+</div>
+</section>`;
   return `<section class="cl-method-card-wide">
 <div>
 <span class="cl-kicker">Competitor-informed upgrade</span>
@@ -701,7 +713,7 @@ function methodologyHtml(tool) {
 <div class="cl-method-list">
 <div><strong>Reference pattern</strong><span>${esc(tool.competitor || "Climate risk and sustainability planning tools")}</span></div>
 <div><strong>Dashboard path</strong><span>Save the result locally, then sync it to account workspace when signed in.</span></div>
-<div><strong>Local PDF</strong><span>Generated in this browser with the bundled PDF engine. No email, account, or network submission is required.</span></div>
+${localPdfNotice}
 </div>
 </section>`;
 }
