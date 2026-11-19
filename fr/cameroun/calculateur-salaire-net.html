@@ -419,6 +419,7 @@
 
 <afro-footer></afro-footer>
 <script>
+var PERIOD = "annual";
 var RESULT=null, CHART = null, CHART_TYPE = 'donut', CHAT_HISTORY = [];
 var CNPS_RATE = 0.042;
 var CNPS_CEILING_MONTHLY = 750000;
@@ -526,6 +527,11 @@ function calculate() {
 
   RESULT = {
     gross: gross,
+    annualGross: gross,
+    annualNet: net,
+    netMonthly: net / 12,
+    calculationMode: window.CALC_MODE || "gross",
+    hasCNPS: hasCNPS,
     cnps: cnps,
     empCNPS: empCNPS,
     annualIRPP: annualIRPP,
@@ -676,6 +682,34 @@ async function submitPdf(e) {
   document.getElementById('modalSuccess').style.display = 'block';
 }
 
+function cameroonPayrollReport() {
+  var r = RESULT;
+  var mode = window.CALC_MODE || 'gross';
+  var input = Number(document.getElementById('grossSalary').value);
+  if (!r || r.calculationMode !== mode || r.hasCNPS !== isOn('cnps') ||
+      !(input > 0) || Math.abs(input - (mode === 'net' ? r.net : r.gross)) > 1) {
+    throw new Error('Calculez le salaire avec les paramètres actuels avant de télécharger le PDF.');
+  }
+  return {
+    title: 'Estimation du salaire au Cameroun',
+    inputs: [
+      { label: mode === 'net' ? 'Salaire net annuel demandé' : 'Salaire brut annuel saisi', value: fmt(input) },
+      { label: 'Cotisation salariale CNPS', value: r.hasCNPS ? 'Incluse' : 'Désactivée' }
+    ],
+    results: [
+      { label: 'Salaire brut annuel', value: fmt(r.gross) },
+      { label: 'CNPS salariale annuelle', value: fmt(r.cnps) },
+      { label: 'Revenu imposable annuel', value: fmt(r.gross - r.cnps) },
+      { label: 'IRPP annuel', value: fmt(r.annualIRPP) },
+      { label: 'Centimes additionnels communaux annuels', value: fmt(r.cac) },
+      { label: 'Total des retenues annuelles', value: fmt(r.totalDed) },
+      { label: 'Salaire net annuel', value: fmt(r.net) },
+      { label: 'Équivalent mensuel du salaire brut', value: fmt(r.gross / 12) },
+      { label: 'Équivalent mensuel du salaire net', value: fmt(r.net / 12) }
+    ]
+  };
+}
+
 function shareResult() {
   if(!RESULT) return;
   var text = 'Salaire net Cameroun : Brut ' + fmt(RESULT.gross) + '/an → Net ' + fmt(RESULT.net) + '/an (' + pct(RESULT.effectiveRate) + ' taux effectif). afrotools.com/fr/cameroun/calculateur-salaire-net';
@@ -784,7 +818,7 @@ window._grossToNet = function(g) {
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 <!-- french-finance-export-contract:start -->
 <script type="application/json" id="afrotools-fr-finance-export-contract">{"schemaVersion":1,"englishId":"cm-paye","englishRoute":"/cameroon/cm-paye","frenchRoute":"/fr/cameroun/calculateur-salaire-net","formats":["pdf"]}</script>
-<script src="/assets/js/pages/french-finance-export-contract.js?v=170231e1" defer></script>
+<script src="/assets/js/pages/french-finance-export-contract.js?v=dbb409c6" defer></script>
 <!-- french-finance-export-contract:end -->
 </body>
 </html>

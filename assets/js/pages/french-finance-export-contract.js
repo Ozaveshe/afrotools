@@ -274,6 +274,9 @@
       },
       englishOwnerRoute: config.englishRoute
     };
+    if (config.englishId === 'cm-paye' && typeof global.cameroonPayrollReport === 'function') {
+      Object.assign(data, global.cameroonPayrollReport());
+    }
     if (!data.inputs.length) throw new Error('Renseignez le scénario avant l’export.');
     if (!data.results.length) throw new Error('Calculez ou actualisez un résultat avant l’export.');
     return data;
