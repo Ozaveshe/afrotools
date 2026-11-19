@@ -22,11 +22,13 @@ async function assertUnserialized(page) {
 test('All 17 original JSON workflows fail closed when the whole controller is unavailable', async ({ page }) => {
   const observed = observe(page);
   await page.route('**/assets/js/pages/sw-agriculture-assigned-parity.js*', route => route.abort());
+  await page.route('**/assets/js/pages/sw-agric-profit.js*', route => route.abort());
   for (const app of guarded) {
     await page.goto('/sw/zana/' + app.slug + '/');
     await expect(page.locator('[data-agri-form] button[type=submit]')).toBeDisabled();
     await expect(page.locator('[data-status]')).toContainText('hakijapakia');
-    await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
+    if (app.id === 'agric-profit') await page.locator('#fp-area').fill(String(token));
+    else await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
     await assertUnserialized(page);
     await page.locator('[data-agri-form]').evaluate(form => form.requestSubmit());
     await expect(page.locator('[data-result]')).toBeHidden();

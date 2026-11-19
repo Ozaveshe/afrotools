@@ -14,8 +14,12 @@ for (const app of apps) {
     await expect(page.locator("html")).toHaveAttribute("lang", "sw");
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeVisible();
-    const result = JSON.parse(await page.locator("[data-output]").textContent());
-    expect(result).toBeTruthy();
+    if (app.id === "agric-profit") {
+      await expect(page.locator("[data-output]")).toContainText("Mapato ya mauzo");
+      await expect(page.locator("#scenario")).toHaveCount(0);
+    } else {
+      expect(JSON.parse(await page.locator("[data-output]").textContent())).toBeTruthy();
+    }
 
     for (const format of ["json", "txt", "csv", "pdf"]) {
       const downloadPromise = page.waitForEvent("download");
@@ -30,14 +34,15 @@ for (const app of apps) {
         expect(payload.locale).toBe("sw");
         await page.locator("[data-import]").setInputFiles(file);
         await expect(page.locator("[data-status]")).toContainText("imefunguliwa");
-      } else if (format === "csv") expect(bytes.toString("utf8")).toContain("sehemu,thamani");
+      } else if (format === "csv") expect(bytes.toString("utf8")).toContain(app.id === "agric-profit" ? '"Kipimo","Thamani"' : "sehemu,thamani");
       else if (format === "txt") expect(bytes.toString("utf8")).toContain(app.name);
       else expect(bytes.subarray(0, 4).toString("ascii")).toBe("%PDF");
     }
 
     await page.locator("[data-agri-form] button[type=reset]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
-    await page.locator("#scenario").fill("{");
+    if (app.id === "agric-profit") await page.locator("#fp-area").fill("-1");
+    else await page.locator("#scenario").fill("{");
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
     expect(errors).toEqual([]);
