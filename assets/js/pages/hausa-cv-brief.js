@@ -117,6 +117,37 @@
       status.textContent = 'An goge bayanan shafin. Ba a iya goge ajiyar burauzar ba. Yi amfani da saitunan burauzar don goge bayanan shafin.';
     }
   });
+  const pdfButton = document.getElementById('cvPdf');
+  const pdfStatus = document.getElementById('cvPdfStatus');
+  pdfButton.addEventListener('click', async () => {
+    const state = draft();
+    pdfStatus.textContent = '';
+    if (!state) return;
+    const sections = [state.name, state.role];
+    if (state.skills) sections.push('ƘWAREWA', state.skills);
+    if (state.education) sections.push('ILIMI KO HORO', state.education);
+    pdfButton.disabled = true;
+    pdfStatus.textContent = 'Ana shirya PDF…';
+    try {
+      const bytes = await window.CareerDocumentPdf.buildPdf(sections.join('\n\n'), 'cv');
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(new Blob([bytes], {type: 'application/pdf'}));
+      link.href = url;
+      link.download = 'cv-hausa.pdf';
+      link.dataset.noPdfGate = 'true';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      pdfStatus.textContent = 'An shirya PDF ɗinka don saukewa.';
+    } catch (error) {
+      pdfStatus.textContent = error && error.code === 'CAREER_PDF_UNSUPPORTED_CHARACTER'
+        ? 'Wasu haruffa ba su samuwa a rubutun PDF. Sauke TXT don kiyaye duk abin da ka rubuta.'
+        : 'Ba a iya shirya PDF ba. Sake gwadawa ko sauke TXT.';
+    } finally {
+      pdfButton.disabled = false;
+    }
+  });
   window.draftCv = draft;
   window.downloadCvBrief = function () {
     var state = draft();
