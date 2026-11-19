@@ -65,9 +65,9 @@
     },
     'za-paye': {
       country: 'Afrique du Sud', currency: 'ZAR', symbol: 'R', period: 'annual',
-      checkedOn: '2026-01-01', employeeRate: 0.01, employeeCapAnnual: 212544,
-      employerRate: 0.01, employerCapAnnual: 212544, rebateAnnual: 17235,
-      bands: [[237100, 0.18], [370500, 0.26], [512800, 0.31], [673000, 0.36], [857900, 0.39], [1817000, 0.41], [Infinity, 0.45]]
+      checkedOn: '2026-11-19', employeeRate: 0.01, employeeCapAnnual: 212544,
+      employerRate: 0.01, employerCapAnnual: 212544, rebateAnnual: 17820,
+      bands: [[245100, 0.18], [383100, 0.26], [530200, 0.31], [695800, 0.36], [887000, 0.39], [1878600, 0.41], [Infinity, 0.45]]
     },
     'sd-paye': {
       country: 'Soudan', currency: 'SDG', symbol: 'SDG', period: 'monthly',
@@ -91,6 +91,11 @@
       employerRate: 0.045, employerCapMonthly: 31.50, levyRate: 0.03,
       bands: [[1200, 0], [3600, 0.20], [12000, 0.25], [24000, 0.30], [36000, 0.35], [Infinity, 0.40]]
     }
+  };
+
+  var zaPeriods = {
+    '2026/27': { dates: '1er mars 2026 au 28 février 2027', bands: CONFIGS['za-paye'].bands, rebates: [17820, 27585, 30834] },
+    '2025/26': { dates: '1er mars 2025 au 28 février 2026', bands: [[237100, .18], [370500, .26], [512800, .31], [673000, .36], [857900, .39], [1817000, .41], [Infinity, .45]], rebates: [17235, 26679, 29824] }
   };
 
   function clean(value) {
@@ -223,7 +228,7 @@
       '.fr-paye-native__actions{display:flex;gap:8px;flex-wrap:wrap}.fr-paye-native__actions button{background:#334155}',
       '.fr-paye-native [data-results]{margin-top:18px;border-top:1px solid #dbe3ed;padding-top:16px}.fr-paye-native dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px}.fr-paye-native dt{color:var(--color-text-muted,#475569)}.fr-paye-native dd{margin:0;font-weight:800;text-align:right}',
       '.fr-paye-native [data-error]{color:#b91c1c;font-weight:750}.fr-paye-native [data-status]{min-height:1.5em;color:#166534;font-weight:700}',
-      '@media(max-width:560px){.fr-paye-native form{grid-template-columns:1fr}.fr-paye-native button{width:100%}.fr-paye-native dl{grid-template-columns:1fr}.fr-paye-native dd{text-align:left;margin-bottom:7px}}'
+      '@media(max-width:560px){.fr-paye-native form{grid-template-columns:1fr}.fr-paye-native button{width:100%}.fr-paye-native fieldset select{width:100%;min-height:44px}.fr-paye-native dl{grid-template-columns:1fr}.fr-paye-native dd{text-align:left;margin-bottom:7px}}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -245,9 +250,10 @@
     mount.innerHTML = [
       '<section class="fr-paye-native" data-fr-paye-native data-fr-finance-workflow-owner="true" aria-labelledby="fr-paye-native-title">',
       '<h2 id="fr-paye-native-title">Calcul PAYE natif en français — ' + config.country + '</h2>',
-      '<p class="fr-paye-native__lead">Saisissez un salaire brut mensuel. Le moteur applique localement le même barème, les mêmes plafonds et les mêmes retenues par défaut que le propriétaire anglais.</p>',
+      '<p class="fr-paye-native__lead">Saisissez un salaire brut mensuel. Le calcul applique le barème et les retenues du pays sélectionné.</p>',
       '<form novalidate>',
       hubMode ? '<label for="frPayeCountry">Pays et barème<select id="frPayeCountry" name="country">' + Object.keys(CONFIGS).map(function (key) { return '<option value="' + key + '">' + CONFIGS[key].country + '</option>'; }).join('') + '</select></label>' : '',
+      (id === 'za-paye' || hubMode) ? '<fieldset data-za-period' + (id === 'za-paye' ? '' : ' hidden') + '><legend>Barème SARS</legend><label for="frZaPeriod">Année fiscale</label><select id="frZaPeriod" name="zaPeriod">' + Object.keys(zaPeriods).map(function (year) { return '<option>' + year + '</option>'; }).join('') + '</select><label for="frZaAge">Âge au dernier jour de l’année fiscale</label><select id="frZaAge" name="zaAge"><option>Moins de 65 ans</option><option>65 à 74 ans</option><option>75 ans ou plus</option></select></fieldset>' : '',
       '<label for="frPayeGross">Salaire brut mensuel (' + config.currency + ')<input id="frPayeGross" name="grossMonthly" type="number" min="0" step="0.01" inputmode="decimal" required value="500000"></label>',
       '<label for="frPayeBasic" data-basic-field' + (config.basicHealthRate ? '' : ' hidden') + '>Salaire de base mensuel pour la NHIMA (K)<input id="frPayeBasic" name="basicMonthly" type="number" min="0" step="0.01" aria-describedby="frPayeBasicNote"><small id="frPayeBasicNote">Sans montant saisi, le salaire brut est utilisé comme salaire de base. Excluez les indemnités du salaire de base.</small></label>',
       '<button type="submit" data-calculate>Calculer le salaire net</button>',
@@ -257,7 +263,7 @@
       '<h3 id="fr-paye-results-title">Résultat de la simulation</h3><dl data-result-rows></dl>',
       '</section>',
       '<div class="fr-paye-native__actions"><button type="button" data-reset>Réinitialiser</button></div>',
-      '<p class="fr-paye-native__meta">Source et paramètres du propriétaire anglais vérifiés le <time data-checked-date datetime="' + config.checkedOn + '">' + config.checkedOn + '</time>. Estimation de planification uniquement : elle ne remplace ni une fiche de paie, ni une déclaration, ni l’avis de l’autorité fiscale.</p>',
+      '<p class="fr-paye-native__meta">Paramètres du barème vérifiés le <time data-checked-date datetime="' + config.checkedOn + '">' + config.checkedOn + '</time>. Estimation de planification uniquement : elle ne remplace ni une fiche de paie, ni une déclaration, ni l’avis de l’autorité fiscale.</p>',
       '<p class="fr-paye-native__meta">Confidentialité : calcul et exports effectués dans ce navigateur, sans compte ni adresse e-mail.</p>',
       '</section>'
     ].join('');
@@ -265,6 +271,7 @@
     var form = app.querySelector('form');
     var input = app.querySelector('#frPayeGross');
     var country = app.querySelector('#frPayeCountry');
+    var periodField = app.querySelector('[data-za-period]');
     var basicInput = app.querySelector('#frPayeBasic');
     var basicField = app.querySelector('[data-basic-field]');
     var results = app.querySelector('[data-results]');
@@ -294,6 +301,11 @@
         error.textContent = 'Saisissez un salaire brut mensuel positif.';
         return;
       }
+      var zaPeriod = null;
+      if (periodField && !periodField.hidden) {
+        zaPeriod = zaPeriods[form.elements.zaPeriod.value];
+        config = Object.assign({}, CONFIGS['za-paye'], { bands: zaPeriod.bands, rebateAnnual: zaPeriod.rebates[form.elements.zaAge.selectedIndex] });
+      }
       var result;
       try { result = calculate(config, gross, config.basicHealthRate ? basicInput.value : undefined); }
       catch (validationError) {
@@ -308,13 +320,17 @@
         ['Revenu imposable mensuel', money(config, result.taxableMonthly)],
         ['PAYE mensuel estimé', money(config, result.taxMonthly)]
       ];
+      if (zaPeriod) {
+        outputRows.unshift(['Année fiscale SARS', form.elements.zaPeriod.value + ' (' + zaPeriod.dates + ')'], ['Âge', form.elements.zaAge.value]);
+        outputRows.push(['Réduction annuelle liée à l’âge', money(config, config.rebateAnnual)], ['PAYE annuel estimé', money(config, result.taxMonthly * 12)]);
+      }
       if (config.basicHealthRate) outputRows.push(['NHIMA salariée (1 % du salaire de base)', money(config, result.healthMonthly)], ['NHIMA employeur', money(config, result.healthMonthly)]);
       if (result.stampMonthly > 0) outputRows.push(['Droit de timbre mensuel', money(config, result.stampMonthly)]);
       outputRows.push(
         ['Total des retenues mensuelles', money(config, result.deductionsMonthly)],
         ['Salaire net mensuel estimé', money(config, result.netMonthly)],
         ['Salaire net annuel estimé', money(config, result.netMonthly * 12)],
-        ['Coût employeur mensuel', money(config, result.employerCostMonthly)],
+        [zaPeriod ? 'Brut + UIF employeur (hors SDL et autres charges)' : 'Coût employeur mensuel', money(config, result.employerCostMonthly)],
         ['Taux effectif PAYE', result.effectiveRate.toFixed(2) + ' %']
       );
       rows.innerHTML = outputRows.map(function (row) {
@@ -327,7 +343,14 @@
     }
 
     form.addEventListener('submit', render);
+    if (periodField) form.addEventListener('input', function () {
+      if (periodField.hidden) return;
+      results.hidden = true;
+      rows.textContent = '';
+      status.textContent = 'Paramètres modifiés. Relancez le calcul.';
+    });
     if (country) country.addEventListener('change', function () {
+      if (periodField) periodField.hidden = country.value !== 'za-paye';
       basicField.hidden = !CONFIGS[country.value].basicHealthRate;
       basicInput.value = '';
       status.textContent = 'Barème sélectionné : ' + CONFIGS[country.value].country + '. Lancez le calcul pour actualiser le résultat.';
@@ -335,6 +358,8 @@
     });
     app.querySelector('[data-reset]').addEventListener('click', function () {
       form.reset();
+      if (periodField) periodField.hidden = country ? country.value !== 'za-paye' : false;
+      if (!country) config = CONFIGS[id];
       basicField.hidden = !(country ? CONFIGS[country.value] : config).basicHealthRate;
       results.hidden = true;
       rows.innerHTML = '';

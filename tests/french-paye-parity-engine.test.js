@@ -48,7 +48,6 @@ function assertNear(actual, expected, label, tolerance = 0.02) {
 test('French PAYE shared calculator matches English owner engines for shared fixtures', () => {
   const french = loadBrowserScript('assets/js/pages/french-paye-parity.js').frenchPayeParity;
   const egypt = loadBrowserScript('assets/js/engines/eg-paye.js').engines.egPAYE;
-  const southAfrica = loadBrowserScript('assets/js/engines/za-paye.js').engines.zaPAYE;
   const tanzania = loadBrowserScript('assets/js/engines/tz-paye.js').engines.tzPAYE;
 
   const egGrossMonthly = 50000;
@@ -61,16 +60,12 @@ test('French PAYE shared calculator matches English owner engines for shared fix
 
   const zaGrossMonthly = 60000;
   const zaFrench = french.calculate(french.configs['za-paye'], zaGrossMonthly);
-  const zaOwner = southAfrica.calculate(zaGrossMonthly * 12, {
-    ageGroup: 'under65',
-    retirement: 0,
-    medMembers: 0,
-    uif: true
-  });
-  assertNear(zaFrench.employeeMonthly, zaOwner.uif / 12, 'South Africa UIF employee');
-  assertNear(zaFrench.taxMonthly, zaOwner.paye / 12, 'South Africa PAYE');
-  assertNear(zaFrench.netMonthly, zaOwner.netAnnual / 12, 'South Africa net salary');
-  assertNear(zaFrench.employerMonthly, zaOwner.employerUIF / 12, 'South Africa UIF employer');
+  // SARS 2026/27: 39% above R695,800, less the primary rebate.
+  const zaTax = (185215 + (720000 - 695800) * 0.39 - 17820) / 12;
+  assertNear(zaFrench.employeeMonthly, 177.12, 'South Africa UIF employee');
+  assertNear(zaFrench.taxMonthly, zaTax, 'South Africa 2026/27 PAYE');
+  assertNear(zaFrench.netMonthly, zaGrossMonthly - zaTax - 177.12, 'South Africa net salary');
+  assertNear(zaFrench.employerMonthly, 177.12, 'South Africa UIF employer');
 
   const tzGrossMonthly = 1500000;
   const tzFrench = french.calculate(french.configs['tz-paye'], tzGrossMonthly);

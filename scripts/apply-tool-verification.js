@@ -130,6 +130,12 @@ function shouldKeepUrl(url) {
 }
 
 function shouldKeepToolSource(url, toolId) {
+  if (toolId === 'za-paye-fr') {
+    return [
+      'https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/',
+      'https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/'
+    ].includes(url);
+  }
   // Preserve the reviewed pension authority notice in this tool's source ledger.
   if (toolId === 'zm-paye' && url === 'https://www.linkedin.com/posts/national-pension-scheme-authority_public-notice-revision-in-contribution-ceiling-activity-7417941633180090368-y4Dr') return true;
   if (!shouldKeepUrl(url)) return false;

@@ -30334,9 +30334,7 @@
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
       },
-      "protectedDuplicates": [
-        "fr/south-africa/za-paye.html"
-      ],
+      "protectedDuplicates": [],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
       "rounding": {
@@ -30465,6 +30463,69 @@
           "kind": "authority-link",
           "registryId": null,
           "title": "SARS · UIF contributions and ceiling",
+          "url": "https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/"
+        }
+      ],
+      "supportStatus": "legacy-protected",
+      "units": [
+        "currency"
+      ],
+      "verificationBasis": "AfroTools source audit"
+    },
+    {
+      "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
+      "artifactDigest": "sha256:59682453ba119f15bd8bd5aff349c6a0dcb64a965055e3b499d475663536e4e2",
+      "artifactPath": "fr/south-africa/za-paye.html",
+      "currency": "ZAR",
+      "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
+      "currencyOverride": null,
+      "disclaimer": "Planning estimate only. Confirm rates, payroll treatment, filing, and remittance with the relevant authority or a qualified professional.",
+      "effectiveDateStatus": "declared",
+      "effectiveFrom": "2025-03-01",
+      "effectiveTo": "2027-02-28",
+      "formulaFamily": "paye-route",
+      "formulaVersion": "Barèmes-SARS-pour-les-années-fiscales-2025/26-et+sha256.59682453ba11",
+      "id": "route-za-paye-fr",
+      "jurisdictions": [
+        "ZA"
+      ],
+      "knownExclusions": [
+        "Hors retraite, crédits médicaux, primes, année incomplète et SDL."
+      ],
+      "lastVerified": "2026-11-19",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "artifactDigest": "sha256:59682453ba119f15bd8bd5aff349c6a0dcb64a965055e3b499d475663536e4e2",
+        "artifactPath": "fr/south-africa/za-paye.html",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
+      },
+      "protectedDuplicates": [],
+      "riskDomain": "tax_payroll",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
+        "stages": [
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
+        ]
+      },
+      "sourceJurisdictions": [
+        "ZA"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "SARS — barèmes et réductions",
+          "url": "https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "SARS — UIF",
           "url": "https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/"
         }
       ],
@@ -33128,7 +33189,6 @@
     {
       "formulaId": "route-za-paye",
       "routes": [
-        "/fr/south-africa/za-paye",
         "/south-africa/za-paye-2025-26"
       ],
       "sourceUrls": [
@@ -33152,6 +33212,17 @@
         "https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/"
       ],
       "toolId": "za-paye-current"
+    },
+    {
+      "formulaId": "route-za-paye-fr",
+      "routes": [
+        "/fr/south-africa/za-paye"
+      ],
+      "sourceUrls": [
+        "https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/",
+        "https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/"
+      ],
+      "toolId": "za-paye-fr"
     },
     {
       "formulaId": "route-za-transfer-duty",

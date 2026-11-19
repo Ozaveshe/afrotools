@@ -5809,7 +5809,6 @@
       "tool_id": "za-paye",
       "jurisdiction": "South Africa",
       "routes": [
-        "/fr/south-africa/za-paye",
         "/south-africa/za-paye-2025-26"
       ],
       "source_urls": [
@@ -8264,6 +8263,50 @@
         }
       ],
       "effective_from": "2026-03-01",
+      "effective_to": "2027-02-28"
+    },
+    "za-paye-fr": {
+      "tool_id": "za-paye-fr",
+      "jurisdiction": "South Africa",
+      "routes": [
+        "/fr/south-africa/za-paye"
+      ],
+      "source_urls": [
+        "https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/",
+        "https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/"
+      ],
+      "source_titles": [
+        "SARS — barèmes et réductions",
+        "SARS — UIF"
+      ],
+      "last_verified": "2026-11-19",
+      "verified_by": "AfroTools source audit",
+      "risk_level": "high",
+      "disclaimer_type": "tax",
+      "law_or_version": "Barèmes SARS pour les années fiscales 2025/26 et 2026/27",
+      "methodology_markdown": "Douze salaires bruts mensuels identiques, tranches annuelles et réduction selon l’âge pour l’exercice choisi, puis UIF salariée plafonnée.",
+      "known_limitations": [
+        "Hors retraite, crédits médicaux, primes, année incomplète et SDL."
+      ],
+      "change_history": [
+        {
+          "date": "2026-11-19",
+          "note": "Choix de l’exercice fiscal et de la réduction selon l’âge."
+        }
+      ],
+      "test_cases": [
+        {
+          "input": "25 000 ZAR bruts par mois, moins de 65 ans, 2026/27.",
+          "expected_output": "PAYE mensuel de 3 381,00 ZAR et net mensuel de 21 441,88 ZAR.",
+          "why": "Vérifie le barème actuel et le plafond UIF."
+        },
+        {
+          "input": "25 000 ZAR bruts par mois, moins de 65 ans, 2025/26.",
+          "expected_output": "PAYE annuel de 41 797 ZAR.",
+          "why": "Vérifie que le changement d’exercice recalcule le résultat."
+        }
+      ],
+      "effective_from": "2025-03-01",
       "effective_to": "2027-02-28"
     }
   }
