@@ -409,7 +409,7 @@ function hardenExistingFrench(row, source) {
   if (!html.includes("/assets/js/pages/fr-uniquely-african-native-guards.js")) {
     html = html.replace(/<\/body>/i, '  <script src="/assets/js/pages/fr-uniquely-african-native-guards.js"></script>\n</body>');
   }
-  if (!html.includes("/assets/js/pages/fr-uniquely-african-native-exports.js")) {
+  if (row.english.id !== "brideprice-advisor" && !html.includes("/assets/js/pages/fr-uniquely-african-native-exports.js")) {
     html = html.replace(/<\/body>/i, '  <script src="/assets/js/pages/fr-uniquely-african-native-exports.js"></script>\n</body>');
   }
   const aiHref = `/fr/ai/?tool=${encodeURIComponent(row.english.id)}&route=${encodeURIComponent(row.french.route)}`;

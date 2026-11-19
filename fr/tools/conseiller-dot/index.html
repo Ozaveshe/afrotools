@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Planificateur de dot, lobola et cadeaux familiaux | AfroTools</title>
-  <meta name="description" content="Planifiez une discussion de dot, lobola ou cadeaux familiaux avec budget, liste de cadeaux, contribution, risques d'endettement, sources et export local.">
+  <meta name="description" content="Calculez votre budget familial de dot ou de lobola à partir des dépenses convenues. Voyez le reste à financer, l’épargne mensuelle et les points de consentement à discuter.">
   <meta property="og:title" content="Planificateur de dot, lobola et cadeaux familiaux | AfroTools">
-  <meta property="og:description" content="Un outil respectueux pour préparer une discussion familiale: budget, cadeaux, reserve, consentement, sources et export local.">
+  <meta property="og:description" content="Préparez en famille un budget de dot ou de lobola, avec des montants convenus, une réserve et cinq points de discussion.">
   <meta property="og:image" content="https://afrotools.com/assets/img/tools/brideprice-advisor.webp">
   <meta property="og:url" content="https://afrotools.com/fr/tools/conseiller-dot/">
   <meta property="og:type" content="website">
@@ -64,6 +64,7 @@
     input, select, textarea { width: 100%; border: 1px solid var(--dot-border); background: #fff; border-radius: 12px; padding: 12px; font: inherit; color: var(--dot-ink); }
     textarea { min-height: 90px; resize: vertical; }
     .help { color: var(--dot-muted); font-size: .82rem; line-height: 1.45; }
+    .field, .check-list { min-width: 0; }
     .check-list { display: grid; gap: 9px; margin-top: 8px; }
     .check-list label { display: grid; grid-template-columns: 20px 1fr; gap: 9px; align-items: start; font-weight: 700; color: var(--dot-muted); }
     .check-list input { width: 18px; height: 18px; margin-top: 2px; }
@@ -123,7 +124,7 @@
     <div class="dot-hero-copy">
       <div class="eyebrow">Outil culturel et budgétaire</div>
       <h1>Planifier une dot sans transformer l'amour en dette</h1><figure class="ua-native-artwork"><img data-fr-ua-artwork src="/assets/img/tools/brideprice-advisor.webp" width="320" height="180" alt="" loading="eager"></figure>
-      <p class="lead">Préparer une discussion de dot, lobola, bridewealth, sadaki ou cadeaux familiaux avec respect: budget, contribution, reserve, consentement, questions familiales et export local. L'outil aide à cadrer la conversation, pas à fixer le prix d'une personne.</p>
+      <p class="lead">Préparez une discussion familiale sur la dot, le lobola ou les cadeaux convenus. Comparez le budget avec les fonds disponibles, puis vérifiez ensemble que chacun peut s’exprimer, refuser ou demander une pause.</p>
       <div class="hero-actions">
         <a class="btn primary" href="#planner">Commencer le plan</a>
         <a class="btn" href="#sources">Voir les sources</a>
@@ -132,7 +133,7 @@
     <aside class="dot-card trust-card" aria-label="Principes de confiance">
       <div class="trust-item">
         <span class="trust-label">Position</span>
-        <span class="trust-value">Respect, consentement et budget realiste avant tout.</span>
+        <span class="trust-value">Respect, consentement et budget réaliste avant tout.</span>
       </div>
       <div class="trust-item">
         <span class="trust-label">Confidentialité</span>
@@ -146,13 +147,14 @@
   </section>
 
   <section class="dot-grid" id="planner">
-    <form class="dot-card" id="dotForm">
-      <h2 class="card-title">Entrer le contexte familial</h2>
-      <p class="card-note">Utilisez des montants approximatifs. La bonne sortie ici est une discussion plus claire, pas un chiffre impose.</p>
+    <form class="dot-card" id="dotForm" novalidate>
+      <h2 class="card-title">Préparer le budget convenu</h2>
+      <p class="card-note">Saisissez uniquement les montants convenus ensemble. Ne renseignez ni nom, ni adresse, ni numéro de téléphone. Le calcul reste sur cet appareil.</p>
       <div class="form-grid">
         <div class="field">
-          <label for="tradition">Tradition ou cadre</label>
+          <label for="tradition">Cadre de discussion (facultatif)</label>
           <select id="tradition" name="tradition">
+            <option value="">Choisir si vous le souhaitez</option>
             <option value="southern">Afrique australe - lobola / bogadi</option>
             <option value="west">Afrique de l'Ouest - dot / liste familiale</option>
             <option value="east">Afrique de l'Est - ruracio / kwanjula / cadeaux</option>
@@ -162,73 +164,77 @@
         </div>
         <div class="field">
           <label for="currency">Devise</label>
-          <select id="currency" name="currency">
+          <input id="currency" name="currency" list="dot-currencies" maxlength="8" value="KES" required>
+          <datalist id="dot-currencies">
             <option value="NGN">NGN - naira</option>
             <option value="ZAR">ZAR - rand</option>
             <option value="GHS">GHS - cedi</option>
             <option value="KES">KES - shilling kenyan</option>
             <option value="XOF">XOF - franc CFA</option>
             <option value="USD">USD - dollar</option>
-          </select>
+          </datalist>
         </div>
         <div class="field">
           <label for="symbolicGift">Cadeau symbolique ou dot</label>
-          <input id="symbolicGift" name="symbolicGift" type="number" min="0" step="1000" value="150000">
-          <span class="help">Cash, valeur des bovins/cadeaux, ou contribution rituelle.</span>
+          <input id="symbolicGift" name="symbolicGift" type="number" min="0" step="any" value="0" required>
+          <span class="help">Saisissez uniquement la somme convenue ou la valeur que vous attribuez ensemble aux cadeaux.</span>
         </div>
         <div class="field">
-          <label for="familyGifts">Cadeaux familiaux</label>
-          <input id="familyGifts" name="familyGifts" type="number" min="0" step="1000" value="220000">
-          <span class="help">Vetements, boissons, paniers, objets de maison, etc.</span>
+          <label for="familyGifts">Autres cadeaux ou frais convenus</label>
+          <input id="familyGifts" name="familyGifts" type="number" min="0" step="any" value="0" required>
+          <span class="help">Par exemple : vêtements, boissons ou objets pour la maison.</span>
         </div>
         <div class="field">
-          <label for="ceremonyCost">Cérémonie et reception</label>
-          <input id="ceremonyCost" name="ceremonyCost" type="number" min="0" step="1000" value="450000">
+          <label for="ceremonyCost">Réception ou rencontre convenue</label>
+          <input id="ceremonyCost" name="ceremonyCost" type="number" min="0" step="any" value="0" required>
         </div>
         <div class="field">
           <label for="travelCost">Transport et visites familiales</label>
-          <input id="travelCost" name="travelCost" type="number" min="0" step="1000" value="120000">
+          <input id="travelCost" name="travelCost" type="number" min="0" step="any" value="0" required>
         </div>
         <div class="field">
           <label for="saved">Épargne déjà disponible</label>
-          <input id="saved" name="saved" type="number" min="0" step="1000" value="300000">
+          <input id="saved" name="saved" type="number" min="0" step="any" value="0" required>
         </div>
         <div class="field">
           <label for="months">Mois avant la rencontre</label>
-          <input id="months" name="months" type="number" min="1" max="60" step="1" value="8">
+          <input id="months" name="months" type="number" min="1" step="any" value="6" required>
         </div>
         <div class="field">
-          <label for="familySupport">Contribution familiale attendue</label>
-          <input id="familySupport" name="familySupport" type="number" min="0" step="1000" value="150000">
+          <label for="familySupport">Contribution familiale déjà disponible</label>
+          <input id="familySupport" name="familySupport" type="number" min="0" step="any" value="0" required>
         </div>
         <div class="field">
-          <label for="contingency">Reserve de prudence (%)</label>
-          <input id="contingency" name="contingency" type="number" min="0" max="50" step="1" value="12">
+          <label for="contingency">Réserve de prudence (%)</label>
+          <input id="contingency" name="contingency" type="number" min="0" max="100" step="any" value="10" required>
         </div>
         <div class="field full">
-          <span class="label">Checklist respect et sécurité</span>
-          <div class="check-list">
-            <label><input type="checkbox" id="adultConsent" checked> Les deux personnes sont adultes et consentent librement.</label>
-            <label><input type="checkbox" id="noDebt" checked> La famille accepte de ne pas financer la discussion par une dette dangereuse.</label>
-            <label><input type="checkbox" id="clearKeeper"> La destination des cadeaux ou fonds est clarifiee avant la rencontre.</label>
-            <label><input type="checkbox" id="registration"> Le couple verifiera les demarches civiles, religieuses ou coutumieres applicables.</label>
-          </div>
+          <fieldset class="check-list">
+            <legend>Points à discuter ensemble</legend>
+            <label><input type="checkbox" id="adultConsent"> Le consentement est libre et peut être retiré.</label>
+            <label><input type="checkbox" id="coupleHeard"> Chaque personne qui se marie a pu s’exprimer directement.</label>
+            <label><input type="checkbox" id="pauseRespected"> Une pause ou un refus sera respecté sans pression.</label>
+            <label><input type="checkbox" id="clearKeeper"> Les conditions, les cadeaux et leur destinataire ont été précisés par écrit.</label>
+            <label><input type="checkbox" id="registration"> Si nécessaire, nous consulterons une personne qualifiée sur les usages ou les formalités locales.</label>
+          </fieldset>
         </div>
         <div class="field full">
-          <label for="notes">Notes de discussion</label>
-          <textarea id="notes" name="notes" placeholder="Exemple: limiter la liste aux cadeaux essentiels, separer ceremonie civile et tradition, nommer les mediateurs familiaux."></textarea>
+          <label for="notes">Notes privées (uniquement sur cet appareil)</label>
+          <textarea id="notes" name="notes" placeholder="Exemple : revoir ensemble la liste des cadeaux. Ces notes sont exclues des exports et de la copie."></textarea>
         </div>
       </div>
       <div class="button-row">
         <button class="btn primary" type="submit">Mettre à jour le plan</button>
         <button class="btn" type="button" id="copyBtn">Copier</button>
+        <button class="btn" type="reset">Réinitialiser</button>
+        <button class="btn" type="button" id="jsonBtn" data-native-export="json">Télécharger JSON</button>
         <button class="btn" type="button" id="downloadBtn">Télécharger TXT</button>
         <button class="btn" type="button" id="saveBtn">Sauvegarder localement</button>
       </div>
       <p class="help" id="actionStatus" role="status" aria-live="polite"></p>
     </form>
 
-    <section class="dot-card results" aria-live="polite">
+    <section class="dot-card results" id="planResults" aria-live="polite">
       <h2 class="card-title">Plan de discussion</h2>
       <div class="result-main">
         <div class="metric">
@@ -242,8 +248,8 @@
       </div>
       <div class="split">
         <div class="mini"><span>Mensuel à préparer</span><strong id="monthlyOut">0</strong></div>
-        <div class="mini"><span>Part cadeaux/cérémonie</span><strong id="shareOut">0%</strong></div>
-        <div class="mini"><span>Checklist respect</span><strong id="checkOut">0/4</strong></div>
+        <div class="mini"><span>Part des cadeaux et autres frais</span><strong id="shareOut">0%</strong></div>
+        <div class="mini"><span>Checklist respect</span><strong id="checkOut">0/5</strong></div>
       </div>
       <div class="status-box" id="riskBox">
         Remplissez le formulaire pour voir les points d'attention.
@@ -254,7 +260,7 @@
 
   <section class="dot-card" id="sources" style="margin-top:20px">
     <h2 class="card-title">Sources et méthode</h2>
-    <p class="card-note">Le calcul additionne les postes saisis, ajoute une reserve de prudence, puis soustrait l'épargne et les contributions familiales. Les sources ci-dessous cadrent le vocabulaire, les limites legales et les risques de coercition; elles ne donnent pas de prix officiel.</p>
+    <p class="card-note">Le total comprend les dépenses convenues et la réserve choisie. Le reste à financer déduit l’épargne et les contributions déjà disponibles. Le montant mensuel répartit ce reste sur la durée saisie. Les sources ci-dessous cadrent le vocabulaire, les limites legales et les risques de coercition; elles ne donnent pas de prix officiel.</p>
     <div class="source-grid">
       <div class="source-card">
         <a href="https://www.britannica.com/topic/marital-exchange" rel="noopener" target="_blank">Britannica - marital exchange</a>
@@ -282,7 +288,7 @@
     <h2 class="card-title">Questions fréquentes</h2>
     <details>
       <summary>Cet outil remplace-t-il les anciens ou les familles ?</summary>
-      <p>Non. Il aide seulement à préparer une conversation claire: budget, limites, questions et documentation. Les familles et les autorites competentes gardent leur role.</p>
+      <p>Non. Il aide seulement à préparer une conversation claire: budget, limites, questions et documentation. La décision appartient aux personnes qui se marient.</p>
     </details>
     <details>
       <summary>Pourquoi parler de consentement dans un outil de dot ?</summary>
@@ -300,152 +306,10 @@
 </main>
 <afro-footer></afro-footer>
 
-<script>
-(function () {
-  'use strict';
-  var form = document.getElementById('dotForm');
-  var status = document.getElementById('actionStatus');
-  var fields = ['tradition', 'currency', 'symbolicGift', 'familyGifts', 'ceremonyCost', 'travelCost', 'saved', 'months', 'familySupport', 'contingency', 'notes'].reduce(function (acc, id) {
-    acc[id] = document.getElementById(id);
-    return acc;
-  }, {});
-  var checks = ['adultConsent', 'noDebt', 'clearKeeper', 'registration'].map(function (id) { return document.getElementById(id); });
-  var labels = {
-    southern: 'Afrique australe - lobola / bogadi',
-    west: "Afrique de l'Ouest - dot / liste familiale",
-    east: "Afrique de l'Est - ruracio / kwanjula / cadeaux",
-    islamic: 'Cadre islamique - mahr / sadaki',
-    diaspora: 'Diaspora - discussion inter-familles'
-  };
-
-  function number(id) {
-    return Math.max(0, Number(fields[id].value || 0));
-  }
-
-  function money(value, currency) {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(value || 0);
-  }
-
-  function calculate() {
-    var currency = fields.currency.value;
-    var direct = number('symbolicGift') + number('familyGifts') + number('ceremonyCost') + number('travelCost');
-    var reserve = direct * (number('contingency') / 100);
-    var total = direct + reserve;
-    var resources = number('saved') + number('familySupport');
-    var gap = Math.max(0, total - resources);
-    var monthly = gap / Math.max(1, number('months'));
-    var giftShare = total ? Math.round(((number('symbolicGift') + number('familyGifts')) / total) * 100) : 0;
-    var checked = checks.filter(function (box) { return box.checked; }).length;
-    var riskClass = 'good';
-    var riskText = 'Plan raisonnable: la reserve existe et la checklist montre une discussion respectueuse.';
-
-    if (!checks[0].checked) {
-      riskClass = 'risk';
-      riskText = "Point critique: ne continuez pas sans consentement libre, age legal et absence de pression. Ce budget ne valide aucune union.";
-    } else if (!checks[1].checked || monthly > (resources || total || 1) * 0.35) {
-      riskClass = 'risk';
-      riskText = "Risque d'endettement: reduisez la liste, espacez les ceremonies ou fixez un plafond familial avant toute promesse.";
-    } else if (checked < 4 || gap > resources) {
-      riskClass = 'warn';
-      riskText = "A clarifier: documentez la destination des cadeaux, le role des mediateurs et les demarches civiles ou coutumieres.";
-    }
-
-    var summary = [
-      'Plan dot / lobola - AfroTools',
-      'Cadre: ' + labels[fields.tradition.value],
-      'Budget prudent: ' + money(total, currency),
-      'Reste a financer: ' + money(gap, currency),
-      'Epargne mensuelle indicative: ' + money(monthly, currency),
-      'Part cadeaux et dot: ' + giftShare + '%',
-      'Checklist respect: ' + checked + '/4',
-      'Note: estimation de planification, pas prix officiel ni conseil juridique.',
-      fields.notes.value ? 'Notes: ' + fields.notes.value.trim() : ''
-    ].filter(Boolean).join('\n');
-
-    document.getElementById('totalOut').textContent = money(total, currency);
-    document.getElementById('gapOut').textContent = money(gap, currency);
-    document.getElementById('monthlyOut').textContent = money(monthly, currency);
-    document.getElementById('shareOut').textContent = giftShare + '%';
-    document.getElementById('checkOut').textContent = checked + '/4';
-    document.getElementById('riskBox').className = 'status-box ' + riskClass;
-    document.getElementById('riskBox').textContent = riskText;
-    document.getElementById('summaryOut').textContent = summary;
-    return summary;
-  }
-
-  function setStatus(message) {
-    status.textContent = message;
-  }
-
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    calculate();
-    setStatus('Plan mis a jour.');
-  });
-
-  form.addEventListener('input', function () {
-    calculate();
-  });
-
-  document.getElementById('copyBtn').addEventListener('click', function () {
-    var text = calculate();
-    if (!navigator.clipboard || !navigator.clipboard.writeText) {
-      setStatus('Copie indisponible dans ce navigateur.');
-      return;
-    }
-    navigator.clipboard.writeText(text).then(function () {
-      setStatus('Resume copie.');
-    }).catch(function () {
-      setStatus('Copie indisponible dans ce navigateur.');
-    });
-  });
-
-  document.getElementById('downloadBtn').addEventListener('click', function () {
-    var blob = new Blob([calculate()], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement('a');
-    link.href = url;
-    link.download = 'plan-dot-lobola-afrotools.txt';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    setStatus('Fichier TXT prepare.');
-  });
-
-  document.getElementById('saveBtn').addEventListener('click', function () {
-    var data = {};
-    Object.keys(fields).forEach(function (id) { data[id] = fields[id].value; });
-    checks.forEach(function (box) { data[box.id] = box.checked; });
-    data.savedAt = new Date().toISOString();
-    localStorage.setItem('afrotools:conseiller-dot-fr', JSON.stringify(data));
-    setStatus('Plan sauvegarde dans ce navigateur.');
-  });
-
-  try {
-    var saved = JSON.parse(localStorage.getItem('afrotools:conseiller-dot-fr') || 'null');
-    if (saved) {
-      Object.keys(fields).forEach(function (id) {
-        if (Object.prototype.hasOwnProperty.call(saved, id)) fields[id].value = saved[id];
-      });
-      checks.forEach(function (box) {
-        if (Object.prototype.hasOwnProperty.call(saved, box.id)) box.checked = !!saved[box.id];
-      });
-      setStatus('Plan local restaure.');
-    }
-  } catch (error) {
-    setStatus('Le brouillon local n a pas pu etre restaure.');
-  }
-
-  calculate();
-})();
-</script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
-  <script src="/assets/js/data/brideprice-data.js?v=926bc4ba"></script>
-  <script src="/engines/brideprice-culture-engine.js?v=877cbaeb"></script>
-  <script src="/assets/js/pages/brideprice-fr-parity.js?v=222c8da2"></script>
-  <script src="/assets/js/pages/fr-uniquely-african-native-guards.js?v=40e644c5"></script>
-  <script src="/assets/js/pages/fr-uniquely-african-native-exports.js?v=afa89491"></script>
+  <script src="/assets/js/engines/marriage-conversation-engine.js?v=6e02b582"></script>
+  <script src="/assets/js/pages/brideprice-fr-parity.js"></script>
+  <script src="/assets/js/pages/fr-uniquely-african-native-guards.js"></script>
   <aside class="ua-native-ai-route" aria-label="Continuer avec AfroTools AI"><a href="/fr/ai/?tool=brideprice-advisor&route=%2Ffr%2Ftools%2Fconseiller-dot%2F">Préparer ce workflow dans AfroTools AI</a></aside>
 </body>
 </html>

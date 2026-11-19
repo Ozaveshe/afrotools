@@ -82,7 +82,7 @@ const nativeCopySelectors = {
   "whatsapp-link": "#copyLink",
   "remittance-compare": "#rm-copy",
   "remittance-v2": "#rm-copy",
-  "brideprice-advisor": "#ua-bp-copy",
+  "brideprice-advisor": "#copyBtn",
   "ajo-interest": "#copyBtn",
   "market-days": "#copy-result",
   "ajo-chama-calc": "#copyBtn"
@@ -98,7 +98,7 @@ const nativeEnglishMutations = {
   "whatsapp-link": { "#phoneNumber": "7087654321" },
   "remittance-compare": { "#rm-b-recipient": "800000" },
   "remittance-v2": { "#rm-b-recipient": "800000" },
-  "brideprice-advisor": { "#bpSaved": "50000" },
+  "brideprice-advisor": { "#bp-saved": "4500", "#bp-consent": true, "#bp-heard": true, "#bp-pause": true, "#bp-written": true },
   "ajo-interest": { "#contribution": "40000" },
   "market-days": {},
   "ajo-chama-calc": { "#contribution": "7500" }
@@ -191,7 +191,8 @@ async function fillValues(page, values) {
     const field = page.locator(selector);
     await expect(field, `${selector} exists`).toHaveCount(1);
     const tag = await field.evaluate((node) => node.tagName.toLowerCase());
-    if (tag === "select") await field.selectOption(String(raw));
+    if (typeof raw === "boolean") await field.setChecked(raw);
+    else if (tag === "select") await field.selectOption(String(raw));
     else await field.fill(String(raw));
   }
 }
@@ -441,20 +442,17 @@ async function captureNativeSemantic(page, id, locale) {
       };
     }
     if (routeId === "brideprice-advisor") {
-      if (language === "fr") {
-        const result = window.AfroToolsFrenchBridePricePayload;
-        return { target: result.target, gap: result.gap, monthly: result.monthly, perHome: result.perHome };
-      }
-      const cultures = window.AfroToolsBridePriceData[document.querySelector("#country").value];
-      const culture = cultures[Number(document.querySelector("#culture").value) || 0];
-      const result = window.BridePriceCultureEngine.calculate({
-        culture,
-        saved: Number(document.querySelector("#bpSaved").value),
-        months: Number(document.querySelector("#bpMonths").value),
-        homes: Number(document.querySelector("#bpHouseholds").value),
-        tone: document.querySelector("#bpTone").value
-      }).values;
-      return { target: result.target, gap: result.gap, monthly: result.monthly, perHome: result.perHome };
+      const french = language === "fr";
+      const resultRow = index => text(`#bp-result-list .rm-result:nth-child(${index}) strong`);
+      const total = text(french ? "#totalOut" : "#bp-primary-value");
+      return {
+        currency: total.trim().split(/\s+/).pop(),
+        total: numeric(total),
+        gap: numeric(french ? text("#gapOut") : resultRow(1)),
+        monthly: numeric(french ? text("#monthlyOut") : resultRow(2)),
+        checks: french ? text("#checkOut") : resultRow(3),
+        ready: french ? document.querySelector("#riskBox").dataset.ready === "true" : resultRow(4) === "complete"
+      };
     }
     if (routeId === "ajo-interest") {
       return language === "en"

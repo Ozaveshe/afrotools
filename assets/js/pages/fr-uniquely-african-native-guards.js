@@ -132,12 +132,6 @@
       clear: ["#resultPanel"],
       message: "Saisissez un montant et un taux de référence strictement supérieurs à zéro."
     },
-    "brideprice-advisor": {
-      action: '#advisorForm button[type="submit"], form button[type="submit"]',
-      fields: [{ selector: "#symbolicGift", min: 0 }, { selector: "#familyGifts", min: 0 }, { selector: "#months", minExclusive: 0 }],
-      clear: ["#ua-bp-result", "#totalOut", "#gapOut", "#monthlyOut", "#shareOut", "#checkOut", "#riskBox", "#summaryOut"],
-      message: "Les coûts ne peuvent pas être négatifs et la durée doit être positive."
-    },
     "ajo-interest": {
       action: '#ajoForm button[type="submit"], form button[type="submit"]',
       fields: [{ selector: "#members", min: 3 }, { selector: "#contribution", minExclusive: 0 }, { selector: "#position", minExclusive: 0 }],
