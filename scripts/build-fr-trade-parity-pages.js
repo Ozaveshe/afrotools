@@ -400,7 +400,7 @@ const pages = [
     fields: [
       field("Pays d’origine", "originCountry", { type: "select", blank: false, choices: [] }),
       field("Pays de destination", "destinationCountry", { type: "select", blank: false, choices: [] }),
-      field("Code SH (facultatif)", "hsCode", { placeholder: "8517.12" }),
+      field("Code SH (facultatif)", "hsCode", { placeholder: "8517.13" }),
       field("Catégorie supposée pour la simulation", "tariffCategory", { type: "select", blank: false, choices: [["A", "Catégorie A"], ["B", "Catégorie B"], ["C", "Catégorie C"]] }),
       field("Droit NPF de référence (%, facultatif)", "baseDuty", { type: "number", min: 0, step: .01 }),
       field("Année du scénario", "scenarioYear", { type: "number", min: 2021, max: 2033, step: 1, value: 2026 })
