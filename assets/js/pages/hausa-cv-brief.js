@@ -1,14 +1,51 @@
 (function () {
   'use strict';
-  var fields = ['name', 'role', 'skills', 'education'];
+  const originalFields = ['name', 'role', 'skills', 'education'];
+  const fields = [...originalFields, 'email', 'phone'];
+  const jobFields = ['title', 'employer', 'period', 'details'];
+  const jobs = document.getElementById('cvWorkRows');
+  const addJob = document.getElementById('cvAddJob');
+  const maxJobs = 50;
   var result = document.getElementById('cvResult');
-  function read() {
-    var state = {};
-    fields.forEach(function (id) { state[id] = document.getElementById(id).value.trim(); });
-    return state;
+  function updateJobLabels() {
+    Array.from(jobs.children).forEach((row, index) => {
+      row.querySelector('legend').textContent = 'Aiki na ' + (index + 1);
+      row.querySelector('[data-remove-job]').setAttribute('aria-label', 'Cire aiki na ' + (index + 1));
+    });
+    addJob.disabled = jobs.children.length >= maxJobs;
+  }
+  function appendJob(values = {}) {
+    const row = document.getElementById('cvJobTemplate').content.firstElementChild.cloneNode(true);
+    jobFields.forEach(key => { row.querySelector('[data-job="' + key + '"]').value = values[key] || ''; });
+    row.querySelector('[data-remove-job]').addEventListener('click', () => {
+      if (Array.from(row.querySelectorAll('[data-job]')).some(input => input.value) &&
+          !window.confirm('A cire wannan aikin daga daftarin da ke shafin?')) return;
+      const next = row.nextElementSibling || row.previousElementSibling;
+      row.remove();
+      updateJobLabels();
+      (next ? next.querySelector('input') : addJob).focus();
+    });
+    jobs.appendChild(row);
+    return row;
+  }
+  addJob.addEventListener('click', () => {
+    const row = appendJob();
+    updateJobLabels();
+    row.querySelector('input').focus();
+  });
+  function documentSections(state) {
+    const sections = [[state.name, state.role]];
+    if (state.email || state.phone) sections.push(['HANYAR TUNTUƁA', state.email, state.phone]);
+    const history = state.jobs.map(job => [job.title, job.employer, job.period, job.details]
+      .map(value => value.trim()).filter(Boolean).join('\n')).filter(Boolean);
+    if (history.length) sections.push(['TARIHIN AIKI', history.join('\n\n')]);
+    if (state.skills) sections.push(['ƘWAREWA', state.skills]);
+    if (state.education) sections.push(['ILIMI KO HORO', state.education]);
+    return sections.map(lines => lines.filter(Boolean).join('\n'));
   }
   function draft() {
-    var state = read();
+    const state = snapshot();
+    fields.forEach(id => { state[id] = state[id].trim(); });
     result.style.display = 'block';
     result.replaceChildren();
     if (!state.name || !state.role) {
@@ -16,13 +53,11 @@
       document.getElementById(!state.name ? 'name' : 'role').focus();
       return null;
     }
-    var title = document.createElement('strong');
-    title.textContent = state.name;
-    result.appendChild(title);
-    [state.role, 'Ƙwarewa: ' + state.skills, 'Ilimi ko horo: ' + state.education].forEach(function (text) {
-      var paragraph = document.createElement('p');
-      paragraph.textContent = text;
-      result.appendChild(paragraph);
+    documentSections(state).forEach((text, index) => {
+      const block = document.createElement(index === 0 ? 'strong' : 'p');
+      block.style.whiteSpace = 'pre-line';
+      block.textContent = text;
+      result.appendChild(block);
     });
     return state;
   }
@@ -30,23 +65,34 @@
   const limit = 256 * 1024;
   const status = document.getElementById('cvDraftStatus');
   function snapshot() {
-    return Object.fromEntries(fields.map(id => [id, document.getElementById(id).value]));
+    const state = Object.fromEntries(fields.map(id => [id, document.getElementById(id).value]));
+    state.jobs = Array.from(jobs.children, row => Object.fromEntries(jobFields.map(
+      key => [key, row.querySelector('[data-job="' + key + '"]').value]
+    )));
+    return state;
   }
   function encode() {
-    const json = JSON.stringify({format: 'afrotools-ha-cv', version: 1, fields: snapshot()}, null, 2);
+    const json = JSON.stringify({format: 'afrotools-ha-cv', version: 2, fields: snapshot()}, null, 2);
     if (new Blob([json]).size > limit) throw new Error('size');
     return json;
   }
   function decode(json) {
     const data = JSON.parse(json);
-    if (!data || data.format !== 'afrotools-ha-cv' || data.version !== 1 ||
-        !data.fields || !fields.every(id => typeof data.fields[id] === 'string')) {
+    if (!data || data.format !== 'afrotools-ha-cv' || !data.fields ||
+        !originalFields.every(id => typeof data.fields[id] === 'string')) throw new Error('format');
+    if (data.version === 1) return Object.assign({}, data.fields, {email: '', phone: '', jobs: []});
+    if (data.version !== 2 || !fields.every(id => typeof data.fields[id] === 'string') ||
+        !Array.isArray(data.fields.jobs) || data.fields.jobs.length > maxJobs ||
+        !data.fields.jobs.every(job => job && jobFields.every(key => typeof job[key] === 'string'))) {
       throw new Error('format');
     }
     return data.fields;
   }
   function apply(values) {
-    fields.forEach(id => { document.getElementById(id).value = values[id]; });
+    fields.forEach(id => { document.getElementById(id).value = values[id] || ''; });
+    jobs.replaceChildren();
+    (values.jobs || []).forEach(appendJob);
+    updateJobLabels();
     result.replaceChildren();
     result.style.display = 'none';
   }
@@ -107,7 +153,7 @@
   document.getElementById('cvClear').addEventListener('click', () => {
     if (!window.confirm('A goge bayanan da ke shafin da daftarin CV da aka ajiye a wannan burauzar?')) return;
     importRequest++;
-    apply(Object.fromEntries(fields.map(id => [id, ''])));
+    apply({});
     const attachment = document.getElementById('cvUpload');
     if (attachment) { attachment.value = ''; attachment.dispatchEvent(new Event('change')); }
     try {
@@ -123,9 +169,7 @@
     const state = draft();
     pdfStatus.textContent = '';
     if (!state) return;
-    const sections = [state.name, state.role];
-    if (state.skills) sections.push('ƘWAREWA', state.skills);
-    if (state.education) sections.push('ILIMI KO HORO', state.education);
+    const sections = documentSections(state);
     pdfButton.disabled = true;
     pdfStatus.textContent = 'Ana shirya PDF…';
     try {
@@ -152,9 +196,7 @@
   window.downloadCvBrief = function () {
     var state = draft();
     if (!state) return;
-    var text = 'Takaitaccen CV\n\nSuna: ' + state.name + '\nAiki: ' + state.role +
-      '\nƘwarewa: ' + state.skills + '\nIlimi ko horo: ' + state.education +
-      '\n\nSirri: an shirya wannan a cikin burauza.';
+    const text = documentSections(state).join('\n\n');
     var link = document.createElement('a');
     var url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
     link.href = url;
