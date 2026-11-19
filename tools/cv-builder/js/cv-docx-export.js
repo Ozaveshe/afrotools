@@ -279,7 +279,7 @@
             }(C(), function() {
                 if (e.CVExportUpgrade && "function" == typeof e.CVExportUpgrade.filename) return e.CVExportUpgrade.filename("docx");
                 var t, n = (t = i()) && t.data ? t.data : {};
-                return (a([ n.fn, n.ln, n.title || "CV" ], "-") || "AfroTools-CV").replace(/&/g, " and ").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-") + ".docx";
+                return (a([ n.fn, n.ln, n.title || "CV" ], "-") || "AfroTools-CV").replace(/&/g, " and ").normalize("NFC").replace(/[^\p{L}\p{M}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-") + ".docx";
             }()), p(copy.downloaded), n = "cv_export_docx", r = {
                 template: i().template || "",
                 country: i().country || ""

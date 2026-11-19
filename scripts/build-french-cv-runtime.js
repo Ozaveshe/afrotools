@@ -17,6 +17,13 @@ const STRUCTURED_VALUES = new Set(['id', 'status', 'tone', 'active', 'type', 'mo
 
 const translations = {
   ...OVERRIDES.routes['cv-builder'],
+  'First Name': 'Prénom',
+  'Last Name': 'Nom de famille',
+  'Professional Title (e.g. Software Engineer)': 'Titre professionnel (ex. : ingénieure logiciel)',
+  'Job Title': 'Intitulé du poste',
+  'Company / Organisation': 'Entreprise ou organisation',
+  'Open CV export options': 'Options d’exportation du CV',
+  'Export files': 'Exporter les fichiers',
   Save: 'Enregistrer',
   Print: 'Imprimer',
   Open: 'Ouvrir',
