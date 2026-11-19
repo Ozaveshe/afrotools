@@ -27,7 +27,7 @@
   var sourceManifest = null;
   var sourceStatus = null;
   var electionData = null;
-  var countryRegistry = [];
+  var countryRegistry = config.mode === 'permit' && Array.isArray(root.AFRICAN_COUNTRIES) ? root.AFRICAN_COUNTRIES : [];
   var currentReceipt = null;
   var syncPermitCountry = null;
   var submitButton = form.querySelector('[type="submit"]');
@@ -237,8 +237,8 @@
 
   function renderPermit() {
     var countries = countryRegistry.map(function (country) {
-      var name = country.displayNames && country.displayNames.fr || country.title || country.id;
-      return [country.id, name + ' — ' + country.currency];
+      var name = country.displayNames && country.displayNames.fr || country.name || country.code;
+      return [country.code, name + ' — ' + country.currency];
     }).sort(function (left, right) {
       return left[1].localeCompare(right[1], 'fr');
     });
@@ -264,10 +264,10 @@
     if (!countrySelect || !sourceSelect) return;
 
     syncPermitCountry = function updatePermitCountry(countryCode, preferredSourceId) {
-      if (countryCode && countryRegistry.some(function (record) { return record.id === countryCode; })) {
+      if (countryCode && countryRegistry.some(function (record) { return record.code === countryCode; })) {
         countrySelect.value = countryCode;
       }
-      var country = countryRegistry.find(function (record) { return record.id === countrySelect.value; });
+      var country = countryRegistry.find(function (record) { return record.code === countrySelect.value; });
       var matching = sourceRecords().filter(function (source) { return source.country === countrySelect.value; });
       sourceSelect.replaceChildren();
       if (!matching.length) {
@@ -713,18 +713,11 @@
         if (!response.ok) throw new Error('elections');
         return response.json();
       })
-      : Promise.resolve(null),
-    config.mode === 'permit'
-      ? fetch('/data/registry/countries.json', { credentials: 'same-origin' }).then(function (response) {
-        if (!response.ok) throw new Error('countries');
-        return response.json();
-      })
-      : Promise.resolve([])
+      : Promise.resolve(null)
   ]).then(function (values) {
     sourceManifest = values[0];
     sourceStatus = values[1];
     electionData = values[2];
-    countryRegistry = values[3];
     renderFields();
     hydrateElectionFilters();
     hydratePermitCountry();
