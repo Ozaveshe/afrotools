@@ -3276,11 +3276,21 @@ document.addEventListener('DOMContentLoaded', function() {
       focusIdx = -1;
     }
 
+    function exactPublishedTool(query) {
+      var name = normalizeSearchText(query);
+      if (!name || !window.AFRO_TOOLS) return null;
+      var published = homepageSearchTools().filter(function(tool) {
+        return tool.href && /^(live|new)$/.test(tool.status);
+      });
+      var byId = published.find(function(tool) { return normalizeSearchText(tool.id) === name; });
+      if (byId) return byId;
+      var byName = published.filter(function(tool) { return normalizeSearchText(tool.name) === name; });
+      return byName.length === 1 ? byName[0] : null;
+    }
+
     function doSearch(source) {
       var q = input.value.trim();
-      var exactTool = homepageInvoiceMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
-        return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
-      });
+      var exactTool = homepageInvoiceMatch(q) || exactPublishedTool(q);
       if (exactTool) { navigate(exactTool.href); return; }
       var aiEnabled = isAiFrontdoorEnabled();
       trackAiFrontdoor('ai_frontdoor_submit', {
