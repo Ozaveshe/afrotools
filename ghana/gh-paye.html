@@ -831,6 +831,7 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
 
     // Tier III optimizer
     showTier3Optimizer();
+    calcBonus();
 
     if (shouldScroll !== false) {
       $('resultsCard').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
@@ -921,37 +922,25 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
     const bonusAmt = parseAmt($('bonusAmt').value);
     if (bonusAmt <= 0) { $('bonusResult').style.display = 'none'; return; }
 
+    const money = new Intl.NumberFormat('en-GH', {style: 'currency', currency: 'GHS'});
     const basic = R.basic;
     const threshold = basic * 0.15;
     const flatPortion = Math.min(bonusAmt, threshold);
     const excessPortion = Math.max(0, bonusAmt - threshold);
 
     const flatTax = flatPortion * 0.05;
-    // Excess taxed at marginal rate (top rate that applies)
-    const marginalRate = getMarginalRate(R.chargeableIncome);
-    const excessTax = excessPortion * marginalRate;
+    const excessTax = calcTax(R.chargeableIncome + excessPortion).tax - R.tax;
     const totalBonusTax = flatTax + excessTax;
     const netBonus = bonusAmt - totalBonusTax;
 
     $('bonusResult').style.display = 'block';
     $('bonusResult').innerHTML = `
-      <div class="res-row"><span>Bonus Amount</span><span>${fmt(bonusAmt)}</span></div>
-      <div class="res-row"><span>Flat 5% portion (first 15% of basic = ${fmt(threshold)})</span><span class="c-red">-${fmt(flatTax)}</span></div>
-      ${excessPortion > 0 ? `<div class="res-row"><span>Excess at ${(marginalRate * 100).toFixed(1)}% marginal rate</span><span class="c-red">-${fmt(excessTax)}</span></div>` : ''}
-      <div class="res-row"><span>Total Bonus Tax</span><span class="c-red">-${fmt(totalBonusTax)}</span></div>
-      <div class="res-row res-row total"><span>Net Bonus</span><span class="c-grn">${fmt(netBonus)}</span></div>
+      <div class="res-row"><span>Bonus Amount</span><span>${money.format(bonusAmt)}</span></div>
+      <div class="res-row"><span>Flat 5% portion (first 15% of basic = ${money.format(threshold)})</span><span class="c-red">-${money.format(flatTax)}</span></div>
+      ${excessPortion > 0 ? `<div class="res-row"><span>Progressive PAYE on excess bonus</span><span class="c-red">-${money.format(excessTax)}</span></div>` : ''}
+      <div class="res-row"><span>Total Bonus Tax</span><span class="c-red">-${money.format(totalBonusTax)}</span></div>
+      <div class="res-row res-row total"><span>Net Bonus</span><span class="c-grn">${money.format(netBonus)}</span></div>
     `;
-  }
-
-  function getMarginalRate(chargeableIncome) {
-    let rem = chargeableIncome;
-    let lastRate = 0;
-    for (const b of BANDS) {
-      if (rem <= 0) break;
-      lastRate = b.rate;
-      rem -= isFinite(b.limit) ? b.limit : rem;
-    }
-    return lastRate;
   }
 
   // --- CHART (lazy) ---
