@@ -5816,7 +5816,7 @@
       "jurisdiction": "South Africa",
       "routes": [
         "/fr/south-africa/za-paye",
-        "/south-africa/za-paye"
+        "/south-africa/za-paye-2025-26"
       ],
       "source_urls": [
         "https://www.sars.gov.za/",
@@ -5860,7 +5860,9 @@
           "expected_output": "Taxable income is processed through the visible country bands and net pay equals gross pay minus modeled deductions.",
           "why": "Confirms the calculator is using the documented methodology rather than an opaque flat estimate."
         }
-      ]
+      ],
+      "effective_from": "2025-03-01",
+      "effective_to": "2026-02-28"
     },
     "za-vat": {
       "tool_id": "za-vat",
@@ -8216,6 +8218,59 @@
           "why": "Confirms the calculator is using the documented methodology rather than an opaque flat estimate."
         }
       ]
+    },
+    "za-paye-current": {
+      "tool_id": "za-paye-current",
+      "jurisdiction": "South Africa",
+      "routes": [
+        "/south-africa/za-paye"
+      ],
+      "source_urls": [
+        "https://www.sars.gov.za/guide-for-employers-in-respect-of-employees-tax-2027/",
+        "https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/",
+        "https://www.sars.gov.za/tax-rates/medical-tax-credit-rates/",
+        "https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/"
+      ],
+      "source_titles": [
+        "SARS · Employer guide 2027 (revision 1)",
+        "SARS · Individual rates, rebates and thresholds",
+        "SARS · Medical scheme fees credits",
+        "SARS · UIF contributions and ceiling"
+      ],
+      "last_verified": "2026-10-16",
+      "verified_by": "AfroTools source audit",
+      "risk_level": "high",
+      "disclaimer_type": "tax",
+      "law_or_version": "SARS PAYE-GEN-01-G21 revision 1; 2027 assessment: 1 March 2026 to 28 February 2027",
+      "methodology_markdown": "Current-period annual marginal-formula salary estimate. The full retirement contribution, limited tax deduction and undeducted amount are distinct. The English browser requires an explicit funding choice for a nonzero contribution: employee cash subtracts the full contribution after PAYE/UIF; tax-effect-only shows the balance before retirement payments. Legacy server API net/reverse values remain before retirement cash. Employer SDL is estimated at 1% of salary after the modelled allowable retirement deduction, assuming employer liability. Employer-cost lines do not model other remuneration exclusions, donations, employer retirement or CTC packages.",
+      "known_limitations": [
+        "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
+        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
+        "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission.",
+        "Current 2026/27 salary-only model. Select the historical calculator for 2025/26. Annual marginal-formula estimates assume 12 equal salary months and can differ from SARS banded payroll deduction tables; bonuses, directives and part-year adjustments are not modeled.",
+        "Changing inputs clears previous results. Local backups preserve the funding choice; imported legacy retirement amounts and funding must be reviewed before calculating.",
+        "Retirement is modeled against salary only; other income and section 11F limits require review. Employer SDL assumes liability and uses only salary less the modelled allowable retirement deduction; liability, other remuneration exclusions and donations require review. Medical credits are available only on the English/browser surface, not the simpler French/server defaults."
+      ],
+      "change_history": [
+        {
+          "date": "2026-05-02",
+          "note": "Trust and verification panel added with source links, methodology, limitations, and report-error CTA."
+        }
+      ],
+      "test_cases": [
+        {
+          "input": "Annual gross salary: 0.",
+          "expected_output": "PAYE and statutory deductions should be 0 and net pay should not be negative.",
+          "why": "Establishes the zero-income baseline and catches negative liability regressions."
+        },
+        {
+          "input": "Annual gross salary entered in the page currency.",
+          "expected_output": "Taxable income is processed through the visible country bands and net pay equals gross pay minus modeled deductions.",
+          "why": "Confirms the calculator is using the documented methodology rather than an opaque flat estimate."
+        }
+      ],
+      "effective_from": "2026-03-01",
+      "effective_to": "2027-02-28"
     }
   }
 }
