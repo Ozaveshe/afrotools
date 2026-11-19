@@ -248,7 +248,7 @@ a{text-decoration:none;color:inherit;}
 <link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/">
-<script src="/assets/js/lib/localized-fuel-search.js?v=d7036365"></script>
+<script src="/assets/js/lib/localized-fuel-search.js?v=f0e9af53"></script>
 </head>
 <script>
 window.addEventListener('load', function() {
@@ -1921,7 +1921,7 @@ window.addEventListener('load', function() {
         </div>
 <!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->
   </div>
-  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Load more tools</button></div>
+  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Afficher plus d’outils</button></div>
 
   <div class="sec-divider"></div>
 
@@ -2390,12 +2390,17 @@ const frenchPublishedIds = new Set(Array.from(document.querySelectorAll('#toolsG
 function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
   if (!terms.length) return tools;
   const finder = typeof window !== 'undefined' && window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(terms.join(' '), 'fr', tools);
-  if (finder) return [finder];
+  const topic = finder && terms.length === 1 && /^carburants?$/.test(terms[0]);
+  if (finder && !topic) return [finder];
   const direct = tools.filter(tool => {
     const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
     return terms.every(term => text.includes(term));
   });
-  return direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  const matches = direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  if (!topic) return matches;
+  // Preserve other fuel tools and the visitor's selected ordering.
+  const recommended = Object.assign({}, finder, { priority: Number.MAX_SAFE_INTEGER });
+  return [recommended, ...matches.filter(tool => tool.id !== finder.id)];
 }
 // FRENCH_DIRECTORY_DIRECT_SEARCH_END
 function renderTools(){

@@ -21,6 +21,8 @@ test('market price queries preserve language, country and requested fuel', () =>
     ['prix du diesel au Kenya', 'fr', french + '?country=KE&fuel=diesel#fuel-finder'],
     ['prix de l’essence en Côte d’Ivoire', 'fr', french + '?country=CI&fuel=petrol#fuel-finder'],
     ['bei ya dizeli Kenya', 'sw', swahili + '?country=KE&fuel=diesel#fuel-finder'],
+    ['Carburant', 'fr', french + '#fuel-finder'],
+    ['mafuta', 'sw', swahili + '#fuel-finder'],
     ['bei za mafuta', 'sw', swahili + '#fuel-finder']
   ]) assert.equal(window.AfroFuelDirectoryResult(query, locale, tools).href, href);
 });
