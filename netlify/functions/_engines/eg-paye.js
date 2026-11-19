@@ -13,17 +13,17 @@ const ETA_BANDS = [
 ];
 
 const EXCLUSION_RULES = [
-  { threshold: 600000, extraTax: 0, excludedBand: 0 },
-  { threshold: 700000, extraTax: 1500, excludedBand: 1 },
-  { threshold: 800000, extraTax: 2250, excludedBand: 2 },
-  { threshold: 900000, extraTax: 26000, excludedBand: 3 },
-  { threshold: 1000000, extraTax: 45000, excludedBand: 4 },
-  { threshold: 1200000, extraTax: 274750, excludedBand: 5 }
+  { threshold: 600000, extraTax: 4000, excludedBand: 0 },
+  { threshold: 700000, extraTax: 6750, excludedBand: 1 },
+  { threshold: 800000, extraTax: 10250, excludedBand: 2 },
+  { threshold: 900000, extraTax: 15250, excludedBand: 3 },
+  { threshold: 1200000, extraTax: 25250, excludedBand: 4 }
 ];
 
 const PERSONAL_EXEMPTION = 20000;
 const DISABLED_PERSONAL_EXEMPTION = 30000;
-const NOSI_CAP = 174000;
+const NOSI_CAP = 200400;
+const NOSI_FLOOR = 32400;
 const NOSI_RATE = 0.11;
 const EMPLOYER_NOSI_RATE = 0.1875;
 
@@ -88,7 +88,7 @@ module.exports = {
   countryName: 'Egypt',
   currency: 'EGP',
   regimes: ['STANDARD'],
-  lastUpdated: '2026-04-06',
+  lastUpdated: '2026-11-19',
   /* source-confidence-stamp:start */
   sourceCheckedOn: '2025-03-01',
   nextReviewDate: '2025-05-30',
@@ -104,9 +104,9 @@ module.exports = {
     } = params;
 
     const personalExemption = disabled ? DISABLED_PERSONAL_EXEMPTION : PERSONAL_EXEMPTION;
-    const nosiBase = inclNosi ? Math.min(grossAnnual, NOSI_CAP) : 0;
+    const nosiBase = inclNosi && grossAnnual > 0 ? Math.min(Math.max(grossAnnual, NOSI_FLOOR), NOSI_CAP) : 0;
     const nosi = nosiBase * NOSI_RATE;
-    const nati = Math.max(0, grossAnnual - personalExemption - nosi);
+    const nati = Math.floor(Math.max(0, grossAnnual - personalExemption - nosi) / 10) * 10;
     const standard = calcStandardTax(nati);
     const exclusion = calcExclusion(nati);
     const totalTax = standard.tax + exclusion.exclusionExtra;

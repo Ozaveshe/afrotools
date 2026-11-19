@@ -15,10 +15,11 @@
     },
     'eg-paye': {
       country: 'Égypte', currency: 'EGP', symbol: 'EGP', period: 'annual',
-      checkedOn: '2026-01-01', employeeRate: 0.11, employeeCapAnnual: 174000,
-      employerRate: 0.1875, employerCapAnnual: 174000, employeeDeductible: true, personalAllowance: 20000,
+      checkedOn: '2026-11-19', insuranceFloorMonthly: 2700, employeeRate: 0.11, employeeCapAnnual: 200400,
+      employerRate: 0.1875, employerCapAnnual: 200400, employeeDeductible: true, personalAllowance: 20000,
       bands: [[40000, 0], [55000, 0.10], [70000, 0.15], [200000, 0.20], [400000, 0.225], [1200000, 0.25], [Infinity, 0.275]],
-      exclusionAdjustments: [[600000, 0], [700000, 1500], [800000, 2250], [900000, 26000], [1000000, 45000], [1200000, 274750]]
+      taxableRounding: 10,
+      exclusionAdjustments: [[600000, 4000], [700000, 6750], [800000, 10250], [900000, 15250], [1200000, 25250]]
     },
     'sz-paye': {
       country: 'Eswatini', currency: 'SZL', symbol: 'E', period: 'annual',
@@ -159,14 +160,15 @@
         + Math.min(grossMonthly, 28570) * 0.01;
       employerMonthly = grossMonthly * 0.015;
     } else {
+      var insuredMonthly = grossMonthly > 0 ? Math.max(grossMonthly, config.insuranceFloorMonthly || 0) : 0;
       employeeMonthly = cappedContribution(
-        grossMonthly,
+        insuredMonthly,
         config.employeeRate,
         config.employeeCapMonthly,
         config.employeeCapAnnual
       );
       employerMonthly = cappedContribution(
-        grossMonthly,
+        insuredMonthly,
         config.employerRate,
         config.employerCapMonthly,
         config.employerCapAnnual
@@ -179,6 +181,7 @@
       0,
       grossBasis - (config.employeeDeductible ? employeeBasis : 0) - (config.personalAllowance || 0)
     );
+    if (config.taxableRounding) taxable = Math.floor(taxable / config.taxableRounding) * config.taxableRounding;
     var taxResult = progressiveTax(taxable, config.bands);
     var taxBasis = taxResult.tax;
     if (config.exclusionAdjustments) {

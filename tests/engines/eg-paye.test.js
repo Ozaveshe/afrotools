@@ -1,1 +1,52 @@
-module.exports=function(a,n,t,e){!function(){const n=a.calculate(2e4,{nosi:!0});e(n.tax,0,1,"EG 20K: at personal exemption -> 0 tax"),e(n.nati,0,1,"EG 20K: NATI = 0")}(),function(){const n=a.calculate(15e3,{nosi:!1});e(n.nati,0,1,"EG 15K (no NOSI): NATI = 0"),e(n.tax,0,1,"EG 15K (no NOSI): 0 tax")}(),function(){const n=a.calculate(2e5,{nosi:!0});e(n.nosi,19140,1,"EG 200K: NOSI = 19,140"),e(n.nati,160860,1,"EG 200K: NATI = 160,860"),e(n.standardTax,21922,1,"EG 200K: standard tax = 21,922"),e(n.exclusionExtra,0,1,"EG 200K: no exclusion extra"),e(n.tax,21922,1,"EG 200K: total tax = 21,922")}(),function(){const t=a.calculate(8e5,{nosi:!0});e(t.nosi,19140,1,"EG 800K: NOSI capped at 19,140"),e(t.nati,760860,1,"EG 800K: NATI = 760,860"),e(t.exclusionExtra,1500,1,"EG 800K: exclusion extra = 1,500"),n(2===t.excludedBands.length,"EG 800K: 2 bands excluded"),n(t.tax>t.standardTax,"EG 800K: total tax > standard tax")}(),function(){const n=a.calculate(15e5,{nosi:!0});e(n.nosi,19140,1,"EG 1.5M: NOSI = 19,140"),e(n.nati,1460860,1,"EG 1.5M: NATI = 1,460,860"),e(n.exclusionExtra,274750,1,"EG 1.5M: exclusion extra = 274,750"),t(n.excludedBands.length,6,"EG 1.5M: all 6 bands excluded"),e(n.marginalRate,27.5,.01,"EG 1.5M: marginal rate = 27.5%")}(),function(){const n=a.calculate(15e4,{nosi:!0}),t=a.calculate(174e3,{nosi:!0}),i=a.calculate(3e5,{nosi:!0});e(n.nosi,16500,1,"EG NOSI: below cap -> 11% of gross"),e(t.nosi,19140,1,"EG NOSI: at cap -> 11% of 174K"),e(i.nosi,19140,1,"EG NOSI: above cap -> still 11% of 174K"),e(i.nosiBase,174e3,1,"EG NOSI: nosiBase capped at 174K")}(),function(){const t=a.calculate(5e5,{nosi:!0}),i=a.calculate(5e5,{nosi:!1});e(i.nosi,0,1,"EG no NOSI: nosi = 0"),n(i.nati>t.nati,"EG no NOSI: higher NATI without NOSI"),n(i.tax>t.tax,"EG no NOSI: higher tax without NOSI")}(),function(){const e=a.calculate(3e5,{nosi:!0,disabled:!1}),i=a.calculate(3e5,{nosi:!0,disabled:!0});t(e.personalExemption,2e4,"EG normal: personal exemption = 20,000"),t(i.personalExemption,3e4,"EG disabled: personal exemption = 30,000"),n(i.nati<e.nati,"EG disabled: lower NATI"),n(i.tax<e.tax,"EG disabled: lower tax")}(),function(){const n=a.calculate(3e5,{nosi:!0});e(n.employerNOSI,32625,1,"EG employer NOSI = 32,625")}(),function(){const n=5e5,t={nosi:!0},i=a.calculate(n,t),o=a.reverseCalc(i.netAnnual,t);e(o,n,100,"EG reverse calc: round-trip within 100 EGP")}(),function(){const n=a.calculate(0,{nosi:!0});e(n.tax,0,1,"EG 0: zero salary -> 0 tax"),e(n.nosi,0,1,"EG 0: zero salary -> 0 NOSI")}(),n(!1===a.validate(0).valid,"Validate: 0 is invalid"),n(!1===a.validate(-100).valid,"Validate: negative is invalid"),n(!0===a.validate(3e5).valid,"Validate: 300K is valid")};
+// Annual taxable income before Article 8 rounding, expected tax in EGP.
+const statutoryCases = [
+  [0, 0],
+  [40000, 0],
+  [55000, 1500],
+  [70000, 3750],
+  [200000, 29750],
+  [400000, 74750],
+  [599990, 124747.5],
+  [600000, 124750],
+  [600009, 124750],
+  [600010, 128752.5],
+  [699990, 153747.5],
+  [700000, 153750],
+  [700009, 153750],
+  [700010, 156502.5],
+  [799990, 181497.5],
+  [800000, 181500],
+  [800009, 181500],
+  [800010, 185002.5],
+  [899990, 209997.5],
+  [900000, 210000],
+  [900009, 210000],
+  [900010, 215002.5],
+  [1000000, 240000],
+  [1000010, 240002.5],
+  [1199990, 289997.5],
+  [1200000, 290000],
+  [1200009, 290000],
+  [1200010, 300002.75],
+  [1500000, 382500]
+];
+
+module.exports = function testEgyptPaye(engine, assert, equal, near) {
+  for (const [taxable, expected] of statutoryCases) {
+    const result = engine.calculate(taxable + 20000, { nosi: false });
+    near(result.tax, expected, 0.01, 'Article 8 PAYE at EGP ' + taxable);
+  }
+  for (const [gross, insured] of [[0, 0], [24000, 32400], [32400, 32400], [150000, 150000], [200400, 200400], [300000, 200400]]) {
+    const result = engine.calculate(gross);
+    near(result.nosi, insured * 0.11, 0.01, 'Employee insurance at ' + gross);
+    near(result.employerNOSI, insured * 0.1875, 0.01, 'Employer insurance at ' + gross);
+    near(result.netMonthly * 12, result.netAnnual, 0.01, 'Monthly take-home at ' + gross);
+  }
+  const regular = engine.calculate(300000);
+  const disability = engine.calculate(300000, { disabled: true });
+  equal(disability.personalExemption, 30000, 'Eligible increased personal allowance');
+  assert(disability.tax < regular.tax, 'Increased allowance reduces tax');
+  equal(engine.calculate(300000, { nosi: false }).nosi, 0, 'Optional insurance switch');
+  near(engine.reverseCalc(regular.netAnnual), 300000, 100, 'Reverse calculation');
+  for (const amount of [-100, 0, 300000]) equal(engine.validate(amount).valid, amount > 0, 'Salary validity ' + amount);
+};

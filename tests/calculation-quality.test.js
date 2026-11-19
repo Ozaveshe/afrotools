@@ -491,6 +491,8 @@ test('quality report is deterministic for an explicit as-of date', function () {
     'business-roi-review-time-fold-earlier',
     'business-roi-review-time-fold-reject',
     'business-roi-review-time-invalid-calendar',
+    'paye-eg-defaults',
+    'paye-eg-large-decimal',
     'paye-gh-defaults',
     'paye-gh-large-decimal',
     'paye-ls-defaults',

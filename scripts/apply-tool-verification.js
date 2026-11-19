@@ -514,10 +514,10 @@ function applyEgyptPayeEvidence(manifest) {
     "Egyptian Tax Authority: payroll forms",
     "NOSI: insurable wage limits for 2025 and 2026"
   ];
-  entry.law_or_version = "Income Tax Law 91 of 2005, amended by Law 7 of 2024. The calculator uses the 2025 insurance ceiling of EGP 14,500 per month. From January 2026 the published ceiling is EGP 16,700.";
+  entry.law_or_version = "Income Tax Law 7 of 2024, Articles 8 and 13. For full-year employment in 2026, the model uses monthly insurable wages between EGP 2,700 and EGP 16,700.";
   entry.last_verified = "2026-11-19";
   entry.verified_by = "AfroTools: source links and insurance ceilings reviewed";
-  const highIncomeLimitation = "Use the ETA payroll forms for high incomes: the calculator’s treatment of excluded lower bands has not been validated. Insurance rates, minimum insurable pay and disability relief require separate eligibility checks.";
+  const highIncomeLimitation = "This full-year estimate assumes the entered salary is insurable. Part-year work, special insurance classes, separate health programs and relief eligibility require payroll-specific inputs.";
   entry.known_limitations = [...new Set([highIncomeLimitation, ...entry.known_limitations])];
 }
 
@@ -617,12 +617,12 @@ const EGYPT_VERIFICATION_FR = new Map([
     "NOSI : plafonds et planchers du salaire assurable pour 2025 et 2026"
   ],
   [
-    "Income Tax Law 91 of 2005, amended by Law 7 of 2024. The calculator uses the 2025 insurance ceiling of EGP 14,500 per month. From January 2026 the published ceiling is EGP 16,700.",
-    "Loi 91 de 2005 sur le revenu, modifiée par la loi 7 de 2024. Le calculateur utilise le plafond 2025 de 14 500 EGP par mois. Depuis janvier 2026, le plafond publié est de 16 700 EGP."
+    "Income Tax Law 7 of 2024, Articles 8 and 13. For full-year employment in 2026, the model uses monthly insurable wages between EGP 2,700 and EGP 16,700.",
+    "Loi 7 de 2024, articles 8 et 13. Pour une année complète en 2026, le salaire mensuel assurable retenu est compris entre 2 700 et 16 700 EGP."
   ],
   [
-    "Use the ETA payroll forms for high incomes: the calculator’s treatment of excluded lower bands has not been validated. Insurance rates, minimum insurable pay and disability relief require separate eligibility checks.",
-    "Pour les revenus élevés, utilisez les formulaires de paie officiels : le traitement des tranches exclues par le calculateur reste à valider. Les taux de cotisation, le salaire assurable minimum et les conditions liées au handicap doivent être vérifiés séparément."
+    "This full-year estimate assumes the entered salary is insurable. Part-year work, special insurance classes, separate health programs and relief eligibility require payroll-specific inputs.",
+    "Cette estimation pour une année entière suppose que le salaire saisi est assurable. Une année incomplète, les régimes spéciaux, la couverture maladie et les conditions d’exonération nécessitent des données de paie spécifiques."
   ],
   [
     "AfroTools: source links and insurance ceilings reviewed",
