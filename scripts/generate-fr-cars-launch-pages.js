@@ -372,6 +372,12 @@ function localEstimate(valueUsd, currency) {
   return value == null ? "Conversion indisponible" : money(value, currency);
 }
 
+function landedEstimate(ctx) {
+  return ctx.eligibilityStatus === "ineligible"
+    ? "Non applicable"
+    : localEstimate(ctx.landed.normal, ctx.localCurrency);
+}
+
 function fxDisclosure(currency) {
   const rate = forex.rateFor(currency);
   if (rate == null) return `<p class="fr-cars-note" data-car-fx-currency="${escapeHtml(currency)}">Conversion indisponible : aucun taux daté utilisable pour ${escapeHtml(currency)}. Saisissez un taux vérifié dans le devis modifiable.</p>`;
@@ -781,7 +787,7 @@ function renderMakePage(page) {
     return `<tr>
       <td data-label="Modèle"><a href="${modelRoute}">${escapeHtml(ctx.vehicle.model)}</a></td>
       <td data-label="Année repère">${escapeHtml(ctx.vehicle.year)}</td>
-      <td data-label="Coût rendu illustratif">${localEstimate(ctx.landed.normal, ctx.localCurrency)}</td>
+      <td data-label="Coût rendu illustratif">${landedEstimate(ctx)}</td>
       <td data-label="Prix local daté">${observedLocalPrice(ctx, country.code)}</td>
       <td data-label="Statut">${observationFor(country.code, ctx.vehicle) ? "Relevé daté" : "Devis vendeur requis"}</td>
     </tr>`;
@@ -845,7 +851,7 @@ function renderModelIndexPage(page) {
     const yearCtx = contextFor(item.countryCode, item);
     return `<tr>
       <td data-label="Année"><a href="/fr/cars/${country.frSlug}/${yearCtx.vehicle.makeSlug}/${yearCtx.vehicle.modelSlug}/${yearCtx.vehicle.year}/">${escapeHtml(yearCtx.vehicle.year)}</a></td>
-      <td data-label="Coût rendu illustratif">${localEstimate(yearCtx.landed.normal, yearCtx.localCurrency)}</td>
+      <td data-label="Coût rendu illustratif">${landedEstimate(yearCtx)}</td>
       <td data-label="Prix local daté">${observedLocalPrice(yearCtx, country.code)}</td>
       <td data-label="Risque estimé">${escapeHtml(frenchRisk(yearCtx.importRisk.label))}</td>
       <td data-label="Liquidité estimée">${escapeHtml(frenchLiquidity(yearCtx.liquidity.label))}</td>
@@ -920,7 +926,7 @@ function renderModelPage(page) {
     : `Budget source et coût d'import illustratifs pour ${vehicleName} ${place}. Aucun relevé de prix local daté n'est disponible.`;
   const priceRows = [
     [sourceObservation ? "Prix demandé marché source" : "Budget source illustratif", localEstimate(ctx.sourcePrice.median, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), sourceObservation ? `${sourceObservation.sampleSize} annonces aux Émirats arabes unis, page datée du ${escapeHtml(sourceObservation.sourceSnapshotAt)} · <a href="${escapeHtml(sourceObservation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>. Prix demandé converti, pas coût rendu.` : "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
-    ["Coût rendu illustratif", importIneligible ? "Non applicable" : localEstimate(ctx.landed.normal, ctx.localCurrency), importIneligible ? "—" : forex.rateFor(ctx.localCurrency) == null ? "Conversion indisponible" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
+    ["Coût rendu illustratif", landedEstimate(ctx), importIneligible ? "—" : forex.rateFor(ctx.localCurrency) == null ? "Conversion indisponible" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
     ["Prix demandé local observé", observation ? money(observation.median, observation.currency) : "Aucun relevé local daté", "—", observation ? `${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>` : "Un budget import ne prouve pas le prix d'un véhicule local."]
   ].map(([label, local, usd, note]) => `<tr><td data-label="Couche de prix">${label}</td><td data-label="Devise locale">${local}</td><td data-label="Référence USD">${usd}</td><td data-label="Note">${note}</td></tr>`).join("\n");
 
