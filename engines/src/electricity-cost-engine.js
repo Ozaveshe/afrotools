@@ -66,8 +66,10 @@
     return { valid: errors.length === 0, errors: errors };
   }
 
-  function percentageItems(items, base) {
-    return (items || []).map(function (item) {
+  function percentageItems(items, base, units) {
+    return (items || []).filter(function (item) {
+      return item.above_kwh == null || units > item.above_kwh;
+    }).map(function (item) {
       var amount = item.type === 'fixed' ? number(item.value) : base * number(item.value) / 100;
       return { id: item.id || 'charge', label: item.label || 'Charge', amount: round(amount, 6) };
     });
@@ -78,6 +80,13 @@
     var cost = 0;
     var breakdown = [];
     var tiers = (record.tiers || []).slice().sort(function (a, b) { return number(a.from) - number(b.from); });
+    if (record.pricing_model === 'whole_month_block') {
+      var block = tiers.find(function (tier) { return remaining > tier.from && (tier.up_to == null || remaining <= tier.up_to); });
+      if (!block) return { ok: false, error: 'Monthly usage falls outside the published blocks.' };
+      var charge = round(remaining * block.rate, 6);
+      return { ok: true, energy_charge: charge, fixed_charge: block.monthly_service_charge,
+        tier_breakdown: [{ label: block.label, units: remaining, rate: block.rate, cost: charge }] };
+    }
     for (var i = 0; i < tiers.length && remaining > 0; i += 1) {
       var tier = tiers[i];
       var from = number(tier.from);
@@ -99,11 +108,11 @@
     if (!record || units <= 0) return { ok: false, error: 'Enter electricity units greater than zero.' };
     var energy = energyCost(record, units);
     if (!energy.ok) return energy;
-    var fixed = Math.max(0, number(record.fixed_charge));
+    var fixed = Math.max(0, number(energy.fixed_charge == null ? record.fixed_charge : energy.fixed_charge));
     var subtotal = energy.energy_charge + fixed;
-    var levies = percentageItems(record.levies, subtotal);
+    var levies = percentageItems(record.levies, subtotal, units);
     var afterLevies = subtotal + levies.reduce(function (sum, item) { return sum + item.amount; }, 0);
-    var taxes = percentageItems(record.taxes, afterLevies);
+    var taxes = percentageItems(record.taxes, record.tax_base === 'before_levies' ? subtotal : afterLevies, units);
     var rawTotal = afterLevies + taxes.reduce(function (sum, item) { return sum + item.amount; }, 0);
     var total = Math.max(rawTotal, number(record.minimum_charge));
     return {
@@ -165,7 +174,7 @@
       taxes: finalBill.taxes,
       minimum_charge_applied: finalBill.minimum_charge_applied,
       total_charged: finalBill.total,
-      effective_rate: round(money / low, 4),
+      effective_rate: round((record.pricing_model === 'whole_month_block' ? finalBill.total_unrounded : money) / low, 4),
       tier_breakdown: finalBill.tier_breakdown,
       currency: record.currency,
       tariff_id: record.tariff_id,

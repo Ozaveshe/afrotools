@@ -52,12 +52,23 @@ test('Ethiopia water requires source inputs, calculates independently, reopens T
   await expect(page.locator('#waterError')).not.toBeEmpty();
   await expect(page.locator('#results')).not.toHaveClass(/\bon\b/);
 });
-test('retired Ethiopia electricity links to custom ETB journey with no automatic tariff claim', async ({ page }) => {
+test('Ethiopia electricity guide opens the EEU monthly budget and preserves custom ETB', async ({ page }) => {
+  await page.addInitScript(() => { window.__AFROTOOLS_ELECTRICITY_AS_OF__ = '2026-11-19'; });
   await page.goto(routes[4]);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   await page.getByRole('link', { name: 'Open Electricity Cost & Prepaid Units' }).click();
   await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY);
-  await page.locator('#electricityCountry').selectOption('ET');
+  await expect(page.locator('#electricityCountry')).toHaveValue('ET');
+  await expect(page.locator('#electricitySourceTitle')).toContainText('Ethiopian Electric Utility');
+  const schedule = page.locator('#electricityMonthlySchedule');
+  await schedule.locator('summary').press('Enter');
+  await expect(schedule.locator('tbody tr')).toHaveCount(7);
+  await expect(schedule.locator('tbody tr').first()).toContainText('5.21');
+  await page.locator('#electricityAmount').fill('100');
+  await page.locator('#electricityForm button[type="submit"]').click();
+  await expect(page.locator('#electricityPrimary')).toHaveText('50 kWh');
+  await expect(page.locator('#electricityMetricTwo')).toContainText('40.49');
+  await page.locator('#electricityTariff').selectOption('');
   await expect(page.locator('#electricityCustomCurrency')).toHaveValue('ETB');
   await expect(page.locator('#electricitySourceTitle')).toHaveText('Custom-rate mode');
   await page.locator('#electricityAmount').fill('1000'); await page.locator('#electricityCustomRate').fill('5');

@@ -97,7 +97,7 @@
   function updateTariffs() {
     var state = countryState();
     var rows = state.current.filter(function (record) { return !provider.value || record.provider_id === provider.value; });
-    if (country.value === 'UG' && rows.length) {
+    if ((country.value === 'UG' || country.value === 'ET') && rows.length) {
       var lang = document.documentElement.lang;
       rows.push({ tariff_id: '', tariff_name: lang === 'fr' ? 'Autre catégorie / tarif actuel saisi' : lang === 'sw' ? 'Daraja jingine / tarifa ya sasa unayoingiza' : 'Other class / custom current rate' });
     }
@@ -120,8 +120,53 @@
     document.querySelectorAll('[data-electricity-currency]').forEach(function (node) { node.textContent = customCurrency.value; });
   }
 
+  function showMonthlySchedule(record) {
+    var section = document.getElementById('electricityMonthlySchedule');
+    if (!record || record.pricing_model !== 'whole_month_block') {
+      if (section) section.remove();
+      return;
+    }
+    if (section && section.dataset.tariff === record.tariff_id) return;
+    if (!section) {
+      section = document.createElement('details');
+      section.id = 'electricityMonthlySchedule';
+      sourceCard.appendChild(section);
+    }
+    section.replaceChildren();
+    section.dataset.tariff = record.tariff_id;
+    var summary = document.createElement('summary');
+    summary.textContent = 'View monthly rates and service charges';
+    section.appendChild(summary);
+    var table = document.createElement('table');
+    var headings = table.createTHead().insertRow();
+    ['Monthly kWh', 'ETB/kWh', 'Service charge (ETB)'].forEach(function (label) {
+      var cell = document.createElement('th');
+      cell.scope = 'col';
+      cell.textContent = label;
+      headings.appendChild(cell);
+    });
+    var body = table.createTBody();
+    record.tiers.forEach(function (tier) {
+      var row = body.insertRow();
+      row.insertCell().textContent = tier.up_to == null ? '> ' + tier.from : (tier.from ? '> ' : '') + tier.from + ' – ' + tier.up_to;
+      row.insertCell().textContent = tier.rate.toFixed(2);
+      row.insertCell().textContent = tier.monthly_service_charge.toFixed(2);
+    });
+    section.appendChild(table);
+  }
+
   function renderSource() {
     var record = selectedRecord();
+    showMonthlySchedule(record);
+    var monthly = record && record.pricing_model === 'whole_month_block';
+    var budget = mode() === 'money_to_units';
+    var moneyOption = form.querySelector('input[value="money_to_units"]');
+    moneyOption.parentNode.lastChild.textContent = monthly ? ' Monthly budget → maximum kWh' : ' Money → prepaid units';
+    document.getElementById('electricityAmountLabel').textContent = budget ? (monthly ? 'Monthly budget (ETB)' : 'Purchase amount') : 'Electricity units';
+    document.getElementById('electricityAmountHelp').textContent = budget
+      ? (monthly ? 'Enter the total budget for one billing month, including the service charge.' : 'Enter the money paid for the token; do not enter a token or meter number.')
+      : 'Enter monthly or billing-period consumption in kWh.';
+    document.getElementById('electricityPrepaidFields').hidden = !budget || monthly;
     if (ugandaFields) {
       ugandaFields.hidden = !(ugandaBilling && ugandaBilling.applies(record));
       ugandaFields.style.display = ugandaFields.hidden ? 'none' : '';
@@ -175,7 +220,7 @@
   function renderCalculation(record, calculation) {
     var isUnits = calculation.mode === 'money_to_units';
     var primary = isUnits ? calculation.units.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' kWh' : engine.formatMoney(calculation.total, record.currency);
-    document.getElementById('electricityPrimaryLabel').textContent = isUnits ? 'Estimated prepaid units' : 'Estimated electricity bill';
+    document.getElementById('electricityPrimaryLabel').textContent = isUnits ? (record.pricing_model === 'whole_month_block' ? 'Maximum monthly usage within budget' : 'Estimated prepaid units') : 'Estimated electricity bill';
     document.getElementById('electricityPrimary').textContent = primary;
     document.getElementById('electricityMetricOneLabel').textContent = isUnits ? 'Amount for energy' : 'Energy charge';
     document.getElementById('electricityMetricOne').textContent = engine.formatMoney(isUnits ? calculation.amount_for_energy : calculation.energy_charge, record.currency);
@@ -184,6 +229,10 @@
     var breakdown = calculation.tier_breakdown.map(function (tier) {
       return '<li>' + tier.label + ': ' + tier.units.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' kWh × ' + engine.formatMoney(tier.rate, record.currency) + ' = ' + engine.formatMoney(tier.cost, record.currency) + '</li>';
     });
+    if (isUnits && record.pricing_model === 'whole_month_block') {
+      document.getElementById('electricityMetricTwoLabel').textContent = 'Budget left after monthly charges';
+      document.getElementById('electricityMetricTwo').textContent = engine.formatMoney(calculation.purchase_amount - calculation.total_charged, record.currency);
+    }
     if (calculation.fixed_charge > 0) breakdown.push('<li>Fixed charge: ' + engine.formatMoney(calculation.fixed_charge, record.currency) + '</li>');
     (calculation.levies || []).forEach(function (item) { breakdown.push('<li>' + item.label + ': ' + engine.formatMoney(item.amount, record.currency) + '</li>'); });
     (calculation.taxes || []).forEach(function (item) { breakdown.push('<li>' + item.label + ': ' + engine.formatMoney(item.amount, record.currency) + '</li>'); });
@@ -217,7 +266,7 @@
       record = prepared.record;
     }
     var calculation = mode() === 'money_to_units'
-      ? engine.calculateUnits(record, value, { extra_deductions: deductions() })
+      ? engine.calculateUnits(record, value, { extra_deductions: record.pricing_model === 'whole_month_block' ? [] : deductions() })
       : engine.calculateBill(record, value);
     if (!calculation.ok) return fail(amount, calculation.error);
     renderCalculation(record, calculation);
@@ -236,9 +285,6 @@
   form.addEventListener('submit', calculate);
   form.querySelectorAll('input[name="electricityMode"]').forEach(function (input) {
     input.addEventListener('change', function () {
-      document.getElementById('electricityAmountLabel').textContent = mode() === 'money_to_units' ? 'Purchase amount' : 'Electricity units';
-      document.getElementById('electricityAmountHelp').textContent = mode() === 'money_to_units' ? 'Enter the money paid for the token; do not enter a token or meter number.' : 'Enter monthly or billing-period consumption in kWh.';
-      document.getElementById('electricityPrepaidFields').hidden = mode() !== 'money_to_units';
       result.hidden = true;
       renderSource();
     });

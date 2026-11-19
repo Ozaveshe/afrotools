@@ -80,4 +80,19 @@ assert.equal(new Set(ugRows.map((record) => record.provider_id)).size, 1);
 assert.equal(new Set(ugRows.map((record) => record.customer_class)).size, 3);
 assert.equal(engine.recordsForCountry(dataset, 'GH').length, 0);
 
-console.log('Electricity cost engine verified: flat/tiered boundaries, charges, both directions, freshness, fallback and provider/class resolution.');
+const [eeuPrepaid, eeuPostpaid] = dataset.records.filter(record => record.country_code === 'ET');
+for (const [units, rate] of [[50, 1.08], [51, 2.57], [101, 4.24], [201, 6.60], [301, 6.78], [401, 6.83], [501, 6.84]]) {
+  const bill = engine.calculateBill(eeuPrepaid, units);
+  assert.equal(bill.energy_charge, engine.round(units * rate));
+  assert.equal(bill.tier_breakdown.length, 1);
+}
+assert.equal(engine.calculateBill(eeuPrepaid, 200).taxes.length, 0);
+assert.equal(engine.calculateBill(eeuPrepaid, 201).taxes.length, 1);
+assert.equal(engine.calculateBill(eeuPostpaid, 350).total, 2810.30);
+assert.equal(engine.calculateBill(eeuPrepaid, 350).total, 2771.45);
+assert.equal(engine.calculateUnits(eeuPrepaid, 100).units, 50);
+assert.equal(engine.calculateUnits(eeuPrepaid, 100).total_charged, 59.51);
+assert.equal(engine.calculateUnits(eeuPrepaid, 4).ok, false);
+assert.equal(engine.recordStatus(eeuPrepaid, '2027-01-01').reason, 'expired');
+
+console.log('Electricity cost engine verified: flat, marginal and whole-month rates, charges, both directions, freshness and custom rates.');
