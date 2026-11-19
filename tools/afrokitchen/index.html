@@ -1279,7 +1279,9 @@
     var card = document.createElement('a');
     card.className = 'ak-recipe-card';
     card.href = AKRoutes.recipe(r.slug);
-    card.setAttribute('aria-label', 'Open recipe: ' + (r.name || 'AfroKitchen recipe'));
+    var profile = r.method_review_status === 'pending-source-method';
+    var action = profile ? 'Open dish profile' : 'Open recipe';
+    card.setAttribute('aria-label', action + ': ' + (r.name || 'AfroKitchen'));
     var thumbHtml = AKImages.createCardSlotMarkup(r, {
       label: category,
       title: r.name,
@@ -1294,12 +1296,12 @@
         '<h3 class="ak-recipe-card-title">' + esc(r.name) + '</h3>' +
         '<p class="ak-recipe-card-desc">' + esc(excerptText(r.description, 122)) + '</p>' +
         '<div class="ak-recipe-card-meta">' +
-          recipeMetaItem('time', 'Time', totalMin ? totalMin + ' min' : 'Time varies') +
+          (profile ? '' : recipeMetaItem('time', 'Time', totalMin ? totalMin + ' min' : 'Time varies')) +
           recipeMetaItem('servings', 'Servings', r.default_servings ? 'Serves ' + r.default_servings : '') +
-          recipeMetaItem('difficulty', 'Difficulty', titleCase(r.difficulty || 'medium')) +
+          (profile ? '' : recipeMetaItem('difficulty', 'Difficulty', titleCase(r.difficulty || 'medium'))) +
           recipeMetaItem('diet', 'Diet', diet) +
         '</div>' +
-        '<span class="ak-recipe-card-cta">Open recipe ' + planIcon('action') + '</span>' +
+        '<span class="ak-recipe-card-cta">' + action + ' ' + planIcon('action') + '</span>' +
       '</div>';
     AKImages.hydrate(card);
     return card;
