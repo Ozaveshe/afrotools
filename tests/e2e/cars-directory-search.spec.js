@@ -93,3 +93,28 @@ test('unsourced car profile and CSV do not imply observed local demand or confid
   await expect(page.locator('#carsReport a[href*="/tools/car-import-cost/"]')).not.toHaveCount(0);
   await page.locator('.cars-score-grid').screenshot({ path: testInfo.outputPath('unsourced-score-grid.png') });
 });
+
+test('an ineligible import compares only buyer-entered local offers in the report and CSV', async ({ page }) => {
+  await page.goto('/cars/import-vs-local/kenya/toyota/camry/2012/');
+  const form = page.locator('#carsLocalOffers');
+  await expect(form).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Cost breakdown' })).toHaveCount(0);
+  const first = form.getByLabel('Local offer A, all-in (KES)');
+  const second = form.getByLabel('Local offer B, all-in (KES)');
+  await expect(first).toHaveValue('');
+  await first.fill('1,180,000');
+  await second.fill('1,250,000.50');
+  await expect(form.getByRole('status')).toHaveText('Local offer A costs KES 70,000.50 less.');
+
+  const pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export CSV' }).click();
+  const download = await pending;
+  const rows = csvRows(fs.readFileSync(await download.path(), 'utf8').replace(/^\uFEFF/, ''));
+  const row = Object.fromEntries(rows[0].map((key, index) => [key, rows[1][index]]));
+  expect(row).toMatchObject({ import_eligibility: 'ineligible', landed_normal_local: '', landed_normal_usd: '',
+    local_ask_median_local: '', monthly_finance_local: '', buyer_local_offer_difference: '70000.5' });
+  await second.fill('1,00');
+  await expect(form.getByRole('status')).toContainText('Enter both positive quote totals');
+  await second.fill('1180000');
+  await expect(form.getByRole('status')).toHaveText('Both local offers have the same all-in price.');
+});
