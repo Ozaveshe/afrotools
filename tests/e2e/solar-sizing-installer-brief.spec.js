@@ -70,3 +70,22 @@ test('builds one copyable installer brief from the real appliance calculation', 
   expect(dimensions.documentWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
   expect(runtimeErrors).toEqual([]);
 });
+
+test('keyboard focus follows appliance additions and removals', async ({ page }) => {
+  await page.goto('/tools/solar-sizing/');
+  const add = page.getByRole('button', { name: 'Add Appliance' });
+  const rows = page.locator('#appList .appliance-row');
+  await add.focus();
+  await page.keyboard.press('Enter');
+  await expect(rows).toHaveCount(6);
+  await expect(rows.last().getByRole('textbox')).toBeFocused();
+  await rows.nth(1).getByRole('button').focus();
+  await page.keyboard.press('Enter');
+  await expect(rows.nth(1).getByRole('textbox')).toBeFocused();
+  while (await rows.count()) {
+    await rows.last().getByRole('button').focus();
+    await page.keyboard.press('Enter');
+    if (await rows.count()) await expect(rows.last().getByRole('textbox')).toBeFocused();
+  }
+  await expect(add).toBeFocused();
+});

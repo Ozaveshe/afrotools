@@ -284,7 +284,16 @@ function addRow(preset){
   renderRows();
   invalidateInstallerBrief();
 }
-function removeRow(idx){rows.splice(idx,1);renderRows();invalidateInstallerBrief();}
+function focusApplianceRow(index){
+  var row=document.querySelectorAll("#appList .appliance-row")[index];
+  (row ? row.querySelector("input") : document.getElementById("addBtn")).focus();
+}
+function removeRow(idx){
+  rows.splice(idx,1);
+  renderRows();
+  invalidateInstallerBrief();
+  focusApplianceRow(Math.min(idx,rows.length-1));
+}
 function renderRows(){
   var list=document.getElementById("appList");
   list.innerHTML="";
@@ -320,6 +329,7 @@ window.addEventListener("afro-energy-appliance-preset",function(ev){
 
 document.getElementById("addBtn").addEventListener("click",function(){
   addRow({name:"",watts:0,hours:1,qty:1});
+  focusApplianceRow(rows.length-1);
 });
 document.getElementById("countrySelect").addEventListener("change",invalidateInstallerBrief);
 

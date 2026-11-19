@@ -1379,9 +1379,13 @@ for (const row of manifest.rows) {
   });
 }
 
-test("hub exposes exactly 34 unique French physical routes", async ({ page }) => {
+test("hub lists each distinct French tool and links to the quote comparator once", async ({ page }) => {
   await page.goto("/fr/uniquely-african/", { waitUntil: "domcontentloaded" });
-  const hrefs = await page.locator("main a[href^='/fr/tools/']").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
-  expect(new Set(hrefs)).toEqual(new Set(manifest.rows.map((row) => row.french.route)));
-  expect(hrefs.length).toBe(34);
+  const hrefs = await page.locator(".ua-hub-card h2 a").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+  const destinations = manifest.rows.filter(row => row.english.id !== 'remittance-v2').map(row => row.french.route);
+  expect(hrefs).toEqual(destinations);
+  expect(new Set(hrefs).size).toBe(33);
+  await page.getByRole('link', { name: 'Comparer deux devis', exact: true }).click();
+  await expect(page).toHaveURL(/#ua-remittance-compare$/);
+  await expect(page.locator('#ua-remittance-compare h2 a')).toHaveAttribute('href', '/fr/tools/transfert-argent/');
 });

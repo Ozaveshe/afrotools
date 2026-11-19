@@ -29,7 +29,7 @@ const NATIVE_TITLES = Object.freeze({
   "amount-words-gh": "Cedis ghanéens en lettres",
   "susu-tracker": "Suivi Susu, Esusu et Chama",
   "whatsapp-link": "Générateur de lien WhatsApp",
-  "remittance-compare": "Comparateur de transferts vers l’Afrique",
+  "remittance-compare": "Comparateur de devis de transfert",
   "remittance-v2": "Comparateur de transferts détaillé",
   "brideprice-advisor": "Conseiller de préparation de la dot",
   "ajo-interest": "Calculateur d’intérêt et de rotation tontine",
@@ -45,7 +45,7 @@ const NATIVE_CONTEXTS = Object.freeze({
   "amount-words-gh": "Écrivez les montants en cedis et pesewas selon les conventions documentaires du Ghana.",
   "susu-tracker": "Suivez une rotation Susu, Esusu, Chama ou Tontine en conservant le terme du groupe, l’ordre et les échéances.",
   "whatsapp-link": "Créez localement un lien WhatsApp avec l’indicatif international correct et sans envoyer le numéro à AfroTools.",
-  "remittance-compare": "Comparez des corridors de transfert diaspora vers l’Afrique avec devise, frais, marge de change et fraîcheur visibles.",
+  "remittance-compare": "Saisissez deux devis pour le même transfert et comparez le montant reçu après frais.",
   "remittance-v2": "Préparez une comparaison détaillée de transferts avec montant reçu, frais, change, délai et limites de chaque fournisseur.",
   "brideprice-advisor": "Préparez une discussion de dot avec respect, consentement, coutumes choisies et limites financières explicites.",
   "ajo-interest": "Comparez la valeur temporelle d’une rotation Ajo ou Tontine sans réduire l’entraide à un simple produit de crédit.",
@@ -449,21 +449,25 @@ function reciprocalLocaleOwners(row, changes) {
 }
 
 function hubHtml(manifest) {
-  const cards = manifest.rows.map((row) => {
+  // The V2 remittance entry is a permanently retired alias of the quote comparator.
+  const listings = manifest.rows.filter(row => row.english.id !== 'remittance-v2');
+  const regionNames = new Intl.DisplayNames(['fr'], { type: 'region' });
+  const cards = listings.map((row) => {
+    const countries = row.countryCodes.filter(code => /^[A-Z]{2}$/.test(code)).map(code => regionNames.of(code)).join(', ');
     const presentation = getPresentation(row.english.id);
     const registryName = presentation ? presentation.title : NATIVE_TITLES[row.english.id];
     const context = presentation ? presentation.culturalContext || presentation.description : NATIVE_CONTEXTS[row.english.id];
     if (!registryName) throw new Error(`Missing hub title for ${row.english.id}`);
     if (!context) throw new Error(`Missing French hub context for ${row.english.id}`);
-    return `<article class="ua-hub-card"><img src="/${escapeHtml(row.artwork.path)}" width="240" height="135" alt="" loading="lazy"><div><p>${escapeHtml(context)}</p><h2><a href="${normalizeRoute(row.french.route)}">${escapeHtml(registryName)}</a></h2><span>${escapeHtml(row.countryCodes.join(", "))}</span></div></article>`;
+    return `<article class="ua-hub-card" id="ua-${escapeHtml(row.english.id)}"><img src="/${escapeHtml(row.artwork.path)}" width="240" height="135" alt="" loading="lazy"><div><p>${escapeHtml(context)}</p><h2><a href="${normalizeRoute(row.french.route)}">${escapeHtml(registryName)}</a></h2>${countries ? `<span>${escapeHtml(countries)}</span>` : ''}</div></article>`;
   }).join("\n");
   return `<!doctype html>
 <html lang="fr" data-theme="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>34 outils typiquement africains en français | AfroTools</title>
-  <meta name="description" content="Les 34 applications gratuites typiquement africaines d’AfroTools: calculs, cultures, marchés, diaspora, tissus, recettes et données, avec propriétaires français natifs.">
+  <title>Outils pour la vie quotidienne en Afrique | AfroTools</title>
+  <meta name="description" content="Comparez des devis de transfert, planifiez une tontine ou consultez le calendrier des marchés igbo.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://afrotools.com/fr/uniquely-african/">
   <link rel="alternate" hreflang="en" href="https://afrotools.com/uniquely-african/">
@@ -472,14 +476,14 @@ function hubHtml(manifest) {
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="AfroTools">
-  <meta property="og:title" content="34 outils typiquement africains en français">
-  <meta property="og:description" content="Des outils africains natifs en français, sans iframe ni passage par une interface anglaise.">
+  <meta property="og:title" content="Outils pour la vie quotidienne en Afrique">
+  <meta property="og:description" content="Des outils pour préparer vos transferts, votre épargne et vos achats au marché.">
   <meta property="og:url" content="https://afrotools.com/fr/uniquely-african/">
   <meta property="og:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/fr-uniquely-african.css">
-  <script type="application/ld+json">${jsonForHtml({ "@context": "https://schema.org", "@type": "CollectionPage", name: "34 outils typiquement africains en français", url: "https://afrotools.com/fr/uniquely-african/", inLanguage: "fr", numberOfItems: 34 })}</script>
+  <script type="application/ld+json">${jsonForHtml({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Outils pour la vie quotidienne en Afrique", url: "https://afrotools.com/fr/uniquely-african/", inLanguage: "fr", mainEntity: { "@type": "ItemList", numberOfItems: listings.length } })}</script>
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
 </head>
@@ -488,9 +492,9 @@ function hubHtml(manifest) {
   <afro-navbar></afro-navbar>
   <main id="ua-hub" class="ua-page ua-hub">
     <nav class="ua-breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span aria-hidden="true">›</span><span>Outils typiquement africains</span></nav>
-    <header class="ua-hub-hero"><p class="ua-eyebrow">Uniquement africain</p><h1>34 outils africains, entièrement en français</h1><p>Chaque carte correspond à une application physique du programme. Les noms locaux, pays, monnaies, unités, sources et limites restent visibles; aucune carte ne renvoie vers une interface anglaise.</p></header>
-    <div class="ua-hub-count"><strong>34 / 34</strong><span>routes sémantiques réconciliées</span></div>
-    <section class="ua-hub-grid" aria-label="Catalogue des 34 applications">${cards}</section>
+    <header class="ua-hub-hero"><h1>Outils pour la vie quotidienne en Afrique</h1><p>Comparez deux devis de transfert, planifiez les tours d’une tontine ou retrouvez les jours de marché igbo.</p></header>
+    <nav class="ua-next" aria-label="Accès rapide"><a href="#ua-remittance-compare">Comparer deux devis</a><a href="#ua-ajo-chama">Planifier une tontine</a><a href="#ua-market-days">Consulter le calendrier des marchés</a></nav>
+    <section class="ua-hub-grid" aria-label="Catalogue des ${listings.length} outils">${cards}</section>
   </main>
   <afro-footer></afro-footer>
 </body>
