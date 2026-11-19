@@ -906,6 +906,60 @@ function renderModelIndexPage(page) {
   return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl(enRoute), schema, body }));
 }
 
+const comparisonMarkets = {
+  CI: {
+    make: "hyundai", model: "elantra", year: 2018,
+    guidance: "Pour une voiture de tourisme, la limite publiée est de cinq ans depuis la première mise en circulation à l’étranger. Une Elantra mise en circulation en 2018 dépasse cette limite. Comparez des offres locales ; l’année-modèle seule ne prouve pas la date de mise en circulation.",
+    authority: "Conseil des ministres de Côte d’Ivoire",
+    source: "https://www.gouv.ci/uploads/publications/1512588358Communique-du-Conseil-des-Ministres-du-mercredi-06-decembre-2017.pdf"
+  },
+  CM: {
+    make: "ford", model: "ranger", year: 2018,
+    guidance: "Demandez un devis de dédouanement pour la version exacte du pick-up, puis ajoutez le fret, les frais portuaires et les frais de mise en circulation.",
+    authority: "Douanes camerounaises",
+    source: "https://www.douanes.cm/douanes-cameroun/importation/"
+  },
+  TZ: {
+    make: "toyota", model: "axio", year: 2018,
+    guidance: "La valeur retenue dépend notamment du modèle, de la cylindrée et de l’année de production. Vérifiez la version exacte auprès de la Tanzania Revenue Authority et demandez les frais de transport et de mise en circulation.",
+    authority: "Portail du commerce de Tanzanie",
+    source: "https://trade.tanzania.go.tz/procedure/266?l=en"
+  }
+};
+
+function comparisonRoute(country, vehicle) {
+  return `fr/cars/import-vs-local/${country.enSlug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`;
+}
+
+function renderQuoteComparison(countryCode, spec) {
+  const country = countryByCode(countryCode);
+  const ctx = contextFor(countryCode, spec);
+  const v = ctx.vehicle;
+  const route = comparisonRoute(country, v);
+  const detail = `/fr/cars/${country.frSlug}/${v.makeSlug}/${v.modelSlug}/${v.year}/`;
+  const name = `${v.make} ${v.model} ${v.year}`;
+  const title = `Importer ou acheter sur place une ${name} ${countryPlace(country)} ?`;
+  const currency = ctx.localCurrency;
+  const localOnly = countryCode === "CI" || ctx.eligibilityStatus === "ineligible";
+  const description = `Comparez deux devis pour une ${name} ${countryPlace(country)}, tous frais compris en ${currency}.`;
+  const firstLabel = localOnly ? "Première offre locale" : "Devis d’import, véhicule immatriculé";
+  const secondLabel = localOnly ? "Deuxième offre locale" : "Offre locale, véhicule immatriculé";
+  const field = (id, label) => `<p><label for="${id}">${label} (${currency})</label><br><input id="${id}" name="${id}" type="number" inputmode="numeric" required min="1" max="9007199254740991" step="1"></p>`;
+  const body = `<main><section class="fr-cars-hero"><div class="fr-cars-shell"><h1>${title}</h1><p>${description}</p></div></section>
+    <section class="fr-cars-shell fr-cars-band"><p>${spec.guidance} <a href="${spec.source}">${spec.authority}</a></p>
+    <article class="fr-cars-card"><h2>${localOnly ? "Comparer deux offres locales" : "Comparer vos devis"}</h2>
+    <p>${localOnly ? "Saisissez les prix des deux véhicules disponibles sur place, avec les frais de transfert et de mise en circulation." : "Pour l’import, utilisez un devis écrit comprenant achat, transport, assurance, droits, taxes, port et immatriculation. Pour l’offre locale, ajoutez les frais de transfert et d’immatriculation. Comparez des véhicules de version et d’état similaires."}</p>
+    <form id="car-quote-comparison" data-currency="${currency}" data-local-only="${localOnly}">
+${localOnly ? "" : '    <label><input type="checkbox" required> J’ai vérifié que ce véhicule peut être importé et immatriculé.</label>'}
+    ${field("first-quote", firstLabel)}${field("second-quote", secondLabel)}
+    <button class="fr-cars-button" type="submit">Comparer les montants</button>
+    <output style="display:block;margin-top:1rem" aria-live="polite"></output></form>
+    <noscript>Soustrayez le plus petit devis du plus grand pour obtenir l’écart.</noscript></article>
+    <p><a href="${detail}">Consulter la fiche française de la ${name}</a></p></section></main>
+    <script src="/assets/js/pages/fr-car-quote-comparison.js" defer></script>`;
+  return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl(route.slice(3)), schema: breadcrumb([{name:"Voitures",url:absUrl("fr/cars")},{name:title,url:absUrl(route)}]), body }));
+}
+
 function renderModelPage(page) {
   const country = countryByCode(page.countryCode);
   const ctx = contextFor(page.countryCode, page);
@@ -961,7 +1015,8 @@ function renderModelPage(page) {
         <p>${observation ? `Au ${escapeHtml(observation.reviewedAt)}, un petit relevé de ${observation.sampleSize} annonces${observation.sampleVariant ? ` pour ${escapeHtml(observationLabel(observation, ctx.vehicle))}` : ""} donnait un prix demandé médian de ${money(observation.median, observation.currency)}. Ce n'est pas un prix de vente conclu.` : "Aucun prix local observé et daté n'est disponible pour cette voiture. Demandez un devis vendeur avant de comparer."}</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/${country.frSlug}/">Voir ${escapeHtml(country.frName)}</a>
-          <a class="fr-cars-button secondary" href="/cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}/">Voir la fiche complète en anglais</a>
+          ${comparisonMarkets[country.code]?.make === page.make && comparisonMarkets[country.code].model === page.model && comparisonMarkets[country.code].year === page.year ? `<a class="fr-cars-button" href="/${comparisonRoute(country, ctx.vehicle)}/">Comparer mes devis</a>
+          ` : ""}<a class="fr-cars-button secondary" href="/cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}/">Voir la fiche complète en anglais</a>
         </div>
       </div>
     </section>
@@ -993,6 +1048,7 @@ COUNTRIES.forEach((country) => written.push(renderCountryPage(country)));
 MAKE_PAGES.forEach((page) => written.push(renderMakePage(page)));
 MODEL_INDEX_PAGES.forEach((page) => written.push(renderModelIndexPage(page)));
 MODEL_PAGES.forEach((page) => written.push(renderModelPage(page)));
+Object.entries(comparisonMarkets).forEach(([code, spec]) => written.push(renderQuoteComparison(code, spec)));
 reciprocalPairs.forEach(injectEnglishHreflang);
 
 console.log(`Generated ${written.length} French cars launch pages`);
