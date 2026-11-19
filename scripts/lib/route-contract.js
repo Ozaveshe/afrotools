@@ -704,6 +704,7 @@ function buildRouteGraph(sourceOverride) {
     })),
     policy: {
       localeHomes: sources.policy.localeHomes,
+      canonicalDecisions: sources.policy.canonicalDecisions,
       fallbackLabels: sources.policy.fallbackLabels,
       routeNormalization: sources.policy.routeNormalization
     }
@@ -961,6 +962,22 @@ function loadInternalLinks(graph) {
   return links;
 }
 
+// Preserve selected links in a cache-pinned shared asset only when the alias
+// is a direct permanent redirect to a page in the same locale.
+function canKeepInternalAlias(graph, record, sourceFile) {
+  if (!sourceFile) return false;
+  const decision = (graph.policy?.canonicalDecisions || []).find((item) =>
+    item.preserveLinksIn?.includes(sourceFile) &&
+    normalizeRoute(item.source) === normalizeRoute(record.route)
+  );
+  if (!decision) return false;
+  const resolution = resolveFinalRoute(graph, record.route);
+  const target = getRouteRecord(graph, resolution.finalRoute);
+  return resolution.hops === 1 &&
+    normalizeRoute(decision.destination) === normalizeRoute(resolution.finalRoute) &&
+    target?.state === "page" && target.locale === record.locale;
+}
+
 function validateInternalLinks(links, graph) {
   const errors = [];
   for (const link of links) {
@@ -975,6 +992,7 @@ function validateInternalLinks(links, graph) {
     }
     const record = getRouteRecord(graph, route);
     if (record && record.state === "redirect" && PERMANENT_CODES.has(Number(record.statusCode))) {
+      if (canKeepInternalAlias(graph, record, link.sourceFile)) continue;
       errors.push(issue("INTERNAL_LINK_ALIAS", record, "href", `${link.sourceRoute} links to ${route}; use ${resolveFinalRoute(graph, route).finalRoute}`));
     }
   }
@@ -1007,7 +1025,7 @@ function validateRouteGraph(graph, options = {}) {
   return { ok: errors.length === 0, errors, warnings };
 }
 
-function rewriteInternalHref(graph, href) {
+function rewriteInternalHref(graph, href, sourceFile) {
   const input = String(href || "");
   if (!input || input.startsWith("#") || /^(?:mailto:|tel:|javascript:|data:)/i.test(input)) return input;
   const absolute = input.startsWith(SITE_ORIGIN);
@@ -1020,6 +1038,7 @@ function rewriteInternalHref(graph, href) {
   if (parsed.origin !== SITE_ORIGIN) return input;
   const record = getRouteRecord(graph, parsed.pathname);
   if (!record || record.state !== "redirect" || !PERMANENT_CODES.has(Number(record.statusCode))) return input;
+  if (canKeepInternalAlias(graph, record, sourceFile)) return input;
   const finalRoute = resolveFinalRoute(graph, parsed.pathname).finalRoute;
   const suffix = `${parsed.search || ""}${parsed.hash || ""}`;
   return `${absolute ? SITE_ORIGIN : ""}${finalRoute}${suffix}`;
@@ -1274,9 +1293,10 @@ function syncInternalLinks(graph, options = {}) {
   for (const filePath of filePaths) {
     if (!fs.existsSync(filePath)) continue;
     const original = fs.readFileSync(filePath, "utf8");
+    const sourceFile = path.relative(ROOT, filePath).replace(/\\/g, "/");
     let fileReplacements = 0;
     const next = original.replace(/(\bhref(?:Fr|Sw|Ha|Yo)?\s*(?:=|:)\s*)(["'])([^"']+)\2/gi, (match, prefix, quote, href) => {
-      const rewritten = rewriteInternalHref(graph, href);
+      const rewritten = rewriteInternalHref(graph, href, sourceFile);
       if (rewritten === href) return match;
       fileReplacements += 1;
       return `${prefix}${quote}${rewritten}${quote}`;
