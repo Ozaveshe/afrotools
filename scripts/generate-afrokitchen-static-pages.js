@@ -1441,6 +1441,7 @@ function buildPendingMethodPageHtml(recipe, recipeImages) {
 <meta name="afrokitchen-schema-blockers" content="source_method_pending"><link rel="canonical" href="${escapeHtml(recipe.route_url)}">
 <meta property="og:title" content="${escapeHtml(recipe.name)} | AfroKitchen"><meta property="og:description" content="${escapeHtml(recipe.description)}">
 <meta property="og:type" content="website"><meta property="og:image" content="${escapeHtml(media.socialImage || TOOL_OG_IMAGE)}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${escapeHtml(media.socialImage || TOOL_OG_IMAGE)}">
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/tools/afrokitchen/style.css">
 <style>
 .ak-pending-page { background:var(--color-bg); color:var(--color-text); }
