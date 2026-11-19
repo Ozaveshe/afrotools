@@ -1,0 +1,3682 @@
+{
+  "schemaVersion": 1,
+  "forms": {
+    "cac-cost": {
+      "englishId": "cac-cost",
+      "name": "Coût d’enregistrement CAC",
+      "frenchRoute": "/fr/tools/cout-cac",
+      "workflowControl": "Calculer le coût CAC",
+      "engineMode": "cac-cost",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "entityType",
+          "label": "Forme CAC",
+          "type": "select",
+          "options": [
+            [
+              "bn",
+              "Nom commercial"
+            ],
+            [
+              "llc",
+              "Société à responsabilité limitée"
+            ],
+            [
+              "llp",
+              "Société de personnes à responsabilité limitée"
+            ],
+            [
+              "ngo",
+              "Organisation à but non lucratif"
+            ],
+            [
+              "plc",
+              "Société anonyme"
+            ]
+          ],
+          "exampleValue": "bn"
+        },
+        {
+          "name": "shareCapital",
+          "label": "Capital social (NGN)",
+          "type": "number",
+          "min": 10000,
+          "step": 10000,
+          "exampleValue": "1000000"
+        },
+        {
+          "name": "directors",
+          "label": "Nombre d’administrateurs",
+          "type": "number",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "exampleValue": "2"
+        },
+        {
+          "name": "useAgent",
+          "label": "Mode de dépôt",
+          "type": "select",
+          "options": [
+            [
+              "self",
+              "Dépôt direct"
+            ],
+            [
+              "agent",
+              "Agent ou avocat accrédité"
+            ]
+          ],
+          "exampleValue": "self"
+        },
+        {
+          "name": "express",
+          "label": "Traitement express",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        },
+        {
+          "name": "addTin",
+          "label": "NIF après immatriculation",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "addScuml",
+          "label": "Inscription SCUML",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "addAnnualReturns",
+          "label": "Déclaration annuelle de première année",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "addStatusReport",
+          "label": "Rapport de statut de la société",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "cipc-cost": {
+      "englishId": "cipc-cost",
+      "name": "Coût d’enregistrement CIPC (SA)",
+      "frenchRoute": "/fr/tools/cout-cipc",
+      "workflowControl": "Calculer le coût CIPC",
+      "engineMode": "cipc-cost",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "entityType",
+          "label": "Forme CIPC",
+          "type": "select",
+          "options": [
+            [
+              "pty",
+              "Société privée (Pty Ltd)"
+            ],
+            [
+              "inc",
+              "Société à responsabilité personnelle"
+            ],
+            [
+              "npc",
+              "Société à but non lucratif (NPC)"
+            ],
+            [
+              "coop",
+              "Coopérative"
+            ],
+            [
+              "ext",
+              "Société étrangère"
+            ]
+          ],
+          "exampleValue": "pty"
+        },
+        {
+          "name": "method",
+          "label": "Mode de dépôt",
+          "type": "select",
+          "options": [
+            [
+              "online",
+              "En ligne"
+            ],
+            [
+              "manual",
+              "Manuel"
+            ]
+          ],
+          "exampleValue": "online"
+        },
+        {
+          "name": "nameRes",
+          "label": "Réserver le nom",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "bbbee",
+          "label": "Ajouter l’affidavit B-BBEE",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "taxReg",
+          "label": "Ajouter l’inscription SARS",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "uif",
+          "label": "Ajouter l’inscription UIF",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "coida",
+          "label": "Ajouter l’inscription COIDA",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "useAgent",
+          "label": "Utiliser un agent",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "data-compliance": {
+      "englishId": "data-compliance",
+      "name": "Conformite données",
+      "frenchRoute": "/fr/tools/conformite-donnees",
+      "workflowControl": "Évaluer la conformité",
+      "engineMode": "data-compliance",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "lawfulBasis",
+          "label": "Base légale documentée",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "privacyNotice",
+          "label": "Notice de confidentialité fournie",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "retention",
+          "label": "Durée de conservation définie",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "breachPlan",
+          "label": "Procédure de violation testée",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "jurisdiction",
+          "label": "Cadre principal",
+          "type": "select",
+          "options": [
+            [
+              "NDPA",
+              "Loi nigériane NDPA"
+            ],
+            [
+              "POPIA",
+              "Loi sud-africaine POPIA"
+            ],
+            [
+              "other",
+              "Autre cadre africain"
+            ]
+          ],
+          "exampleValue": "POPIA"
+        }
+      ]
+    },
+    "contract-gen": {
+      "englishId": "contract-gen",
+      "name": "Générateur de contrat",
+      "frenchRoute": "/fr/tools/generateur-contrat",
+      "workflowControl": "Générer le contrat",
+      "engineMode": "contract-gen",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "partyA",
+          "label": "Partie A",
+          "type": "text",
+          "exampleValue": "Awa Exemple"
+        },
+        {
+          "name": "partyB",
+          "label": "Partie B",
+          "type": "text",
+          "exampleValue": "Moussa Exemple"
+        },
+        {
+          "name": "obligation",
+          "label": "Obligation principale",
+          "type": "text",
+          "exampleValue": "Livraison du service test"
+        },
+        {
+          "name": "payment",
+          "label": "Paiement convenu",
+          "type": "text",
+          "exampleValue": "XOF 250 000"
+        },
+        {
+          "name": "startDate",
+          "label": "Date de début",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "jurisdiction",
+          "label": "Juridiction à vérifier",
+          "type": "text",
+          "exampleValue": "Sénégal"
+        }
+      ]
+    },
+    "tenancy-deposit": {
+      "englishId": "tenancy-deposit",
+      "name": "Caution locative",
+      "frenchRoute": "/fr/tools/caution-locative",
+      "workflowControl": "Calculer le coût d’entrée",
+      "engineMode": "tenancy-deposit",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "ng",
+              "Nigeria"
+            ],
+            [
+              "ke",
+              "Kenya"
+            ],
+            [
+              "za",
+              "Afrique du Sud"
+            ],
+            [
+              "gh",
+              "Ghana"
+            ]
+          ],
+          "exampleValue": "ng"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer mensuel",
+          "type": "number",
+          "exampleValue": "500000"
+        },
+        {
+          "name": "advanceMonths",
+          "label": "Mois d’avance",
+          "type": "number",
+          "exampleValue": "12"
+        },
+        {
+          "name": "depositMonths",
+          "label": "Mois de dépôt",
+          "type": "number",
+          "exampleValue": "1"
+        },
+        {
+          "name": "agentFee",
+          "label": "Commission de l’agent (%)",
+          "type": "number",
+          "exampleValue": "10"
+        },
+        {
+          "name": "legalFee",
+          "label": "Frais juridiques",
+          "type": "select",
+          "options": [
+            [
+              "none",
+              "Aucun"
+            ],
+            [
+              "annual-five",
+              "5 % du loyer annuel"
+            ],
+            [
+              "annual-ten",
+              "10 % du loyer annuel"
+            ],
+            [
+              "flat50000",
+              "Forfait local"
+            ]
+          ],
+          "exampleValue": "annual-five"
+        },
+        {
+          "name": "serviceCharge",
+          "label": "Charge mensuelle de service",
+          "type": "number",
+          "exampleValue": "1000"
+        }
+      ]
+    },
+    "leave-days": {
+      "englishId": "leave-days",
+      "name": "Calculateur de congés",
+      "frenchRoute": "/fr/tools/calculateur-conges",
+      "workflowControl": "Afficher les droits légaux",
+      "engineMode": "leave-days",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        }
+      ]
+    },
+    "visa-cost": {
+      "englishId": "visa-cost",
+      "name": "Coût visa",
+      "frenchRoute": "/fr/tools/cout-visa",
+      "workflowControl": "Comparer le parcours de visa",
+      "engineMode": "visa-cost",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "passport",
+          "label": "Passeport",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "destination",
+          "label": "Destination",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ],
+            [
+              "KE",
+              "Kenya"
+            ]
+          ],
+          "exampleValue": "KE"
+        },
+        {
+          "name": "visaType",
+          "label": "Type de voyage",
+          "type": "select",
+          "options": [
+            [
+              "evisa",
+              "Visa électronique"
+            ],
+            [
+              "tourism",
+              "Tourisme"
+            ],
+            [
+              "business",
+              "Affaires"
+            ],
+            [
+              "transit",
+              "Transit"
+            ]
+          ],
+          "exampleValue": "evisa"
+        },
+        {
+          "name": "officialFee",
+          "label": "Frais officiels confirmés (USD)",
+          "type": "number",
+          "exampleValue": "30"
+        },
+        {
+          "name": "serviceFee",
+          "label": "Frais de service saisis (USD)",
+          "type": "number",
+          "exampleValue": "0"
+        }
+      ]
+    },
+    "stamp-duty": {
+      "englishId": "stamp-duty",
+      "name": "Droits d'enregistrement",
+      "frenchRoute": "/fr/tools/droits-enregistrement",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "stamp-duty",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "value",
+          "label": "Valeur de la transaction",
+          "type": "number",
+          "exampleValue": "100000"
+        },
+        {
+          "name": "rate",
+          "label": "Taux saisi (%)",
+          "type": "number",
+          "exampleValue": "2.5"
+        },
+        {
+          "name": "fixed",
+          "label": "Frais fixes",
+          "type": "number",
+          "exampleValue": "500"
+        }
+      ]
+    },
+    "property-tax": {
+      "englishId": "property-tax",
+      "name": "Taxe foncière",
+      "frenchRoute": "/fr/tools/taxe-fonciere",
+      "workflowControl": "Calculer la taxe foncière",
+      "engineMode": "property-tax",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "city",
+          "label": "Ville ou région",
+          "type": "select",
+          "options": [
+            [
+              "lagos",
+              "Lagos"
+            ],
+            [
+              "dakar",
+              "Dakar"
+            ],
+            [
+              "abidjan",
+              "Abidjan"
+            ],
+            [
+              "johannesburg",
+              "Johannesburg"
+            ]
+          ],
+          "exampleValue": "lagos"
+        },
+        {
+          "name": "use",
+          "label": "Usage du bien",
+          "type": "select",
+          "options": [
+            [
+              "residential",
+              "Résidentiel"
+            ],
+            [
+              "rental",
+              "Location"
+            ],
+            [
+              "commercial",
+              "Commercial"
+            ],
+            [
+              "industrial",
+              "Industriel"
+            ]
+          ],
+          "exampleValue": "residential"
+        },
+        {
+          "name": "propertyValue",
+          "label": "Valeur du bien",
+          "type": "number",
+          "exampleValue": "50000000"
+        }
+      ]
+    },
+    "rental-yield": {
+      "englishId": "rental-yield",
+      "name": "Rendement locatif",
+      "frenchRoute": "/fr/tools/rendement-locatif",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "rental-yield",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "value",
+          "label": "Valeur du bien",
+          "type": "number",
+          "exampleValue": "100000"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer mensuel",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "costs",
+          "label": "Charges annuelles",
+          "type": "number",
+          "exampleValue": "2000"
+        }
+      ]
+    },
+    "land-title-check": {
+      "englishId": "land-title-check",
+      "name": "Vérification de titre foncier en Afrique",
+      "frenchRoute": "/fr/tools/verification-titre-foncier",
+      "workflowControl": "Évaluer la checklist",
+      "engineMode": "land-title-check",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "check1",
+          "label": "Identité et pouvoir du vendeur",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check2",
+          "label": "Recherche officielle au registre",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check3",
+          "label": "Référence parcellaire concordante",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check4",
+          "label": "Charges et litiges examinés",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "property-valuation": {
+      "englishId": "property-valuation",
+      "name": "Évaluation immobilière",
+      "frenchRoute": "/fr/tools/evaluation-immobiliere",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "property-valuation",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "area",
+          "label": "Surface",
+          "type": "number",
+          "exampleValue": "100"
+        },
+        {
+          "name": "comparable",
+          "label": "Prix comparable par unité",
+          "type": "number",
+          "exampleValue": "1500"
+        },
+        {
+          "name": "adjustment",
+          "label": "Ajustement (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "rent-affordability": {
+      "englishId": "rent-affordability",
+      "name": "Capacité de loyer",
+      "frenchRoute": "/fr/tools/capacite-loyer",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "rent-affordability",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "income",
+          "label": "Revenu net mensuel",
+          "type": "number",
+          "exampleValue": "5000"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer mensuel",
+          "type": "number",
+          "exampleValue": "1200"
+        },
+        {
+          "name": "ratio",
+          "label": "Ratio budgétaire (%)",
+          "type": "number",
+          "exampleValue": "30"
+        },
+        {
+          "name": "advance",
+          "label": "Mois de loyer d’avance",
+          "type": "number",
+          "exampleValue": "2"
+        }
+      ]
+    },
+    "tenant-screening": {
+      "englishId": "tenant-screening",
+      "name": "Vérification de locataire en Afrique",
+      "frenchRoute": "/fr/tools/verification-locataire",
+      "workflowControl": "Évaluer la checklist",
+      "engineMode": "tenant-screening",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "check1",
+          "label": "Consentement du candidat obtenu",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check2",
+          "label": "Identité vérifiée de façon cohérente",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check3",
+          "label": "Capacité financière documentée",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check4",
+          "label": "Références contrôlées avec consentement",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "rent-intelligence": {
+      "englishId": "rent-intelligence",
+      "name": "Intelligence loyer",
+      "frenchRoute": "/fr/tools/intelligence-loyer",
+      "workflowControl": "Filtrer les loyers vérifiés",
+      "engineMode": "rent-intelligence",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "countryCode",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "DZ",
+              "Algérie"
+            ],
+            [
+              "NG",
+              "Nigeria"
+            ]
+          ],
+          "exampleValue": "DZ"
+        },
+        {
+          "name": "city",
+          "label": "Ville",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "propertyType",
+          "label": "Type de bien",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "bedrooms",
+          "label": "Chambres",
+          "type": "text",
+          "exampleValue": ""
+        }
+      ]
+    },
+    "lease-risk-check": {
+      "englishId": "lease-risk-check",
+      "name": "Risque bail location",
+      "frenchRoute": "/fr/tools/verification-risque-bail",
+      "workflowControl": "Filtrer les signaux approuvés",
+      "engineMode": "lease-risk-check",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "countryCode",
+          "label": "Pays du signal",
+          "type": "select",
+          "options": [
+            [
+              "DZ",
+              "Algérie"
+            ],
+            [
+              "NG",
+              "Nigeria"
+            ]
+          ],
+          "exampleValue": "DZ"
+        },
+        {
+          "name": "city",
+          "label": "Ville",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "minimumRisk",
+          "label": "Niveau de risque minimal",
+          "type": "text",
+          "exampleValue": ""
+        }
+      ]
+    },
+    "rental-agreement": {
+      "englishId": "rental-agreement",
+      "name": "Contrat de location",
+      "frenchRoute": "/fr/tools/contrat-location",
+      "workflowControl": "Générer le projet de location",
+      "engineMode": "rental-agreement",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "landlord",
+          "label": "Nom du bailleur",
+          "type": "text",
+          "exampleValue": "Awa Test"
+        },
+        {
+          "name": "tenant",
+          "label": "Nom du locataire",
+          "type": "text",
+          "exampleValue": "Moussa Test"
+        },
+        {
+          "name": "address",
+          "label": "Adresse du bien",
+          "type": "text",
+          "exampleValue": "12 rue Exemple"
+        },
+        {
+          "name": "start",
+          "label": "Date de début",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "duration",
+          "label": "Durée (mois)",
+          "type": "number",
+          "exampleValue": "12"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "deposit",
+          "label": "Dépôt",
+          "type": "number",
+          "exampleValue": "2000"
+        }
+      ]
+    },
+    "property-mgmt-fees": {
+      "englishId": "property-mgmt-fees",
+      "name": "Frais gestion immobilière",
+      "frenchRoute": "/fr/tools/frais-gestion-immobiliere",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "property-mgmt-fees",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer par période",
+          "type": "number",
+          "exampleValue": "2000"
+        },
+        {
+          "name": "rate",
+          "label": "Taux de gestion (%)",
+          "type": "number",
+          "exampleValue": "8"
+        },
+        {
+          "name": "fixed",
+          "label": "Frais fixes",
+          "type": "number",
+          "exampleValue": "50"
+        }
+      ]
+    },
+    "building-materials": {
+      "englishId": "building-materials",
+      "name": "Calculateur de matériaux de construction",
+      "frenchRoute": "/fr/tools/materiaux-construction",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "building-materials",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "quantity",
+          "label": "Quantité ou surface",
+          "type": "number",
+          "exampleValue": "10"
+        },
+        {
+          "name": "unitCost",
+          "label": "Coût unitaire",
+          "type": "number",
+          "exampleValue": "100"
+        },
+        {
+          "name": "fixed",
+          "label": "Coûts fixes",
+          "type": "number",
+          "exampleValue": "50"
+        },
+        {
+          "name": "contingency",
+          "label": "Imprévus (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "construction-budget": {
+      "englishId": "construction-budget",
+      "name": "Planificateur de budget construction",
+      "frenchRoute": "/fr/tools/budget-construction",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "construction-budget",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "quantity",
+          "label": "Quantité ou surface",
+          "type": "number",
+          "exampleValue": "10"
+        },
+        {
+          "name": "unitCost",
+          "label": "Coût unitaire",
+          "type": "number",
+          "exampleValue": "100"
+        },
+        {
+          "name": "fixed",
+          "label": "Coûts fixes",
+          "type": "number",
+          "exampleValue": "50"
+        },
+        {
+          "name": "contingency",
+          "label": "Imprévus (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "dev-feasibility": {
+      "englishId": "dev-feasibility",
+      "name": "Étude de faisabilité",
+      "frenchRoute": "/fr/tools/etude-faisabilite",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "dev-feasibility",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "revenue",
+          "label": "Recettes attendues",
+          "type": "number",
+          "exampleValue": "500000"
+        },
+        {
+          "name": "land",
+          "label": "Coût du terrain",
+          "type": "number",
+          "exampleValue": "100000"
+        },
+        {
+          "name": "build",
+          "label": "Coût de construction",
+          "type": "number",
+          "exampleValue": "200000"
+        },
+        {
+          "name": "professional",
+          "label": "Honoraires professionnels",
+          "type": "number",
+          "exampleValue": "20000"
+        },
+        {
+          "name": "finance",
+          "label": "Coût du financement",
+          "type": "number",
+          "exampleValue": "15000"
+        },
+        {
+          "name": "other",
+          "label": "Autres coûts",
+          "type": "number",
+          "exampleValue": "5000"
+        }
+      ]
+    },
+    "survey-cost": {
+      "englishId": "survey-cost",
+      "name": "Coût geometre",
+      "frenchRoute": "/fr/tools/cout-geometre",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "survey-cost",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "quantity",
+          "label": "Quantité ou surface",
+          "type": "number",
+          "exampleValue": "10"
+        },
+        {
+          "name": "unitCost",
+          "label": "Coût unitaire",
+          "type": "number",
+          "exampleValue": "100"
+        },
+        {
+          "name": "fixed",
+          "label": "Coûts fixes",
+          "type": "number",
+          "exampleValue": "50"
+        },
+        {
+          "name": "contingency",
+          "label": "Imprévus (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "property-cgt": {
+      "englishId": "property-cgt",
+      "name": "Plus-value immobilière",
+      "frenchRoute": "/fr/tools/plus-value-immobiliere",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "property-cgt",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "sale",
+          "label": "Prix de vente",
+          "type": "number",
+          "exampleValue": "300000"
+        },
+        {
+          "name": "basis",
+          "label": "Coût de base",
+          "type": "number",
+          "exampleValue": "180000"
+        },
+        {
+          "name": "costs",
+          "label": "Frais de vente et travaux",
+          "type": "number",
+          "exampleValue": "20000"
+        },
+        {
+          "name": "exemption",
+          "label": "Exonération saisie",
+          "type": "number",
+          "exampleValue": "10000"
+        },
+        {
+          "name": "rate",
+          "label": "Taux d’imposition saisi (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "service-charge": {
+      "englishId": "service-charge",
+      "name": "Calculateur de frais de service",
+      "frenchRoute": "/fr/tools/frais-service",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "service-charge",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "annual",
+          "label": "Coûts communs annuels",
+          "type": "number",
+          "exampleValue": "12000"
+        },
+        {
+          "name": "units",
+          "label": "Nombre d’unités",
+          "type": "number",
+          "exampleValue": "10"
+        },
+        {
+          "name": "reserve",
+          "label": "Réserve (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "short-let-calc": {
+      "englishId": "short-let-calc",
+      "name": "Location courte durée",
+      "frenchRoute": "/fr/tools/calculateur-location-courte",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "short-let-calc",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "nightly",
+          "label": "Tarif par nuit",
+          "type": "number",
+          "exampleValue": "100"
+        },
+        {
+          "name": "nights",
+          "label": "Nuits occupées par an",
+          "type": "number",
+          "exampleValue": "200"
+        },
+        {
+          "name": "expenses",
+          "label": "Dépenses annuelles",
+          "type": "number",
+          "exampleValue": "5000"
+        }
+      ]
+    },
+    "agent-commission": {
+      "englishId": "agent-commission",
+      "name": "Commission d'agent immobilier",
+      "frenchRoute": "/fr/tools/commission-agent",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "agent-commission",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "value",
+          "label": "Valeur de la transaction",
+          "type": "number",
+          "exampleValue": "200000"
+        },
+        {
+          "name": "rate",
+          "label": "Commission (%)",
+          "type": "number",
+          "exampleValue": "5"
+        },
+        {
+          "name": "tax",
+          "label": "Taxe sur commission (%)",
+          "type": "number",
+          "exampleValue": "10"
+        }
+      ]
+    },
+    "plot-converter": {
+      "englishId": "plot-converter",
+      "name": "Convertisseur de parcelle",
+      "frenchRoute": "/fr/tools/convertisseur-parcelle",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "plot-converter",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "value",
+          "label": "Valeur",
+          "type": "number",
+          "exampleValue": "1"
+        },
+        {
+          "name": "from",
+          "label": "Unité de départ",
+          "type": "select",
+          "options": [
+            [
+              "sqm",
+              "m²"
+            ],
+            [
+              "hectare",
+              "hectare"
+            ],
+            [
+              "acre",
+              "acre"
+            ],
+            [
+              "sqft",
+              "pied carré"
+            ]
+          ],
+          "exampleValue": "hectare"
+        },
+        {
+          "name": "to",
+          "label": "Unité d’arrivée",
+          "type": "select",
+          "options": [
+            [
+              "sqm",
+              "m²"
+            ],
+            [
+              "hectare",
+              "hectare"
+            ],
+            [
+              "acre",
+              "acre"
+            ],
+            [
+              "sqft",
+              "pied carré"
+            ]
+          ],
+          "exampleValue": "sqm"
+        }
+      ]
+    },
+    "building-permit": {
+      "englishId": "building-permit",
+      "name": "Permis de construire",
+      "frenchRoute": "/fr/tools/permis-construire",
+      "workflowControl": "Évaluer la checklist",
+      "engineMode": "building-permit",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "check1",
+          "label": "Autorité d’urbanisme identifiée",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check2",
+          "label": "Liste officielle des pièces obtenue",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check3",
+          "label": "Plans et signatures professionnelles prêts",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "check4",
+          "label": "Inspections et étapes confirmées",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "diaspora-property": {
+      "englishId": "diaspora-property",
+      "name": "Immobilier diaspora",
+      "frenchRoute": "/fr/tools/immobilier-diaspora",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "diaspora-property",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "budget",
+          "label": "Budget en devise étrangère",
+          "type": "number",
+          "exampleValue": "100000"
+        },
+        {
+          "name": "fx",
+          "label": "Taux local par unité étrangère",
+          "type": "number",
+          "exampleValue": "15"
+        },
+        {
+          "name": "price",
+          "label": "Prix du bien en monnaie locale",
+          "type": "number",
+          "exampleValue": "1200000"
+        },
+        {
+          "name": "costs",
+          "label": "Autres coûts d’acquisition",
+          "type": "number",
+          "exampleValue": "100000"
+        }
+      ]
+    },
+    "offplan-vs-ready": {
+      "englishId": "offplan-vs-ready",
+      "name": "Sur plan vs prêt",
+      "frenchRoute": "/fr/tools/sur-plan-vs-pret",
+      "workflowControl": "Calculer avec mes hypothèses",
+      "engineMode": "offplan-vs-ready",
+      "sharedEngine": "property-assumption",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Devise",
+          "type": "text",
+          "exampleValue": "XOF"
+        },
+        {
+          "name": "ready",
+          "label": "Coût du bien prêt",
+          "type": "number",
+          "exampleValue": "250000"
+        },
+        {
+          "name": "offplan",
+          "label": "Prix sur plan",
+          "type": "number",
+          "exampleValue": "200000"
+        },
+        {
+          "name": "carrying",
+          "label": "Coûts de portage",
+          "type": "number",
+          "exampleValue": "10000"
+        },
+        {
+          "name": "delay",
+          "label": "Retard supposé (mois)",
+          "type": "number",
+          "exampleValue": "6"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer pendant le retard",
+          "type": "number",
+          "exampleValue": "2000"
+        }
+      ]
+    },
+    "ng-nhf": {
+      "englishId": "ng-nhf",
+      "name": "Calculateur NHF Nigeria",
+      "frenchRoute": "/fr/tools/ng-nhf",
+      "workflowControl": "Calculer la contribution et le prêt",
+      "engineMode": "ng-nhf",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "basic",
+          "label": "Salaire mensuel de base (NGN)",
+          "type": "number",
+          "exampleValue": "350000"
+        },
+        {
+          "name": "yearsContributed",
+          "label": "Années de contribution",
+          "type": "number",
+          "exampleValue": "5"
+        },
+        {
+          "name": "loan",
+          "label": "Montant du prêt (NGN)",
+          "type": "number",
+          "exampleValue": "15000000"
+        },
+        {
+          "name": "tenure",
+          "label": "Durée du prêt (années)",
+          "type": "number",
+          "exampleValue": "15"
+        },
+        {
+          "name": "gross",
+          "label": "Salaire mensuel brut (NGN)",
+          "type": "number",
+          "exampleValue": "500000"
+        }
+      ]
+    },
+    "tenancy-agreement": {
+      "englishId": "tenancy-agreement",
+      "name": "Contrat de bail",
+      "frenchRoute": "/fr/tools/contrat-bail",
+      "workflowControl": "Générer le projet de bail",
+      "engineMode": "tenancy-agreement",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "landlord",
+          "label": "Bailleur",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "tenant",
+          "label": "Locataire",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "property",
+          "label": "Bien loué",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "startDate",
+          "label": "Début du bail",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "rent",
+          "label": "Loyer et devise",
+          "type": "text",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "deposit",
+          "label": "Dépôt et devise",
+          "type": "text",
+          "exampleValue": "1000"
+        }
+      ]
+    },
+    "employment-contract": {
+      "englishId": "employment-contract",
+      "name": "Contrat de travail",
+      "frenchRoute": "/fr/tools/contrat-travail",
+      "workflowControl": "Générer le contrat de travail",
+      "engineMode": "employment-contract",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "employer",
+          "label": "Employeur",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "employee",
+          "label": "Salarié",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "jobTitle",
+          "label": "Poste",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "salary",
+          "label": "Salaire et devise",
+          "type": "text",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "startDate",
+          "label": "Date de début",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "probationMonths",
+          "label": "Période d’essai (mois)",
+          "type": "number",
+          "exampleValue": "3"
+        }
+      ]
+    },
+    "cac-checker": {
+      "englishId": "cac-checker",
+      "name": "Vérificateur CAC Nigeria",
+      "frenchRoute": "/fr/tools/verificateur-cac",
+      "workflowControl": "Analyser le nom proposé",
+      "engineMode": "cac-checker",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "proposedName",
+          "label": "Nom proposé",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "entityType",
+          "label": "Forme visée",
+          "type": "select",
+          "options": [
+            [
+              "business-name",
+              "Nom commercial"
+            ],
+            [
+              "limited",
+              "Société à responsabilité limitée"
+            ],
+            [
+              "ngo",
+              "Organisation à but non lucratif"
+            ]
+          ],
+          "exampleValue": "limited"
+        },
+        {
+          "name": "regulatedWord",
+          "label": "Mot réglementé présent",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        }
+      ]
+    },
+    "ip-rights-africa": {
+      "englishId": "ip-rights-africa",
+      "name": "Propriété intellectuelle Afrique",
+      "frenchRoute": "/fr/tools/propriete-intellectuelle",
+      "workflowControl": "Construire le plan de protection",
+      "engineMode": "ip-rights-africa",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "assetType",
+          "label": "Actif à protéger",
+          "type": "select",
+          "options": [
+            [
+              "brand",
+              "Marque et nom"
+            ],
+            [
+              "invention",
+              "Invention"
+            ],
+            [
+              "work",
+              "Œuvre créative"
+            ],
+            [
+              "knowhow",
+              "Savoir-faire"
+            ]
+          ],
+          "exampleValue": "brand"
+        },
+        {
+          "name": "markets",
+          "label": "Portée",
+          "type": "select",
+          "options": [
+            [
+              "national",
+              "Un pays"
+            ],
+            [
+              "regional",
+              "Plusieurs pays africains"
+            ],
+            [
+              "global",
+              "International"
+            ]
+          ],
+          "exampleValue": "national"
+        },
+        {
+          "name": "publicDisclosure",
+          "label": "Déjà rendu public",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        }
+      ]
+    },
+    "business-registration": {
+      "englishId": "business-registration",
+      "name": "Enregistrement entreprise",
+      "frenchRoute": "/fr/tools/enregistrement-entreprise",
+      "workflowControl": "Construire le plan de dépôt",
+      "engineMode": "business-registration",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "entityType",
+          "label": "Forme envisagée",
+          "type": "select",
+          "options": [
+            [
+              "sole",
+              "Entreprise individuelle"
+            ],
+            [
+              "limited",
+              "Société à responsabilité limitée"
+            ],
+            [
+              "ngo",
+              "Organisation à but non lucratif"
+            ]
+          ],
+          "exampleValue": "limited"
+        },
+        {
+          "name": "founders",
+          "label": "Nombre de fondateurs",
+          "type": "number",
+          "exampleValue": "2"
+        },
+        {
+          "name": "employees",
+          "label": "Salariés au démarrage",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "company-type-selector": {
+      "englishId": "company-type-selector",
+      "name": "Choisir forme société",
+      "frenchRoute": "/fr/tools/choisir-forme-societe",
+      "workflowControl": "Recommander une forme",
+      "engineMode": "company-type-selector",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "founders",
+          "label": "Nombre de fondateurs",
+          "type": "number",
+          "exampleValue": "1"
+        },
+        {
+          "name": "limitedLiability",
+          "label": "Responsabilité limitée souhaitée",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "outsideInvestment",
+          "label": "Investisseurs externes prévus",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "annualTurnover",
+          "label": "Chiffre d’affaires prévu",
+          "type": "number",
+          "exampleValue": "5000000"
+        }
+      ]
+    },
+    "nda-generator": {
+      "englishId": "nda-generator",
+      "name": "Générateur NDA",
+      "frenchRoute": "/fr/tools/generateur-nda",
+      "workflowControl": "Générer le NDA",
+      "engineMode": "nda-generator",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "discloser",
+          "label": "Partie divulgatrice",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "recipient",
+          "label": "Partie destinataire",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "purpose",
+          "label": "Finalité de la divulgation",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "durationMonths",
+          "label": "Durée de confidentialité (mois)",
+          "type": "number",
+          "exampleValue": "24"
+        },
+        {
+          "name": "jurisdiction",
+          "label": "Juridiction à vérifier",
+          "type": "text",
+          "exampleValue": "Nigeria"
+        }
+      ]
+    },
+    "privacy-policy-gen": {
+      "englishId": "privacy-policy-gen",
+      "name": "Politique confidentialité",
+      "frenchRoute": "/fr/tools/generateur-politique-confidentialite",
+      "workflowControl": "Générer la politique",
+      "engineMode": "privacy-policy-gen",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "controller",
+          "label": "Responsable du traitement",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "website",
+          "label": "Site ou service",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "dataCategories",
+          "label": "Catégories de données",
+          "type": "text",
+          "exampleValue": "Contact et préférences"
+        },
+        {
+          "name": "retention",
+          "label": "Durée de conservation",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "contact",
+          "label": "Contact droits des personnes",
+          "type": "text",
+          "exampleValue": ""
+        }
+      ]
+    },
+    "will-generator": {
+      "englishId": "will-generator",
+      "name": "Générateur testament",
+      "frenchRoute": "/fr/tools/generateur-testament",
+      "workflowControl": "Générer le projet de testament",
+      "engineMode": "will-generator",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "testator",
+          "label": "Testateur",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "executor",
+          "label": "Exécuteur proposé",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "beneficiary",
+          "label": "Bénéficiaire",
+          "type": "text",
+          "exampleValue": "Fatou Exemple"
+        },
+        {
+          "name": "asset",
+          "label": "Bien ou legs",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "date",
+          "label": "Date du projet",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        }
+      ]
+    },
+    "ndpa-checker": {
+      "englishId": "ndpa-checker",
+      "name": "Verificateur NDPA",
+      "frenchRoute": "/fr/tools/verificateur-ndpa",
+      "workflowControl": "Calculer le score NDPA",
+      "engineMode": "ndpa-checker",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "lawfulBasis",
+          "label": "Base légale et finalité documentées",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "dpo",
+          "label": "Responsable ou DPO identifié",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "dpia",
+          "label": "DPIA réalisée pour les risques élevés",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "breach72h",
+          "label": "Procédure de notification de violation",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "popia-checker": {
+      "englishId": "popia-checker",
+      "name": "Verificateur POPIA",
+      "frenchRoute": "/fr/tools/verificateur-popia",
+      "workflowControl": "Calculer le score POPIA",
+      "engineMode": "popia-checker",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "accountability",
+          "label": "Responsabilité attribuée",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "purpose",
+          "label": "Finalité et minimisation documentées",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "openness",
+          "label": "Information des personnes assurée",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "security",
+          "label": "Mesures de sécurité et notification",
+          "type": "checkbox",
+          "exampleValue": "false"
+        }
+      ]
+    },
+    "child-support": {
+      "englishId": "child-support",
+      "name": "Pension alimentaire enfant",
+      "frenchRoute": "/fr/tools/pension-alimentaire-enfant",
+      "workflowControl": "Estimer la contribution",
+      "engineMode": "child-support",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "nonCustodialIncome",
+          "label": "Revenu mensuel du parent non gardien",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "custodialIncome",
+          "label": "Revenu mensuel du parent gardien",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "children",
+          "label": "Nombre d’enfants",
+          "type": "number",
+          "exampleValue": "1"
+        },
+        {
+          "name": "custody",
+          "label": "Organisation de garde",
+          "type": "select",
+          "options": [
+            [
+              "sole",
+              "Garde principale"
+            ],
+            [
+              "joint",
+              "Garde conjointe"
+            ],
+            [
+              "shared",
+              "Garde alternée"
+            ]
+          ],
+          "exampleValue": "sole"
+        },
+        {
+          "name": "special",
+          "label": "Besoins particuliers",
+          "type": "select",
+          "options": [
+            [
+              "none",
+              "Aucun"
+            ],
+            [
+              "medical",
+              "Besoins médicaux"
+            ],
+            [
+              "educational",
+              "Besoins éducatifs"
+            ]
+          ],
+          "exampleValue": "none"
+        }
+      ]
+    },
+    "court-fees": {
+      "englishId": "court-fees",
+      "name": "Frais de tribunal",
+      "frenchRoute": "/fr/tools/frais-tribunal",
+      "workflowControl": "Calculer les frais de tribunal",
+      "engineMode": "court-fees",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "claimAmount",
+          "label": "Montant de la demande",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "courtLevel",
+          "label": "Niveau de juridiction",
+          "type": "select",
+          "options": [
+            [
+              "magistrate",
+              "Tribunal de première instance"
+            ],
+            [
+              "high",
+              "Haute cour"
+            ],
+            [
+              "appeal",
+              "Cour d’appel"
+            ]
+          ],
+          "exampleValue": "magistrate"
+        },
+        {
+          "name": "claimType",
+          "label": "Type de demande",
+          "type": "select",
+          "options": [
+            [
+              "debt",
+              "Dette"
+            ],
+            [
+              "contract",
+              "Contrat"
+            ],
+            [
+              "injury",
+              "Préjudice corporel"
+            ],
+            [
+              "property",
+              "Bien"
+            ],
+            [
+              "family",
+              "Famille"
+            ],
+            [
+              "other",
+              "Autre"
+            ]
+          ],
+          "exampleValue": "debt"
+        }
+      ]
+    },
+    "affidavit-generator": {
+      "englishId": "affidavit-generator",
+      "name": "Affidavit",
+      "frenchRoute": "/fr/tools/generateur-affidavit",
+      "workflowControl": "Générer l’affidavit",
+      "engineMode": "affidavit-generator",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "deponent",
+          "label": "Déclarant",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "facts",
+          "label": "Faits attestés",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "place",
+          "label": "Lieu de déclaration",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "date",
+          "label": "Date",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "annexure",
+          "label": "Pièce jointe mentionnée",
+          "type": "text",
+          "exampleValue": ""
+        }
+      ]
+    },
+    "annual-returns": {
+      "englishId": "annual-returns",
+      "name": "Déclarations annuelles",
+      "frenchRoute": "/fr/tools/declarations-annuelles-societes",
+      "workflowControl": "Construire la fiche de déclaration",
+      "engineMode": "annual-returns",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "anniversaryDate",
+          "label": "Date anniversaire",
+          "type": "date",
+          "exampleValue": "2026-08-15"
+        },
+        {
+          "name": "recordsReady",
+          "label": "Registres et comptes prêts",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "filingStatus",
+          "label": "État du dépôt",
+          "type": "select",
+          "options": [
+            [
+              "pending",
+              "À préparer"
+            ],
+            [
+              "filed",
+              "Déposé"
+            ],
+            [
+              "late",
+              "En retard"
+            ]
+          ],
+          "exampleValue": "pending"
+        }
+      ]
+    },
+    "bail-calculator": {
+      "englishId": "bail-calculator",
+      "name": "Caution penale",
+      "frenchRoute": "/fr/tools/calculateur-caution-penale",
+      "workflowControl": "Afficher la fiche de caution",
+      "engineMode": "bail-calculator",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "offenceCategory",
+          "label": "Catégorie d’infraction",
+          "type": "select",
+          "options": [
+            [
+              "minor",
+              "Mineure"
+            ],
+            [
+              "moderate",
+              "Intermédiaire"
+            ],
+            [
+              "serious",
+              "Grave"
+            ]
+          ],
+          "exampleValue": "minor"
+        },
+        {
+          "name": "priorRecord",
+          "label": "Antécédent déclaré",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        },
+        {
+          "name": "flightRisk",
+          "label": "Risque de non-comparution",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        }
+      ]
+    },
+    "board-resolution": {
+      "englishId": "board-resolution",
+      "name": "Resolution conseil",
+      "frenchRoute": "/fr/tools/modele-resolution-conseil",
+      "workflowControl": "Générer la résolution",
+      "engineMode": "board-resolution",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "company",
+          "label": "Société",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "meetingDate",
+          "label": "Date de réunion",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "decision",
+          "label": "Décision",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "chair",
+          "label": "Président de séance",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "quorum",
+          "label": "Administrateurs présents",
+          "type": "number",
+          "exampleValue": "3"
+        }
+      ]
+    },
+    "breach-notification": {
+      "englishId": "breach-notification",
+      "name": "Violation données",
+      "frenchRoute": "/fr/tools/notification-violation-donnees",
+      "workflowControl": "Générer la notification",
+      "engineMode": "breach-notification",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "controller",
+          "label": "Organisation",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "incidentDate",
+          "label": "Date de l’incident",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "dataTypes",
+          "label": "Données concernées",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "affected",
+          "label": "Personnes potentiellement touchées",
+          "type": "number",
+          "exampleValue": "25"
+        },
+        {
+          "name": "measures",
+          "label": "Mesures prises",
+          "type": "text",
+          "exampleValue": ""
+        }
+      ]
+    },
+    "business-license": {
+      "englishId": "business-license",
+      "name": "Licence entreprise",
+      "frenchRoute": "/fr/tools/licence-entreprise",
+      "workflowControl": "Construire le plan de licence",
+      "engineMode": "business-license",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "activity",
+          "label": "Activité",
+          "type": "select",
+          "options": [
+            [
+              "retail",
+              "Commerce de détail"
+            ],
+            [
+              "trade",
+              "Commerce"
+            ],
+            [
+              "services",
+              "Services"
+            ],
+            [
+              "regulated",
+              "Activité réglementée"
+            ]
+          ],
+          "exampleValue": "retail"
+        },
+        {
+          "name": "municipality",
+          "label": "Ville ou commune",
+          "type": "text",
+          "exampleValue": "Dakar"
+        },
+        {
+          "name": "premises",
+          "label": "Local ouvert au public",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "cookie-consent": {
+      "englishId": "cookie-consent",
+      "name": "Consentement cookies",
+      "frenchRoute": "/fr/tools/banniere-consentement-cookies",
+      "workflowControl": "Générer la configuration de consentement",
+      "engineMode": "cookie-consent",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "website",
+          "label": "Site",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "analytics",
+          "label": "Cookies analytiques",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "marketing",
+          "label": "Cookies marketing",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "privacyUrl",
+          "label": "Lien de confidentialité",
+          "type": "text",
+          "exampleValue": "/privacy-policy"
+        },
+        {
+          "name": "consentExpiry",
+          "label": "Durée du consentement (jours)",
+          "type": "number",
+          "exampleValue": "180"
+        }
+      ]
+    },
+    "divorce-settlement": {
+      "englishId": "divorce-settlement",
+      "name": "Partage divorce",
+      "frenchRoute": "/fr/tools/calculateur-divorce",
+      "workflowControl": "Calculer le scénario de partage",
+      "engineMode": "divorce-settlement",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "totalAssets",
+          "label": "Total des actifs matrimoniaux",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "marriageDuration",
+          "label": "Durée du mariage (années)",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "children",
+          "label": "Enfants concernés",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "custodian",
+          "label": "Garde principale",
+          "type": "select",
+          "options": [
+            [
+              "A",
+              "Partie A"
+            ],
+            [
+              "B",
+              "Partie B"
+            ],
+            [
+              "shared",
+              "Garde partagée"
+            ]
+          ],
+          "exampleValue": "A"
+        },
+        {
+          "name": "partyAName",
+          "label": "Nom de la partie A",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "partyAIncome",
+          "label": "Revenu de la partie A",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "partyBName",
+          "label": "Nom de la partie B",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "partyBIncome",
+          "label": "Revenu de la partie B",
+          "type": "number",
+          "exampleValue": "1000"
+        }
+      ]
+    },
+    "dpa-generator": {
+      "englishId": "dpa-generator",
+      "name": "Accord DPA",
+      "frenchRoute": "/fr/tools/generateur-dpa",
+      "workflowControl": "Générer le DPA",
+      "engineMode": "dpa-generator",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "controller",
+          "label": "Responsable du traitement",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "processor",
+          "label": "Sous-traitant",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "purpose",
+          "label": "Finalité du traitement",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "dataTypes",
+          "label": "Données traitées",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "duration",
+          "label": "Durée",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "security",
+          "label": "Mesures de sécurité",
+          "type": "text",
+          "exampleValue": "Chiffrement et accès limité"
+        }
+      ]
+    },
+    "dpia-tool": {
+      "englishId": "dpia-tool",
+      "name": "DPIA",
+      "frenchRoute": "/fr/tools/outil-dpia",
+      "workflowControl": "Évaluer le risque DPIA",
+      "engineMode": "dpia-tool",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "largeScale",
+          "label": "Traitement à grande échelle",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "sensitiveData",
+          "label": "Données sensibles concernées",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "systematicMonitoring",
+          "label": "Surveillance systématique",
+          "type": "checkbox",
+          "exampleValue": "true"
+        },
+        {
+          "name": "crossBorder",
+          "label": "Transfert transfrontalier",
+          "type": "checkbox",
+          "exampleValue": "false"
+        },
+        {
+          "name": "purpose",
+          "label": "Finalité évaluée",
+          "type": "text",
+          "exampleValue": "Scoring locatif de test"
+        }
+      ]
+    },
+    "foreign-company-reg": {
+      "englishId": "foreign-company-reg",
+      "name": "Société étrangère",
+      "frenchRoute": "/fr/tools/enregistrement-societe-etrangere",
+      "workflowControl": "Construire le plan d’implantation",
+      "engineMode": "foreign-company-reg",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays d’accueil",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "presence",
+          "label": "Présence envisagée",
+          "type": "select",
+          "options": [
+            [
+              "branch",
+              "Succursale"
+            ],
+            [
+              "subsidiary",
+              "Filiale locale"
+            ],
+            [
+              "representative",
+              "Bureau de représentation"
+            ]
+          ],
+          "exampleValue": "branch"
+        },
+        {
+          "name": "homeCountry",
+          "label": "Pays d’origine",
+          "type": "text",
+          "exampleValue": "France"
+        },
+        {
+          "name": "localHiring",
+          "label": "Embauche locale prévue",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "gdpr-vs-africa": {
+      "englishId": "gdpr-vs-africa",
+      "name": "RGPD vs Afrique",
+      "frenchRoute": "/fr/tools/rgpd-vs-lois-africaines",
+      "workflowControl": "Comparer les obligations",
+      "engineMode": "gdpr-vs-africa",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "africanLaw",
+          "label": "Loi africaine",
+          "type": "select",
+          "options": [
+            [
+              "NDPA",
+              "Loi nigériane NDPA"
+            ],
+            [
+              "POPIA",
+              "Loi sud-africaine POPIA"
+            ],
+            [
+              "DPAKE",
+              "Loi kényane sur la protection des données"
+            ]
+          ],
+          "exampleValue": "NDPA"
+        },
+        {
+          "name": "topic",
+          "label": "Sujet comparé",
+          "type": "select",
+          "options": [
+            [
+              "breach",
+              "Notification de violation"
+            ],
+            [
+              "rights",
+              "Droits des personnes"
+            ],
+            [
+              "transfer",
+              "Transferts internationaux"
+            ]
+          ],
+          "exampleValue": "breach"
+        },
+        {
+          "name": "euResidents",
+          "label": "Personnes dans l’UE concernées",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "inheritance-tax": {
+      "englishId": "inheritance-tax",
+      "name": "Calculateur de droits de succession",
+      "frenchRoute": "/fr/tools/inheritance-tax",
+      "workflowControl": "Calculer les droits saisis",
+      "engineMode": "inheritance-tax",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "estateValue",
+          "label": "Valeur brute de la succession",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "relationship",
+          "label": "Lien avec le défunt",
+          "type": "select",
+          "options": [
+            [
+              "spouse",
+              "Conjoint"
+            ],
+            [
+              "child",
+              "Enfant"
+            ],
+            [
+              "other",
+              "Autre parent"
+            ],
+            [
+              "nonrelative",
+              "Sans lien de parenté"
+            ]
+          ],
+          "exampleValue": "spouse"
+        },
+        {
+          "name": "debts",
+          "label": "Dettes et passifs",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "funeralExpenses",
+          "label": "Frais funéraires",
+          "type": "number",
+          "exampleValue": "1000"
+        }
+      ]
+    },
+    "ip-protection": {
+      "englishId": "ip-protection",
+      "name": "Protection PI",
+      "frenchRoute": "/fr/tools/guide-protection-pi",
+      "workflowControl": "Construire la stratégie PI",
+      "engineMode": "ip-protection",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "asset",
+          "label": "Actif",
+          "type": "select",
+          "options": [
+            [
+              "brand",
+              "Marque"
+            ],
+            [
+              "invention",
+              "Invention"
+            ],
+            [
+              "content",
+              "Contenu"
+            ],
+            [
+              "secret",
+              "Secret commercial"
+            ]
+          ],
+          "exampleValue": "brand"
+        },
+        {
+          "name": "exposure",
+          "label": "Divulgation publique",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        },
+        {
+          "name": "markets",
+          "label": "Marchés visés",
+          "type": "text",
+          "exampleValue": "Sénégal et Côte d’Ivoire"
+        },
+        {
+          "name": "ownershipDocs",
+          "label": "Preuves de propriété disponibles",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "legal-aid": {
+      "englishId": "legal-aid",
+      "name": "Aide juridique",
+      "frenchRoute": "/fr/tools/eligibilite-aide-juridique-afrique",
+      "workflowControl": "Pré-évaluer l’éligibilité",
+      "engineMode": "legal-aid",
+      "sharedEngine": "mortgage-property-english-owner",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "monthlyIncome",
+          "label": "Revenu mensuel",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "totalAssets",
+          "label": "Total des actifs",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "dependants",
+          "label": "Personnes à charge",
+          "type": "number",
+          "exampleValue": "1000"
+        },
+        {
+          "name": "matter",
+          "label": "Type d’affaire",
+          "type": "select",
+          "options": [
+            [
+              "criminal",
+              "Pénale"
+            ],
+            [
+              "family",
+              "Familiale"
+            ],
+            [
+              "land",
+              "Foncière"
+            ],
+            [
+              "employment",
+              "Emploi"
+            ],
+            [
+              "civil",
+              "Civile"
+            ],
+            [
+              "other",
+              "Autre"
+            ]
+          ],
+          "exampleValue": "criminal"
+        }
+      ]
+    },
+    "partnership-agreement": {
+      "englishId": "partnership-agreement",
+      "name": "Accord partenariat",
+      "frenchRoute": "/fr/tools/accord-partenariat",
+      "workflowControl": "Générer l’accord de partenariat",
+      "engineMode": "partnership-agreement",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "partnerA",
+          "label": "Partenaire A",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "partnerB",
+          "label": "Partenaire B",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "business",
+          "label": "Activité commune",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "contributionA",
+          "label": "Apport A",
+          "type": "text",
+          "exampleValue": "XOF 600 000"
+        },
+        {
+          "name": "contributionB",
+          "label": "Apport B",
+          "type": "text",
+          "exampleValue": "XOF 400 000"
+        },
+        {
+          "name": "profitSplit",
+          "label": "Partage des bénéfices",
+          "type": "text",
+          "exampleValue": "50/50"
+        }
+      ]
+    },
+    "power-of-attorney": {
+      "englishId": "power-of-attorney",
+      "name": "Procuration",
+      "frenchRoute": "/fr/tools/procuration",
+      "workflowControl": "Générer la procuration",
+      "engineMode": "power-of-attorney",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "principal",
+          "label": "Mandant",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "agent",
+          "label": "Mandataire",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "powers",
+          "label": "Pouvoirs confiés",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "startDate",
+          "label": "Début",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        },
+        {
+          "name": "endDate",
+          "label": "Fin",
+          "type": "date",
+          "exampleValue": "2026-12-31"
+        },
+        {
+          "name": "jurisdiction",
+          "label": "Juridiction à vérifier",
+          "type": "text",
+          "exampleValue": "Nigeria"
+        }
+      ]
+    },
+    "shareholder-agreement": {
+      "englishId": "shareholder-agreement",
+      "name": "Générateur de pacte d’actionnaires",
+      "frenchRoute": "/fr/tools/generateur-de-pacte-d-actionnaires",
+      "workflowControl": "Générer le pacte",
+      "engineMode": "shareholder-agreement",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "company",
+          "label": "Société",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "shareholderA",
+          "label": "Actionnaire A",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "shareholderB",
+          "label": "Actionnaire B",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "shareA",
+          "label": "Participation A (%)",
+          "type": "number",
+          "exampleValue": "50"
+        },
+        {
+          "name": "shareB",
+          "label": "Participation B (%)",
+          "type": "number",
+          "exampleValue": "50"
+        },
+        {
+          "name": "reservedMatter",
+          "label": "Décision réservée",
+          "type": "text",
+          "exampleValue": ""
+        }
+      ]
+    },
+    "statutory-declaration": {
+      "englishId": "statutory-declaration",
+      "name": "Générateur de déclaration solennelle",
+      "frenchRoute": "/fr/tools/declaration-solennelle",
+      "workflowControl": "Générer la déclaration",
+      "engineMode": "statutory-declaration",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "declarant",
+          "label": "Déclarant",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "purpose",
+          "label": "Objet",
+          "type": "select",
+          "options": [
+            [
+              "name-change",
+              "Changement de nom"
+            ],
+            [
+              "lost-document",
+              "Document perdu"
+            ],
+            [
+              "address",
+              "Confirmation d’adresse"
+            ]
+          ],
+          "exampleValue": "name-change"
+        },
+        {
+          "name": "facts",
+          "label": "Faits déclarés",
+          "type": "text",
+          "exampleValue": ""
+        },
+        {
+          "name": "place",
+          "label": "Lieu",
+          "type": "text",
+          "exampleValue": "Dakar"
+        },
+        {
+          "name": "date",
+          "label": "Date",
+          "type": "date",
+          "exampleValue": "2026-08-01"
+        }
+      ]
+    },
+    "tin-guide": {
+      "englishId": "tin-guide",
+      "name": "Guide du numéro d’identification fiscale (NIF)",
+      "frenchRoute": "/fr/tools/guide-nif",
+      "workflowControl": "Afficher le parcours NIF",
+      "engineMode": "tin-guide",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "applicantType",
+          "label": "Demandeur",
+          "type": "select",
+          "options": [
+            [
+              "individual",
+              "Particulier"
+            ],
+            [
+              "business",
+              "Entreprise"
+            ],
+            [
+              "nonresident",
+              "Non-résident"
+            ]
+          ],
+          "exampleValue": "business"
+        },
+        {
+          "name": "registeredBusiness",
+          "label": "Entreprise déjà immatriculée",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "onlinePreferred",
+          "label": "Démarche en ligne préférée",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "trademark-registration": {
+      "englishId": "trademark-registration",
+      "name": "Guide d’enregistrement de marque",
+      "frenchRoute": "/fr/tools/enregistrement-marque",
+      "workflowControl": "Construire le plan de marque",
+      "engineMode": "trademark-registration",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays principal",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "routeType",
+          "label": "Voie de dépôt",
+          "type": "select",
+          "options": [
+            [
+              "national",
+              "Voie nationale"
+            ],
+            [
+              "OAPI",
+              "OAPI"
+            ],
+            [
+              "ARIPO",
+              "ARIPO"
+            ]
+          ],
+          "exampleValue": "OAPI"
+        },
+        {
+          "name": "classes",
+          "label": "Nombre de classes de Nice",
+          "type": "number",
+          "exampleValue": "2"
+        },
+        {
+          "name": "priorSearch",
+          "label": "Recherche d’antériorité faite",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        }
+      ]
+    },
+    "winding-up": {
+      "englishId": "winding-up",
+      "name": "Checklist de dissolution d’entreprise",
+      "frenchRoute": "/fr/tools/dissolution-societe",
+      "workflowControl": "Construire la checklist de dissolution",
+      "engineMode": "winding-up",
+      "sharedEngine": "english-dom-oracle",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Pays",
+          "type": "select",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Sénégal"
+            ],
+            [
+              "CI",
+              "Côte d’Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrique du Sud"
+            ]
+          ],
+          "exampleValue": "NG"
+        },
+        {
+          "name": "routeType",
+          "label": "Voie envisagée",
+          "type": "select",
+          "options": [
+            [
+              "voluntary",
+              "Dissolution volontaire"
+            ],
+            [
+              "creditors",
+              "Liquidation par les créanciers"
+            ],
+            [
+              "strikeoff",
+              "Radiation administrative"
+            ]
+          ],
+          "exampleValue": "voluntary"
+        },
+        {
+          "name": "solvent",
+          "label": "Société solvable",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "yes"
+        },
+        {
+          "name": "employees",
+          "label": "Salariés concernés",
+          "type": "number",
+          "exampleValue": "4"
+        },
+        {
+          "name": "taxClearance",
+          "label": "Quitus fiscal obtenu",
+          "type": "select",
+          "options": [
+            [
+              "yes",
+              "Oui"
+            ],
+            [
+              "no",
+              "Non"
+            ]
+          ],
+          "exampleValue": "no"
+        }
+      ]
+    }
+  }
+}

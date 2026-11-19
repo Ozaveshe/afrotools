@@ -14,6 +14,23 @@ const englishOwners = require('../scripts/lib/french-mortgage-property-english-o
 
 const ROOT = path.resolve(__dirname, '..');
 const manifest = require('../data/registry/french-mortgage-property.json');
+const publicConfig = require('../assets/js/data/french-workflow-forms.json');
+const { publicForms } = require('../scripts/lib/french-workflow-public-forms');
+
+test('published forms contain only visitor inputs and engine routing controls', () => {
+  assert.deepEqual(publicConfig, publicForms(manifest.rows));
+  assert.equal(Object.keys(publicConfig.forms).length, manifest.rows.length);
+  for (const row of manifest.rows) {
+    const form = publicConfig.forms[row.englishId];
+    assert.deepEqual(Object.keys(form).sort(), ['engineMode', 'englishId', 'fields', 'frenchRoute', 'name', 'sharedEngine', 'workflowControl']);
+    assert.deepEqual(form.fields.map(field => field.name), row.fields.map(field => field.name));
+    for (const field of form.fields) {
+      assert.ok(Object.keys(field).every(key => ['name', 'label', 'type', 'min', 'max', 'step', 'options', 'exampleValue'].includes(key)));
+      assert.doesNotMatch(String(field.exampleValue), /^Synthetic\s/i);
+    }
+  }
+});
+
 const inventory = require('../reports/french-free-app-parity-inventory.json');
 const aiEval = require('../data/ai/french-mortgage-property-route-eval.json');
 const generatedAiMap = require('../assets/js/ai/french-route-map.generated');

@@ -247,23 +247,23 @@
     }
   });
 
-  fetch('/data/registry/french-mortgage-property.json', { cache: 'no-store' })
+  fetch('/assets/js/data/french-workflow-forms.json', { cache: 'no-store' })
     .then(function (response) {
       if (!response.ok) throw new Error('manifest');
       return response.json();
     })
     .then(function (manifest) {
-      if (manifest.count !== 66 || !Array.isArray(manifest.rows)) throw new Error('manifest');
-      contract = manifest.rows.find(function (row) { return row.englishId === englishId; });
-      if (!contract) throw new Error('route');
+      if (manifest.schemaVersion !== 1 || !manifest.forms) throw new Error('manifest');
+      contract = manifest.forms[englishId];
+      if (!contract || contract.englishId !== englishId || !Array.isArray(contract.fields)) throw new Error('route');
       if (presentation && presentation.presentFields) {
         contract.fields = presentation.presentFields(englishId, contract.fields);
       }
       fieldsRoot.innerHTML = contract.fields.map(fieldMarkup).join('');
       contract.fields.forEach(function (field) {
         var control = form.elements[field.name];
-        if (field.type === 'checkbox') control.checked = field.fixtureValue === 'true';
-        else control.value = field.fixtureValue;
+        if (field.type === 'checkbox') control.checked = field.exampleValue === 'true';
+        else control.value = field.exampleValue;
       });
       root.querySelector('[data-workflow-control]').textContent = contract.workflowControl;
       root.setAttribute('data-workflow-ready', 'true');
@@ -271,6 +271,6 @@
     })
     .catch(function () {
       form.querySelectorAll('button,input,select').forEach(function (control) { control.disabled = true; });
-      say('Contrat de route introuvable ou racine de test incorrecte. Le workflow reste fermé.', true);
+      say('Les champs du formulaire n’ont pas pu être chargés. Actualisez la page pour réessayer.', true);
     });
 }());

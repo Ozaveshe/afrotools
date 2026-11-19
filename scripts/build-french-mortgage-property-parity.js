@@ -12,6 +12,7 @@ const {
 } = require('./lib/french-mortgage-property-contracts');
 const engine = require('../assets/js/engines/french-mortgage-property');
 
+const { publicForms } = require('./lib/french-workflow-public-forms');
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://afrotools.com';
 const CHECKED_AT = '2026-07-29';
@@ -782,6 +783,9 @@ function main() {
   };
   fs.mkdirSync(path.dirname(MANIFEST_PATH), { recursive: true });
   fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  const publicPath = path.join(ROOT, 'assets/js/data/french-workflow-forms.json');
+  fs.mkdirSync(path.dirname(publicPath), { recursive: true });
+  fs.writeFileSync(publicPath, JSON.stringify(publicForms(rows), null, 2) + '\n', 'utf8');
   fs.writeFileSync(path.join(ROOT, 'fr', 'mortgage-property', 'index.html'), hubHtml(rows), 'utf8');
   syncEquivalentHreflangs('/mortgage-property', '/fr/mortgage-property');
 
