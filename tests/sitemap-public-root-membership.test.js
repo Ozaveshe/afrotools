@@ -88,3 +88,30 @@ test('Yoruba sitemap membership matches the catalog and current page indexabilit
     assert.equal(urls.has(url), indexable, record.route);
   }
 });
+
+test('Yoruba invoice and receipt publish reciprocal five-language document clusters', () => {
+  const graph = readJson('data/registry/route-graph.json');
+  const sitemap = new Map([...read('sitemap-i18n.xml').matchAll(/<url>([\s\S]*?)<\/url>/g)]
+    .map(([, block]) => [block.match(/<loc>([^<]+)<\/loc>/)[1], block]));
+  const yoruba = sitemapLastmods('sitemap-yo.xml');
+  for (const slug of ['kiriiro-invoice', 'kiriiro-risiti']) {
+    const route = '/yo/awon-ise/' + slug + '/';
+    const html = read(route.slice(1) + 'index.html');
+    const declared = Object.fromEntries([...html.matchAll(/hreflang="([^"]+)" href="https:\/\/afrotools\.com([^"]+)"/g)]
+      .map(([, language, target]) => [language, target]));
+    assert.deepEqual(Object.keys(declared).sort(), ['en', 'fr', 'ha', 'sw', 'x-default', 'yo']);
+    assert.equal(declared['x-default'], declared.en);
+    assert.ok(yoruba.has(BASE_URL + route), route);
+    for (const target of new Set(Object.values(declared))) {
+      const record = graph.routes.find(record => record.state === 'page' && record.route === target);
+      assert.equal(record.indexability, 'indexable', target);
+      assert.equal(record.sitemap.included, true, target);
+      assert.deepEqual(record.hreflangs, declared, target);
+      const block = sitemap.get(BASE_URL + target);
+      assert.ok(block, target);
+      for (const [language, destination] of Object.entries(declared)) {
+        assert.ok(block.includes('hreflang="' + language + '" href="' + BASE_URL + destination + '"'), target);
+      }
+    }
+  }
+});

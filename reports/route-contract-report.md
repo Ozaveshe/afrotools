@@ -7,7 +7,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7879 |
 | Permanent and temporary redirects | 3188 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
@@ -15,7 +15,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
 | Documented fallbacks | 15046 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7879 |
 
 ## Locale Coverage
 
@@ -3302,6 +3302,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:03b6af9e5982: en=`/tools/ng-pension/`, fr=`/fr/tools/ng-pension/`, ha=`/ha/kayan-aiki/fansho-najeriya/`, sw=`/sw/zana/kikokotoo-pensheni-nigeria/`; x-default=`/tools/ng-pension/`
 - equivalence:03c9d74cb32b: en=`/cars/nigeria/mercedes-benz/e-class/2017/`; x-default=`/cars/nigeria/mercedes-benz/e-class/2017/`
 - equivalence:040ac22bfb2e: en=`/agriculture/seed-rate/zimbabwe`, fr=`/fr/agriculture/seed-rate/zimbabwe`, sw=`/sw/kilimo/kiwango-cha-mbegu/zimbabwe/`; x-default=`/agriculture/seed-rate/zimbabwe`
+- equivalence:0450a3b0ce0e: en=`/tools/receipt-generator/`, fr=`/fr/tools/generateur-recu/`, ha=`/ha/kayan-aiki/kirkiro-resit/`, sw=`/sw/zana/kizalishaji-risiti/`, yo=`/yo/awon-ise/kiriiro-risiti/`; x-default=`/tools/receipt-generator/`
 - equivalence:045338fd6ee6: en=`/salary-tax/crypto/`, sw=`/sw/mshahara-na-kodi/crypto/`; x-default=`/salary-tax/crypto/`
 - equivalence:045fbad9d81c: en=`/jamb/daily/`; x-default=`/jamb/daily/`
 - equivalence:046f88c54f28: fr=`/fr/blog/controle-iuts-bulletin-paie-burkina-faso/`; x-default=`/fr/blog/controle-iuts-bulletin-paie-burkina-faso/`
@@ -5766,6 +5767,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:96a98006588e: en=`/tools/afrokitchen/recipes/nshima-ifisashi/`; x-default=`/tools/afrokitchen/recipes/nshima-ifisashi/`
 - equivalence:96ab949a9d7a: en=`/tools/gratuity-calculator/gabon/`; x-default=`/tools/gratuity-calculator/gabon/`
 - equivalence:970d8f020c1a: en=`/tools/amount-words-gh/`, fr=`/fr/tools/montant-lettres-gh/`, sw=`/sw/zana/kiasi-kwa-maneno-ghana/`; x-default=`/tools/amount-words-gh/`
+- equivalence:97103235b730: en=`/tools/invoice-generator/`, fr=`/fr/tools/generateur-factures/`, ha=`/ha/kayan-aiki/kirkiro-invoice/`, sw=`/sw/zana/kizalishaji-ankara/`, yo=`/yo/awon-ise/kiriiro-invoice/`; x-default=`/tools/invoice-generator/`
 - equivalence:97117d044808: en=`/tools/solar-vs-generator/tanzania/`; x-default=`/tools/solar-vs-generator/tanzania/`
 - equivalence:971de3087d00: en=`/tools/employee-cost/burkina-faso/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-burkina-faso/`; x-default=`/tools/employee-cost/burkina-faso/`
 - equivalence:9753470d7525: en=`/tools/lobola-calculator/zambia/`, fr=`/fr/tools/calculateur-de-lobola-zambie/`; x-default=`/tools/lobola-calculator/zambia/`
@@ -6415,7 +6417,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:bea3697515f6: fr=`/fr/widgets/financement-appareil-telecom/`; x-default=`/fr/widgets/financement-appareil-telecom/`
 - equivalence:bea4d8735110: en=`/agriculture/crop-insurance/ghana`; x-default=`/agriculture/crop-insurance/ghana`
 - equivalence:bee3a1ead797: en=`/tools/etims-guide/`, fr=`/fr/tools/guide-d-etims-de-la-kra/`, sw=`/sw/zana/mwongozo-wa-etims-kra/`; x-default=`/tools/etims-guide/`
-- equivalence:bef1a14c5a1d: en=`/tools/invoice-generator/`, fr=`/fr/tools/generateur-factures/`, ha=`/ha/kayan-aiki/kirkiro-invoice/`, sw=`/sw/zana/kizalishaji-ankara/`; x-default=`/tools/invoice-generator/`
 - equivalence:bef75719805c: en=`/tools/afrokitchen/recipes/ranonapango-mg/`; x-default=`/tools/afrokitchen/recipes/ranonapango-mg/`
 - equivalence:bf15ba7259e2: en=`/blog/kenya-solar-battery-sizing-guide/`; x-default=`/blog/kenya-solar-battery-sizing-guide/`
 - equivalence:bf1f77c1ce42: en=`/blog/car-import-cost-ghana-guide/`; x-default=`/blog/car-import-cost-ghana-guide/`
@@ -7408,7 +7409,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fb8362d25939: en=`/tools/funeral-insurance/ethiopia`, fr=`/fr/tools/assurance-obseques/ethiopia`; x-default=`/tools/funeral-insurance/ethiopia`
 - equivalence:fb83bb10f43c: en=`/agriculture/farm-loans/kenya`, fr=`/fr/agriculture/farm-loans/kenya`, sw=`/sw/kilimo/mikopo-ya-shamba/kenya/`; x-default=`/agriculture/farm-loans/kenya`
 - equivalence:fb99b806b76a: en=`/tools/solar-roi/liberia/`, fr=`/fr/tools/roi-solaire/liberia/`; x-default=`/tools/solar-roi/liberia/`
-- equivalence:fba810a8be12: en=`/tools/receipt-generator/`, fr=`/fr/tools/generateur-recu/`, ha=`/ha/kayan-aiki/kirkiro-resit/`, sw=`/sw/zana/kizalishaji-risiti/`; x-default=`/tools/receipt-generator/`
 - equivalence:fbaf5ea925f5: en=`/tools/afrokitchen/recipes/poulet-dg-cm/`; x-default=`/tools/afrokitchen/recipes/poulet-dg-cm/`
 - equivalence:fbb4348ab758: en=`/blog/remove-image-background-online-africa/`, fr=`/fr/blog/supprimer-arriere-plan-image-en-ligne/`, sw=`/sw/blogu/kuondoa-mandharinyuma-ya-picha-mtandaoni/`; x-default=`/blog/remove-image-background-online-africa/`
 - equivalence:fbcc5b4096c2: en=`/agriculture/input-prices/`, fr=`/fr/agriculture/input-prices/`, sw=`/sw/zana/kilinganisha-bei-za-pembejeo/`; x-default=`/agriculture/input-prices/`
