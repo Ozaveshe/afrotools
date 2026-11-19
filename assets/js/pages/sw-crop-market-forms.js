@@ -7,6 +7,7 @@
   const box = root.querySelector("[data-result]");
   const output = root.querySelector("[data-output]");
   const field = key => form.elements.namedItem(key);
+  const harvestTool = config.id === "harvest-date-estimator";
   const priceTool = config.id === "commodity-prices";
   const data = window.COMMODITY_PRICES;
   const crops = {maize:"Mahindi", rice:"Mchele uliokobolewa nchini", sorghum:"Mtama", millet:"Uwele", cowpea:"Kunde", cassava_garri:"Garri (muhogo uliochakatwa)", cocoa:"Kakao (punje zilizokaushwa)", coffee_arabica:"Kahawa ya Arabika (bichi)", sesame:"Ufuta", groundnut:"Karanga zilizomenywa"};
@@ -30,7 +31,15 @@
       markets(input.countryCode);
       field("volumeTonnes").value = input.volumeTonnes ?? "";
     } else {
-      for (const key of Object.keys(config.input)) field(key).value = input[key] ?? "";
+      for (const key of Object.keys(config.input)) {
+        const el = field(key);
+        const value = input[key] ?? "";
+        // Older harvest files accepted arbitrary crop names and weather notes.
+        if (harvestTool && el.tagName === "SELECT" && value && !Array.from(el.options).some(o => o.value === value)) {
+          el.add(new Option(value, value));
+        }
+        el.value = value;
+      }
     }
   }
   if (priceTool) {
@@ -39,6 +48,12 @@
   }
   setInput(config.input);
   function run(input) {
+    if (harvestTool) {
+      if (!Number.isSafeInteger(input.maturityDays) || input.maturityDays < 0) throw Error("Ingiza idadi kamili ya siku kuanzia sifuri.");
+      const result = window.AfroTools.HarvestDateEngine.calculate(input);
+      if (!result.ok || !window.AfroTools.HarvestDateEngine.dateParts(result.harvestDate)) throw Error("Kagua tarehe na idadi ya siku.");
+      return result;
+    }
     if (priceTool) {
       if (!(Number.isFinite(input.volumeTonnes) && input.volumeTonnes > 0)) throw Error("Ingiza kiasi cha tani kikubwa kuliko sifuri.");
       return window.AfroTools.CommodityPriceEngine.calculate(input, data);
@@ -58,6 +73,18 @@
   }
   function rows(r) {
     const i = r.input;
+    if (harvestTool) {
+      const date = new Intl.DateTimeFormat("sw", {dateStyle:"long",timeZone:"UTC"});
+      const format = iso => date.format(new Date(iso + "T00:00:00Z"));
+      return [
+        ["Tarehe inayokadiriwa ya mavuno", format(r.harvestDate)],
+        ["Zao", field("crop").selectedOptions[0].text],
+        ["Tarehe ya kupanda", format(i.plantingDate)],
+        ["Siku za kukomaa", String(i.maturityDays)],
+        ["Hatari ya hali ya hewa", field("weatherRisk").selectedOptions[0].text],
+        ["Msingi wa makadirio", "Tarehe ya kupanda pamoja na siku ulizoingiza. Angalia ukomavu shambani kabla ya kuvuna."]
+      ];
+    }
     const amount = value => (priceTool ? r.price.currency : i.currency) + " " + number.format(value);
     if (!priceTool) return [
       ["Thamani iliyowekewa bima", amount(i.farmValue)],
@@ -127,7 +154,7 @@
       pdf.save(filename);
       return;
     }
-    const csv = () => [["Sehemu","Thamani"],...displayed].map(row => row.map(value => '"' + String(value).replace(/"/g,'""') + '"').join(",")).join("\r\n");
+    const csv = () => [["Sehemu","Thamani"],...displayed].map(row => row.map(value => '"' + String(value).replace(/^[=+@\-\t\r]/, match => "'" + match).replace(/"/g,'""') + '"').join(",")).join("\r\n");
     const content = type === "json" ? JSON.stringify(report(),null,2) : type === "csv" ? csv() : text;
     const url = URL.createObjectURL(new Blob([content],{type:{json:"application/json",csv:"text/csv",txt:"text/plain"}[type]}));
     const link = document.createElement("a");

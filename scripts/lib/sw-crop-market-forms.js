@@ -1,6 +1,10 @@
 "use strict";
 
 const forms = {
+  "harvest-date-estimator": {
+    note: "Chagua zao, tarehe uliyopanda na idadi ya siku za kukomaa kwa aina ya mbegu zako. Siku 120 ni mfano. Hali ya hewa na zao ni kumbukumbu za mpango wako na hazibadilishi tarehe kiotomatiki.",
+    fields: '<label for="crop">Zao</label><select id="crop" required><option value="maize">Mahindi</option><option value="rice">Mpunga</option><option value="cassava">Muhogo</option><option value="tomato">Nyanya</option><option value="other">Zao jingine</option></select><label for="plantingDate">Tarehe ya kupanda</label><input type="date" id="plantingDate" required><label for="maturityDays">Siku za kukomaa tangu kupanda</label><input type="number" id="maturityDays" min="0" step="1" required><label for="weatherRisk">Hatari ya hali ya hewa (kwa kumbukumbu)</label><select id="weatherRisk" required><option value="normal">Ya kawaida</option><option value="low">Ndogo</option><option value="medium">Wastani</option><option value="high">Kubwa</option></select>'
+  },
   "commodity-prices": {
     note: "Chagua zao na soko ili kupanga kwa kutumia bei ya kumbukumbu. Uliza bei ya leo kwa mnunuzi au sokoni.",
     fields: '<label for="commodityKey">Zao</label><select id="commodityKey" required></select><label for="countryCode">Nchi na soko</label><select id="countryCode" required></select><label for="volumeTonnes">Kiasi cha kuuza (tani)</label><input id="volumeTonnes" type="number" min="0" step="any" value="1" required>'
