@@ -1,1 +1,44 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.mw_paye=function(a,e){e=e||{};var t=function(a){return"MWK "+Math.round(a).toLocaleString("en")},s=[{limit:17e4,rate:0},{limit:14e5,rate:.3},{limit:843e4,rate:.35},{limit:1/0,rate:.4}];a.innerHTML='<div class="aw-title">🇲🇼 Malawi PAYE Calculator</div><div class="aw-field"><label class="aw-label">Monthly Gross Salary (MWK)</label><input class="aw-input" id="awMwGross" type="text" inputmode="numeric" placeholder="e.g. 500,000"></div><button class="aw-btn aw-btn--primary" id="awMwCalc">Calculate PAYE</button><div id="awMwResult"></div>'+(e.footerHTML||""),a.querySelector("#awMwCalc").addEventListener("click",function(){var e=parseFloat((a.querySelector("#awMwGross").value||"").replace(/[^0-9.]/g,""))||0;if(e){var i=function(a){for(var e=0,t=a,i=0;i<s.length&&!(t<=0);i++){var l=s[i],r=Math.min(t,isFinite(l.limit)?l.limit:t);e+=r*l.rate,t-=r}return{gross:a,tax:e,net:a-e,effectiveRate:a>0?e/a*100:0}}(e);a.querySelector("#awMwResult").innerHTML='<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home (MRA 2025/26)</div><div class="aw-result-main">'+t(i.net)+'</div></div><div style="margin-top:12px"><div class="aw-result-row"><span>Gross Salary</span><span>'+t(i.gross)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span>PAYE Tax</span><span style="color:#dc2626">-'+t(i.tax)+'</span></div><div class="aw-result-row"><span>Effective Rate</span><span>'+i.effectiveRate.toFixed(1)+'%</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#0062CC">'+t(i.net)+'</span></div><div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#0062CC">'+t(12*i.net)+"</span></div></div>"}}),a.querySelector("#awMwGross").addEventListener("keydown",function(e){"Enter"===e.key&&a.querySelector("#awMwCalc").click()})}}();
+(function () {
+  'use strict';
+  window.AfroWidgets = window.AfroWidgets || {};
+  window.AfroWidgets.mw_paye = function (root, options) {
+    const money = new Intl.NumberFormat('en', { maximumFractionDigits: 2 });
+    const format = amount => 'MWK ' + money.format(amount);
+    const bands = [[170000, 0], [1400000, 0.30], [8430000, 0.35], [Infinity, 0.40]];
+    root.innerHTML = '<div class="aw-title">Malawi PAYE Calculator</div>' +
+      '<p>Use regular monthly taxable pay. The estimate assumes the full salary is pensionable, with a 5% employee and 10% employer pension contribution.</p>' +
+      '<form><div class="aw-field"><label class="aw-label" for="awMwGross">Monthly gross salary (MWK)</label>' +
+      '<input class="aw-input" id="awMwGross" type="text" inputmode="decimal" placeholder="e.g. 500,000"></div>' +
+      '<button class="aw-btn aw-btn--primary" id="awMwCalc" type="submit">Calculate PAYE</button></form>' +
+      '<div id="awMwResult" aria-live="polite"></div>' + ((options && options.footerHTML) || '');
+    const input = root.querySelector('#awMwGross');
+    const output = root.querySelector('#awMwResult');
+    input.addEventListener('input', () => { output.textContent = ''; });
+    root.querySelector('form').addEventListener('submit', event => {
+      event.preventDefault();
+      const entered = input.value.trim();
+      const salary = Number(entered.replace(/,/g, ''));
+      if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,2})?$/.test(entered) || !Number.isFinite(salary * 12) || salary <= 0) {
+        output.textContent = 'Enter a positive monthly gross salary in Malawi kwacha.';
+        input.focus();
+        return;
+      }
+      const pension = salary * 0.05;
+      let remaining = salary;
+      let paye = 0;
+      for (const [width, rate] of bands) {
+        const portion = Math.min(remaining, width);
+        paye += portion * rate;
+        remaining -= portion;
+      }
+      const net = salary - pension - paye;
+      const row = (label, value) => '<div class="aw-result-row"><span>' + label + '</span><span>' + value + '</span></div>';
+      output.innerHTML = '<div class="aw-result-box"><div class="aw-result-label">Monthly take-home pay</div>' +
+        '<div class="aw-result-main">' + format(net) + '</div></div>' +
+        row('Monthly gross', format(salary)) + row('Employee pension (5%)', format(pension)) +
+        row('Employer pension paid separately (10%)', format(salary * 0.10)) + row('Monthly PAYE', format(paye)) +
+        row('Effective PAYE rate', (100 * paye / salary).toFixed(1) + '%') +
+        row('Net for 12 identical months', format(12 * net));
+    });
+  };
+})();

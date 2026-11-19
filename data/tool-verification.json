@@ -3456,21 +3456,23 @@
         "/malawi/mw-paye"
       ],
       "source_urls": [
-        "https://www.mra.mw",
-        "https://www.mra.mw/news/pages/48?cat=PAYE+Calculator",
-        "https://www.mra.mw/admin/storage/download_files/1767960355_Taxation%20%28Amendment%29%20ACT.pdf"
+        "https://www.mra.mw/",
+        "https://www.mra.mw/admin/storage/download_files/1767960355_Taxation%20%28Amendment%29%20ACT.pdf",
+        "https://www.mra.mw/admin/storage/download_files/1767952247_NEW%20TAX%20MEASURES...pdf",
+        "https://www.labour.gov.mw/images/documents/Malawi-Pension-Act_2023.pdf"
       ],
       "source_titles": [
-        "mra.mw",
-        "MRA PAYE calculator Official MRA calculator surface where available.",
-        "MRA Taxation (Amendment) (No. 2) Act, 2025 — employment-income rates, Appendix B"
+        "MRA homepage: choose PAYE Calculator.",
+        "MRA Taxation (Amendment) (No. 2) Act, 2025 — employment-income rates, Appendix B",
+        "MRA notice: monthly PAYE bands",
+        "Pension Act 2023: minimum contributions, section 12"
       ],
-      "last_verified": "2026-07-01",
+      "last_verified": "2026-11-19",
       "verified_by": "AfroTools source audit",
       "risk_level": "high",
       "disclaimer_type": "tax",
-      "law_or_version": "Last verified: July 2026 · Source: MRA (mra",
-      "methodology_markdown": "The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.",
+      "law_or_version": "Taxation (Amendment) (No. 2) Act 2025, Appendix B, and Pension Act 2023, section 12.",
+      "methodology_markdown": "Enter monthly taxable pay. This estimate assumes the whole salary is pensionable. PAYE uses the gross taxable amount. The employee pays 5% into the pension scheme and the employer pays a separate 10%.",
       "known_limitations": [
         "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
         "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
@@ -3484,14 +3486,14 @@
       ],
       "test_cases": [
         {
-          "input": "Annual gross salary: 0.",
-          "expected_output": "PAYE and statutory deductions should be 0 and net pay should not be negative.",
-          "why": "Establishes the zero-income baseline and catches negative liability regressions."
+          "input": "MWK 170,000 monthly gross pay.",
+          "expected_output": "PAYE is zero. After MWK 8,500 employee pension, take-home pay is MWK 161,500.",
+          "why": "Checks the tax-free ceiling."
         },
         {
-          "input": "Annual gross salary entered in the page currency.",
-          "expected_output": "Taxable income is processed through the visible country bands and net pay equals gross pay minus modeled deductions.",
-          "why": "Confirms the calculator is using the documented methodology rather than an opaque flat estimate."
+          "input": "MWK 500,000 monthly gross pay.",
+          "expected_output": "PAYE is MWK 99,000. Employee pension is MWK 25,000 and take-home pay is MWK 376,000.",
+          "why": "Reproduces the MRA PAYE calculator and separates employee pension from tax."
         }
       ]
     },
