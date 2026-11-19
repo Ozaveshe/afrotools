@@ -20,7 +20,15 @@
     "0901.11": "Kahawa isiyokaangwa, yenye kafeini",
     "0901.12": "Kahawa isiyokaangwa, iliyoondolewa kafeini",
     "0901.21": "Kahawa iliyokaangwa, yenye kafeini",
-    "0901.22": "Kahawa iliyokaangwa, iliyoondolewa kafeini"
+    "0901.22": "Kahawa iliyokaangwa, iliyoondolewa kafeini",
+    "1001.11": "Ngano aina ya durum kwa ajili ya kupanda",
+    "1001.19": "Ngano aina ya durum kwa matumizi mengine",
+    "1001.91": "Ngano nyingine na mchanganyiko wa ngano na rai (meslin) kwa kupanda",
+    "1001.99": "Ngano nyingine na mchanganyiko wa ngano na rai (meslin) kwa matumizi mengine",
+    "1006.10": "Mpunga wenye maganda",
+    "1006.20": "Mchele wa kahawia uliotolewa maganda ya nje",
+    "1006.30": "Mchele uliokobolewa kwa sehemu au kikamilifu",
+    "1006.40": "Mchele uliovunjika"
   };
   const hint = form.querySelector("[data-match-count]");
   const choices = form.querySelector("[data-countries]");
@@ -40,7 +48,12 @@
       return digits ? HS_DATABASE.searchIndex.filter(item => item.code.replace(".", "").startsWith(digits)) : [];
     }
     const translated = Object.prototype.hasOwnProperty.call(glossary,query) ? glossary[query] : query;
-    return HsLookupEngine.searchByProduct(translated);
+    const engineMatches = HsLookupEngine.searchByProduct(translated);
+    const found = new Set(engineMatches.map(item => item.code));
+    const localMatches = HS_DATABASE.searchIndex.filter(item =>
+      !found.has(item.code) && descriptions[item.code]?.toLowerCase().includes(query)
+    );
+    return engineMatches.concat(localMatches);
   }
   function updateMatches() {
     const items = matches(fields.query.value);
