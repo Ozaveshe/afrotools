@@ -73,3 +73,18 @@ test('the JAMB child sitemap exposes reviewed-data freshness in the root index',
   );
   assert.equal(indexLastmods.get(`${BASE_URL}/jamb/sitemap.xml`), latestJambReviewDate());
 });
+
+test('Yoruba sitemap membership matches the catalog and current page indexability', () => {
+  const { routes } = readJson('data/registry/yoruba-route-manifest.json');
+  const urls = sitemapLastmods('sitemap-yo.xml');
+  for (const record of routes) {
+    const html = read(record.sourceOwner);
+    const robots = html.match(/<meta\b(?=[^>]*\bname=["']robots["'])[^>]*>/i)?.[0] || '';
+    const canonical = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/i)?.[0] || '';
+    const href = canonical.match(/\bhref=["']([^"']+)["']/i)?.[1];
+    const url = BASE_URL + record.route;
+    const native = ['native', 'localized-shell'].includes(record.state);
+    const indexable = native && href === url && !/\bnoindex\b/i.test(robots);
+    assert.equal(urls.has(url), indexable, record.route);
+  }
+});
