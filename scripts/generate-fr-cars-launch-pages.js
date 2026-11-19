@@ -373,6 +373,7 @@ function localEstimate(valueUsd, currency) {
 }
 
 function landedEstimate(ctx) {
+  if (ctx.eligibilityStatus === "conditional") return "Admissibilité à vérifier";
   return ctx.eligibilityStatus === "ineligible"
     ? "Non applicable"
     : localEstimate(ctx.landed.normal, ctx.localCurrency);
@@ -910,8 +911,8 @@ const comparisonMarkets = {
   CI: {
     make: "hyundai", model: "elantra", year: 2018,
     guidance: "Pour une voiture de tourisme, la limite publiée est de cinq ans depuis la première mise en circulation à l’étranger. Une Elantra mise en circulation en 2018 dépasse cette limite. Comparez des offres locales ; l’année-modèle seule ne prouve pas la date de mise en circulation.",
-    authority: "Conseil des ministres de Côte d’Ivoire",
-    source: "https://www.gouv.ci/uploads/publications/1512588358Communique-du-Conseil-des-Ministres-du-mercredi-06-decembre-2017.pdf"
+    authority: "Douanes ivoiriennes (décret 2017-792)",
+    source: "https://www.douanes.ci/sites/default/files/base_documentaire/decret_2017-792.pdf"
   },
   CM: {
     make: "ford", model: "ranger", year: 2018,
@@ -942,11 +943,17 @@ function renderQuoteComparison(countryCode, spec) {
   const currency = ctx.localCurrency;
   const localOnly = countryCode === "CI" || ctx.eligibilityStatus === "ineligible";
   const description = `Comparez deux devis pour une ${name} ${countryPlace(country)}, tous frais compris en ${currency}.`;
+  const ciAgePanel = countryCode === "CI" ? `<article class="fr-cars-card"><h2>Vérifier la condition d’âge</h2>
+    <p>Admissibilité à vérifier. Pour une importation ordinaire de voiture de tourisme, applicable aux embarquements depuis le 1er juillet 2018. Pour les cas particuliers, dont les exemptions de l’article 2, demandez confirmation aux douanes.</p>
+    <form id="ci-age-check"><label><input type="checkbox" name="ordinary"> Les documents confirment une voiture de tourisme d’occasion en importation ordinaire.</label>
+    <p><label>Première mise en circulation à l’étranger <input type="date" name="firstCirculation"></label></p>
+    <p><label>Date d’embarquement <input type="date" name="shipmentDate"></label></p>
+    <button type="submit" class="fr-cars-button">Vérifier les dates</button><output style="display:block" aria-live="polite"></output></form></article>` : "";
   const firstLabel = localOnly ? "Première offre locale" : "Devis d’import, véhicule immatriculé";
   const secondLabel = localOnly ? "Deuxième offre locale" : "Offre locale, véhicule immatriculé";
   const field = (id, label) => `<p><label for="${id}">${label} (${currency})</label><br><input id="${id}" name="${id}" type="number" inputmode="numeric" required min="1" max="9007199254740991" step="1"></p>`;
   const body = `<main><section class="fr-cars-hero"><div class="fr-cars-shell"><h1>${title}</h1><p>${description}</p></div></section>
-    <section class="fr-cars-shell fr-cars-band"><p>${spec.guidance} <a href="${spec.source}">${spec.authority}</a></p>
+    <section class="fr-cars-shell fr-cars-band"><p>${spec.guidance} <a href="${spec.source}">${spec.authority}</a></p>${ciAgePanel}
     <article class="fr-cars-card"><h2>${localOnly ? "Comparer deux offres locales" : "Comparer vos devis"}</h2>
     <p>${localOnly ? "Saisissez les prix des deux véhicules disponibles sur place, avec les frais de transfert et de mise en circulation." : "Pour l’import, utilisez un devis écrit comprenant achat, transport, assurance, droits, taxes, port et immatriculation. Pour l’offre locale, ajoutez les frais de transfert et d’immatriculation. Comparez des véhicules de version et d’état similaires."}</p>
     <form id="car-quote-comparison" data-currency="${currency}" data-local-only="${localOnly}">
@@ -956,7 +963,7 @@ ${localOnly ? "" : '    <label><input type="checkbox" required> J’ai vérifié
     <output style="display:block;margin-top:1rem" aria-live="polite"></output></form>
     <noscript>Soustrayez le plus petit devis du plus grand pour obtenir l’écart.</noscript></article>
     <p><a href="${detail}">Consulter la fiche française de la ${name}</a></p></section></main>
-    <script src="/assets/js/pages/fr-car-quote-comparison.js" defer></script>`;
+    ${countryCode === "CI" ? '<script src="/assets/js/lib/car-price-intelligence.js" defer></script>' : ""}<script src="/assets/js/pages/fr-car-quote-comparison.js" defer></script>`;
   return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl(route.slice(3)), schema: breadcrumb([{name:"Voitures",url:absUrl("fr/cars")},{name:title,url:absUrl(route)}]), body }));
 }
 
@@ -980,7 +987,7 @@ function renderModelPage(page) {
     : `Budget source et coût d'import illustratifs pour ${vehicleName} ${place}. Aucun relevé de prix local daté n'est disponible.`;
   const priceRows = [
     [sourceObservation ? "Prix demandé marché source" : "Budget source illustratif", localEstimate(ctx.sourcePrice.median, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), sourceObservation ? `${sourceObservation.sampleSize} annonces aux Émirats arabes unis, page datée du ${escapeHtml(sourceObservation.sourceSnapshotAt)} · <a href="${escapeHtml(sourceObservation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>. Prix demandé converti, pas coût rendu.` : "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
-    ["Coût rendu illustratif", landedEstimate(ctx), importIneligible ? "—" : forex.rateFor(ctx.localCurrency) == null ? "Conversion indisponible" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
+    ["Coût rendu illustratif", landedEstimate(ctx), importIneligible || ctx.eligibilityStatus === "conditional" ? "—" : forex.rateFor(ctx.localCurrency) == null ? "Conversion indisponible" : money(ctx.landed.normal, "USD"), ctx.eligibilityStatus === "conditional" ? 'Confirmez la catégorie, l’usage, la date de première circulation à l’étranger et la date d’embarquement. <a href="https://www.douanes.ci/sites/default/files/base_documentaire/decret_2017-792.pdf">Décret 2017-792 (articles 2, 5 et 6)</a>.' : importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
     ["Prix demandé local observé", observation ? money(observation.median, observation.currency) : "Aucun relevé local daté", "—", observation ? `${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>` : "Un budget import ne prouve pas le prix d'un véhicule local."]
   ].map(([label, local, usd, note]) => `<tr><td data-label="Couche de prix">${label}</td><td data-label="Devise locale">${local}</td><td data-label="Référence USD">${usd}</td><td data-label="Note">${note}</td></tr>`).join("\n");
 

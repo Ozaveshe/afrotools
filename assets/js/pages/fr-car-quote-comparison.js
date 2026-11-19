@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  const ageForm = document.getElementById("ci-age-check");
+  if (ageForm) {
+    const result = ageForm.querySelector("output");
+    ageForm.addEventListener("input", () => { result.textContent = ""; });
+    ageForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const fields = ageForm.elements;
+      const check = window.AfroCarPriceIntelligence.assessCiImportAge({
+        ordinaryUsedImport: fields.ordinary.checked, vehicleClass: "passenger",
+        firstCirculation: fields.firstCirculation.value, shipmentDate: fields.shipmentDate.value
+      });
+      result.textContent = {
+        conditional: "Admissibilité à vérifier. Confirmez la catégorie, les deux dates et l’application du régime ordinaire auprès des douanes.",
+        ineligible: "La limite de cinq ans est dépassée pour cette voiture de tourisme en importation ordinaire.",
+        "within-age-limit": "La condition d’âge est satisfaite aux dates saisies. Les douanes doivent confirmer les autres conditions."
+      }[check.status];
+    });
+  }
   const form = document.getElementById("car-quote-comparison");
   const output = form.querySelector("output");
   const format = new Intl.NumberFormat("fr-FR", {
