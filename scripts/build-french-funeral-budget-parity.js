@@ -91,7 +91,7 @@ function page() {
   <meta name="twitter:image" content="${IMAGE}">
   <link rel="stylesheet" href="/assets/css/design-system.css">
   <link rel="stylesheet" href="/assets/css/remittance-quote-comparator.css">
-  <style>.ua-native-artwork{margin:1rem 0;max-width:100%}.ua-native-artwork img{display:block;max-width:100%;height:auto}.rm-hero h1,.rm-hero p{overflow-wrap:anywhere}</style>
+  <style>.ua-native-artwork{margin:1rem 0;max-width:100%}.ua-native-artwork img{display:block;max-width:100%;height:auto}.rm-hero h1,.rm-hero p{overflow-wrap:anywhere}.rm-card{min-width:0;overflow-wrap:anywhere}</style>
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
   <script type="application/ld+json">${JSON.stringify(faq)}</script>
 </head>
