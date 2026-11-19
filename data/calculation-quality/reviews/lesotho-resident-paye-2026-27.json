@@ -1,0 +1,46 @@
+{
+  "reviewedBy": "Codex, AfroTools Lesotho PAYE source review",
+  "reviewedAt": "2026-11-18",
+  "sourceUrl": "https://www.rsl.org.ls/sites/default/files/2026-04/Income%20Tax%20structure%202026%20-%202027.pdf",
+  "reason": "Resident employment income at 20% through M77,760 and 30% above, with annual credit M12,240. M77,760 yields M3,312 tax and M74,448 net. M114,000 yields M14,184 tax and M99,816 net. Zero remains zero.",
+  "formulaIds": [
+    "paye-server-ls",
+    "route-ls-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-ls-defaults",
+      "formulaId": "paye-server-ls",
+      "before": {
+        "deductions.totalDeductions": 280956,
+        "result.netAnnual": 719044,
+        "result.netMonthly": 59920,
+        "tax.netTax": 280956
+      },
+      "after": {
+        "tax.netTax": 279984,
+        "result.netAnnual": 720016,
+        "result.netMonthly": 60001,
+        "deductions.totalDeductions": 279984
+      },
+      "reason": "RSL 2026/27 raised the first annual band to M77,760 and the annual credit to M12,240."
+    },
+    {
+      "fixtureId": "paye-ls-large-decimal",
+      "formulaId": "paye-server-ls",
+      "before": {
+        "deductions.totalDeductions": 299980956,
+        "result.netAnnual": 700019045,
+        "result.netMonthly": 58334920,
+        "tax.netTax": 299980956
+      },
+      "after": {
+        "tax.netTax": 299979984,
+        "result.netAnnual": 700020017,
+        "result.netMonthly": 58335001,
+        "deductions.totalDeductions": 299979984
+      },
+      "reason": "RSL 2026/27 raised the first annual band to M77,760 and the annual credit to M12,240."
+    }
+  ]
+}
