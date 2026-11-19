@@ -165,7 +165,27 @@
         }
         function renderQr() {
           var qr = form.querySelector('[data-wa-qr]'), qrStatus = form.querySelector('[data-wa-qr-status]'); qr.replaceChildren(); qrStatus.textContent = '';
-          try { if (!view.QRCode) throw new Error('QR unavailable'); new view.QRCode(qr,{text:current.url,width:256,height:256,colorDark:'#0f172a',colorLight:'#ffffff',correctLevel:view.QRCode.CorrectLevel.M}); }
+          try {
+            var encoded = new view.QRCode(doc.createElement('div'), {text:current.url,correctLevel:view.QRCode.CorrectLevel.M});
+            var matrix = encoded._oQRCode;
+            var modules = matrix.getModuleCount();
+            // Four blank modules on every edge, with each data module drawn on whole pixels.
+            var size = Math.max(256, (modules + 8) * 4);
+            var cell = Math.floor(size / (modules + 8));
+            var offset = Math.floor((size - modules * cell) / 2);
+            var canvas = doc.createElement('canvas');
+            canvas.width = canvas.height = size;
+            var context = canvas.getContext('2d');
+            context.fillStyle = '#ffffff';
+            context.fillRect(0, 0, size, size);
+            context.fillStyle = '#0f172a';
+            for (var row = 0; row < modules; row++) {
+              for (var col = 0; col < modules; col++) {
+                if (matrix.isDark(row, col)) context.fillRect(offset + col * cell, offset + row * cell, cell, cell);
+              }
+            }
+            qr.appendChild(canvas);
+          }
           catch (_) { qr.replaceChildren(); qrStatus.textContent = t.qrFail; }
         }
         function calculate() {
