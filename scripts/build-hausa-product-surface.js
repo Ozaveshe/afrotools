@@ -81,7 +81,8 @@ function bridgePage(bridge) {
 <p>Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika <code>locale=ha</code> da hanyar komawa idan shafin Turanci yana goyon bayansu.</p>
 <p>Buɗe wannan gada kaɗai ba ya nufin cewa an ajiye ko an daidaita bayananka. Ka duba saƙon nasara ko kuskure a shafin da ya biyo baya.</p>
 </div>
-<div class="ha-bridge-actions">
+<div class="ha-bridge-actions">${bridge.nativeTool ? `
+<a href="${escapeHtml(bridge.nativeTool.route)}">${escapeHtml(bridge.nativeTool.label)}</a>` : ''}
 <a id="haBridgeContinue" data-destination-base="${escapeHtml(new URL(bridge.destination, 'https://afrotools.com').pathname)}" href="${escapeHtml(destination)}">Ci gaba zuwa shafin Turanci</a>
 <a class="alt" href="${escapeHtml(bridge.back)}">${escapeHtml(bridge.backLabel)}</a>
 </div>

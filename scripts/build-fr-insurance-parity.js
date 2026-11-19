@@ -183,6 +183,8 @@ function appHtml(app) {
   const related = relatedApps(app.id);
   const submitLabel = app.mode === 'warning' ? 'Examiner les signaux' : 'Calculer avec mes données';
   const aiQuery = encodeURIComponent(`Aide-moi à choisir le bon outil pour ${app.title.toLowerCase()}`);
+  const otherAlternates = (app.additionalAlternates || []).map(({ lang, route }) =>
+    `\n<link rel="alternate" hreflang="${escapeHtml(lang)}" href="${absolute(route)}">`).join('');
   const swAlternate = SW_ALTERNATES[app.id]
     ? `\n<link rel="alternate" hreflang="sw" href="${absolute(SW_ALTERNATES[app.id])}">`
     : '';
@@ -216,7 +218,7 @@ function appHtml(app) {
   <script src="/assets/js/pages/insurance-assumption-workflow.js" defer></script>
 <link rel="canonical" href="${absolute(app.frenchRoute)}">
 <link rel="alternate" hreflang="en" href="${absolute(app.englishRoute)}">
-<link rel="alternate" hreflang="fr" href="${absolute(app.frenchRoute)}">${swAlternate}
+<link rel="alternate" hreflang="fr" href="${absolute(app.frenchRoute)}">${swAlternate}${otherAlternates}
 <link rel="alternate" hreflang="x-default" href="${absolute(app.englishRoute)}">
 </head>
 <body class="day7-insurance-workflow">

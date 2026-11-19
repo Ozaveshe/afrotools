@@ -134,13 +134,21 @@
   var output = workflowRoot.querySelector('[data-result]');
   var mode = workflowRoot.dataset.mode;
   var requestedLocale = workflowRoot.dataset.locale;
-  var locale = requestedLocale === 'fr' || requestedLocale === 'sw' ? requestedLocale : 'en';
+  var locale = requestedLocale === 'fr' || requestedLocale === 'sw' || (requestedLocale === 'ha' && mode === 'quote') ? requestedLocale : 'en';
   var currencySelect = form.elements.currency;
   var defaultCurrency = workflowRoot.dataset.currency || (locale === 'fr' ? 'XOF' : 'your currency');
-  var money = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : (locale === 'sw' ? 'sw-KE' : 'en'), { maximumFractionDigits: 2 });
+  var money = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : (locale === 'sw' ? 'sw-KE' : locale), { maximumFractionDigits: 2 });
   var lastResult = null;
 
   var copy = {
+    ha: {
+      errors: { quote_invalid: 'Shigar da ƙimar kaya sama da sifili. Kaso ya kasance daga 0 zuwa 100, kuɗin hidima kuma daga sifili zuwa sama.' },
+      copied: 'An kwafi sakamakon.',
+      copyFailed: 'Zaɓi rubutun sakamakon ka kwafe shi.',
+      exportFirst: 'Kammala lissafin kafin sauke bayanai.',
+      reset: 'An share bayanan.',
+      print: 'Zaɓi bugu ko adana takardar a matsayin PDF.'
+    },
     en: {
       errors: {
         need_invalid: 'Enter non-negative amounts and at least one year.',
@@ -263,6 +271,12 @@
   }
 
   function renderResult(result) {
+    if (locale === 'ha') {
+      return 'Kuɗin inshora da na hidima: ' + format(result.subtotal) +
+        '. Ƙarin tanadi: ' + format(result.total - result.subtotal) +
+        '. Jimillar da za ka ware: ' + format(result.total) +
+        '. An yi lissafin bisa bayanan da ka shigar.';
+    }
     if (locale === 'sw') {
       if (result.mode === 'need') {
         return 'Pengo la mipango: ' + format(result.gap) + '. Mahitaji yote ' +
@@ -404,7 +418,7 @@
       currency: currentCurrency(),
       inputs: input,
       result: result,
-      boundary: locale === 'fr'
+      boundary: locale === 'ha' ? 'Hasashe ne bisa bayananka. Kamfanin inshora ne zai tabbatar da farashi da kariyar da zai bayar.' : locale === 'fr'
         ? 'Estimation de planification uniquement ; aucun devis, contrat, garantie, éligibilité ou conseil officiel.'
         : (locale === 'sw'
           ? 'Makisio ya mipango tu; si bei rasmi, mkataba, ulinzi, uamuzi wa kustahiki wala ushauri rasmi.'
@@ -448,6 +462,15 @@
     } else {
       setStatus(copy[locale].copyFailed);
     }
+  }
+
+  if (locale === 'ha') {
+    form.addEventListener('input', function () {
+      lastResult = null;
+      output.textContent = '';
+      setStatus('');
+      workflowRoot.querySelectorAll('[data-export]').forEach(function (button) { button.disabled = true; });
+    });
   }
 
   form.addEventListener('submit', function (event) {
