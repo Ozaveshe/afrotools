@@ -237,7 +237,7 @@
     },
     classroom(input, api) {
       const result = api.calculate(numeric(Object.assign({ fixedArea: 0, administrativeMax: 0 }, input), ["roomLength", "roomWidth", "frontDepth", "rearDepth", "sideClearance", "aisleWidth", "aisleCount", "deskWidth", "rowPitch", "seatsPerUnit", "areaPerLearner", "actualLearners", "fixedArea", "administrativeMax"]));
-      if (result.valid) result.limitingFactor = display(result.limitingFactor);
+      if (result.valid) result.limitingFactorLabel = display(result.limitingFactor);
       return result;
     },
     "course-load"(input, api) {
