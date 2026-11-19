@@ -191,7 +191,7 @@
   "image": "https://afrotools.com/assets/img/tools/eac-cet.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Le calcul donne-t-il un taux officiel definitif ?","acceptedAnswer":{"@type":"Answer","text":"Non. L'outil applique la bande que vous choisissez pour estimer le droit sur la valeur CIF. Le classement HS, les mesures de séjour, exemptions et taxes locales doivent être vérifiés avec les autorites ou un agent en douane."}},{"@type":"Question","name":"Quelles bandes EAC CET sont incluses ?","acceptedAnswer":{"@type":"Answer","text":"La structure générale utilise 0%, 10%, 25% et 35%. Certains produits et pays peuvent avoir des mesures approuvees separement dans les gazettes EAC."}},{"@type":"Question","name":"L'outil couvre-t-il la TVA et les frais portuaires ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il calcule surtout une estimation du droit d'import. Vous pouvez ajouter des frais locaux comme ligne separee, mais les taxes nationales doivent être confirmees localement."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Le calcul donne-t-il un taux officiel definitif ?","acceptedAnswer":{"@type":"Answer","text":"Non. L'outil applique la bande que vous choisissez pour estimer le droit sur la valeur CIF. Le classement HS, les mesures de séjour, exemptions et taxes locales doivent être vérifiés avec les autorites ou un agent en douane."}},{"@type":"Question","name":"Quelles bandes EAC CET sont incluses ?","acceptedAnswer":{"@type":"Answer","text":"La structure générale utilise 0%, 10%, 25% et 35%. Certains produits et pays peuvent avoir des mesures approuvees separement dans les gazettes EAC."}},{"@type":"Question","name":"L'outil couvre-t-il la TVA et les frais portuaires ?","acceptedAnswer":{"@type":"Answer","text":"Le calcul estime la TVA et les prélèvements nationaux selon le pays choisi. Ajoutez les frais portuaires dans les autres frais."}}]}</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/tec-eac/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/eac-cet/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tec-eac/">
@@ -273,13 +273,19 @@
         <div class="eac-grid-2">
           <div class="eac-field">
             <label for="local-fees">Autres frais à ajouter</label>
-            <input id="local-fees" name="local-fees" inputmode="decimal" value="350" placeholder="Port, documentation, agent">
+            <input id="local-fees" name="local-fees" inputmode="decimal" value="0" placeholder="Port, documentation, agent">
           </div>
           <div class="eac-field">
             <label for="hs-code">Code HS / produit</label>
             <input id="hs-code" name="hs-code" placeholder="Ex. 8517.12 téléphones">
           </div>
         </div>
+        <fieldset id="kenya-fees">
+          <legend>Exonérations confirmées pour cet envoi au Kenya</legend>
+          <label><input type="checkbox" id="exemptIdf"> Exonération de la redevance de déclaration d’importation (IDF)</label><br>
+          <label><input type="checkbox" id="exemptRdl"> Exonération du prélèvement ferroviaire (RDL)</label>
+          <p>Vérifiez chaque exonération sur les documents douaniers. L’estimation suppose une TVA au taux normal et aucune accise. <a href="https://new.kenyalaw.org/akn/ke/act/2016/29">Loi kényane, articles 7 et 8</a>.</p>
+        </fieldset>
         <div class="eac-field">
           <label for="notes">Notes de vérification</label>
           <textarea id="notes" name="notes" placeholder="Ex. vérifier stay of application 2025/2026, exemption pays, règles d'origine."></textarea>
@@ -303,7 +309,7 @@
         <div class="eac-result"><strong>Valeur CIF</strong><div class="eac-number" id="cif-output">USD 10,000.00</div></div>
         <div class="eac-result"><strong>Taux applique</strong><div class="eac-number" id="rate-output">25%</div></div>
         <div class="eac-result"><strong>Droit estime</strong><div class="eac-number" id="duty-output">USD 2,500.00</div></div>
-        <div class="eac-result"><strong>Landed estimate</strong><div class="eac-number" id="landed-output">USD 12,850.00</div></div>
+        <div class="eac-result"><strong>Coût total estimé</strong><div class="eac-number" id="landed-output">14 950,00 $US</div></div>
       </div>
       <div class="eac-result">
         <strong>Note exportable</strong>
@@ -315,11 +321,11 @@
   <div class="eac-sections">
     <section class="eac-section">
       <h2>Méthodologie, workflow et limites</h2>
-      <p><strong>Méthode de calcul.</strong> Pour une origine hors EAC, le droit estime est la valeur CIF multipliee par la bande CET choisie. Pour une origine EAC avec preuve, l'outil affiche un scénario preferentiel à vérifier avec les règles d'origine. Le landed estimate ajoute la valeur CIF, le droit estime et les frais que vous saisissez.</p>
+      <p><strong>Méthode de calcul.</strong> Pour une origine hors EAC, le droit estime est la valeur CIF multipliee par la bande CET choisie. Pour une origine EAC avec preuve, l'outil affiche un scénario preferentiel à vérifier avec les règles d'origine. Le coût total comprend la valeur CIF, le droit, les prélèvements nationaux estimés, la TVA estimée et les autres frais saisis.</p>
       <ol>
         <li>Confirmez le code HS et la description de marchandise.</li>
         <li>Vérifiez la bande CET, les mesures de séjour, exemptions ou taux nationaux approuves.</li>
-        <li>Ajoutez TVA, accises, IDF, frais portuaires ou autres charges locales separement.</li>
+        <li>Ajoutez uniquement les frais absents du détail, par exemple les frais portuaires. Vérifiez le traitement de la TVA et des accises pour votre produit.</li>
         <li>Validez la déclaration avec un agent en douane ou l'autorite fiscale du pays.</li>
       </ol>
       <p><strong>Avertissement.</strong> Cet outil est une estimation commerciale et non un avis juridique, fiscal ou douanier. Il ne remplace pas l'e-tariff officiel, la gazette EAC, un ruling de classification ou une déclaration douaniere.</p>
@@ -378,6 +384,9 @@
   const band = document.getElementById('band');
   const customRate = document.getElementById('custom-rate');
   const localFees = document.getElementById('local-fees');
+  const kenyaFees = document.getElementById('kenya-fees');
+  const exemptIdf = document.getElementById('exemptIdf');
+  const exemptRdl = document.getElementById('exemptRdl');
   const hsCode = document.getElementById('hs-code');
   const notes = document.getElementById('notes');
   const warning = document.getElementById('warning');
@@ -410,10 +419,12 @@
   }
 
   function money(value) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.value, maximumFractionDigits: 2 }).format(value);
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: currency.value, maximumFractionDigits: 2 }).format(value);
   }
 
   function buildResult() {
+    kenyaFees.hidden = country.value !== 'Kenya';
+    kenyaFees.disabled = kenyaFees.hidden;
     warning.classList.remove('show');
     warning.textContent = '';
 
@@ -442,7 +453,8 @@
     const engineResult = window.EacCetEngine.calculate({
       cifValue: cifParsed.value,
       cetRate: rate,
-      countryCode: COUNTRY_CODES[country.value] || 'KE'
+      countryCode: COUNTRY_CODES[country.value] || 'KE',
+      kenyaExemptions: { idf: exemptIdf.checked, rdl: exemptRdl.checked }
     });
     const duty = engineResult.cetDuty;
     const landed = engineResult.totalLanded + feesParsed.value;
@@ -452,12 +464,19 @@
       'Valeur CIF: ' + money(cifParsed.value),
       'Bande / taux: ' + rate.toFixed(rate % 1 ? 2 : 0) + '%',
       'Droit estime: ' + money(duty),
+      ...engineResult.breakdown.filter(item => item.name.includes('(IDF)') || item.name.includes('(RDL)')).map(item => {
+        const isIdf = item.name.includes('(IDF)');
+        const label = isIdf ? 'Redevance de déclaration (IDF)' : 'Prélèvement ferroviaire (RDL)';
+        const exempt = isIdf ? exemptIdf.checked : exemptRdl.checked;
+        return label + ' (' + (exempt ? 'exonération confirmée' : item.rate.toLocaleString('fr') + ' %') + ') : ' + money(item.amount);
+      }),
       'Prélèvements nationaux estimés: ' + money(engineResult.totalLevies),
       'TVA estimée: ' + money(engineResult.vatAmount),
       'Autres frais saisis: ' + money(feesParsed.value),
-      'Landed estimate: ' + money(landed),
+      'Coût total estimé: ' + money(landed),
       originNote
     ];
+    if (country.value === 'Kenya') lines.push('Hypothèse : TVA au taux normal, sans accise. Source : https://new.kenyalaw.org/akn/ke/act/2016/29');
     if (hsCode.value.trim()) lines.push('HS / produit: ' + hsCode.value.trim());
     if (notes.value.trim()) lines.push('Notes: ' + notes.value.trim());
     lines.push('Avertissement: estimation seulement; verifier HS, gazettes EAC, exemptions, taxes nationales et autorite douaniere.');
@@ -525,6 +544,7 @@
       band: band.value,
       customRate: customRate.value,
       localFees: localFees.value,
+      kenyaExemptions: { idf: !kenyaFees.hidden && exemptIdf.checked, rdl: !kenyaFees.hidden && exemptRdl.checked },
       hsCode: hsCode.value,
       notes: notes.value,
       summary: result.summary
@@ -541,7 +561,7 @@
     if (band.value !== 'custom') customRate.value = band.value;
     buildResult();
   });
-  [country, origin, currency, cif, customRate, localFees, hsCode, notes].forEach(function (field) {
+  [country, origin, currency, cif, customRate, localFees, exemptIdf, exemptRdl, hsCode, notes].forEach(function (field) {
     field.addEventListener('input', buildResult);
     field.addEventListener('change', buildResult);
   });

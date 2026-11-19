@@ -111,7 +111,11 @@ const pages = [
       field("Bidhaa, kundi au msimbo HS", "query", { required: true }),
       field("Thamani ya CIF (USD)", "cifValue", { type: "number", min: 0.01, step: 0.01, value: 10000, required: true }),
       field("Kiwango cha CET (%)", "cetRate", { type: "number", min: 0, max: 150, step: 0.5, value: 25, required: true }),
-      field("Nchi ya EAC", "countryCode", { type: "select" })
+      field("Nchi ya EAC", "countryCode", { type: "select" }),
+      `<fieldset data-kenya-fees hidden disabled><legend>Misamaha iliyothibitishwa kwa shehena hii nchini Kenya</legend>
+        ${field("Msamaha wa ada ya tamko la uagizaji (IDF)", "exemptIdf", { type: "checkbox" })}
+        ${field("Msamaha wa tozo ya maendeleo ya reli (RDL)", "exemptRdl", { type: "checkbox" })}
+        <p>Thibitisha kila msamaha kwenye nyaraka za forodha. Makadirio yanatumia VAT ya kawaida bila ushuru wa bidhaa. <a href="https://new.kenyalaw.org/akn/ke/act/2016/29">Sheria ya Kenya, vifungu vya 7 na 8</a>.</p></fieldset>`
     ],
     scripts: ["/engines/eac-cet-engine.js"],
     warning: "Rejesta ya vyanzo ilipitiwa Mei 2026 na imepita dirisha la siku 45 la data yenye hatari kubwa. Bendi nyeti, msamaha na ada za nchi lazima zithibitishwe na mamlaka husika.",

@@ -125,14 +125,26 @@
     if (!matches.length) throw new Error("Hakuna bidhaa iliyopatikana. Jaribu jina au msimbo HS mwingine.");
     var selected = matches[0];
     var rate = number("cetRate");
-    var estimate = window.EacCetEngine.calculate({ cifValue: number("cifValue"), cetRate: rate, countryCode: value("countryCode") });
+    var exemptions = { idf: checked("exemptIdf"), rdl: checked("exemptRdl") };
+    var estimate = window.EacCetEngine.calculate({ cifValue: number("cifValue"), cetRate: rate, countryCode: value("countryCode"), kenyaExemptions: exemptions });
     var comparison = window.EacCetEngine.compareCountries(number("cifValue"), rate);
     return report(
       "Makadirio ya CET ya EAC",
       "Bidhaa ya kwanza iliyolingana ni mwongozo wa kuanzia. Kiwango ulichoweka ndicho kimetumika kwenye hesabu.",
       [["Bidhaa ya kuanzia", selected.name], ["Msimbo wa mfano", selected.hsRange], ["CET iliyowekwa", decimal(rate, "%")], ["Jumla iliyofika", money(estimate.totalLanded, "USD")], ["Kiwango halisi", decimal(estimate.effectiveRate, "%")]],
-      estimate.breakdown.map(function (item) { return [item.name, money(item.amount, "USD"), item.note || ""]; }).concat(comparison.map(function (item) { return [item.name, money(item.totalLanded, "USD"), decimal(item.effectiveRate, "%")]; })),
-      ["Thibitisha mstari wa ushuru, msamaha, ada za nchi, VAT na masharti ya bidhaa na mamlaka ya mapato ya nchi husika."]
+      estimate.breakdown.map(function (item) {
+        if (item.name.includes("(IDF)") || item.name.includes("(RDL)")) {
+          var idf = item.name.includes("(IDF)");
+          return [idf ? "Ada ya tamko la uagizaji (IDF)" : "Tozo ya maendeleo ya reli (RDL)", money(item.amount, "USD"), exemptions[idf ? "idf" : "rdl"] ? "Msamaha umethibitishwa" : decimal(item.rate, "%") + " ya CIF"];
+        }
+        if (value("countryCode") === "KE") {
+          if (item.name === "CIF Value") return ["Thamani ya CIF", money(item.amount, "USD"), "Gharama, bima na usafiri"];
+          if (item.name.startsWith("EAC Common External Tariff")) return ["Ushuru wa pamoja wa EAC", money(item.amount, "USD"), decimal(rate, "%") + " ya CIF"];
+          if (item.name.startsWith("VAT")) return ["VAT (" + decimal(item.rate, "%") + ")", money(item.amount, "USD"), "VAT ya kawaida kwa CIF pamoja na ushuru wa EAC, bila ushuru wa bidhaa."];
+        }
+        return [item.name, money(item.amount, "USD"), item.note || ""];
+      }).concat(comparison.map(function (item) { return [item.name, money(item.totalLanded, "USD"), decimal(item.effectiveRate, "%")]; })),
+      ["Thibitisha mstari wa ushuru, msamaha, ada za nchi, VAT na masharti ya bidhaa na mamlaka ya mapato ya nchi husika."].concat(value("countryCode") === "KE" ? ["Kenya: VAT ya kawaida bila ushuru wa bidhaa. Ulinganisho wa nchi unatumia viwango vya kawaida bila msamaha. https://new.kenyalaw.org/akn/ke/act/2016/29"] : [])
     );
   }
 
@@ -196,6 +208,10 @@
     var y = 27; pdf.splitTextToSize(textReport(), 180).forEach(function (line) { if (y > 282) { pdf.addPage(); y = 15; } pdf.text(line, 15, y); y += 5; });
     pdf.save("afrotools-" + tool + "-" + new Date().toISOString().slice(0, 10) + ".pdf"); status.textContent = "PDF imetengenezwa ndani ya kivinjari.";
   }
+  function updateKenyaFees() {
+    var fields = form.querySelector("[data-kenya-fees]");
+    if (fields) fields.hidden = fields.disabled = value("countryCode") !== "KE";
+  }
   function reopen(file) {
     if (!file) return;
     var reader = new FileReader();
@@ -204,6 +220,10 @@
         var data = JSON.parse(String(reader.result || ""));
         if (!data || data.tool !== tool || data.locale !== "sw" || !data.inputs || !data.report) throw new Error("Hii si export ya JSON ya programu hii.");
         Array.prototype.forEach.call(form.elements, function (field) { if (!field.name || !Object.prototype.hasOwnProperty.call(data.inputs, field.name)) return; if (field.type === "checkbox") field.checked = Boolean(data.inputs[field.name]); else field.value = String(data.inputs[field.name]); });
+        if (tool === "eac-cet") {
+          ["exemptIdf", "exemptRdl"].forEach(function (name) { form.elements.namedItem(name).checked = data.inputs[name] === true; });
+          updateKenyaFees();
+        }
         render(data.report); status.textContent = "Export ya JSON imefunguliwa ndani ya kivinjari. Kagua tena sehemu na matokeo.";
       } catch (error) { lastReport = null; resultBox.hidden = true; status.dataset.state = "error"; status.textContent = error.message || "Faili ya JSON haikuweza kufunguliwa."; status.focus(); }
     });
@@ -231,7 +251,11 @@
       var members = window.SadcRooEngine.getMemberStates(); fill("exportCountry", members, "code", function (item) { return item.name; }); fill("importCountry", members, "code", function (item) { return item.name; });
       if (form.elements.namedItem("importCountry").options.length > 1) form.elements.namedItem("importCountry").selectedIndex = 1;
     }
-    if (tool === "eac-cet" && window.EacCetEngine) fill("countryCode", window.EacCetEngine.getMemberStates(), "code", function (item) { return item.name; });
+    if (tool === "eac-cet" && window.EacCetEngine) {
+      fill("countryCode", window.EacCetEngine.getMemberStates(), "code", function (item) { return item.name; });
+      form.elements.namedItem("countryCode").addEventListener("change", updateKenyaFees);
+      updateKenyaFees();
+    }
   }
 
   form.addEventListener("submit", function (event) {
@@ -239,7 +263,7 @@
     try { render(handlers[tool]()); }
     catch (error) { lastReport = null; resultBox.hidden = true; summary.textContent = ""; metrics.replaceChildren(); rows.replaceChildren(); notes.replaceChildren(); status.dataset.state = "error"; status.textContent = error.message || "Kagua sehemu kisha ujaribu tena."; status.focus(); }
   });
-  form.addEventListener("reset", function () { window.setTimeout(function () { lastReport = null; resultBox.hidden = true; status.dataset.state = ""; status.textContent = "Fomu imewekwa upya."; }, 0); });
+  form.addEventListener("reset", function () { window.setTimeout(function () { updateKenyaFees(); lastReport = null; resultBox.hidden = true; status.dataset.state = ""; status.textContent = "Fomu imewekwa upya."; }, 0); });
   root.addEventListener("click", function (event) { var button = event.target.closest("[data-export]"); if (button) exportFile(button.getAttribute("data-export")); });
   root.addEventListener("change", function (event) { if (event.target.matches("[data-import-json]")) { reopen(event.target.files && event.target.files[0]); event.target.value = ""; } });
   initialize();
