@@ -9,6 +9,7 @@ const routeApi=require('../scripts/lib/route-contract');
 const ROOT=path.resolve(__dirname,'..');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
 const generatedArtwork=new Map([
+ ...require('../data/image-generation/blog-generated-2026-11-19-birth-registration.json').images,
  ...require('../data/image-generation/blog-generated-2026-10-09.json').images,
  ...require('../data/image-generation/blog-generated-2026-10-13.json').images
 ].map(row=>[row.slug,row]));
@@ -96,4 +97,22 @@ test('canonical reviewed card: unrelated route and missing reviewed identity fai
 test('canonical reviewed card: wrong image on correctly routed card is rejected',()=>{
  const html=cardFixture(),card=canonicalCard(html);
  assert.throws(()=>applyCard(html.replace(card,card.replace(/src="[^"]*"/,'src="/assets/img/unknown.webp"'))),/Article card imagery changed/);
+});
+
+test('birth registration article and listing bindings keep the family registration artwork', () => {
+  const slug = 'civil-birth-registration-editorial';
+  const artwork = generatedArtwork.get(slug);
+  assert.equal(artwork.routes.length, 2);
+  for (const route of artwork.routes) {
+    const placements = bindings.filter(row => row.route === route);
+    assert.deepEqual(placements.map(row => row.placement).sort(), ['article-hero', 'listing-card']);
+    for (const row of placements) {
+      assert.equal(row.generation_slug, slug);
+      assert.equal(row.path, artwork.target);
+      assert.match(row.alt, /infant/);
+    }
+    const article = fs.readFileSync(path.join(ROOT, route, 'index.html'), 'utf8');
+    assert.ok(artwork.variants.every(variant => article.includes(variant.path)));
+    assert.doesNotMatch(article, /travel-documents-editorial/);
+  }
 });
