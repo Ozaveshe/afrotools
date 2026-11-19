@@ -107,6 +107,11 @@ test('Yoruba invoice and receipt publish reciprocal five-language document clust
       assert.equal(record.indexability, 'indexable', target);
       assert.equal(record.sitemap.included, true, target);
       assert.deepEqual(record.hreflangs, declared, target);
+      const head = read(record.source.file).split('</head>')[0];
+      const links = [...head.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="https:\/\/afrotools\.com([^"]+)"/g)];
+      assert.equal(links.length, 6, target);
+      assert.deepEqual(Object.fromEntries(links.map(([, lang, href]) => [lang, href])), declared, target);
+      assert.deepEqual(record.declaredHreflangs, declared, target);
       const block = sitemap.get(BASE_URL + target);
       assert.ok(block, target);
       for (const [language, destination] of Object.entries(declared)) {
