@@ -1,5 +1,6 @@
 'use strict';
 
+const eritreaDieselContact = require('./eritrea-diesel-contact');
 const markets = require('../../data/fuel/markets.json');
 const latest = require('../../data/fuel/latest.json');
 const observations = require('../../assets/js/lib/fuel-market-observations');
@@ -72,7 +73,7 @@ module.exports = function staticPrices(locale, escape) {
     if (initiallyOpen) opened = true;
     const missing = ['petrol','diesel'].filter(fuel => !fuels.has(fuel))
       .map(fuel => `<p>${escape(t(fuel))} · ${escape(t('unavailable'))}</p>`);
-    return `<details data-country="${escape(code)}"${initiallyOpen ? ' open' : ''}><summary>${escape(names.of(code))}</summary>${entries.concat(missing).join('\n')}</details>`;
+    return `<details data-country="${escape(code)}"${initiallyOpen ? ' open' : ''}><summary>${escape(names.of(code))}</summary>${entries.concat(missing).join('\n')}${code === 'ER' ? eritreaDieselContact(locale, false) : ''}</details>`;
   });
   return `<details id="fuel-static-reference" open><summary>${heading}</summary><p>${checked} ${time(asOf)}. ${advice}</p>${groups.join('\n')}</details>`;
 };

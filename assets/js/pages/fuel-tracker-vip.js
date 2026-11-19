@@ -45,6 +45,8 @@
    byId('fuel-result-comparison').textContent=s.available&&status(other).available&&other.currency===record.currency?t('comparison',{fuel:t(other.fuel_type),difference:money(other.price-record.price,record.currency)}):t('noComparison');
    byId('fuel-price').value=s.available?record.price:'';var entry=countryDirectory.get(byId('fuel-country').value);
    byId('fuel-currency').value=record&&record.currency||entry&&entry.currency||'USD';byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
+   var contact=byId('fuel-er-diesel-contact');
+   if(contact)contact.hidden=byId('fuel-country').value!=='ER'||byId('fuel-type').value!=='diesel';
    showAlternative();
    event(s.available?'fuel_localized_result_shown':'fuel_unavailable_shown',{market_id:selected&&selected.market_id||'none',country_code:selected&&selected.country_code||'none',fuel_type:byId('fuel-type').value,data_granularity:selected&&selected.granularity||'none',location_used:false,result_shown:s.available,reason:s.available?'':s.stale?'stale':'missing'});
   }
@@ -98,6 +100,16 @@
   }
   window.AfroTools.fuelFillReport=function(){if(!result)return null;if(result.market&&(!status(record).valid||(status(record).historical&&!historicalChosen))){render();return null;}return JSON.parse(JSON.stringify(result));};
   function download(format){if(!result)return;if(result.market&&(!status(record).valid||(status(record).historical&&!historicalChosen))){render();return;}var detail=sourceDateDetail(record);var text=format==='json'?JSON.stringify(result,null,2):[t('estimated')+': '+money(result.calculation.totalCost,result.inputs.currency),t('price')+': '+result.inputs.pricePerLitre+' '+result.inputs.currency,t('volume')+': '+result.calculation.litres,t('mode')+': '+t(result.inputs.mode==='tank'?'tank':'quantity'),t('quantity')+': '+result.calculation.inputAmount+' '+t(result.inputs.unit),result.inputs.mode==='tank'?t('tankSize')+': '+result.inputs.tankSize+' '+t(result.inputs.unit)+'\n'+t('level')+': '+result.inputs.currentLevelPct:'',t('basis')+': '+t(result.priceBasis),result.market?[t('market')+': '+place(selected),t('coverage')+': '+t(result.market.granularity),t(dateLabel(record))+': '+referenceDate(record),t(detail.label)+': '+detail.value,result.market.validTo?t('validTo')+': '+result.market.validTo:'',result.market.priceKind==='official-maximum-retail'?t('cap'):'',t('source')+': '+result.market.sourceName+' '+result.market.sourceUrl].filter(Boolean).join('\n'):'',t('policy')].filter(Boolean).join('\n');var url=URL.createObjectURL(new Blob([text],{type:format==='json'?'application/json':'text/plain;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='fuel-fill.'+format;a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);}
+  var confirmedPrice=byId('fuel-enter-confirmed-price');
+  if(confirmedPrice)confirmedPrice.addEventListener('click',function(){
+   var price=byId('fuel-price');
+   if(reference)price.value='';
+   reference=false;
+   historicalChosen=false;
+   byId('fuel-price-help').textContent=t('manual');
+   invalidate();
+   price.focus();
+  });
   byId('fuel-use-history').addEventListener('click',function(){if(!status(record).historical)return;reference=true;historicalChosen=true;byId('fuel-price').value=record.price;byId('fuel-currency').value=record.currency;byId('fuel-price-help').textContent=t('historical-estimate');invalidate();byId('fuel-price').focus();});
   byId('fuel-fill-form').addEventListener('submit',calculate);byId('fuel-fill-form').addEventListener('input',function(e){if(['fuel-price','fuel-currency'].includes(e.target.id)){reference=false;byId('fuel-price-help').textContent=t('manual');}invalidate();});byId('fuel-fill-form').addEventListener('change',function(){mode();invalidate();});
   byId('fuel-country').addEventListener('change',function(){

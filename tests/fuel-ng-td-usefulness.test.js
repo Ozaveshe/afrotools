@@ -59,6 +59,19 @@ test('a linked petrol region keeps its identity until the visitor opens the date
  assert.equal(v.get('fuel-type').value,'diesel');
  assert.equal(v.get('fuel-price').value,'33.62');
 });
+test('an Eritrea diesel quote uses the manual calculator and drops historical survey attribution',async()=>{
+ const v=await visitor('en',false,'2026-11-19T12:00:00Z','?country=ER');
+ v.get('fuel-type').value='diesel';v.get('fuel-type').fire('change');
+ assert.equal(v.get('fuel-er-diesel-contact').hidden,false);
+ v.get('fuel-use-history').click();assert.equal(v.get('fuel-price').value,'20');
+ v.get('fuel-enter-confirmed-price').click();assert.equal(v.get('fuel-price').value,'');
+ v.get('fuel-price').value='31.5';
+ v.get('fuel-fill-form').fire('input',{target:v.get('fuel-price')});
+ v.get('fuel-enter-confirmed-price').click();assert.equal(v.get('fuel-price').value,'31.5');
+ v.get('fuel-fill-form').fire('submit');
+ assert.equal(v.report().calculation.totalCost,630);
+ assert.equal(v.report().priceBasis,'manual');assert.equal(v.report().market,null);
+});
 test('normal Nigeria visitor gets 20-litre budget and can replace benchmark with a real pump quote',async()=>{
  const v=await visitor();assert.equal(v.get('fuel-market').value,'ng-national');assert.equal(v.get('fuel-price').value,'1298');v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,25960);assert.equal(v.report().market.priceKind,'weekly-national-benchmark');
  v.get('fuel-price').value='1350';v.get('fuel-fill-form').fire('input',{target:v.get('fuel-price')});assert.equal(v.report(),null);v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,27000);assert.equal(v.report().priceBasis,'manual');assert.equal(v.report().market,null);
