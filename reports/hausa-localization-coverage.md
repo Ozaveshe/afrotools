@@ -3,9 +3,9 @@
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
 - Public Hausa routes: 106
-- Native: 23
+- Native: 24
 - Localized shells: 58
-- Explicit English fallbacks: 25
+- Explicit English fallbacks: 24
 - Indexable: 81
 - Sitemap members: 81
 
@@ -73,7 +73,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/kwandon-kasuwa/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/kwatanta-aika-kudi/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/kwatanta-farashin-magani/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/kwatanta-kudin-makaranta/ | english-fallback | no | no | /tools/compare-school-fees/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
+| /ha/kayan-aiki/kwatanta-kudin-makaranta/ | native | no | no |  | ha/kayan-aiki/kwatanta-kudin-makaranta/kwatanci.js |
 | /ha/kayan-aiki/kwatanta-kunshin-intanet/ | english-fallback | no | no | /tools/data-plan-comparison/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-aiki/lambar-shafi-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/lambobin-ussd/ | localized-shell | yes | yes |  | Hausa route-first localized shell |

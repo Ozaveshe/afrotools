@@ -77,7 +77,7 @@ async function recipeExports(page, locale, fixture) {
   expect(json.result.status).toBe('ok');
   expect(json.result.values).toEqual({ scaleFactor: factor, ingredientCount: fixture.count, targetServings: target });
   expect(json.result.rows).toHaveLength(fixture.count);
-  expect(json.result.rows[0]).toMatchObject({ name: fixture.firstIngredient, scaledAmount: fixture.firstAmount, unit: 'cups' });
+  expect(json.result.rows[0]).toMatchObject({ name: fixture.firstIngredient[locale], scaledAmount: fixture.firstAmount, unit: locale === 'fr' ? 'tasses' : 'vikombe' });
   const txt = await downloadText(page, 'txt');
   const copiedBefore = await page.evaluate(() => window.__kitchenCopiedText.length);
   await page.locator('[data-ua-export="copy"]').click();
@@ -102,8 +102,8 @@ async function recipeExports(page, locale, fixture) {
   return { json, txt, copied };
 }
 
-const jollof = { slug: 'nigerian-jollof-rice', name: 'Nigerian Jollof Rice', base: 6, count: 15, firstIngredient: 'long-grain parboiled rice', firstAmount: 6 };
-const ugali = { slug: 'ugali-sukuma-wiki', name: 'Ugali na Sukuma Wiki', base: 4, count: 9, firstIngredient: 'white maize flour (unga)', firstAmount: 4 };
+const jollof = { slug: 'nigerian-jollof-rice', name: 'Nigerian Jollof Rice', base: 6, count: 15, firstIngredient: { fr: 'riz long grain étuvé', sw: 'mchele mrefu uliochemshwa kwa mvuke kabla ya kukobolewa' }, firstAmount: 6 };
+const ugali = { slug: 'ugali-sukuma-wiki', name: 'Ugali na Sukuma Wiki', base: 4, count: 9, firstIngredient: { fr: 'farine de maïs blanc (unga)', sw: 'unga wa mahindi meupe' }, firstAmount: 4 };
 
 for (const [locale, settings] of Object.entries(locales)) {
   for (const width of [320, 390]) for (const theme of ['light', 'dark']) {
@@ -135,7 +135,7 @@ for (const [locale, settings] of Object.entries(locales)) {
       if (locale === 'sw') {
         await expect(page.locator('[data-ua-metrics]')).toHaveClass('ua-metrics');
         expect(await page.locator('[data-ua-table] th').allTextContents()).toEqual(['Kiungo', 'Kiasi', 'Kipimo']);
-        await expect(rows.first()).toContainText('long-grain parboiled rice');
+        await expect(rows.first()).toContainText(jollof.firstIngredient[locale]);
         await expect(rows.first().locator('td').nth(1)).toHaveText('6');
       }
       evidence.firstExports = await recipeExports(page, locale, jollof);
@@ -162,9 +162,9 @@ for (const [locale, settings] of Object.entries(locales)) {
       await target.fill('3');
       await submit.click();
       evidence.fractionalExports = await recipeExports(page, locale, { ...ugali, target: 3, firstAmount: 1.5 });
-      expect(evidence.fractionalExports.json.result.rows.find(row => row.name === 'salt').scaledAmount).toBe(0.375);
-      expect(evidence.fractionalExports.txt).toContain(locale === 'fr' ? 'salt: 0,38 teaspoon' : 'salt: 0.38 teaspoon');
-      expect(evidence.fractionalExports.txt).not.toMatch(/salt: 0[.,]375/);
+      expect(evidence.fractionalExports.json.result.rows.find(row => row.name === (locale === 'fr' ? 'sel' : 'chumvi')).scaledAmount).toBe(0.375);
+      expect(evidence.fractionalExports.txt).toContain(locale === 'fr' ? 'sel: 0,38 c. à café' : 'chumvi: 0.38 kijiko cha chai');
+      expect(evidence.fractionalExports.txt).not.toMatch(/(?:sel|chumvi): 0[.,]375/);
       expect(evidence.fractionalExports.txt).not.toMatch(/\d+[.,]\d{3,}/);
 
       await target.fill('10');

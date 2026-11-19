@@ -22,14 +22,14 @@ test('malformed input and overflow never produce an amount', () => {
   assert.equal(engine.parse('999999999999.995', '999999999999').valid, false);
 });
 
-for (const slug of ['amount-words-gh', 'naira-to-words']) {
+for (const slug of ['amount-words-gh', 'amount-words-ke', 'naira-to-words']) {
   test(`${slug}: real page wording retains exact major/minor units`, () => {
     const html = fs.readFileSync(`tools/${slug}/index.html`, 'utf8');
     const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('function amountToWords('));
     const sandbox = { window: { AfroTools: { engines: { amountWordsInput: engine } } } };
     vm.runInNewContext(inline, sandbox);
     const curr = { dataset: { main: 'Naira', sub: 'Kobo' } };
-    const max = slug === 'amount-words-gh' ? '999999999999' : maximum;
+    const max = slug === 'naira-to-words' ? maximum : '999999999999';
     const wording = raw => sandbox.amountToWords(engine.parse(raw, max), curr);
     assert.match(wording('0'), /Zero.*Only/);
     if (slug === 'amount-words-gh') {
@@ -42,6 +42,9 @@ for (const slug of ['amount-words-gh', 'naira-to-words']) {
         ['1.02', 'Ghana Cedi One and Pesewas Two Only'],
         ['2.02', 'Ghana Cedis Two and Pesewas Two Only']
       ]) assert.equal(wording(amount), expected, amount);
+    } else if (slug === 'amount-words-ke') {
+      assert.equal(wording('1.005'), 'Kenya Shilling One and Cent One Only');
+      assert.equal(wording('0.02'), 'Cents Two Only');
     } else {
       assert.match(wording('0.01'), /One Kobo Only/);
       assert.match(wording('1.005'), /One Kobo Only/);

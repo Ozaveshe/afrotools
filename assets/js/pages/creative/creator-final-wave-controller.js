@@ -139,6 +139,34 @@
     });
   }
 
+  function drawSlideText(context, text, y, height, startSize, weight, slideNumber) {
+    var width = context.canvas.width - 200;
+    var words = text.split(/\s+/);
+    for (var size = startSize; size >= 30; size -= 2) {
+      context.font = weight + " " + size + "px sans-serif";
+      var lineHeight = Math.ceil(size * 1.25);
+      var lines = [""];
+      var fits = words.every(function (word) {
+        if (context.measureText(word).width > width) return false;
+        var last = lines.length - 1;
+        var next = lines[last] ? lines[last] + " " + word : word;
+        if (context.measureText(next).width <= width) {
+          lines[last] = next;
+        } else {
+          lines.push(word);
+        }
+        return lines.length * lineHeight <= height;
+      });
+      if (fits) {
+        lines.forEach(function (line, index) { context.fillText(line, 100, y + index * lineHeight); });
+        return;
+      }
+    }
+    throw new Error(config.locale === "fr"
+      ? "Diapositive " + slideNumber + " : raccourcissez le texte ou répartissez-le sur plusieurs diapositives."
+      : "Slide " + slideNumber + ": shorten the text or split it across slides.");
+  }
+
   function canvasForSlide(result, slide) {
     var canvas = document.createElement("canvas");
     canvas.width = result.dimensions.width;
@@ -149,15 +177,14 @@
     context.fillStyle = result.colours.accent;
     context.fillRect(0, 0, 26, canvas.height);
     context.fillStyle = "#ffffff";
-    context.font = "900 86px sans-serif";
+    var number = result.slides.indexOf(slide) + 1;
     context.textBaseline = "top";
-    drawWrapped(context, slide.heading, 100, 150, canvas.width - 200, 102, 5);
+    drawSlideText(context, slide.heading, 150, 560, 86, 900, number);
     context.fillStyle = "#dbeafe";
-    context.font = "500 46px sans-serif";
-    drawWrapped(context, slide.body, 100, 760, canvas.width - 200, 62, 6);
+    drawSlideText(context, slide.body, 760, 420, 46, 500, number);
     context.fillStyle = result.colours.accent;
     context.font = "700 30px sans-serif";
-    context.fillText(String(result.slides.indexOf(slide) + 1).padStart(2, "0"), 100, 1230);
+    context.fillText(String(number).padStart(2, "0"), 100, 1230);
     return canvas;
   }
 
@@ -268,6 +295,7 @@
             pending -= 1;
             if (!pending) {
               zip.generateAsync({ type: "blob" }).then(function (blobValue) {
+                if (lastResult !== result) return;
                 blobDownload("creator-carousel-slides.zip", "application/zip", blobValue);
               });
             }
@@ -278,6 +306,18 @@
   }
 
   fieldsNode.innerHTML = config.fields.map(fieldMarkup).join("");
+
+  if (config.owner === "creator-carousel") {
+    form.addEventListener("input", function () {
+      if (!lastResult) return;
+      lastResult = null;
+      document.getElementById("creatorFinalOutput").hidden = true;
+      exportNode.replaceChildren();
+      statusNode.textContent = config.locale === "fr"
+        ? "Modifications en attente. Recréez le carrousel pour le télécharger."
+        : "Changes pending. Build the carousel again to download it.";
+    });
+  }
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();

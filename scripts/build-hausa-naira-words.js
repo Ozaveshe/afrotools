@@ -11,7 +11,8 @@ const CHECK = process.argv.includes('--check');
 function repairExports(html) {
   const functions = {
     convert: `function convert() {
-  var raw = cleanAmountInput(document.getElementById('amount').value);
+  var input = document.getElementById('amount');
+  var raw = input.value.trim();
   var card = document.getElementById('resultCard');
   var formatted = document.getElementById('formatted');
   lastWords = '';
@@ -20,25 +21,31 @@ function repairExports(html) {
   document.getElementById('result').textContent = '';
   document.getElementById('docPreview').textContent = '';
   renderQuality(0, '');
-  if (!raw || isNaN(raw) || parseFloat(raw) < 0) {
+  input.removeAttribute('aria-invalid');
+  input.removeAttribute('aria-describedby');
+  if (!raw) {
     card.style.display = 'none';
     return false;
   }
-  var amount = parseFloat(raw);
-  if (amount > 999999999999999.99) {
-    document.getElementById('result').innerHTML = '<span style="color:#ef4444;">Adadin ya yi yawa. Matsakaici shi ne 999,999,999,999,999.99</span>';
+  var code = document.getElementById('currency').value;
+  var parsed;
+  try {
+    parsed = window.AfroTools.engines.hausaNumberWords.parseAmount(raw, code);
+  } catch (error) {
+    input.setAttribute('aria-invalid', 'true');
+    input.setAttribute('aria-describedby', 'result');
+    document.getElementById('result').textContent = error.message;
     card.style.display = '';
     return false;
   }
-  var code = document.getElementById('currency').value;
-  var figure = amount.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  var words = applyCaseMode(amountToWords(amount));
+  var figure = parsed.major.toLocaleString('en') + '.' + parsed.exact.split('.')[1];
+  var words = applyCaseMode(amountToWords(parsed.exact));
   lastWords = words;
   lastDocumentLine = buildDocumentLine(code, figure, words);
   formatted.textContent = code + ' ' + figure;
   document.getElementById('result').innerHTML = '<span class="currency-label">' + code + ' Adadi cikin kalmomi</span>' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
-  renderQuality(amount, raw);
+  renderQuality(parsed, raw);
   card.style.display = '';
   return true;
 }`,
@@ -65,9 +72,14 @@ function repairExports(html) {
 }`,
     downloadJsonResult: `function downloadJsonResult() {
   if (!convert()) { showToast('Saka adadi mai inganci tukuna.'); return; }
+  var parsed = window.AfroTools.engines.hausaNumberWords.parseAmount(document.getElementById('amount').value, document.getElementById('currency').value);
+  var numeric = Number(parsed.exact);
+  var decimalParts = String(numeric).split('.');
+  var roundTrip = decimalParts[0] + '.' + (decimalParts[1] || '').padEnd(2, '0');
+  var amountValue = roundTrip === parsed.exact ? numeric : parsed.exact;
   var payload = {
     tool: 'naira-to-words', language: 'ha', currency: document.getElementById('currency').value,
-    amount: Number(cleanAmountInput(document.getElementById('amount').value)), words: lastWords,
+    amount: amountValue, amountExact: parsed.exact, words: lastWords,
     documentLine: lastDocumentLine, generatedAt: new Date().toISOString(), localOnly: true
   };
   var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
@@ -97,6 +109,9 @@ function repairExports(html) {
 
 function copyResult() {`);
   }
+  html = html.replace(/function cleanAmountInput\(raw\) \{[\s\S]*?\n\}\n/, '');
+  html = html.replace('Math.round((amount % 1) * 100) > 0', 'amount.minor > 0')
+    .replace('var big = amount >= 1000000;', 'var big = amount.major >= 1000000;');
   html = html.replace('aria-label="Misali 250000.50"', 'aria-label="Adadin kudi"');
   html = html.replace('<div class="copy-toast" id="toast">', '<div class="copy-toast" id="toast" role="status" aria-live="polite" aria-atomic="true">');
   return html;
