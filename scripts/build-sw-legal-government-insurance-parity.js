@@ -371,6 +371,29 @@ function legalContracts() {
   });
 }
 
+function publicLegalConfig(rows) {
+  const pick = (record, keys) => Object.fromEntries(
+    keys.filter((key) => Object.hasOwn(record, key)).map((key) => [key, record[key]])
+  );
+  const sourceKeys = ['jurisdiction', 'availability', 'url', 'label', 'checkedAt', 'confidence'];
+  return { rows: rows.map((row) => {
+    const config = pick(row, [
+      'englishId', 'name', 'swahiliRoute', 'sharedEngine', 'engineMode', 'workflowControl',
+      'resultIntro', 'resultLabels', 'clearStaleOnInput', 'parserValidPdf', 'countryPresets'
+    ]);
+    config.fields = row.fields.map((field) => ({
+      ...pick(field, ['name', 'type', 'label', 'options', 'required', 'min', 'max', 'step']),
+      initialValue: Object.hasOwn(field, 'initialValue') ? field.initialValue : field.fixtureValue
+    }));
+    config.source = pick(row.source, sourceKeys);
+    if (row.jurisdictionSources) {
+      config.jurisdictionSources = Object.fromEntries(Object.entries(row.jurisdictionSources)
+        .map(([country, source]) => [country, pick(source, sourceKeys)]));
+    }
+    return config;
+  }) };
+}
+
 function head(app, category, imageId) {
   const schema = {
     '@context': 'https://schema.org',
@@ -677,9 +700,17 @@ function checkOrWrite(outputs) {
 }
 
 function main() {
+  const legalRows = legalContracts();
+  const publicOutput = [
+    path.join(ROOT, 'data', 'legal', 'sw-property-forms.json'),
+    JSON.stringify(publicLegalConfig(legalRows), null, 2) + '\n'
+  ];
+  if (process.argv.includes('--legal-runtime-only')) {
+    checkOrWrite([publicOutput]);
+    return;
+  }
   const allRows = scopedInventoryRows();
   const scopedById = new Map(allRows.map((row) => [row.englishId, row]));
-  const legalRows = legalContracts();
   const governmentSource = JSON.parse(fs.readFileSync(GOVERNMENT_MANIFEST, 'utf8')).apps;
   const govRows = governmentSource.map((owner) => {
     const row = scopedById.get(owner.id);
@@ -702,6 +733,7 @@ function main() {
     return { id: owner.id, route: identity.route, name: identity.name, description: identity.description, englishRoute: owner.englishRoute, owner };
   });
   const outputs = [
+    publicOutput,
     [SW_LEGAL_OUTPUT, JSON.stringify({ schemaVersion: 1, owner: 'scripts/build-sw-legal-government-insurance-parity.js', count: legalRows.length, rows: legalRows }, null, 2) + '\n'],
     ...legalRows.map((row) => [fileForRoute(row.swahiliRoute), legalPage(row)]),
     ...govRows.map((row) => [fileForRoute(row.route), governmentPage(row)]),

@@ -380,7 +380,7 @@
     reader.readAsText(event.target.files[0]);
   });
 
-  fetch(root.getAttribute('data-contract-manifest') || '/data/registry/swahili-legal-property-gaps.json', { cache: 'no-store' })
+  fetch(root.getAttribute('data-contract-manifest') || '/data/legal/sw-property-forms.json', { cache: 'no-store' })
     .then(function (response) {
       if (!response.ok) throw new Error('manifest');
       return response.json();
