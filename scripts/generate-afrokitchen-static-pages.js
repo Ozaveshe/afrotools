@@ -677,9 +677,9 @@ function renderStaticRecipeCard(recipe, recipeImages) {
   const region = recipe.region || "";
   const time = classifyRecipeDuration(recipe.total_time_minutes).kind === "known" ? `${recipe.total_time_minutes} min` : "Not recorded";
   const servings = recipe.default_servings ? `Serves ${recipe.default_servings}` : "";
-  const imageAlt = recipeImageAlt(recipe);
+  // The link already names the recipe and includes its visible title.
   const thumb = hasImage
-    ? `<span class="ak-static-recipe-card-thumb"><img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async"${recipeImageAttributes(imageSrc, 640, 480, true)}></span>`
+    ? `<span class="ak-static-recipe-card-thumb"><img src="${escapeHtml(imageSrc)}" alt="" loading="lazy" decoding="async"${recipeImageAttributes(imageSrc, 640, 480, true)}></span>`
     : renderRecipeFallbackMarkup(recipe, true);
 
   return `<a class="ak-static-recipe-card${hasImage ? " has-thumb" : " has-fallback"}" href="${escapeHtml(href)}" aria-label="Open recipe: ${escapeHtml(recipe.name)}">
