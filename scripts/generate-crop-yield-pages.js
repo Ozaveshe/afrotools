@@ -209,7 +209,7 @@ countries.forEach(c => {
   html = html.replace(/(<meta name="afrotools-source-jurisdiction" content=")[^"]+(">)/, `$1${c.sourceJurisdiction}$2`);
   html = html.replace(/(<meta name="afrotools-formula-jurisdiction" content=")[^"]+(">)/, `$1${countryData.countryCode}$2`);
   html = html.replace(/(<meta name="afrotools-currency" content=")[^"]+(">)/, `$1${c.currency}$2`);
-  html = html.replace('"applicationCategory":"UtilityApplication"', `"applicationCategory":"UtilityApplication","spatialCoverage":{"@type":"Country","name":${JSON.stringify(c.name)},"identifier":${JSON.stringify(c.code)}},"additionalProperty":[{"@type":"PropertyValue","name":"sourceJurisdiction","value":${JSON.stringify(c.sourceJurisdiction)}},{"@type":"PropertyValue","name":"formulaJurisdiction","value":${JSON.stringify(countryData.countryCode)}},{"@type":"PropertyValue","name":"currency","value":${JSON.stringify(c.currency)}}]`);
+  html = html.replace('"applicationCategory":"UtilitiesApplication"', `"applicationCategory":"UtilitiesApplication","spatialCoverage":{"@type":"Country","name":${JSON.stringify(c.name)},"identifier":${JSON.stringify(c.code)}}`);
 
   // Replace template-only Nigeria facts with the country dataset used by the engine.
   html = html.replace(/<section class="seo-content agri-country-facts"[\s\S]*?<\/section>/, factsSection(c, countryData));
