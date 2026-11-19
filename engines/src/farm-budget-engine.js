@@ -112,7 +112,7 @@
       totals.seed * 0.5 + totals.labor * 0.2,
       totals.fertilizer * 0.4 + totals.chemicals * 0.4 + totals.labor * 0.2,
       totals.fertilizer * 0.4 + totals.chemicals * 0.3 + totals.labor * 0.2,
-      totals.chemicals * 0.3 + totals.labor * 0.15,
+      totals.fertilizer * 0.2 + totals.chemicals * 0.3 + totals.labor * 0.15,
       totals.labor * 0.25 + totals.transport + contingency * 0.5 + loanInterest
     ];
     var averagePrice = crops.reduce(function sum(accumulator, crop) {

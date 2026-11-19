@@ -23,11 +23,13 @@ test('All 17 original JSON workflows fail closed when the whole controller is un
   const observed = observe(page);
   await page.route('**/assets/js/pages/sw-agriculture-assigned-parity.js*', route => route.abort());
   await page.route('**/assets/js/pages/sw-agric-profit.js*', route => route.abort());
+  await page.route('**/assets/js/pages/sw-farm-budget.js*', route => route.abort());
   for (const app of guarded) {
     await page.goto('/sw/zana/' + app.slug + '/');
     await expect(page.locator('[data-agri-form] button[type=submit]')).toBeDisabled();
     await expect(page.locator('[data-status]')).toContainText('hakijapakia');
     if (app.id === 'agric-profit') await page.locator('#fp-area').fill(String(token));
+    else if (app.id === 'farm-budget') await page.locator('[data-area]').fill(String(token));
     else await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
     await assertUnserialized(page);
     await page.locator('[data-agri-form]').evaluate(form => form.requestSubmit());
@@ -84,7 +86,8 @@ test('JavaScript unavailable leaves controls disabled and forced native GET has 
       await page.goto(baseURL + '/sw/zana/' + app.slug + '/');
       await expect(page.locator('[data-agri-form] button[type=submit]')).toBeDisabled();
       await expect(page.locator('[data-local-script-note]')).toContainText('JavaScript');
-      await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
+      if (app.id === 'farm-budget') await page.locator('[data-area]').fill(String(token));
+      else await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
       await assertUnserialized(page);
       const beforeClick = page.url();
       await page.locator('[data-agri-form] button[type=submit]').click({ force: true });

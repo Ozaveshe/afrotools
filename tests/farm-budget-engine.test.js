@@ -37,6 +37,8 @@ for (const countryCode of Object.keys(farmCosts)) {
             assert.equal(result.totalBudget, result.subtotal + result.contingency + result.loanInterest);
             assert.equal(result.profit, result.totals.revenue - result.totalBudget);
             assert.equal(result.cashflow.length, 6);
+            const allocated = result.cashflow.reduce((sum, month) => sum + month.value, 0);
+            assert.ok(Math.abs(allocated - result.totalBudget) <= result.totalBudget * 1e-12);
             assert.equal(result.scenarios.length, 4);
             assert.ok(Number.isFinite(result.breakEvenYieldTonnesHa));
             scenarios += 1;
