@@ -116,7 +116,7 @@ test('real collector maps each fetched URL and preserves reused diesel beside fr
   } });
   const rows = await runner.context.fetchFromGlobalPetrolPrices();
   assert.equal(rows.length, countries.length);
-  assert.equal(runner.calls.length, countries.length * 2);
+  assert.equal(runner.calls.length, countries.length * 2 + 1);
   for (const row of rows) {
     const old = previous.countries.find(c => c.code === row.code);
     assert.equal(row.petrol.price, 14);
@@ -131,4 +131,24 @@ test('real collector maps each fetched URL and preserves reused diesel beside fr
   }
   assert.deepEqual(previous, before);
   assert.equal(runner.context.validateFuelData(runner.context.transformFuelData(rows)).valid, true);
+});
+test('Nigeria overview reads dated NGN per litre by product and header, independently of the USD column', async () => {
+  const table = '<table><tr><td>Fuels, price per liter</td><td>Date</td><td>USD</td><td>NGN</td></tr>' +
+    '<tr><th><a>Gasoline prices</a></th><td>16.11.2026</td><td>0.86</td><td>1161.75</td></tr>' +
+    '<tr><th>Diesel prices</th><td>16.11.2026</td><td>1.239</td><td>1675</td></tr></table>';
+  const runner = load({html: () => table});
+  const pair = await runner.context.fetchMarketPair({code:'NG', slug:'Nigeria', currency:'NGN'});
+  assert.deepEqual(copy(pair).map(f => [f.local, f.observed_at, f.source_url]), [
+    [1161.75, '2026-11-16', 'https://www.globalpetrolprices.com/Nigeria/'],
+    [1675, '2026-11-16', 'https://www.globalpetrolprices.com/Nigeria/']
+  ]);
+  assert.equal(runner.calls.length, 1);
+  for (const malformed of [table.replace('>NGN<', '>EUR<'), table.replace('per liter','per kilogram')]) {
+    assert.deepEqual(copy(runner.context.parseNigeriaBenchmarkTable(malformed)), {});
+  }
+  for (const invalid of ['31.02.2026','01.01.2099','undated']) {
+    const parsed = runner.context.parseNigeriaBenchmarkTable(table.replace('16.11.2026', invalid));
+    assert.equal(parsed.gasoline, undefined);
+    assert.equal(parsed.diesel.local, 1675);
+  }
 });
