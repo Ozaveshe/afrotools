@@ -42,6 +42,23 @@ async function visitor(locale='en',failLoads=false,asOf=now,search='',beforeLoad
  start();if(beforeLoad)beforeLoad({get,root});await new Promise(resolve=>setImmediate(resolve));await new Promise(resolve=>setImmediate(resolve));
  return {get,root,calls,report:()=>window.AfroTools.fuelFillReport(),download:async()=>{get('fuel-fill-txt').fire('click');return blob.text();}};
 }
+test('a linked petrol region keeps its identity until the visitor opens the dated national diesel alternative',async()=>{
+ const id='za-coast-petrol95-2026-11';
+ const v=await visitor('en',false,'2026-11-19T12:00:00Z','?market='+id);
+ assert.equal(v.get('fuel-market').value,id);
+ v.get('fuel-type').value='diesel';
+ v.get('fuel-type').fire('change');
+ assert.equal(v.get('fuel-market').value,id);
+ assert.equal(v.get('fuel-price').value,'');
+ const button=v.get('fuel-market-alternative');
+ assert.equal(button.hidden,false);
+ assert.match(button.textContent,/National benchmark/);
+ assert.match(button.textContent,/2026-11-16/);
+ button.click();
+ assert.equal(v.get('fuel-market').value,'za-national-weekly-diesel');
+ assert.equal(v.get('fuel-type').value,'diesel');
+ assert.equal(v.get('fuel-price').value,'33.62');
+});
 test('normal Nigeria visitor gets 20-litre budget and can replace benchmark with a real pump quote',async()=>{
  const v=await visitor();assert.equal(v.get('fuel-market').value,'ng-national');assert.equal(v.get('fuel-price').value,'1298');v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,25960);assert.equal(v.report().market.priceKind,'weekly-national-benchmark');
  v.get('fuel-price').value='1350';v.get('fuel-fill-form').fire('input',{target:v.get('fuel-price')});assert.equal(v.report(),null);v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,27000);assert.equal(v.report().priceBasis,'manual');assert.equal(v.report().market,null);
