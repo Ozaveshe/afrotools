@@ -91,3 +91,26 @@
 /* The existing dialog keeps compact ingredient rows while reusing the same nodes. */
 .ak-cook-dialog .ak-ing-art,.ak-cook-dialog .ak-equipment,.ak-cook-dialog .ak-visual-step-nav,.ak-cook-dialog .ak-visual-pager{display:none}
 @media print{.ak-visual-recipe .ak-step[hidden]{display:block!important}.ak-visual-step-nav,.ak-visual-pager,.ak-running-timers,.ak-equipment,.ak-ing-art{display:none!important}.ak-page.ak-visual-recipe #ak-static-ingredients{display:block}.ak-page.ak-visual-recipe .ak-ing-item{display:block;text-align:left;border:0;padding:4px}.ak-page.ak-visual-recipe .ak-ing-amount{display:inline}.ak-page.ak-visual-recipe .ak-hero{padding:10px 0}.ak-page.ak-visual-recipe .ak-cookbook-cover{display:none}.ak-visual-nutrition>*{display:block!important}}
+
+/* Printed recipes follow kitchen reading order, including the selected yield. */
+@media print {
+  body:has(.ak-visual-recipe) #afro-cookie-consent,
+  .ak-visual-recipe .ak-breadcrumb,
+  .ak-visual-recipe .ak-hero-actions,
+  .ak-visual-recipe:has(.ak-servings-btn:not([disabled])) .ak-hero-stats .ak-stat:nth-child(4),
+  .ak-visual-recipe .ak-static-serving-bar button,
+  .ak-visual-recipe .ak-static-actions,
+  .ak-visual-recipe .ak-static-serving-note,
+  .ak-visual-recipe details > summary {
+    display: none !important;
+  }
+
+  .ak-page.ak-visual-recipe .ak-recipe-layout {
+    display: block !important;
+  }
+
+  .ak-visual-recipe .ak-step,
+  .ak-visual-recipe .ak-ing-item {
+    break-inside: avoid;
+  }
+}
