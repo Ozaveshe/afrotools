@@ -77,15 +77,15 @@ function trustSection(page) {
 <h2>Orisun, ona isiro ati opin</h2>
 <p><strong>Orisun ati alabapade:</strong> oju-iwe yii lo ${page.dataFiles}. A tun sayewo oju-iwe yii ni 22 June 2026. Owo ọja, ojo, irugbin, ajile, gbigbe, arun, kokoro ati wiwa olura le yipada.</p>
 <p><strong>Ona isiro:</strong> ${page.method}</p>
-<p><strong>Sayewo:</strong> fi abajade we iye ọja agbegbe, ADP tabi extension officer, ẹgbẹ agbẹ, olutaja, olura gidi ati iwe adehun ṣaaju ki o to ra ohun elo tabi gba gbese.</p>
-<p><strong>Asiri ati opin:</strong> awọn iye ti o tẹ wa ninu browser yii. AfroTools ko fi data oko rẹ ranṣẹ si server. Eyi jẹ irinṣẹ eto ati afiyesi nikan; kii ṣe idiyele ọja osise, ijẹrisi ijọba, imọran inawo, tabi ileri ere.</p>
+<p><strong>Sayewo:</strong> fi abajade we iye ọja agbegbe, ADP tàbí òṣìṣẹ́ ìmọ̀ràn nípa iṣẹ́ àgbẹ̀, ẹgbẹ agbẹ, olutaja, olura gidi ati iwe adehun ṣaaju ki o to ra ohun elo tabi gba gbese.</p>
+<p><strong>Asiri ati opin:</strong> Àwọn iye tí o tẹ dúró lórí ẹ̀rọ rẹ. AfroTools kì í fi àlàyé oko rẹ ránṣẹ́ sí ibòmíràn. Eyi jẹ irinṣẹ eto ati afiyesi nikan; kii ṣe idiyele ọja osise, ijẹrisi ijọba, imọran inawo, tabi ileri ere.</p>
 </section>`;
 }
 
 function exportSection(page) {
   return `<section class="card" data-yo-agriculture-batch="export">
 <h2>Gbe abajade jade</h2>
-<p class="muted">Da akopọ tabi gba faili TXT fun ijiroro pẹlu agbẹ, olutaja, ẹgbẹ oko tabi olura. Ohun gbogbo n ṣiṣẹ local-first ninu browser yii.</p>
+<p class="muted">Da akopọ tabi gba faili TXT fun ijiroro pẹlu agbẹ, olutaja, ẹgbẹ oko tabi olura. Gbogbo iṣẹ́ yìí ń ṣẹlẹ̀ lórí ẹ̀rọ rẹ.</p>
 <div class="yo-p1-buttons">
   <button type="button" data-yo-agri-copy>Da abajade kopi</button>
   <button type="button" data-yo-agri-download>Gba TXT</button>
