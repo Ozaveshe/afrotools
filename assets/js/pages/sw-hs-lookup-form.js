@@ -12,6 +12,11 @@
     mahindi: "maize", ngano: "wheat", sabuni: "soap", pamba: "cotton", maziwa: "milk"
   };
   const descriptions = {
+    "8517.13": "Simu mahiri",
+    "8517.14": "Simu nyingine za mtandao wa simu au wa mawasiliano yasiyotumia waya",
+    "8541.42": "Seli za sola ambazo bado hazijaunganishwa kuwa moduli au paneli",
+    "8541.43": "Seli za sola zilizounganishwa kuwa moduli au paneli",
+    "8541.49": "Vifaa vingine vya nusu kondakta vinavyoitikia mwanga",
     "0901.11": "Kahawa isiyokaangwa, yenye kafeini",
     "0901.12": "Kahawa isiyokaangwa, iliyoondolewa kafeini",
     "0901.21": "Kahawa iliyokaangwa, yenye kafeini",
