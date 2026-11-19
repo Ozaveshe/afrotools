@@ -15301,101 +15301,42 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:8ef32f5256c881ff43d63320f24caacbbca27666f13e5251cea3ecfdb88b76aa",
+      "artifactDigest": "sha256:cd728115dd155b3ba68d47f6a18a9895336de327171767da2a4391e2f68157ad",
       "artifactPath": "netlify/functions/_engines/ma-paye.js",
       "currency": "MAD",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
       "currencyOverride": null,
       "disclaimer": "Planning estimate only. Confirm rates, payroll treatment, filing, and remittance with the relevant authority or a qualified professional.",
-      "effectiveDateStatus": "review-required",
-      "effectiveFrom": null,
-      "effectiveTo": null,
+      "effectiveDateStatus": "declared",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": "2026-12-31",
       "formulaFamily": "paye-server",
-      "formulaVersion": "2026-03-01+sha256.8ef32f5256c8",
+      "formulaVersion": "2026-01-01+sha256.cd728115dd15",
       "id": "paye-server-ma",
       "jurisdictions": [
         "MA"
       ],
       "knownExclusions": [
-        "Special regimes, treaties, sector rules, regional reliefs, and individual filing adjustments may not be modeled."
+        "Ordinary private-sector salary paid evenly over twelve months. Special professions, benefits and exempt allowances excluded. CNSS contribution rates are planning assumptions."
       ],
-      "lastVerified": "2025-01-01",
+      "lastVerified": "2026-11-19",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "mode": "schema-exposed-runtime-parameters",
-        "values": {
-          "bandType": "progressive",
-          "bands": [
-            [
-              30000,
-              0
-            ],
-            [
-              20000,
-              0.1
-            ],
-            [
-              20000,
-              0.2
-            ],
-            [
-              20000,
-              0.3
-            ],
-            [
-              40000,
-              0.34
-            ],
-            [
-              "Infinity",
-              0.38
-            ]
-          ],
-          "employerSS": [
-            {
-              "cap": 72000,
-              "key": "cnss",
-              "label": "CNSS (8.98%)",
-              "rate": 0.0898
-            },
-            {
-              "key": "amo",
-              "label": "AMO Health (4.11%)",
-              "rate": 0.0411
-            }
-          ],
-          "isMonthly": false,
-          "personalRelief": 0,
-          "regimes": [
-            "STANDARD"
-          ],
-          "socialSecurity": [
-            {
-              "cap": 72000,
-              "key": "cnss",
-              "label": "CNSS (4.48%)",
-              "rate": 0.0448
-            },
-            {
-              "key": "amo",
-              "label": "AMO Health (2.26%)",
-              "rate": 0.0226
-            }
-          ]
-        }
+        "artifactDigest": "sha256:cd728115dd155b3ba68d47f6a18a9895336de327171767da2a4391e2f68157ad",
+        "artifactPath": "netlify/functions/_engines/ma-paye.js",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
       },
-      "protectedDuplicates": [],
+      "protectedDuplicates": [
+        "engines/src/morocco-paye.js"
+      ],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
       "rounding": {
-        "calculationNote": "Unrounded intermediate amounts feed later stages unless the implementation explicitly applies Math.round.",
-        "method": "nearest-integer",
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
         "stages": [
-          "individual statutory deductions",
-          "tax per band in the result breakdown",
-          "annual net tax after relief",
-          "annual and monthly net result",
-          "employer contribution totals"
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
         ]
       },
       "sourceJurisdictions": [
@@ -15406,29 +15347,8 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "dgi.gov.ma",
-          "url": "https://dgi.gov.ma"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "tax.gov.ma",
-          "url": "https://tax.gov.ma"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "Code général des impôts 2026",
+          "title": "DGI — Code général des impôts 2026, articles 59, 73 et 74",
           "url": "https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "Note circulaire 735 — réforme TVA",
-          "url": "https://www.finances.gov.ma/Publication/dgi/2024/Note-Circulaire735LF2024.pdf"
         }
       ],
       "supportStatus": "registered",

@@ -534,6 +534,10 @@ function buildRegistry(asOf) {
         return toolsByRoute.get(normalizedRoute(route)) || [];
       });
       const entry = formulaEntry(formula, { id: 'paye-' + country.toLowerCase() + '-source', countryCode: country, fallbackName: (countryNames.get(country) || country) + ' PAYE source pack', appliesTo: ['tax', 'salary'], routes, toolIds, notes: (countryNames.get(country) || country) + ' PAYE engine source audit. Outputs remain planning estimates.', disclaimer: 'PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.' }, today);
+      if (country === 'MA') {
+        entry.routes = ['/morocco/ma-paye', '/fr/maroc/calculateur-salaire-net', '/fr/morocco/ma-paye', '/sw/morocco/kikokotoo-kodi-mshahara/', '/widgets/iframe/financial-morocco-paye.html'];
+        entry.notes = '2026 DGI CGI articles 59, 73 and 74 reviewed for ordinary salary, professional expenses and family relief. CNSS rates remain planning assumptions. Formula version: ' + formula.formulaVersion + '.';
+      }
       if (country === 'ST') {
         entry.sourceName = 'INSS Decreto-Lei 19/2022';
         entry.routes = ['/fr/sao-tome/st-paye', '/sao-tome/st-paye', '/sw/sao-tome/kikokotoo-kodi-mshahara/', '/widgets/iframe/financial-sao-tome-paye.html'];

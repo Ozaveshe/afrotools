@@ -23,3 +23,9 @@ Professional expenses are computed from gross taxable salary excluding benefits,
 ## Verification and release
 
 Run `node --test tests/morocco-paye.test.js tests/morocco-release-generation.test.js` and `tests/e2e/morocco-paye-parity.spec.js` on an isolated static server. Tests must cover boundary values, reverse discontinuity, scenarios, all four routes, portable period context, parsed PDF, keyboard/mobile, stale inputs and AI consent. Build owners skip these native pages and the dedicated builder runs at the end of surface generation. Combined release/i18n checks and independent acceptance remain coordinator work; this source change does not self-accept or deploy.
+
+## Additional pathways reviewed 19 November 2026
+
+The PAYE API and embeddable salary widget now delegate to the same ordinary salary calculation as the native pages. The API preserves whole-dirham reporting. The widget shows amounts to two decimals and assumes no dependants. At MAD 10,000 gross each month, income tax is MAD 601.56, employee CNSS is MAD 268.80, AMO is MAD 226.00 and net pay is MAD 8,903.64.
+
+The ministry CGI 2026 articles 59, 73 and 74 support the expense deduction, annual tax bands and family relief used here. The ACAPS contribution decree specifies the MAD 6,000 monthly CNSS salary ceiling. The exact 2026 CNSS rates still require confirmation. [Ministry CGI 2026](https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf) · [ACAPS contribution decree](https://www.acaps.ma/sites/default/files/publication_documents/decret_ndeg_2-01-2723.pdf)

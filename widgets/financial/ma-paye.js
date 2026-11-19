@@ -1,1 +1,40 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.ma_paye=function(a,e){e=e||{};var t=function(a){return"MAD "+Math.round(a).toLocaleString("en")},s=[{limit:3e4,rate:0},{limit:2e4,rate:.1},{limit:1e4,rate:.2},{limit:2e4,rate:.3},{limit:1e5,rate:.34},{limit:1/0,rate:.38}];a.innerHTML='<div class="aw-title">🇲🇦 Morocco PAYE Calculator</div><div class="aw-field"><label class="aw-label">Monthly Gross Salary (MAD)</label><input class="aw-input" id="awMaGross" type="text" inputmode="numeric" placeholder="e.g. 15,000"></div><button class="aw-btn aw-btn--primary" id="awMaCalc">Calculate PAYE</button><div id="awMaResult"></div>'+(e.footerHTML||""),a.querySelector("#awMaCalc").addEventListener("click",function(){var e=parseFloat((a.querySelector("#awMaGross").value||"").replace(/[^0-9.]/g,""))||0;if(e){var i=function(a){for(var e=.0448*Math.min(a,72e3),t=Math.max(0,a-e),i=0,l=t,n=0;n<s.length&&!(l<=0);n++){var r=s[n],o=Math.min(l,isFinite(r.limit)?r.limit:l);i+=o*r.rate,l-=o}return{gross:a,cnss:e,taxable:t,tax:i,net:a-e-i,effectiveRate:a>0?i/a*100:0}}(12*e);a.querySelector("#awMaResult").innerHTML='<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home (DGI 2025)</div><div class="aw-result-main">'+t(i.net/12)+'</div></div><div style="margin-top:12px"><div class="aw-result-row"><span>Monthly Gross</span><span>'+t(e)+'</span></div><div class="aw-result-row"><span>CNSS (4.48%, cap 6k/mo)</span><span>-'+t(i.cnss/12)+'</span></div><div class="aw-result-row"><span>Taxable Income</span><span>'+t(i.taxable/12)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span>IR Tax</span><span style="color:#dc2626">-'+t(i.tax/12)+'</span></div><div class="aw-result-row"><span>Effective Rate</span><span>'+i.effectiveRate.toFixed(1)+'%</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#0062CC">'+t(i.net/12)+'</span></div><div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#0062CC">'+t(i.net)+"</span></div></div>"}}),a.querySelector("#awMaGross").addEventListener("keydown",function(e){"Enter"===e.key&&a.querySelector("#awMaCalc").click()})}}();
+(function () {
+  'use strict';
+  var script = document.currentScript;
+  var engineUrl = new URL('../../engines/morocco-paye.js', script.src).href;
+  var enginePromise;
+  function loadSalary() {
+    if (window.AfroTools && window.AfroTools.moroccoPaye) return Promise.resolve(window.AfroTools.moroccoPaye);
+    if (!enginePromise) enginePromise = new Promise(function (resolve, reject) {
+      var dependency = document.createElement('script');
+      dependency.src = engineUrl;
+      dependency.onload = function () { resolve(window.AfroTools.moroccoPaye); };
+      dependency.onerror = function () { enginePromise = null; reject(new Error('Calculator unavailable. Try again.')); };
+      document.head.appendChild(dependency);
+    });
+    return enginePromise;
+  }
+  window.AfroWidgets = window.AfroWidgets || {};
+  window.AfroWidgets.ma_paye = function (root) {
+    root.innerHTML = '<div class="aw-title">Morocco salary estimate · 2026</div><form><label class="aw-label">Monthly gross salary (MAD)<input class="aw-input" id="awMaGross" type="number" min="0.01" step="0.01" required></label><button class="aw-btn aw-btn--primary" id="awMaCalc">Calculate PAYE</button></form><div id="awMaResult" role="status"></div>';
+    var input = root.querySelector('input');
+    var output = root.querySelector('[role=status]');
+    var format = new Intl.NumberFormat('en', { style: 'currency', currency: 'MAD' });
+    input.addEventListener('input', function () { output.textContent = ''; });
+    root.querySelector('form').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      var gross = input.valueAsNumber;
+      try {
+        var api = await loadSalary();
+        if (gross !== input.valueAsNumber) return;
+        var r = api.calculate(gross, 'monthly');
+        output.replaceChildren();
+        var rows = [['Monthly net pay', r.annualNet / 12], ['Monthly income tax', r.incomeTax / 12], ['Monthly CNSS', r.cnss / 12], ['Monthly AMO', r.amo / 12], ['Monthly taxable income', r.taxable / 12], ['Annual net pay', r.annualNet]];
+        rows.forEach(function (row) {
+          var line = document.createElement('p'); line.className = 'aw-result-row'; line.textContent = row[0] + ' · ' + format.format(row[1]); output.appendChild(line);
+        });
+        output.append('Equal monthly salary, ordinary private sector, no dependants. CNSS rates are planning assumptions.');
+      } catch (error) { output.textContent = 'Unable to estimate this salary. Check the amount and try again.'; }
+    });
+  };
+})();

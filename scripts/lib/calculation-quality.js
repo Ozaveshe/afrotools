@@ -1437,6 +1437,16 @@ function buildJsFormula(
     }));
   }
 
+  if (artifactPath === "netlify/functions/_engines/ma-paye.js") {
+    const owner = "engines/src/morocco-paye.js";
+    const model = require(path.join(root, owner));
+    sources = [{ registryId: null, title: "DGI — Code général des impôts 2026, articles 59, 73 et 74", url: model.sources.code, kind: "authority-link", authorityStatus: "source-reviewed" }];
+    lastVerified = engine.sourceCheckedOn;
+    effective = { effectiveFrom: "2026-01-01", effectiveTo: "2026-12-31", effectiveDateStatus: "declared" };
+    protectedDuplicates.push(owner);
+    knownExclusions = ["Ordinary private-sector salary paid evenly over twelve months. Special professions, benefits and exempt allowances excluded. CNSS contribution rates are planning assumptions."];
+  }
+
   const canonicalCurrency = countryCode
     ? currencyForCountry(countries, countryCode)
     : currency;

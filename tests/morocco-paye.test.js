@@ -28,3 +28,15 @@ test('invalid salaries/options fail; adapters preserve ordinary results and meta
  const sw=require('../engines/src/sw-final-paye-engine');near(sw.calculatePaye('ma-paye',{gross:120000}).net,106843.68);
  const context={window:{AfroTools:{moroccoPaye:api}}};vm.createContext(context);vm.runInContext(fs.readFileSync(require.resolve('../engines/src/francophone-paye-engine'),'utf8'),context);const legacy=context.window.FrancoPayeEngine;near(legacy.calculate('MA',120000).netAnnual,106843.68);assert.equal(legacy.COUNTRY_CONFIG.MA.slug,'maroc');assert.equal(legacy.calculate('MA',120000).flag,'🇲🇦');
 });
+test('Morocco API resolves only reviewed 2026 salary rules and preserves its whole-MAD contract', () => {
+  const registry = require('../netlify/functions/_engines');
+  assert.equal(registry.resolve('MA', '2025-12-31').error, 'UNSUPPORTED_DATE');
+  assert.equal(registry.resolve('MA', '2027-01-01').error, 'UNSUPPORTED_DATE');
+  const {engine} = registry.resolve('MA', '2026-11-19');
+  const estimate = engine.calculate({grossAnnual: 120000});
+  assert.deepEqual([estimate.deductions.cnss, estimate.deductions.amo, estimate.tax.professionalExpenses, estimate.tax.taxableIncome, estimate.tax.netTax, estimate.result.netAnnual], [3226, 2712, 30000, 84062, 7219, 106844]);
+  assert.equal(estimate.meta.sourceCheckedOn, '2026-11-19');
+  assert.equal(engine.calculate({grossAnnual: 120000, dependents: 6}).tax.netTax, 3619);
+  const target = api.calculate(78000, 'annual').annualNet;
+  assert.equal(engine.reverseCalculate({netAnnual: target}).input.grossAnnual, 78000);
+});
