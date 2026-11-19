@@ -253,7 +253,13 @@ for (const fixture of nativeFixtures.routes) {
     && frenchSource.includes('id="rm-copy" data-native-export="copy"')
     && frenchSource.includes('id="rm-json" data-native-export="json"')
     && frenchSource.includes('id="rm-error" class="rm-error" role="alert"');
-  const ownsPageNativeContract = ownsNativeMobileMoneyContract || ownsNativeFuneralContract || ownsNativeRemittanceV2Contract;
+  const ownsNativeMarriageContract = fixture.id === "brideprice-advisor"
+    && frenchSource.includes("/assets/js/engines/marriage-conversation-engine.js")
+    && frenchSource.includes("/assets/js/pages/brideprice-fr-parity.js")
+    && frenchSource.includes('id="copyBtn"')
+    && frenchSource.includes('id="jsonBtn" data-native-export="json"')
+    && frenchSource.includes('id="planResults" aria-live="polite"');
+  const ownsPageNativeContract = ownsNativeMobileMoneyContract || ownsNativeFuneralContract || ownsNativeRemittanceV2Contract || ownsNativeMarriageContract;
   assert(ownsPageNativeContract || nativeExportSource.includes(`"${fixture.id}": {`),
     `${fixture.id}: explicit French native export contract`);
   assert(ownsPageNativeContract || nativeGuardSource.includes(`"${fixture.id}": {`),
