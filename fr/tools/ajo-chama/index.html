@@ -277,6 +277,7 @@ Grace | 1</textarea>
   </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/assets/js/lib/savings-rotation-dates.js?v=22e1dbc4"></script>
 <script>
 (function(){
   const el = (id) => document.getElementById(id);
@@ -292,11 +293,6 @@ Grace | 1</textarea>
       const need = Number(parts[1] || (index + 1));
       return name ? { name, need: Number.isFinite(need) ? need : index + 1, index } : null;
     }).filter(Boolean);
-  }
-  function addDays(date, days){
-    const next = new Date(date.getTime());
-    next.setDate(next.getDate() + days);
-    return next;
   }
   function orderMembers(members){
     const mode = el('orderMode').value;
@@ -329,7 +325,7 @@ Grace | 1</textarea>
     const members = parseMembers();
     const contribution = Number(el('contribution').value || 0);
     const reserveRate = Number(el('reserveRate').value || 0) / 100;
-    const interval = Number(el('frequency').value || 30);
+    const frequency = {'7': 'weekly', '14': 'biweekly', '30': 'monthly'}[el('frequency').value];
     const startRaw = el('startDate').value;
     if (members.length < 2) {
       setStatus('Ajoutez au moins deux membres.', true);
@@ -350,7 +346,7 @@ Grace | 1</textarea>
     const payout = pot - reserve;
     lastSchedule = ordered.map((member, index) => ({
       round: index + 1,
-      date: addDays(start, index * interval).toISOString().slice(0, 10),
+      date: SavingsRotationDates.civilDate(SavingsRotationDates.dateForRound(start, frequency, index)),
       name: member.name,
       pot,
       reserve,
@@ -359,7 +355,7 @@ Grace | 1</textarea>
     el('memberCount').textContent = String(members.length);
     el('potValue').textContent = money(pot);
     el('payoutValue').textContent = money(payout);
-    el('cycleLength').textContent = String(interval * Math.max(0, members.length - 1));
+    el('cycleLength').textContent = String((Date.parse(lastSchedule[lastSchedule.length - 1].date) - Date.parse(startRaw)) / 86400000);
     el('scheduleBody').innerHTML = lastSchedule.map((row) => '<tr><td>' + row.round + '</td><td>' + row.date + '</td><td>' + row.name + '</td><td>' + money(row.pot) + '</td><td>' + money(row.reserve) + '</td><td>' + money(row.payout) + '</td></tr>').join('');
     const risk = [];
     if (members.length < 5) risk.push('Petit groupe: un seul retard peut bloquer le cycle.');

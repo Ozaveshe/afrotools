@@ -469,12 +469,12 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/lib/savings-rotation-dates.js?v=22e1dbc4"></script>
 <script>
 var currencySymbols = { NGN:'\u20A6', KES:'KSh', GHS:'GH\u20B5', ZAR:'R', UGX:'USh', TZS:'TSh', XOF:'CFA', XAF:'FCFA', RWF:'RWF', ETB:'ETB', MAD:'MAD', EGP:'E\u00A3', ZMW:'K', USD:'$', GBP:'\u00A3', EUR:'\u20AC' };
 
 function init() {
-  var today = new Date();
-  document.getElementById('startDate').value = today.toISOString().split('T')[0];
+  document.getElementById('startDate').value = SavingsRotationDates.civilDate(new Date());
   updateMemberList();
   document.getElementById('numMembers').addEventListener('change', updateMemberList);
 }
@@ -512,16 +512,6 @@ function fmt(amount, cur) {
   return sym + ' ' + Number(amount).toLocaleString('en', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
-function addDays(date, days) { var d = new Date(date); d.setDate(d.getDate() + days); return d; }
-function addWeeks(date, weeks) { return addDays(date, weeks * 7); }
-function addMonths(date, months) { var d = new Date(date); d.setMonth(d.getMonth() + months); return d; }
-
-function getNextDate(start, frequency, round) {
-  if (frequency === 'weekly') return addWeeks(start, round);
-  if (frequency === 'biweekly') return addWeeks(start, round * 2);
-  return addMonths(start, round);
-}
-
 function formatDate(d) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
@@ -540,7 +530,7 @@ function generateSchedule() {
   var contribution = parseFloat(document.getElementById('contribution').value);
   var currency = document.getElementById('currency').value;
   var frequency = document.getElementById('frequency').value;
-  var startDate = new Date(document.getElementById('startDate').value);
+  var startDate = new Date(document.getElementById('startDate').value + 'T00:00:00');
   var penaltyRate = parseFloat(document.getElementById('penaltyRate').value) || 0;
   var rotationMode = document.getElementById('rotationMode').value;
   var interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
@@ -570,7 +560,7 @@ function generateSchedule() {
   var totalCycleValue = payoutPerRound * totalRounds;
   var totalEachPays = contribution * totalRounds;
   var totalEachReceives = payoutPerRound * numCycles;
-  var endDate = getNextDate(startDate, frequency, totalRounds - 1 + (numCycles - 1) * cycleSeparator);
+  var endDate = SavingsRotationDates.dateForRound(startDate, frequency, totalRounds - 1 + (numCycles - 1) * cycleSeparator);
   var reservePerRound = poolPerRound * reserveRate / 100;
   var reserveTotal = reservePerRound * totalRounds;
 
@@ -641,7 +631,7 @@ function generateSchedule() {
     var cycleNum = Math.floor(i / n) + 1;
     var roundInCycle = i % n;
     var separatorOffset = (cycleNum - 1) * cycleSeparator;
-    var date = getNextDate(startDate, frequency, i + separatorOffset);
+    var date = SavingsRotationDates.dateForRound(startDate, frequency, i + separatorOffset);
     var row = document.createElement('tr');
     if (i % 2 === 0) row.className = 'highlight-row';
     var cycleLabel = numCycles > 1 ? ('<span style="font-size:.75rem;color:#64748b">C' + cycleNum + '</span>') : '';
