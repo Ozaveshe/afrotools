@@ -40,3 +40,20 @@ test('JSON, external scripts and displayed code examples stay outside the picker
  const code='<script>function setupCountryPicker(){} function findCountry(){}</script>';
  for(const html of ['<pre>'+code+'</pre>','<code>'+code+'</code>','<textarea>'+code+'</textarea>','<script type="application/json">{"name":"Open "}</script>','<script src="/external.js"></script>'])assert.equal(localizeFrenchSolarCountryPickerHtml(html,{}),html);
 });
+test('hub and all 54 French calculators present each country exactly once with its French label', () => {
+  const names = frenchSolarCountryDisplayNames();
+  const directory = path.join(root, 'fr/tools/roi-solaire');
+  const countries = fs.readdirSync(directory, { withFileTypes:true }).filter(entry => entry.isDirectory());
+  assert.equal(countries.length, 54);
+  for (const folder of ['', ...countries.map(entry => entry.name)]) {
+    const html = fs.readFileSync(path.join(directory, folder, 'index.html'), 'utf8');
+    const picker = html.match(/<select id="(?:solarRootCountrySelect|solarCountryPageSelect)"[^>]*>[\s\S]*?<\/select>/)[0];
+    const groups = [...picker.matchAll(/<optgroup label="([^"]+)">([\s\S]*?)<\/optgroup>/g)];
+    assert.deepEqual(groups.map(group => [group[1], (group[2].match(/data-code=/g) || []).length]), [['Pays populaires',10],['Autres pays',44]]);
+    const options = [...picker.matchAll(/<option value="([^"]+)" data-code="([A-Z]{2})" data-currency="([A-Z]{3})"([^>]*)>([^<]*)<\/option>/g)];
+    assert.equal(new Set(options.map(option => option[2])).size, 54);
+    for (const [, , code, currency, , label] of options) assert.ok(label.endsWith(' ' + names[code] + ' - ' + currency), label);
+    if (folder) assert.deepEqual(options.filter(option => option[4].includes('selected')).map(option => option[1]), [folder]);
+    else assert.match(picker, /<option value="">Choisissez un pays…<\/option>/);
+  }
+});

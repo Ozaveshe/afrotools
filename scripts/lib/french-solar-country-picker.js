@@ -106,9 +106,29 @@ function localizeFrenchSolarCountryPickerHtml(html, names) {
       const value=names[code[1]].replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
       return option.replace(/\bvalue=(["'])(.*?)\1/i,'value="'+value+'"');
     }));
+  function pickerMarkup(fragment) {
+    return datalists(fragment).replace(/<select\b[^>]*\bid=["'](?:solarRootCountrySelect|solarCountryPageSelect)["'][^>]*>[\s\S]*?<\/select>/gi, select => {
+      const seen = new Set();
+      return select
+        .replace(/(<optgroup label=")(?:Popular countries|Pays populaires)(">)/g, '$1Pays populaires$2')
+        .replace(/(<optgroup label=")(?:All countries|Autres pays)(">)/g, '$1Autres pays$2')
+        .replace(/(<option\b[^>]*>)([^<]*)(<\/option>)/gi, (option, open, label, close) => {
+          const code = open.match(/\bdata-code="([A-Z]{2})"/);
+          if (!code) return /\bvalue=""/.test(open) ? open + 'Choisissez un pays…' + close : option;
+          const name = names[code[1]];
+          if (!name) throw new Error('Missing French Solar option label for ' + code[1]);
+          if (seen.has(code[1])) return '';
+          seen.add(code[1]);
+          const currency = open.match(/\bdata-currency="([A-Z]{3})"/);
+          const flag = label.trim().split(/\s+/)[0];
+          if (!currency) throw new Error('Missing Solar currency for ' + code[1]);
+          return open + flag + ' ' + name.replace(/&/g, '&amp;').replace(/</g, '&lt;') + ' - ' + currency[1] + close;
+        });
+    });
+  }
   let output="",cursor=0;
   for(const match of html.matchAll(/<(script|style|textarea|pre|code)\b[\s\S]*?<\/\1\s*>/gi)){
-    output+=datalists(html.slice(cursor,match.index));
+    output+=pickerMarkup(html.slice(cursor,match.index));
     const block=match[0],tag=match[1];
     output+=tag.toLowerCase()!=="script"?block:block.replace(/(<script\b([^>]*)>)([\s\S]*?)(<\/script>)/i,
       (whole,open,attributes,source,close)=>{
@@ -117,7 +137,7 @@ function localizeFrenchSolarCountryPickerHtml(html, names) {
       });
     cursor=match.index+block.length;
   }
-  return output+datalists(html.slice(cursor));
+  return output+pickerMarkup(html.slice(cursor));
 }
 
 module.exports={localizeFrenchSolarCountryPicker,localizeFrenchSolarCountryPickerHtml};
