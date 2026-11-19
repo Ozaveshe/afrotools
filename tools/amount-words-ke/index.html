@@ -178,22 +178,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card">
 <div class="card-head"><span class="card-title">Enter Amount</span></div>
 <div class="card-body">
-<label>Amount in Kenya Shillings (KES)</label>
-<input aria-label="E.g. 125,750.50" type="text" id="amount" placeholder="e.g. 125,750.50" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<label for="amount">Amount in Kenya Shillings (KES)</label>
+<input aria-describedby="amountError" inputmode="decimal" type="text" id="amount" placeholder="e.g. 125,750.50" style="font-size:1.2rem;padding:14px" oninput="convert()" disabled data-amount-control>
+<p id="amountError" role="status" aria-live="polite">Loading converter…</p>
 <div class="quick-amounts">
-<button type="button" class="quick-btn" onclick="setAmt(1000)">1,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(5000)">5,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(10000)">10,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(50000)">50,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(100000)">100,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(500000)">500,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(1000000)">1,000,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(1000)" disabled data-amount-control>1,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(5000)" disabled data-amount-control>5,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(10000)" disabled data-amount-control>10,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(50000)" disabled data-amount-control>50,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(100000)" disabled data-amount-control>100,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(500000)" disabled data-amount-control>500,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(1000000)" disabled data-amount-control>1,000,000</button>
 </div>
 <div class="doc-grid">
-<div><label>Payee or Vendor</label><input aria-label="Optional" type="text" id="payeeName" placeholder="Optional" oninput="convert()"></div>
-<div><label>Reference</label><input aria-label="Invoice, rent, tender, or memo" type="text" id="docRef" placeholder="Invoice, rent, tender, or memo" oninput="convert()"></div>
-<div><label>Output Format</label><select id="docMode" onchange="convert()" aria-label="Doc Mode"><option value="cheque">Cheque line</option><option value="invoice">Tax invoice</option><option value="rent">Rent or lease payment</option><option value="rtgs">Bank transfer instruction</option></select></div>
-<div><label>Text Style</label><select id="caseMode" onchange="convert()" aria-label="Case Mode"><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
+<div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control></div>
+<div><label for="docRef">Reference</label><input type="text" id="docRef" placeholder="Invoice, rent, tender, or memo" oninput="convert()" disabled data-amount-control></div>
+<div><label>Output Format</label><select id="docMode" onchange="convert()" aria-label="Doc Mode" disabled data-amount-control><option value="cheque">Cheque line</option><option value="invoice">Tax invoice</option><option value="rent">Rent or lease payment</option><option value="rtgs">Bank transfer instruction</option></select></div>
+<div><label>Text Style</label><select id="caseMode" onchange="convert()" aria-label="Case Mode" disabled data-amount-control><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
 </div>
 <div class="review-grid" id="reviewGrid" style="display:none"></div>
 </div></div>
@@ -203,7 +204,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="lbl">Amount in Words</div>
 <div class="words" id="wordsResult"></div>
 <div class="formatted" id="fmtResult"></div>
-<div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()">Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()">Copy Document Line</button></div>
+<div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()" disabled data-amount-control>Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()" disabled data-amount-control>Copy Document Line</button></div>
 <div class="doc-preview" id="docPreview"></div>
 <div style="margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px;text-align:left">
   <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px">Did You Know?</div>
@@ -292,6 +293,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/amount-words-input.js?v=3c28855d"></script>
 <script>
 const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
   'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
@@ -310,19 +312,17 @@ function numWords(n) {
 }
 
 function amountToWords(amount) {
-  const parts = amount.toFixed(2).split('.');
-  const shillings = parseInt(parts[0]);
-  const cents = parseInt(parts[1]);
+  const shillings = amount.major;
+  const cents = amount.minor;
 
   let words = '';
   if (shillings === 0 && cents === 0) return 'Zero Kenya Shillings Only';
 
   if (shillings > 0) {
-    words = 'Kenya Shillings ' + numWords(shillings);
+    words = (shillings === 1 ? 'Kenya Shilling ' : 'Kenya Shillings ') + numWords(shillings);
   }
   if (cents > 0) {
-    if (shillings > 0) words += ' and Cents ';
-    else words = 'Cents ';
+    words += (shillings > 0 ? ' and ' : '') + (cents === 1 ? 'Cent ' : 'Cents ');
     words += numWords(cents);
   }
   words += ' Only';
@@ -342,18 +342,11 @@ function applyCaseMode(text) {
   return text;
 }
 
-function cleanAmount(raw) {
-  raw = String(raw || '').replace(/,/g, '').replace(/[^0-9.]/g, '');
-  const firstDot = raw.indexOf('.');
-  if (firstDot !== -1) raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
-  return raw;
-}
-
 function buildDocumentLine(amount, words) {
   const mode = document.getElementById('docMode').value;
   const payee = document.getElementById('payeeName').value.trim();
   const ref = document.getElementById('docRef').value.trim();
-  const figure = 'KES ' + amount.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const figure = 'KES ' + amount.figure;
   const prefix = payee ? 'Pay ' + payee + ': ' : '';
   const suffix = ref ? ' | Ref: ' + ref : '';
   if (mode === 'invoice') return prefix + 'Tax invoice amount ' + figure + ' (' + words + ')' + suffix;
@@ -366,9 +359,9 @@ function renderReview(amount) {
   const grid = document.getElementById('reviewGrid');
   if (!grid) return;
   grid.style.display = 'grid';
-  const cents = Math.round((amount % 1) * 100);
+  const cents = amount.minor;
   const payee = document.getElementById('payeeName').value.trim();
-  const large = amount >= 1000000;
+  const large = amount.major >= 1000000;
   grid.innerHTML =
     '<div class="review-pill"><strong>' + (payee ? 'Payee ready' : 'Add payee') + '</strong>' + (payee ? 'Recipient appears in the copy line.' : 'Useful before printing a cheque.') + '</div>' +
     '<div class="review-pill"><strong>' + (cents ? 'Cents included' : 'Whole shillings') + '</strong>' + (cents ? 'The cents portion is written out.' : 'No cents line is needed.') + '</div>' +
@@ -376,20 +369,26 @@ function renderReview(amount) {
 }
 
 function convert() {
-  const raw = cleanAmount(document.getElementById('amount').value);
-  if (!raw || isNaN(parseFloat(raw))) { document.getElementById('resultCard').style.display='none'; document.getElementById('reviewGrid').style.display='none'; return; }
-
-  const amount = parseFloat(raw);
-  if (amount > 999999999999.99) { document.getElementById('resultCard').style.display='none'; return; }
+  const input = document.getElementById('amount');
+  const amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999');
+  input.setAttribute('aria-invalid', String(!amount.valid && !amount.empty));
+  document.getElementById('amountError').textContent = amount.error || (amount.rounded ? 'Rounded to KES ' + amount.figure + '. Words and figures use this amount.' : '');
+  if (!amount.valid) {
+    lastWords = lastDocumentLine = '';
+    for (const id of ['wordsResult', 'fmtResult', 'chequeFormat', 'docPreview']) document.getElementById(id).textContent = '';
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('reviewGrid').style.display = 'none';
+    return;
+  }
 
   const words = applyCaseMode(amountToWords(amount));
   lastWords = words;
   lastDocumentLine = buildDocumentLine(amount, words);
   document.getElementById('wordsResult').textContent = words;
-  document.getElementById('fmtResult').textContent = 'KES ' + amount.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('fmtResult').textContent = 'KES ' + amount.figure;
   document.getElementById('chequeFormat').innerHTML =
     '<strong>Pay:</strong> ' + escapeHtml(document.getElementById('payeeName').value.trim() || '____________________') + '<br>' +
-    '<strong>Amount (figures):</strong> KES ' + amount.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) + '<br>' +
+    '<strong>Amount (figures):</strong> KES ' + amount.figure + '<br>' +
     '<strong>Amount (words):</strong> ' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
   renderReview(amount);
@@ -402,6 +401,7 @@ function setAmt(n) {
 }
 
 function copyWords() {
+  if (!lastWords) return;
   navigator.clipboard.writeText(lastWords).then(() => {
     const btn = document.querySelector('.copy-btn');
     btn.textContent = 'Copied!';
@@ -411,6 +411,7 @@ function copyWords() {
 
 function copyDocumentLine() {
   convert();
+  if (!lastDocumentLine) return;
   navigator.clipboard.writeText(lastDocumentLine).then(() => {
     const buttons = document.querySelectorAll('.copy-btn');
     buttons[1].textContent = 'Copied!';
@@ -419,6 +420,14 @@ function copyDocumentLine() {
 }
 </script>
 
+<script>
+if (window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.amountWordsInput) {
+  document.querySelectorAll('[data-amount-control]').forEach(function (control) { control.disabled = false; });
+  convert();
+} else {
+  document.getElementById('amountError').textContent = 'Unable to load the converter. Reload to try again.';
+}
+</script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
 </html>
