@@ -236,7 +236,9 @@
       return api.calculate(numeric(input, ["directCost", "otherCost", "studyHours", "hourValue", "annualUplift", "studyMonths", "delayMonths", "horizonYears"]));
     },
     classroom(input, api) {
-      return api.calculate(numeric(Object.assign({ fixedArea: 0, administrativeMax: 0 }, input), ["roomLength", "roomWidth", "frontDepth", "rearDepth", "sideClearance", "aisleWidth", "aisleCount", "deskWidth", "rowPitch", "seatsPerUnit", "areaPerLearner", "actualLearners", "fixedArea", "administrativeMax"]));
+      const result = api.calculate(numeric(Object.assign({ fixedArea: 0, administrativeMax: 0 }, input), ["roomLength", "roomWidth", "frontDepth", "rearDepth", "sideClearance", "aisleWidth", "aisleCount", "deskWidth", "rowPitch", "seatsPerUnit", "areaPerLearner", "actualLearners", "fixedArea", "administrativeMax"]));
+      if (result.valid) result.limitingFactor = display(result.limitingFactor);
+      return result;
     },
     "course-load"(input, api) {
       return api.calculate({
@@ -359,6 +361,8 @@
       "within-half-band": "À moins de 0,5 point",
       "admission or further study": "Admission ou poursuite d’études",
       "The receiving education institution, with SAQA evaluation where required": "L’établissement destinataire, avec une évaluation SAQA si elle est requise",
+      "Furniture layout": "Disposition du mobilier",
+      "Administrative class-size limit": "Effectif maximal autorisé",
       "Area per learner": "Surface par apprenant",
       below: "Sous le minimum",
       "APA 7 draft. The engine preserves the capitalisation you enter; apply APA sentence case and source-specific exceptions before submitting.": "Brouillon APA 7. Le moteur conserve les majuscules saisies; appliquez la casse de phrase APA et les exceptions propres à la source avant remise."

@@ -4,7 +4,7 @@ const manifest = require('../../data/localization/fr-business-roi-parity.json');
 
 const cases = {
   pomodoro: { values: { focusMinutes: '20' }, edit: ['focusMinutes', '30'], expected: '30:00' },
-  'unit-converter': { values: { group: 'length', value: '2', from: 'm', to: 'cm' }, edit: ['value', '3'], expected: '300 cm' },
+  'unit-converter': { values: { group: 'length', value: '2', from: 'm', to: 'cm' }, edit: ['value', '3'], expected: '300 centimètre' },
   'budget-planner': { values: { currency: 'USD', incomeMain: '1000', incomeOther: '0' }, edit: ['incomeMain', '2000'], expected: '2 000' },
   'countdown-timer': { values: { eventName: 'Fixture initiale', eventDate: '2030-08-05', eventTime: '09:00' }, edit: ['eventName', 'Fixture modifiée'], expected: 'Fixture modifiée' },
   'time-zone': { values: { localDateTime: '2026-07-29T10:00', fromZone: 'Africa/Abidjan', toZone: 'Africa/Nairobi' }, edit: ['localDateTime', '2026-07-29T11:00'], expected: '14:00' },

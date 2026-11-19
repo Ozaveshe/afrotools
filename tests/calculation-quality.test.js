@@ -493,6 +493,8 @@ test('quality report is deterministic for an explicit as-of date', function () {
     'business-roi-review-time-invalid-calendar',
     'paye-gh-defaults',
     'paye-gh-large-decimal',
+    'paye-ls-defaults',
+    'paye-ls-large-decimal',
     'paye-ug-large-decimal',
     'paye-zm-defaults',
     'paye-zm-large-decimal'
