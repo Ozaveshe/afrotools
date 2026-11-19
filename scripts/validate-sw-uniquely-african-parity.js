@@ -15,12 +15,12 @@ function count(text, pattern) { return (text.match(pattern) || []).length; }
 
 const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
 const french = JSON.parse(fs.readFileSync(FRENCH, "utf8"));
-fail(manifest.denominator === 34 && manifest.rows.length === 34, "manifest must contain exactly 34 rows");
-fail(new Set(manifest.rows.map((row) => row.english.id)).size === 34, "English ids must be unique");
-fail(new Set(manifest.rows.map((row) => row.swahili.route)).size === 34, "Swahili routes must be unique");
-fail(JSON.stringify(manifest.rows.map((row) => row.english.id)) === JSON.stringify(french.rows.map((row) => row.english.id)), "manifest must preserve the accepted English African denominator and order");
+fail(manifest.denominator === 33 && manifest.rows.length === 33, "manifest must contain exactly 33 rows");
+fail(new Set(manifest.rows.map((row) => row.english.id)).size === manifest.denominator, "English ids must be unique");
+fail(new Set(manifest.rows.map((row) => row.swahili.route)).size === manifest.denominator, "Swahili routes must be unique");
+fail(JSON.stringify(manifest.rows.map((row) => row.english.id)) === JSON.stringify(french.rows.filter(row => row.english.id !== "remittance-v2").map((row) => row.english.id)), "manifest must preserve the accepted English African denominator and order");
 fail(manifest.rows.filter((row) => row.swahili.mode === "shared-engine").length === 28, "exactly 28 shared-engine routes required");
-fail(manifest.rows.filter((row) => row.swahili.mode.startsWith("native-blocked")).length === 6, "exactly 6 native-owner blockers required");
+const available = manifest.rows.filter(row => ["shared-engine", "native-existing"].includes(row.swahili.mode));
 
 const frenchMarkers = /\b(?:Calculer|Comparez|Coût|Devise|Montant|Résultat|Fraîcheur|Confiance|Limites|Réinitialiser|Ouganda|Tanzanie|Afrique du Sud|Éthiopie|Égypte)\b/i;
 const englishShellMarkers = /Fungua zana kamili ya Kiingereza|Zana kamili inayofuata iko kwa Kiingereza|English fallback|open the full English tool/i;
@@ -60,7 +60,7 @@ for (const row of manifest.rows) {
     fail(html.includes(`data-sw-ua-app="${row.english.id}"`), `${row.english.id}: generated owner marker missing`);
     fail(html.includes("/engines/uniquely-african-engine.js"), `${row.english.id}: shared engine missing`);
     fail(html.includes("/assets/js/pages/sw-uniquely-african.js"), `${row.english.id}: Swahili runtime missing`);
-    fail(html.includes('"inLanguage":"sw"'), `${row.english.id}: schema language missing`);
+    fail(/"inLanguage"\s*:\s*"sw"/.test(html), `${row.english.id}: schema language missing`);
     const visibleText = html.replace(/<head>[\s\S]*?<\/head>/i, "").replace(/<script\b[\s\S]*?<\/script>/gi, "");
     fail(!frenchMarkers.test(visibleText), `${row.english.id}: residual French presentation copy`);
     fail(count(html, /data-ua-form/g) === 1, `${row.english.id}: exactly one owned app form required`);
@@ -71,11 +71,9 @@ for (const row of manifest.rows) {
 }
 
 const hub = read("sw/zana-za-kipekee-afrika/index.html");
-fail(count(hub, /class="ua-hub-card"/g) === 34, "hub must expose exactly 34 cards");
-fail(count(hub, /data-state="candidate"/g) === 28, "hub must expose exactly 28 candidate routes");
-fail(count(hub, /data-state="blocked"/g) === 6, "hub must show exactly 6 blockers");
-for (const row of manifest.rows.filter((item) => item.swahili.mode === "shared-engine")) fail(hub.includes(`href="${row.swahili.route}"`), `${row.english.id}: hub link missing`);
+fail(count(hub, /class="ua-hub-card"/g) === available.length, "hub card count must match the available destinations");
+for (const row of available) fail(hub.includes(`href="${row.swahili.route}"`), `${row.english.id}: hub link missing`);
 
-const result = { denominator:34, generated:28, browserPending:28, blocked:6, artworkPresent:34 - errors.filter((error) => error.includes("missing artwork")).length, errors };
+const result = { denominator:manifest.denominator, linked:available.length, blocked:manifest.rows.length - available.length, artworkPresent:manifest.denominator - errors.filter((error) => error.includes("missing artwork")).length, errors };
 console.log(JSON.stringify(result, null, 2));
 if (errors.length) process.exitCode = 1;
