@@ -111,18 +111,44 @@
       var all=await store.list();if(version!==renderVersion)return;
       // A plan/list refresh must not acknowledge a failed user operation.
       if(errorVersion===observedErrorVersion && (clearOperationError || !operationError))clearError();
-      grid.replaceChildren();section.style.display='';
+      section.style.display='';
       var head=section.querySelector('[data-pdf-history-status]');
       if(!head){head=document.createElement('div');head.dataset.pdfHistoryStatus='';grid.before(head);}
       head.textContent=all.length?copy(isPro?'pro':'free'):copy('empty');
       if(all.length>limit){var link=document.createElement('a');link.href='/pro/';link.textContent=copy('upgrade');head.append(' ',link);}
-      all.slice(0,limit).forEach(function(item){
-        var card=document.createElement('article');card.dataset.pdfHistoryId=item.id;card.style.cssText='flex:1;min-width:180px;max-width:240px;padding:12px;border:1px solid #64748b;border-radius:10px;overflow-wrap:anywhere';
-        var title=document.createElement('strong'),operation=document.createElement('p'),time=document.createElement('time'),actions=document.createElement('div');
-        title.textContent=item.title;operation.textContent=item.data.operation==='Downloaded PDF'?copy('downloaded'):item.data.operation;
-        time.dateTime=new Date(item.updatedAt).toISOString();time.textContent=new Date(item.updatedAt).toLocaleString(language());
-        [['resume',window.pdfResumeSaved],['delete',window.pdfDelSaved]].forEach(function(action){var button=document.createElement('button');button.type='button';button.dataset.pdfHistoryAction=action[0];button.textContent=copy(action[0]);button.style.cssText='min-width:44px;min-height:44px;margin-right:8px';button.addEventListener('click',function(){action[1](item.id);});actions.appendChild(button);});
-        card.append(title,operation,time,actions);grid.appendChild(card);
+      var visible = all.slice(0, limit);
+      var visibleIds = new Set(visible.map(function(item) { return item.id; }));
+      var cards = new Map();
+      Array.from(grid.children).forEach(function(card) {
+        var id = card.dataset.pdfHistoryId;
+        if (visibleIds.has(id)) cards.set(id, card);
+        else card.remove();
+      });
+      visible.forEach(function(item, index) {
+        var card = cards.get(item.id);
+        if (!card) {
+          card = document.createElement('article');
+          card.dataset.pdfHistoryId = item.id;
+          card.style.cssText = 'flex:1;min-width:180px;max-width:240px;padding:12px;border:1px solid #64748b;border-radius:10px;overflow-wrap:anywhere';
+          var actions = document.createElement('div');
+          [['resume',window.pdfResumeSaved],['delete',window.pdfDelSaved]].forEach(function(action) {
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.dataset.pdfHistoryAction = action[0];
+            button.textContent = copy(action[0]);
+            button.style.cssText = 'min-width:44px;min-height:44px;margin-right:8px';
+            button.addEventListener('click', function() { action[1](item.id); });
+            actions.appendChild(button);
+          });
+          card.append(document.createElement('strong'), document.createElement('p'), document.createElement('time'), actions);
+        }
+        card.querySelector('strong').textContent = item.title;
+        card.querySelector('p').textContent = item.data.operation === 'Downloaded PDF' ? copy('downloaded') : item.data.operation;
+        var time = card.querySelector('time');
+        var updated = new Date(item.updatedAt);
+        time.dateTime = updated.toISOString();
+        time.textContent = updated.toLocaleString(language());
+        if (grid.children[index] !== card) grid.insertBefore(card, grid.children[index] || null);
       });
     } catch(e) { if(version===renderVersion)report(e); }
   }

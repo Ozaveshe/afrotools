@@ -15,7 +15,29 @@ async function fault(page,store,method){await page.evaluate(({store,method})=>{c
 const legacy=JSON.stringify([{id:'legacy',title:'Synthetic legacy.pdf',createdAt:1,updatedAt:1,data:{operation:'Synthetic saved operation',hasFile:true}}]);
 for(const locale of Object.keys(routes)){
  test(locale+' PDF history: mobile actions are keyboard reachable and labelled',async({page,baseURL})=>{
-  const errors=await prepare(page,baseURL,locale,legacy);const resume=page.locator('[data-pdf-history-action=resume]'),remove=page.locator('[data-pdf-history-action=delete]');await expect(resume).toBeVisible();await expect(resume).toHaveText({en:'Resume',fr:'Reprendre',sw:'Endelea'}[locale]);const box=await remove.boundingBox();expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);expect(box.x+box.width).toBeLessThanOrEqual(391);await resume.focus();await page.keyboard.press('Tab');await expect(remove).toBeFocused();await expect(page.locator('[data-pdf-history-id] time')).toBeVisible();expect(errors).toEqual([]);
+  const errors = await prepare(page, baseURL, locale, legacy);
+  const resume = page.locator('[data-pdf-history-action=resume]');
+  const remove = page.locator('[data-pdf-history-action=delete]');
+  await expect(resume).toHaveText({en:'Resume',fr:'Reprendre',sw:'Endelea'}[locale]);
+  await expect(remove).toHaveText({en:'Delete',fr:'Supprimer',sw:'Futa'}[locale]);
+  await expect(remove).toBeVisible();
+  const box = await remove.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box.width).toBeGreaterThanOrEqual(44);
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  expect(box.x + box.width).toBeLessThanOrEqual(391);
+
+  await page.evaluate(() => {
+   window.AfroProGate = {getStatus: () => Promise.resolve({isPro:true})};
+   document.querySelector('[data-pdf-history-action=resume]').focus();
+   window.dispatchEvent(new Event('afro-pro-gate-ready'));
+  });
+  await expect(page.locator('[data-pdf-history-status]')).toContainText('Pro');
+  await expect(resume).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(remove).toBeFocused();
+  await expect(page.locator('[data-pdf-history-id] time')).toBeVisible();
+  expect(errors).toEqual([]);
  });
  test(locale+' PDF history: missing file copy never opens or changes the current document',async({page,baseURL})=>{
   const missing=JSON.stringify([{id:'missing',title:'Synthetic missing.pdf',createdAt:1,updatedAt:1,data:{hasFile:true}}]);const errors=await prepare(page,baseURL,locale,missing);await expect(page.locator('[data-pdf-history-id=missing]')).toBeVisible();await page.evaluate(()=>{window.resumeCalls=0;window.loadPDFBytes=async()=>window.resumeCalls++});await page.locator('[data-pdf-history-action=resume]').click();await expect(page.locator('#pdfHistoryError')).toContainText({en:'no saved PDF copy',fr:'pas de copie PDF',sw:'haina nakala ya PDF'}[locale]);expect(await page.evaluate(()=>window.resumeCalls)).toBe(0);expect((await snapshot(page))['recent-operations'][0].data.hasFile).toBe(false);expect(errors).toEqual([]);
@@ -75,11 +97,12 @@ for (const locale of Object.keys(routes)) {
   expect(await page.evaluate(()=>window.pdfSaveOp('Synthetic new.pdf','Synthetic',new Uint8Array([7,8,9])))).toBeNull();
   await expect(page.locator('#pdfHistoryError')).toBeVisible();
   await page.evaluate(async()=>{
-   window.oldHistoryCard=document.querySelector('[data-pdf-history-id=legacy]');
    window.AfroPdfHistory.list=window.originalHistoryList;
-   window.resolvePendingHistory(await window.AfroPdfHistory.list());
+   const items = await window.AfroPdfHistory.list();
+   items[0].title = 'Synthetic refreshed title.pdf';
+   window.resolvePendingHistory(items);
   });
-  await page.waitForFunction(()=>document.querySelector('[data-pdf-history-id=legacy]')!==window.oldHistoryCard);
+  await expect(page.locator('[data-pdf-history-id=legacy] strong')).toHaveText('Synthetic refreshed title.pdf');
   await expect(page.locator('#pdfHistoryError')).toBeVisible();expect(await snapshot(page)).toEqual(before);
   await page.evaluate(()=>window.restoreDatabase());
   expect(await page.evaluate(async()=>!!await window.pdfSaveOp('Synthetic retry.pdf','Synthetic',new Uint8Array([7,8,9])))).toBe(true);
