@@ -7,6 +7,7 @@ const path = require("path");
 const { writeFileSyncWithRetry } = require("./lib/safe-write");
 const { stableId } = require("./lib/content-integrity");
 
+const {southSudanMarketExamples} = require('./lib/south-sudan-fuel-markets');
 const ROOT = path.resolve(__dirname, "..");
 const SNAPSHOT_PATH = path.join(ROOT, "data", "fuel", "latest.json");
 const COUNTRY_REGISTRY_PATH = path.join(ROOT, "data", "registry", "countries.json");
@@ -348,6 +349,7 @@ function visiblePage(row, rows, country) {
   const compareHref = '#related-countries';
   const generatorHref = '/fr/tools/couts-secours-energie/';
 
+  const localMarkets = southSudanMarketExamples(row, 'fr', escapeHtml);
   const header = `<header class="fuel-country-hero">
   <div class="fuel-country-shell">
     <nav class="fuel-breadcrumb" aria-label="Fil d’Ariane">
@@ -358,8 +360,8 @@ function visiblePage(row, rows, country) {
     <div class="fuel-country-grid">
       <div>
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>Prix du carburant — ${escapeHtml(region)}</span></div>
-        <h1${intent ? ' style="color:#173e32"' : ""}>${escapeHtml(intent ? intent.title.replace(" | AfroFuel", "") : `Prix du carburant — ${name}`)}</h1>
-        <p class="fuel-lede">Consultez le dernier relevé disponible des prix de l’essence, du diesel et du GPL ${escapeHtml(location)}, en ${escapeHtml(row.currency)}. Estimez un budget de transport, de groupe électrogène ou de ménage, puis vérifiez le prix local.</p>
+        <h1${intent ? ' style="color:#173e32"' : ""}>${escapeHtml(intent ? intent.title.replace(" | AfroFuel", "") : `Prix du carburant — ${name}`)}</h1>${localMarkets}
+        <p class="fuel-lede">${localMarkets ? `Les chiffres nationaux ci-dessous proviennent du relevé du ${escapeHtml(formatDate(row.last_updated))}. Les liens ci-dessus permettent de calculer le coût d’un plein local.` : `Consultez le dernier relevé disponible des prix de l’essence, du diesel et du GPL ${escapeHtml(location)}, en ${escapeHtml(row.currency)}. Estimez un budget de transport, de groupe électrogène ou de ménage, puis vérifiez le prix local.`}</p>
         ${intent ? `<p class="fuel-note">${escapeHtml(intent.note)}</p>\n        ` : ""}<p class="fuel-trust">Relevé du ${escapeHtml(date)} · ${escapeHtml(source.label)}. Ne constitue pas un prix actuel en station. Prix à revalider avant utilisation.</p>
       </div>
       <aside class="fuel-price-card" aria-label="Résumé des prix du carburant ${escapeHtml(location)}">
@@ -390,7 +392,7 @@ function visiblePage(row, rows, country) {
   </section>`;
 
   const generator = `<section class="fuel-section" aria-labelledby="generator-estimate">
-    <h2 id="generator-estimate">Estimation du coût d’un groupe électrogène ${escapeHtml(location)}</h2>
+    <h2 id="generator-estimate">Estimation du coût d’un groupe électrogène ${escapeHtml(location)}${localMarkets ? ' (relevé national du ' + escapeHtml(formatDate(row.last_updated)) + ')' : ''}</h2>
     <p>Dans ce modèle de planification, un groupe à essence de ${escapeHtml(estimate.generatorSize)} fonctionnant ${estimate.hoursPerDay} heures par jour pendant ${estimate.daysPerMonth} jours consomme environ ${formatNumber(estimate.litresPerMonth)} litres par mois.</p>
     <div class="fuel-panels">
       <div class="fuel-panel"><strong>Estimation mensuelle</strong><span>${escapeHtml(estimate.local)}</span><p>${escapeHtml(estimate.usd)} à titre de comparaison.</p></div>

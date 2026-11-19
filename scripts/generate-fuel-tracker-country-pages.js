@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const {southSudanMarketExamples} = require('./lib/south-sudan-fuel-markets');
 const ROOT = path.resolve(__dirname, '..');
 const SNAPSHOT_PATH = path.join(ROOT, 'data', 'fuel', 'latest.json');
 const OUT_DIR = path.join(ROOT, 'tools', 'fuel-tracker');
@@ -296,6 +297,7 @@ function regionalPetrolCard(reference) {
 
 function htmlPage(row, rows) {
   const regionalReference = regionalPetrolReference(row);
+  const localMarkets = southSudanMarketExamples(row, 'en', escapeHtml);
   const slug = countrySlug(row);
   const url = `${BASE_URL}/tools/fuel-tracker/${slug}/`;
   const flag = countryFlag(row.code);
@@ -493,8 +495,8 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
     <div class="fuel-country-grid${regionalReference ? ' fuel-country-grid--with-reference' : ''}">
       <div>
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>${escapeHtml(region)} fuel prices</span></div>
-        <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}
-        <p class="fuel-lede">${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
+        <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}${localMarkets}
+        <p class="fuel-lede">${localMarkets ? `The national figures below use the snapshot dated ${escapeHtml(date)}. Use the market links above for a local fill-up estimate.` : `${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.`}</p>
         <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
         <p class="fuel-date">Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
@@ -521,7 +523,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
 </header>
 <main class="fuel-country-shell fuel-main">
   <section class="fuel-section" aria-labelledby="generator-estimate">
-    <h2 id="generator-estimate">${regionalReference ? 'Historical national generator estimate' : 'Generator cost estimate in ' + escapeHtml(row.name)}</h2>${regionalReference ? `<p>This uses the national snapshot dated ${escapeHtml(date)} at ${escapeHtml(priceLocal(row, 'petrol'))}, not the Gauteng regional price above. <a href="/tools/fuel-tracker/?market=${encodeURIComponent(regionalReference.market.market_id)}#fuel-finder">Calculate a Gauteng fill with an editable price</a>.</p>` : ''}
+    <h2 id="generator-estimate">${localMarkets ? 'National generator example (' + escapeHtml(date) + ')' : regionalReference ? 'Historical national generator estimate' : 'Generator cost estimate in ' + escapeHtml(row.name)}</h2>${regionalReference ? `<p>This uses the national snapshot dated ${escapeHtml(date)} at ${escapeHtml(priceLocal(row, 'petrol'))}, not the Gauteng regional price above. <a href="/tools/fuel-tracker/?market=${encodeURIComponent(regionalReference.market.market_id)}#fuel-finder">Calculate a Gauteng fill with an editable price</a>.</p>` : ''}
     <p>A ${escapeHtml(estimate.generatorSize)} petrol generator running ${estimate.hoursPerDay} hours per day for ${estimate.daysPerMonth} days per month uses about ${formatNumber(estimate.litresPerMonth)} litres monthly in this simple planning model.</p>
     <div class="fuel-panels">
       <div class="fuel-panel"><strong>${regionalReference ? 'Historical monthly estimate' : 'Monthly estimate'}</strong><span>${escapeHtml(estimate.local)}</span><p>${escapeHtml(estimate.usd)} for comparison.</p></div>
