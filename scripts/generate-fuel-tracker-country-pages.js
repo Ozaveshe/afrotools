@@ -246,7 +246,7 @@ function faqItems(row, rows, estimate) {
     },
     {
       q: `How much is LPG in ${row.name}?`,
-      a: `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
+      a: `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot${row.lpg.snapshot_date ? ' dated ' + formatDate(row.lpg.snapshot_date) : ''}. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
     },
     {
       q: `How much does a 5 KVA generator cost to run in ${row.name}?`,
@@ -364,7 +364,7 @@ function htmlPage(row, rows) {
     description: `Petrol, diesel, and LPG snapshot for ${row.name}, dated ${date}. Prices may vary by city, station, supplier, and timing.`,
     url,
     dateModified: snapshotDate,
-    temporalCoverage: snapshotDate,
+    temporalCoverage: row.lpg.snapshot_date ? row.lpg.snapshot_date + '/' + snapshotDate : snapshotDate,
     inLanguage: 'en',
     creator: {
       '@type': 'Organization',
@@ -496,7 +496,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
         <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}
         <p class="fuel-lede">${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
         <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
-        <p class="fuel-date">Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
+        <p class="fuel-date">${row.lpg.snapshot_date ? 'Petrol and diesel: national retail observations from <a href="' + escapeHtml(row.source_url) + '">GlobalPetrolPrices</a>, ' + escapeHtml(date) + '. LPG: historical snapshot from ' + escapeHtml(formatDate(row.lpg.snapshot_date)) + '.' : 'Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied.'} <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
       <aside class="fuel-price-card" aria-label="${escapeHtml(row.name)} fuel price summary">
         <div class="fuel-card-top">
@@ -509,7 +509,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
         <div class="fuel-price-list">
           <div class="fuel-price-row"><span>Petrol</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'petrol'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'petrol'))} comparison</span></div></div>
           <div class="fuel-price-row"><span>Diesel</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'diesel'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'diesel'))} comparison</span></div></div>
-          <div class="fuel-price-row"><span>LPG</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'lpg'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'lpg'))} comparison</span></div></div>
+          <div class="fuel-price-row"><span>LPG${row.lpg.snapshot_date ? " · " + escapeHtml(formatDate(row.lpg.snapshot_date)) : ""}</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'lpg'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'lpg'))} comparison</span></div></div>
         </div>
         <div class="fuel-actions">
           <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>

@@ -116,7 +116,7 @@ test('real collector maps each fetched URL and preserves reused diesel beside fr
   } });
   const rows = await runner.context.fetchFromGlobalPetrolPrices();
   assert.equal(rows.length, countries.length);
-  assert.equal(runner.calls.length, countries.length * 2 + 1);
+  assert.equal(runner.calls.length, countries.length * 2 + 2);
   for (const row of rows) {
     const old = previous.countries.find(c => c.code === row.code);
     assert.equal(row.petrol.price, 14);
@@ -144,11 +144,23 @@ test('Nigeria overview reads dated NGN per litre by product and header, independ
   ]);
   assert.equal(runner.calls.length, 1);
   for (const malformed of [table.replace('>NGN<', '>EUR<'), table.replace('per liter','per kilogram')]) {
-    assert.deepEqual(copy(runner.context.parseNigeriaBenchmarkTable(malformed)), {});
+    assert.deepEqual(copy(runner.context.parseCountryBenchmarkTable(malformed, 'NGN', pair[0].source_url)), {});
   }
   for (const invalid of ['31.02.2026','01.01.2099','undated']) {
-    const parsed = runner.context.parseNigeriaBenchmarkTable(table.replace('16.11.2026', invalid));
+    const parsed = runner.context.parseCountryBenchmarkTable(table.replace('16.11.2026', invalid), 'NGN', pair[0].source_url);
     assert.equal(parsed.gasoline, undefined);
     assert.equal(parsed.diesel.local, 1675);
   }
+});
+test('Malawi country table uses kwacha and excludes the per-litre kerosene row from LPG', async () => {
+  const source = 'https://www.globalpetrolprices.com/Malawi/';
+  const runner = load({html: () => '<table><tr><td>Fuels, price per liter</td><td>Date</td><td>MWK</td><td>USD</td></tr>' +
+    '<tr><th>Gasoline prices</th><td>16.11.2026</td><td>5619</td><td>3.237</td></tr>' +
+    '<tr><th>Diesel prices</th><td>16.11.2026</td><td>5863</td><td>3.377</td></tr>' +
+    '<tr><th>Kerosene prices</th><td>16.11.2026</td><td>4389</td><td>2.528</td></tr></table>'});
+  const pair = await runner.context.fetchMarketPair({code:'MW', slug:'Malawi', currency:'MWK'});
+  assert.deepEqual(copy(pair).map(f => [f.local, f.usd, f.observed_at, f.source_url]), [
+    [5619, 3.237, '2026-11-16', source], [5863, 3.377, '2026-11-16', source]
+  ]);
+  assert.deepEqual(runner.calls, [source]);
 });

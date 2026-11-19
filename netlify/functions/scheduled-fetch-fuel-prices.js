@@ -193,8 +193,8 @@ async function fetchCountryFuelPrice(country, fuelType) {
   return parsed;
 }
 
-// The Nigeria country table identifies both the NGN column and each product's observation date.
-function parseNigeriaBenchmarkTable(html) {
+// A national overview table identifies the local currency column and each product's observation date.
+function parseCountryBenchmarkTable(html, currency, sourceUrl) {
   var result = {};
   var tables = String(html).match(/<table\b[^>]*>[\s\S]*?<\/table>/gi) || [];
   for (var table of tables) {
@@ -203,10 +203,10 @@ function parseNigeriaBenchmarkTable(html) {
       return (row.match(/<(?:td|th)\b[^>]*>[\s\S]*?<\/(?:td|th)>/gi) || []).map(stripHtml);
     });
     var header = cells[0] || [];
-    if (!/^Fuels, price per liter$/i.test(header[0]) || !header.includes('NGN') || !header.includes('Date')) continue;
+    if (!/^Fuels, price per liter$/i.test(header[0]) || !header.includes(currency) || !header.includes('Date')) continue;
     for (var fields of cells.slice(1)) {
       var product = {'Gasoline prices': 'gasoline', 'Diesel prices': 'diesel'}[fields[0]];
-      var local = fields[header.indexOf('NGN')] || '';
+      var local = fields[header.indexOf(currency)] || '';
       var date = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(fields[header.indexOf('Date')] || '');
       if (!product || !date || !/^\d+(?:\.\d+)?$/.test(local) || Number(local) <= 0) continue;
       var iso = date[3] + '-' + date[2] + '-' + date[1];
@@ -214,7 +214,7 @@ function parseNigeriaBenchmarkTable(html) {
       if (!Number.isFinite(epoch) || new Date(epoch).toISOString().slice(0, 10) !== iso || epoch > Date.now()) continue;
       var usd = fields[header.indexOf('USD')] || '';
       result[product] = { local: Number(local), usd: /^\d+(?:\.\d+)?$/.test(usd) ? Number(usd) : null,
-        observed_at: iso, source_url: 'https://www.globalpetrolprices.com/Nigeria/' };
+        observed_at: iso, source_url: sourceUrl };
     }
     break;
   }
@@ -223,10 +223,11 @@ function parseNigeriaBenchmarkTable(html) {
 
 async function fetchMarketPair(country) {
   var benchmark = {};
-  if (country.code === 'NG') {
+  if (['NG', 'MW'].includes(country.code)) {
     try {
-      var response = await fetchWithRetry('https://www.globalpetrolprices.com/Nigeria/', { headers: { 'Accept': 'text/html' } });
-      benchmark = parseNigeriaBenchmarkTable(await response.text());
+      var url = 'https://www.globalpetrolprices.com/' + country.slug + '/';
+      var response = await fetchWithRetry(url, { headers: { 'Accept': 'text/html' } });
+      benchmark = parseCountryBenchmarkTable(await response.text(), country.currency, url);
     } catch (_) { /* Retain product-detail fallback when the overview is unavailable. */ }
   }
   return Promise.all(['gasoline', 'diesel'].map(function(type) {
