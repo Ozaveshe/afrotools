@@ -7,7 +7,7 @@
   <meta name="tool-id" content="pdf-compress-yo">
   <title>Dín Ìwọ̀n PDF | AfroTools Yorùbá</title>
   <meta name="description" content="Dín ìwọ̀n PDF ninu aṣàwákiri rẹ pẹlu ipo mímọ́, dídín scan ku, ZIP ọ̀pọ̀-fáìlì, ati ìròyìn ìwọ̀n ṣáájú ati lẹ́yìn.">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <meta name="author" content="AfroTools">
   <meta name="content-language" content="yo">
   <meta property="og:type" content="website">
@@ -60,19 +60,15 @@
     .copy-section{padding-bottom:56px;color:#475569;line-height:1.7}.copy-section h2,.copy-section h3{color:#0f172a}
     @media(max-width:860px){.tool-main-inner,.preset-row,.setting-grid{grid-template-columns:1fr}.tool-main{padding-inline:16px}}
   </style>
-<link rel="stylesheet" href="/assets/css/yoruba-fallback.css?v=72ea27b7" data-yoruba-fallback-style>
 <link rel="canonical" href="https://afrotools.com/yo/awon-ise/din-iwon-pdf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-compress/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compresser-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubana-pdf/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/matsa-pdf/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/din-iwon-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-compress/">
 </head>
 <body class="top-level-page-ui-refresh"><afro-navbar active="tools"></afro-navbar>
-<!-- yoruba-fallback:start -->
-<aside class="yoruba-fallback" data-yoruba-fallback role="note" aria-labelledby="yoruba-fallback-title">
-  <div class="yoruba-fallback__inner">
-    <h2 id="yoruba-fallback-title">Iṣẹ́ yìí kò tíì ṣetan.</h2>
-    <p>Yan iṣẹ́ mìíràn nínú àkójọ àwọn irinṣẹ́ Yorùbá.</p>
-    <a href="/yo/awon-ise/">Àwọn irinṣẹ́ Yorùbá</a>
-  </div>
-</aside>
-<!-- yoruba-fallback:end -->
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
@@ -96,7 +92,7 @@
             <input type="file" id="pdfFileInput" accept=".pdf" multiple>
             <label for="pdfFileInput" class="file-input-label">Tẹ láti yan tàbí fa PDF síbí<div style="font-size:.74rem;margin-top:4px;opacity:.72">Yan fáìlì kan fun PDF, tàbí ọ̀pọ̀ fáìlì fun ZIP.</div></label>
           </div>
-          <div id="fileInfo" style="display:none;margin-top:12px;"><div class="f-label-text"><span id="fileName"></span></div><div style="font-size:.72rem;color:#64748b;margin-top:4px;">Ìwọ̀n lapapọ̀: <span id="fileSize"></span></div></div>
+          <p id="fileAdvice" role="status" aria-live="polite"></p><div id="fileInfo" style="display:none;margin-top:12px;"><div class="f-label-text"><span id="fileName"></span></div><div style="font-size:.72rem;color:#64748b;margin-top:4px;">Ìwọ̀n lapapọ̀: <span id="fileSize"></span></div></div>
           <div id="batchFileList" class="file-list" style="display:none;"></div>
         </div>
       </div>
@@ -138,7 +134,7 @@
             <div class="action-row"><button type="button" class="act-btn act-download" id="downloadBtn">Gba silẹ̀</button></div>
             <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><share-result-button tool-name="Dín Ìwọ̀n PDF" tool-slug="pdf-compress"></share-result-button></div>
           </div>
-          <div id="processingText" style="display:none;text-align:center;color:#334155;"><div style="margin-bottom:12px;">Ó ń dín ìwọ̀n ku...</div><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+          <div id="processingText" style="display:none;text-align:center;color:#334155;"><div id="processingLabel" role="status">À ń dín ìwọ̀n kù…</div><div class="progress-bar" id="progressBar" role="progressbar" aria-labelledby="processingLabel" aria-describedby="processingDetail" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progressFill"></div></div><span id="processingDetail"></span> <span id="progressPercent">0%</span></div>
         </div>
       </div>
       <div class="info-card">
@@ -156,14 +152,7 @@
   <p><strong>Ṣé dídín ìwọ̀n le mú kí ọrọ̀ dà bí blur?</strong> Ipo mímọ́ ni yíyan tó dáa jù tí ọrọ̀ tí a lè yan bá ṣe pàtàkì. Àwọn ọ̀nà raster le jẹ́ kí ọrọ̀ má ṣeé yan mọ́.</p>
   <p><strong>Ṣé PDF mi máa lọ sí server?</strong> Rárá. Iṣẹ́ dídín ìwọ̀n ń ṣẹlẹ̀ ninu aṣàwákiri rẹ, PDF rẹ kò sì kúrò lori ẹrọ rẹ.</p>
 </section>
-<section class="copy-section" data-tool-verification-panel="pdf-compress-yo">
-  <h2>Sources &amp; verification - last reviewed 2026</h2>
-  <p><strong>Methodology:</strong> The compressor estimates original and compressed sizes from the selected PDF files, compression preset, DPI and quality settings, then offers a browser download or ZIP output where supported.</p>
-  <p><strong>Source and freshness:</strong> The workflow follows the AfroTools Document &amp; PDF category contract for browser-local PDF utilities. Compression results vary by PDF content, scan quality, images and whether selectable text can be preserved.</p>
-  <p><strong>Disclaimer and privacy:</strong> This is a file utility, not an official document validation service. Files stay in the browser during compression unless you choose to download or share an output.</p>
-  <p><a href="/tools/pdf-compress/">Open the full English compressor</a> or <a href="/document-pdf/">continue in the Document &amp; PDF hub</a>.</p>
-</section>
-<email-gate-modal></email-gate-modal>
+<section class="copy-section" data-tool-verification-panel="pdf-compress-yo"><h2>Ṣàyẹ̀wò PDF tuntun</h2><p>Fi ìwọ̀n tuntun wé ti àtijọ́, kí o sì ṣí PDF tuntun láti yẹ àwọn ojú-ìwé wò. O lè gba fáìlì rẹ sílẹ̀ lórí ẹ̀rọ rẹ láìforúkọsílẹ̀.</p></section>
 <afro-related-tools category="document-pdf" current="pdf-compress"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -173,8 +162,7 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<script src="/yo/awon-ise/din-iwon-pdf/app.js?v=244d30c5"></script>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/tools/pdf-compress/app.js?v=367c3517"></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>

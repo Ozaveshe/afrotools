@@ -23,8 +23,9 @@
 
   var els = {};
 
-  function native(en, fr, sw) {
+  function native(en, fr, sw, yo) {
     var lang = document.documentElement.lang.toLowerCase().split('-')[0];
+    if (lang === 'yo') return yo;
     return lang === 'fr' ? fr : lang === 'sw' ? sw : en;
   }
 
@@ -185,7 +186,7 @@
       analyzeMergeFile(id);
     });
     renderMergeFileList();
-    if (rejected) showResult(native('Non-PDF files skipped: ', 'Fichiers non PDF ignorés : ', 'Faili zisizo PDF zilizoachwa: ') + rejected, true);
+    if (rejected) showResult(native('Non-PDF files skipped: ', 'Fichiers non PDF ignorés : ', 'Faili zisizo PDF zilizoachwa: ', "A fo àwọn fáìlì tí kì í ṣe PDF: ") + rejected, true);
   }
 
   async function analyzeMergeFile(id) {
@@ -231,22 +232,22 @@
 
       var meta = document.createElement('span');
       meta.className = 'file-item-meta';
-      var pageText = entry.loading ? native("reading pages...","lecture des pages…","inasoma kurasa…") : (entry.error ? native("PDF error","PDF illisible","PDF haisomeki") : native('Pages: ', 'Pages : ', 'Kurasa: ') + entry.pageCount);
+      var pageText = entry.loading ? native("reading pages...", "lecture des pages…", "inasoma kurasa…", "à ń ka àwọn ojú-ìwé…") : (entry.error ? native("PDF error", "PDF illisible", "PDF haisomeki", "A kò lè ka PDF") : native('Pages: ', 'Pages : ', 'Kurasa: ', "Ojú-ìwé: ") + entry.pageCount);
       meta.textContent = formatSize(entry.file.size) + ' | ' + pageText;
       if (entry.error) meta.classList.add('err');
 
       var pageField = document.createElement('label');
       pageField.className = 'merge-pages-field';
       var pageLabel = document.createElement('span');
-      pageLabel.textContent = native("Pages","Pages","Kurasa");
+      pageLabel.textContent = native("Pages", "Pages", "Kurasa", "Ojú-ìwé");
       var pageInput = document.createElement('input');
       pageInput.type = 'text';
       // Native range labels include the user's filename; never dictionary-translate it.
       pageInput.setAttribute('translate', 'no');
       pageInput.value = entry.pageSpec || '';
-      pageInput.placeholder = entry.pageCount ? native('All / 1-', 'Toutes / 1-', 'Zote / 1-') + entry.pageCount : native("All pages","Toutes les pages","Kurasa zote");
+      pageInput.placeholder = entry.pageCount ? native('All / 1-', 'Toutes / 1-', 'Zote / 1-', "Gbogbo / 1-") + entry.pageCount : native("All pages", "Toutes les pages", "Kurasa zote", "Gbogbo ojú-ìwé");
       pageInput.dataset.action = 'pages';
-      pageInput.setAttribute('aria-label', native('Pages from ', 'Pages du fichier ', 'Kurasa za ') + entry.file.name + native(' to include', ' à inclure', ' za kujumuisha'));
+      pageInput.setAttribute('aria-label', native('Pages from ', 'Pages du fichier ', 'Kurasa za ', "Yan ojú-ìwé inú ") + entry.file.name + native(' to include', ' à inclure', ' za kujumuisha', " fún àkójọpọ̀"));
       pageInput.disabled = state.busy || entry.loading || !!entry.error;
       pageField.append(pageLabel, pageInput);
 
@@ -262,7 +263,7 @@
     });
 
     els.mergeFileList.querySelectorAll('button[data-action]').forEach(function (button) {
-      var labels = { up: native('Up', 'Monter', 'Juu'), down: native('Down', 'Descendre', 'Chini'), remove: native('Remove', 'Supprimer', 'Ondoa') };
+      var labels = { up: native('Up', 'Monter', 'Juu', "Gbé sókè"), down: native('Down', 'Descendre', 'Chini', "Sọ̀kalẹ̀"), remove: native('Remove', 'Supprimer', 'Ondoa', "Yọ kúrò") };
       button.textContent = labels[button.dataset.action];
       button.setAttribute('aria-label', labels[button.dataset.action]);
     });
@@ -289,11 +290,11 @@
     });
     els.mergeBtn.disabled = state.busy || state.splitLoading || hasLoading || valid.length < 2 || hasErrors || rangeError;
     els.clearMergeBtn.disabled = state.mergeFiles.length === 0 || state.busy;
-    if (!state.mergeFiles.length) els.mergeSummary.textContent = native("Add at least two PDFs to merge.","Ajoutez au moins deux PDF à fusionner.","Ongeza angalau PDF mbili za kuunganisha.");
-    else if (hasErrors) els.mergeSummary.textContent = native("Remove unreadable PDFs before merging.","Supprimez les PDF illisibles avant la fusion.","Ondoa PDF zisizosomeka kabla ya kuunganisha.");
-    else if (hasLoading) els.mergeSummary.textContent = native('Reading all selected PDFs. Please wait.', 'Lecture de tous les PDF sélectionnés. Veuillez patienter.', 'Inasoma PDF zote zilizochaguliwa. Tafadhali subiri.');
+    if (!state.mergeFiles.length) els.mergeSummary.textContent = native("Add at least two PDFs to merge.", "Ajoutez au moins deux PDF à fusionner.", "Ongeza angalau PDF mbili za kuunganisha.", "Fi ó kéré tán PDF méjì kún un láti darapọ̀ wọn.");
+    else if (hasErrors) els.mergeSummary.textContent = native("Remove unreadable PDFs before merging.", "Supprimez les PDF illisibles avant la fusion.", "Ondoa PDF zisizosomeka kabla ya kuunganisha.", "Yọ PDF tí kò ṣeé kà kí o tó darapọ̀ wọn.");
+    else if (hasLoading) els.mergeSummary.textContent = native('Reading all selected PDFs. Please wait.', 'Lecture de tous les PDF sélectionnés. Veuillez patienter.', 'Inasoma PDF zote zilizochaguliwa. Tafadhali subiri.', "À ń ka àwọn PDF. Jọ̀wọ́ dúró.");
     else if (rangeError) els.mergeSummary.textContent = rangeMessage;
-    else els.mergeSummary.textContent = native('PDFs ready: ', 'PDF prêts : ', 'PDF zilizo tayari: ') + valid.length + native(' | Pages: ', ' | Pages : ', ' | Kurasa: ') + totalPages + '.';
+    else els.mergeSummary.textContent = native('PDFs ready: ', 'PDF prêts : ', 'PDF zilizo tayari: ', "PDF tó ṣetán: ") + valid.length + native(' | Pages: ', ' | Pages : ', ' | Kurasa: ', " · Ojú-ìwé: ") + totalPages + '.';
   }
 
   function setupDragReorder() {
@@ -322,10 +323,10 @@
     if (state.busy || state.splitLoading || state.mergeFiles.some(function (entry) { return entry.loading || entry.error; })) return;
     var items = state.mergeFiles.filter(function (entry) { return !entry.error && !entry.loading; });
     if (items.length < 2) return;
-    setBusy(els.mergeBtn, native("Merging...","Fusion…","Inaunganisha…"));
+    setBusy(els.mergeBtn, native("Merging...", "Fusion…", "Inaunganisha…", "À ń darapọ̀…"));
     setProgress(0);
     els.actionRow.style.display = 'none';
-    showResult(native("Merging PDFs...","Fusion des PDF…","Inaunganisha PDF…"), false);
+    showResult(native("Merging PDFs...", "Fusion des PDF…", "Inaunganisha PDF…", "À ń darapọ̀ àwọn PDF…"), false);
     try {
       var mergedDoc = await getPDFLib().PDFDocument.create();
       for (var i = 0; i < items.length; i++) {
@@ -341,11 +342,11 @@
       state.mergedPdf = bytes;
       setProgress(100);
       var pageCount = mergedDoc.getPageCount();
-      showResult(native('PDFs merged: ', 'PDF fusionnés : ', 'PDF zilizounganishwa: ') + items.length + native('; output pages: ', ' ; pages obtenues : ', '; kurasa za matokeo: ') + pageCount + '.', false);
+      showResult(native('PDFs merged: ', 'PDF fusionnés : ', 'PDF zilizounganishwa: ', "PDF tí a darapọ̀: ") + items.length + native('; output pages: ', ' ; pages obtenues : ', '; kurasa za matokeo: ', "; iye ojú-ìwé: ") + pageCount + '.', false);
       var filename = cleanBaseName(items[0].file.name) + '_merged.pdf';
-      setDownloadAction(native("Download merged PDF","Télécharger le PDF fusionné","Pakua PDF iliyounganishwa"), new Blob([bytes], { type: 'application/pdf' }), filename);
+      setDownloadAction(native("Download merged PDF", "Télécharger le PDF fusionné", "Pakua PDF iliyounganishwa", "Gba PDF tí a darapọ̀"), new Blob([bytes], { type: 'application/pdf' }), filename);
     } catch (err) {
-      showResult(native('Could not merge these PDFs. Check the files and page ranges.', 'Impossible de fusionner ces PDF. Vérifiez les fichiers et les plages de pages.', 'PDF hizi hazikuunganishwa. Kagua faili na masafa ya kurasa.'), true);
+      showResult(native('Could not merge these PDFs. Check the files and page ranges.', 'Impossible de fusionner ces PDF. Vérifiez les fichiers et les plages de pages.', 'PDF hizi hazikuunganishwa. Kagua faili na masafa ya kurasa.', "A kò lè darapọ̀ àwọn PDF wọ̀nyí. Ṣàyẹ̀wò àwọn fáìlì àti ojú-ìwé tí o yàn."), true);
       els.actionRow.style.display = 'none';
     } finally {
       hideProgress();
@@ -371,12 +372,12 @@
     setSplitLoading(false);
     if (!isPdfFile(file)) {
       hideProgress();
-      showResult(native("Please choose a PDF file.","Choisissez un fichier PDF.","Chagua faili la PDF."), true);
+      showResult(native("Please choose a PDF file.", "Choisissez un fichier PDF.", "Chagua faili la PDF.", "Yan fáìlì PDF kan."), true);
       return;
     }
     setSplitLoading(true);
     state.splitFile = file;
-    showResult(native("Reading PDF...","Lecture du PDF…","Inasoma PDF…"), false);
+    showResult(native("Reading PDF...", "Lecture du PDF…", "Inasoma PDF…", "À ń ka PDF…"), false);
     setProgress(12);
     try {
       var arrayBuffer = await file.arrayBuffer();
@@ -409,7 +410,7 @@
       els.splitGrid.innerHTML = '';
       setSplitLoading(false);
       hideProgress();
-      showResult(native('Could not read this PDF. Choose a valid, unlocked PDF.', 'Impossible de lire ce PDF. Choisissez un PDF valide et non verrouillé.', 'PDF hii haisomeki. Chagua PDF halali isiyofungwa.'), true);
+      showResult(native('Could not read this PDF. Choose a valid, unlocked PDF.', 'Impossible de lire ce PDF. Choisissez un PDF valide et non verrouillé.', 'PDF hii haisomeki. Chagua PDF halali isiyofungwa.', "A kò lè ka PDF yìí. Yan PDF tó pé tí a kò tì pa."), true);
       syncSplitButton();
     }
   }
@@ -474,7 +475,7 @@
       var selectable = state.splitMode === 'extract';
       cell.className = 'sp-cell' + (selectable ? ' selectable' : '') + (state.splitSelectedPages[i] ? ' selected' : '');
       cell.dataset.pageIndex = i;
-      var pageLabel = native('Page ', 'Page ', 'Ukurasa ') + (i + 1);
+      var pageLabel = native('Page ', 'Page ', 'Ukurasa ', "Ojú-ìwé ") + (i + 1);
       var thumb = state.splitThumbnails[i]
         ? '<img src="' + state.splitThumbnails[i] + '" alt="' + pageLabel + '">'
         : '<div class="sp-ph" translate="no">' + pageLabel + '</div>';
@@ -518,7 +519,7 @@
 
   function parsePageSelection(text, total) {
     var value = String(text || '').trim();
-    if (!value || /^(all|tous|toutes|zote)$/i.test(value)) {
+    if (!value || /^(all|tous|toutes|zote|gbogbo)$/i.test(value)) {
       var allPages = [];
       for (var i = 0; i < total; i++) allPages.push(i);
       return { valid: true, pages: allPages };
@@ -530,23 +531,23 @@
 
   function parseRangeGroups(text, total) {
     var raw = String(text || '').trim();
-    if (!raw) return { valid: false, error: native("Enter at least one page or range.","Saisissez au moins une page ou une plage.","Weka angalau ukurasa mmoja au masafa."), groups: [] };
+    if (!raw) return { valid: false, error: native("Enter at least one page or range.", "Saisissez au moins une page ou une plage.", "Weka angalau ukurasa mmoja au masafa.", "Tẹ nọ́ńbà ojú-ìwé tàbí àárín ojú-ìwé kan."), groups: [] };
     var groups = [];
     var parts = raw.split(',');
     for (var i = 0; i < parts.length; i++) {
       var part = parts[i].trim();
       if (!part) continue;
       var match = part.match(/^(\d+)(?:\s*-\s*(\d+))?$/);
-      if (!match) return { valid: false, error: native("Use page numbers and ranges like 1-3, 5.","Utilisez des pages et des plages, par exemple 1-3, 5.","Tumia namba za kurasa na masafa kama 1-3, 5."), groups: [] };
+      if (!match) return { valid: false, error: native("Use page numbers and ranges like 1-3, 5.", "Utilisez des pages et des plages, par exemple 1-3, 5.", "Tumia namba za kurasa na masafa kama 1-3, 5.", "Lo nọ́ńbà tàbí àárín bíi 1-3, 5."), groups: [] };
       var start = Number(match[1]);
       var end = match[2] ? Number(match[2]) : start;
       if (start < 1 || end < 1 || start > total || end > total) {
-        return { valid: false, error: native('Pages must be between 1 and ', 'Les pages doivent être comprises entre 1 et ', 'Kurasa lazima ziwe kati ya 1 na ') + total + '.', groups: [] };
+        return { valid: false, error: native('Pages must be between 1 and ', 'Les pages doivent être comprises entre 1 et ', 'Kurasa lazima ziwe kati ya 1 na ', "Nọ́ńbà ojú-ìwé gbọ́dọ̀ wà láàárín 1 àti ") + total + '.', groups: [] };
       }
-      if (end < start) return { valid: false, error: native('The range ends before it starts.', 'La fin de la plage précède son début.', 'Mwisho wa masafa uko kabla ya mwanzo.'), groups: [] };
+      if (end < start) return { valid: false, error: native('The range ends before it starts.', 'La fin de la plage précède son début.', 'Mwisho wa masafa uko kabla ya mwanzo.', "Nọ́ńbà ìparí kéré ju ìbẹ̀rẹ̀."), groups: [] };
       groups.push([start - 1, end - 1]);
     }
-    if (!groups.length) return { valid: false, error: native("Enter at least one page or range.","Saisissez au moins une page ou une plage.","Weka angalau ukurasa mmoja au masafa."), groups: [] };
+    if (!groups.length) return { valid: false, error: native("Enter at least one page or range.", "Saisissez au moins une page ou une plage.", "Weka angalau ukurasa mmoja au masafa.", "Tẹ nọ́ńbà ojú-ìwé tàbí àárín ojú-ìwé kan."), groups: [] };
     return { valid: true, groups: groups };
   }
 
@@ -599,27 +600,27 @@
     var total = pageCount();
     var summary = '';
     var enabled = false;
-    var label = native("Upload a PDF first","Ajoutez d’abord un PDF","Ongeza PDF kwanza");
+    var label = native("Upload a PDF first", "Ajoutez d’abord un PDF", "Ongeza PDF kwanza", "Yan PDF kan kọ́kọ́");
     if (state.splitPdfDoc && state.splitMode === 'cuts') {
       var cutCount = Object.keys(state.splitCuts).length;
       enabled = cutCount > 0;
-      label = enabled ? native('PDF files → ZIP: ', 'Fichiers PDF → ZIP : ', 'Faili za PDF → ZIP: ') + (cutCount + 1) : native("Select split points first","Choisissez les points de séparation","Chagua sehemu za kugawanya kwanza");
-      if (enabled) summary = native('Will create: ', 'Création prévue : ', 'Itaunda: ') + getCutRanges().map(formatRange).join(' | ');
+      label = enabled ? native('PDF files → ZIP: ', 'Fichiers PDF → ZIP : ', 'Faili za PDF → ZIP: ', "Àwọn PDF sínú ZIP: ") + (cutCount + 1) : native("Select split points first", "Choisissez les points de séparation", "Chagua sehemu za kugawanya kwanza", "Yan ibi tí o fẹ́ gé kọ́kọ́");
+      if (enabled) summary = native('Will create: ', 'Création prévue : ', 'Itaunda: ', "A ó ṣẹ̀dá: ") + getCutRanges().map(formatRange).join(' | ');
     } else if (state.splitPdfDoc && state.splitMode === 'ranges') {
       var parsedRanges = parseRangeGroups(els.rangeInput.value, total);
       enabled = parsedRanges.valid;
-      label = els.rangeCombine.checked ? native("Extract ranges into one PDF","Extraire les plages dans un PDF","Toa masafa kuwa PDF moja") : native("Split ranges -> ZIP","Diviser les plages → ZIP","Gawanya masafa → ZIP");
-      summary = parsedRanges.valid ? native('Ranges: ', 'Plages : ', 'Masafa: ') + parsedRanges.groups.map(formatRange).join(' | ') : parsedRanges.error;
+      label = els.rangeCombine.checked ? native("Extract ranges into one PDF", "Extraire les plages dans un PDF", "Toa masafa kuwa PDF moja", "Kó àwọn àárín ojú-ìwé sínú PDF kan") : native("Split ranges -> ZIP", "Diviser les plages → ZIP", "Gawanya masafa → ZIP", "Pín àwọn àárín sínú ZIP");
+      summary = parsedRanges.valid ? native('Ranges: ', 'Plages : ', 'Masafa: ', "Àwọn àárín: ") + parsedRanges.groups.map(formatRange).join(' | ') : parsedRanges.error;
     } else if (state.splitPdfDoc && state.splitMode === 'extract') {
       var parsedPages = parseRangeGroups(els.extractInput.value, total);
       enabled = parsedPages.valid;
       var pageTotal = parsedPages.valid ? expandGroups(parsedPages.groups).length : 0;
-      label = enabled ? native('Extract pages as PDF: ', 'Extraire les pages en PDF : ', 'Toa kurasa kuwa PDF: ') + pageTotal : native("Select pages to extract","Choisissez les pages à extraire","Chagua kurasa za kutoa");
-      summary = parsedPages.valid ? native('Selected pages: ', 'Pages sélectionnées : ', 'Kurasa zilizochaguliwa: ') + pagesToSpec(expandGroups(parsedPages.groups)) : parsedPages.error;
+      label = enabled ? native('Extract pages as PDF: ', 'Extraire les pages en PDF : ', 'Toa kurasa kuwa PDF: ', "Gba àwọn ojú-ìwé gẹ́gẹ́ bí PDF: ") + pageTotal : native("Select pages to extract", "Choisissez les pages à extraire", "Chagua kurasa za kutoa", "Yan àwọn ojú-ìwé");
+      summary = parsedPages.valid ? native('Selected pages: ', 'Pages sélectionnées : ', 'Kurasa zilizochaguliwa: ', "Àwọn ojú-ìwé tí o yàn: ") + pagesToSpec(expandGroups(parsedPages.groups)) : parsedPages.error;
     } else if (state.splitPdfDoc && state.splitMode === 'every') {
       enabled = total > 0;
-      label = native('Pages → ZIP: ', 'Pages → ZIP : ', 'Kurasa → ZIP: ') + total;
-      summary = native("Each page will become its own PDF.","Chaque page devient un PDF distinct.","Kila ukurasa utakuwa PDF tofauti.");
+      label = native('Pages → ZIP: ', 'Pages → ZIP : ', 'Kurasa → ZIP: ', "Àwọn ojú-ìwé sínú ZIP: ") + total;
+      summary = native("Each page will become its own PDF.", "Chaque page devient un PDF distinct.", "Kila ukurasa utakuwa PDF tofauti.", "Ojú-ìwé kọ̀ọ̀kan yóò di PDF tirẹ̀.");
     }
     els.splitBtn.disabled = state.busy || state.splitLoading || !enabled;
     els.splitBtn.textContent = label;
@@ -721,17 +722,17 @@
   async function performSplit() {
     if (state.busy || state.splitLoading || !state.splitPdfDoc) return;
     var baseName = cleanBaseName(state.splitFile.name);
-    setBusy(els.splitBtn, native("Working...","Traitement…","Inachakata…"));
+    setBusy(els.splitBtn, native("Working...", "Traitement…", "Inachakata…", "À ń ṣiṣẹ́…"));
     setProgress(0);
     els.actionRow.style.display = 'none';
-    showResult(native("Preparing output...","Préparation du fichier…","Inaandaa faili…"), false);
+    showResult(native("Preparing output...", "Préparation du fichier…", "Inaandaa faili…", "À ń pèsè fáìlì…"), false);
     try {
       if (state.splitMode === 'cuts') {
         var cutFiles = await makeFilesFromRanges(getCutRanges(), baseName);
         setProgress(92);
         var cutZip = buildZip(cutFiles);
-        showResult(native('PDF files created: ', 'Fichiers PDF créés : ', 'Faili za PDF zilizoundwa: ') + cutFiles.length + '.', false);
-        setDownloadAction(native("Download ZIP","Télécharger le ZIP","Pakua ZIP"), cutZip, baseName + '_split.zip');
+        showResult(native('PDF files created: ', 'Fichiers PDF créés : ', 'Faili za PDF zilizoundwa: ', "Iye PDF tí a dá: ") + cutFiles.length + '.', false);
+        setDownloadAction(native("Download ZIP", "Télécharger le ZIP", "Pakua ZIP", "Gba ZIP"), cutZip, baseName + '_split.zip');
         downloadBlob(cutZip, baseName + '_split.zip');
       } else if (state.splitMode === 'ranges') {
         var parsedRanges = parseRangeGroups(els.rangeInput.value, pageCount());
@@ -740,14 +741,14 @@
           var pages = expandGroups(parsedRanges.groups);
           var combined = await makePdfFromPages(pages);
           var combinedBlob = new Blob([combined], { type: 'application/pdf' });
-          showResult(native('Pages extracted into one PDF: ', 'Pages extraites dans un PDF : ', 'Kurasa zilizotolewa katika PDF moja: ') + pages.length + '.', false);
-          setDownloadAction(native("Download extracted PDF","Télécharger le PDF extrait","Pakua PDF iliyotolewa"), combinedBlob, baseName + '_ranges.pdf');
+          showResult(native('Pages extracted into one PDF: ', 'Pages extraites dans un PDF : ', 'Kurasa zilizotolewa katika PDF moja: ', "Iye ojú-ìwé tí a kó sínú PDF kan: ") + pages.length + '.', false);
+          setDownloadAction(native("Download extracted PDF", "Télécharger le PDF extrait", "Pakua PDF iliyotolewa", "Gba PDF tí a yọ"), combinedBlob, baseName + '_ranges.pdf');
           downloadBlob(combinedBlob, baseName + '_ranges.pdf');
         } else {
           var rangeFiles = await makeFilesFromRanges(parsedRanges.groups, baseName);
           var rangeZip = buildZip(rangeFiles);
-          showResult(native('Range PDFs created: ', 'PDF de plages créés : ', 'PDF za masafa zilizoundwa: ') + rangeFiles.length + '.', false);
-          setDownloadAction(native("Download ranges ZIP","Télécharger les plages en ZIP","Pakua masafa katika ZIP"), rangeZip, baseName + '_ranges.zip');
+          showResult(native('Range PDFs created: ', 'PDF de plages créés : ', 'PDF za masafa zilizoundwa: ', "Iye PDF tí a dá fún àwọn àárín: ") + rangeFiles.length + '.', false);
+          setDownloadAction(native("Download ranges ZIP", "Télécharger les plages en ZIP", "Pakua masafa katika ZIP", "Gba àwọn àárín nínú ZIP"), rangeZip, baseName + '_ranges.zip');
           downloadBlob(rangeZip, baseName + '_ranges.zip');
         }
       } else if (state.splitMode === 'extract') {
@@ -756,21 +757,21 @@
         var selected = expandGroups(parsedPages.groups);
         var extracted = await makePdfFromPages(selected);
         var extractedBlob = new Blob([extracted], { type: 'application/pdf' });
-        showResult(native('Selected pages extracted: ', 'Pages sélectionnées extraites : ', 'Kurasa zilizochaguliwa zilizotolewa: ') + selected.length + '.', false);
-        setDownloadAction(native("Download selected pages PDF","Télécharger les pages sélectionnées","Pakua kurasa zilizochaguliwa"), extractedBlob, baseName + '_selected_pages.pdf');
+        showResult(native('Selected pages extracted: ', 'Pages sélectionnées extraites : ', 'Kurasa zilizochaguliwa zilizotolewa: ', "Ojú-ìwé tí a yọ: ") + selected.length + '.', false);
+        setDownloadAction(native("Download selected pages PDF", "Télécharger les pages sélectionnées", "Pakua kurasa zilizochaguliwa", "Gba PDF àwọn ojú-ìwé tí o yàn"), extractedBlob, baseName + '_selected_pages.pdf');
         downloadBlob(extractedBlob, baseName + '_selected_pages.pdf');
       } else if (state.splitMode === 'every') {
         var ranges = [];
         for (var i = 0; i < pageCount(); i++) ranges.push([i, i]);
         var everyFiles = await makeFilesFromRanges(ranges, baseName);
         var everyZip = buildZip(everyFiles);
-        showResult(native('One-page PDFs exported: ', 'PDF d’une page exportés : ', 'PDF za ukurasa mmoja zilizotolewa: ') + everyFiles.length + '.', false);
-        setDownloadAction(native("Download every page ZIP","Télécharger toutes les pages en ZIP","Pakua kila ukurasa katika ZIP"), everyZip, baseName + '_every_page.zip');
+        showResult(native('One-page PDFs exported: ', 'PDF d’une page exportés : ', 'PDF za ukurasa mmoja zilizotolewa: ', "Iye PDF tí ọkọọkan ní ojú-ìwé kan: ") + everyFiles.length + '.', false);
+        setDownloadAction(native("Download every page ZIP", "Télécharger toutes les pages en ZIP", "Pakua kila ukurasa katika ZIP", "Gba gbogbo ojú-ìwé nínú ZIP"), everyZip, baseName + '_every_page.zip');
         downloadBlob(everyZip, baseName + '_every_page.zip');
       }
       setProgress(100);
     } catch (err) {
-      showResult(native('Could not split this PDF. Check the file and selected pages.', 'Impossible de diviser ce PDF. Vérifiez le fichier et les pages choisies.', 'PDF hii haikugawanywa. Kagua faili na kurasa zilizochaguliwa.'), true);
+      showResult(native('Could not split this PDF. Check the file and selected pages.', 'Impossible de diviser ce PDF. Vérifiez le fichier et les pages choisies.', 'PDF hii haikugawanywa. Kagua faili na kurasa zilizochaguliwa.', "A kò lè pín PDF yìí. Ṣàyẹ̀wò fáìlì àti àwọn ojú-ìwé tí o yàn."), true);
       els.actionRow.style.display = 'none';
     } finally {
       hideProgress();
