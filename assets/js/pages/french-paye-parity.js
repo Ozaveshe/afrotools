@@ -28,8 +28,8 @@
     },
     'ls-paye': {
       country: 'Lesotho', currency: 'LSL', symbol: 'M', period: 'annual',
-      checkedOn: '2026-01-01', rebateAnnual: 11640,
-      bands: [[74040, 0.20], [Infinity, 0.30]]
+      checkedOn: '2026-11-18', rebateAnnual: 12240,
+      bands: [[77760, 0.20], [Infinity, 0.30]]
     },
     'ly-paye': {
       country: 'Libye', currency: 'LYD', symbol: 'LYD', period: 'monthly',
