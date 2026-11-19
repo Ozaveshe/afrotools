@@ -270,6 +270,48 @@
         : `<strong>Fast read:</strong> This ${n(r)} estimate includes more than customs. Use <strong>Official Charges</strong> to review customs costs, or open <strong>Compare</strong> to review modeled price and freight assumptions for each source.`;
     if (o.innerHTML !== guideMarkup) o.innerHTML = guideMarkup;
   }
+  function attachVehicleGuide(form) {
+    const actions = form.querySelector(".car-import-actions");
+    if (!actions) return;
+    const link = document.createElement("a");
+    link.hidden = true;
+    actions.after(link);
+    const field = (name) => form.elements.namedItem("carImport" + name);
+    const key = (value) => value.trim().toLowerCase().replace(/[\s-]+/g, "");
+    fetch("/data/cars/price-intelligence.json").then((response) => {
+      if (!response.ok) throw new Error("Catalog unavailable");
+      return response.json();
+    }).then((catalog) => {
+      function refresh() {
+        const country = catalog.countries[field("Country").value];
+        const make = key(field("Make").value);
+        const model = key(field("Model").value);
+        const year = field("Year").value;
+        const vehicle = catalog.vehicles.find((item) =>
+          String(item.year) === year && key(item.make) === make && key(item.model) === model
+        );
+        if (!country || country.directory_enabled === false || !vehicle) {
+          link.hidden = true;
+          link.removeAttribute("href");
+          return;
+        }
+        const label = vehicle.year + " " + vehicle.make + " " + vehicle.model;
+        const french = document.documentElement.lang === "fr";
+        link.textContent = french
+          ? "Consulter le guide " + label + " — " + country.name + " (en anglais)"
+          : "View the " + label + " guide for " + country.name;
+        link.href = "/cars/" + [country.slug, vehicle.makeSlug, vehicle.modelSlug, year].join("/") + "/";
+        link.hidden = false;
+      }
+      form.addEventListener("input", refresh);
+      form.addEventListener("change", refresh);
+      form.addEventListener("submit", refresh);
+      // The calculator also hydrates saved inputs and URL selections asynchronously.
+      const summary = document.getElementById("carImportSummaryLine");
+      if (summary) new MutationObserver(refresh).observe(summary, {childList: true});
+      refresh();
+    }).catch(() => { link.hidden = true; });
+  }
   function p(i) {
     if (!i || "true" === i.dataset.enhanced) return;
     ((i.dataset.enhanced = "true"),
@@ -348,6 +390,7 @@
           u(e.getAttribute("data-quick-start"));
         });
       }));
+    attachVehicleGuide(i);
     const m = a("#carImportCountry", i);
     m &&
       (m.addEventListener("change", function () {
