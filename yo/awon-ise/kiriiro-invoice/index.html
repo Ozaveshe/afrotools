@@ -54,7 +54,36 @@
     html[data-theme="dark"] .hero{background:#0b1524;color:#eef5ff;border-color:#354963}
     html[data-theme="dark"] .hero h1{color:#eef5ff}
     html[data-theme="dark"] .hero p,html[data-theme="dark"] .hero .crumb{color:#b8c7dc}
-  </style>
+    @page { margin: 14mm; }
+  @media print {
+    body > :not(#main-content),
+    #main-content > :not(.invoice-print-card),
+    .invoice-print-card > :not(#paper) { display: none !important; }
+
+    html, body, #main-content, #main-content > .invoice-print-card, #paper {
+      display: block;
+      width: auto;
+      max-width: none;
+      height: auto;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      background: white;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    #paper { color: #111; font-size: 10pt; overflow-wrap: anywhere; }
+    #paper .paper-top { display: flex; break-inside: avoid; }
+    #paper table { display: table; width: 100%; border-collapse: collapse; }
+    #paper thead { display: table-header-group; }
+    #paper tr { break-inside: avoid; }
+    #paper th, #paper td { padding: 5pt; text-align: left; }
+    #paper .summary { display: block; break-inside: avoid; }
+  }
+</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/invoice-generator.webp">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kíriíro ìwé owó ni Yorùbá | AfroTools">
@@ -103,7 +132,7 @@
     </div>
     <div class="field"><label for="terms">Ọ̀rọ̀ sisanwo</label><textarea id="terms" rows="3">Jọwọ san iye to ku ṣaaju ọjọ́ ipari. Ìwé owó yii jẹ fun ìmúrasílẹ̀ iṣowo.</textarea></div>
   </section>
-  <aside class="card">
+  <aside class="card invoice-print-card">
     <h2>Oju ìwé owó</h2>
     <div class="paper" id="paper"></div>
     <div class="btns" style="margin-top:14px">
