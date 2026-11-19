@@ -99,3 +99,20 @@ test('first homepage search recovers when the real catalogue arrives after debou
     releaseRegistry();
   }
 });
+
+test('submitting a unique displayed tool name opens the suggested calculator', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const search = page.locator('#hero-search-input');
+  await search.fill('Working Days Calculator');
+  await expect(page.locator('#search-dropdown .sd-item').first()).toHaveAttribute('href', '/tools/working-days/');
+  await page.locator('#hero-search-btn').click();
+  await expect(page).toHaveURL(/\/tools\/working-days\/?$/);
+  await page.locator('#startDate').fill('2026-11-16');
+  await page.locator('#endDate').fill('2026-11-22');
+  await page.locator('#country').selectOption('none');
+  await page.getByRole('button', { name: 'Calculate', exact: true }).click();
+  await expect(page.locator('#workDays')).toHaveText('5');
+  await expect(page.locator('#calDays')).toHaveText('7');
+  await expect(page.locator('#weekendDays')).toHaveText('2');
+});
