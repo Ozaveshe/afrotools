@@ -1327,7 +1327,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
     category: "Immobilier",
     title: "Widget conversion surface terrain",
     description: "Convertir rapidement acres, hectares et metres carres pour une annonce ou un projet.",
-    fullFrenchPath: "/fr/property/",
+    fullFrenchPath: "/fr/tools/convertisseur-unites/#superficie",
     englishSource: "widgets/iframe/property-land-size-converter",
     primaryUse: "Pages immobilier, agriculture, construction, diaspora et guides d'achat terrain.",
     caution: "Verifier les mesures officielles du titre foncier avant transaction.",
