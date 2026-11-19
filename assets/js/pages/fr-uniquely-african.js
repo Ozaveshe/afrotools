@@ -37,6 +37,9 @@
     if (typeof value === "boolean") return value ? "Oui" : "Non";
     if (typeof value === "string") return value;
     if (!Number.isFinite(value)) return "—";
+    if (contract.id === "ajo-chama" && ["pool", "totalContributions", "arrears"].includes(key)) {
+      return value.toLocaleString("fr-FR", {maximumFractionDigits: 2}) + " " + input.currency;
+    }
     var currencyKeys = /(?:cost|fee|value|profit|revenue|price|total|gap|secured|remittance|material|quote|expenses|difference|spread)$/i;
     var percentKeys = /Pct$|weightedSeverity|scaleFactor/i;
     var digits = percentKeys.test(key) ? 2 : Math.abs(value) < 10 ? 2 : 0;
@@ -231,7 +234,7 @@
       generatedAt: new Date().toISOString(),
       localOnly: true,
       input: input,
-      result: result,
+      result: contract.id === "ajo-chama" ? Object.assign({currency: input.currency}, result) : result,
       source: contract.source,
       freshness: contract.freshness,
       confidence: contract.confidence,
@@ -252,6 +255,12 @@
         lines.push(`${contract.metrics[key]}: ${metricValue(key, payload.result.values[key], payload.input)}`);
       }
     });
+    if (contract.id === "ajo-chama") {
+      lines.push("", "Calendrier des tours");
+      payload.result.rows.forEach(function (row) {
+        lines.push("Tour " + row.round + " : membre " + row.recipient + ", " + metricValue("pool", row.pool, payload.input));
+      });
+    }
     if (contract.id === "afrokitchen") {
       var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
       var recipe = recipes.find(function (item) { return item.slug === payload.input.recipe; });
@@ -308,7 +317,10 @@
       var pdf = new JsPdf({ unit: "pt", format: "a4", compress: false });
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(10);
-      var lines = pdf.splitTextToSize(ascii(text), 495);
+      var printable = contract.id === "ajo-chama"
+        ? text.replace(/[\u00a0\u202f]/g, " ").replace(/[’‘]/g, "'")
+        : ascii(text);
+      var lines = pdf.splitTextToSize(printable, 495);
       var y = 50;
       lines.forEach(function (line) {
         if (y > 790) {

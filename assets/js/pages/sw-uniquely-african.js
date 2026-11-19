@@ -30,6 +30,10 @@
     if (typeof value === "boolean") return value ? "Ndiyo" : "Hapana";
     if (value == null) return "—";
     if (typeof value !== "number") return String(value);
+    if (contract.id === "ajo-chama-calc") {
+      const amount = value.toLocaleString("sw-TZ", {maximumFractionDigits: 2});
+      return key === "totalRounds" || key === "members" ? amount : input.currency + " " + amount;
+    }
     var digits = /Pct$|weightedSeverity|scaleFactor|Kwh|Litres|Months/i.test(key) ? 2 : Math.abs(value) < 10 ? 2 : 0;
     var formatted = value.toLocaleString("sw-TZ", { maximumFractionDigits: digits, minimumFractionDigits: digits });
     if (/Pct$|weightedSeverity/i.test(key)) return formatted + "%";
@@ -53,9 +57,21 @@
     }).join("");
   }
 
-  function renderRows(result) {
+  const savingsColumns = ["Zamu", "Mpokeaji", "Mchango kwa mwanachama", "Malipo kwa mpokeaji"];
+  function savingsCells(row, input) {
+    return [String(row.round), "Mwanachama " + row.recipient,
+      formatValue("contribution", row.contribution, input), formatValue("payout", row.payout, input)];
+  }
+  function renderRows(result, input) {
     var table = document.querySelector("[data-ua-table]");
     if (!result.rows || !result.rows.length) { table.innerHTML = ""; table.hidden = true; return; }
+    if (contract.id === "ajo-chama-calc") {
+      table.hidden = false;
+      table.innerHTML = "<thead><tr>" + savingsColumns.map(label => '<th scope="col">' + label + '</th>').join("") +
+        "</tr></thead><tbody>" + result.rows.map(row => "<tr>" + savingsCells(row, input)
+          .map(cell => "<td>" + escapeHtml(cell) + "</td>").join("") + "</tr>").join("") + "</tbody>";
+      return;
+    }
     if (contract.id === "afrokitchen") {
       table.hidden = false;
       table.innerHTML = "<thead><tr><th scope=\"col\">Kiungo</th><th scope=\"col\">Kiasi</th><th scope=\"col\">Kipimo</th></tr></thead><tbody>" + result.rows.map(function (row) {
@@ -91,6 +107,10 @@
     Object.keys(contract.metrics).forEach(function (key) {
       if (Object.prototype.hasOwnProperty.call(payload.result.values, key)) lines.push(contract.metrics[key] + ": " + formatValue(key, payload.result.values[key], payload.input));
     });
+    if (contract.id === "ajo-chama-calc") {
+      lines.push("", "Ratiba ya zamu", savingsColumns.join(" | "));
+      payload.result.rows.forEach(row => lines.push(savingsCells(row, payload.input).join(" | ")));
+    }
     if (contract.id === "afrokitchen") {
       var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
       var recipe = recipes.find(function (item) { return item.slug === payload.input.recipe; });
@@ -331,7 +351,7 @@
       section.hidden = false; lastPayload = null; return;
     }
     status.textContent = "Hesabu imekamilika kwenye kivinjari hiki."; status.className = "ua-ready";
-    renderMetrics(result, input); renderRows(result); lastPayload = { schemaVersion:1, toolId:contract.id, locale:"sw", input:input, result:result, source:contract.source, freshness:contract.freshness, limitations:contract.limitations };
+    renderMetrics(result, input); renderRows(result, input); lastPayload = { schemaVersion:1, toolId:contract.id, locale:"sw", input:input, result:contract.id === "ajo-chama-calc" ? Object.assign({currency: input.currency}, result) : result, source:contract.source, freshness:contract.freshness, limitations:contract.limitations };
     renderExports(lastPayload); section.hidden = false; section.focus();
   });
 
