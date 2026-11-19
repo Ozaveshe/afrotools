@@ -769,6 +769,11 @@ function showFunComparisons(cost, country) {
 }
 
 // Init
+const requestedTripCountry = new URLSearchParams(window.location.search).get('country')?.trim().toUpperCase();
+const tripCountrySelect = document.getElementById('country');
+if (requestedTripCountry && Array.from(tripCountrySelect.options).some((option) => option.value === requestedTripCountry)) {
+  tripCountrySelect.value = requestedTripCountry;
+}
 updateFuelPrice();
 updateGenPrice();
 initRoutes();
