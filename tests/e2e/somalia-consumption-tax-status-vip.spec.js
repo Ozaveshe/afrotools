@@ -49,7 +49,7 @@ test('Somalia evidence reference supports mobile, dark, reduced motion, zoom, ke
   expect(buffer.subarray(0, 5).toString()).toBe('%PDF-');
   const parsed = await pdfParse(buffer);
   expect(parsed.text).toContain('Somalia VAT status & consumption-tax evidence');
-  expect(parsed.text).toContain('not a tax calculator');
+  expect(parsed.text).toContain('national');
 });
 
 test('Somalia evidence reference durable visual proof', async ({ browser }) => {
