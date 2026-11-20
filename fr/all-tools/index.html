@@ -146,7 +146,7 @@ a{text-decoration:none;color:inherit;}
 .nl-btn:hover{background:#0059B3;}
 
 @media(max-width:640px){
-  .filter-bar{padding:10px 16px;}
+  .filter-bar{padding:10px 16px;position:static;}
   .filter-inner{gap:8px;}
   .search-wrap{max-width:100%;flex:1 0 100%;}
   .tools-grid{grid-template-columns:1fr;}
@@ -241,7 +241,8 @@ a{text-decoration:none;color:inherit;}
 <meta property="article:modified_time" content="2026-03-28">
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
-<link rel="stylesheet" href="/assets/css/localized-discovery-standard.css?v=06cb4983"><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cette page garantit-elle une fonction disponible ?","acceptedAnswer":{"@type":"Answer","text":"Non. Cette page organise la découverte. La page finale du produit indique ses contrôles, ses sources, sa confidentialité, ses exports, son état et ses limites."}},{"@type":"Question","name":"Comment signaler une information obsolète ?","acceptedAnswer":{"@type":"Answer","text":"Envoyez la route, le pays, la date, la source et un exemple reproductible via la page de contact, sans données personnelles réelles."}}]}</script><link rel="canonical" href="https://afrotools.com/fr/all-tools/">
+<link rel="stylesheet" href="/assets/css/localized-discovery-standard.css?v=06cb4983"><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cette page garantit-elle une fonction disponible ?","acceptedAnswer":{"@type":"Answer","text":"Non. Cette page organise la découverte. La page finale du produit indique ses contrôles, ses sources, sa confidentialité, ses exports, son état et ses limites."}},{"@type":"Question","name":"Comment signaler une information obsolète ?","acceptedAnswer":{"@type":"Answer","text":"Envoyez la route, le pays, la date, la source et un exemple reproductible via la page de contact, sans données personnelles réelles."}}]}</script><script src="/assets/js/lib/localized-fuel-search.js?v=d7036365"></script>
+<link rel="canonical" href="https://afrotools.com/fr/all-tools/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/all-tools/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-zote/">
@@ -2386,13 +2387,27 @@ function applySearchSuggestion(query){
 const frenchPublishedIds = new Set(Array.from(document.querySelectorAll('#toolsGrid [data-directory-record][data-id]'), node => node.dataset.id));
 
 // FRENCH_DIRECTORY_DIRECT_SEARCH_START
+function frenchDirectoryIntent(terms) {
+  const query = terms.join(' ');
+  if (/^(?:creer|generer|faire|etablir)(?: une| la| des)? factures?$/.test(query)) return 'generateur-factures-fr';
+  if (/^(?:(?:calculateur|calculatrice|calculer|calcul|budget|estimation)(?: (?:de la|de|du|pour la|la|le))? )?(?:dot|lobola)$/.test(query) || query === 'calculateur de budget lobola') return 'calculateur-lobola-fr';
+  return '';
+}
 function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
   if (!terms.length) return tools;
+  const finder = typeof window !== 'undefined' && window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(terms.join(' '), 'fr', tools);
+  if (finder) return [finder];
   const direct = tools.filter(tool => {
     const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
     return terms.every(term => text.includes(term));
   });
-  return direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  const matches = direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  const preferredId = frenchDirectoryIntent(terms);
+  if (preferredId) {
+    const preferred = tools.find(tool => tool.id === preferredId);
+    if (preferred && !matches.includes(preferred)) return [preferred, ...matches];
+  }
+  return matches;
 }
 // FRENCH_DIRECTORY_DIRECT_SEARCH_END
 function renderTools(){
@@ -2446,7 +2461,8 @@ function renderTools(){
       return (order[a.status]||1) - (order[b.status]||1);
     });
   } else {
-    tools.sort((a,b) => (b.priority||0) - (a.priority||0));
+    const preferredId = frenchDirectoryIntent(searchTerms);
+    tools.sort((a,b) => (preferredId ? Number(b.id === preferredId) - Number(a.id === preferredId) : 0) || (b.priority||0) - (a.priority||0));
   }
 
   // Update counts using the same registry rows this page actually renders.
