@@ -152,9 +152,41 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#0f172a;margin:0}
   </div>
 </section>
 <main class="tool-main">
-  <div class="card">
-    <div class="card-head"><span>🔍</span><p class="card-title">Compare Inputs</p></div>
+  <section class="card" aria-labelledby="bagBudgetTitle">
+    <div class="card-head"><h2 class="card-title" id="bagBudgetTitle">Budget for 50 kg fertilizer bags</h2></div>
     <div class="card-body">
+      <p>On 8 September 2026 Kenya's Ministry of Agriculture announced KSh 2,000 per 50 kg bag for subsidised fertilizer dispatched at Mombasa for small-scale farmers across Kenya. Confirm eligibility and stock with your collection point, or enter a local dealer's quote.</p>
+      <p><a href="https://kilimo.go.ke/ps-ronoh-flags-off-99000-metric-tonnes-of-subsidised-fertiliser-at-the-port-of-mombasa/">Read the ministry's distribution notice</a></p>
+      <div class="form-grid">
+        <div class="field"><label class="f-label" for="budgetBags">Number of 50 kg bags</label><input class="f-input" type="number" id="budgetBags" min="1" step="1" value="1" required></div>
+        <div class="field"><label class="f-label" for="budgetPrice">Price per bag (KSh)</label><input class="f-input" type="number" id="budgetPrice" min="0" step="0.01" value="2000" required></div>
+      </div>
+      <p><output id="bagBudget" for="budgetBags budgetPrice">1 bag (50 kg) costs KSh 2,000 before transport.</output></p>
+    </div>
+  </section>
+  <script>
+    (function () {
+      const bags = document.getElementById('budgetBags');
+      const price = document.getElementById('budgetPrice');
+      const result = document.getElementById('bagBudget');
+      function updateBudget() {
+        const count = bags.valueAsNumber;
+        const total = count * price.valueAsNumber;
+        if (!bags.validity.valid || !price.validity.valid || !Number.isSafeInteger(count) || !Number.isFinite(total)) {
+          result.textContent = 'Enter a whole number of bags and a price of zero or more.';
+          return;
+        }
+        result.textContent = count + (count === 1 ? ' bag' : ' bags') + ' (' + (count * 50).toLocaleString('en-KE') + ' kg) costs KSh ' + total.toLocaleString('en-KE', {maximumFractionDigits: 2}) + ' before transport.';
+      }
+      bags.addEventListener('input', updateBudget);
+      price.addEventListener('input', updateBudget);
+    }());
+  </script>
+
+  <div class="card">
+    <div class="card-head"><span>🔍</span><p class="card-title">Compare reference input prices</p></div>
+    <div class="card-body">
+      <p>These planning figures use the March 2026 reference dataset. Use the bag budget above for the September subsidy announcement or your own price.</p>
       <div class="form-grid">
         <div class="field">
           <label class="f-label" for="inputType">Input Type</label>
