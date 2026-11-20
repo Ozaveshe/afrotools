@@ -157,6 +157,52 @@
             }
         });
     }
+    function quoteStatus(message) {
+        var status = r("#carImportQuoteStatus");
+        if (!status) {
+            status = document.createElement("p");
+            status.id = "carImportQuoteStatus";
+            status.className = "car-import-help";
+            status.setAttribute("role", "status");
+            status.setAttribute("aria-live", "polite");
+            r("#carImportForm").appendChild(status);
+        }
+        status.textContent = message;
+        status.hidden = !message;
+    }
+    function invalidateQuote() {
+        a.lastResult = null;
+        r("#carImportResults").hidden = true;
+        var save = r("#carImportCloudSave");
+        if (save && typeof save.setData === "function") save.setData(null);
+    }
+    function invalidateDraftQuote() {
+        invalidateQuote();
+        quoteStatus("");
+        // An edited draft must not restore or share the previous calculated price.
+        try { localStorage.removeItem("carImportCostLastInput"); } catch (storageError) {}
+        var query = new URLSearchParams(location.search);
+        if (query.has("price")) {
+            query.delete("price");
+            history.replaceState(null, "", location.pathname + (query.toString() ? "?" + query.toString() : "") + location.hash);
+        }
+    }
+    function missingValueMessage() {
+        var language = document.documentElement.lang.split("-")[0];
+        return ({
+            en: "Enter a positive purchase price, FOB or CIF value in the matching input mode. There is no usable vehicle value for this selection yet.",
+            fr: "Saisissez un prix d’achat, une valeur FOB ou CIF supérieure à zéro dans le mode correspondant. Aucune valeur de véhicule utilisable n’est disponible pour cette sélection.",
+            sw: "Weka bei ya ununuzi, thamani ya FOB au CIF iliyo zaidi ya sifuri katika hali inayolingana. Hakuna thamani ya gari inayoweza kutumika kwa chaguo hili bado."
+        })[language] || "Enter a positive purchase price, FOB or CIF value in the matching input mode. There is no usable vehicle value for this selection yet.";
+    }
+    function hasVehicleValue(input) {
+        function positive(value) { return Number.isFinite(value) && value > 0; }
+        if (input.inputMode === "cif") return positive(input.cifUsd);
+        if (input.inputMode === "fob") return positive(input.fobUsd);
+        if (input.inputMode === "purchase") return positive(input.purchasePriceUsd);
+        var normalized = t.normalizeInput(input, a.data);
+        return positive(normalized.purchasePriceUsd) || positive(normalized.fobUsd);
+    }
     function m() {
         if (a.data) {
             if (!supportsCountry(p("#carImportCountry"))) {
@@ -198,7 +244,14 @@
                 financeMonths: d("#carImportFinanceMonths") || 36,
                 localDealerPriceUsd: d("#carImportLocalDealerPrice"),
                 extraAgencyChargesUsd: d("#carImportExtraAgencyCharges")
-            }, s = t.calculate(e, a.data);
+            };
+            if (!hasVehicleValue(e)) {
+                invalidateQuote();
+                quoteStatus(missingValueMessage());
+                return;
+            }
+            quoteStatus("");
+            var s = t.calculate(e, a.data);
             a.lastResult = s, function(t) {
                 var a = t.country.currency;
                 r("#carImportResults").hidden = !1, r("#carImportTotal").textContent = n(t.totals.onRoadUsd, "USD"),
@@ -350,6 +403,7 @@
     }
     function I() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = a.lastResult, r = [ [ "section", "label", "amount_usd" ] ];
         if ([ "officialTaxes", "officialFees", "practicalCosts", "inlandDelivery", "registration" ].forEach(function(a) {
             t.breakdowns[a].forEach(function(t) {
@@ -378,6 +432,7 @@
     }
     function g() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = a.lastResult;
         i("car_import_export_pdf", {
             country: t.country.code
@@ -418,6 +473,7 @@
     }
     function v() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = "On-road estimate: " + n(a.lastResult.totals.onRoadUsd, "USD") + " for " + a.lastResult.country.name + ".";
         navigator.share ? navigator.share({
             title: "AfroTools car import estimate",
@@ -430,6 +486,7 @@
     }
     function b() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = [];
         try {
             t = JSON.parse(localStorage.getItem("carImportCostQuotes") || "[]");
@@ -449,6 +506,7 @@
     }
     function C() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = r("#carImportAiQuestion"), e = r("#carImportAiLog"), o = t && t.value.trim();
         if (o) {
             i("car_import_ai_advisor_opened", {
@@ -648,7 +706,13 @@
                 t.has("bodyType") && (r.bodyType = t.get("bodyType"), r.vehicleClass = t.get("bodyType")),
                 Object.keys(r).length && f(r);
                 prepareCountryEntry(requestedEntryCountry(r.countryCode));
-            }(), m(), r("#carImportForm").addEventListener("submit", function(t) {
+            }(), m(), r("#carImportForm").addEventListener("input", function() {
+                invalidateDraftQuote();
+            }), r("#carImportForm").addEventListener("change", function() {
+                invalidateDraftQuote();
+            }), r("#carImportForm").addEventListener("car-import:reset", function() {
+                invalidateDraftQuote();
+            }), r("#carImportForm").addEventListener("submit", function(t) {
                 t.preventDefault(), m();
             }), r("#carImportCountry").addEventListener("change", u), r("#carImportSourceMarket").addEventListener("change", function() {
                 i("car_import_source_market_selected", {
@@ -660,7 +724,8 @@
                 });
             }), r("#carImportPdf").addEventListener("click", g), r("#carImportCsv").addEventListener("click", I),
             r("#carImportPrint").addEventListener("click", function() {
-                window.print();
+                a.lastResult || m();
+                if (a.lastResult) window.print();
             }), r("#carImportShare").addEventListener("click", v), r("#carImportSaveLocal").addEventListener("click", b),
             r("#carImportAskAi").addEventListener("click", C), r("#carImportCompareMode").addEventListener("click", function() {
                 h(r("[aria-controls='carImportTabCompare']")), i("car_import_compare_mode_used", {
