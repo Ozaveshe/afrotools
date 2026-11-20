@@ -10,4 +10,30 @@ function frenchPoultryResult(result) {
     note: "Estimation indicative. Vérifiez vos prix et vos coûts avant de prendre une décision."
   };
 }
-function d(e,t){var a=i((t=t||{}).widgetId)||r[0],fr=t.locale==="fr"&&a.id==="poultry-roi-estimator",l="aw-lite-"+a.id+"-"+Math.random().toString(36).slice(2,7),u=a.fields.map(function(e){var t=l+"-"+e.id,a="date"===e.type?s():e.value;return'<div class="aw-field"><label class="aw-label" for="'+t+'">'+n(fr?(e.id==="revenue"?"Recettes prévues":"Coût total"):e.label)+(e.unit?" ("+n(e.unit)+")":"")+'</label><input class="aw-input" id="'+t+'" data-field="'+n(e.id)+'" type="'+("date"===e.type?"date":"number")+'" inputmode="decimal" step="any" value="'+n(a)+'"></div>'}).join("");e.innerHTML='<div class="aw-title">'+n(fr?"Rentabilité avicole":a.title)+'</div><p class="aw-result-label" style="margin:-8px 0 14px">'+n(fr?"Comparez les recettes prévues et les coûts de votre élevage de volailles.":a.description)+"</p>"+u+'<button class="aw-btn aw-btn--primary" type="button">'+(fr?"Calculer":"Calculate")+'</button><div class="aw-result-box" style="display:none"></div>'+(t.footerHTML||"");var d=e.querySelector(".aw-result-box");function p(){var t={};return e.querySelectorAll("[data-field]").forEach(function(e){t[e.getAttribute("data-field")]="date"===e.type?e.value:o(e.value)}),t}function m(){var e=c(a,p());if(fr)e=frenchPoultryResult(e);d.style.display="block",d.innerHTML='<div class="aw-result-label">'+n(e.label)+'</div><div class="aw-result-main">'+n(e.value)+"</div>"+(e.rows.length?'<hr class="aw-divider">'+e.rows.map(function(e){return'<div class="aw-result-row"><span class="aw-result-label">'+n(e.label)+"</span><span>"+n(e.value)+"</span></div>"}).join(""):"")+'<p class="aw-result-label" style="margin-top:10px">'+n(e.note)+"</p>"}e.querySelector(".aw-btn").addEventListener("click",m),e.querySelectorAll("input").forEach(function(e){e.addEventListener("change",m),e.addEventListener("keyup",function(e){"Enter"===e.key&&m()})}),m()}return{specs:r,byId:i,install:function(e){var t=e.AfroWidgets=e.AfroWidgets||{};t.renderLiteWidget=d,r.forEach(function(e){var a=function(t,a){(a=a||{}).widgetId=e.id,d(t,a)};t[function(e){return e.replace(/-/g,"_")}(e.id)]=a,t[function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()})}(e.id)]=a})},renderLiteWidget:d}}();"undefined"!=typeof module&&module.exports&&(module.exports=t),e&&(e.AfroWidgetLitePack=t,e.document&&t.install(e))}("undefined"!=typeof window?window:globalThis);
+const frenchWidgets = {
+  "poultry-roi-estimator": {
+    title: "Rentabilité avicole",
+    description: "Comparez les recettes prévues et les coûts de votre élevage de volailles.",
+    fields: { revenue: "Recettes prévues", cost: "Coût total" },
+    result: frenchPoultryResult
+  },
+  "irrigation-volume": {
+    title: "Volume d’irrigation",
+    description: "Calculez le volume d’eau à apporter à votre parcelle.",
+    fields: { area: "Surface irriguée", depth: "Hauteur d’eau" },
+    result(result) {
+      const number = value => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 8 })
+        .format(Number.parseFloat(String(value).replace(/,/g, "")));
+      return {
+        label: "Volume d’eau",
+        value: number(result.value) + " m³",
+        rows: result.rows.map(row => ({
+          label: row.label === "area" ? "Surface irriguée" : "Hauteur d’eau",
+          value: number(row.value) + (row.label === "area" ? " ha" : " mm")
+        })),
+        note: "Un millimètre d’eau sur un hectare correspond à 10 m³. Ce volume ne tient pas compte des pertes pendant l’irrigation."
+      };
+    }
+  }
+};
+function d(e,t){var a=i((t=t||{}).widgetId)||r[0],fr=t.locale==="fr"&&frenchWidgets[a.id],l="aw-lite-"+a.id+"-"+Math.random().toString(36).slice(2,7),u=a.fields.map(function(e){var t=l+"-"+e.id,a="date"===e.type?s():e.value;return'<div class="aw-field"><label class="aw-label" for="'+t+'">'+n(fr?fr.fields[e.id]:e.label)+(e.unit?" ("+n(e.unit)+")":"")+'</label><input class="aw-input" id="'+t+'" data-field="'+n(e.id)+'" type="'+("date"===e.type?"date":"number")+'" inputmode="decimal" step="any" value="'+n(a)+'"></div>'}).join("");e.innerHTML='<div class="aw-title">'+n(fr?fr.title:a.title)+'</div><p class="aw-result-label" style="margin:-8px 0 14px">'+n(fr?fr.description:a.description)+"</p>"+u+'<button class="aw-btn aw-btn--primary" type="button">'+(fr?"Calculer":"Calculate")+'</button><div class="aw-result-box" style="display:none"></div>'+(t.footerHTML||"");var d=e.querySelector(".aw-result-box");function p(){var t={};return e.querySelectorAll("[data-field]").forEach(function(e){t[e.getAttribute("data-field")]="date"===e.type?e.value:o(e.value)}),t}function m(){var e=c(a,p());if(fr)e=fr.result(e);d.style.display="block",d.innerHTML='<div class="aw-result-label">'+n(e.label)+'</div><div class="aw-result-main">'+n(e.value)+"</div>"+(e.rows.length?'<hr class="aw-divider">'+e.rows.map(function(e){return'<div class="aw-result-row"><span class="aw-result-label">'+n(e.label)+"</span><span>"+n(e.value)+"</span></div>"}).join(""):"")+'<p class="aw-result-label" style="margin-top:10px">'+n(e.note)+"</p>"}e.querySelector(".aw-btn").addEventListener("click",m),e.querySelectorAll("input").forEach(function(e){e.addEventListener("change",m),e.addEventListener("keyup",function(e){"Enter"===e.key&&m()})}),m()}return{specs:r,byId:i,install:function(e){var t=e.AfroWidgets=e.AfroWidgets||{};t.renderLiteWidget=d,r.forEach(function(e){var a=function(t,a){(a=a||{}).widgetId=e.id,d(t,a)};t[function(e){return e.replace(/-/g,"_")}(e.id)]=a,t[function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()})}(e.id)]=a})},renderLiteWidget:d}}();"undefined"!=typeof module&&module.exports&&(module.exports=t),e&&(e.AfroWidgetLitePack=t,e.document&&t.install(e))}("undefined"!=typeof window?window:globalThis);

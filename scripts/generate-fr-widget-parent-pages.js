@@ -132,7 +132,7 @@ function pageUrl(route) {
 }
 
 function iframeCode(widget, item) {
-  const localeQuery = item.id === "poultry-roi-estimator" ? "?lang=fr" : "";
+  const localeQuery = ["poultry-roi-estimator", "irrigation-volume"].includes(item.id) ? "?lang=fr" : "";
   return `<iframe src="${SITE}${widget.iframePath}${localeQuery}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
 }
 
@@ -505,10 +505,10 @@ function refreshEmbedControls(html, item, widget) {
   const textareas = html.match(textareaPattern) || [];
   if (textareas.length !== 1) throw new Error(`Expected one iframe code field: ${item.slug}`);
   let encodedCode = textareas[0].replace(/^<textarea\b[^>]*>/, "").replace(/<\/textarea>$/, "");
-  if (item.id === "poultry-roi-estimator") {
+  if (["poultry-roi-estimator", "irrigation-volume"].includes(item.id)) {
     const source = `${SITE}${widget.iframePath}`;
     const oldSource = encodedCode.includes(`${source}?lang=fr`) ? `${source}?lang=fr` : source;
-    if (!encodedCode.includes(`${oldSource}&quot;`)) throw new Error("Unexpected poultry embed URL");
+    if (!encodedCode.includes(`${oldSource}&quot;`)) throw new Error("Unexpected embed URL for " + item.id);
     encodedCode = encodedCode.replace(`${oldSource}&quot;`, `${source}?lang=fr&quot;`);
   }
   const generated = pageTemplate(item, widget).match(blockPattern);
