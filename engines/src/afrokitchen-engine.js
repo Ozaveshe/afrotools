@@ -803,7 +803,7 @@ var AfroKitchenEngine = function() {
     is_featured: !0,
     is_verified: !0,
     view_count: 800,
-    image_url: "/assets/img/recipes/ugali-sukuma-wiki.webp",
+    image_url: "/assets/img/kitchen/ugali-na-sukuma-wiki.webp",
     ingredients: [ {
       sort_order: 1,
       group_name: "For ugali",
@@ -928,7 +928,7 @@ var AfroKitchenEngine = function() {
     is_featured: !0,
     is_verified: !0,
     view_count: 700,
-    image_url: "/assets/img/recipes/ethiopian-doro-wat.webp",
+    image_url: "/assets/img/kitchen/doro-wat.webp",
     best_served_with: "Injera (Ethiopian sourdough flatbread), side salads, and Ethiopian coffee ceremony",
     ingredients: [ {
       sort_order: 1,
@@ -1066,7 +1066,7 @@ var AfroKitchenEngine = function() {
     is_featured: !1,
     is_verified: !0,
     view_count: 500,
-    image_url: "/assets/img/recipes/south-african-bobotie.webp",
+    image_url: "/assets/img/kitchen/bobotie-za.webp",
     best_served_with: "Yellow rice with raisins and turmeric, sambal, and chutney",
     ingredients: [ {
       sort_order: 1,
@@ -1201,7 +1201,7 @@ var AfroKitchenEngine = function() {
     is_featured: !0,
     is_verified: !0,
     view_count: 600,
-    image_url: "/assets/img/recipes/senegalese-thieboudienne.webp",
+    image_url: "/assets/img/kitchen/thieboudienne-sn.webp",
     best_served_with: "Served communally from one large platter with lemon wedges and extra hot sauce",
     ingredients: [ {
       sort_order: 1,
@@ -1357,7 +1357,7 @@ var AfroKitchenEngine = function() {
     is_featured: !0,
     is_verified: !0,
     view_count: 550,
-    image_url: "/assets/img/recipes/egyptian-koshari.webp",
+    image_url: "/assets/img/kitchen/koshari-eg.webp",
     best_served_with: "Extra dakka (hot sauce) and a cold drink",
     ingredients: [ {
       sort_order: 1,
@@ -1487,7 +1487,7 @@ var AfroKitchenEngine = function() {
     is_featured: !1,
     is_verified: !0,
     view_count: 450,
-    image_url: "/assets/img/recipes/moroccan-chicken-tagine.webp",
+    image_url: "/assets/img/kitchen/chicken-tagine-preserved-lemons-ma.webp",
     best_served_with: "Couscous or crusty Moroccan bread for soaking up the sauce",
     ingredients: [ {
       sort_order: 1,
@@ -1609,7 +1609,7 @@ var AfroKitchenEngine = function() {
     is_featured: !1,
     is_verified: !0,
     view_count: 400,
-    image_url: "/assets/img/recipes/ghanaian-waakye.webp",
+    image_url: "/assets/img/kitchen/waakye-gh.webp",
     best_served_with: "Shito (black pepper sauce), spaghetti, boiled eggs, fried plantain, gari, protein of choice",
     ingredients: [ {
       sort_order: 1,
