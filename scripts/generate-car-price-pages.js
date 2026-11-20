@@ -143,7 +143,10 @@ function marketEvidenceHTML(country, vehicle) {
     : `Compare this local asking snapshot with an import quote that includes the purchase price, freight, customs valuation and duty, port and clearing costs, delays, and registration. ${sourceMarketObservation(vehicle) ? "The source-market band is also a dated asking-price sample; confirm the exact seller quote before deciding." : "The source-price budget elsewhere on this page is an older planning estimate; enter a current source quote before deciding."}`;
   const corroboration = (observation.corroboratingSources || []).map((source) => `<li><a href="${escapeHtml(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.sourceName)}</a>: ${escapeHtml(formatMoney(source.median, source.currency))} median asking price across ${source.sampleSize} comparable listings (reviewed ${escapeHtml(source.reviewedAt)}). ${escapeHtml(source.method)}</li>`).join("\n");
   return `<section class="cars-panel cars-static-summary cars-market-evidence">
-<h2>${escapeHtml(name)} asking prices in ${escapeHtml(observation.market)}</h2>
+<h2>${escapeHtml(name)} asking prices in ${escapeHtml(observation.market)}</h2>${observation.individualAsks ? `
+<p>Local seller examples checked ${escapeHtml(observation.individualAsksReviewed)}: both advertised as 2018 Toyota Corolla LE 1.8L, automatic, foreign used, in Lagos. Asking prices and availability can change.</p>
+<ul>${observation.individualAsks.map(ad => `<li><a href="${escapeHtml(ad.url)}">${escapeHtml(ad.area)} seller listing</a>: ${escapeHtml(formatObservedMoney(ad.price, "NGN"))} asking</li>`).join("")}</ul>
+<p>The UAE prices below are overseas purchase prices. Add shipping, duty and clearing before comparing with a local quote.</p>` : ""}
 <p>In a sample of ${observation.sampleSize} ${escapeHtml(observation.condition)} asking prices reviewed ${escapeHtml(observation.reviewedAt)}, the median was <strong>${escapeHtml(formatMoney(observation.median, observation.currency))}</strong>. The middle half ran from ${escapeHtml(formatMoney(observation.lowerQuartile, observation.currency))} to ${escapeHtml(formatMoney(observation.upperQuartile, observation.currency))}.</p>
 <p><strong>Method:</strong> ${escapeHtml(observation.method)}</p>
 <p><strong>Limits:</strong> ${escapeHtml(observation.limitations)}</p>
@@ -341,7 +344,7 @@ function staticContentHTML(meta) {
     return vehicleTableHTML(vehicles, country, `/cars/${country.slug}`, `${meta.make} ${meta.model} year variants in ${country.name}`);
   }
   if (meta.pageType === "vehicle" || meta.pageType === "import-vs-local") {
-    return vehicleDetailHTML(meta.vehicleObj, country) + sourceMarketEvidenceHTML(meta.vehicleObj) + marketEvidenceHTML(country, meta.vehicleObj);
+    return vehicleDetailHTML(meta.vehicleObj, country) + sourceMarketEvidenceHTML(meta.vehicleObj) + (country.code === "NG" && meta.vehicleObj.id === "toyota-corolla-2018" ? "" : marketEvidenceHTML(country, meta.vehicleObj));
   }
   return "";
 }
@@ -397,6 +400,7 @@ function schema(meta, routePath) {
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
   const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
+  const leadWithLocal = ["vehicle", "import-vs-local"].includes(meta.pageType) && meta.countryObj?.code === "NG" && meta.vehicleObj?.id === "toyota-corolla-2018";
   const askingVehicle = meta.pageType === "model"
     ? meta.listVehicles.find(hasExamples)
     : ["vehicle", "import-vs-local"].includes(meta.pageType) && hasExamples(meta.vehicleObj) ? meta.vehicleObj : null;
@@ -432,7 +436,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
 </head>
 <body class="cars-page">
   <afro-navbar active="transport"></afro-navbar>
-  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}${leadWithLocal ? marketEvidenceHTML(meta.countryObj, meta.vehicleObj) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
