@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-11-21",
+  "baseCommit": "ce517903437e15688e878977c617a5edea1b7e6f",
+  "periodDependency": "zambia-period-parity-20261121-01",
+  "scope": "Regular2026 employee payroll estimate; annual input divided by12 for monthly equivalent. No2027 parameters applied.",
+  "sources": [
+    {
+      "url": "https://www.zra.org.zm/tax-information/",
+      "retrieval": "DirectHTTP200 and current indexed content",
+      "supports": "2026 monthly bands0/20/30/37%; PAYE3176 at gross15000; tax on gross without prior pension deduction."
+    },
+    {
+      "url": "https://www.linkedin.com/posts/national-pension-scheme-authority_public-notice-revision-in-contribution-ceiling-activity-7417941633180090368-y4Dr",
+      "retrieval": "Official NAPSA account notice read through web tool",
+      "supports": "2026 maximum employee1861.80/month; combined3723.60; gross-earnings ceiling37236; rate10%combined."
+    },
+    {
+      "url": "https://media.zambialii.org/media/legislation/41897/source_file/e1932f4e1b7838ef/zm-act-si-2019-63-publication-document.pdf#page=35",
+      "retrieval": "Primary Government Gazette reproduction,38-page PDF opened and Third Schedule read through web tool; local download403, no local PDF inspection claimed.",
+      "supports": "SI63of2019, gazetted20September2019, printedpage301: employee1%basic and employer1%basic, monthly; no ceiling specified in schedule."
+    }
+  ],
+  "fixtureDelta": {
+    "englishId": "zm-paye",
+    "reviewEvidence": "data/calculation-quality/reviews/zambia-en-sw-2026-11-21.json",
+    "previousExpected": {
+      "tax": 27012,
+      "net": 115488,
+      "employeeSocial": 7500,
+      "employerCost": 157500
+    },
+    "expected": {
+      "tax": 27012,
+      "net": 113988,
+      "employeeSocial": 7500,
+      "employerCost": 159000,
+      "employeeHealth": 1500,
+      "employerHealth": 1500
+    },
+    "fields": {
+      "tax": "annualPAYE",
+      "net": "netAnnual",
+      "employeeSocial": "napsa",
+      "employerCost": "totalEmployerCostAnnual",
+      "employeeHealth": "nhima",
+      "employerHealth": "empNhima"
+    },
+    "reason": "Default annual gross150000 is treated as all-basic when basic is blank. Add1500 employee NHIMA and1500 employer NHIMA to historical no-health fixture. PAYE and NAPSA unchanged; preserve historical acceptance."
+  },
+  "knownLimits": [
+    "Regular12-month planning estimate; irregular pay periods/benefits require payroll-specific treatment.",
+    "Employer subtotal excludes SDL, workers compensation and other employment benefits.",
+    "November2026 press reporting suggests a January2027 gross-basis change. Final2027 implementing rules are not verified and are not applied.",
+    "Historical Swahili acceptance receipt and its numeric fixture remain unchanged; current-source overlay explicitly documents their replacement."
+  ]
+}

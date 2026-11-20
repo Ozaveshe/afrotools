@@ -199,7 +199,7 @@ function inspectAccepted(row) {
 
 function blockReason(row) {
   if (row.englishId === 'pension-projection') return 'Skipped fail-closed at position 66: the distinct legacy 26-country product keeps contribution, preset-growth and illustrative 4% withdrawal logic inline in tools/pension-projection/index.html. The maintained DOM-free pension-projection-planner engine belongs to the already accepted pension-proj product and cannot be substituted without changing product identity.';
-  if (row.englishId === 'sars-efiling') return 'Skipped fail-closed at position 74: this is an editorial route guide, not a calculator app, and has no DOM-free calculation/export engine to prove. Its dedicated artwork is also missing; app-level acceptance cannot be inferred from the English guide.';
+  if (row.englishId === 'sars-efiling') return 'Skipped fail-closed at position 74: this is an editorial route guide, not a calculator app, and has no DOM-free calculation/export engine to prove. Existing artwork does not establish app-level acceptance from the English guide.';
   if (row.englishId === 'sd-paye') return 'Skipped fail-closed at position 75: Sudan PAYE tax and NSIF logic remains inline, its source registry marks the formula review-required/high-risk, and the legacy PDF path posts email plus raw gross salary to a lead form. No maintained DOM-free engine can support safe native parity.';
   if (row.englishId === 'sl-paye') return 'Skipped fail-closed at position 77: Sierra Leone PAYE and NASSIT logic remains inline, official-source verification is high-risk, and the legacy PDF path posts email plus raw gross salary to a lead form. No maintained DOM-free engine can support safe native parity.';
   if (row.englishId === 'tn-paye') return 'Skipped fail-closed at position 85: Tunisia IRPP and CNSS logic remains inline, official-source verification is high-risk, and the legacy PDF path posts email plus raw gross salary to a lead form. No maintained DOM-free engine can support safe native parity.';
@@ -216,18 +216,18 @@ const alreadyAccepted = new Set(acceptance.entries.filter((entry) => entry.statu
 // The programme was partitioned against BASE_SHA. Coordinator acceptance grows
 // during integration, so deriving shards from today's unaccepted rows silently
 // reassigns the lane. Resolve the frozen 46+46 IDs from their owned manifests.
-const financialById = new Map(inventory.rows
-  .filter((row) => row.categoryKey === 'financial')
-  .map((row) => [row.englishId, row]));
+// Category membership may change after partitioning (for example import-duty
+// moved to trade). Keep the manifest's exact IDs and resolve current metadata
+// across the authoritative inventory; never repartition or invent missing rows.
+const financialById = new Map(inventory.rows.map((row) => [row.englishId, row]));
 const shardAManifest = readJson('data/localization/sw-financial-shard-a-candidate.json');
 const shardBManifest = readJson(MANIFEST_FILE);
 const shardBBaselineById = new Map(shardBManifest.rows.map((row) => [row.englishId, row]));
 const shardA = shardAManifest.rows.map((row) => financialById.get(row.englishId));
 const shardB = shardBManifest.rows.map((row) => financialById.get(row.englishId));
 const unaccepted = [...shardA, ...shardB];
-const overlap = shardB.filter((row) => shardA.some((other) => other.englishId === row.englishId));
-
 if (unaccepted.some((row) => !row)) throw new Error('Pinned financial shard assignment no longer resolves against the authoritative inventory.');
+const overlap = shardB.filter((row) => shardA.some((other) => other.englishId === row.englishId));
 if (unaccepted.length !== 92) throw new Error(`Expected 92 pinned financial rows; found ${unaccepted.length}.`);
 if (shardA.length !== 46 || shardB.length !== 46) throw new Error('Expected two exact 46-row shards.');
 if (overlap.length) throw new Error(`Shard overlap: ${overlap.map((row) => row.englishId).join(', ')}`);
@@ -513,7 +513,7 @@ const receipt = {
         'https://fiscalreforms.ng/wp-content/uploads/2024/10/Deduction-of-Tax-at-Source-Withholding-Regulations-2024_Gazetted.pdf',
         'https://www.nipc.gov.ng/wp-content/uploads/2025/08/Nigeria-Tax-Administration-Act-2025-Gazette.pdf',
         'https://www.jrb.gov.ng/media-center/jrb-releases-pit-guidelines-2026',
-        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
       ],
     },
     nigeriaCitOfficialSourceRecheck: {
@@ -523,7 +523,7 @@ const receipt = {
       decision: 'No formula parameter changed. The Swahili route delegates to the reviewed English engine, requires explicit scope confirmation and does not calculate the section 57 top-up or make a filing or assessment decision.',
       urls: [
         'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
-        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
         'https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/',
       ],
     },
@@ -534,7 +534,7 @@ const receipt = {
       decision: 'No formula parameter changed. The Swahili route delegates to the reviewed English engine and remains a scoped planning estimate rather than a filing, assessment or exemption decision.',
       urls: [
         'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
-        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
       ],
     },
     mauritaniaOfficialSourceRecheck: {
