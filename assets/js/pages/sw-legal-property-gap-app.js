@@ -115,16 +115,109 @@
     return new Uint8Array(documentPdf.output('arraybuffer'));
   }
 
+  var classificationKeys = new Set(["statut", "priorite", "niveau", "classification", "delai", "recommandation", "prochaineAction", "etapeSuivante", "autoritesAVerifier", "niveauRisque", "parcours", "pointsComparer", "etapePrioritaire"]);
+  var classificationValues = {
+    "dossier préparé": "Nyaraka zimeandaliwa",
+    "dossier incomplet": "Nyaraka hazijakamilika",
+    "maintien": "Dumisha hatua zilizopo",
+    "violation de données": "Uvunjaji wa usalama wa data",
+    "préparation complète": "Maandalizi yamekamilika",
+    "écarts à traiter": "Mapungufu yanayohitaji kushughulikiwa",
+    "à confirmer": "Inahitaji kuthibitishwa",
+    "autorisation potentielle": "Huenda idhini ikahitajika",
+    "contrôle local sans alerte": "Ukaguzi wa jina kwenye kifaa haukuonyesha tahadhari",
+    "recherche CAC officielle requise": "Utafutaji rasmi katika rejista ya CAC unahitajika",
+    "confirmer autorité et pièces": "Thibitisha mamlaka husika na nyaraka zinazohitajika",
+    "société à responsabilité limitée ou par actions": "Kampuni yenye dhima ndogo au kampuni ya hisa",
+    "entreprise individuelle à comparer": "Linganisha biashara ya mtu binafsi",
+    "partenariat à comparer": "Linganisha ubia",
+    "témoins et règles locales à vérifier": "Thibitisha masharti ya eneo lako kuhusu mashahidi na wosia",
+    "audit annuel": "Ukaguzi wa kila mwaka",
+    "notification de violation": "Taarifa ya uvunjaji wa usalama wa data",
+    "avancé": "Kiwango cha juu",
+    "partiel": "Imekamilika kwa sehemu",
+    "faible": "Kiwango cha chini",
+    "assermentation requise": "Kiapo kinahitajika",
+    "conserver la preuve": "Hifadhi uthibitisho wa kuwasilisha",
+    "confirmer échéance et frais": "Thibitisha tarehe ya mwisho na ada",
+    "examen judiciaire renforcé": "Uchunguzi wa kina zaidi wa mahakama",
+    "conditions supplémentaires possibles": "Masharti ya ziada yanaweza kuwekwa",
+    "conditions ordinaires possibles": "Masharti ya kawaida yanaweza kuwekwa",
+    "délai légal à vérifier": "Thibitisha muda uliowekwa na sheria",
+    "autorité sectorielle + commune": "Mamlaka ya sekta na manispaa",
+    "commune + sécurité/local": "Manispaa na mamlaka ya usalama wa eneo",
+    "registre/commune": "Msajili au manispaa",
+    "élevé": "Juu",
+    "intermédiaire": "Wastani",
+    "limité": "Ndogo",
+    "documenter mesures et consultation": "Andika hatua zilizochukuliwa na mashauriano yaliyofanywa",
+    "confirmer le périmètre": "Thibitisha wigo wa tathmini",
+    "constituer une entité locale": "Sajili kampuni ya ndani",
+    "enregistrer la société étrangère et son représentant": "Sajili kampuni ya kigeni na mwakilishi wake",
+    "confirmer si le bureau peut rester non commercial": "Thibitisha kama ofisi inaweza kufanya shughuli zisizo za kibiashara pekee",
+    "délais, autorité et information des personnes": "Muda wa kutoa taarifa, mamlaka husika na kuwajulisha walioathirika",
+    "accès, rectification, opposition et effacement": "Haki za kupata, kusahihisha, kupinga uchakataji na kufuta data",
+    "base de transfert et garanties": "Msingi wa kuhamisha data na hatua za ulinzi",
+    "attestation requise": "Uthibitisho wa mtu mwenye mamlaka unahitajika",
+    "rassembler l’immatriculation et l’identité du représentant": "Kusanya hati ya usajili na kitambulisho cha mwakilishi",
+    "immatriculer ou justifier le statut avant la demande": "Sajili biashara au thibitisha hali yake kabla ya kuomba",
+    "confirmer frais et pièces": "Thibitisha ada na nyaraka zinazohitajika",
+    "effectuer une recherche": "Fanya utafutaji wa alama zilizopo",
+    "évaluer l’insolvabilité et protéger les créanciers": "Tathmini uwezo wa kulipa madeni na ulinde wadai",
+    "obtenir les soldes fiscaux et sociaux": "Pata salio la kodi na michango ya hifadhi ya jamii",
+    "préparer résolutions, avis et radiation": "Andaa maazimio, matangazo na nyaraka za kufuta usajili",
+    "1-3 days": "Siku 1 hadi 3",
+    "7-21 days": "Siku 7 hadi 21"
+  };
+  var resultSelectionFields = {
+    "formeCAC": "entityType",
+    "formeCIPC": "entityType",
+    "cadre": "jurisdiction",
+    "typeVoyage": "visaType",
+    "forme": "entityType",
+    "pays": "country",
+    "garde": "custody",
+    "niveauJuridiction": "courtLevel",
+    "typeDemande": "claimType",
+    "etatDepot": "filingStatus",
+    "categorieInfraction": "offenceCategory",
+    "activite": "activity",
+    "presence": "presence",
+    "loiAfricaine": "africanLaw",
+    "sujet": "topic",
+    "typeAffaire": "matter",
+    "objet": "purpose",
+    "demandeur": "applicantType",
+    "voieDepot": "routeType",
+    "voie": "routeType",
+    "paysAccueil": "country",
+    "paysPrincipal": "country",
+    "passeport": "passport",
+    "destination": "destination"
+  };
+
   function resultData(result) {
     var fields = result.resultFields || {};
     var translated = {};
-    var courtSelections = englishId === 'court-fees'
-      ? { pays: 'country', niveauJuridiction: 'courtLevel', typeDemande: 'claimType' }
-      : {};
     Object.keys(fields).forEach(function (key) {
-      var selection = form.elements[courtSelections[key]];
-      translated[labelFor(key)] = selection && selection.selectedOptions.length
-        ? selection.selectedOptions[0].textContent : formatValue(fields[key]);
+      if (!contract.nativeResultValues) {
+        translated[labelFor(key)] = formatValue(fields[key]);
+        return;
+      }
+      var sourceField = resultSelectionFields[key];
+      var field = contract.fields.find(function (item) { return item.name === sourceField && item.type === 'select'; });
+      var selected = field && field.options.find(function (option) { return option[0] === lastInput[sourceField]; });
+      var value = fields[key];
+      if (selected) {
+        translated[labelFor(key)] = selected[1];
+      } else if (englishId === 'cookie-consent' && key === 'categories') {
+        translated[labelFor(key)] = value.split(', ').map(function (item) {
+          return { 'nécessaires': 'muhimu', 'analytiques': 'uchanganuzi', 'marketing': 'matangazo' }[item] || item;
+        }).join(', ');
+      } else {
+        translated[labelFor(key)] = classificationKeys.has(key) && Object.hasOwn(classificationValues, value)
+          ? classificationValues[value] : formatValue(value);
+      }
     });
     return translated;
   }
@@ -313,7 +406,9 @@
       return;
     }
     lastInput = collect();
-    var result = englishId === 'court-fees' ? courtFeeQuote(lastInput) : window.AfroTools.FrenchMortgagePropertyEngine.run(contract, lastInput, {
+    var engine = window.AfroTools.FrenchMortgagePropertyEngine;
+    var calculate = contract.nativeResultValues ? engine.runRaw : engine.run;
+    var result = englishId === 'court-fees' ? courtFeeQuote(lastInput) : calculate(contract, lastInput, {
       legalEngine: window.AfroTools.LegalEngine
     });
     if (!result || !result.ok) {

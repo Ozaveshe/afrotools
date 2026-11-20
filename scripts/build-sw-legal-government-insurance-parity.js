@@ -417,7 +417,7 @@ function publicLegalConfig(rows) {
     if (row.englishId === 'court-fees') row = courtFeeQuoteContract(row);
     const config = pick(row, [
       'englishId', 'name', 'swahiliRoute', 'sharedEngine', 'engineMode', 'workflowControl',
-      'resultIntro', 'resultLabels', 'clearStaleOnInput', 'parserValidPdf', 'countryPresets'
+      'resultIntro', 'resultLabels', 'nativeResultValues', 'clearStaleOnInput', 'parserValidPdf', 'countryPresets'
     ]);
     if (row.fields.some((field) => field.type === 'text')) config.clearStaleOnInput = true;
     config.fields = row.fields.map((field) => ({
@@ -746,7 +746,7 @@ function main() {
   const remainingRows = JSON.parse(fs.readFileSync(remainingPath, 'utf8')).rows;
   const publicOutput = [
     path.join(ROOT, 'data', 'legal', 'sw-property-forms.json'),
-    JSON.stringify(publicLegalConfig(legalRows.concat(remainingRows)), null, 2) + '\n'
+    JSON.stringify(publicLegalConfig(legalRows.concat(remainingRows.map((row) => ({ ...row, nativeResultValues: true })))), null, 2) + '\n'
   ];
   if (process.argv.includes('--legal-runtime-only')) {
     checkOrWrite([publicOutput]);
