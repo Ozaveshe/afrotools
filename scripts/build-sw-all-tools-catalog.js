@@ -24,7 +24,7 @@ function renderSwAppCatalog() {
     if (/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(page)) continue;
     if (seen.has(canonical)) continue;
     const title = /<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(page)?.[1]
-      .replace(/\s*[|â€“â€”-]\s*AfroTools.*$/i, '').replace(/\s+/g, ' ').trim();
+      .replace(/\s*[|–—-]\s*AfroTools.*$/i, '').replace(/\s+/g, ' ').trim();
     if (!title || /[<>]/.test(title)) throw new Error('Invalid Swahili title in ' + row.primarySwahiliFile);
     // The source title is HTML text and can already contain character references.
     const name = title.replace(/&(?!#(?:x[\da-f]+|\d+);|[a-z][a-z\d]+;)/gi, '&amp;');
