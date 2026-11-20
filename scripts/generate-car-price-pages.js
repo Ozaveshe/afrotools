@@ -127,6 +127,19 @@ function countryMarketHTML(country) {
   return `<section class="cars-panel cars-static-summary"><h2>Dated local asking-price snapshots</h2><ul>${rows}</ul><p class="cars-static-note">These are small asking-price samples, not completed sale prices or live dealer quotes. Open a vehicle for the source, method, and import-cost comparison.</p></section>`;
 }
 
+function camryYearComparison(country, vehicles) {
+  if (country.code !== "NG" || !vehicles.length || vehicles[0].modelSlug !== "camry") return "";
+  const expectedYears = [2005, 2012, 2018];
+  const rows = expectedYears.map(year => {
+    const vehicle = vehicles.find(item => item.year === year);
+    const sample = vehicle && marketObservation(country, vehicle);
+    if (!sample || sample.searchIndexEligible === false) return "";
+    return `<li><a href="/cars/nigeria/toyota/camry/${year}/">${year} Camry</a>: <strong>${escapeHtml(formatObservedMoney(sample.median, sample.currency))}</strong> median asking price · ${escapeHtml(sample.condition)} · ${sample.sampleSize} listings in ${escapeHtml(sample.market)}, reviewed ${escapeHtml(sample.reviewedAt)}. <a href="${escapeHtml(sample.sourceUrl)}">Check the ${year} source</a></li>`;
+  });
+  if (rows.some(row => !row)) return "";
+  return `<section class="cars-panel cars-static-summary"><h2>Compare Nigerian Camry asking prices by year</h2><ul>${rows.join("")}</ul><p>The 2005 sample covers locally used cars; the later samples cover foreign-used cars advertised in Nigeria. Condition, trim and mileage also affect the price. Open a year for the asking range, sources and import guidance.</p></section>`;
+}
+
 function marketEvidenceHTML(country, vehicle) {
   const observation = marketObservation(country, vehicle);
   if (!observation) return "";
@@ -436,7 +449,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
 </head>
 <body class="cars-page">
   <afro-navbar active="transport"></afro-navbar>
-  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}${leadWithLocal ? marketEvidenceHTML(meta.countryObj, meta.vehicleObj) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}${meta.pageType === "model" ? camryYearComparison(meta.countryObj, meta.listVehicles) : ""}${leadWithLocal ? marketEvidenceHTML(meta.countryObj, meta.vehicleObj) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
@@ -536,6 +549,8 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
     if (!models.has(key)) models.set(key, vehicle);
   });
   models.forEach((vehicle, key) => {
+    const modelVehicles = data.vehicles.filter(v => v.makeSlug === vehicle.makeSlug && v.modelSlug === vehicle.modelSlug);
+    const hasYearComparison = Boolean(camryYearComparison(country, modelVehicles));
     writePage(`cars/${country.slug}/${key}`, {
       title: `${vehicle.make} ${vehicle.model} Prices — ${country.name} | AfroTools`,
       description: `Compare ${vehicle.make} ${vehicle.model} year variants in ${country.name} with source-market price, landed-cost, local asking, financing, and risk ranges.`,
@@ -546,8 +561,9 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
       modelSlug: vehicle.modelSlug,
       model: vehicle.model,
       pageType: "model",
-      noindex: true,
-      listVehicles: data.vehicles.filter((v) => v.makeSlug === vehicle.makeSlug && v.modelSlug === vehicle.modelSlug)
+      noindex: !hasYearComparison,
+      lastmod: hasYearComparison ? "2026-11-20" : undefined,
+      listVehicles: modelVehicles
     });
   });
 
