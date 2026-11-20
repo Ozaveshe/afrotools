@@ -9,6 +9,11 @@ function productDate(row, type) {
 function countryPageRows(snapshot, marketData, now = new Date().toISOString()) {
   return snapshot.countries.map(original => {
     const row = {...original};
+    if (row.code === 'NG') {
+      const outlet = marketData.markets.find(m => m.market_id === 'ng-abuja-nnpc-observed' && m.country_code === 'NG' && m.granularity === 'city');
+      row.abujaPetrol = outlet?.fuels.find(f => f.fuel_type === 'petrol' && f.currency === row.currency &&
+        f.unit === 'litre' && f.price_kind === 'outlet-observation' && status(f, now).valid);
+    }
     const candidates = marketData.markets.filter(m => m.country_code === row.code && m.granularity === 'national');
     for (const type of ['petrol', 'diesel']) {
       if (!row[type] || !['liter', 'litre'].includes(row[type].unit)) continue;
