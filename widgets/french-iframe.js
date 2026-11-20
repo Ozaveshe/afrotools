@@ -1,5 +1,25 @@
 (function () {
   const widgets = {
+
+  "markup-calc": {
+    "title": "Calculateur de majoration",
+    "tool": "/fr/tools/calculateur-marge/",
+    "frame": "financial-markup-calc",
+    "script": "financial/markup-calc.js"
+  },
+  "percentage-calculator": {
+    "title": "Calculateur de pourcentage",
+    "tool": "/fr/tools/calculateur-pourcentage/",
+    "frame": "financial-percentage-calculator",
+    "script": "financial/percentage-calc.js"
+  },
+  "budget-planner": {
+    "title": "Budget mensuel",
+    "tool": "/fr/tools/planificateur-budget/",
+    "frame": "financial-budget-planner",
+    "script": "financial/budget-planner.js"
+  }
+,
     "discount-calc": {
       title: "Calculateur de remise",
       tool: "/fr/tools/calculateur-remise/",

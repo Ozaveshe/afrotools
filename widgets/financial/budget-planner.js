@@ -1,1 +1,48 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.budget_planner=function(a,l){l=l||{},a.innerHTML='<div class="aw-title">Budget Planner</div><div class="aw-field"><label class="aw-label">Monthly Income</label><input class="aw-input" id="aw-income" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-field"><label class="aw-label">Housing / Rent</label><input class="aw-input" id="aw-rent" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-row"><div class="aw-field"><label class="aw-label">Food</label><input class="aw-input" id="aw-food" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-field"><label class="aw-label">Transport</label><input class="aw-input" id="aw-transport" type="number" min="0" inputmode="decimal" placeholder="0"></div></div><div class="aw-row"><div class="aw-field"><label class="aw-label">Utilities</label><input class="aw-input" id="aw-utilities" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-field"><label class="aw-label">Other</label><input class="aw-input" id="aw-other" type="number" min="0" inputmode="decimal" placeholder="0"></div></div><button class="aw-btn aw-btn--primary" id="aw-calc">Calculate Budget</button><div class="aw-result-box" id="aw-res" style="display:none"></div>'+(l.footerHTML||"");var e=function(a){return Math.round(a).toLocaleString("en")};function s(){var l=parseFloat(a.querySelector("#aw-income").value)||0,s=0;if(["rent","food","transport","utilities","other"].forEach(function(l){s+=parseFloat(a.querySelector("#aw-"+l).value)||0}),!(l<=0)){var i=l-s,n=i/l*100,t=.5*l,d=.3*l,r=.2*l,c=a.querySelector("#aw-res");c.style.display="block",c.innerHTML='<div class="aw-result-row"><span class="aw-result-label">Total Expenses</span><span class="aw-result-main">'+e(s)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Remaining</span><span class="aw-result-main">'+e(i)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Savings Rate</span><span>'+n.toFixed(1)+'%</span></div><hr class="aw-divider"><div class="aw-result-label">50/30/20 Rule Guide</div><div class="aw-result-row"><span class="aw-result-label">Needs (50%)</span><span>'+e(t)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Wants (30%)</span><span>'+e(d)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Savings (20%)</span><span>'+e(r)+"</span></div>"}}a.querySelector("#aw-calc").addEventListener("click",s),a.querySelectorAll("input").forEach(function(a){a.addEventListener("keyup",function(a){"Enter"===a.key&&s()})})}}();
+!function() {
+  "use strict";
+  window.AfroWidgets = window.AfroWidgets || {}, window.AfroWidgets.budget_planner = function(a, l) {
+    var locale = a && a.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr" ? "fr-FR" : "en";
+    function translate(label) {
+      return locale === "fr-FR" && french[label] || label;
+    }
+    var french = {
+      "Budget Planner": "Budget mensuel",
+      "Monthly Income": "Revenu mensuel",
+      "Housing / Rent": "Logement ou loyer",
+      Food: "Alimentation",
+      Transport: "Transport",
+      Utilities: "Eau, électricité et services",
+      Other: "Autres dépenses",
+      "Calculate Budget": "Calculer le budget",
+      "Total Expenses": "Total des dépenses",
+      Remaining: "Solde disponible",
+      "Savings Rate": "Part du revenu disponible",
+      "50/30/20 Rule Guide": "Repère de répartition 50/30/20",
+      "Needs (50%)": "Besoins essentiels (50 %)",
+      "Wants (30%)": "Envies (30 %)",
+      "Savings (20%)": "Épargne (20 %)"
+    };
+    l = l || {}, a.innerHTML = '<div class="aw-title">' + translate("Budget Planner") + '</div><div class="aw-field"><label class="aw-label">' + translate("Monthly Income") + '</label><input class="aw-input" id="aw-income" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-field"><label class="aw-label">' + translate("Housing / Rent") + '</label><input class="aw-input" id="aw-rent" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-row"><div class="aw-field"><label class="aw-label">' + translate("Food") + '</label><input class="aw-input" id="aw-food" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-field"><label class="aw-label">' + translate("Transport") + '</label><input class="aw-input" id="aw-transport" type="number" min="0" inputmode="decimal" placeholder="0"></div></div><div class="aw-row"><div class="aw-field"><label class="aw-label">' + translate("Utilities") + '</label><input class="aw-input" id="aw-utilities" type="number" min="0" inputmode="decimal" placeholder="0"></div><div class="aw-field"><label class="aw-label">' + translate("Other") + '</label><input class="aw-input" id="aw-other" type="number" min="0" inputmode="decimal" placeholder="0"></div></div><button class="aw-btn aw-btn--primary" id="aw-calc">' + translate("Calculate Budget") + '</button><div class="aw-result-box" id="aw-res" style="display:none"></div>' + (l.footerHTML || "");
+    var e = function(a) {
+      return Math.round(a).toLocaleString("en");
+    };
+    function s() {
+      var l = parseFloat(a.querySelector("#aw-income").value) || 0, s = 0;
+      if ([ "rent", "food", "transport", "utilities", "other" ].forEach(function(l) {
+        s += parseFloat(a.querySelector("#aw-" + l).value) || 0;
+      }), !(l <= 0)) {
+        var i = l - s, n = i / l * 100, t = .5 * l, d = .3 * l, r = .2 * l, c = a.querySelector("#aw-res");
+        c.style.display = "block", c.innerHTML = '<div class="aw-result-row"><span class="aw-result-label">' + translate("Total Expenses") + '</span><span class="aw-result-main">' + e(s) + '</span></div><div class="aw-result-row"><span class="aw-result-label">' + translate("Remaining") + '</span><span class="aw-result-main">' + e(i) + '</span></div><div class="aw-result-row"><span class="aw-result-label">' + translate("Savings Rate") + "</span><span>" + n.toLocaleString(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+          useGrouping: false
+        }) + '%</span></div><hr class="aw-divider"><div class="aw-result-label">' + translate("50/30/20 Rule Guide") + '</div><div class="aw-result-row"><span class="aw-result-label">' + translate("Needs (50%)") + "</span><span>" + e(t) + '</span></div><div class="aw-result-row"><span class="aw-result-label">' + translate("Wants (30%)") + "</span><span>" + e(d) + '</span></div><div class="aw-result-row"><span class="aw-result-label">' + translate("Savings (20%)") + "</span><span>" + e(r) + "</span></div>";
+      }
+    }
+    a.querySelector("#aw-calc").addEventListener("click", s), a.querySelectorAll("input").forEach(function(a) {
+      a.addEventListener("keyup", function(a) {
+        "Enter" === a.key && s();
+      });
+    });
+  };
+}();
