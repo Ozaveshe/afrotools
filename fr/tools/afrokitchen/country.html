@@ -43,11 +43,22 @@ html,body{margin:0;padding:0;height:100%}
 </head>
 <body class="tool-page top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
+<p style="margin:1rem">Ce contenu est disponible en anglais. <a href="/fr/tools/afrocuisine/">Explorer AfroCuisine en français</a>.</p>
 <div class="fr-frame-wrap">
-<iframe src="/tools/afrokitchen/country.html" title="Cuisine par pays - AfroKitchen | AfroTools" loading="eager"></iframe>
+<iframe data-src="/tools/afrokitchen/country.html" title="Cuisine par pays - AfroKitchen | AfroTools" loading="eager"></iframe>
 </div>
 <script>
 var f=document.querySelector('.fr-frame-wrap iframe');
+var destination = new URL(f.dataset.src, location.origin);
+var params = new URLSearchParams(location.search);
+var slug = params.get('slug');
+if (slug && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) && !params.has('country') && !params.has('code')) {
+  destination.pathname = '/tools/afrokitchen/countries/' + slug + '/';
+} else {
+  destination.search = location.search;
+}
+destination.hash = location.hash;
+f.src = destination.href;
 function resizeFrame(){try{f.style.height=Math.max(f.contentDocument.body.scrollHeight,window.innerHeight-62)+'px'}catch(e){}}
 f.addEventListener('load',function(){resizeFrame();try{new MutationObserver(resizeFrame).observe(f.contentDocument.body,{childList:true,subtree:true,attributes:true})}catch(e){}});
 window.addEventListener('resize',resizeFrame);
