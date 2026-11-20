@@ -3,22 +3,25 @@
 function isFrench() {
   return /^fr(?:-|$)/i.test(document.documentElement.lang);
 }
-function label(english, french) {
-  return isFrench() ? french : english;
+function isSwahili() {
+  return /^sw(?:-|$)/i.test(document.documentElement.lang);
+}
+function label(english, french, swahili) {
+  return isFrench() ? french : isSwahili() ? swahili : english;
 }
 function resetButton(button) {
-  button.innerHTML = e + " " + label("Save Result", "Enregistrer le résultat");
+  button.innerHTML = e + " " + label("Save Result", "Enregistrer le résultat", "Hifadhi matokeo");
 }
 function askForLogin(component) {
-  var message = label("Sign in to save your calculations", "Connectez-vous pour enregistrer votre résultat.");
-  if (!isFrench() && window.AfroAuthModal && typeof window.AfroAuthModal.open === "function") {
+  var message = label("Sign in to save your calculations", "Connectez-vous pour enregistrer votre résultat.", "Ingia ili uhifadhi matokeo yako.");
+  if (!isFrench() && !isSwahili() && window.AfroAuthModal && typeof window.AfroAuthModal.open === "function") {
     window.AfroAuthModal.open(message);
     return;
   }
   var notice = component.querySelector(".srb-notice");
   var link = document.createElement("a");
   link.href = (isFrench() ? "/fr/auth/" : "/auth/") + "?mode=login&next=" + encodeURIComponent(location.pathname + location.search);
-  link.textContent = label("Sign in", "Se connecter");
+  link.textContent = label("Sign in", "Se connecter", "Ingia (Kiingereza)");
   notice.replaceChildren(document.createTextNode(message + " "), link);
 }
 n.prototype.setData = function(data) {
@@ -46,17 +49,17 @@ n.prototype._handleClick = async function() {
   }
   var notice = this.querySelector(".srb-notice");
   if (!this._data || !this._data.inputs || !this._data.outputs) {
-    notice.textContent = label("Run a calculation first", "Effectuez d’abord un calcul.");
+    notice.textContent = label("Run a calculation first", "Effectuez d’abord un calcul.", "Fanya hesabu kwanza.");
     return;
   }
   if (!window.AfroHistory) {
-    notice.textContent = label("Save feature unavailable", "L’enregistrement est indisponible.");
+    notice.textContent = label("Save feature unavailable", "L’enregistrement est indisponible.", "Uhifadhi haupatikani kwa sasa.");
     return;
   }
   var button = this.querySelector(".srb-btn");
   this._saving = true;
   button.disabled = true;
-  button.innerHTML = e + " " + label("Saving...", "Enregistrement…");
+  button.innerHTML = e + " " + label("Saving...", "Enregistrement…", "Inahifadhi…");
   try {
     var response = await window.AfroHistory.save({
       toolSlug: this.getAttribute("tool-slug") || "",
@@ -67,10 +70,10 @@ n.prototype._handleClick = async function() {
       outputs: this._data.outputs
     });
     if (response && response.saved) {
-      button.textContent = label("Saved", "Résultat enregistré");
+      button.textContent = label("Saved", "Résultat enregistré", "Matokeo yamehifadhiwa");
       var dashboard = document.createElement("a");
       dashboard.href = isFrench() ? "/fr/dashboard/" : "/dashboard/";
-      dashboard.textContent = label("View in dashboard", "Voir dans le tableau de bord");
+      dashboard.textContent = label("View in dashboard", "Voir dans le tableau de bord", "Tazama kwenye dashibodi (Kiingereza)");
       notice.replaceChildren(dashboard);
       return;
     }
@@ -78,14 +81,14 @@ n.prototype._handleClick = async function() {
       askForLogin(this);
     } else if (response && response.reason === "limit_reached") {
       var upgrade = document.createElement("a");
-      upgrade.href = isFrench() ? "/fr/pricing/" : "/pricing/";
-      upgrade.textContent = label("Upgrade to Pro", "Passer à Pro");
-      notice.replaceChildren(document.createTextNode(label("Monthly limit reached", "Limite mensuelle atteinte") + " (" + response.limit + "). "), upgrade);
+      upgrade.href = isFrench() ? "/fr/pricing/" : isSwahili() ? "/sw/bei/" : "/pricing/";
+      upgrade.textContent = label("Upgrade to Pro", "Passer à Pro", "Boresha hadi Pro");
+      notice.replaceChildren(document.createTextNode(label("Monthly limit reached", "Limite mensuelle atteinte", "Umefikia kikomo cha mwezi") + " (" + response.limit + "). "), upgrade);
     } else {
       throw new Error("save");
     }
   } catch (error) {
-    notice.textContent = label("Could not save. Please try again.", "Échec de l’enregistrement. Réessayez.");
+    notice.textContent = label("Could not save. Please try again.", "Échec de l’enregistrement. Réessayez.", "Imeshindwa kuhifadhi. Jaribu tena.");
   } finally {
     this._saving = false;
     if (!(response && response.saved)) {
