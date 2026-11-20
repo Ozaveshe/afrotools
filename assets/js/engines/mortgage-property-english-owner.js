@@ -83,11 +83,11 @@
     var express = input.express === true || input.express === 'yes';
     var items = [];
     if (type === 'bn') {
-      items.push({ item: 'Business Name Registration Fee (CAC)', amount: 13500 });
-      items.push({ item: 'Name Reservation Fee', amount: 500 });
+      items.push({ item: 'Business Name Registration Fee (CAC)', amount: 20000 });
+      items.push({ item: 'Name Reservation Fee', amount: input.restrictedName ? 5000 : 1000 });
       if (useAgent === 'agent') items.push({ item: 'Agent / Accredited Lawyer Fee', amount: 25000 });
-      if (express) items.push({ item: 'Express Processing', amount: 5000 });
-      if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 3000 });
+      if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 5000 });
+      if (input.addStatusReport) items.push({ item: 'Company Status Report', amount: 5000 });
     } else if (type === 'llc') {
       var regFee = 25000;
       if (shareCapital > 1000000 && shareCapital <= 5000000) regFee = 35000;

@@ -573,7 +573,7 @@ test('shared owner engines execute the exact French fixture and no French-derive
     addAnnualReturns: false,
     addStatusReport: false,
     addScuml: false
-  }).total, 14000);
+  }).total, 21000);
   for (const boundary of [
     { shareCapital: 0, directors: 2, code: 'invalid-cac-share-capital' },
     { shareCapital: 1000000, directors: 0, code: 'invalid-cac-directors' }
