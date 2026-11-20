@@ -474,6 +474,12 @@ const COUNTRY_RULES = COUNTRIES
 
 function translateSegment(text) {
   let out = text.replace(/\bInstallation(?:ation)+\b/g, "Installation");
+  out = out.replace("Battery backup is not the same as total daily energy. Size it around appliances that must run during an outage: lights, fan, router, phones, POS terminal, fridge, freezer, medical fridge, pump controls, or a small workstation.",
+    "Dimensionnez la batterie selon les appareils qui doivent fonctionner pendant une coupure et la durée de secours souhaitée. Comptez par exemple les lampes, le ventilateur, le routeur, les téléphones, le terminal de paiement, le réfrigérateur, le congélateur, le réfrigérateur médical, les commandes de pompe ou un petit poste de travail.")
+    .replace(/This page uses (.+?) as the (.+?) essential-load battery-cost band\./g,
+      "Le budget indicatif retenu pour une batterie alimentant les appareils essentiels est de $1.")
+    .replace(/(.+?) bill, (.+?) generator\/month/g, "Facture mensuelle : $1 ; groupe électrogène : $2/mois")
+    .replace(/(.+?) bill \/ (.+?) gen USD/g, "Facture : $1 ; groupe électrogène : $2 USD");
   for (const [re, to] of REGEX_RULES) {
     re.lastIndex = 0;
     out = out.replace(re, to);
@@ -493,8 +499,95 @@ function frenchSolarCountryDisplayNames() {
     .map(country => [country.code, frName(country.countryName)]));
 }
 
+// The engine selects the scenario. French presentation supplies the explanation and next action.
+const decisionCopy = {
+  "The solar idea may work, but the payment pressure needs quote validation.": [
+    "Financement à vérifier",
+    "La mensualité du crédit est élevée par rapport aux économies prévues.",
+    "Demandez deux devis écrits, au comptant et à crédit, puis comparez le montant total à rembourser."
+  ],
+  "Solar looks commercially sensible if a written quote matches these assumptions.": [
+    "Projet solaire favorable",
+    "Le délai d’amortissement estimé est court et les économies de carburant contribuent au gain mensuel.",
+    "Demandez un devis pour la puissance et la batterie retenues, puis refaites le calcul avec les prix proposés."
+  ],
+  "Solar savings look useful, but a large battery may not be the first purchase.": [
+    "Solaire intéressant, batterie facultative",
+    "Les économies estimées justifient d’étudier le solaire. Les coupures indiquées ne nécessitent pas forcément une grande batterie.",
+    "Comparez un devis sans batterie et un devis avec une petite batterie réservée aux appareils essentiels."
+  ],
+  "The money case is weak, but backup value may still justify a smaller system.": [
+    "Rentabilité faible, secours utile",
+    "Le délai d’amortissement est long ou indéterminé. Les coupures peuvent néanmoins justifier une alimentation de secours.",
+    "Mesurez la consommation des appareils essentiels et demandez un devis pour un onduleur et une batterie adaptés."
+  ],
+  "Your pain is backup reliability first; full solar can come after quote validation.": [
+    "Alimentation de secours en priorité",
+    "La durée des coupures ou le coût du groupe électrogène justifient d’examiner le secours sur batterie.",
+    "Faites chiffrer l’onduleur et la batterie pour les appareils indispensables, en vérifiant la puissance nécessaire au démarrage."
+  ],
+  "The numbers are close enough that a real quote should decide the next move.": [
+    "Devis nécessaire pour décider",
+    "Le résultat varie avec le tarif électrique, le carburant et le prix de l’installation.",
+    "Obtenez un devis détaillé et reprenez le calcul avec vos factures récentes."
+  ],
+  "Add bill or generator spend before trusting the recommendation.": [
+    "Données de dépenses insuffisantes",
+    "La durée des coupures seule ne permet pas d’estimer le délai d’amortissement.",
+    "Saisissez une facture mensuelle d’électricité ou les dépenses mensuelles de carburant du groupe électrogène."
+  ]
+};
+
 function localizeSolarRuntimeCopy(html) {
   const copy = new Map([
+    [" litres/year", " litres/an"],
+    [" hours/year", " heures/an"],
+    [" panels", " panneaux"],
+    ["Monthly grid bill", "Facture mensuelle d’électricité"],
+    ["Monthly generator spend", "Dépenses mensuelles du groupe électrogène"],
+    ["Outage hours per day", "Durée quotidienne des coupures"],
+    ["Solar system size", "Puissance de l’installation"],
+    ["Tariff per kWh", "Tarif du kWh"],
+    ["Fuel price per litre", "Prix du litre de carburant"],
+    ["Performance ratio", "Ratio de performance"],
+    ["Panel wattage", "Puissance du panneau"],
+    ["Battery depth of discharge", "Profondeur de décharge de la batterie"],
+    ["Install cost per kW", "Coût installé par kW"],
+    ["Battery cost band", "Coût de la batterie"],
+    ["Annual maintenance percent", "Taux annuel d’entretien"],
+    ["Finance deposit percent", "Taux d’apport initial"],
+    ["Annual finance interest", "Taux d’intérêt annuel"],
+    ["Finance term in months", "Durée du crédit en mois"],
+    ["Enter a number for ", "Saisissez une valeur numérique pour le champ suivant : "],
+    ["Monthly grid bill cannot be negative.", "La facture mensuelle d’électricité doit être positive ou nulle."],
+    ["Generator spend cannot be negative.", "Les dépenses de carburant doivent être positives ou nulles."],
+    ["Outage hours must be between 0 and 24.", "La durée des coupures doit être comprise entre 0 et 24 heures par jour."],
+    ["System size must be positive.", "La puissance de l’installation doit être supérieure à zéro."],
+    ["Tariff cannot be negative.", "Le tarif doit être positif ou nul."],
+    ["Fuel price cannot be negative.", "Le prix du carburant doit être positif ou nul."],
+    ["Performance ratio should be between 0.40 and 0.95.", "Le ratio de performance doit être compris entre 0,40 et 0,95."],
+    ["Panel wattage should be between 250 W and 750 W.", "La puissance du panneau doit être comprise entre 250 et 750 W."],
+    ["Battery depth of discharge should be between 50% and 95%.", "La profondeur de décharge doit être comprise entre 50 % et 95 %."],
+    ["Install cost cannot be negative.", "Le coût d’installation doit être positif ou nul."],
+    ["Battery cost cannot be negative.", "Le coût de la batterie doit être positif ou nul."],
+    ["Maintenance should be between 0% and 20%.", "Le taux annuel d’entretien doit être compris entre 0 % et 20 %."],
+    ["Finance deposit should be between 0% and 100%.", "L’apport initial doit être compris entre 0 % et 100 %."],
+    ["Finance interest should be between 0% and 80%.", "Le taux d’intérêt doit être compris entre 0 % et 80 %."],
+    ["Finance term should be between 1 and 120 months.", "La durée du crédit doit être comprise entre 1 et 120 mois."],
+    ["Fix ", "Corrigez les "],
+    [" highlighted fields before using this estimate.", " champs signalés avant d’utiliser cette estimation."],
+    ["Fix highlighted inputs before results can update.", "Corrigez les champs signalés pour actualiser les résultats."],
+    ["Installer checklist downloaded.", "Liste de vérification du devis téléchargée."],
+    ["Installer checklist copied.", "Liste de vérification du devis copiée."],
+    ["Quote checklist downloaded. No account required.", "Liste de vérification du devis téléchargée."],
+    ["Correct highlighted inputs before sharing or exporting.", "Corrigez les champs signalés avant de partager ou d’exporter l’estimation."],
+    ["Simple payback before final quote validation.", "Délai d’amortissement simple à confirmer avec un devis."],
+    ["Installer should verify roof area, load profile, inverter surge and battery usable kWh.", "Faites vérifier la surface du toit, les besoins électriques, la puissance de pointe de l’onduleur et la capacité utile de la batterie."],
+
+    [" confidence", ""],
+    [" confidence, strong case", " ; délai d’amortissement court"],
+    [" confidence, quote-sensitive", " ; résultat sensible au devis"],
+    [" confidence, resilience-led", " ; intérêt surtout lié au secours électrique"],
     [" years", " ans"],
     ["en-US", "fr-FR"],
     [" kWh/mo</td><td>", " kWh/mois</td><td>"],
@@ -622,6 +715,29 @@ function localizeSolarRuntimeCopy(html) {
     source = source.replace(
       'downloadTextFile("solar-roi-"+DEFAULTS.countrySlug+"-estimate.txt"',
       'downloadTextFile("estimation-solaire-"+DEFAULTS.countrySlug+".txt"');
+    if (!source.includes("var localizedScenario=")) {
+      const anchor = "  var batteryLabel=(profile&&profile.label)||batteryOption;";
+      const summary = 'decision.headline+" "+decision.reasons.slice(0,2).join(" ")';
+      if (!source.includes(anchor) || source.split(summary).length !== 3) {
+        throw new Error("Unexpected Solar decision rendering; review the French scenario copy");
+      }
+      const fallback = ["Devis à vérifier", "Vérifiez les hypothèses du calcul.", "Demandez un devis détaillé avant de décider."];
+      source = source.replace(anchor, () =>
+        "  var localizedScenario=(" + JSON.stringify(decisionCopy) + ")[decision.headline]||" + JSON.stringify(fallback) + ";\n" +
+        '  var decisionSummary=localizedScenario[1]+" "+localizedScenario[2];\n' + anchor);
+      source = source.replace(/function confidenceText\(payback\)\{[^\n]+\}/, (body) =>
+        body.replace("{if", '{var level={High:"élevée",Medium:"moyenne",Low:"faible"}[DEFAULTS.confidence]||"à vérifier";if')
+          .replaceAll("return DEFAULTS.confidence", 'return "Fiabilité des hypothèses : "+level'));
+      source = source.split(summary).join("decisionSummary")
+        .replace('set("rRisk",decision.label,confidenceText(result.simplePaybackYears),decision.label)',
+          'set("rRisk",localizedScenario[0],confidenceText(result.simplePaybackYears),localizedScenario[0])');
+    }
+    source = source
+      .replace("var batteryLabel=(profile&&profile.label)||batteryOption;",
+        'var batteryLabel=document.getElementById("batteryOption").selectedOptions[0].textContent;')
+      .replace("confidence:DEFAULTS.confidence,",
+        'confidence:({"Very high":"très élevé",High:"élevé",Medium:"moyen",Low:"faible"})[DEFAULTS.confidence]||"à vérifier",')
+      .replace('monthlySavings:money(monthlyNet)+"/month"', 'monthlySavings:money(monthlyNet)+"/mois"');
     return open+source+close;
   });
 }
