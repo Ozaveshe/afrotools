@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "gpa-calculator": {
+    "title": "Moyenne pondérée et cumulée",
+    "tool": "/fr/tools/calculateur-gpa/",
+    "frame": "education-gpa-calculator",
+    "script": "education/gpa.js"
+  },
+  "jamb-aggregate": {
+    "title": "Score d’admission JAMB",
+    "tool": "/fr/tools/calculateur-jamb/",
+    "frame": "education-jamb-aggregate",
+    "script": "education/jamb-aggregate.js"
+  }
+,
+
   "currency-converter": {
     "title": "Conversion de devises",
     "tool": "/fr/tools/convertisseur-devises/",
