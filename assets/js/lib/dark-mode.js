@@ -69,10 +69,11 @@
     var o = document.getElementById("afro-theme-fallback-toggle");
     if (o) {
       var t = "dark" === n();
-      ((o.textContent = t ? "Light" : "Dark"),
+      var frenchWidget = document.documentElement.dataset.afroWidgetLocale === "fr";
+      ((o.textContent = frenchWidget ? (t ? "Mode clair" : "Mode sombre") : (t ? "Light" : "Dark")),
         o.setAttribute(
           "aria-label",
-          t ? "Switch to light mode" : "Switch to dark mode",
+          frenchWidget ? (t ? "Activer le mode clair" : "Activer le mode sombre") : (t ? "Switch to light mode" : "Switch to dark mode"),
         ));
     }
   }

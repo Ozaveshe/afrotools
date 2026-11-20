@@ -1,6 +1,26 @@
 (function () {
   const widgets = {
 
+  "base64": {
+    "title": "Encodeur et décodeur Base64",
+    "tool": "/fr/tools/encodeur-base64/",
+    "frame": "developer-base64",
+    "script": "developer/base64.js"
+  },
+  "url-encoder": {
+    "title": "Encodage des paramètres d’URL",
+    "tool": "/fr/tools/encodeur-url/",
+    "frame": "developer-url-encoder",
+    "script": "developer/url-encoder.js"
+  },
+  "html-entities": {
+    "title": "Encodage des entités HTML",
+    "tool": "/fr/tools/entites-html/",
+    "frame": "developer-html-entities",
+    "script": "developer/html-entities.js"
+  }
+,
+
   "break-even-lite": {
     "title": "Seuil de rentabilité",
     "tool": "/fr/tools/seuil-rentabilite/",
