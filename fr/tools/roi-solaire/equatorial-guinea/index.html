@@ -1045,12 +1045,12 @@ function run(focusFirstInvalid,source){
   });
   var localizedScenario=({"The solar idea may work, but the payment pressure needs quote validation.":["Financement à vérifier","La mensualité du crédit est élevée par rapport aux économies prévues.","Demandez deux devis écrits, au comptant et à crédit, puis comparez le montant total à rembourser."],"Solar looks commercially sensible if a written quote matches these assumptions.":["Projet solaire favorable","Le délai d’amortissement estimé est court et les économies de carburant contribuent au gain mensuel.","Demandez un devis pour la puissance et la batterie retenues, puis refaites le calcul avec les prix proposés."],"Solar savings look useful, but a large battery may not be the first purchase.":["Solaire intéressant, batterie facultative","Les économies estimées justifient d’étudier le solaire. Les coupures indiquées ne nécessitent pas forcément une grande batterie.","Comparez un devis sans batterie et un devis avec une petite batterie réservée aux appareils essentiels."],"The money case is weak, but backup value may still justify a smaller system.":["Rentabilité faible, secours utile","Le délai d’amortissement est long ou indéterminé. Les coupures peuvent néanmoins justifier une alimentation de secours.","Mesurez la consommation des appareils essentiels et demandez un devis pour un onduleur et une batterie adaptés."],"Your pain is backup reliability first; full solar can come after quote validation.":["Alimentation de secours en priorité","La durée des coupures ou le coût du groupe électrogène justifient d’examiner le secours sur batterie.","Faites chiffrer l’onduleur et la batterie pour les appareils indispensables, en vérifiant la puissance nécessaire au démarrage."],"The numbers are close enough that a real quote should decide the next move.":["Devis nécessaire pour décider","Le résultat varie avec le tarif électrique, le carburant et le prix de l’installation.","Obtenez un devis détaillé et reprenez le calcul avec vos factures récentes."],"Add bill or generator spend before trusting the recommendation.":["Données de dépenses insuffisantes","La durée des coupures seule ne permet pas d’estimer le délai d’amortissement.","Saisissez une facture mensuelle d’électricité ou les dépenses mensuelles de carburant du groupe électrogène."]})[decision.headline]||["Devis à vérifier","Vérifiez les hypothèses du calcul.","Demandez un devis détaillé avant de décider."];
   var decisionSummary=localizedScenario[1]+" "+localizedScenario[2];
-  var batteryLabel=(profile&&profile.label)||batteryOption;
+  var batteryLabel=document.getElementById("batteryOption").selectedOptions[0].textContent;
   var backupFit=batteryOption==="none"?"Sans batterie, le groupe électrogène ou le réseau reste nécessaire pendant les coupures.":"Vérifiez que la batterie choisie couvre les appareils essentiels pendant les coupures.";
   lastReport={
     countryName:DEFAULTS.countryName,
     countrySlug:DEFAULTS.countrySlug,
-    confidence:DEFAULTS.confidence,
+    confidence:({"Very high":"très élevé",High:"élevé",Medium:"moyen",Low:"faible"})[DEFAULTS.confidence]||"à vérifier",
     sourceFreshness:DEFAULTS.lastReviewed,
     executiveSummary:decisionSummary,
     systemKw:kw,
@@ -1068,7 +1068,7 @@ function run(focusFirstInvalid,source){
     installCostPerKw:money(inputs.installCostPerKw),
     maintenancePct:maintenancePct,
     systemCost:money(result.systemCost),
-    monthlySavings:money(monthlyNet)+"/month",
+    monthlySavings:money(monthlyNet)+"/mois",
     payback:years(result.simplePaybackYears),
     paybackYearsRaw:result.simplePaybackYears,
     tenYearNet:money(result.tenYearNetSavings),

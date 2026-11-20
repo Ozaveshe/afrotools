@@ -723,6 +723,12 @@ function localizeSolarRuntimeCopy(html) {
         .replace('set("rRisk",decision.label,confidenceText(result.simplePaybackYears),decision.label)',
           'set("rRisk",localizedScenario[0],confidenceText(result.simplePaybackYears),localizedScenario[0])');
     }
+    source = source
+      .replace("var batteryLabel=(profile&&profile.label)||batteryOption;",
+        'var batteryLabel=document.getElementById("batteryOption").selectedOptions[0].textContent;')
+      .replace("confidence:DEFAULTS.confidence,",
+        'confidence:({"Very high":"très élevé",High:"élevé",Medium:"moyen",Low:"faible"})[DEFAULTS.confidence]||"à vérifier",')
+      .replace('monthlySavings:money(monthlyNet)+"/month"', 'monthlySavings:money(monthlyNet)+"/mois"');
     return open+source+close;
   });
 }
