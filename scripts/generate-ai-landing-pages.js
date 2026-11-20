@@ -244,6 +244,7 @@ function renderPage(page, data) {
   const useCases = page.useCases.map((item) =>
     `<div class="vl-card"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div>`
   ).join("");
+  const featuredTool = page.tools.find((tool) => tool.href === page.featuredToolHref);
   const tools = page.tools.map((tool) =>
     `<a class="vl-tool" href="${escapeHtml(tool.href)}"><strong>${escapeHtml(tool.label)}</strong><span>${escapeHtml(tool.note)}</span><em aria-hidden="true">&rarr;</em></a>`
   ).join("");
@@ -441,7 +442,8 @@ function renderPage(page, data) {
           <div>
             <span class="vl-kicker">${escapeHtml(page.kicker)}</span>
             <h1>${escapeHtml(page.title)}</h1>
-            <p class="vl-promise">${escapeHtml(page.promise)}</p>
+            <p class="vl-promise">${escapeHtml(page.promise)}</p>${featuredTool ? `
+            <p><a href="${escapeHtml(featuredTool.href)}">${escapeHtml(featuredTool.label)}</a> &mdash; ${escapeHtml(featuredTool.note)}</p>` : ""}
             <div class="vl-ask">
               <form class="vl-ask-form" action="/ai/" method="get">
                 <input id="vlPrompt" name="q" type="text" placeholder="${escapeHtml(page.inputPlaceholder)}" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Describe your task">
