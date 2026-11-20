@@ -52,7 +52,20 @@
      schedule.target = '_blank';
      schedule.rel = 'noopener noreferrer';
      schedule.textContent = t('zaDieselSchedule');
-     note.append(' ' + t('zaDieselWholesale') + ' ', schedule);
+     // DMPR November 2026 schedule, Diesel worksheet. These rounded wholesale
+     // references are display-only; the calculator uses the visitor's pump price.
+     var rand = new Intl.NumberFormat(locale, { style: 'currency', currency: 'ZAR', currencyDisplay: 'code' });
+     var date = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+     var period = date.format(new Date('2026-11-04T00:00:00Z')) + ' – ' + date.format(new Date('2026-12-01T00:00:00Z'));
+     var benchmark = t('zaDieselWholesale', {
+      period: period, inland50: rand.format(31.60), inland500: rand.format(30.86),
+      coast50: rand.format(30.73), coast500: rand.format(29.98)
+     });
+     var source = document.createElement('a');
+     source.href = 'https://www.dmpr.gov.za/API/Evotiva-UserFiles/FileActionsServices/DownloadFile?ItemId=3557&ModuleId=2305&TabId=154';
+     source.textContent = t('zaDieselSource');
+     note.prepend(benchmark + ' ');
+     note.append(' · ', source, ' · ', schedule);
     }
    }
    byId('fuel-result-validTo').textContent=record&&record.valid_to||'—';
