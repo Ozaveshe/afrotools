@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const nativeNavigationStyle = require('./lib/native-navigation-style');
 const fs = require('fs');
 const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
@@ -180,7 +181,7 @@ function renderToolPage(tool, manifest) {
   });
   return `<!doctype html>
 <html lang="fr" data-theme-choice="auto">
-<head>
+<head>${tool.sourceId === 'lobola-calculator' ? nativeNavigationStyle : ''}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${escapeHtml(tool.title)} | AfroTools</title>

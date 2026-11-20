@@ -148,12 +148,17 @@ function loaderSource(tag) {
   return match ? match[2] : "";
 }
 
+// A generator may opt in to cross-document navigation in the first style.
+const LEADING_NAVIGATION_STYLE = /^\s*<style>\s*@view-transition\s*\{\s*navigation\s*:\s*auto\s*;?\s*\}[\s\S]*?<\/style\s*>/i;
+
 function loaderIsInHead(html, match) {
   const openingHead = /<head\b[^>]*>/i.exec(html);
   const closingHead = /<\/head\s*>/i.exec(html);
   if (!openingHead || !closingHead) return false;
   const headStart = openingHead.index + openingHead[0].length;
-  return match.index >= headStart && match.index < closingHead.index;
+  if (match.index < headStart || match.index >= closingHead.index) return false;
+  const firstInHead = !html.slice(headStart, match.index).trim();
+  return !(firstInHead && LEADING_NAVIGATION_STYLE.test(html.slice(match.index + match[0].length, closingHead.index)));
 }
 
 function loaderIsCanonical(html, match, tag, placement) {
@@ -208,7 +213,9 @@ function replaceLoaderInPlace(html, match, tag, placement) {
 function insertAfterOpeningHead(html, tag) {
   const openingHead = /<head\b[^>]*>/i.exec(html);
   if (!openingHead) return null;
-  const insertAt = openingHead.index + openingHead[0].length;
+  const headStart = openingHead.index + openingHead[0].length;
+  const critical = LEADING_NAVIGATION_STYLE.exec(html.slice(headStart));
+  const insertAt = headStart + (critical ? critical[0].length : 0);
   const rest = html.slice(insertAt);
   const existingLineBreak = /^(\r?\n)/.exec(rest);
   return html.slice(0, insertAt)
