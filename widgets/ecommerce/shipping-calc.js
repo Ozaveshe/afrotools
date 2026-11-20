@@ -1,1 +1,123 @@
-!function(e){"use strict";e.AfroWidgets=e.AfroWidgets||{},e.AfroWidgets.shippingCalc=function(t,i){i=i||{},function(t){if(e.AfroTools&&e.AfroTools.ShippingCostPlanner)return t();var i=document.querySelector("script[data-shipping-planner-engine]");if(i)return i.addEventListener("load",t,{once:!0});var r=document.createElement("script");r.src="/assets/js/engines/shipping-cost-planner.js",r.dataset.shippingPlannerEngine="1",r.addEventListener("load",t,{once:!0}),document.head.appendChild(r)}(function(){var r=e.AfroTools&&e.AfroTools.ShippingCostPlanner;if(r&&t){var n="scp-widget-"+Math.random().toString(36).slice(2,8),s=String(i.accent||"#087f6b").replace(/[^#(),.%\w\s-]/g,"");t.innerHTML='<section id="'+n+'" class="scp-widget" style="--sw-accent:'+s+'"><style>.scp-widget{font-family:Inter,system-ui,sans-serif;background:var(--sw-bg,#fff);color:var(--sw-text,#102330);border:1px solid var(--sw-border,#d7e2e7);border-radius:16px;overflow:hidden;max-width:520px}.scp-widget *{box-sizing:border-box}.sw-head{padding:18px 19px;background:linear-gradient(135deg,#0b3540,#087f6b);color:#fff}.sw-head strong{font-size:1rem}.sw-head p{margin:5px 0 0;color:#d9f7f0;font-size:.76rem;line-height:1.45}.sw-body{padding:16px}.sw-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.sw-span{grid-column:1/-1}.sw-field label{display:block;font-size:.72rem;font-weight:800;margin-bottom:5px}.sw-field input,.sw-field select{width:100%;min-height:44px;padding:9px 10px;border:1.5px solid var(--sw-border,#d7e2e7);border-radius:9px;background:var(--sw-soft,#f2f7f8);color:inherit;font:inherit}.sw-field :focus,.sw-btn:focus-visible,.sw-link:focus-visible{outline:3px solid rgba(8,127,107,.28);outline-offset:2px}.sw-note{font-size:.7rem;line-height:1.45;color:var(--sw-muted,#526675);margin:0}.sw-btn{width:100%;min-height:46px;border:0;border-radius:10px;background:var(--sw-accent);color:#fff;font-weight:900;cursor:pointer}.sw-status{min-height:18px;margin:8px 0 0;font-size:.74rem;color:var(--sw-muted,#526675)}.sw-result{display:none;margin-top:13px;padding:13px;border-radius:12px;background:var(--sw-soft,#f2f7f8)}.sw-result.on{display:block}.sw-metric{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:.78rem}.sw-metric strong{font-size:.9rem}.sw-link{display:block;text-align:center;margin-top:12px;color:var(--sw-accent);font-size:.74rem;font-weight:800}.dark .scp-widget,[data-theme="dark"] .scp-widget{--sw-bg:#112531;--sw-text:#eff8f7;--sw-border:#2c4652;--sw-soft:#172f3b;--sw-muted:#a8bdc6}@media(max-width:360px){.sw-grid{grid-template-columns:1fr}.sw-span{grid-column:auto}}@media(prefers-reduced-motion:reduce){.scp-widget *{transition:none!important}}</style><header class="sw-head"><strong>Chargeable Weight Planner</strong><p>Your confirmed divisor and optional user rate. No carrier quote or customs calculation.</p></header><div class="sw-body"><form class="sw-grid" novalidate>'+c("count","Packages","number","1",'min="1" step="1"')+c("actual","Actual kg each","number","2",'min="0.001" step="any"')+c("length","Length cm","number","30",'min="0.001" step="any"')+c("width","Width cm","number","20",'min="0.001" step="any"')+c("height","Height cm","number","15",'min="0.001" step="any"')+'<div class="sw-field"><label for="'+n+'-divisor">Confirmed divisor</label><select id="'+n+'-divisor" required><option value="">Choose after checking</option><option value="5000">5000 — confirmed</option><option value="6000">6000 — confirmed</option></select></div>'+c("rate","Your rate/kg (optional)","number","0",'min="0" step="any"')+c("unit","Display unit","text","USD","")+'<p class="sw-note sw-span">Your provider and service determine the divisor and rate. Values shown here are never live quotes.</p><button class="sw-btn sw-span" type="submit">Calculate</button></form><p class="sw-status" role="status" aria-live="polite"></p><div class="sw-result" tabindex="-1"></div><a class="sw-link" href="/tools/shipping-calc/" target="_blank" rel="noopener noreferrer">Open the full private planner</a></div></section>';var o=document.getElementById(n),a=o.querySelector("form"),d=o.querySelector(".sw-status"),l=o.querySelector(".sw-result");a.addEventListener("submit",function(e){e.preventDefault();var t=r.calculate({currencyLabel:p("unit"),packageCount:p("count"),actualKgPerPackage:p("actual"),lengthCm:p("length"),widthCm:p("width"),heightCm:p("height"),divisor:o.querySelector("select").value,ratePerKg:p("rate"),fixedFees:0,packagingFees:0,fuelPct:0,declaredValue:0,insurancePct:0,contingencyPct:0});if(!t.valid)return l.classList.remove("on"),void(d.textContent="Confirm the divisor and enter positive weights and dimensions.");var i=t.outputs,n=String(t.inputs.currencyLabel||"").slice(0,16);l.innerHTML=u("Actual total",i.actualTotalKg.toFixed(3)+" kg")+u("Volumetric total",i.volumetricTotalKg.toFixed(3)+" kg")+u("Chargeable weight",i.chargeableKg.toFixed(3)+" kg")+u("Freight at your rate",(n?n+" ":"")+i.freight.toFixed(2)),l.classList.add("on"),l.focus({preventScroll:!0}),d.textContent="Planning result ready. No customs or provider quote is included."})}function c(e,t,i,r,s){return'<div class="sw-field"><label for="'+n+"-"+e+'">'+t+'</label><input id="'+n+"-"+e+'" data-name="'+e+'" type="'+i+'" value="'+r+'" '+s+"></div>"}function p(e){return o.querySelector('[data-name="'+e+'"]').value}function u(e,t){return'<div class="sw-metric"><span>'+e+"</span><strong>"+t+"</strong></div>"}})}}(window);
+!function(e) {
+  "use strict";
+  e.AfroWidgets = e.AfroWidgets || {}, e.AfroWidgets.shippingCalc = function(t, i) {
+    const fr = t.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr";
+    const labels = {
+      "Chargeable Weight Planner": "Calcul du poids facturable",
+      "Your confirmed divisor and optional user rate. No carrier quote or customs calculation.": "Indiquez le diviseur du transporteur. Ajoutez son tarif pour estimer le fret.",
+      Packages: "Nombre de colis",
+      "Actual kg each": "Poids réel par colis (kg)",
+      "Length cm": "Longueur (cm)",
+      "Width cm": "Largeur (cm)",
+      "Height cm": "Hauteur (cm)",
+      "Confirmed divisor": "Diviseur volumétrique confirmé",
+      "Choose after checking": "Choisir le diviseur confirmé",
+      "5000 — confirmed": "5000 — confirmé",
+      "6000 — confirmed": "6000 — confirmé",
+      "Your rate/kg (optional)": "Tarif par kg (facultatif)",
+      "Display unit": "Devise ou unité du tarif",
+      "Your provider and service determine the divisor and rate. Values shown here are never live quotes.": "Le diviseur et le tarif dépendent du service choisi. Vérifiez-les sur le devis du transporteur.",
+      Calculate: "Calculer",
+      "Open the full private planner": "Ouvrir le simulateur complet",
+      "Actual total": "Poids réel total",
+      "Volumetric total": "Poids volumétrique total",
+      "Chargeable weight": "Poids facturable",
+      "Freight at your rate": "Fret au tarif saisi",
+      "Confirm the divisor and enter positive weights and dimensions.": "Confirmez le diviseur et saisissez des poids et dimensions positifs.",
+      "Planning result ready. No customs or provider quote is included.": "Estimation calculée. Les frais de douane sont exclus.",
+      "Nigeria · Planning estimate": "Nigéria · Simulation",
+      "Import duty & landed cost": "Droits de douane et coût rendu",
+      "Use the duty rate confirmed for your HS code. No stored FX or category guess.": "Saisissez le taux confirmé pour votre code douanier SH. Les montants sont en dollars américains.",
+      "FOB value (USD)": "Valeur FOB (USD)",
+      "Freight + insurance (USD)": "Fret et assurance (USD)",
+      "Confirmed CET rate": "Taux du tarif extérieur commun confirmé",
+      Choose: "Choisir",
+      "Other assessed charges (USD)": "Autres prélèvements évalués (USD)",
+      "VAT rate": "Taux de TVA (%)",
+      "Port + clearing (USD)": "Port et dédouanement (USD)",
+      "Calculate planning total": "Calculer le coût estimé",
+      "Planning estimate only. Confirm HS classification, customs value and charges with Nigeria Customs Service.": "Vérifiez le classement SH, la valeur en douane et les prélèvements auprès des douanes nigérianes.",
+      "Planning landed cost": "Coût rendu estimé",
+      Duty: "Droits de douane",
+      VAT: "TVA",
+      "Calculated locally. Nothing was sent or stored.": "Calcul effectué sur votre appareil."
+    };
+    const tr = key => fr ? labels[key] || key : key;
+    function localize(element) {
+      if (!fr) return;
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        const item = walker.currentNode, key = item.nodeValue.trim();
+        if (labels[key]) item.nodeValue = item.nodeValue.replace(key, labels[key]);
+      }
+    }
+    i = i || {}, function(t) {
+      if (e.AfroTools && e.AfroTools.ShippingCostPlanner) return t();
+      var i = document.querySelector("script[data-shipping-planner-engine]");
+      if (i) return i.addEventListener("load", t, {
+        once: !0
+      });
+      var r = document.createElement("script");
+      r.src = "https://afrotools.com/assets/js/engines/shipping-cost-planner.js", r.dataset.shippingPlannerEngine = "1",
+      r.addEventListener("load", t, {
+        once: !0
+      }), document.head.appendChild(r);
+    }(function() {
+      var r = e.AfroTools && e.AfroTools.ShippingCostPlanner;
+      if (r && t) {
+        var n = "scp-widget-" + Math.random().toString(36).slice(2, 8), s = String(i.accent || "#087f6b").replace(/[^#(),.%\w\s-]/g, "");
+        t.innerHTML = '<section id="' + n + '" class="scp-widget" style="--sw-accent:' + s + '"><style>.scp-widget{font-family:Inter,system-ui,sans-serif;background:var(--sw-bg,#fff);color:var(--sw-text,#102330);border:1px solid var(--sw-border,#d7e2e7);border-radius:16px;overflow:hidden;max-width:520px}.scp-widget *{box-sizing:border-box}.sw-head{padding:18px 19px;background:linear-gradient(135deg,#0b3540,#087f6b);color:#fff}.sw-head strong{font-size:1rem}.sw-head p{margin:5px 0 0;color:#d9f7f0;font-size:.76rem;line-height:1.45}.sw-body{padding:16px}.sw-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.sw-span{grid-column:1/-1}.sw-field label{display:block;font-size:.72rem;font-weight:800;margin-bottom:5px}.sw-field input,.sw-field select{width:100%;min-height:44px;padding:9px 10px;border:1.5px solid var(--sw-border,#d7e2e7);border-radius:9px;background:var(--sw-soft,#f2f7f8);color:inherit;font:inherit}.sw-field :focus,.sw-btn:focus-visible,.sw-link:focus-visible{outline:3px solid rgba(8,127,107,.28);outline-offset:2px}.sw-note{font-size:.7rem;line-height:1.45;color:var(--sw-muted,#526675);margin:0}.sw-btn{width:100%;min-height:46px;border:0;border-radius:10px;background:var(--sw-accent);color:#fff;font-weight:900;cursor:pointer}.sw-status{min-height:18px;margin:8px 0 0;font-size:.74rem;color:var(--sw-muted,#526675)}.sw-result{display:none;margin-top:13px;padding:13px;border-radius:12px;background:var(--sw-soft,#f2f7f8)}.sw-result.on{display:block}.sw-metric{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:.78rem}.sw-metric strong{font-size:.9rem}.sw-link{display:block;text-align:center;margin-top:12px;color:var(--sw-accent);font-size:.74rem;font-weight:800}.dark .scp-widget,[data-theme="dark"] .scp-widget{--sw-bg:#112531;--sw-text:#eff8f7;--sw-border:#2c4652;--sw-soft:#172f3b;--sw-muted:#a8bdc6}@media(max-width:360px){.sw-grid{grid-template-columns:1fr}.sw-span{grid-column:auto}}@media(prefers-reduced-motion:reduce){.scp-widget *{transition:none!important}}</style><header class="sw-head"><strong>Chargeable Weight Planner</strong><p>Your confirmed divisor and optional user rate. No carrier quote or customs calculation.</p></header><div class="sw-body"><form class="sw-grid" novalidate>' + c("count", "Packages", "number", "1", 'min="1" step="1"') + c("actual", "Actual kg each", "number", "2", 'min="0.001" step="any"') + c("length", "Length cm", "number", "30", 'min="0.001" step="any"') + c("width", "Width cm", "number", "20", 'min="0.001" step="any"') + c("height", "Height cm", "number", "15", 'min="0.001" step="any"') + '<div class="sw-field"><label for="' + n + '-divisor">Confirmed divisor</label><select id="' + n + '-divisor" required><option value="">Choose after checking</option><option value="5000">5000 — confirmed</option><option value="6000">6000 — confirmed</option></select></div>' + c("rate", "Your rate/kg (optional)", "number", "0", 'min="0" step="any"') + c("unit", "Display unit", "text", "USD", "") + '<p class="sw-note sw-span">Your provider and service determine the divisor and rate. Values shown here are never live quotes.</p><button class="sw-btn sw-span" type="submit">Calculate</button></form><p class="sw-status" role="status" aria-live="polite"></p><div class="sw-result" tabindex="-1"></div><a class="sw-link" href="/tools/shipping-calc/" target="_blank" rel="noopener noreferrer">Open the full private planner</a></div></section>';
+        var o = document.getElementById(n), a = o.querySelector("form"), d = o.querySelector(".sw-status"), l = o.querySelector(".sw-result");
+        localize(o);
+        if (fr) o.querySelector(".sw-link").href = "https://afrotools.com/fr/tools/estimateur-fret/";
+        a.addEventListener("input", () => {
+          l.classList.remove("on");
+          l.replaceChildren();
+          d.textContent = "";
+        });
+        a.addEventListener("submit", function(e) {
+          e.preventDefault();
+          var t = r.calculate({
+            currencyLabel: p("unit"),
+            packageCount: p("count"),
+            actualKgPerPackage: p("actual"),
+            lengthCm: p("length"),
+            widthCm: p("width"),
+            heightCm: p("height"),
+            divisor: o.querySelector("select").value,
+            ratePerKg: p("rate"),
+            fixedFees: 0,
+            packagingFees: 0,
+            fuelPct: 0,
+            declaredValue: 0,
+            insurancePct: 0,
+            contingencyPct: 0
+          });
+          if (!t.valid) return l.classList.remove("on"), void (d.textContent = tr("Confirm the divisor and enter positive weights and dimensions."));
+          var i = t.outputs, n = String(t.inputs.currencyLabel || "").slice(0, 16);
+          l.replaceChildren();
+          l.append(u("Actual total", i.actualTotalKg.toFixed(3) + " kg"), u("Volumetric total", i.volumetricTotalKg.toFixed(3) + " kg"), u("Chargeable weight", i.chargeableKg.toFixed(3) + " kg"), u("Freight at your rate", (n ? n + " " : "") + (Number(p("rate")) > 0 ? i.freight.toLocaleString(fr ? "fr" : "en", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }) : "—"))), l.classList.add("on"), l.focus({
+            preventScroll: !0
+          }), d.textContent = tr("Planning result ready. No customs or provider quote is included.");
+        });
+      }
+      function c(e, t, i, r, s) {
+        return '<div class="sw-field"><label for="' + n + "-" + e + '">' + t + '</label><input id="' + n + "-" + e + '" data-name="' + e + '" type="' + i + '" value="' + r + '" ' + s + "></div>";
+      }
+      function p(e) {
+        return o.querySelector('[data-name="' + e + '"]').value;
+      }
+      function u(e, t) {
+        const row = document.createElement("div"), label = document.createElement("span"), number = document.createElement("strong");
+        row.className = "sw-metric";
+        label.textContent = tr(e);
+        number.textContent = t;
+        row.append(label, number);
+        return row;
+      }
+    });
+  };
+}(window);

@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "shipping-calc": {
+    "title": "Estimation du fret",
+    "tool": "/fr/tools/estimateur-fret/",
+    "frame": "ecommerce-shipping-calc",
+    "script": "ecommerce/shipping-calc.js"
+  },
+  "import-duty": {
+    "title": "Droits de douane au Nigéria",
+    "tool": "/fr/tools/cout-rendu/",
+    "frame": "ecommerce-import-duty",
+    "script": "ecommerce/import-duty.js"
+  }
+,
+
   "waec-calculator": {
     "title": "Points par matière WAEC / NECO",
     "tool": "/fr/tools/calculateur-waec/",
