@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ha">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiyasin harajin kwastam | AfroTools</title>
+  <meta name="description" content="Lissafa kiyasin harajin kwastam daga darajar CIF da adadin harajin da ka tabbatar.">
+  <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/harajin-kwastam/">
+  <style>
+    *{box-sizing:border-box}body{margin:auto;max-width:44rem;padding:1.25rem;font:1rem/1.55 system-ui;color:#182b24;background:#fafcf9}a{color:#176345}h1{line-height:1.15}form,section{padding:1rem;margin-block:1rem;border:1px solid #cad9ce;border-radius:.65rem;background:white}label{display:block;font-weight:600;margin-block:.65rem .25rem}input,button{font:inherit;padding:.65rem}input{width:100%;border:1px solid #698073;border-radius:.3rem}button{margin-top:1rem;background:#175639;color:white;border:0;border-radius:.3rem}output{font-weight:700}
+  </style>
+</head>
+<body>
+<nav><a href="/ha/">AfroTools Hausa</a> / <a href="/ha/kasuwanci-da-haraji/">Kasuwanci da haraji</a></nav>
+<main>
+  <h1>Kiyasin harajin kwastam</h1>
+  <p>Idan ka san ƙimar harajin kayanka, za ka iya lissafa kuɗin da za ka tanada. Yi amfani da kuɗin ƙasa guda a duk lissafin.</p>
+  <form id="calculator">
+    <label for="cif">Darajar CIF</label>
+    <small id="basis">Jimillar farashin kaya, kuɗin sufuri da inshora.</small>
+    <input id="cif" type="number" min="0" step="any" inputmode="decimal" aria-describedby="basis" required>
+    <label for="rate">Ƙimar harajin kwastam (%)</label>
+    <small id="rate-help">Shigar da ƙimar da ka tabbatar daga takardar kwastam ko wakilinka.</small>
+    <input id="rate" type="number" min="0" step="any" inputmode="decimal" aria-describedby="rate-help" required>
+    <button type="submit">Lissafa haraji</button>
+  </form>
+  <section aria-live="polite" id="result" hidden>
+    <h2>Kiyasin kuɗi</h2><p>Harajin kwastam: <output id="duty"></output></p><p>Darajar CIF da haraji: <output id="total"></output></p>
+    <p>Wannan kiyasi ya haɗa da harajin da ka shigar kawai. VAT, kuɗin tashar jirgi da sauran caji na iya ƙaruwa a kai.</p>
+  </section>
+  <p>Don ƙarin bayani da lissafin sauran caji: <a lang="en" href="/tools/import-duty/">Import duty calculator (English)</a> · <a lang="fr" href="/fr/tools/cout-rendu/">Coût rendu (français)</a>.</p>
+</main>
+<script>
+  const calculator = document.getElementById('calculator');
+  const result = document.getElementById('result');
+  const numbers = new Intl.NumberFormat('ha', {maximumFractionDigits: 2});
+  calculator.addEventListener('input', () => { result.hidden = true; });
+  calculator.addEventListener('submit', event => {
+    event.preventDefault();
+    const cif = document.getElementById('cif').valueAsNumber;
+    const rate = document.getElementById('rate').valueAsNumber;
+    const duty = cif * (rate / 100);
+    if (!Number.isFinite(cif + duty)) {
+      document.getElementById('duty').textContent = 'Adadin ya yi yawa. Rage adadin.';
+      document.getElementById('total').textContent = '—';
+    } else {
+      document.getElementById('duty').textContent = numbers.format(duty);
+      document.getElementById('total').textContent = numbers.format(cif + duty);
+    }
+    result.hidden = false;
+  });
+</script>
+</body>
+</html>
