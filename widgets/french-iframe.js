@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "time-zone": {
+    "title": "Convertisseur de fuseaux horaires",
+    "tool": "/fr/tools/fuseaux-horaires/",
+    "frame": "data-productivity-time-zone",
+    "script": "data-productivity/time-zone.js"
+  }
+,
+
   "diff-checker": {
     "title": "Comparer deux textes",
     "tool": "/fr/tools/comparateur-texte/",
