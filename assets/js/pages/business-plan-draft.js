@@ -3,6 +3,32 @@
   var root = document.querySelector("[data-business-plan-draft]");
   var engine = window.AfroTools && window.AfroTools.BusinessPlanDraft;
   if (!root || !engine) return;
+  // A first visit can load the form before the service worker controls the page.
+  // Fetch only the blank public route and its static dependencies after activation.
+  if (navigator.serviceWorker && window.caches) {
+    var warming = false;
+    async function warmDraftForm() {
+      if (warming || !navigator.serviceWorker.controller || !navigator.onLine) return;
+      warming = true;
+      try {
+        var assets = Array.from(document.querySelectorAll(
+          'link[rel="stylesheet"][href^="/assets/css/"], script[src^="/assets/js/engines/business-plan-draft.js"], ' +
+          'script[src^="/assets/js/pages/business-plan-draft.js"], script[src^="/assets/vendor/jspdf/"]'
+        ), function (node) { return node.href || node.src; });
+        var route = location.pathname;
+        await Promise.all([route].concat(assets).map(async function (url) {
+          if (await caches.match(url)) return;
+          var options = { credentials: "omit" };
+          if (url === route) options.headers = { Accept: "text/html" };
+          await fetch(url, options);
+        }));
+      } catch (_) { /* Retry on reconnect or a new service-worker activation. */ }
+      finally { warming = false; }
+    }
+    navigator.serviceWorker.addEventListener("controllerchange", warmDraftForm);
+    window.addEventListener("online", warmDraftForm);
+    warmDraftForm();
+  }
   var locale = root.dataset.locale || "en";
   var STORE = "afrotools:business-plan-draft:v1:" + locale;
   var SCHEMA = 1;
