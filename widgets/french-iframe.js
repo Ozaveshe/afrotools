@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "solar-calculator": {
+    "title": "Dimensionnement solaire",
+    "tool": "/fr/tools/calculateur-solaire/",
+    "frame": "engineering-solar-calculator",
+    "script": "engineering/solar-calculator.js"
+  }
+,
+
   "public-holidays": {
     "title": "Calendrier des jours fériés",
     "tool": "/fr/tools/jours-feries/",
