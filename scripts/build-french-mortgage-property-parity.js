@@ -782,6 +782,11 @@ function main() {
   };
   fs.mkdirSync(path.dirname(MANIFEST_PATH), { recursive: true });
   fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  const publicRows = manifest.rows.map(({ englishId, fields, frenchRoute, name, workflowControl, engineMode, sharedEngine }) => ({
+    englishId, fields, frenchRoute, name, workflowControl, engineMode, sharedEngine
+  }));
+  const publicCatalog = { count: publicRows.length, rows: publicRows };
+  fs.writeFileSync(path.join(ROOT, 'data', 'french-mortgage-property-public.json'), JSON.stringify(publicCatalog) + '\n', 'utf8');
   fs.writeFileSync(path.join(ROOT, 'fr', 'mortgage-property', 'index.html'), hubHtml(rows), 'utf8');
   syncEquivalentHreflangs('/mortgage-property', '/fr/mortgage-property');
 

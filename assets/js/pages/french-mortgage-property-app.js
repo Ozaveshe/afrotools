@@ -247,7 +247,7 @@
     }
   });
 
-  fetch('/data/registry/french-mortgage-property.json', { cache: 'no-store' })
+  fetch('/data/french-mortgage-property-public.json', { cache: 'no-store' })
     .then(function (response) {
       if (!response.ok) throw new Error('manifest');
       return response.json();
