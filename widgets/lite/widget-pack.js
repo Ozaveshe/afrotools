@@ -10,7 +10,7 @@ function frenchPoultryResult(result) {
     note: "Estimation indicative. Vérifiez vos prix et vos coûts avant de prendre une décision."
   };
 }
-const frenchUnits = { months: "mois", units: "unités", "currency units": "unités monétaires", days: "jours", fish: "poissons", "fish/m2": "poissons/m²", m2: "m²", m3: "m³" };
+const frenchUnits = { hours: "heures", months: "mois", units: "unités", "currency units": "unités monétaires", days: "jours", fish: "poissons", "fish/m2": "poissons/m²", m2: "m²", m3: "m³" };
 const frenchRows = { "Base quantity": "Quantité de base", "Buffer": "Marge", "Percentage component": "Part proportionnelle", "Fixed component": "Part fixe", "Days added": "Durée ajoutée" };
 
 function frenchWidgetResult(result, spec, locale) {
@@ -32,6 +32,126 @@ function frenchWidgetResult(result, spec, locale) {
   };
 }
 const frenchWidgets = {
+
+  "battery-backup-time": {
+    "title": "Autonomie de la batterie",
+    "description": "Estimez la durée d’alimentation à puissance constante.",
+    "fields": {
+      "capacity": "Capacité de la batterie (Wh)",
+      "load": "Puissance moyenne (W)"
+    },
+    "resultLabel": "Autonomie estimée",
+    "note": "Une capacité utilisable de 1 000 Wh pour une charge de 100 W donne 10 heures avant prise en compte des pertes.",
+    "rowLabels": {
+      "Numerator": "Capacité de la batterie (Wh)",
+      "Denominator": "Puissance moyenne (W)"
+    }
+  },
+  "generator-runtime-cost": {
+    "title": "Coût du carburant du groupe électrogène",
+    "description": "Estimez la dépense de carburant sur la durée prévue.",
+    "fields": {
+      "hours": "Durée de fonctionnement (h)",
+      "litres": "Consommation horaire (L/h)",
+      "price": "Prix du litre"
+    },
+    "resultLabel": "Coût du carburant",
+    "note": "Utilisez la consommation observée à la charge prévue et le prix local du litre.",
+    "rowLabels": {
+      "hours": "Durée de fonctionnement (h)",
+      "litres": "Consommation horaire (L/h)",
+      "price": "Prix du litre"
+    }
+  },
+  "appliance-cost-widget": {
+    "title": "Coût d’utilisation d’un appareil",
+    "description": "Estimez le coût de l’électricité consommée par un appareil sur plusieurs jours.",
+    "fields": {
+      "watts": "Puissance (W)",
+      "hours": "Utilisation quotidienne (h)",
+      "days": "Nombre de jours",
+      "tariff": "Tarif par kWh"
+    },
+    "resultLabel": "Coût estimé",
+    "note": "Un appareil de 1 000 W utilisé 2 heures par jour pendant 5 jours consomme 10 kWh.",
+    "rowLabels": {
+      "watts": "Puissance (W)",
+      "hours": "Utilisation quotidienne (h)",
+      "days": "Nombre de jours",
+      "tariff": "Tarif par kWh"
+    }
+  },
+  "water-bill-widget": {
+    "title": "Coût de l’eau consommée",
+    "description": "Multipliez le volume consommé par le tarif applicable au mètre cube.",
+    "fields": {
+      "usage": "Volume consommé (m³)",
+      "tariff": "Tarif par m³"
+    },
+    "resultLabel": "Coût de la consommation",
+    "note": "Ajoutez séparément les frais fixes éventuels. Pour un tarif par tranches, traitez chaque tranche séparément.",
+    "rowLabels": {
+      "usage": "Volume consommé (m³)",
+      "tariff": "Tarif par m³"
+    }
+  },
+  "utility-arrears-plan": {
+    "title": "Échelonnement des impayés",
+    "description": "Répartissez le solde impayé en mensualités égales.",
+    "fields": {
+      "arrears": "Montant des impayés",
+      "months": "Nombre de mois"
+    },
+    "resultLabel": "Mensualité estimée",
+    "note": "Le calcul répartit la dette existante. Vérifiez les intérêts et les frais éventuels avec votre fournisseur.",
+    "rowLabels": {
+      "Total": "Montant des impayés",
+      "Parts": "Nombre de mois"
+    }
+  },
+  "solar-payback-widget": {
+    "title": "Délai de récupération d’une installation solaire",
+    "description": "Estimez combien de mois d’économies sont nécessaires pour couvrir le coût initial.",
+    "fields": {
+      "cost": "Coût de l’installation",
+      "saving": "Économies mensuelles"
+    },
+    "resultLabel": "Délai de récupération",
+    "note": "Saisissez une économie mensuelle positive et utilisez la même devise pour les deux montants.",
+    "rowLabels": {
+      "Numerator": "Coût de l’installation",
+      "Denominator": "Économies mensuelles"
+    }
+  },
+  "device-finance-widget": {
+    "title": "Mensualité de financement d’un appareil",
+    "description": "Répartissez le solde à payer après l’acompte sur le nombre de mois prévu.",
+    "fields": {
+      "balance": "Prix après déduction de l’acompte",
+      "months": "Nombre de mensualités"
+    },
+    "resultLabel": "Mensualité estimée",
+    "note": "Un solde de 360 000 réparti sur 12 mois donne 30 000 par mois, hors intérêts et frais.",
+    "rowLabels": {
+      "Numerator": "Solde à payer",
+      "Denominator": "Nombre de mensualités"
+    }
+  },
+  "whatsapp-vs-sms-widget": {
+    "title": "Coût d’une campagne WhatsApp ou SMS",
+    "description": "Comparez le coût total de la même campagne sur les deux canaux.",
+    "fields": {
+      "sms": "Coût de la campagne SMS",
+      "whatsapp": "Coût de la campagne WhatsApp"
+    },
+    "resultLabel": "Économie avec WhatsApp",
+    "note": "Utilisez la même devise. Un résultat négatif indique que la campagne WhatsApp coûte plus cher que la campagne SMS.",
+    "rowLabels": {
+      "First value": "Coût des SMS",
+      "Second value": "Coût des messages WhatsApp"
+    }
+  }
+,
 
   "business-license-budget": {
     "title": "Budget de création d’entreprise",
@@ -442,4 +562,4 @@ const frenchWidgets = {
     }
   }
 };
-function d(e,t){var a=i((t=t||{}).widgetId)||r[0],fr=t.locale==="fr"&&frenchWidgets[a.id],l="aw-lite-"+a.id+"-"+Math.random().toString(36).slice(2,7),u=a.fields.map(function(e){var t=l+"-"+e.id,a="date"===e.type?s():e.value;return'<div class="aw-field"><label class="aw-label" for="'+t+'">'+n(fr?fr.fields[e.id]:e.label)+(e.unit?" ("+n(fr ? frenchUnits[e.unit] || e.unit : e.unit)+")":"")+'</label><input class="aw-input" id="'+t+'" data-field="'+n(e.id)+'" type="'+("date"===e.type?"date":"number")+'" inputmode="decimal" step="any" value="'+n(a)+'"></div>'}).join("");e.innerHTML='<div class="aw-title">'+n(fr?fr.title:a.title)+'</div><p class="aw-result-label" style="margin:-8px 0 14px">'+n(fr?fr.description:a.description)+"</p>"+u+'<button class="aw-btn aw-btn--primary" type="button">'+(fr?"Calculer":"Calculate")+'</button><div class="aw-result-box" style="display:none"></div>'+(t.footerHTML||"");var d=e.querySelector(".aw-result-box");function p(){var t={};return e.querySelectorAll("[data-field]").forEach(function(e){t[e.getAttribute("data-field")]="date"===e.type?e.value:o(e.value)}),t}function m(){var e=c(a,p(),fr?"fr-FR":"en-GB");if(fr)e=fr.result?fr.result(e):frenchWidgetResult(e,a,fr);d.style.display="block",d.innerHTML='<div class="aw-result-label">'+n(e.label)+'</div><div class="aw-result-main">'+n(e.value)+"</div>"+(e.rows.length?'<hr class="aw-divider">'+e.rows.map(function(e){return'<div class="aw-result-row"><span class="aw-result-label">'+n(e.label)+"</span><span>"+n(e.value)+"</span></div>"}).join(""):"")+'<p class="aw-result-label" style="margin-top:10px">'+n(e.note)+"</p>"}e.querySelector(".aw-btn").addEventListener("click",m),e.querySelectorAll("input").forEach(function(e){e.addEventListener("change",m),e.addEventListener("keyup",function(e){"Enter"===e.key&&m()})}),m()}return{specs:r,byId:i,frenchWidget:function(id){return frenchWidgets[id]},install:function(e){var t=e.AfroWidgets=e.AfroWidgets||{};t.renderLiteWidget=d,r.forEach(function(e){var a=function(t,a){(a=a||{}).widgetId=e.id,d(t,a)};t[function(e){return e.replace(/-/g,"_")}(e.id)]=a,t[function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()})}(e.id)]=a})},renderLiteWidget:d}}();"undefined"!=typeof module&&module.exports&&(module.exports=t),e&&(e.AfroWidgetLitePack=t,e.document&&t.install(e))}("undefined"!=typeof window?window:globalThis);
+function d(e,t){var a=i((t=t||{}).widgetId)||r[0],fr=t.locale==="fr"&&frenchWidgets[a.id],l="aw-lite-"+a.id+"-"+Math.random().toString(36).slice(2,7),u=a.fields.map(function(e){var t=l+"-"+e.id,a="date"===e.type?s():e.value;return'<div class="aw-field"><label class="aw-label" for="'+t+'">'+n(fr?fr.fields[e.id]:e.label)+(e.unit && !(fr && fr.fields[e.id].endsWith("(" + (frenchUnits[e.unit] || e.unit) + ")"))?" ("+n(fr ? frenchUnits[e.unit] || e.unit : e.unit)+")":"")+'</label><input class="aw-input" id="'+t+'" data-field="'+n(e.id)+'" type="'+("date"===e.type?"date":"number")+'" inputmode="decimal" step="any" value="'+n(a)+'"></div>'}).join("");e.innerHTML='<div class="aw-title">'+n(fr?fr.title:a.title)+'</div><p class="aw-result-label" style="margin:-8px 0 14px">'+n(fr?fr.description:a.description)+"</p>"+u+'<button class="aw-btn aw-btn--primary" type="button">'+(fr?"Calculer":"Calculate")+'</button><div class="aw-result-box" style="display:none"></div>'+(t.footerHTML||"");var d=e.querySelector(".aw-result-box");function p(){var t={};return e.querySelectorAll("[data-field]").forEach(function(e){t[e.getAttribute("data-field")]="date"===e.type?e.value:o(e.value)}),t}function m(){var e=c(a,p(),fr?"fr-FR":"en-GB");if(fr)e=fr.result?fr.result(e):frenchWidgetResult(e,a,fr);d.style.display="block",d.innerHTML='<div class="aw-result-label">'+n(e.label)+'</div><div class="aw-result-main">'+n(e.value)+"</div>"+(e.rows.length?'<hr class="aw-divider">'+e.rows.map(function(e){return'<div class="aw-result-row"><span class="aw-result-label">'+n(e.label)+"</span><span>"+n(e.value)+"</span></div>"}).join(""):"")+'<p class="aw-result-label" style="margin-top:10px">'+n(e.note)+"</p>"}e.querySelector(".aw-btn").addEventListener("click",m),e.querySelectorAll("input").forEach(function(e){e.addEventListener("change",m),e.addEventListener("keyup",function(e){"Enter"===e.key&&m()})}),m()}return{specs:r,byId:i,frenchWidget:function(id){return frenchWidgets[id]},install:function(e){var t=e.AfroWidgets=e.AfroWidgets||{};t.renderLiteWidget=d,r.forEach(function(e){var a=function(t,a){(a=a||{}).widgetId=e.id,d(t,a)};t[function(e){return e.replace(/-/g,"_")}(e.id)]=a,t[function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()})}(e.id)]=a})},renderLiteWidget:d}}();"undefined"!=typeof module&&module.exports&&(module.exports=t),e&&(e.AfroWidgetLitePack=t,e.document&&t.install(e))}("undefined"!=typeof window?window:globalThis);

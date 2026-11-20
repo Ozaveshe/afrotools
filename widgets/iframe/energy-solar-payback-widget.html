@@ -20,15 +20,23 @@ body.dark{background:#0a1628;color:#fafaf8}
 <body>
 <div id="widget-root" class="aw aw--light"></div>
 <div class="aw-footer"><a href="https://afrotools.com/energy/?utm_source=widget&utm_medium=embed&utm_campaign=solar-payback-widget" target="_blank" rel="noopener noreferrer">Powered by AfroTools</a></div>
-<script src="/widgets/lite/widget-pack.js?v=a04de757"></script>
+<script src="/widgets/lite/widget-pack.js?v=a06fad57"></script>
 <script>
 (function(){
   var params = new URLSearchParams(window.location.search);
   var theme = params.get("theme") || "light";
   var root = document.getElementById("widget-root");
+  var locale = params.get("lang") === "fr" && true ? "fr" : "en";
+  if (locale === "fr") {
+    document.documentElement.lang = "fr";
+    document.title = "Délai de récupération d’une installation solaire - AfroTools";
+    var attribution = document.querySelector(".aw-footer a");
+    attribution.textContent = "Propulsé par AfroTools";
+    attribution.href = "/fr/energy/?utm_source=widget&utm_medium=embed&utm_campaign=solar-payback-widget";
+  }
   if (theme === "dark") document.body.classList.add("dark");
   root.className = "aw aw--" + theme;
-  window.AfroWidgets.renderLiteWidget(root, { widgetId: "solar-payback-widget", theme: theme });
+  window.AfroWidgets.renderLiteWidget(root, { widgetId: "solar-payback-widget", theme: theme, locale: locale });
   if ("ResizeObserver" in window) {
     var ro = new ResizeObserver(function(){
       window.parent.postMessage({ type: "afrotools:resize", height: document.body.scrollHeight }, "*");
