@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "markdown-editor": {
+    "title": "Éditeur Markdown",
+    "tool": "/fr/tools/editeur-markdown/",
+    "frame": "developer-markdown-editor",
+    "script": "developer/markdown-editor.js"
+  }
+,
+
   "jwt-decoder": {
     "title": "Décodage d’un jeton JWT",
     "tool": "/fr/tools/decodeur-jwt/",
