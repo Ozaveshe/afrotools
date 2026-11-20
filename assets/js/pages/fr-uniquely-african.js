@@ -380,6 +380,15 @@
     target.innerHTML = contract.outputs.map(function (kind) {
       return `<button type="button" data-ua-export="${escapeHtml(kind)}">${escapeHtml(labels[kind] || kind.toUpperCase())}</button>`;
     }).join("");
+    if (contract.id === "afrokitchen" && delegateState.recipe && delegateState.recipe.method_url) {
+      var method = document.createElement("a");
+      method.href = delegateState.recipe.method_url;
+      method.hreflang = "en";
+      method.target = "_blank";
+      method.rel = "noopener";
+      method.textContent = "Étapes de cuisson en anglais (nouvel onglet)";
+      target.prepend(method);
+    }
     target.querySelectorAll("[data-ua-export]").forEach(function (button) {
       button.addEventListener("click", function () {
         var kind = button.getAttribute("data-ua-export");
@@ -599,8 +608,13 @@
     delegateState.recipe = recipe;
     input.originalServings = recipe.default_servings;
     input.ingredients = (recipe.ingredients || []).map(function (ingredient) {
+      var name = ingredientNames[ingredient.name] || ingredient.name;
+      if (recipe.slug === "ugali-sukuma-wiki" && ingredient.name === "salt") {
+        var components = { "For ugali": "pour l’ugali", "For sukuma wiki": "pour le sukuma wiki" };
+        if (components[ingredient.group_name]) name += " (" + components[ingredient.group_name] + ")";
+      }
       return {
-        name: ingredientNames[ingredient.name] || ingredient.name,
+        name: name,
         amount: ingredient.amount,
         unit: kitchenUnit(ingredient.unit, ingredient.amount)
       };

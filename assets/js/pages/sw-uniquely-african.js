@@ -176,6 +176,15 @@
     var target = document.querySelector("[data-ua-exports]");
     var labels = { copy:"Nakili", json:"Pakua JSON", txt:"Pakua TXT", pdf:"Pakua PDF", print:"Chapisha" };
     target.innerHTML = contract.outputs.map(function (kind) { return '<button type="button" data-ua-export="' + kind + '">' + labels[kind] + "</button>"; }).join("");
+    if (contract.id === "afrokitchen" && delegateState.recipe && delegateState.recipe.method_url) {
+      var method = document.createElement("a");
+      method.href = delegateState.recipe.method_url;
+      method.hreflang = "en";
+      method.target = "_blank";
+      method.rel = "noopener";
+      method.textContent = "Hatua za kupika kwa Kiingereza (kichupo kipya)";
+      target.prepend(method);
+    }
     target.querySelectorAll("[data-ua-export]").forEach(function (button) {
       button.addEventListener("click", async function () {
         var kind = button.getAttribute("data-ua-export");
@@ -318,8 +327,13 @@
     if (!recipe) return { error:{ status:"invalid", field:"recipe", code:"ingredient_required" } };
     delegateState.recipe = recipe; input.originalServings = recipe.default_servings;
     input.ingredients = (recipe.ingredients || []).map(function (ingredient) {
+      var name = ingredientNames[ingredient.name] || ingredient.name;
+      if (recipe.slug === "ugali-sukuma-wiki" && ingredient.name === "salt") {
+        var components = { "For ugali": "kwa ugali", "For sukuma wiki": "kwa sukuma wiki" };
+        if (components[ingredient.group_name]) name += " (" + components[ingredient.group_name] + ")";
+      }
       return {
-        name: ingredientNames[ingredient.name] || ingredient.name,
+        name: name,
         amount: ingredient.amount,
         unit: kitchenUnit(ingredient.unit, ingredient.amount)
       };
