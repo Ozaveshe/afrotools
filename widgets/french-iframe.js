@@ -1,5 +1,6 @@
 (function () {
   const widgets = {
+    "generator-fuel": {"title": "Coût du carburant du groupe électrogène", "tool": "/fr/tools/carburant-generateur/", "frame": "engineering-generator-fuel", "script": "engineering/generator-fuel.js"},
 
   "solar-calculator": {
     "title": "Dimensionnement solaire",
