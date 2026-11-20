@@ -547,19 +547,19 @@ function extractOwnerStyles(html) {
     .join("\n");
 }
 
-function translateStatic(markup) {
-  const keys = Object.keys(COPY).sort((left, right) => right.length - left.length);
+function translateStatic(markup, copy) {
+  const keys = Object.keys(copy).sort((left, right) => right.length - left.length);
   const translateValue = (value) => {
     const leading = value.match(/^\s*/)?.[0] || "";
     const trailing = value.match(/\s*$/)?.[0] || "";
     const core = value.slice(leading.length, value.length - trailing.length);
     const decoded = core.replace(/&amp;/g, "&").replace(/&le;/g, "≤");
-    if (COPY[decoded]) return `${leading}${COPY[decoded]}${trailing}`;
+    if (copy[decoded]) return `${leading}${copy[decoded]}${trailing}`;
     let translated = core;
     for (const key of keys) {
       const encodedKey = key.replace(/&/g, "&amp;").replace(/≤/g, "&le;");
-      if (translated.includes(encodedKey)) translated = translated.split(encodedKey).join(COPY[key]);
-      if (translated.includes(key)) translated = translated.split(key).join(COPY[key]);
+      if (translated.includes(encodedKey)) translated = translated.split(encodedKey).join(copy[key]);
+      if (translated.includes(key)) translated = translated.split(key).join(copy[key]);
     }
     return `${leading}${translated}${trailing}`;
   };
@@ -575,6 +575,14 @@ function translateStatic(markup) {
 function ownerContract(row) {
   const contract = OWNER_CONTRACTS[row.toolId];
   if (!contract) throw new Error(`No Swahili Travel owner contract for ${row.toolId}`);
+  const copy = row.toolId === "africa-flight" ? {
+    ...COPY,
+    "Estimated one-way budget per traveller": "Makadirio ya gharama ya kwenda kwa kila msafiri",
+    "Carriers listed for this route. Confirm service and compare current quotes including baggage.": "Mashirika yaliyoorodheshwa kwa njia hii. Hakikisha safari inapatikana na ulinganishe nauli za sasa pamoja na gharama za mizigo.",
+    "Lower planning estimate": "Makadirio ya chini",
+    "Advance booking estimate": "Makadirio kwa tiketi ya mapema",
+    "Last-minute estimate": "Makadirio kwa tiketi ya dakika za mwisho"
+  } : COPY;
   const html = readOwner(row);
   const script = extractOwnerScript(html);
   const ownerHash = crypto.createHash("sha256").update(script).digest("hex");
@@ -597,7 +605,7 @@ function ownerContract(row) {
   };
   return {
     action: contract.action,
-    copy: COPY,
+    copy,
     fieldIds,
     healthBoundary: false,
     invalid: contract.invalid,
@@ -608,7 +616,7 @@ function ownerContract(row) {
     safetyMode: contract.safetyMode || null,
     source,
     styles: extractOwnerStyles(html),
-    widget: translateStatic(widget)
+    widget: translateStatic(widget, copy)
   };
 }
 
