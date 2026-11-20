@@ -7,7 +7,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7879 |
 | Permanent and temporary redirects | 3212 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
@@ -15,7 +15,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
 | Documented fallbacks | 15070 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7879 |
 
 ## Locale Coverage
 
@@ -5270,6 +5270,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:76d1a9288f02: en=`/niger/ne-vat`, fr=`/fr/niger/calculateur-tva`, sw=`/sw/niger/kikokotoo-vat/`; x-default=`/niger/ne-vat`
 - equivalence:7708df052b23: en=`/jamb/economics/1989/`; x-default=`/jamb/economics/1989/`
 - equivalence:77148a2adb23: en=`/tools/employee-cost/morocco/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-maroc/`, sw=`/sw/morocco/kikokotoo-gharama-ya-mfanyakazi/`; x-default=`/tools/employee-cost/morocco/`
+- equivalence:771bbf029f6b: en=`/blog/waec-result-guide-2026/`, fr=`/fr/blog/waec-result-guide-2026/`; x-default=`/blog/waec-result-guide-2026/`
 - equivalence:77478ccc0f58: en=`/blog/afcfta-import-duties-africa-2026/`; x-default=`/blog/afcfta-import-duties-africa-2026/`
 - equivalence:775299402da6: en=`/tools/workers-comp/tunisia`; x-default=`/tools/workers-comp/tunisia`
 - equivalence:77780563fd17: en=`/tools/visa-checker/mozambique`; x-default=`/tools/visa-checker/mozambique`
@@ -5725,6 +5726,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:921d05c930fb: en=`/tools/linkedin-optimizer/`, fr=`/fr/tools/optimiseur-linkedin/`, sw=`/sw/zana/boresha-linkedin/`; x-default=`/tools/linkedin-optimizer/`
 - equivalence:922ffa40970c: en=`/tools/visa-checker/tunisia`; x-default=`/tools/visa-checker/tunisia`
 - equivalence:92b8fe97a58a: en=`/tools/afrokitchen/recipes/achu-soup-cm/`; x-default=`/tools/afrokitchen/recipes/achu-soup-cm/`
+- equivalence:92d5d4f2d6aa: en=`/blog/waec-grading-system-aggregate/`, fr=`/fr/blog/waec-grading-system-aggregate/`; x-default=`/blog/waec-grading-system-aggregate/`
 - equivalence:93049b80ad57: en=`/tools/business-license/`, fr=`/fr/tools/licence-entreprise/`, sw=`/sw/zana/leseni-ya-biashara/`; x-default=`/tools/business-license/`
 - equivalence:930ffcca0a3e: en=`/tools/solar-vs-generator/senegal/`; x-default=`/tools/solar-vs-generator/senegal/`
 - equivalence:9316b96fc4e1: en=`/tools/fire-calc/`, fr=`/fr/tools/calculateur-fire/`, sw=`/sw/zana/kikokotoo-fire/`; x-default=`/tools/fire-calc/`
@@ -5796,7 +5798,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:9770d7e1d021: en=`/tools/retrenchment-calculator/burkina-faso/`; x-default=`/tools/retrenchment-calculator/burkina-faso/`
 - equivalence:97a52cb1c992: en=`/blog/morocco-vat-filing-guide-2026/`; x-default=`/blog/morocco-vat-filing-guide-2026/`
 - equivalence:97b1f231e0b5: en=`/jamb/economics/1984/`; x-default=`/jamb/economics/1984/`
-- equivalence:97b39f2af098: en=`/blog/waec-result-guide-2026/`; x-default=`/blog/waec-result-guide-2026/`
 - equivalence:97b3c5b5a8fe: en=`/agriculture/irrigation/rwanda`, fr=`/fr/agriculture/irrigation/rwanda`, sw=`/sw/kilimo/umwagiliaji/rwanda/`; x-default=`/agriculture/irrigation/rwanda`
 - equivalence:97ca2d87d418: en=`/tools/contractor-vs-employee/lesotho/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-lesotho/`, sw=`/sw/lesotho/kilinganisha-mkandarasi-na-mfanyakazi/`; x-default=`/tools/contractor-vs-employee/lesotho/`
 - equivalence:97ce5d52f871: en=`/tools/afrokitchen/recipes/sahrawi-couscous-eh/`; x-default=`/tools/afrokitchen/recipes/sahrawi-couscous-eh/`
@@ -7477,7 +7478,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fdd13679b2fe: en=`/blog/import-duty-calculator-kenya-2026/`; x-default=`/blog/import-duty-calculator-kenya-2026/`
 - equivalence:fdd193acfec4: en=`/blog/south-africa-tax-free-savings-account-2026/`; x-default=`/blog/south-africa-tax-free-savings-account-2026/`
 - equivalence:fe058161d28b: en=`/tools/health-contribution/senegal`; x-default=`/tools/health-contribution/senegal`
-- equivalence:fe1a6df5bb78: en=`/blog/waec-grading-system-aggregate/`; x-default=`/blog/waec-grading-system-aggregate/`
 - equivalence:fe283472b9dc: fr=`/fr/widgets/cout-reunion-business/`; x-default=`/fr/widgets/cout-reunion-business/`
 - equivalence:fe29e6d75c18: en=`/tools/contractor-vs-employee/madagascar/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-madagascar/`; x-default=`/tools/contractor-vs-employee/madagascar/`
 - equivalence:fe2ca4220fb7: en=`/tools/water-bill/tunisia/`; x-default=`/tools/water-bill/tunisia/`
