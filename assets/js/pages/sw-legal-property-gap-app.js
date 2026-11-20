@@ -118,8 +118,13 @@
   function resultData(result) {
     var fields = result.resultFields || {};
     var translated = {};
+    var courtSelections = englishId === 'court-fees'
+      ? { pays: 'country', niveauJuridiction: 'courtLevel', typeDemande: 'claimType' }
+      : {};
     Object.keys(fields).forEach(function (key) {
-      translated[labelFor(key)] = formatValue(fields[key]);
+      var selection = form.elements[courtSelections[key]];
+      translated[labelFor(key)] = selection && selection.selectedOptions.length
+        ? selection.selectedOptions[0].textContent : formatValue(fields[key]);
     });
     return translated;
   }
