@@ -285,8 +285,11 @@
       fieldsRoot.innerHTML = contract.fields.map(fieldMarkup).join('');
       contract.fields.forEach(function (field) {
         var control = form.elements[field.name];
-        if (field.type === 'checkbox') control.checked = field.fixtureValue === 'true';
-        else control.value = field.fixtureValue;
+        if (field.defaultValue !== undefined) control.defaultValue = field.defaultValue;
+        else if (field.fixtureValue !== undefined) {
+          if (field.type === 'checkbox') control.checked = field.fixtureValue === 'true';
+          else control.value = field.fixtureValue;
+        }
       });
       root.querySelector('[data-workflow-control]').textContent = contract.workflowControl;
       if (englishId === 'court-fees') {

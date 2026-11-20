@@ -784,8 +784,9 @@ function main() {
   };
   fs.mkdirSync(path.dirname(MANIFEST_PATH), { recursive: true });
   fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  const publicFields = require('./lib/french-property-public-fields');
   const publicRows = manifest.rows.map(({ englishId, fields, frenchRoute, name, workflowControl, engineMode, sharedEngine }) => ({
-    englishId, fields, frenchRoute, name, workflowControl, engineMode, sharedEngine
+    englishId, fields: publicFields(englishId, fields), frenchRoute, name, workflowControl, engineMode, sharedEngine
   }));
   const publicCatalog = { count: publicRows.length, rows: publicRows };
   fs.writeFileSync(path.join(ROOT, 'data', 'french-mortgage-property-public.json'), JSON.stringify(publicCatalog) + '\n', 'utf8');
