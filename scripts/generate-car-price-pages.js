@@ -192,9 +192,13 @@ ${entry.archivedSource ? "<p>Historical asking price. The original listing could
 </section>`;
 }
 
-function vehicleImageHTML(vehicle) {
+function primaryVehicleImage(vehicle) {
   const binding = (data.mediaLibrary && data.mediaLibrary.bindings || []).find((entry) => entry.vehicleId === vehicle.id && entry.isPrimary && entry.status === "approved");
-  const asset = binding && (data.mediaLibrary.assets || []).find((entry) => entry.id === binding.assetId && ["licensed", "generated"].includes(entry.sourceType));
+  return binding && (data.mediaLibrary.assets || []).find((entry) => entry.id === binding.assetId && ["licensed", "generated"].includes(entry.sourceType));
+}
+
+function vehicleImageHTML(vehicle) {
+  const asset = primaryVehicleImage(vehicle);
   return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="${asset.width || 640}" height="${asset.height || 400}"><figcaption>${escapeHtml((asset.sourceUrl && asset.caption) || (asset.sourceType === "generated" ? asset.caption || "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."))}${asset.sourceUrl && /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(asset.sourceUrl) ? ` <a href="${escapeHtml(asset.sourceUrl)}" target="_blank" rel="noopener noreferrer">Photo source and reuse rights</a>` : ""}</figcaption></figure>` : "";
 }
 
@@ -399,6 +403,13 @@ function schema(meta, routePath) {
 
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
+  const vehicle = meta.vehicleObj;
+  const image = vehicle && meta.countryObj && marketObservation(meta.countryObj, vehicle) && primaryVehicleImage(vehicle);
+  const reviewedIllustration = image && image.sourceType === "generated" &&
+    image.visualReview?.status === "reviewed" && image.modelReview?.vehicleId === vehicle.id &&
+    image.modelReview.status === "reviewed-generation" && image.imageUrl.startsWith("/assets/img/cars/");
+  const shareImage = reviewedIllustration ? "https://afrotools.com" + image.imageUrl : "https://afrotools.com/assets/img/og/og-cars.webp";
+
   const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
   const leadWithLocal = ["vehicle", "import-vs-local"].includes(meta.pageType) && meta.countryObj?.code === "NG" && meta.vehicleObj?.id === "toyota-corolla-2018";
   const askingVehicle = meta.pageType === "model"
@@ -420,9 +431,11 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
   <meta property="og:url" content="${canonicalUrl}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AfroTools">
-  <meta property="og:image" content="https://afrotools.com/assets/img/og/og-cars.webp">
+  <meta property="og:image" content="${escapeHtml(shareImage)}">
+  ${reviewedIllustration ? `<meta property="og:image:alt" content="${escapeHtml(image.alt)}">` : ""}
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://afrotools.com/assets/img/og/og-cars.webp">
+  <meta name="twitter:image" content="${escapeHtml(shareImage)}">
+  ${reviewedIllustration ? `<meta name="twitter:image:alt" content="${escapeHtml(image.alt)}">` : ""}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
