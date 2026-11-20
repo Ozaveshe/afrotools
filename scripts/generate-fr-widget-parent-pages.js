@@ -17,6 +17,7 @@ const HUB_TITLE = "Widgets à intégrer à votre site | AfroTools";
 const HUB_DESCRIPTION = "Choisissez un widget à intégrer à votre site. Consultez son outil complet et ses limites, puis copiez le code d’intégration.";
 // This existing page has bespoke margin/markup copy; generic generation must not replace it.
 const BESPOKE_PARENT_SLUG = "marge-beneficiaire";
+const frenchIframes = require("../widgets/french-iframe.js");
 const liteWidgets = require("../widgets/lite/widget-pack.js");
 const WIDGETS = require("../widgets/WIDGET-REGISTRY.js");
 const { FRENCH_WIDGET_PARENT_PAGES } = require("./lib/french-widget-parent-map");
@@ -133,7 +134,7 @@ function pageUrl(route) {
 }
 
 function iframeCode(widget, item) {
-  const localeQuery = liteWidgets.frenchWidget(item.id) ? "?lang=fr" : "";
+  const localeQuery = (liteWidgets.frenchWidget(item.id) || frenchIframes[item.id]) ? "?lang=fr" : "";
   return `<iframe src="${SITE}${widget.iframePath}${localeQuery}" width="100%" height="520" frameborder="0" title="${item.title} - AfroTools" loading="lazy"></iframe>`;
 }
 
@@ -506,7 +507,7 @@ function refreshEmbedControls(html, item, widget) {
   const textareas = html.match(textareaPattern) || [];
   if (textareas.length !== 1) throw new Error(`Expected one iframe code field: ${item.slug}`);
   let encodedCode = textareas[0].replace(/^<textarea\b[^>]*>/, "").replace(/<\/textarea>$/, "");
-  if (liteWidgets.frenchWidget(item.id)) {
+  if (liteWidgets.frenchWidget(item.id) || frenchIframes[item.id]) {
     const source = `${SITE}${widget.iframePath}`;
     const oldSource = encodedCode.includes(`${source}?lang=fr`) ? `${source}?lang=fr` : source;
     if (!encodedCode.includes(`${oldSource}&quot;`)) throw new Error("Unexpected embed URL for " + item.id);
