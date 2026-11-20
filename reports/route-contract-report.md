@@ -7,7 +7,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7879 |
 | Permanent and temporary redirects | 3212 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
@@ -15,7 +15,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
 | Documented fallbacks | 15070 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7879 |
 
 ## Locale Coverage
 
@@ -4033,7 +4033,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2f5953282848: en=`/tools/tenancy-agreement/ghana`, fr=`/fr/tools/contrat-bail/ghana`; x-default=`/tools/tenancy-agreement/ghana`
 - equivalence:2f67e8ec450b: en=`/tools/tenancy-agreement/rwanda`, fr=`/fr/tools/contrat-bail/rwanda`; x-default=`/tools/tenancy-agreement/rwanda`
 - equivalence:2f8104c2663d: en=`/tools/afrokitchen/recipes/bamia/`; x-default=`/tools/afrokitchen/recipes/bamia/`
-- equivalence:2f88ef522ec8: en=`/blog/kenya-shilling-words/`; x-default=`/blog/kenya-shilling-words/`
 - equivalence:2f8ef83f2e52: en=`/agriculture/fertilizer/congo-brazzaville`, fr=`/fr/agriculture/fertilizer/congo-brazzaville`, sw=`/sw/kilimo/mbolea/congo/`; x-default=`/agriculture/fertilizer/congo-brazzaville`
 - equivalence:2fb5ec31055d: en=`/tools/solar-roi/sudan/`, fr=`/fr/tools/roi-solaire/sudan/`; x-default=`/tools/solar-roi/sudan/`
 - equivalence:2fc03d5712c8: fr=`/fr/widgets/frais-mobile-money/`; x-default=`/fr/widgets/frais-mobile-money/`
@@ -5009,6 +5008,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:670d29058c36: en=`/`, fr=`/fr/`, ha=`/ha/`, sw=`/sw/`, yo=`/yo/`; x-default=`/`
 - equivalence:671d9d76a8d5: en=`/tools/retrenchment-calculator/dr-congo/`; x-default=`/tools/retrenchment-calculator/dr-congo/`
 - equivalence:67233f731a5b: en=`/jamb/accounts/1994/`; x-default=`/jamb/accounts/1994/`
+- equivalence:67258a98dcea: en=`/blog/ghana-cedi-words/`, fr=`/fr/blog/ghana-cedi-words/`; x-default=`/blog/ghana-cedi-words/`
 - equivalence:6728e740df45: en=`/tools/solar-roi/ethiopia/`, fr=`/fr/tools/roi-solaire/ethiopia/`; x-default=`/tools/solar-roi/ethiopia/`
 - equivalence:674580647ec7: en=`/tools/solar-roi/cape-verde/`, fr=`/fr/tools/roi-solaire/cape-verde/`; x-default=`/tools/solar-roi/cape-verde/`
 - equivalence:675665798462: en=`/tools/afrokitchen/recipes/maru-we-llham-mr/`; x-default=`/tools/afrokitchen/recipes/maru-we-llham-mr/`
@@ -6484,6 +6484,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c1c669d42409: en=`/tools/afrokitchen/recipes/gurasa-sd/`; x-default=`/tools/afrokitchen/recipes/gurasa-sd/`
 - equivalence:c1c87a110588: en=`/tools/gratuity-calculator/sudan/`; x-default=`/tools/gratuity-calculator/sudan/`
 - equivalence:c1c8a7f5b15b: en=`/tools/water-bill/cameroon/`; x-default=`/tools/water-bill/cameroon/`
+- equivalence:c1f7f92bc29d: en=`/blog/kenya-shilling-words/`, fr=`/fr/blog/kenya-shilling-words/`; x-default=`/blog/kenya-shilling-words/`
 - equivalence:c207fd1548b1: en=`/tools/startup-valuation/`, fr=`/fr/tools/evaluation-startup/`, sw=`/sw/zana/thamani-ya-startup/`; x-default=`/tools/startup-valuation/`
 - equivalence:c23552fda8a9: en=`/jamb/english/1983/`; x-default=`/jamb/english/1983/`
 - equivalence:c2409a39a2c2: en=`/tools/afrokitchen/countries/botswana/`; x-default=`/tools/afrokitchen/countries/botswana/`
@@ -7253,7 +7254,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ee9cf76b4ea8: en=`/tools/afrokitchen/recipes/mkatra-siniya-km/`; x-default=`/tools/afrokitchen/recipes/mkatra-siniya-km/`
 - equivalence:eebf11a43750: en=`/tools/afrokitchen/recipes/muriwo-unedovi-zw/`; x-default=`/tools/afrokitchen/recipes/muriwo-unedovi-zw/`
 - equivalence:eeec75582935: en=`/tools/afrokitchen/recipes/milk-tart-za/`; x-default=`/tools/afrokitchen/recipes/milk-tart-za/`
-- equivalence:eeedd2c54601: en=`/blog/ghana-cedi-words/`; x-default=`/blog/ghana-cedi-words/`
 - equivalence:eef9ae28cf1f: en=`/tools/motor-third-party/libya`; x-default=`/tools/motor-third-party/libya`
 - equivalence:ef12c74d4934: en=`/tools/employee-cost/mozambique/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-mozambique/`, sw=`/sw/mozambique/kikokotoo-gharama-ya-mfanyakazi/`; x-default=`/tools/employee-cost/mozambique/`
 - equivalence:ef7a99b8adc4: en=`/tools/paygo-solar/morocco/`; x-default=`/tools/paygo-solar/morocco/`
