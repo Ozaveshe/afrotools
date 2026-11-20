@@ -1,1 +1,54 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{};var a={NG:{name:"Nigeria",sym:"₦",res:68,com:85,ind:75,svc:.12},KE:{name:"Kenya",sym:"KES ",res:25.4,com:20,ind:15,svc:.08},ZA:{name:"South Africa",sym:"R",res:3.5,com:2.8,ind:2.2,svc:.05},GH:{name:"Ghana",sym:"GH₵",res:1.26,com:1.68,ind:1.08,svc:.1},EG:{name:"Egypt",sym:"E£",res:1,com:1.5,ind:1.25,svc:.06},ET:{name:"Ethiopia",sym:"ETB ",res:.69,com:1.04,ind:.86,svc:.08},TZ:{name:"Tanzania",sym:"TSh ",res:292,com:369,ind:252,svc:.1},UG:{name:"Uganda",sym:"USh ",res:786,com:918,ind:715,svc:.12},RW:{name:"Rwanda",sym:"RWF ",res:221,com:276,ind:194,svc:.09},MA:{name:"Morocco",sym:"MAD ",res:1.3,com:1.7,ind:1.15,svc:.07}};window.AfroWidgets.prepaidMeter=function(e,s){s=s||{};var l=Object.keys(a).map(function(e){return'<option value="'+e+'">'+a[e].name+"</option>"}).join("");e.innerHTML='<div class="aw-title">🔢 Prepaid Meter Calculator</div><div class="aw-row"><div class="aw-field"><label class="aw-label">Country</label><select class="aw-select" id="aw-pm-ctry">'+l+'</select></div><div class="aw-field"><label class="aw-label">Customer Type</label><select class="aw-select" id="aw-pm-type"><option value="res">Residential</option><option value="com">Commercial</option></select></div></div><div class="aw-field"><label class="aw-label">Token / Recharge Amount</label><input class="aw-input" id="aw-pm-amount" type="number" min="0" inputmode="decimal" placeholder="e.g. 5000"></div><button class="aw-btn" id="aw-pm-calc">Calculate Units</button><div class="aw-result-box" id="aw-pm-res" style="display:none"></div>'+(s.footerHTML||""),e.querySelector("#aw-pm-calc").addEventListener("click",function(){var s=e.querySelector("#aw-pm-ctry").value,l=e.querySelector("#aw-pm-type").value,n=parseFloat(e.querySelector("#aw-pm-amount").value)||0;if(n){var t=a[s],i="com"===l?t.com:t.res,r=t.svc||.1,c=Math.round(n*r),o=n-c,d=i>0?Math.round(o/i*10)/10:0,m="com"===l?30:10,u=d>0&&m>0?Math.round(d/m):0,p=e.querySelector("#aw-pm-res");p.style.display="block",p.innerHTML='<div class="aw-result-label">Units You Receive</div><div class="aw-result-main">'+d+' kWh</div><hr class="aw-divider"><div class="aw-result-row"><span class="aw-result-label">Token Amount</span><span>'+v(n)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Service Charge (~'+Math.round(100*r)+'%)</span><span style="color:#dc2626">-'+v(c)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Energy Value</span><span>'+v(o)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Rate</span><span>'+t.sym+i.toFixed(2)+"/kWh</span></div>"+(u>0?'<div class="aw-result-row"><span class="aw-result-label">Est. Duration</span><span>~'+u+" days</span></div>":"")+'<div class="aw-result-row" style="font-size:12px;color:var(--muted);margin-top:4px"><span>💡 Larger top-ups reduce % lost to service charges</span></div>'}function v(a){return t.sym+Math.round(a).toLocaleString()}}),e.querySelector("#aw-pm-amount").addEventListener("keyup",function(a){"Enter"===a.key&&e.querySelector("#aw-pm-calc").click()})}}();
+window.AfroWidgets = window.AfroWidgets || {};
+window.AfroWidgets.prepaidMeter = function (root, options) {
+  const fr = root.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr";
+  const say = (en, native) => fr ? native : en;
+  const fmt = value => value.toLocaleString(fr ? "fr" : "en", {maximumFractionDigits: 3});
+  const form = document.createElement("form");
+  form.noValidate = true;
+  form.style.cssText = "display:grid;gap:12px";
+  const title = document.createElement("h2");
+  const status = document.createElement("output");
+  status.setAttribute("aria-live","polite");
+  form.append(title);
+  root.replaceChildren(form);
+  function field(text, type, id, value) {
+    const label = document.createElement("label");
+    label.textContent = text;
+    const element = document.createElement(type === "select" ? "select" : "input");
+    element.className = type === "select" ? "aw-select" : "aw-input";
+    element.style.cssText = "display:block;width:100%;box-sizing:border-box;min-height:40px";
+    if (type !== "select") { element.type="number"; element.step="any"; element.min="0"; }
+    element.dataset.field = id;
+    if(value !== undefined) element.value = value;
+    label.append(element);form.append(label);
+    return element;
+  }
+  const country=field(say("Country and currency","Pays et devise"),"select","country");
+  const currencies={NG:"NGN",KE:"KES",ZA:"ZAR",GH:"GHS",EG:"EGP",ET:"ETB",TZ:"TZS",UG:"UGX",RW:"RWF",MA:"MAD"};
+  const countries=new Intl.DisplayNames([fr?"fr":"en"],{type:"region"});
+  for (const [region,code] of Object.entries(currencies)) country.add(new Option(countries.of(region)+" · "+code,region));
+  const money=value=>new Intl.NumberFormat(fr?"fr":"en",{style:"currency",currency:currencies[country.value]}).format(value);
+  const note=document.createElement("p");form.append(note);
+  const rate=field(say("Price per kWh from your bill","Prix du kWh indiqué sur votre facture"),"number","rate");
+  const calculate=document.createElement("button");calculate.className="aw-btn";calculate.type="submit";
+  function finish(run) {
+    form.append(calculate,status);
+    if(options?.footerHTML) root.insertAdjacentHTML("beforeend",options.footerHTML);
+    form.addEventListener("input",()=>{status.textContent="";});
+    country.addEventListener("change",()=>{rate.value="";status.textContent="";});
+    form.addEventListener("submit",event=>{event.preventDefault();status.textContent=run();});
+  }
+  title.textContent=say("Prepaid electricity estimate","Estimation d’une recharge électrique");
+  note.textContent=say("Use your latest recharge receipt. Enter a price for the same tariff block as your planned purchase.","Reprenez le dernier reçu de recharge et le prix de la tranche applicable à votre achat.");
+  const amount=field(say("Top-up amount","Montant de la recharge"),"number","amount");
+  const fees=field(say("Total deductions, taxes and debt recovery on this purchase","Total des retenues, taxes et remboursements sur cet achat"),"number","fees",0);
+  const consumption=field(say("Your daily consumption in kWh (optional)","Consommation quotidienne en kWh (facultatif)"),"number","use");
+  country.addEventListener("change",()=>{fees.value="0";});
+  calculate.textContent=say("Estimate units","Estimer les kWh");
+  finish(()=>{
+    const sum=amount.valueAsNumber, price=rate.valueAsNumber, deductions=fees.valueAsNumber, usage=consumption.valueAsNumber;
+    if(!(sum>0&&price>0&&deductions>=0&&deductions<=sum) || (consumption.value!=="" && !(usage>0))) return say("Enter a positive recharge and unit price. Deductions must be between zero and the recharge amount. Enter positive daily use or leave it blank.","Saisissez une recharge et un tarif positifs. Les retenues doivent être comprises entre zéro et le montant de la recharge. Indiquez une consommation positive ou laissez ce champ vide.");
+    const net=sum-deductions, units=net/price;
+    return fmt(units)+" kWh · "+say("Energy credit","Crédit énergie")+" "+money(net)+(usage>0?" · "+fmt(units/usage)+say(" days at your usage"," jours à votre consommation"):"");
+  });
+};

@@ -1,5 +1,19 @@
 (function () {
   const widgets = {
+
+  "prepaid-meter": {
+    "title": "Estimation de recharge électrique",
+    "tool": "/fr/tools/compteur-prepaye/",
+    "frame": "energy-prepaid-meter",
+    "script": "energy/prepaid-meter.js"
+  },
+  "appliance-power": {
+    "title": "Consommation électrique des appareils",
+    "tool": "/fr/tools/consommation-appareils/",
+    "frame": "energy-appliance-power",
+    "script": "energy/appliance-power.js"
+  }
+,
     "staking-rewards": {"title": "Récompenses de staking", "tool": "/fr/tools/impot-crypto/", "frame": "crypto-staking-rewards", "script": "crypto/staking-rewards.js"},
 
   "mortgage-calculator": {

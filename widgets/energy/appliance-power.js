@@ -1,1 +1,59 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{};var a={NG:{name:"Nigeria",sym:"₦",rate:68},KE:{name:"Kenya",sym:"KES ",rate:25.4},ZA:{name:"South Africa",sym:"R",rate:3.5},GH:{name:"Ghana",sym:"GH₵",rate:1.26},EG:{name:"Egypt",sym:"E£",rate:1},ET:{name:"Ethiopia",sym:"ETB ",rate:.69},TZ:{name:"Tanzania",sym:"TSh ",rate:292},UG:{name:"Uganda",sym:"USh ",rate:786},MA:{name:"Morocco",sym:"MAD ",rate:1.3}},e=[{id:"ac",label:"Air Conditioner",w:1500},{id:"fridge",label:"Refrigerator",w:150},{id:"tv",label:'TV (42")',w:120},{id:"fan",label:"Ceiling Fan",w:75},{id:"bulb",label:"LED Bulb",w:10},{id:"pump",label:"Water Pump",w:750},{id:"iron",label:"Electric Iron",w:1e3},{id:"washing",label:"Washing Machine",w:500},{id:"microwave",label:"Microwave",w:1200},{id:"computer",label:"Desktop Computer",w:200},{id:"laptop",label:"Laptop",w:65},{id:"freezer",label:"Deep Freezer",w:200}];window.AfroWidgets.appliancePower=function(l,i){i=i||{};var t=Object.keys(a).map(function(e){return'<option value="'+e+'">'+a[e].name+"</option>"}).join(""),s=e.map(function(a){return'<div class="aw-ap-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><label style="flex:2;font-size:13px">'+a.label+'</label><input class="aw-input" style="flex:1;height:36px;font-size:13px" data-w="'+a.w+'" data-id="'+a.id+'" id="aw-ap-'+a.id+'" type="number" min="0" max="24" step="0.5" placeholder="hrs/day" inputmode="decimal"><span style="font-size:12px;color:var(--muted);width:60px">'+a.w+"W</span></div>"}).join("");l.innerHTML='<div class="aw-title">🔌 Appliance Power Calculator</div><div class="aw-row"><div class="aw-field"><label class="aw-label">Country</label><select class="aw-select" id="aw-ap-ctry">'+t+'</select></div></div><div style="margin-bottom:12px"><div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px">Enter daily hours per appliance:</div>'+s+'</div><button class="aw-btn" id="aw-ap-calc">Calculate Monthly Cost</button><div class="aw-result-box" id="aw-ap-res" style="display:none"></div>'+(i.footerHTML||""),l.querySelector("#aw-ap-calc").addEventListener("click",function(){var i=l.querySelector("#aw-ap-ctry").value,t=a[i],s=0,r="";if(e.forEach(function(a){var e=parseFloat(l.querySelector("#aw-ap-"+a.id).value)||0;if(e>0){var i=a.w/1e3*e*30;s+=i,r+='<div class="aw-result-row"><span class="aw-result-label">'+a.label+"</span><span>"+i.toFixed(1)+" kWh</span></div>"}}),s){var n=s*t.rate,o=l.querySelector("#aw-ap-res");o.style.display="block",o.innerHTML='<div class="aw-result-label">Monthly Electricity Cost</div><div class="aw-result-main">'+d(n)+'</div><hr class="aw-divider">'+r+'<hr class="aw-divider"><div class="aw-result-row"><span class="aw-result-label">Total kWh/month</span><span>'+s.toFixed(1)+' kWh</span></div><div class="aw-result-row"><span class="aw-result-label">Annual Cost</span><span>'+d(12*n)+"</span></div>"}function d(a){return t.sym+Math.round(a).toLocaleString()}})}}();
+window.AfroWidgets = window.AfroWidgets || {};
+window.AfroWidgets.appliancePower = function (root, options) {
+  const fr = root.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr";
+  const say = (en, native) => fr ? native : en;
+  const fmt = value => value.toLocaleString(fr ? "fr" : "en", {maximumFractionDigits: 3});
+  const form = document.createElement("form");
+  form.noValidate = true;
+  form.style.cssText = "display:grid;gap:12px";
+  const title = document.createElement("h2");
+  const status = document.createElement("output");
+  status.setAttribute("aria-live","polite");
+  form.append(title);
+  root.replaceChildren(form);
+  function field(text, type, id, value) {
+    const label = document.createElement("label");
+    label.textContent = text;
+    const element = document.createElement(type === "select" ? "select" : "input");
+    element.className = type === "select" ? "aw-select" : "aw-input";
+    element.style.cssText = "display:block;width:100%;box-sizing:border-box;min-height:40px";
+    if (type !== "select") { element.type="number"; element.step="any"; element.min="0"; }
+    element.dataset.field = id;
+    if(value !== undefined) element.value = value;
+    label.append(element);form.append(label);
+    return element;
+  }
+  const country=field(say("Country and currency","Pays et devise"),"select","country");
+  const currencies={NG:"NGN",KE:"KES",ZA:"ZAR",GH:"GHS",EG:"EGP",ET:"ETB",TZ:"TZS",UG:"UGX",RW:"RWF",MA:"MAD"};
+  const countries=new Intl.DisplayNames([fr?"fr":"en"],{type:"region"});
+  for (const [region,code] of Object.entries(currencies)) country.add(new Option(countries.of(region)+" · "+code,region));
+  const money=value=>new Intl.NumberFormat(fr?"fr":"en",{style:"currency",currency:currencies[country.value]}).format(value);
+  const note=document.createElement("p");form.append(note);
+  const rate=field(say("Price per kWh from your bill","Prix du kWh indiqué sur votre facture"),"number","rate");
+  const calculate=document.createElement("button");calculate.className="aw-btn";calculate.type="submit";
+  function finish(run) {
+    form.append(calculate,status);
+    if(options?.footerHTML) root.insertAdjacentHTML("beforeend",options.footerHTML);
+    form.addEventListener("input",()=>{status.textContent="";});
+    country.addEventListener("change",()=>{rate.value="";status.textContent="";});
+    form.addEventListener("submit",event=>{event.preventDefault();status.textContent=run();});
+  }
+  title.textContent=say("Appliance electricity use","Consommation électrique des appareils");
+  note.textContent=say("Estimate 30 days of use. Enter hours when the appliance draws power. The price is optional and excludes fixed fees.","Estimation sur 30 jours. Indiquez les heures de fonctionnement effectif. Le prix du kWh est facultatif et exclut les frais fixes.");
+  const devices=[["Air conditioner","Climatiseur",1500],["Refrigerator","Réfrigérateur",150],["TV","Téléviseur",120],["Ceiling fan","Ventilateur",75],["LED bulb","Ampoule LED",10],["Water pump","Pompe à eau",750],["Iron","Fer à repasser",1000],["Washing machine","Lave-linge",500],["Microwave","Micro-ondes",1200],["Desktop computer","Ordinateur de bureau",200],["Laptop","Ordinateur portable",65],["Freezer","Congélateur",200]];
+  const rows=devices.map(([en,native,power],index)=>{
+    const group=document.createElement("fieldset");const legend=document.createElement("legend");legend.textContent=say(en,native);group.append(legend);
+    const watts=field(say("Rated watts","Puissance (W)"),"number","watts"+index,power);
+    const hours=field(say("Hours per day","Heures par jour"),"number","hours"+index);hours.max="24";
+    group.append(watts.parentElement,hours.parentElement);form.append(group);return {name:legend.textContent,watts,hours};
+  });
+  calculate.textContent=say("Calculate consumption","Calculer la consommation");
+  finish(()=>{
+   const items=[];
+   for(const row of rows){if(row.hours.value==="")continue;const hours=row.hours.valueAsNumber,power=row.watts.valueAsNumber;if(!(hours>=0&&hours<=24&&power>0))return row.name+" · "+say("Enter 0–24 hours and a positive wattage.","Saisissez entre 0 et 24 heures et une puissance positive.");items.push({name:row.name,kWh:power*hours*30/1000});}
+   if(!items.length)return say("Enter daily hours for at least one appliance.","Indiquez les heures par jour pour au moins un appareil.");
+   if(rate.value!=="" && !(rate.valueAsNumber>=0))return say("Correct the price per kWh or leave it blank.","Corrigez le prix du kWh ou laissez ce champ vide.");
+   const total=items.reduce((sum,item)=>sum+item.kWh,0);
+   return fmt(total)+say(" kWh in 30 days"," kWh sur 30 jours")+(rate.value!==""?" · "+money(total*rate.valueAsNumber):"")+" · "+items.map(item=>item.name+" "+fmt(item.kWh)+" kWh").join(", ");
+  });
+};
