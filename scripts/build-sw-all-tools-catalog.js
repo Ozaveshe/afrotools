@@ -4,6 +4,7 @@ const { SWAHILI_CATEGORIES } = require('./lib/swahili-category-directory');
 const { rows } = require('../reports/swahili-free-app-parity-inventory.json');
 
 const root = path.resolve(__dirname, '..');
+const { buildCanonicalRegistry, getSelector } = require('./lib/canonical-registry');
 const directory = path.join(root, 'sw/zana-zote/index.html');
 const begin = '<!-- sw-app-catalog:start -->';
 const end = '<!-- sw-app-catalog:end -->';
@@ -27,7 +28,9 @@ function renderSwAppCatalog() {
       .replace(/\s*[|–—-]\s*AfroTools.*$/i, '').replace(/\s+/g, ' ').trim();
     if (!title || /[<>]/.test(title)) throw new Error('Invalid Swahili title in ' + row.primarySwahiliFile);
     // The source title is HTML text and can already contain character references.
-    const name = title.replace(/&(?!#(?:x[\da-f]+|\d+);|[a-z][a-z\d]+;)/gi, '&amp;');
+    // This page has a native heading but retains an English metadata title.
+    const displayTitle = title === 'Creator invoice workspace' ? 'Ankara ya mtayarishi' : title;
+    const name = displayTitle.replace(/&(?!#(?:x[\da-f]+|\d+);|[a-z][a-z\d]+;)/gi, '&amp;');
     // Conflicting English ownership does not invalidate a self-canonical Swahili destination.
     // List it by its own title without replacing an English search result.
     const id = row.ownerConflict ? canonical : row.englishId;
@@ -50,7 +53,7 @@ function renderSwAppCatalog() {
   return lines.join('\n');
 }
 
-function updateSwDirectory(html) {
+function updateSwDirectory(html, publishedCount = getSelector(buildCanonicalRegistry(), 'tools.locale.sw.published').value) {
   function replaceOnce(original, replacement, installed) {
     if (html.includes(installed)) return;
     const at = html.indexOf(original);
@@ -79,6 +82,10 @@ function updateSwDirectory(html) {
     <p class="hero-sub">Tafuta zana kwa jina au chagua kategoria. Matokeo ya Kiingereza huwekwa alama kabla ya kufunguliwa, na nchi ya zana haibadilishi lugha ya ukurasa.</p>`,
     `    <h1 class="hero-h1">Zana zote za AfroTools kwa Kiswahili</h1>
     <p class="hero-sub">Tafuta zana kwa jina au chagua kategoria. Matokeo ya Kiingereza huwekwa alama kabla ya kufunguliwa, na nchi ya zana haibadilishi lugha ya ukurasa.</p>`);
+  const heroDescription = '<p class="hero-sub">Tafuta zana kwa jina au chagua kategoria. Matokeo ya Kiingereza huwekwa alama kabla ya kufunguliwa, na nchi ya zana haibadilishi lugha ya ukurasa.</p>';
+  const heroCount = '<p class="hero-published">Rekodi zilizochapishwa kwa Kiswahili: <span data-registry-count="tools.locale.sw.published">' + publishedCount + '</span>.</p>';
+  html = html.replace(/<p class="hero-published">[^\n]*?<\/p>/, heroCount);
+  replaceOnce(heroDescription, heroDescription + '\n    ' + heroCount, heroCount);
   replaceOnce(`    <div class="hero-btns">`,
     `    <div class="hero-btns">
       <a href="#zana-kwa-kategoria" class="btn-blue">Chagua kategoria</a>`,
