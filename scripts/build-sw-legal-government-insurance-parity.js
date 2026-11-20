@@ -419,10 +419,11 @@ function publicLegalConfig(rows) {
       'englishId', 'name', 'swahiliRoute', 'sharedEngine', 'engineMode', 'workflowControl',
       'resultIntro', 'resultLabels', 'clearStaleOnInput', 'parserValidPdf', 'countryPresets'
     ]);
+    if (row.fields.some((field) => field.type === 'text')) config.clearStaleOnInput = true;
     config.fields = row.fields.map((field) => ({
       ...pick(field, ['name', 'type', 'label', 'options', 'required', 'min', 'max', 'step']),
       initialValue: Object.hasOwn(field, 'initialValue') ? field.initialValue
-        : field.type === 'date' || /^Synthetic\b/i.test(String(field.fixtureValue)) ? '' : field.fixtureValue
+        : field.type === 'text' || field.type === 'date' || /^Synthetic\b/i.test(String(field.fixtureValue)) ? '' : field.fixtureValue
     }));
     config.source = pick(row.source, sourceKeys);
     if (row.jurisdictionSources) {
