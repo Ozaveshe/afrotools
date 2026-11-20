@@ -3483,11 +3483,8 @@ document.addEventListener('DOMContentLoaded', function() {
       var item = e.target.closest('.sd-item');
       var footer = e.target.closest('#sd-see-all');
       if (footer) { doSearch('dropdown_footer'); return; }
-      if (item) {
-        var href = item.getAttribute('href') || item.dataset.href;
-        if (href && item.dataset.live === 'true') navigate(href);
-        else doSearch('dropdown_item');
-      }
+      // Live results are anchors. Let the browser perform their single navigation.
+      if (item && !item.matches('a[href]')) doSearch('dropdown_item');
     });
 
     // Close on outside click
