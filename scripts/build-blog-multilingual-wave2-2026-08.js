@@ -256,6 +256,11 @@ function renderArticle(topic, locale) {
   const item = localized(topic, locale);
   const route = routeFor(locale, item.slug);
   const canonical = `https://afrotools.com${route}`;
+  const languageNames = { en: 'English', fr: 'Français', sw: 'Kiswahili' };
+  const languageLabels = { en: 'Article languages', fr: 'Langues de l’article', sw: 'Lugha za makala' };
+  const languageLinks = Object.keys(languageNames).filter(lang => lang !== locale).map(lang =>
+    `<a lang="${lang}" hreflang="${lang}" href="${routeFor(lang, localized(topic, lang).slug)}">${languageNames[lang]}</a>`
+  ).join(' · ');
   const alternates = ['en', 'fr', 'sw'].map((lang) => `<link rel="alternate" hreflang="${lang}" href="https://afrotools.com${routeFor(lang, localized(topic, lang).slug)}">`).join('\n');
   const body = renderBody(topic, locale);
   const wordCount = visibleWordCount(body);
@@ -301,7 +306,7 @@ ${alternates}
 </head>
 <body class="top-level-page-ui-refresh">
 <div class="reading-progress" id="readingProgress"></div><afro-navbar></afro-navbar>
-<section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="${c.home}">${locale === 'en' ? 'Home' : locale === 'fr' ? 'Accueil' : 'Mwanzo'}</a> <span class="sep">&#8250;</span> <a href="${c.hub}">${locale === 'sw' ? 'Blogu' : 'Blog'}</a></nav><span class="category-badge">${esc(item.category)}</span><h1>${esc(item.title)}</h1><div class="article-meta-hero"><span>${c.team}</span><span class="dot"></span><time datetime="${data.published}">${c.reviewed} ${data.reviewedLabel[locale]}</time><span class="dot"></span><span>${readMinutes} ${c.minutes}</span></div></div></section>
+<section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="${c.home}">${locale === 'en' ? 'Home' : locale === 'fr' ? 'Accueil' : 'Mwanzo'}</a> <span class="sep">&#8250;</span> <a href="${c.hub}">${locale === 'sw' ? 'Blogu' : 'Blog'}</a></nav><nav aria-label="${languageLabels[locale]}">${languageLinks}</nav><span class="category-badge">${esc(item.category)}</span><h1>${esc(item.title)}</h1><div class="article-meta-hero"><span>${c.team}</span><span class="dot"></span><time datetime="${data.published}">${c.reviewed} ${data.reviewedLabel[locale]}</time><span class="dot"></span><span>${readMinutes} ${c.minutes}</span></div></div></section>
 <div class="article-featured-img"><div class="article-featured-img-inner"><img width="600" height="400" src="/assets/img/tools/${topic.image}.webp" alt="${esc(item.imageAlt)}" loading="eager"></div></div>
 <main class="article-layout"><nav class="article-toc" aria-label="${c.guide}"><div class="article-toc-title">${c.guide}</div><ol><li><a href="#quick-answer">${c.quick}</a></li><li><a href="#inputs">${c.inputs}</a></li><li><a href="#workflow">${c.workflow}</a></li><li><a href="#pitfalls">${c.pitfalls}</a></li><li><a href="#sources">${c.sources}</a></li><li><a href="#faq">${c.faq}</a></li></ol></nav><article class="article-body">${body}</article></main>
 <afro-footer></afro-footer>${locale === 'sw' ? '<script src="/assets/js/lib/sw-accessibility.js" defer></script>' : ''}<script src="/blog/assets/js/blog-reading.js?v=${blogReadingVersion}" defer></script><script src="/assets/js/lazy-analytics.js?v=${analyticsVersion}" defer></script>
