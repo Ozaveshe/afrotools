@@ -1,5 +1,6 @@
 "use strict";
 
+const nativeNavigationStyle = require('./lib/native-navigation-style');
 const fs = require("fs");
 const path = require("path");
 const { normalizeBuildManagedHtml } = require("./lib/shared-asset-references");
@@ -484,7 +485,7 @@ function pageHtml(page) {
   const dataScripts = (page.dataScripts || []).map((src) => `<script src="${src}"></script>`).join("\n");
   return `<!doctype html>
 <html lang="fr">
-<head>
+<head>${page.tool === "proforma-invoice" ? nativeNavigationStyle : ''}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="index,follow">
