@@ -25,6 +25,8 @@
   function render(){
    byId('fuel-coverage-notice').textContent='';
    invalidate();selected=markets.find(function(m){return m.market_id===byId('fuel-market').value;})||null;record=engine.marketRecord(selected,byId('fuel-type').value);var s=status(record);reference=s.available;historicalChosen=false;
+   var nigeriaGuide=byId('fuel-ng-guide');
+   if(nigeriaGuide)nigeriaGuide.hidden=byId('fuel-country').value!=='NG';
    byId('fuel-result-place').textContent=selected?place(selected):t('unavailable');
    byId('fuel-result-granularity').textContent=selected?t(selected.granularity):'';
    byId('fuel-result-confidence').textContent=t(s.valid?s.basis:'unavailable');
