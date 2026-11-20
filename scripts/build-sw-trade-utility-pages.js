@@ -1,5 +1,6 @@
 "use strict";
 
+const nativeNavigationStyle = require('./lib/native-navigation-style');
 const fs = require("fs");
 const path = require("path");
 const { loadBindings } = require("./lib/reviewed-tool-image-bindings");
@@ -91,7 +92,7 @@ function html(page) {
   }, null, 2);
   return `<!doctype html>
 <html lang="sw">
-<head>
+<head>${page.id === "proforma-invoice" ? nativeNavigationStyle : ''}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${page.title} | AfroTools</title>
