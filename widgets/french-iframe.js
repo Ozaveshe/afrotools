@@ -1,6 +1,26 @@
 (function () {
   const widgets = {
 
+  "inflation-calc": {
+    "title": "Simulation de l’inflation",
+    "tool": "/fr/tools/calculateur-inflation/",
+    "frame": "financial-inflation-calc",
+    "script": "financial/inflation-calc.js"
+  },
+  "savings-goal": {
+    "title": "Objectif d’épargne",
+    "tool": "/fr/tools/objectif-epargne/",
+    "frame": "financial-savings-goal",
+    "script": "financial/savings-goal.js"
+  },
+  "car-loan": {
+    "title": "Simulation de prêt automobile",
+    "tool": "/fr/tools/pret-automobile/",
+    "frame": "financial-car-loan",
+    "script": "financial/car-loan.js"
+  }
+,
+
   "markup-calc": {
     "title": "Calculateur de majoration",
     "tool": "/fr/tools/calculateur-marge/",
