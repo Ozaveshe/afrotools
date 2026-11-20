@@ -2,6 +2,40 @@
 // node scripts/minify.js --only=invoice-generator-enhancements
 !function() {
     "use strict";
+
+    function prepareOfflineInvoice() {
+        if (!navigator.serviceWorker || !window.caches || location.pathname !== "/tools/invoice-generator/") return;
+        var path = location.pathname;
+        var assets = Array.from(document.querySelectorAll(
+            'link[rel="stylesheet"][href^="/assets/css/"], script[src^="/assets/vendor/"], ' +
+            'script[src^="/assets/js/lib/save-state-classic.js"], script[src^="/assets/js/pages/invoice-generator-enhancements.js"]'
+        ), function(node) { return node.href || node.src; }).concat([
+            "/assets/fonts/noto-sans/NotoSans-Regular.ttf",
+            "/assets/fonts/noto-sans/NotoSans-Bold.ttf"
+        ]);
+        var warming = false;
+        async function warm() {
+            if (warming || !navigator.serviceWorker.controller || !navigator.onLine) return;
+            warming = true;
+            try {
+                // Fetch only the public blank page and static dependencies. No form state,
+                // shared-link query, authenticated response or saved record enters the cache.
+                await Promise.all([path].concat(assets).map(async function(url) {
+                    if (await caches.match(url)) return;
+                    var options = { credentials: "omit" };
+                    if (url === path) options.headers = { Accept: "text/html" };
+                    await fetch(url, options);
+                }));
+            } catch (_) { /* A later online/controller event can finish the public cache. */ }
+            finally { warming = false; }
+        }
+        // Keep this listener for a worker upgrade: activation can remove an older cache.
+        navigator.serviceWorker.addEventListener("controllerchange", warm);
+        window.addEventListener("online", warm);
+        warm();
+    }
+
+
     var e = "afro_invoice_saved_items_v2", t = "invoice-generator", n = "invoice", a = {
         NGN: {
             s: "₦",
@@ -1213,6 +1247,7 @@
             }
         }(), window.AfroInvoiceState && window.AfroInvoiceState.updatePreview && window.AfroInvoiceState.updatePreview(),
         setTimeout(C, 0);
+        prepareOfflineInvoice();
     }
     "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", q) : q();
 }();
