@@ -3144,7 +3144,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function mergeAIHeroResult(results, q) {
       var first = results[0];
-      if (first && normalizeSearchText(first.t.id) === normalizeSearchText(q)) return results;
+      var query = normalizeSearchText(q);
+      if (first && normalizeSearchText(first.t.id) === query) return results;
+      // The fabric-specific query can also trigger a broader fabric-cost suggestion.
+      if (first && first.t.id === 'ankara-kente-cost' && query === 'ankara fabric cost') return results;
       var routed = buildAIHeroResult(q);
       if (!routed) return results;
       var routedKey = normalizeSearchHref(routed.t.href) || normalizeSearchText(routed.t.id || routed.t.name);
