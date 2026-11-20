@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/assets/fonts/typography.css?v=eb78d469">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f9debbdd">
-<link rel="stylesheet" href="/tools/student-budget/student-budget-vip.css?v=78b552ce">
+<link rel="stylesheet" href="/tools/student-budget/student-budget-vip.css?v=8bbf8c6f">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Student Budget Calculator","url":"https://afrotools.com/tools/student-budget/","description":"Build a private student budget from user-entered monthly resources, period funding, tuition and living costs for a chosen number of months.","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/student-budget.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Student Budget Calculator","item":"https://afrotools.com/tools/student-budget/"}]}</script>
 <script type="application/ld+json">
@@ -146,6 +146,7 @@
   'use strict';
   var engine = window.AfroTools && window.AfroTools.studentBudgetEngine;
   var current = null;
+  var calculationStarted = false;
   var storageKey = 'afrotools.studentBudget.v3';
   var labels = {housing:'Housing',food:'Food',transport:'Transport',data:'Phone and data',study:'Books and study materials',other:'Other recurring costs',tuition:'Tuition and school fees',setup:'Deposits, travel and one-off costs'};
   function el(id) { return document.getElementById(id); }
@@ -162,9 +163,15 @@
     var currency = value('sbCurrency').trim() || 'unit';
     return currency + ' ' + Number(number).toLocaleString('en-US', { maximumFractionDigits: 2 });
   }
-  function calculate() {
+  function calculate(scrollToResults) {
+    calculationStarted = true;
     var result = engine.calculate(read());
-    if (!result.ok) { el('sbStatus').textContent = result.errors.join(' '); return false; }
+    if (!result.ok) {
+      current = null;
+      el('sbResults').classList.remove('show');
+      el('sbStatus').textContent = result.errors.join(' ');
+      return false;
+    }
     el('sbStatus').textContent = ''; current = result;
     el('sbResultPeriod').textContent = result.periodMonths + '-month planning period. Monthly equivalents divide period totals by ' + result.periodMonths + '.';
     el('sbStats').innerHTML =
@@ -178,7 +185,9 @@
     el('sbBreakdown').innerHTML = result.contributions.filter(function (entry) { return entry.amount > 0; }).map(function (entry) {
       return '<tr><td>' + labels[entry.key] + '</td><td>' + (entry.cadence === 'monthly' ? 'Monthly × ' + result.periodMonths : 'Once in period') + '</td><td>' + esc(amount(entry.amount)) + '</td></tr>';
     }).join('') || '<tr><td colspan="3">No expenses entered.</td></tr>';
-    el('sbResults').classList.add('show'); el('sbResults').scrollIntoView({ behavior:'smooth', block:'start' }); el('sbSaveStatus').textContent = 'Unsaved changes.'; return true;
+    el('sbResults').classList.add('show');
+    if (scrollToResults) el('sbResults').scrollIntoView({ behavior:'smooth', block:'start' });
+    return true;
   }
   function report() {
     if (!current && !calculate()) return '';
@@ -195,12 +204,17 @@
   }
   function downloadReport() { var text=report();if(!text)return;var blob=new Blob([text],{type:'text/plain;charset=utf-8'});var url=URL.createObjectURL(blob);var link=document.createElement('a');link.href=url;link.download='student-budget-snapshot.txt';document.body.appendChild(link);link.click();link.remove();setTimeout(function(){URL.revokeObjectURL(url);},0);actionStatus('Text snapshot downloaded.'); }
   function savedPayload() { return {currency:value('sbCurrency'),inputs:read()}; }
-  function saveBudget() { try{localStorage.setItem(storageKey,JSON.stringify(savedPayload()));el('sbSaveStatus').textContent='Budget saved on this device.';}catch(error){el('sbSaveStatus').textContent='This browser did not allow local saving.';} }
+  function saveBudget() { if (!calculate(false)) return; try{localStorage.setItem(storageKey,JSON.stringify(savedPayload()));el('sbSaveStatus').textContent='Budget saved on this device.';}catch(error){el('sbSaveStatus').textContent='This browser did not allow local saving.';} }
   function clearSaved() { try{localStorage.removeItem(storageKey);el('sbSaveStatus').textContent='Saved budget cleared. Current fields remain.';}catch(error){el('sbSaveStatus').textContent='This browser did not allow saved data to be cleared.';} }
   function loadSaved() {
     try { var saved=JSON.parse(localStorage.getItem(storageKey)||'null');if(!saved)return;var input=saved.inputs||{};el('sbCurrency').value=saved.currency||'NGN';el('sbPeriod').value=input.periodMonths||4;el('sbMonthlyIncome').value=input.monthlyIncome||0;el('sbPeriodFunding').value=input.periodFunding||0;var monthly=input.monthlyExpenses||{},period=input.periodExpenses||{};var map={sbHousing:monthly.housing,sbFood:monthly.food,sbTransport:monthly.transport,sbData:monthly.data,sbStudy:monthly.study,sbOther:monthly.other,sbTuition:period.tuition,sbSetup:period.setup};Object.keys(map).forEach(function(id){el(id).value=map[id]||0;});el('sbSaveStatus').textContent='Saved budget loaded from this device.';} catch(error){}
   }
   el('sbCalculate').addEventListener('click',calculate);el('sbSave').addEventListener('click',saveBudget);el('sbClearSaved').addEventListener('click',clearSaved);el('sbCopy').addEventListener('click',copyReport);el('sbDownload').addEventListener('click',downloadReport);el('sbPrint').addEventListener('click',function(){if(current||calculate())window.print();});
+  document.querySelector('.sb-form-card').addEventListener('input', function () {
+    el('sbSaveStatus').textContent = 'Unsaved changes.';
+    actionStatus('');
+    if (calculationStarted) calculate(false);
+  });
   loadSaved(); window.AFROTOOLS_STUDENT_BUDGET_VIP=true;
 })();
 </script>
