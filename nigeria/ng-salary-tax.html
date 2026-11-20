@@ -527,7 +527,7 @@
             </div>
 
             <!-- NHIS RATE (configurable) -->
-            <div class="field cond-field" id="nhisField">
+            <div class="field cond-field on" id="nhisField">
               <div class="f-label">
                 <label class="f-label-text" for="nhisRate">NHIS Contribution Rate (%)</label>
                 <span class="f-hint">Employer-dependent</span>
@@ -1352,7 +1352,7 @@ function isOn(tog) { return document.querySelector(`[data-tog="${tog}"]`)?.class
 
 // PITA 2025
 function calcPITA(gross) {
-  const nhisRate = isOn('nhis') ? (parseFloat(document.getElementById('nhisRate').value) || 5) / 100 : 0;
+  const nhisRate = isOn('nhis') ? healthRatePercent() / 100 : 0;
   const pension = isOn('pension') ? gross * 0.08 : 0;
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
   const nhis = nhisRate > 0 ? gross * nhisRate : 0;
@@ -1413,7 +1413,7 @@ function calcPITA(gross) {
 
 // NTA 2026
 function calcNTA(gross) {
-  const nhisRate = isOn('nhis') ? (parseFloat(document.getElementById('nhisRate').value) || 5) / 100 : 0;
+  const nhisRate = isOn('nhis') ? healthRatePercent() / 100 : 0;
   const pensionable = isOn('pension') ? (parseNum(document.getElementById('pensionableAmt').value) || gross) : 0;
   const pension = pensionable * 0.08;
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
@@ -1925,12 +1925,21 @@ async function downloadPdf() {
 }
 
 // -€-€ SHARE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function healthRatePercent() {
+  const field = document.getElementById('nhisRate');
+  const rate = field.valueAsNumber;
+  return Number.isFinite(rate) && rate >= 0 && rate <= 15 ? rate : 5;
+}
+
 function getShareState() {
   if (!RESULT) return {};
   const state = { g: RESULT.gross, r: REGIME };
   if (isOn('pension')) state.p = 1;
   if (isOn('nhf')) state.n = 1;
-  if (isOn('nhis')) state.h = 1;
+  if (isOn('nhis')) {
+    state.h = 1;
+    state.hr = healthRatePercent();
+  }
   if (isOn('life')) state.li = parseNum(document.getElementById('lifeAmt').value);
   if (isOn('homeloan')) state.hl = parseNum(document.getElementById('homeloanAmt').value);
   if (REGIME === 'nta') {
@@ -1987,7 +1996,12 @@ function restoreFromUrl() {
     const el = document.querySelector(`[data-tog="${toggle}"]`);
     el.classList.toggle('on', enabled);
     el.setAttribute('aria-checked', String(enabled));
-    if (toggle === 'nhis') document.getElementById('nhisField').classList.toggle('on', enabled);
+    if (toggle === 'nhis') {
+      document.getElementById('nhisField').classList.toggle('on', enabled);
+      const rate = enabled && Number.isFinite(s.hr) && s.hr >= 0 && s.hr <= 15 ? s.hr : 5;
+      document.getElementById('nhisRate').value = rate;
+      document.getElementById('nhisRateLabel').textContent = rate + '%';
+    }
   });
   [['life', 'li', 'lifeAmt', 'lifeField'], ['homeloan', 'hl', 'homeloanAmt', 'homeloanField']].forEach(([toggle, key, inputId, fieldId]) => {
     const enabled = Object.prototype.hasOwnProperty.call(s, key) && typeof s[key] === 'number' && Number.isFinite(s[key]) && s[key] >= 0;
