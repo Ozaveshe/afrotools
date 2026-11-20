@@ -383,7 +383,8 @@ function publicLegalConfig(rows) {
     ]);
     config.fields = row.fields.map((field) => ({
       ...pick(field, ['name', 'type', 'label', 'options', 'required', 'min', 'max', 'step']),
-      initialValue: Object.hasOwn(field, 'initialValue') ? field.initialValue : field.fixtureValue
+      initialValue: Object.hasOwn(field, 'initialValue') ? field.initialValue
+        : field.type === 'date' || /^Synthetic\b/i.test(String(field.fixtureValue)) ? '' : field.fixtureValue
     }));
     config.source = pick(row.source, sourceKeys);
     if (row.jurisdictionSources) {
@@ -701,9 +702,11 @@ function checkOrWrite(outputs) {
 
 function main() {
   const legalRows = legalContracts();
+  const remainingPath = path.join(ROOT, 'data', 'registry', 'swahili-legal-remaining-parity.json');
+  const remainingRows = JSON.parse(fs.readFileSync(remainingPath, 'utf8')).rows;
   const publicOutput = [
     path.join(ROOT, 'data', 'legal', 'sw-property-forms.json'),
-    JSON.stringify(publicLegalConfig(legalRows), null, 2) + '\n'
+    JSON.stringify(publicLegalConfig(legalRows.concat(remainingRows)), null, 2) + '\n'
   ];
   if (process.argv.includes('--legal-runtime-only')) {
     checkOrWrite([publicOutput]);
