@@ -2897,6 +2897,33 @@ document.addEventListener('DOMContentLoaded', function() {
     function normalizeSearchText(value) {
       return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
     }
+    // Exact document requests only: "ankara" alone can also describe fabric.
+    function homepageInvoiceMatch(query) {
+      var text = normalizeSearchText(query);
+      var proforma = {
+        'proforma invoice': ['Proforma Invoice Generator', '/tools/proforma-invoice/'],
+        'facture proforma': ['Générateur de facture proforma', '/fr/tools/facture-proforma/'],
+        'ankara proforma': ['Kizalishaji Ankara Proforma', '/sw/zana/ankara-proforma/']
+      };
+      if (Object.prototype.hasOwnProperty.call(proforma, text)) {
+        return { id: 'proforma-invoice', category: 'trade', name: proforma[text][0], href: proforma[text][1], status: 'live', icon: '📄' };
+      }
+      var name, href;
+      if (/^(invoice|invoice generator)$/.test(text)) {
+        name = 'Invoice Generator';
+        href = '/tools/invoice-generator/';
+      } else if (/^(factures?|generateur de factures?|(?:creer|faire|generer) une facture)$/.test(text)) {
+        name = 'Générateur de factures';
+        href = '/fr/tools/generateur-factures/';
+      } else if (/^(?:tengeneza ankara|unda ankara|kizalishaji (?:cha )?ankara)$/.test(text)) {
+        name = 'Kizalishaji Ankara';
+        href = '/sw/zana/kizalishaji-ankara/';
+      } else {
+        return null;
+      }
+      return { id: 'invoice-generator', category: 'document-pdf', name: name, href: href, status: 'live', icon: '🧾' };
+    }
+
     function normalizeSearchHref(value) {
       return String(value || '').split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
     }
@@ -3175,11 +3202,12 @@ document.addEventListener('DOMContentLoaded', function() {
       focusIdx = -1;
       input.removeAttribute('aria-activedescendant');
       if (suppressDropdown) { closeDropdown(); return; }
-      if (!q || !window.AFRO_TOOLS) { closeDropdown(); return; }
+      var invoiceMatch = homepageInvoiceMatch(q);
+      if (!q || (!window.AFRO_TOOLS && !invoiceMatch)) { closeDropdown(); return; }
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
-      var baseResults = homepageSearchTools()
+      var baseResults = (window.AFRO_TOOLS ? homepageSearchTools() : [])
         .map(function(t){ return {t:t, s:score(t,tokens)}; })
         .filter(function(r){ return r.s > 0; })
         .sort(function(a,b){
@@ -3188,8 +3216,13 @@ document.addEventListener('DOMContentLoaded', function() {
           var bl = (b.t.status==='live'||b.t.status==='new') ? 1 : 0;
           return bl - al;
         });
-      requestAIHeroRoute(q, baseResults.length);
-      var results = mergeAIHeroResult(baseResults, q).slice(0, 7);
+      var results;
+      if (invoiceMatch) {
+        results = [{ t: invoiceMatch }].concat(baseResults.filter(function(entry) { return entry.t.id !== invoiceMatch.id; })).slice(0, 7);
+      } else {
+        requestAIHeroRoute(q, baseResults.length);
+        results = mergeAIHeroResult(baseResults, q).slice(0, 7);
+      }
 
       if (!results.length) {
         dropdown.innerHTML = '<div class="sd-empty">Select Find my tool to ask AfroTools AI about "' + esc(q) + '"</div>';
@@ -3245,7 +3278,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function doSearch(source) {
       var q = input.value.trim();
-      var exactTool = window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
+      var exactTool = homepageInvoiceMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
         return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
       });
       if (exactTool) { navigate(exactTool.href); return; }
