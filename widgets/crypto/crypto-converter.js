@@ -1,1 +1,52 @@
-window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.CryptoConverter=function(e,t){var o="dark"===((t=t||{}).theme||"light"),r=o?"#1a1a2e":"#fff",n=o?"#e2e8f0":"#0f1419",i=o?"#334155":"#e2e8f0",a="#f59e0b",l=o?"#0f172a":"#f8fafc",s={bitcoin:{symbol:"BTC",name:"Bitcoin"},ethereum:{symbol:"ETH",name:"Ethereum"},tether:{symbol:"USDT",name:"Tether"},binancecoin:{symbol:"BNB",name:"BNB"},solana:{symbol:"SOL",name:"Solana"},ripple:{symbol:"XRP",name:"XRP"}},c={ngn:{symbol:"₦",name:"Nigerian Naira"},kes:{symbol:"KES",name:"Kenyan Shilling"},ghs:{symbol:"GH₵",name:"Ghanaian Cedi"},zar:{symbol:"R",name:"South African Rand"},egp:{symbol:"E£",name:"Egyptian Pound"},usd:{symbol:"$",name:"US Dollar"},eur:{symbol:"€",name:"Euro"},gbp:{symbol:"£",name:"British Pound"}},d="aw_crypto_rates",p=null;e.innerHTML='<div class="aw-crypto-converter" style="font-family:\'Inter\',system-ui,sans-serif;background:'+r+";color:"+n+";border:1px solid "+i+';border-radius:10px;overflow:hidden"><div style="padding:15px 22px;border-bottom:1px solid '+i+";background:"+(o?"#0f172a":"#f8fafc")+'"><span style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Crypto to African Currency</span></div><div style="padding:22px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px"><div><label style="display:block;font-size:.72rem;font-weight:600;color:#64748b;margin-bottom:5px">Cryptocurrency</label><select id="aw-cc-crypto" style="width:100%;padding:9px 12px;border:1.5px solid '+i+";border-radius:7px;font-size:.82rem;background:"+l+";color:"+n+';font-family:inherit">'+Object.keys(s).map(function(e){return'<option value="'+e+'">'+s[e].symbol+" - "+s[e].name+"</option>"}).join("")+'</select></div><div><label style="display:block;font-size:.72rem;font-weight:600;color:#64748b;margin-bottom:5px">Currency</label><select id="aw-cc-currency" style="width:100%;padding:9px 12px;border:1.5px solid '+i+";border-radius:7px;font-size:.82rem;background:"+l+";color:"+n+';font-family:inherit">'+Object.keys(c).map(function(e){return'<option value="'+e+'">'+c[e].symbol+" - "+c[e].name+"</option>"}).join("")+'</select></div></div><div style="margin-bottom:14px"><label style="display:block;font-size:.72rem;font-weight:600;color:#64748b;margin-bottom:5px">Amount</label><input type="number" id="aw-cc-amount" value="1" min="0" step="0.01" style="width:100%;padding:9px 12px;border:1.5px solid '+i+";border-radius:7px;font-size:.82rem;background:"+l+";color:"+n+';font-family:inherit;box-sizing:border-box"></div><button id="aw-cc-btn" style="display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#d97706,'+a+');color:#fff;font-family:inherit">Convert</button><div id="aw-cc-result" style="margin-top:14px;text-align:center;padding:20px;background:'+(o?"#1e293b":"#fffbeb")+";border:1px solid "+(o?"#334155":"#fde68a")+';border-radius:8px;display:none"><div id="aw-cc-result-value" style="font-size:1.8rem;font-weight:800;color:'+a+'"></div><div id="aw-cc-result-rate" style="font-size:.72rem;color:#64748b;margin-top:4px"></div></div>'+(t.footerHTML?'<div style="margin-top:14px">'+t.footerHTML+"</div>":"")+"</div></div>",e.querySelector("#aw-cc-btn").addEventListener("click",function(){var t=e.querySelector("#aw-cc-crypto").value,o=e.querySelector("#aw-cc-currency").value,r=parseFloat(e.querySelector("#aw-cc-amount").value)||0,n=e.querySelector("#aw-cc-result"),i=e.querySelector("#aw-cc-result-value"),a=e.querySelector("#aw-cc-result-rate"),l=e.querySelector("#aw-cc-btn");l.textContent="Loading...",function(e){var t=function(){try{var e=sessionStorage.getItem(d);if(e){var t=JSON.parse(e);if(Date.now()-t.timestamp<6e5)return t.data}}catch(e){}return null}();if(t)return p=t,void e();var o=new XMLHttpRequest;o.open("GET","https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,ripple&vs_currencies=ngn,kes,ghs,zar,egp,usd,eur,gbp"),o.onload=function(){if(200===o.status)try{(function(e){try{sessionStorage.setItem(d,JSON.stringify({timestamp:Date.now(),data:e}))}catch(e){}})(p=JSON.parse(o.responseText)),e()}catch(t){e("Parse error")}else e("API error: "+o.status)},o.onerror=function(){e("Network error")},o.send()}(function(e){if(l.textContent="Convert",e||!p||!p[t]||!p[t][o])return i.textContent="Unable to fetch rates",a.textContent=e||"Rate not available",void(n.style.display="block");var d=p[t][o],m=r*d,u=c[o];i.textContent=u.symbol+" "+m.toLocaleString("en",{minimumFractionDigits:2,maximumFractionDigits:2}),a.textContent="1 "+s[t].symbol+" = "+u.symbol+" "+d.toLocaleString("en"),n.style.display="block"})})};
+window.AfroWidgets = window.AfroWidgets || {};
+window.AfroWidgets.CryptoConverter = function(root, options) {
+  const crypto = true;
+  const fr = root.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr";
+  const msg = (en, native) => fr ? native : en;
+  const locale = fr ? "fr" : "en";
+  const symbols = {bitcoin:"BTC",ethereum:"ETH",tether:"USDT",binancecoin:"BNB",solana:"SOL",ripple:"XRP"};
+  const fiat = crypto ? ["NGN","KES","GHS","ZAR","EGP","USD","EUR","GBP"] : ["USD","EUR","GBP","NGN","KES","GHS","ZAR","EGP","TZS","UGX","RWF","MAD","XOF","XAF","ZMW","MWK","BWP"];
+  const form = document.createElement("form");form.style.cssText="display:grid;gap:12px";form.noValidate=true;
+  const title=document.createElement("h2");title.textContent=crypto?msg("Crypto converter","Conversion de cryptomonnaies"):msg("Currency converter","Conversion de devises");form.append(title);
+  function addField(text,ops) {
+    const wrapper=document.createElement("label");wrapper.append(document.createTextNode(text));
+    const control=document.createElement(ops?"select":"input");
+    if(ops) for(const key of ops)control.add(new Option(symbols[key]||key,key));
+    else{control.type="number";control.step="any";control.min="0";}
+    control.className=ops?"aw-select":"aw-input";control.style.cssText="display:block;width:100%;min-height:44px";wrapper.append(control);form.append(wrapper);return control;
+  }
+  const amount=addField(msg("Amount","Montant"));amount.value=crypto?"1":"1000";
+  const from=addField(msg("From","De"),crypto?Object.keys(symbols):fiat);
+  const to=addField(msg("To","Vers"),fiat);to.value="NGN";
+  const manual=addField("");manual.setAttribute("data-rate","");
+  const status=document.createElement("p");status.setAttribute("role","status");
+  const result=document.createElement("output");result.setAttribute("aria-live","polite");
+  const button=document.createElement("button");button.className="aw-btn";button.type="submit";button.textContent=msg("Convert","Convertir");form.append(button,status,result);root.replaceChildren(form);if(options?.footerHTML)root.insertAdjacentHTML("beforeend",options.footerHTML);
+  let quote=null, revision=0;
+  function refresh(){
+    const id=++revision;quote=null;manual.value="";result.textContent="";
+    const unit=symbols[from.value]||from.value;
+    manual.parentElement.firstChild.nodeValue=msg("Your provider rate (optional): ","Cours de votre prestataire (facultatif) : ")+to.value+msg(" for 1 "," pour 1 ")+unit;
+    if(!crypto && from.value===to.value){manual.disabled=true;quote={rate:1,source:msg("Same currency","Même devise")};status.textContent=quote.source;return;}
+    manual.disabled=false;status.textContent=msg("Looking up a dated rate. You can enter your quote now.","Recherche d’un cours daté. Vous pouvez saisir votre propre cours.");
+    const base="https://afrotools.com";const urls=crypto?["https://api.coingecko.com/api/v3/simple/price?ids="+from.value+"&vs_currencies="+to.value.toLowerCase()+"&include_last_updated_at=true"]:[base+"/api/forex?base=USD",base+"/data/forex/latest.json"];
+    (async()=>{for(const url of urls){try{
+      const response=await fetch(url,{cache:"no-cache",signal:AbortSignal.timeout(5000)});if(!response.ok)continue;
+      const data=await response.json();if(id!==revision)return;
+      const coin=data[from.value],rate=crypto?Number(coin?.[to.value.toLowerCase()]):Number(to.value==="USD"?1:data.rates?.[to.value])/Number(from.value==="USD"?1:data.rates?.[from.value]);
+      const date=crypto?new Date(Number(coin?.last_updated_at)*1000):new Date(data.as_of||data.timestamp||data.updatedAt);
+      const age=Date.now()-date.getTime();
+      if(!Number.isFinite(rate)||rate<=0||!Number.isFinite(age)||age< -60000||age>(crypto?600000:604800000)||(!crypto && data.base && data.base!=="USD"))continue;
+      quote={rate,source:(crypto?"CoinGecko":"AfroTools FX")+" · "+date.toLocaleString(locale,{dateStyle:"medium",timeStyle:"short"})};status.textContent=quote.source;return;
+    }catch{}}
+    if(id===revision)status.textContent=msg("Enter your provider’s rate to convert this pair.","Saisissez le cours de votre prestataire pour convertir cette paire.");
+    })();
+  }
+  from.addEventListener("change",refresh);to.addEventListener("change",refresh);form.addEventListener("input",()=>{result.textContent="";});
+  form.addEventListener("submit",event=>{
+   event.preventDefault();const own=!manual.disabled && manual.value!=="",rate=own?manual.valueAsNumber:quote?.rate,value=amount.valueAsNumber*rate;
+   if(!(amount.valueAsNumber>0&&rate>0&&Number.isFinite(value))){result.textContent=msg("Enter a positive amount and a valid rate.","Saisissez un montant positif et un cours valide.");return;}
+   const number=n=>n.toLocaleString(locale,{maximumSignificantDigits:10});
+   result.textContent=number(value)+" "+to.value+" · 1 "+(symbols[from.value]||from.value)+" = "+number(rate)+" "+to.value+" · "+(own?msg("Your provider quote","Cours saisi"):quote.source)+" · "+msg("Before fees","Hors frais");
+  });refresh();
+};

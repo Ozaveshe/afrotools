@@ -1,1 +1,52 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{};var e=["USD","EUR","GBP","NGN","KES","GHS","ZAR","EGP","TZS","UGX","RWF","MAD","XOF","XAF","ZMW","MWK","BWP"];function a(e){var a=Number(e);return Number.isFinite(a)&&a>0?a:null}function t(e){var a=e&&new Date(e.as_of||e.timestamp||e.updatedAt);return a&&Number.isFinite(a.getTime())&&Date.now()-a.getTime()>=-864e5&&Date.now()-a.getTime()<=6048e5?a:null}window.AfroWidgets.currency_converter=function(i,l){l=l||{};var r=null,n=null,s=e.map(function(e){return'<option value="'+e+'">'+e+"</option>"}).join("");function o(e,a){var t=i.querySelector("#aw-status");t.textContent=e,t.style.color=a?"#b42318":""}function c(){var e=a(i.querySelector("#aw-amt").value),t=i.querySelector("#aw-from").value,l=i.querySelector("#aw-to").value,s=r&&function(e,t,i){if(t===i)return 1;var l="USD"===t?1:a(e[t]),r="USD"===i?1:a(e[i]);return l&&r?r/l:null}(r,t,l),o=i.querySelector("#aw-res");if(o.hidden=!1,e)if(s){var c=e*s;o.innerHTML='<div class="aw-result-label">Indicative planning estimate</div><div class="aw-result-main">'+l+" "+c.toLocaleString("en",{maximumFractionDigits:4})+'</div><hr class="aw-divider"><div class="aw-result-row"><span class="aw-result-label">Rate</span><span>1 '+t+" = "+s.toLocaleString("en",{maximumSignificantDigits:8})+" "+l+'</span></div><div class="aw-result-row"><span class="aw-result-label">Dated</span><span>'+n.toLocaleDateString("en")+'</span></div><p class="aw-result-label">Fees and provider spreads are not included.</p>'}else o.textContent="This pair is unavailable in the dated dataset.";else o.textContent="Enter an amount greater than zero."}i.innerHTML='<div class="aw-title">Currency Converter</div><p class="aw-result-label" id="aw-status" role="status" aria-live="polite">Checking rate date…</p><div class="aw-field"><label class="aw-label" for="aw-amt">Amount</label><input class="aw-input" id="aw-amt" type="number" min="0.01" step="any" inputmode="decimal" value="1000"></div><div class="aw-row"><div class="aw-field"><label class="aw-label" for="aw-from">From</label><select class="aw-select" id="aw-from">'+s+'</select></div><div class="aw-field"><label class="aw-label" for="aw-to">To</label><select class="aw-select" id="aw-to">'+s+'</select></div></div><button class="aw-btn aw-btn--primary" id="aw-calc" disabled>Convert</button><div class="aw-result-box" id="aw-res" hidden aria-live="polite"></div>'+(l.footerHTML||""),i.querySelector("#aw-from").value="USD",i.querySelector("#aw-to").value="NGN",i.querySelector("#aw-calc").addEventListener("click",c),i.querySelector("#aw-amt").addEventListener("keydown",function(e){"Enter"===e.key&&c()}),async function(){for(var e=0;e<2;e++)try{var a=0===e?"/api/forex?base=USD":"/data/forex/latest.json",l=await fetch(a,{cache:"no-cache",credentials:"same-origin"});if(!l.ok)continue;var s=await l.json(),c=t(s);if(c&&s.rates)return r=s.rates,n=c,o("Dated indicative snapshot: "+c.toLocaleDateString("en"),!1),void(i.querySelector("#aw-calc").disabled=!1)}catch(e){}o("Rates unavailable or older than seven days. Open the full tool to enter your provider rate.",!0)}()}}();
+window.AfroWidgets = window.AfroWidgets || {};
+window.AfroWidgets.currency_converter = function(root, options) {
+  const crypto = false;
+  const fr = root.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr";
+  const msg = (en, native) => fr ? native : en;
+  const locale = fr ? "fr" : "en";
+  const symbols = {bitcoin:"BTC",ethereum:"ETH",tether:"USDT",binancecoin:"BNB",solana:"SOL",ripple:"XRP"};
+  const fiat = crypto ? ["NGN","KES","GHS","ZAR","EGP","USD","EUR","GBP"] : ["USD","EUR","GBP","NGN","KES","GHS","ZAR","EGP","TZS","UGX","RWF","MAD","XOF","XAF","ZMW","MWK","BWP"];
+  const form = document.createElement("form");form.style.cssText="display:grid;gap:12px";form.noValidate=true;
+  const title=document.createElement("h2");title.textContent=crypto?msg("Crypto converter","Conversion de cryptomonnaies"):msg("Currency converter","Conversion de devises");form.append(title);
+  function addField(text,ops) {
+    const wrapper=document.createElement("label");wrapper.append(document.createTextNode(text));
+    const control=document.createElement(ops?"select":"input");
+    if(ops) for(const key of ops)control.add(new Option(symbols[key]||key,key));
+    else{control.type="number";control.step="any";control.min="0";}
+    control.className=ops?"aw-select":"aw-input";control.style.cssText="display:block;width:100%;min-height:44px";wrapper.append(control);form.append(wrapper);return control;
+  }
+  const amount=addField(msg("Amount","Montant"));amount.value=crypto?"1":"1000";
+  const from=addField(msg("From","De"),crypto?Object.keys(symbols):fiat);
+  const to=addField(msg("To","Vers"),fiat);to.value="NGN";
+  const manual=addField("");manual.setAttribute("data-rate","");
+  const status=document.createElement("p");status.setAttribute("role","status");
+  const result=document.createElement("output");result.setAttribute("aria-live","polite");
+  const button=document.createElement("button");button.className="aw-btn";button.type="submit";button.textContent=msg("Convert","Convertir");form.append(button,status,result);root.replaceChildren(form);if(options?.footerHTML)root.insertAdjacentHTML("beforeend",options.footerHTML);
+  let quote=null, revision=0;
+  function refresh(){
+    const id=++revision;quote=null;manual.value="";result.textContent="";
+    const unit=symbols[from.value]||from.value;
+    manual.parentElement.firstChild.nodeValue=msg("Your provider rate (optional): ","Cours de votre prestataire (facultatif) : ")+to.value+msg(" for 1 "," pour 1 ")+unit;
+    if(!crypto && from.value===to.value){manual.disabled=true;quote={rate:1,source:msg("Same currency","Même devise")};status.textContent=quote.source;return;}
+    manual.disabled=false;status.textContent=msg("Looking up a dated rate. You can enter your quote now.","Recherche d’un cours daté. Vous pouvez saisir votre propre cours.");
+    const base="https://afrotools.com";const urls=crypto?["https://api.coingecko.com/api/v3/simple/price?ids="+from.value+"&vs_currencies="+to.value.toLowerCase()+"&include_last_updated_at=true"]:[base+"/api/forex?base=USD",base+"/data/forex/latest.json"];
+    (async()=>{for(const url of urls){try{
+      const response=await fetch(url,{cache:"no-cache",signal:AbortSignal.timeout(5000)});if(!response.ok)continue;
+      const data=await response.json();if(id!==revision)return;
+      const coin=data[from.value],rate=crypto?Number(coin?.[to.value.toLowerCase()]):Number(to.value==="USD"?1:data.rates?.[to.value])/Number(from.value==="USD"?1:data.rates?.[from.value]);
+      const date=crypto?new Date(Number(coin?.last_updated_at)*1000):new Date(data.as_of||data.timestamp||data.updatedAt);
+      const age=Date.now()-date.getTime();
+      if(!Number.isFinite(rate)||rate<=0||!Number.isFinite(age)||age< -60000||age>(crypto?600000:604800000)||(!crypto && data.base && data.base!=="USD"))continue;
+      quote={rate,source:(crypto?"CoinGecko":"AfroTools FX")+" · "+date.toLocaleString(locale,{dateStyle:"medium",timeStyle:"short"})};status.textContent=quote.source;return;
+    }catch{}}
+    if(id===revision)status.textContent=msg("Enter your provider’s rate to convert this pair.","Saisissez le cours de votre prestataire pour convertir cette paire.");
+    })();
+  }
+  from.addEventListener("change",refresh);to.addEventListener("change",refresh);form.addEventListener("input",()=>{result.textContent="";});
+  form.addEventListener("submit",event=>{
+   event.preventDefault();const own=!manual.disabled && manual.value!=="",rate=own?manual.valueAsNumber:quote?.rate,value=amount.valueAsNumber*rate;
+   if(!(amount.valueAsNumber>0&&rate>0&&Number.isFinite(value))){result.textContent=msg("Enter a positive amount and a valid rate.","Saisissez un montant positif et un cours valide.");return;}
+   const number=n=>n.toLocaleString(locale,{maximumSignificantDigits:10});
+   result.textContent=number(value)+" "+to.value+" · 1 "+(symbols[from.value]||from.value)+" = "+number(rate)+" "+to.value+" · "+(own?msg("Your provider quote","Cours saisi"):quote.source)+" · "+msg("Before fees","Hors frais");
+  });refresh();
+};

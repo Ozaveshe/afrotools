@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "currency-converter": {
+    "title": "Conversion de devises",
+    "tool": "/fr/tools/convertisseur-devises/",
+    "frame": "financial-currency-converter",
+    "script": "financial/currency-converter.js"
+  },
+  "crypto-converter": {
+    "title": "Conversion de cryptomonnaies",
+    "tool": "/fr/tools/afrotaux/",
+    "frame": "crypto-crypto-converter",
+    "script": "crypto/crypto-converter.js"
+  }
+,
+
   "electricity-tariff": {
     "title": "Estimer la facture d’électricité",
     "tool": "/fr/tools/tarifs-electricite/",
