@@ -372,6 +372,11 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
       <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
       <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
     </div>
+    <aside id="streamRecording" class="as-empty-card" aria-label="Recorded performance">
+      <strong>Watch a recorded performance</strong>
+      <p>Stonebwoy performs The Torcher Experience at YRC Stadium in Ghana’s Volta Region. Part 1 runs for 39 minutes.</p>
+      <div class="as-empty-actions"><a href="https://www.youtube.com/watch?v=_T3ukL1O6iE">Play the concert on Stonebwoy’s YouTube channel</a></div>
+    </aside>
   </div>
 </section>
 
@@ -1266,6 +1271,11 @@ function briefButton(label, data){
 function renderLive(streams){
   var el = document.getElementById('liveGrid');
   document.getElementById('liveCount').textContent = '('+streams.length+')';
+  document.getElementById('streamRecording').hidden = LIVE_STREAMS.length > 0 || streams.length > 0;
+  if (!streams.length && LIVE_STREAMS.length) {
+    el.innerHTML = '<div class="as-empty-card" role="status"><strong>No live streams match your search.</strong></div>';
+    return;
+  }
   if(!streams.length){
     if(AFROSTREAM_LOAD_STATE.streams === 'unavailable'){
       el.innerHTML = '<div class="as-empty-card" role="status">' +
