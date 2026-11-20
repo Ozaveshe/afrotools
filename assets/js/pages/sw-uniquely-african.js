@@ -334,6 +334,20 @@
     var selected = form.querySelector('[data-ua-field="recipe"]');
     var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
     var recipe = recipes.find(function (item) { return selected && item.slug === selected.value; });
+    var photo = form.querySelector("[data-ua-recipe-photo]");
+    if (recipe && recipe.image_url) {
+      if (!photo) {
+        photo = document.createElement("img");
+        photo.setAttribute("data-ua-recipe-photo", "");
+        photo.width = 320;
+        photo.style.cssText = "display:block;max-width:100%;height:auto;margin-top:0.75rem";
+        selected.closest(".ua-fields").after(photo);
+      }
+      photo.alt = "Sahani ya " + recipe.name_local;
+      photo.src = recipe.image_url;
+    } else if (photo) {
+      photo.remove();
+    }
     if (original) {
       original.readOnly = true;
       original.value = recipe ? recipe.default_servings : "";
