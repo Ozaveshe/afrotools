@@ -474,6 +474,12 @@ const COUNTRY_RULES = COUNTRIES
 
 function translateSegment(text) {
   let out = text.replace(/\bInstallation(?:ation)+\b/g, "Installation");
+  out = out.replace("Battery backup is not the same as total daily energy. Size it around appliances that must run during an outage: lights, fan, router, phones, POS terminal, fridge, freezer, medical fridge, pump controls, or a small workstation.",
+    "Dimensionnez la batterie selon les appareils qui doivent fonctionner pendant une coupure et la durée de secours souhaitée. Comptez par exemple les lampes, le ventilateur, le routeur, les téléphones, le terminal de paiement, le réfrigérateur, le congélateur, le réfrigérateur médical, les commandes de pompe ou un petit poste de travail.")
+    .replace(/This page uses (.+?) as the (.+?) essential-load battery-cost band\./g,
+      "Le budget indicatif retenu pour une batterie alimentant les appareils essentiels est de $1.")
+    .replace(/(.+?) bill, (.+?) generator\/month/g, "Facture mensuelle : $1 ; groupe électrogène : $2/mois")
+    .replace(/(.+?) bill \/ (.+?) gen USD/g, "Facture : $1 ; groupe électrogène : $2 USD");
   for (const [re, to] of REGEX_RULES) {
     re.lastIndex = 0;
     out = out.replace(re, to);
