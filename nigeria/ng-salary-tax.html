@@ -469,7 +469,7 @@
                 <label class="slider-label" for="salarySlider" id="sliderLabelText">Annual Gross Salary</label>
                 <span class="slider-val" id="sliderVal">&#8358;3,600,000</span>
               </div>
-              <input type="range" id="salarySlider" min="500000" max="50000000" step="100000" value="3600000" aria-label="Salary slider">
+              <input type="range" id="salarySlider" min="500000" max="50000000" step="100000" value="3600000" aria-labelledby="sliderLabelText">
             </div>
 
             <!-- SALARY INPUT -->
@@ -491,8 +491,8 @@
                 <label class="f-label-text" for="salaryPeriod">Entry Period</label>
               </div>
               <div class="mode-toggle">
-                <button type="button" class="mode-btn on" id="periodAnnual" onclick="setSalaryPeriod('annual',this)">Annual</button>
-                <button type="button" class="mode-btn" id="periodMonthly" onclick="setSalaryPeriod('monthly',this)">Monthly</button>
+                <button type="button" class="mode-btn on" id="periodAnnual" aria-pressed="true" onclick="setSalaryPeriod('annual',this)">Annual</button>
+                <button type="button" class="mode-btn" id="periodMonthly" aria-pressed="false" onclick="setSalaryPeriod('monthly',this)">Monthly</button>
               </div>
             </div>
 
@@ -594,8 +594,8 @@
         </div>
 
         <!-- RESULTS CARD -->
-        <div class="card results-card" id="resultsCard" aria-live="polite">
-          <div class="res-hero">
+        <div class="card results-card" id="resultsCard">
+          <div class="res-hero" id="payrollResultStatus" role="status" aria-live="polite" aria-atomic="true">
             <div class="res-hero-label" id="resLabel">Monthly Take-Home Pay</div>
             <div class="res-hero-amount" id="resAmount">&#8358;0</div>
             <div class="res-hero-period" id="resPeriod">After all deductions &amp; tax</div>
@@ -604,8 +604,8 @@
           <div class="res-body">
             <!-- Period Toggle -->
             <div class="period-row">
-              <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-              <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+              <button type="button" class="per-btn on" aria-pressed="true" onclick="setPeriod('monthly',this)">Monthly</button>
+              <button type="button" class="per-btn" aria-pressed="false" onclick="setPeriod('annual',this)">Annual</button>
             </div>
 
             <!-- Result Content -->
@@ -1214,6 +1214,7 @@ function setupInput(id) {
   const el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('focus', function() {
+    if (id === 'grossSalary') return; // Keep the user's text selection intact on focus.
     const raw = id === 'homeloanAmt' ? readHomeLoanInterest(this.value) : parseNum(this.value);
     if (id === 'homeloanAmt' && !Number.isFinite(raw)) return;
     this.value = raw > 0 ? raw : '';
@@ -1221,7 +1222,7 @@ function setupInput(id) {
   el.addEventListener('blur', function() {
     const raw = id === 'homeloanAmt' ? readHomeLoanInterest(this.value) : parseNum(this.value);
     if (id === 'homeloanAmt' && !Number.isFinite(raw)) return;
-    if (raw > 0) this.value = (id === 'homeloanAmt' ? raw : Math.round(raw)).toLocaleString('en-NG', { maximumFractionDigits: 20 });
+    if (raw > 0) this.value = (id === 'homeloanAmt' || id === 'grossSalary' ? raw : Math.round(raw)).toLocaleString('en-NG', { maximumFractionDigits: 20 });
   });
   el.addEventListener('input', function() {
     clearTimeout(_debounceTimer);
@@ -1234,7 +1235,7 @@ function setupInput(id) {
 const slider = document.getElementById('salarySlider');
 slider.addEventListener('input', function() {
   const v = parseInt(this.value);
-  document.getElementById('grossSalary').value = Math.round(v).toLocaleString('en-NG');
+  document.getElementById('grossSalary').value = salaryInputValue(v);
   document.getElementById('sliderVal').textContent = fmt(v);
   updateSliderFill(this);
   clearTimeout(_debounceTimer);
@@ -1272,22 +1273,38 @@ function setCalcMode(mode, btn) {
   btn.classList.add('on');
   btn.setAttribute('aria-checked', 'true');
   const isNet = mode === 'net';
-  document.getElementById('salaryLabel').textContent = isNet ? 'Desired Take-Home Pay (Annual)' : 'Annual Gross Salary';
+  updateSalaryLabel();
   document.getElementById('sliderLabelText').textContent = isNet ? 'Desired Annual Take-Home' : 'Annual Gross Salary';
   document.getElementById('salaryHint').textContent = isNet ? 'We\'ll compute the gross salary needed to achieve this net pay.' : '';
   if (RESULT) calculate();
 }
 
 // -€-€ SALARY PERIOD -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function updateSalaryLabel() {
+  const period = SALARY_PERIOD === 'monthly' ? 'Monthly' : 'Annual';
+  document.getElementById('salaryLabel').textContent = CALC_MODE === 'net'
+    ? 'Desired Take-Home Pay (' + period + ')' : period + ' Gross Salary';
+}
+function salaryInputValue(annual) {
+  return (SALARY_PERIOD === 'monthly' ? annual / 12 : annual).toLocaleString('en-NG', { maximumFractionDigits: 2 });
+}
 function setSalaryPeriod(period, btn) {
+  const input = document.getElementById('grossSalary');
+  const amount = parseNum(input.value);
+  const annual = SALARY_PERIOD === 'monthly' ? amount * 12 : amount;
   SALARY_PERIOD = period;
-  btn.parentElement.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+  if (amount > 0) input.value = salaryInputValue(annual);
+  updateSalaryLabel();
+  btn.parentElement.querySelectorAll('.mode-btn').forEach(b => {
+    b.classList.toggle('on', b === btn);
+    b.setAttribute('aria-pressed', String(b === btn));
+  });
+  if (RESULT) calculate();
 }
 
 // -€-€ PRESET BUTTONS -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function setPreset(annual, btn) {
-  document.getElementById('grossSalary').value = Math.round(annual).toLocaleString('en-NG');
+  document.getElementById('grossSalary').value = salaryInputValue(annual);
   slider.value = Math.min(Math.max(annual, 500000), 50000000);
   document.getElementById('sliderVal').textContent = fmt(annual);
   updateSliderFill(slider);
@@ -1586,18 +1603,7 @@ function calculate() {
   window.RESULT = RESULT;
 
   // Update hero
-  const heroLabel = CALC_MODE === 'net'
-    ? `Required Gross (${REGIME === 'nta' ? 'NTA 2026' : 'PITA 2025'})`
-    : `Monthly Take-Home (${REGIME === 'nta' ? 'NTA 2026' : 'PITA 2025'})`;
-  document.getElementById('resLabel').textContent = heroLabel;
-
-  const heroAmount = CALC_MODE === 'net' ? fmt(gross / 12) : fmt(RESULT.netMonthly);
-  document.getElementById('resAmount').textContent = heroAmount;
-
-  const heroGross = CALC_MODE === 'net'
-    ? `Gross annual: ${fmt(gross)} | Net monthly: ${fmt(RESULT.netMonthly)}`
-    : `Gross monthly: ${fmt(RESULT.gross / 12)}`;
-  document.getElementById('resGross').textContent = heroGross;
+  updatePayrollHeadline(PERIOD);
 
   // Results
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
@@ -1667,25 +1673,29 @@ function calculate() {
 }
 
 // -€-€ PERIOD TOGGLE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function updatePayrollHeadline(period) {
+  const isMonthly = period === 'monthly';
+  const d = isMonthly ? 12 : 1;
+  const periodLabel = isMonthly ? 'Monthly' : 'Annual';
+  if (CALC_MODE === 'net') {
+    document.getElementById('resLabel').textContent = `${periodLabel} Required Gross (${REGIME === 'nta' ? 'NTA 2026' : 'PITA 2025'})`;
+    document.getElementById('resAmount').textContent = fmt(RESULT.gross / d);
+    document.getElementById('resGross').textContent = `Gross ${periodLabel.toLowerCase()}: ${fmt(RESULT.gross / d)} | Net ${periodLabel.toLowerCase()}: ${fmt(RESULT.netAnnual / d)}`;
+  } else {
+    document.getElementById('resLabel').textContent = `${periodLabel} Take-Home (${REGIME === 'nta' ? 'NTA 2026' : 'PITA 2025'})`;
+    document.getElementById('resAmount').textContent = fmt(RESULT.netAnnual / d);
+    document.getElementById('resGross').textContent = `Gross ${periodLabel.toLowerCase()}: ${fmt(RESULT.gross / d)}`;
+  }
+}
 function setPeriod(period, btn) {
   PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+  document.querySelectorAll('.per-btn').forEach(b => {
+    b.classList.toggle('on', b === btn);
+    b.setAttribute('aria-pressed', String(b === btn));
+  });
   if (RESULT) {
-    // Update hero section
     const isMonthly = period === 'monthly';
-    const d = isMonthly ? 12 : 1;
-    const periodLabel = isMonthly ? 'Monthly' : 'Annual';
-    if (CALC_MODE === 'net') {
-      document.getElementById('resLabel').textContent = `Required Gross (${REGIME === 'nta' ? 'NTA 2026' : 'PITA 2025'})`;
-      document.getElementById('resAmount').textContent = fmt(RESULT.gross / d);
-      document.getElementById('resGross').textContent = `Gross ${periodLabel.toLowerCase()}: ${fmt(RESULT.gross / d)} | Net ${periodLabel.toLowerCase()}: ${fmt(RESULT.netAnnual / d)}`;
-    } else {
-      document.getElementById('resLabel').textContent = `${periodLabel} Take-Home (${REGIME === 'nta' ? 'NTA 2026' : 'PITA 2025'})`;
-      document.getElementById('resAmount').textContent = fmt(RESULT.netAnnual / d);
-      document.getElementById('resGross').textContent = `Gross ${periodLabel.toLowerCase()}: ${fmt(RESULT.gross / d)}`;
-    }
-
+    updatePayrollHeadline(period);
     // Update result rows
     document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
     const emp = renderEmployerCost(RESULT);
