@@ -609,9 +609,10 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "dca-calculator",
     slug: "dca-crypto",
+    externalCalculator: true,
     category: "Crypto",
     title: "Widget DCA crypto",
-    description: "Comparer un plan d'achat regulier avec un montant, une frequence et une duree.",
+    description: "Reconstituer des achats réguliers de BTC ou d’ETH avec un montant, une fréquence et deux dates.",
     fullFrenchPath: "/fr/crypto/dca-calculator/",
     fullFrenchLabel: "Reconstituer des achats réguliers de cryptomonnaie",
     englishSource: "widgets/iframe/crypto-dca-calculator",
@@ -621,6 +622,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "staking-rewards",
     slug: "recompenses-staking",
+    relatedDestination: true,
     category: "Crypto",
     title: "Widget recompenses de staking",
     description: "Estimer des recompenses de staking a partir d'un montant, d'un taux et d'une duree.",
@@ -997,6 +999,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "customer-ltv-widget",
     slug: "valeur-vie-client",
+    relatedDestination: true,
     category: "PME",
     title: "Widget valeur vie client",
     description: "Estimer une valeur vie client simple a partir de depense moyenne, frequence et retention.",
@@ -1009,6 +1012,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "freelancer-quote",
     slug: "devis-freelance",
+    relatedDestination: true,
     category: "PME",
     title: "Widget devis freelance",
     description: "Construire un devis simple depuis heures, taux, marge et frais.",
@@ -1043,6 +1047,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "study-hours-planner",
     slug: "plan-heures-etude",
+    relatedDestination: true,
     category: "Education",
     title: "Widget plan heures d'etude",
     description: "Repartir des heures d'etude par matiere, objectif et nombre de semaines.",
@@ -1138,6 +1143,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "subscription-margin",
     slug: "marge-abonnement",
+    relatedDestination: true,
     category: "PME",
     title: "Widget marge d'abonnement",
     description: "Estimer une marge mensuelle pour un produit a abonnement selon revenu, couts et volume.",
@@ -1173,6 +1179,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "utility-arrears-plan",
     slug: "plan-arrieres-services",
+    relatedDestination: true,
     category: "Energie",
     title: "Widget plan d'arrieres services",
     description: "Repartir un montant d'arrieres sur plusieurs paiements avec une marge mensuelle.",
@@ -1208,6 +1215,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "maternal-care-budget",
     slug: "budget-maternite",
+    relatedDestination: true,
     category: "Sante",
     title: "Widget budget maternite",
     description: "Estimer un budget de suivi maternite avec consultations, transport, analyses et marge.",
@@ -1220,6 +1228,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "medicine-cost-planner",
     slug: "budget-medicaments",
+    relatedDestination: true,
     category: "Sante",
     title: "Widget budget medicaments",
     description: "Estimer une depense de medicaments selon quantite, frequence et prix unitaire.",
@@ -1258,7 +1267,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
     category: "Emploi",
     title: "Widget cout employeur",
     description: "Estimer un cout employeur total a partir du salaire, avantages et charges.",
-    fullFrenchPath: "/fr/tools/cout-employe/",
+    fullFrenchPath: "/fr/tools/cout-total-employe/",
     fullFrenchLabel: "Estimer le coût total d’un salarié",
     englishSource: "widgets/iframe/jobs-employer-cost-widget",
     primaryUse: "Pages paie, guides RH, PME, cabinets comptables et contenus de recrutement.",
@@ -1279,6 +1288,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "leave-days-widget",
     slug: "jours-conge-emploi",
+    relatedDestination: true,
     category: "Emploi",
     title: "Widget jours de conge",
     description: "Compter des jours de conge ou d'absence selon dates et regle simple.",
@@ -1303,6 +1313,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "contract-deposit-widget",
     slug: "acompte-contrat",
+    relatedDestination: true,
     category: "Juridique",
     title: "Widget acompte de contrat",
     description: "Calculer un acompte a partir de la valeur du contrat et du pourcentage convenu.",
@@ -1339,6 +1350,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "notice-period-widget",
     slug: "periode-preavis",
+    relatedDestination: true,
     category: "Juridique",
     title: "Widget periode de preavis",
     description: "Calculer une date de fin de preavis a partir d'une date de depart et d'un nombre de jours.",
@@ -1420,6 +1432,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "device-finance-widget",
     slug: "financement-appareil-telecom",
+    relatedDestination: true,
     category: "Telecom",
     title: "Widget financement appareil",
     description: "Estimer une mensualite d'appareil apres acompte, duree et frais.",
@@ -1443,6 +1456,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "afcfta-duty-saving",
     slug: "economies-droits-zlecaf",
+    relatedDestination: true,
     category: "Commerce",
     title: "Widget economies droits ZLECAf",
     description: "Estimer une economie de droits quand un taux preferentiel s'applique.",
@@ -1455,6 +1469,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "container-split-cost",
     slug: "partage-cout-conteneur",
+    relatedDestination: true,
     category: "Commerce",
     title: "Widget partage cout conteneur",
     description: "Repartir un cout de conteneur entre importateurs, colis ou lignes de produit.",
@@ -1491,6 +1506,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "export-margin-widget",
     slug: "marge-export",
+    relatedDestination: true,
     category: "Commerce",
     title: "Widget marge export",
     description: "Estimer une marge export apres cout produit, fret, manutention et frais.",
@@ -1515,6 +1531,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "fx-landed-price",
     slug: "prix-rendu-change",
+    relatedDestination: true,
     category: "Commerce",
     title: "Widget prix rendu avec change",
     description: "Convertir un cout fournisseur avec taux de change et majoration de cout rendu.",
@@ -1539,6 +1556,7 @@ const FRENCH_WIDGET_PARENT_PAGES = [
   {
     id: "airport-transfer-cost",
     slug: "cout-transfert-aeroport",
+    relatedDestination: true,
     category: "Voyage",
     title: "Widget cout transfert aeroport",
     description: "Estimer un transfert aeroport selon distance, tarif kilometrique et marge.",

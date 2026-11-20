@@ -12,6 +12,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
+const { withWidgetCalculator } = require("./lib/french-widget-parent-calculator");
 const SITE = "https://afrotools.com";
 const HUB_TITLE = "Widgets à intégrer à votre site | AfroTools";
 const HUB_DESCRIPTION = "Choisissez un widget à intégrer à votre site. Consultez son outil complet et ses limites, puis copiez le code d’intégration.";
@@ -524,6 +525,22 @@ function refreshEmbedControls(html, item, widget) {
 }
 
 function main() {
+  if (process.argv.includes("--destination-links-only")) {
+    const check = process.argv.includes("--check");
+    let changed = 0;
+    for (const item of FRENCH_WIDGET_PARENT_PAGES.filter(entry => entry.fullFrenchLabel)) {
+      const file = path.join(ROOT, "fr", "widgets", item.slug, "index.html");
+      const before = fs.readFileSync(file, "utf8");
+      const after = withWidgetCalculator(before, item, widgetById(item.id));
+      if (before !== after) {
+        changed++;
+        if (!check) fs.writeFileSync(file, after, "utf8");
+      }
+    }
+    console.log(JSON.stringify({ changed, check }));
+    if (check && changed) process.exitCode = 1;
+    return;
+  }
   const resolved = FRENCH_WIDGET_PARENT_PAGES.map((item) => {
     const widget = widgetById(item.id);
     if (!widget) throw new Error(`Missing widget registry entry: ${item.id}`);
@@ -589,7 +606,7 @@ function main() {
     if (entry.item.slug === BESPOKE_PARENT_SLUG) continue;
     const outDir = path.join(frWidgetsDir, entry.item.slug);
     fs.mkdirSync(outDir, { recursive: true });
-    fs.writeFileSync(path.join(outDir, "index.html"), pageTemplate(entry.item, entry.widget), "utf8");
+    fs.writeFileSync(path.join(outDir, "index.html"), withWidgetCalculator(pageTemplate(entry.item, entry.widget), entry.item, entry.widget), "utf8");
   }
 
   console.log(JSON.stringify({
