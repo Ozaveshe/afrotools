@@ -6,7 +6,8 @@
   }
   function find(query, locale, tools) {
     var words = normalize(query);
-    if (!/\b(prix|tarif|tarifs|bei)\b/.test(words) || !/\b(carburants?|essence|petrol|petroli|diesel|gasoil|gazole|dizeli|mafuta)\b/.test(words)) return null;
+    var topic = (locale === 'fr' && /^carburants?$/.test(words)) || (locale === 'sw' && words === 'mafuta');
+    if (!topic && (!/\b(prix|tarif|tarifs|bei)\b/.test(words) || !/\b(carburants?|essence|petrol|petroli|diesel|gasoil|gazole|dizeli|mafuta)\b/.test(words))) return null;
     var matches = [];
     (window.AFRICAN_COUNTRIES || []).forEach(function (country) {
       var names = [country.name, country.displayNames && country.displayNames[locale], country.slug];

@@ -10,12 +10,17 @@ function frenchDirectoryIntent(terms) {
 function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
   if (!terms.length) return tools;
   const finder = typeof window !== 'undefined' && window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(terms.join(' '), 'fr', tools);
-  if (finder) return [finder];
+  const topic = finder && terms.length === 1 && /^carburants?$/.test(terms[0]);
+  if (finder && !topic) return [finder];
   const direct = tools.filter(tool => {
     const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
     return terms.every(term => text.includes(term));
   });
   const matches = direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  if (topic) {
+    const recommended = Object.assign({}, finder, { priority: Number.MAX_SAFE_INTEGER });
+    return [recommended, ...matches.filter(tool => tool.id !== finder.id)];
+  }
   const preferredId = frenchDirectoryIntent(terms);
   if (preferredId) {
     const preferred = tools.find(tool => tool.id === preferredId);
@@ -33,8 +38,13 @@ function repairFrenchDirectorySearch(html) {
     throw new Error('French directory search owner changed; review integration before generation.');
   }
   if (!clean.includes('function renderTools(){')) throw new Error('French directory renderer missing.');
-  const withFuelSearch = clean.includes('/assets/js/lib/localized-fuel-search.js') ? clean : clean.replace('</head>', '<script src="/assets/js/lib/localized-fuel-search.js?v=d7036365"></script>\n</head>');
-  const mobileFilters = withFuelSearch.replace('.filter-bar{padding:10px 16px;}', '.filter-bar{padding:10px 16px;position:static;}');
+  const fuelScript = '/assets/js/lib/localized-fuel-search.js?v=f0e9af53';
+  const scriptUrl = /\/assets\/js\/lib\/localized-fuel-search\.js(?:\?v=[\w-]+)?/;
+  const withFuelSearch = scriptUrl.test(clean)
+    ? clean.replace(scriptUrl, fuelScript)
+    : clean.replace('</head>', '<script src="' + fuelScript + '"></script>\n</head>');
+  const translated = withFuelSearch.replace('>Load more tools</button>', '>Afficher plus d’outils</button>');
+  const mobileFilters = translated.replace('.filter-bar{padding:10px 16px;}', '.filter-bar{padding:10px 16px;position:static;}');
   const standardOrder = 'tools.sort((a,b) => (b.priority||0) - (a.priority||0));';
   const searchOrder = "const preferredId = frenchDirectoryIntent(searchTerms);\n    tools.sort((a,b) => (preferredId ? Number(b.id === preferredId) - Number(a.id === preferredId) : 0) || (b.priority||0) - (a.priority||0));";
   if (!mobileFilters.includes(standardOrder) && !mobileFilters.includes(searchOrder)) throw new Error('French directory recommended sort owner missing.');

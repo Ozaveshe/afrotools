@@ -241,7 +241,7 @@ a{text-decoration:none;color:inherit;}
 <meta property="article:modified_time" content="2026-03-28">
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
-<link rel="stylesheet" href="/assets/css/localized-discovery-standard.css?v=06cb4983"><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cette page garantit-elle une fonction disponible ?","acceptedAnswer":{"@type":"Answer","text":"Non. Cette page organise la découverte. La page finale du produit indique ses contrôles, ses sources, sa confidentialité, ses exports, son état et ses limites."}},{"@type":"Question","name":"Comment signaler une information obsolète ?","acceptedAnswer":{"@type":"Answer","text":"Envoyez la route, le pays, la date, la source et un exemple reproductible via la page de contact, sans données personnelles réelles."}}]}</script><script src="/assets/js/lib/localized-fuel-search.js?v=d7036365"></script>
+<link rel="stylesheet" href="/assets/css/localized-discovery-standard.css?v=06cb4983"><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cette page garantit-elle une fonction disponible ?","acceptedAnswer":{"@type":"Answer","text":"Non. Cette page organise la découverte. La page finale du produit indique ses contrôles, ses sources, sa confidentialité, ses exports, son état et ses limites."}},{"@type":"Question","name":"Comment signaler une information obsolète ?","acceptedAnswer":{"@type":"Answer","text":"Envoyez la route, le pays, la date, la source et un exemple reproductible via la page de contact, sans données personnelles réelles."}}]}</script><script src="/assets/js/lib/localized-fuel-search.js?v=f0e9af53"></script>
 <link rel="canonical" href="https://afrotools.com/fr/all-tools/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/all-tools/">
@@ -1921,7 +1921,7 @@ window.addEventListener('load', function() {
         </div>
 <!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->
   </div>
-  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Load more tools</button></div>
+  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Afficher plus d’outils</button></div>
 
   <div class="sec-divider"></div>
 
@@ -2396,12 +2396,17 @@ function frenchDirectoryIntent(terms) {
 function filterFrenchDirectorySearch(tools, terms, normalize, matchesBroadSearch) {
   if (!terms.length) return tools;
   const finder = typeof window !== 'undefined' && window.AfroFuelDirectoryResult && window.AfroFuelDirectoryResult(terms.join(' '), 'fr', tools);
-  if (finder) return [finder];
+  const topic = finder && terms.length === 1 && /^carburants?$/.test(terms[0]);
+  if (finder && !topic) return [finder];
   const direct = tools.filter(tool => {
     const text = normalize([tool.id, tool.name, tool.desc, tool.href].filter(Boolean).join(' '));
     return terms.every(term => text.includes(term));
   });
   const matches = direct.length ? direct : tools.filter(tool => matchesBroadSearch(tool, terms));
+  if (topic) {
+    const recommended = Object.assign({}, finder, { priority: Number.MAX_SAFE_INTEGER });
+    return [recommended, ...matches.filter(tool => tool.id !== finder.id)];
+  }
   const preferredId = frenchDirectoryIntent(terms);
   if (preferredId) {
     const preferred = tools.find(tool => tool.id === preferredId);
