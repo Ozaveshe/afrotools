@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "random-picker": {
+    "title": "Tirage au sort",
+    "tool": "/fr/tools/selecteur-aleatoire/",
+    "frame": "data-productivity-random-picker",
+    "script": "data-productivity/random-picker.js"
+  }
+,
+
   "unit-converter": {
     "title": "Convertisseur d’unités",
     "tool": "/fr/tools/convertisseur-unites/",
