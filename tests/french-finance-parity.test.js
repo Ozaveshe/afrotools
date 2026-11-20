@@ -172,7 +172,10 @@ test('source French AI route builder discovers all 132 finance owners', () => {
 
 test('French finance hub consumes the exact scoped manifest', () => {
   const html = fs.readFileSync(path.join(ROOT, 'fr', 'salary-tax', 'index.html'), 'utf8');
-  assert.match(html, /fetch\(["']\/data\/registry\/french-finance-tax-market-data\.json["']/);
+  assert.match(html, /fetch\(["']\/data\/french-finance-directory\.json["']/);
+  const directory = require('../data/french-finance-directory.json');
+  assert.equal(directory.count, manifest.count);
+  assert.deepEqual(directory.rows.map(row => row.frenchRoute), manifest.rows.map(row => row.frenchRoute));
   assert.match(html, /manifest\.count !== 132/);
   assert.match(html, /"leave-calculator": "\/fr\/tools\/calculateur-conges-pto\/"/);
   assert.match(html, /"pension-proj": "\/fr\/tools\/projection-pension-simple\/"/);

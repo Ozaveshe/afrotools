@@ -368,6 +368,10 @@ function main() {
   };
   if (process.argv.includes('--write')) {
     fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
+    const directoryFields = ['englishId', 'frenchRoute', 'imageId', 'imageUrl', 'icon', 'frenchName', 'frenchDescription', 'categoryGroup', 'countries'];
+    const directoryRows = manifest.rows.map(row => Object.fromEntries(directoryFields.map(key => [key, row[key]])));
+    const directory = { count: directoryRows.length, rows: directoryRows };
+    fs.writeFileSync(path.join(ROOT, 'data', 'french-finance-directory.json'), JSON.stringify(directory) + '\n');
     fs.writeFileSync(AI_EVAL_PATH, `${JSON.stringify(aiEval, null, 2)}\n`);
     fs.writeFileSync(EVIDENCE_JSON_PATH, `${JSON.stringify(report, null, 2)}\n`);
     fs.writeFileSync(EVIDENCE_MD_PATH, renderEvidenceMarkdown(report));
