@@ -715,9 +715,11 @@
       })
       : Promise.resolve(null),
     config.mode === 'permit'
-      ? fetch('/data/registry/countries.json', { credentials: 'same-origin' }).then(function (response) {
-        if (!response.ok) throw new Error('countries');
-        return response.json();
+      ? Promise.resolve().then(function () {
+        if (!Array.isArray(window.AFRICAN_COUNTRIES) || !window.AFRICAN_COUNTRIES.length) throw new Error('countries');
+        return window.AFRICAN_COUNTRIES.map(function (country) {
+          return { id: country.code, displayNames: country.displayNames, title: country.name, currency: country.currency };
+        });
       })
       : Promise.resolve([])
   ]).then(function (values) {

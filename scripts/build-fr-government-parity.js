@@ -173,7 +173,7 @@ ${swAlternate ? `  <link rel="alternate" hreflang="sw" href="${SITE}${swAlternat
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <script src="/assets/js/engines/government-parity-engine.js"></script>
-  <script src="/assets/js/pages/fr-government-parity-controller.js" defer></script>
+${app.mode === 'permit' ? '  <script src="/assets/js/data/african-countries.js" defer></script>\n' : ''}  <script src="/assets/js/pages/fr-government-parity-controller.js" defer></script>
   <script src="/assets/js/lazy-analytics.js" defer></script>
   <noscript><div class="fg-wrap fg-panel">JavaScript est nécessaire pour le calcul local. Consultez directement la source officielle indiquée dans le registre gouvernemental AfroTools.</div></noscript>
 </body>
