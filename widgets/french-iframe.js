@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "break-even-lite": {
+    "title": "Seuil de rentabilité",
+    "tool": "/fr/tools/seuil-rentabilite/",
+    "frame": "business-break-even-lite",
+    "script": "financial/break-even.js"
+  },
+  "break-even": {
+    "title": "Seuil de rentabilité",
+    "tool": "/fr/tools/seuil-rentabilite/",
+    "frame": "financial-break-even",
+    "script": "financial/break-even.js"
+  }
+,
+
   "inflation-calc": {
     "title": "Simulation de l’inflation",
     "tool": "/fr/tools/calculateur-inflation/",
