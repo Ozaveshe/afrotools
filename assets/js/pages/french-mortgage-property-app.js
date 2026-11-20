@@ -63,6 +63,16 @@
       escapeHtml(field.name) + '" type="' + escapeHtml(field.type) + '"' + attributes + ' required></label>';
   }
 
+  function courtQuoteResult(input) {
+    const sum = AfroCourtQuote.total(input.country, input.filingQuote, input.serviceQuote);
+    if (sum === null) return {ok:false,message:'Vérifiez les montants et les décimales de la devise.'};
+    const currency = AfroCourtQuote.currency(input.country);
+    return {ok:true,summary:'Budget établi à partir du devis du greffe.',checkedAt:input.quoteDate,
+      resultFields:{pays:form.elements.country.selectedOptions[0].textContent,tribunal:input.courtName,dateDuDevis:input.quoteDate,
+        juridiction:form.elements.courtLevel.selectedOptions[0].textContent,typeDeDemande:form.elements.claimType.selectedOptions[0].textContent,
+        devise:currency,dépôt:input.filingQuote,signification:input.serviceQuote,total:sum}};
+  }
+
   function collectInput() {
     var values = {};
     contract.fields.forEach(function (field) {
@@ -73,7 +83,7 @@
   }
 
   function renderResult(result) {
-    result = presentation && presentation.presentResult
+    result = englishId !== 'court-fees' && presentation && presentation.presentResult
       ? presentation.presentResult(englishId, result)
       : result;
     lastResult = result;
@@ -83,7 +93,7 @@
       Object.keys(result.resultFields).map(function (key) {
         return '<div><dt>' + escapeHtml(key.replace(/([A-Z])/g, ' $1')) + '</dt><dd data-result-field="' +
           escapeHtml(key) + '">' + escapeHtml(result.resultFields[key]) + '</dd></div>';
-      }).join('') + '</dl><p class="mp-result-boundary">Estimation de planification vérifiée le ' +
+      }).join('') + '</dl><p class="mp-result-boundary">' + (englishId === 'court-fees' ? 'Date du devis : ' : 'Estimation de planification vérifiée le ') +
       escapeHtml(result.checkedAt) + '. Aucun résultat officiel, juridique, fiscal, bancaire ou de marché n’est garanti.</p>';
     exportBar.hidden = false;
     output.focus();
@@ -101,7 +111,7 @@
       entrees: presentedInput,
       resultat: lastResult.resultFields,
       resume: lastResult.summary,
-      verifieLe: lastResult.checkedAt,
+      ...(englishId === 'court-fees' ? { dateDuDevis: lastResult.checkedAt } : { verifieLe: lastResult.checkedAt }),
       limite: 'Estimation de planification; vérification officielle ou professionnelle requise.'
     };
   }
@@ -123,7 +133,7 @@
     var lines = ['Outil : ' + data.outil, 'Route : ' + data.routeFrancaise];
     Object.keys(data.entrees).forEach(function (key) { lines.push('Entrée ' + key + ' : ' + data.entrees[key]); });
     Object.keys(data.resultat).forEach(function (key) { lines.push('Résultat ' + key + ' : ' + data.resultat[key]); });
-    lines.push('Résumé : ' + data.resume, 'Vérifié le : ' + data.verifieLe, data.limite);
+    lines.push('Résumé : ' + data.resume, (englishId === 'court-fees' ? 'Date du devis : ' + data.dateDuDevis : 'Vérifié le : ' + data.verifieLe), data.limite);
     return lines;
   }
 
@@ -162,7 +172,7 @@
       return;
     }
     lastInput = collectInput();
-    var result = window.AfroTools.FrenchMortgagePropertyEngine.run(contract, lastInput, {
+    var result = englishId === 'court-fees' ? courtQuoteResult(lastInput) : window.AfroTools.FrenchMortgagePropertyEngine.run(contract, lastInput, {
       legalEngine: window.AfroTools.LegalEngine
     });
     if (!result.ok) {
@@ -207,7 +217,7 @@
       } catch (_) {
         saved = null;
       }
-      if (!saved || !saved.input || !saved.result) {
+      if (!saved || !saved.input || !saved.result || (englishId === 'court-fees' && !saved.input.quoteDate)) {
         say('Aucun résultat local enregistré pour cet outil.', true);
         return;
       }
@@ -216,6 +226,11 @@
         if (field.type === 'checkbox') control.checked = Boolean(saved.input[field.name]);
         else control.value = saved.input[field.name];
       });
+      if (englishId === 'court-fees') {
+        root.dispatchEvent(new Event('court-quote-loaded'));
+        form.requestSubmit();
+        return;
+      }
       lastInput = saved.input;
       lastResult = saved.result;
       renderResult(lastResult);
@@ -259,6 +274,14 @@
       if (presentation && presentation.presentFields) {
         contract.fields = presentation.presentFields(englishId, contract.fields);
       }
+      if (englishId === 'court-fees') {
+        contract.fields = contract.fields.filter(field => ['country','courtLevel','claimType'].includes(field.name)).concat([
+          {name:'courtName',type:'text',label:'Tribunal ou greffe ayant fourni le devis',fixtureValue:''},
+          {name:'quoteDate',type:'date',label:'Date du devis',fixtureValue:''},
+          {name:'filingQuote',type:'number',label:'Frais de dépôt indiqués',fixtureValue:''},
+          {name:'serviceQuote',type:'number',label:'Frais de signification indiqués',fixtureValue:''}
+        ]);
+      }
       fieldsRoot.innerHTML = contract.fields.map(fieldMarkup).join('');
       contract.fields.forEach(function (field) {
         var control = form.elements[field.name];
@@ -266,6 +289,21 @@
         else control.value = field.fixtureValue;
       });
       root.querySelector('[data-workflow-control]').textContent = contract.workflowControl;
+      if (englishId === 'court-fees') {
+        const refresh = () => {
+          const cc = form.elements.country.value;
+          root.querySelector('[data-quote-currency]').textContent = 'Devise du devis : ' + AfroCourtQuote.currency(cc);
+          AfroCourtQuote.reference(root.querySelector('[data-quote-reference]'), cc, true);
+        };
+        form.elements.country.addEventListener('change', () => {
+          ['courtName','quoteDate','filingQuote','serviceQuote'].forEach(key => form.elements[key].value = '');
+          refresh();
+        });
+        form.addEventListener('input', () => { lastResult = null; output.hidden = true; exportBar.hidden = true; });
+        form.addEventListener('reset', () => setTimeout(refresh));
+        root.addEventListener('court-quote-loaded', refresh);
+        refresh();
+      }
       root.setAttribute('data-workflow-ready', 'true');
       say('Workflow local prêt. Les données restent dans ce navigateur.');
     })

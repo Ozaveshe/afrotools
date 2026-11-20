@@ -418,6 +418,7 @@ function outputContract(row, frenchRoute, name, frenchFile, contract, englishFil
 }
 
 function pageHtml(row) {
+  if (row.englishId === 'court-fees') row = { ...row, description: "Additionnez les frais de dépôt et de signification indiqués par le greffe et conservez un budget daté dans la devise du devis." };
   const canonical = `${SITE}${normalizeRoute(row.frenchRoute)}/`;
   const alternateLinks = alternateLinkHtml(row.englishRoute, row.frenchRoute);
   const image = row.imageUrl.startsWith('/') ? `${SITE}${row.imageUrl}` : row.imageUrl;
@@ -481,6 +482,7 @@ ${alternateLinks}
   <script src="/assets/js/components/footer.min.js" defer></script>
 ${legalScripts}${propertyScript}${englishOwnerScript}  <script src="/assets/js/lib/french-mortgage-property-presentation.js" defer></script>
   <script src="/assets/js/engines/french-mortgage-property.js" defer></script>
+  ${row.englishId === 'court-fees' ? '<script src="/assets/js/lib/court-fee-quote.js" defer></script>' : ''}
   <script src="/assets/js/pages/french-mortgage-property-app.js" defer></script>
 </head>
 <body class="mp-page">
@@ -521,7 +523,7 @@ ${row.englishId === 'tin-guide' ? '    <p><a href="/fr/tools/guide-nif/dr-congo/
         </form>
         <p class="mp-privacy"><strong>Confidentialité :</strong> le calcul, les projets, la sauvegarde et les exports restent dans ce navigateur. Aucun compte, e-mail ou appel IA n’est requis. Aucune donnée saisie n’est envoyée sur le réseau.</p>
       </section>
-      <aside class="mp-card mp-source" data-tool-verification-panel>
+      ${row.englishId === 'court-fees' ? "<aside class=\"mp-card mp-source\" data-tool-verification-panel><h2>Vérifier le devis du greffe</h2><p>Demandez les frais de dépôt et de signification applicables à votre dossier. Le total reprend les montants saisis.</p><p data-quote-currency></p><p data-quote-reference></p></aside>" : `      <aside class="mp-card mp-source" data-tool-verification-panel>
         <article>
           <h2>Source propre à l’application</h2>
           <p data-source-boundary>${html(row.sourceBoundary)}</p>
@@ -540,7 +542,7 @@ ${row.englishId === 'tin-guide' ? '    <p><a href="/fr/tools/guide-nif/dr-congo/
           </dl>
         </article>
         <article><h2>Découverte IA</h2><p>La route IA française exacte est <code>${html(normalizeRoute(row.frenchRoute))}/</code>. Cet outil ne transmet aucune saisie à un modèle.</p></article>
-      </aside>
+      </aside>`}
     </div>
   </main>
   <afro-footer></afro-footer>
