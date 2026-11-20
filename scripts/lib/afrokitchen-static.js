@@ -17,6 +17,7 @@ const TOOL_OG_IMAGE = `${SITE_ORIGIN}/assets/img/tools/afrokitchen.webp`;
 const RECIPE_FALLBACK_IMAGE = "/assets/img/kitchen-category-banner.webp";
 const RECIPE_FALLBACK_OG_IMAGE = `${SITE_ORIGIN}${RECIPE_FALLBACK_IMAGE}`;
 const RECIPE_IMAGE_ALIASES = require('../../data/image-generation/recipe-image-aliases.json').aliases;
+const VERSIONED_RECIPE_COVERS = require('../../data/image-generation/recipe-image-aliases.json').versioned_covers || {};
 const LOCAL_RECIPE_IMAGE_ALIASES = Object.fromEntries(Object.entries(RECIPE_IMAGE_ALIASES).map(([slug, canonical]) => [slug, [canonical + '.webp']]));
 const SUPABASE_URL =
   process.env.SUPABASE_AUTH_URL || "https://zpclagtgczsygrgztlts.supabase.co";
@@ -359,6 +360,7 @@ function findLocalRecipeImage(slug) {
   if (!safeSlug) return null;
 
   const stems = [
+    ...(VERSIONED_RECIPE_COVERS[safeSlug] ? [VERSIONED_RECIPE_COVERS[safeSlug]] : []),
     safeSlug,
     `${safeSlug}-1`
   ];
