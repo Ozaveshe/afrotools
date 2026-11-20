@@ -63,6 +63,7 @@ function renderFrenchAgriculturePage(options) {
     familyRoute = '/fr/agriculture/',
     useWebPageSchema = false,
   } = options;
+  const isCropYield = row.family === 'crop-yield';
   const canonical = `https://afrotools.com${row.french.route}`;
   const englishUrl = `https://afrotools.com${row.english.route}`;
   const hreflangLinks = alternateEntries(row)
@@ -86,7 +87,7 @@ function renderFrenchAgriculturePage(options) {
     '@type': useWebPageSchema ? 'WebPage' : 'WebApplication',
     name: heading,
     url: canonical,
-    applicationCategory: useWebPageSchema ? undefined : 'UtilityApplication',
+    applicationCategory: useWebPageSchema ? undefined : (isCropYield ? 'UtilitiesApplication' : 'UtilityApplication'),
     operatingSystem: useWebPageSchema ? undefined : 'All',
     inLanguage: 'fr',
     isAccessibleForFree: true,
@@ -96,7 +97,7 @@ function renderFrenchAgriculturePage(options) {
       name: country.frenchName,
       identifier: country.code,
     } : undefined,
-    additionalProperty: useWebPageSchema ? undefined : [
+    additionalProperty: useWebPageSchema || isCropYield ? undefined : [
       { '@type': 'PropertyValue', name: 'sourceJurisdiction', value: country.code || 'Africa' },
       { '@type': 'PropertyValue', name: 'formulaJurisdiction', value: country.code || 'Africa' },
     ],
