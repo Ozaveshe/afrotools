@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "cron-builder": {
+    "title": "Planificateur cron",
+    "tool": "/fr/tools/constructeur-cron/",
+    "frame": "developer-cron-builder",
+    "script": "developer/cron-builder.js"
+  }
+,
+
   "markdown-editor": {
     "title": "Éditeur Markdown",
     "tool": "/fr/tools/editeur-markdown/",
