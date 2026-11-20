@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "regex-tester": {
+    "title": "Testeur d’expressions régulières",
+    "tool": "/fr/tools/testeur-regex/",
+    "frame": "developer-regex-tester",
+    "script": "developer/regex-tester.js"
+  }
+,
+
   "cron-builder": {
     "title": "Planificateur cron",
     "tool": "/fr/tools/constructeur-cron/",
