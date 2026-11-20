@@ -729,7 +729,8 @@ test('every Transport and Trade app exposes and executes an app-owned primary wo
           sourceCount: result.sourceMetadata.length
         };
       });
-      expect(quote.total).toBeCloseTo(18209.88, 2);
+      // Dated HS8703232000 portal scenario; neither this nor its comparison is a Customs bill.
+      expect(quote.total).toBeCloseTo(16128.71, 2);
       expect(quote.officialCharges).toBeGreaterThan(0);
       expect(quote.sourceCount).toBeGreaterThan(0);
       continue;

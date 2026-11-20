@@ -60,7 +60,7 @@
     }(e, t), f = c(t, u), p = n(e.ev || e.isEv ? "ev" : e.fuelType || "petrol");
     "electric" === p && (p = "ev");
     var g = n(e.vehicleClass || e.bodyType || d && d.vehicleClass || "sedan"), m = d && d.sourcePricesUsd && d.sourcePricesUsd[u] || d && d.fobUsd ? a(d.sourcePricesUsd && d.sourcePricesUsd[u] || d.fobUsd) * a(f.vehiclePriceMultiplier, 1) : 0, U = n(e.inputMode || e.valueMode || (e.cifUsd ? "cif" : e.fobUsd ? "fob" : m ? "make-model-year" : "purchase"));
-    return {
+    var normalized = {
       countryCode: s,
       sourceMarket: u,
       sourceMarketLabel: f.label || u,
@@ -99,6 +99,11 @@
       fxRates: e.fxRates || null,
       valuationSeedId: d && d.id || null
     };
+    if (s === "NG") {
+      normalized.ngScenario = e.ngScenario == null ? (matchesNigeriaPortal(normalized) ? "portal-8703232000" : "") : String(e.ngScenario);
+      normalized.ngRates = e.ngRates ? Object.assign({}, e.ngRates) : null;
+    }
+    return normalized;
   }
   function d(e, s, n) {
     var r = s.customsBasisRules || {}, i = function(e, t, s) {
@@ -209,6 +214,69 @@
       return e + a(t.amountUsd, 0);
     }, 0));
   }
+  // Nigeria has conflicting public schedules. A dated portal scenario and a
+  // separately named statutory-assumption comparison must never be blended.
+  function matchesNigeriaPortal(input) {
+    return input.condition === "used" && input.fuelType === "petrol" &&
+      input.engineCc > 1500 && input.engineCc <= 3000 &&
+      [ "sedan", "hatchback", "suv", "mpv" ].indexOf(input.vehicleClass) !== -1;
+  }
+  function nigeriaScenarioError(input) {
+    if (input.countryCode !== "NG") return "";
+    if (input.ngScenario === "portal-8703232000") {
+      return matchesNigeriaPortal(input) ? "" : "The dated HS 8703232000 scenario is for used petrol passenger cars over 1500cc and up to 3000cc. Choose Custom assumptions for this vehicle; your purchase price is retained.";
+    }
+    if (input.ngScenario !== "custom") return "Choose a Nigeria assessment scenario or enter custom assumptions for this vehicle.";
+    var keys = [ "duty", "levy", "etls", "surcharge", "fob", "green", "vat" ];
+    if (!input.ngRates || keys.some(function(key) {
+      var value = input.ngRates[key];
+      return value == null || (typeof value === "string" && value.trim() === "") || !Number.isFinite(Number(value)) || Number(value) < 0 || Number(value) > 100;
+    })) return "Enter every custom charge rate from 0 to 100 percent. Use 0 only for a charge you intend to exclude.";
+    return "";
+  }
+  function nigeriaAssessment(input, basis, pack, fxRate) {
+    var error = nigeriaScenarioError(input);
+    if (error) throw new RangeError(error);
+    var observed = pack.portalScenario;
+    var portal = input.ngScenario === "portal-8703232000";
+    var rates = portal ? observed.rates : input.ngRates;
+    var rows = [];
+    function charge(id, label, base, rate, baseLabel, notes) {
+      var amount = t(base * Number(rate) / 100);
+      return { id: id, label: label, group: "officialTaxes", official: true,
+        amountUsd: amount, amountLocal: t(amount * fxRate, 2), baseUsd: t(base),
+        rate: Number(rate) / 100, baseLabel: baseLabel, notes: notes || "Planning assumption; not an official payable assessment." };
+    }
+    var cv = basis.customsValueUsd;
+    rows.push(charge("ng-import-duty", "Import duty", cv, rates.duty, "Assessed CIF"));
+    rows.push(charge("ng-vehicle-levy", "Vehicle levy", cv, rates.levy, "Assessed CIF"));
+    rows.push(charge("ng-etls", "ECOWAS community levy / ETLS", cv, rates.etls, "Assessed CIF"));
+    rows.push(charge("ng-surcharge", "Duty surcharge", rows[0].amountUsd, rates.surcharge, "Import duty only"));
+    rows.push(charge("ng-fob-charge", portal ? "FCS shown by portal" : "Selected FOB charge", basis.fobUsd, rates.fob, "FOB cash input", portal ? "4% is reproduced from the portal; the September 2025 suspension notice conflicts. Not a confirmation of current collection." : "Selected rate; do not add CISS and FCS twice."));
+    var green = portal ? 0 : Number(rates.green);
+    rows.push(charge("ng-green", "Green tax surcharge", cv, green, "Assessed CIF", portal ? "Not present in the observed portal calculation. See the separate comparison." : "Selected rate and CIF-base assumption; confirm classification and any exemption."));
+    var beforeVat = v(rows);
+    var vatBase = cv + beforeVat - (portal ? rows[1].amountUsd : 0);
+    rows.push(charge("ng-vat", "VAT", vatBase, rates.vat,
+      portal ? "Assessed CIF + duty + ETLS + surcharge + FCS; excludes vehicle levy" : "Assessed CIF + all selected import charges",
+      portal ? "Observed portal arithmetic excludes vehicle levy; this differs from the separate statutory-assumption comparison." : "Tax Act section 149 assumption including selected import taxes and charges; exemptions and final valuation remain declaration-specific."));
+    var comparison = null;
+    if (portal) {
+      var greenRate = input.engineCc >= 4000 ? 4 : input.engineCc >= 2000 ? 2 : 0;
+      var greenRow = charge("ng-green", "Green tax surcharge", cv, greenRate, "Assessed CIF", "Finance circular Annex V band; CIF base is a planning assumption.");
+      var alternate = rows.slice(0, 5).concat([greenRow]);
+      var alternateBase = cv + v(alternate);
+      alternate.push(charge("ng-vat", "VAT", alternateBase, rates.vat, "Assessed CIF + all selected import charges", "Section 149 comparison includes vehicle levy and green tax, retaining other portal rates for comparison only."));
+      comparison = { label: "Statutory-assumption comparison", rows: alternate,
+        taxesUsd: v(alternate), vatBaseUsd: t(alternateBase),
+        note: "Retains the portal duty, levy and FOB assumptions; includes vehicle levy and the Annex V green band in the VAT base. This is not a verified replacement tariff or official payable quote." };
+    }
+    return { label: portal ? "Portal observation: HS 8703232000, " + observed.observedOn : "Custom assumptions",
+      hsCode: portal ? observed.hsCode : "User classification required", observedOn: portal ? observed.observedOn : null,
+      rows: rows, rates: Object.assign({}, rates, {green: green}), taxesUsd: v(rows), vatBaseUsd: t(vatBase),
+      comparison: comparison, note: "Planning scenario only. Customs determines classification, valuation, applicable rates and the amount payable." };
+  }
+
   function compareLocalQuote(result, input) {
     var quote = a(input.localDealerPriceUsd, 0);
     var comparison = {
@@ -220,7 +288,7 @@
     };
     if (quote <= 0) return comparison;
     if (result.warnings.some(function(warning) {
-      return warning.severity === "critical" || warning.code === "stale-rule-pack" || warning.code === "valuation-pack-missing";
+      return warning.severity === "critical" || warning.code === "stale-rule-pack" || warning.code === "valuation-pack-missing" || warning.code === "ng-scenario-assumptions";
     })) {
       comparison.status = "review-required";
       comparison.note = "Resolve import rule or eligibility warnings before comparing the local quote.";
@@ -234,6 +302,7 @@
   }
   return {
     normalizeInput: u,
+    nigeriaScenarioError: nigeriaScenarioError,
     calculate: function s(n, c, f) {
       f = f || {};
       var p = u(n, c = c || {}), g = i(c, p.countryCode), m = function(t, s, n) {
@@ -247,13 +316,27 @@
         ageYears: l(p, c),
         priorOfficialTaxesUsd: 0,
         officialSubtotalUsd: 0
-      }, M = U(g.taxComponents, C), x = U(g.registrationComponents, C), R = function(e, s, n) {
+      };
+      var ngAssessment = null;
+      if (p.countryCode === "NG") {
+        // An assessed value changes the tax basis, never the seller/shipping cash.
+        var cashInput = Object.assign({}, p, {customsValueUsd: 0});
+        if (p.inputMode !== "fob" && p.inputMode !== "cif") cashInput.fobUsd = 0;
+        var cashBasis = d(cashInput, g, c);
+        cashBasis.customsValueUsd = p.customsValueUsd > 0 ? t(p.customsValueUsd) : cashBasis.cifUsd;
+        cashBasis.valuationStatus = p.customsValueUsd > 0 ? "manual-customs-value" : cashBasis.valuationStatus;
+        b = cashBasis;
+        C.valueBasis = b;
+        ngAssessment = nigeriaAssessment(p, b, g, m);
+      }
+      var M = ngAssessment ? ngAssessment.rows : U(g.taxComponents, C), x = U(g.registrationComponents, C), R = function(e, s, n) {
         if ("official" === s.outputMode) return [];
         var r = e.practicalCostPresets || {}, i = h(e, s), o = function(e, a) {
           return (e.cities || []).find(function(e) {
             return e.id === a.destinationCity;
           }) || (e.cities || [])[0] || {};
         }(e, s), l = "diy" === s.clearingMode ? r.diyClearingUsd : r.clearingAgentUsd, c = Math.max(s.storageDays, s.delayDays - a(i.freeStorageDays, 0), 0), u = [ y("terminal-handling", "Terminal handling", i.terminalHandlingUsd || r.terminalHandlingUsd, "practicalCosts", !1, i.label), y("shipping-line", "Shipping-line and release charges", i.shippingLineChargesUsd || r.shippingLineChargesUsd, "practicalCosts", !1, i.label), y("inspection", e.inspectionRules && e.inspectionRules.label || "Inspection and compliance", r.inspectionUsd, "practicalCosts", !1, ""), y("clearing-agent", "diy" === s.clearingMode ? "DIY clearing processing estimate" : "Customs broker / clearing agent", l, "practicalCosts", !1, ""), y("storage-demurrage", "Storage and demurrage risk", c * (a(i.dailyStorageUsd, 0) + a(i.dailyDemurrageUsd, 0)), "practicalCosts", !1, c + " chargeable days"), y("inland-delivery", "Inland delivery to " + (o.label || "destination city"), o.inlandUsd, "inlandDelivery", !1, "") ].filter(Boolean);
+        if ("NG" === e.countryCode && r.documentationUsd) u.push(y("ng-port-documentation", "Port and documentation estimate", r.documentationUsd, "practicalCosts", !1, "Third-party planning allowance, not an official tax."));
         if ("GH" === e.countryCode && r.safeBondRentUsd && u.push(y("safe-bond-rent", "Safe bond terminal handling / rent", r.safeBondRentUsd, "practicalCosts", !1, "")),
         "ZM" === e.countryCode && u.push(y("extra-agency-charges", "Extra agency charges estimate", s.extraAgencyChargesUsd || r.extraAgencyChargesUsd, "practicalCosts", !1, "")),
         "stress" === s.outputMode) {
@@ -409,6 +492,14 @@
           trust: "Use this as a planning estimate. Final customs, port, clearing, registration, and FX outcomes can differ."
         }
       };
+      if (ngAssessment) {
+        O.ngAssessment = ngAssessment;
+        O.badges = [{label: "planning scenario", type: "estimate"}, {label: b.valuationStatus, type: "manual"}];
+        O.breakdowns.customsValueBasis[3].label = "Cash CIF (vehicle + freight + insurance)";
+        O.breakdowns.customsValueBasis.push({id: "assessed-cif", label: "Assessed CIF used for tax", amountUsd: b.customsValueUsd});
+        if (ngAssessment.comparison) ngAssessment.comparison.onRoadUsd = t(O.totals.onRoadUsd - ngAssessment.taxesUsd + ngAssessment.comparison.taxesUsd);
+        O.warnings.unshift({code: "ng-scenario-assumptions", severity: "info", message: ngAssessment.label + ". " + ngAssessment.note});
+      }
       return O.sensitivity = function(e, s) {
         var n = e.totals.onRoadUsd, r = s.fxRate, i = h(s.pack, s.input), o = a(i.dailyStorageUsd, 0) + a(i.dailyDemurrageUsd, 0);
         return {
