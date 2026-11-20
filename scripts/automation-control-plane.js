@@ -329,7 +329,7 @@ function sameStringSet(left, right) {
   return leftSet.size === rightSet.size && Array.from(leftSet).every((item) => rightSet.has(item));
 }
 
-function remoteLookupDiagnostic(result) {
+function remoteLookupDiagnostic(result, outcome) {
   const clean = value => String(value || '')
     .replace(/(https?:\/\/)[^\s/@]+@/gi, '$1[redacted]@')
     .replace(/([?&](?:access_token|token|password|secret|key)=)[^&\s]+/gi, '$1[redacted]')
@@ -340,18 +340,39 @@ function remoteLookupDiagnostic(result) {
     error_code: result.error && typeof result.error.code === 'string' ? clean(result.error.code) : null,
     error_message: result.error && typeof result.error.message === 'string' ? clean(result.error.message) : null,
     signal: result.signal ? clean(result.signal) : null, stderr: clean(result.stderr),
-    outcome: result.status !== 0 ? 'command_unavailable'
-      : String(result.stdout || '').trim() ? 'ref_present' : 'ref_absent' };
+    outcome };
+}
+
+function readRemoteHeads(git) {
+  const result = git(['ls-remote', '--heads', 'origin']);
+  const heads = new Map();
+  if (result.status !== 0 || result.error || result.signal) return { result, failure: 'command_unavailable' };
+  const lines = String(result.stdout || '').split(/\r?\n/);
+  if (lines.at(-1) === '') lines.pop();
+  for (const line of lines) {
+    const match = /^([0-9a-f]{40})\t(refs\/heads\/[^\s]+)$/.exec(line);
+    if (!match) return { result, failure: 'malformed_response' };
+    const [, sha, ref] = match;
+    // Git refname restrictions (git-check-ref-format), in addition to the exact heads prefix.
+    const invalidComponent = ref.split('/').some(part => !part || part.startsWith('.') || part.endsWith('.lock'));
+    if (invalidComponent || ref.endsWith('.') || ref.includes('..') || ref.includes('@{')
+        || /[\x00-\x20\x7f~^:?*\[\\]/.test(ref)) return { result, failure: 'malformed_response' };
+    if (heads.has(ref)) return { result, failure: 'ambiguous_response' };
+    heads.set(ref, sha);
+  }
+  return { result, heads };
 }
 
 function verifyReadyHandoffs(queue, options, git = runGit) {
   if (options.skipRemote) return { available: false, checks: [], issues: [] };
   const checks = [];
   const issues = [];
+  if (!queue.ready.length) return { available: true, checks, issues };
+  const snapshot = readRemoteHeads(git);
   for (const item of queue.ready) {
     const remoteRef = 'refs/heads/' + item.branch;
-    const remote = git(['ls-remote', 'origin', remoteRef]);
-    const remoteSha = remote.status === 0 ? String(remote.stdout || '').trim().split(/\s+/)[0] : null;
+    const remoteSha = snapshot.failure ? null : (snapshot.heads.get(remoteRef) || '');
+    const outcome = snapshot.failure || (remoteSha ? 'ref_present' : 'ref_absent');
     const check = {
       handoff_id: item.handoff_id,
       automation_id: item.automation_id,
@@ -360,7 +381,7 @@ function verifyReadyHandoffs(queue, options, git = runGit) {
       remote_ref: remoteRef,
       remote_commit: remoteSha,
       remote_exact: remoteSha === item.commit,
-      remote_lookup: remoteLookupDiagnostic(remote),
+      remote_lookup: remoteLookupDiagnostic(snapshot.result, outcome),
       base_ancestor: false,
       diff_exact: false,
       actual_changed_files: [],
@@ -368,11 +389,11 @@ function verifyReadyHandoffs(queue, options, git = runGit) {
     if (!check.remote_exact) {
       issues.push({
         severity: 'error',
-        code: remote.status !== 0 ? 'ready_handoff_remote_unavailable' : 'ready_handoff_remote_mismatch',
+        code: snapshot.failure ? 'ready_handoff_remote_unavailable' : 'ready_handoff_remote_mismatch',
         automation_id: item.automation_id,
         handoff_id: item.handoff_id,
-        detail: remote.status !== 0
-          ? 'Remote lookup command unavailable for ' + remoteRef + '; see bounded remote_lookup diagnostics. Expected ' + item.commit + '.'
+        detail: snapshot.failure
+          ? 'Remote head lookup ' + snapshot.failure + ' for ' + remoteRef + '; see bounded remote_lookup diagnostics. Expected ' + item.commit + '.'
           : 'Remote ' + remoteRef + ' resolves to ' + (remoteSha || 'nothing') + ', expected ' + item.commit + '.',
       });
       checks.push(check);
