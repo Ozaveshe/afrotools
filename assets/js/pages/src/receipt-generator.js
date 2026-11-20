@@ -2,6 +2,32 @@
 !function() {
     "use strict";
 
+    function prepareOfflineReceipt() {
+        if (!navigator.serviceWorker || !window.caches || location.pathname !== "/tools/receipt-generator/") return;
+        var path = location.pathname;
+        var assets = Array.from(document.querySelectorAll(
+            'link[rel="stylesheet"][href^="/assets/css/"], script[src^="/assets/vendor/"], ' +
+            'script[src^="/assets/js/lib/save-state-classic.js"], script[src^="/assets/js/pages/receipt-generator.js"]'
+        ), function (node) { return node.href || node.src; });
+
+        async function warm() {
+            if (!navigator.serviceWorker.controller || !navigator.onLine) return;
+            navigator.serviceWorker.removeEventListener("controllerchange", warm);
+            try {
+                // Re-request only the public blank form and its static dependencies through the active worker.
+                // Never include typed receipt data, the URL query, or browser credentials.
+                await Promise.all([path].concat(assets).map(async function (url) {
+                    if (await caches.match(url)) return;
+                    var options = { credentials: "omit" };
+                    if (url === path) options.headers = { Accept: "text/html" };
+                    await fetch(url, options);
+                }));
+            } catch (_) { /* A later online visit can finish caching. Local drafts remain intact. */ }
+        }
+        navigator.serviceWorker.addEventListener("controllerchange", warm);
+        warm();
+    }
+
     function savedFailure(error) {
         var message = window.SaveState.message(error), list = document.getElementById("savedReceipts");
         var panel = document.getElementById("savedPanel");
@@ -783,7 +809,7 @@
                 if (s === false) return;
                 window.confirm('Delete "' + (s ? s.title : "this receipt") + '" from this browser?') && deleteSavedItem(o) && (A(), focusSavedAction());
             }
-        }), N(), A();
+        }), N(), A(), prepareOfflineReceipt();
     }
     "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", Y) : Y();
 }();
