@@ -182,7 +182,7 @@ function scriptBlock() {
     return Array.prototype.slice.call(document.querySelectorAll('#result,#aidResult,#budgetResult,#nysc-result,.ha-result,.result-box')).map(function(el){
       var visible = el.offsetParent !== null || el.classList.contains('show') || el.style.display === 'block';
       if(!visible && !el.textContent.trim()) return '';
-      return el.textContent.replace(/\\s+/g, ' ').trim();
+      return (el.innerText || el.textContent).replace(/\\s+/g, ' ').trim();
     }).filter(Boolean);
   }
   function brief(panel){
@@ -242,9 +242,22 @@ function scriptBlock() {
 let updated = 0;
 
 for (const page of pages) {
+  const selectedFile = process.argv[2];
+  if (selectedFile && selectedFile !== page.file) continue;
   const fullPath = path.join(ROOT, page.file);
   let html = fs.readFileSync(fullPath, 'utf8');
   if (html.includes('data-mixed-education-batch="export"')) {
+    if (page.file === 'ha/kayan-aiki/kasafin-dalibi/index.html') {
+      const sections = /<section class="mixed-education-export"[^>]*>[\s\S]*?<\/section>\s*<section class="mixed-education-trust"[^>]*>[\s\S]*?<\/section>/;
+      const script = /<script data-mixed-education-batch="export-js">[\s\S]*?<\/script>/;
+      if (!sections.test(html) || !script.test(html)) throw new Error('Student budget export sections missing.');
+      const refreshed = html.replace(sections, () => section(page).trim()).replace(script, () => scriptBlock().trim());
+      if (refreshed !== html) {
+        fs.writeFileSync(fullPath, refreshed);
+        updated += 1;
+      }
+      continue;
+    }
     console.log(`Skip existing mixed education batch: ${page.file}`);
     continue;
   }

@@ -513,7 +513,7 @@ const receipt = {
         'https://fiscalreforms.ng/wp-content/uploads/2024/10/Deduction-of-Tax-at-Source-Withholding-Regulations-2024_Gazetted.pdf',
         'https://www.nipc.gov.ng/wp-content/uploads/2025/08/Nigeria-Tax-Administration-Act-2025-Gazette.pdf',
         'https://www.jrb.gov.ng/media-center/jrb-releases-pit-guidelines-2026',
-        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
       ],
     },
     nigeriaCitOfficialSourceRecheck: {
@@ -523,7 +523,7 @@ const receipt = {
       decision: 'No formula parameter changed. The Swahili route delegates to the reviewed English engine, requires explicit scope confirmation and does not calculate the section 57 top-up or make a filing or assessment decision.',
       urls: [
         'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
-        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
         'https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/',
       ],
     },
@@ -534,7 +534,7 @@ const receipt = {
       decision: 'No formula parameter changed. The Swahili route delegates to the reviewed English engine and remains a scoped planning estimate rather than a filing, assessment or exemption decision.',
       urls: [
         'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
-        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
       ],
     },
     mauritaniaOfficialSourceRecheck: {

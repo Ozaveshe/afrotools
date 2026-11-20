@@ -21,7 +21,7 @@
   }
   function currentRate() {
     if (state.rateKind !== 'scenario') return state.rate;
-    return Number(custom.value);
+    return custom.valueAsNumber;
   }
   function clearResult() {
     ['ngvResultMain', 'ngvNet', 'ngvVat', 'ngvGross', 'ngvRateUsed'].forEach(function (id) {
@@ -32,7 +32,7 @@
   }
   function calculate() {
     try {
-      state.result = engine.calculate({ amount: amount.value, mode: state.mode, rate: currentRate(), rateKind: state.rateKind });
+      state.result = engine.calculate({ amount: amount.valueAsNumber, mode: state.mode, rate: currentRate(), rateKind: state.rateKind });
       error.textContent = '';
       byId('ngvResultMain').textContent = money(state.mode === 'add' ? state.result.gross : state.result.net);
       byId('ngvNet').textContent = money(state.result.net);
@@ -67,11 +67,12 @@
       byId('ngvScenario').classList.toggle('on', state.rateKind === 'scenario');
       setPressed('[data-rate-kind]', button);
       calculate();
+      refreshInvoice();
     });
   });
   byId('ngvForm').addEventListener('submit', function (event) { event.preventDefault(); calculate(); });
   amount.addEventListener('input', calculate);
-  custom.addEventListener('input', function () { if (state.rateKind === 'scenario') calculate(); });
+  custom.addEventListener('input', function () { if (state.rateKind === 'scenario') { calculate(); refreshInvoice(); } });
 
   byId('ngvClassification').addEventListener('change', function (event) {
     var treatment = engine.classify(event.target.value);
@@ -92,11 +93,12 @@
   invoiceSection.innerHTML = '<div class="ngv-kicker">' + words[0] + '</div><h2 id="invoice-title">' + words[1] + '</h2><p>' + words[2] + '</p><form id="ngvInvoiceForm" novalidate><div class="ngv-field"><label for="ngvInvoiceDescription">' + words[3] + '</label><input class="ngv-input" id="ngvInvoiceDescription" value="' + words[4] + '"></div><div class="ngv-rate"><div class="ngv-field"><label for="ngvInvoiceQty">' + words[5] + '</label><input class="ngv-input" id="ngvInvoiceQty" type="number" min="0" step="0.01" value="1" aria-describedby="ngvInvoiceError"></div><div class="ngv-field"><label for="ngvInvoiceUnit">' + words[6] + '</label><input class="ngv-input" id="ngvInvoiceUnit" type="number" min="0" step="0.01" value="100000" aria-describedby="ngvInvoiceError"></div></div><div class="ngv-error" id="ngvInvoiceError" role="alert" aria-live="assertive"></div><button class="ngv-primary" type="submit">' + words[7] + '</button></form><div class="ngv-result" id="ngvInvoiceOutput" aria-live="polite"><div class="ngv-result-label">' + words[8] + '</div><div class="ngv-result-row"><span>' + words[9] + '</span><strong id="ngvInvoiceNet">—</strong></div><div class="ngv-result-row"><span>' + words[10] + '</span><strong id="ngvInvoiceVat">—</strong></div><div class="ngv-result-row"><span>' + words[11] + '</span><strong id="ngvInvoiceGross">—</strong></div></div>';
   byId('ngvClassification').closest('.ngv-card').before(invoiceSection);
 
-  byId('ngvInvoiceForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+  var invoiceStarted = false;
+  function refreshInvoice() {
+    if (!invoiceStarted) return;
     var invoiceError = byId('ngvInvoiceError');
     try {
-      var invoice = engine.calculateInvoice([{ description: byId('ngvInvoiceDescription').value, quantity: byId('ngvInvoiceQty').value, unitPrice: byId('ngvInvoiceUnit').value }], currentRate(), state.rateKind);
+      var invoice = engine.calculateInvoice([{ description: byId('ngvInvoiceDescription').value, quantity: byId('ngvInvoiceQty').valueAsNumber, unitPrice: byId('ngvInvoiceUnit').valueAsNumber }], currentRate(), state.rateKind);
       invoiceError.textContent = '';
       byId('ngvInvoiceNet').textContent = money(invoice.net);
       byId('ngvInvoiceVat').textContent = money(invoice.vat);
@@ -105,9 +107,17 @@
     } catch (caught) {
       byId('ngvInvoiceOutput').classList.remove('on');
       ['ngvInvoiceNet', 'ngvInvoiceVat', 'ngvInvoiceGross'].forEach(function (id) { byId(id).textContent = '—'; });
-      invoiceError.textContent = text('invalidInvoice', 'Enter a non-negative quantity and unit price.');
+      invoiceError.textContent = !Number.isFinite(currentRate()) || currentRate() < 0 || currentRate() > 100
+        ? text('invalid', 'Enter a non-negative amount and a rate from 0% to 100%.')
+        : text('invalidInvoice', 'Enter a non-negative quantity and unit price.');
     }
+  }
+  byId('ngvInvoiceForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    invoiceStarted = true;
+    refreshInvoice();
   });
+  byId('ngvInvoiceForm').addEventListener('input', refreshInvoice);
 
   byId('ngvShare').addEventListener('click', async function () {
     var route = location.origin + location.pathname;
