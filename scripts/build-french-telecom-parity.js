@@ -437,11 +437,16 @@ function hubPage() {
     description: 'Outils de planification Télécom en français fondés sur un snapshot archivé et des calculs locaux.',
     url: 'https://afrotools.com/fr/telecom/',
     inLanguage: 'fr',
-    mainEntity: APPS.map((app) => ({
-      '@type': 'SoftwareApplication',
-      name: app.title,
-      url: `https://afrotools.com/fr/telecom/${app.slug}/`
-    }))
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: APPS.length,
+      itemListElement: APPS.map((app, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: app.title,
+        url: `https://afrotools.com/fr/telecom/${app.slug}/`
+      }))
+    }
   });
   return enhanceCategory(`<!doctype html>
 <html lang="fr">

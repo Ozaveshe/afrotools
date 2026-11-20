@@ -364,7 +364,16 @@ function hubPage() {
     name: 'Zana 14 za Mawasiliano kwa Kiswahili',
     description: 'Zana za kupanga mawasiliano kwa Kiswahili zinazotumia snapshot iliyohifadhiwa na hesabu za ndani.',
     url: 'https://afrotools.com/sw/mawasiliano-na-mtandao/', inLanguage: 'sw',
-    mainEntity: APPS.map((app) => ({ '@type': 'SoftwareApplication', name: app.title, url: `https://afrotools.com/sw/zana/${app.slug}/` }))
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: APPS.length,
+      itemListElement: APPS.map((app, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: app.title,
+        url: `https://afrotools.com/sw/zana/${app.slug}/`
+      }))
+    }
   });
   return enhanceCategory(`<!doctype html>
 <html lang="sw">
