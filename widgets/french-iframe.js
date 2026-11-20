@@ -1,5 +1,19 @@
 (function () {
   const widgets = {
+
+  "mortgage-calculator": {
+    "title": "Simulation de prêt immobilier",
+    "tool": "/fr/tools/calculateur-hypothecaire/",
+    "frame": "financial-mortgage-calculator",
+    "script": "financial/mortgage.js"
+  },
+  "investment-return": {
+    "title": "Simulation de rendement",
+    "tool": "/fr/tools/rendement-investissement/",
+    "frame": "financial-investment-return",
+    "script": "financial/investment-return.js"
+  }
+,
     "loan-compare": {"title": "Comparateur de prêts", "tool": "/fr/tools/comparateur-prets/", "frame": "financial-loan-compare", "script": "financial/loan-compare.js"},
     "qr-generator": {"title": "Générateur de codes QR", "tool": "/fr/tools/generateur-qr/", "frame": "image-design-qr-generator", "script": "image-design/qr-generator.js"},
     "color-contrast": {"title": "Contraste des couleurs", "tool": "/fr/tools/contraste-couleurs/", "frame": "image-design-color-contrast", "script": "image-design/color-contrast.js"},
