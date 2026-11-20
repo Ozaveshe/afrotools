@@ -9,7 +9,7 @@
         var language = document.documentElement.lang.split("-")[0];
         var messages = {
             en: ["Add a local on-road quote in Advanced costs to compare.", "Resolve import rule or eligibility warnings before comparing the local quote.", "Import estimate is {amount} below your local on-road quote.", "Your local on-road quote is {amount} below the import estimate.", "The import estimate and your local on-road quote are equal."],
-            fr: ["Ajoutez un devis local clés en main dans les coûts avancés pour comparer.", "Vérifiez les règles et l’admissibilité à l’importation avant de comparer le devis local.", "L’estimation d’importation est inférieure de {amount} à votre devis local clés en main.", "Votre devis local clés en main est inférieur de {amount} à l’estimation d’importation.", "L’estimation d’importation et votre devis local clés en main sont égaux."],
+            fr: ["Ajoutez un devis local clÃƒÂ©s en main dans les coÃƒÂ»ts avancÃƒÂ©s pour comparer.", "VÃƒÂ©rifiez les rÃƒÂ¨gles et lÃ¢â‚¬â„¢admissibilitÃƒÂ© ÃƒÂ  lÃ¢â‚¬â„¢importation avant de comparer le devis local.", "LÃ¢â‚¬â„¢estimation dÃ¢â‚¬â„¢importation est infÃƒÂ©rieure de {amount} ÃƒÂ  votre devis local clÃƒÂ©s en main.", "Votre devis local clÃƒÂ©s en main est infÃƒÂ©rieur de {amount} ÃƒÂ  lÃ¢â‚¬â„¢estimation dÃ¢â‚¬â„¢importation.", "LÃ¢â‚¬â„¢estimation dÃ¢â‚¬â„¢importation et votre devis local clÃƒÂ©s en main sont ÃƒÂ©gaux."],
             sw: ["Ongeza bei ya gari tayari barabarani katika gharama za ziada ili kulinganisha.", "Tatua maonyo ya sheria au ustahiki wa uagizaji kabla ya kulinganisha bei ya ndani.", "Makadirio ya kuagiza ni chini ya bei yako ya ndani kwa {amount}.", "Bei yako ya ndani ni chini ya makadirio ya kuagiza kwa {amount}.", "Makadirio ya kuagiza na bei yako ya ndani ni sawa."]
         };
         var copy = messages[language] || messages.en;
@@ -115,7 +115,7 @@
         var locale = document.documentElement.lang.split("-")[0];
         var messages = {
             en: { unknown: "The requested country", unavailable: " is not supported by this calculator. Your vehicle details are kept. ", choose: "Choose a supported import country to calculate a different destination.", placeholder: "Choose a supported country", selected: "Selected destination: " },
-            fr: { unknown: "Le pays demandé", unavailable: " n’est pas pris en charge par ce calculateur. Les informations sur votre véhicule sont conservées. ", choose: "Choisissez un pays pris en charge pour calculer les coûts d’une autre destination.", placeholder: "Choisir un pays pris en charge", selected: "Destination sélectionnée : " },
+            fr: { unknown: "Le pays demandÃƒÂ©", unavailable: " nÃ¢â‚¬â„¢est pas pris en charge par ce calculateur. Les informations sur votre vÃƒÂ©hicule sont conservÃƒÂ©es. ", choose: "Choisissez un pays pris en charge pour calculer les coÃƒÂ»ts dÃ¢â‚¬â„¢une autre destination.", placeholder: "Choisir un pays pris en charge", selected: "Destination sÃƒÂ©lectionnÃƒÂ©e : " },
             sw: { unknown: "Nchi iliyoombwa", unavailable: " haitumiki katika kikokotoo hiki. Maelezo ya gari yamehifadhiwa kwenye fomu. ", choose: "Chagua nchi inayotumika ili kukokotoa gharama kwa nchi nyingine.", placeholder: "Chagua nchi inayotumika", selected: "Nchi iliyochaguliwa: " }
         };
         var copy = messages[locale] || messages.en;
@@ -156,6 +156,52 @@
                 history.replaceState(null, "", url.pathname + url.search + url.hash);
             }
         });
+    }
+    function quoteStatus(message) {
+        var status = r("#carImportQuoteStatus");
+        if (!status) {
+            status = document.createElement("p");
+            status.id = "carImportQuoteStatus";
+            status.className = "car-import-help";
+            status.setAttribute("role", "status");
+            status.setAttribute("aria-live", "polite");
+            r("#carImportForm").appendChild(status);
+        }
+        status.textContent = message;
+        status.hidden = !message;
+    }
+    function invalidateQuote() {
+        a.lastResult = null;
+        r("#carImportResults").hidden = true;
+        var save = r("#carImportCloudSave");
+        if (save && typeof save.setData === "function") save.setData(null);
+    }
+    function invalidateDraftQuote() {
+        invalidateQuote();
+        quoteStatus("");
+        // An edited draft must not restore or share the previous calculated price.
+        try { localStorage.removeItem("carImportCostLastInput"); } catch (storageError) {}
+        var query = new URLSearchParams(location.search);
+        if (query.has("price")) {
+            query.delete("price");
+            history.replaceState(null, "", location.pathname + (query.toString() ? "?" + query.toString() : "") + location.hash);
+        }
+    }
+    function missingValueMessage() {
+        var language = document.documentElement.lang.split("-")[0];
+        return ({
+            en: "Enter a positive purchase price, FOB or CIF value in the matching input mode. There is no usable vehicle value for this selection yet.",
+            fr: "Saisissez un prix dâ€™achat, une valeur FOB ou CIF supÃ©rieure Ã  zÃ©ro dans le mode correspondant. Aucune valeur de vÃ©hicule utilisable nâ€™est disponible pour cette sÃ©lection.",
+            sw: "Weka bei ya ununuzi, thamani ya FOB au CIF iliyo zaidi ya sifuri katika hali inayolingana. Hakuna thamani ya gari inayoweza kutumika kwa chaguo hili bado."
+        })[language] || "Enter a positive purchase price, FOB or CIF value in the matching input mode. There is no usable vehicle value for this selection yet.";
+    }
+    function hasVehicleValue(input) {
+        function positive(value) { return Number.isFinite(value) && value > 0; }
+        if (input.inputMode === "cif") return positive(input.cifUsd);
+        if (input.inputMode === "fob") return positive(input.fobUsd);
+        if (input.inputMode === "purchase") return positive(input.purchasePriceUsd);
+        var normalized = t.normalizeInput(input, a.data);
+        return positive(normalized.purchasePriceUsd) || positive(normalized.fobUsd);
     }
     function m() {
         if (a.data) {
@@ -198,7 +244,14 @@
                 financeMonths: d("#carImportFinanceMonths") || 36,
                 localDealerPriceUsd: d("#carImportLocalDealerPrice"),
                 extraAgencyChargesUsd: d("#carImportExtraAgencyCharges")
-            }, s = t.calculate(e, a.data);
+            };
+            if (!hasVehicleValue(e)) {
+                invalidateQuote();
+                quoteStatus(missingValueMessage());
+                return;
+            }
+            quoteStatus("");
+            var s = t.calculate(e, a.data);
             a.lastResult = s, function(t) {
                 var a = t.country.currency;
                 r("#carImportResults").hidden = !1, r("#carImportTotal").textContent = n(t.totals.onRoadUsd, "USD"),
@@ -350,6 +403,7 @@
     }
     function I() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = a.lastResult, r = [ [ "section", "label", "amount_usd" ] ];
         if ([ "officialTaxes", "officialFees", "practicalCosts", "inlandDelivery", "registration" ].forEach(function(a) {
             t.breakdowns[a].forEach(function(t) {
@@ -378,6 +432,7 @@
     }
     function g() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = a.lastResult;
         i("car_import_export_pdf", {
             country: t.country.code
@@ -418,6 +473,7 @@
     }
     function v() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = "On-road estimate: " + n(a.lastResult.totals.onRoadUsd, "USD") + " for " + a.lastResult.country.name + ".";
         navigator.share ? navigator.share({
             title: "AfroTools car import estimate",
@@ -430,6 +486,7 @@
     }
     function b() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = [];
         try {
             t = JSON.parse(localStorage.getItem("carImportCostQuotes") || "[]");
@@ -449,6 +506,7 @@
     }
     function C() {
         a.lastResult || m();
+        if (!a.lastResult) return;
         var t = r("#carImportAiQuestion"), e = r("#carImportAiLog"), o = t && t.value.trim();
         if (o) {
             i("car_import_ai_advisor_opened", {
@@ -648,7 +706,13 @@
                 t.has("bodyType") && (r.bodyType = t.get("bodyType"), r.vehicleClass = t.get("bodyType")),
                 Object.keys(r).length && f(r);
                 prepareCountryEntry(requestedEntryCountry(r.countryCode));
-            }(), m(), r("#carImportForm").addEventListener("submit", function(t) {
+            }(), m(), r("#carImportForm").addEventListener("input", function() {
+                invalidateDraftQuote();
+            }), r("#carImportForm").addEventListener("change", function() {
+                invalidateDraftQuote();
+            }), r("#carImportForm").addEventListener("car-import:reset", function() {
+                invalidateDraftQuote();
+            }), r("#carImportForm").addEventListener("submit", function(t) {
                 t.preventDefault(), m();
             }), r("#carImportCountry").addEventListener("change", u), r("#carImportSourceMarket").addEventListener("change", function() {
                 i("car_import_source_market_selected", {
@@ -660,7 +724,8 @@
                 });
             }), r("#carImportPdf").addEventListener("click", g), r("#carImportCsv").addEventListener("click", I),
             r("#carImportPrint").addEventListener("click", function() {
-                window.print();
+                a.lastResult || m();
+                if (a.lastResult) window.print();
             }), r("#carImportShare").addEventListener("click", v), r("#carImportSaveLocal").addEventListener("click", b),
             r("#carImportAskAi").addEventListener("click", C), r("#carImportCompareMode").addEventListener("click", function() {
                 h(r("[aria-controls='carImportTabCompare']")), i("car_import_compare_mode_used", {
