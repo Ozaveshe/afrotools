@@ -29,6 +29,9 @@
   function fmt(n) {
     return Math.round(n).toLocaleString("en");
   }
+  function quantity(value) {
+    return Number(value.toFixed(2));
+  }
   function escape(value) {
     return String(value).replace(/[&<>"']/g, function (c) {
       return {
@@ -40,15 +43,20 @@
       }[c];
     });
   }
+  var resultRequested = false;
   function showError(message) {
     el("placeholderCard").style.display = "none";
     el("resultsCard").style.display = "block";
     el("priceNote").setAttribute("role", "alert");
     el("priceNote").textContent = message;
     el("boqTableWrap").innerHTML = "";
+    ["sumTotal", "sumLabour", "sumGrand", "contPct", "contAmt"].forEach(function (id) {
+      el(id).textContent = "—";
+    });
     window._boqExportData = null;
   }
   function generate() {
+    resultRequested = true;
     var output = engine.calculate(input());
     if (output.error) {
       showError(
@@ -76,7 +84,7 @@
           "</td><td>" +
           escape(item.description) +
           '</td><td class="right">' +
-          fmt(item.qty) +
+          quantity(item.qty).toLocaleString("en") +
           "</td><td>" +
           escape(item.unit) +
           '</td><td class="right">' +
@@ -124,7 +132,7 @@
     );
   }
   function exportCSV() {
-    var output = window._boqExportData || generate();
+    var output = generate();
     if (!output) return;
     var rows = [
       [
@@ -142,7 +150,7 @@
       rows.push([
         index + 1,
         item.description,
-        item.qty,
+        quantity(item.qty),
         item.unit,
         item.rate,
         item.amount,
@@ -194,5 +202,12 @@
     el("numSinks").value = p.sinks;
     el("numBeds").value = p.beds;
     window._boqExportData = null;
+  });
+  var projectCard = el("floorArea").closest(".boq-card");
+  projectCard.addEventListener("input", function () {
+    if (resultRequested) generate();
+  });
+  projectCard.addEventListener("change", function () {
+    if (resultRequested) generate();
   });
 })();
