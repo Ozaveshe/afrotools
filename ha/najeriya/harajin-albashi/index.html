@@ -477,7 +477,7 @@
             </div>
 
             <!-- NHIS RATE (configurable) -->
-            <div class="field cond-field" id="nhisField">
+            <div class="field cond-field on" id="nhisField">
               <div class="f-label">
                 <label class="f-label-text" for="nhisRate">Kason gudummawar NHIS (%)</label>
                 <span class="f-hint">Ya danganta da mai daukar aiki</span>
@@ -1278,7 +1278,7 @@ function isOn(tog) { return document.querySelector(`[data-tog="${tog}"]`)?.class
 
 // PITA 2025
 function calcPITA(gross) {
-  const nhisRate = isOn('nhis') ? (parseFloat(document.getElementById('nhisRate').value) || 5) / 100 : 0;
+  const nhisRate = isOn('nhis') ? healthRatePercent() / 100 : 0;
   const pension = isOn('pension') ? gross * 0.08 : 0;
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
   const nhis = nhisRate > 0 ? gross * nhisRate : 0;
@@ -1339,7 +1339,7 @@ function calcPITA(gross) {
 
 // NTA 2026
 function calcNTA(gross) {
-  const nhisRate = isOn('nhis') ? (parseFloat(document.getElementById('nhisRate').value) || 5) / 100 : 0;
+  const nhisRate = isOn('nhis') ? healthRatePercent() / 100 : 0;
   const pensionable = isOn('pension') ? (parseNum(document.getElementById('pensionableAmt').value) || gross) : 0;
   const pension = pensionable * 0.08;
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
@@ -1826,12 +1826,21 @@ async function downloadPdf() {
 }
 
 // -€-€ SHARE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function healthRatePercent() {
+  const field = document.getElementById('nhisRate');
+  const rate = field.valueAsNumber;
+  return Number.isFinite(rate) && rate >= 0 && rate <= 15 ? rate : 5;
+}
+
 function getShareState() {
   if (!RESULT) return {};
   const state = { g: RESULT.gross, r: REGIME };
   if (isOn('pension')) state.p = 1;
   if (isOn('nhf')) state.n = 1;
-  if (isOn('nhis')) state.h = 1;
+  if (isOn('nhis')) {
+    state.h = 1;
+    state.hr = healthRatePercent();
+  }
   if (isOn('life')) state.li = parseNum(document.getElementById('lifeAmt').value);
   if (isOn('homeloan')) state.hl = parseNum(document.getElementById('homeloanAmt').value);
   if (REGIME === 'nta') {
@@ -1871,21 +1880,37 @@ function copyLink() {
 
 // -€-€ RESTORE FROM URL -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function restoreFromUrl() {
-  if (!AfroTools.shareState || !AfroTools.shareState.hasState()) return;
-  const s = AfroTools.shareState.decode();
-  if (s.g) {
-    document.getElementById('grossSalary').value = Math.round(s.g).toLocaleString('en-NG');
-    slider.value = Math.min(Math.max(s.g, 500000), 50000000);
-    document.getElementById('sliderVal').textContent = fmt(s.g);
-    updateSliderFill(slider);
-  }
+  if (!window.AfroTools || !window.AfroTools.shareState || !window.AfroTools.shareState.hasState()) return;
+  const s = window.AfroTools.shareState.decode();
+  // Tracking and AI-prefill parameters are not a shared calculation.
+  if (typeof s.g !== 'number' || !Number.isFinite(s.g) || s.g <= 0) return;
+  document.getElementById('grossSalary').value = Math.round(s.g).toLocaleString('en-NG');
+  slider.value = Math.min(Math.max(s.g, 500000), 50000000);
+  document.getElementById('sliderVal').textContent = fmt(s.g);
+  updateSliderFill(slider);
   // Older salary links omitted the regime when PITA was the default.
   const sharedNta = s.r === 'nta';
   setRegime(sharedNta ? 'nta' : 'pita', document.getElementById(sharedNta ? 'tabNta' : 'tabPita'));
-  // Restore toggles
-  ['pension', 'nhf', 'nhis'].forEach(t => {
-    const el = document.querySelector(`[data-tog="${t}"]`);
-    if (el) { if (s[t[0]] || s.p || s.n || s.h) el.classList.add('on'); else el.classList.remove('on'); }
+  // Shared links include only enabled deductions; restore each one independently.
+  [['pension', 'p'], ['nhf', 'n'], ['nhis', 'h']].forEach(([toggle, key]) => {
+    const enabled = s[key] === 1 || s[key] === true;
+    const el = document.querySelector(`[data-tog="${toggle}"]`);
+    el.classList.toggle('on', enabled);
+    el.setAttribute('aria-checked', String(enabled));
+    if (toggle === 'nhis') {
+      document.getElementById('nhisField').classList.toggle('on', enabled);
+      const rate = enabled && Number.isFinite(s.hr) && s.hr >= 0 && s.hr <= 15 ? s.hr : 5;
+      document.getElementById('nhisRate').value = rate;
+      document.getElementById('nhisRateLabel').textContent = rate + '%';
+    }
+  });
+  [['life', 'li', 'lifeAmt', 'lifeField'], ['homeloan', 'hl', 'homeloanAmt', 'homeloanField']].forEach(([toggle, key, inputId, fieldId]) => {
+    const enabled = Object.prototype.hasOwnProperty.call(s, key) && typeof s[key] === 'number' && Number.isFinite(s[key]) && s[key] >= 0;
+    const el = document.querySelector(`[data-tog="${toggle}"]`);
+    el.classList.toggle('on', enabled);
+    el.setAttribute('aria-checked', String(enabled));
+    document.getElementById(fieldId).classList.toggle('on', enabled);
+    if (enabled) document.getElementById(inputId).value = s[key].toLocaleString('en-NG', { maximumFractionDigits: 20 });
   });
   if (s.pe) document.getElementById('pensionableAmt').value = Math.round(s.pe).toLocaleString('en-NG');
   if (s.rt) document.getElementById('annualRent').value = Math.round(s.rt).toLocaleString('en-NG');

@@ -598,6 +598,7 @@
 
   function isExportControl(control, format, config) {
     if (!control || !format || config.formats.indexOf(format) === -1) return false;
+    if (control.hasAttribute('data-native-share-link')) return false;
     if (control.dataset.frFinanceGeneratedDownload === 'true' || control.dataset.noPdfGate === 'true') return false;
     if (control.closest('nav,footer,afro-navbar,afro-footer,[data-chat],[class*="chat"]')) return false;
     var label = clean(control.getAttribute('aria-label') || control.textContent || control.value);

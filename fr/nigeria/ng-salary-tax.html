@@ -561,7 +561,7 @@ window.addEventListener('load', function() {
             </div>
 
             <!-- NHIS RATE (configurable) -->
-            <div class="field cond-field" id="nhisField">
+            <div class="field cond-field on" id="nhisField">
               <div class="f-label">
                 <label class="f-label-text" for="nhisRate">NHIS Contribution Rate (%)</label>
                 <span class="f-hint">Employer-dependent</span>
@@ -709,7 +709,7 @@ window.addEventListener('load', function() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               Partager
             </button>
-            <button type="button" class="act-btn" onclick="copyLink()">
+            <button type="button" class="act-btn" data-native-share-link onclick="copyLink()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               Copier le lien
             </button>
@@ -1372,7 +1372,7 @@ function isOn(tog) { return document.querySelector(`[data-tog="${tog}"]`)?.class
 
 // PITA 2025
 function calcPITA(gross) {
-  const nhisRate = isOn('nhis') ? (parseFloat(document.getElementById('nhisRate').value) || 5) / 100 : 0;
+  const nhisRate = isOn('nhis') ? healthRatePercent() / 100 : 0;
   const pension = isOn('pension') ? gross * 0.08 : 0;
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
   const nhis = nhisRate > 0 ? gross * nhisRate : 0;
@@ -1433,7 +1433,7 @@ function calcPITA(gross) {
 
 // NTA 2026
 function calcNTA(gross) {
-  const nhisRate = isOn('nhis') ? (parseFloat(document.getElementById('nhisRate').value) || 5) / 100 : 0;
+  const nhisRate = isOn('nhis') ? healthRatePercent() / 100 : 0;
   const pensionable = isOn('pension') ? (parseNum(document.getElementById('pensionableAmt').value) || gross) : 0;
   const pension = pensionable * 0.08;
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
@@ -1924,12 +1924,21 @@ async function downloadPdf() {
 }
 
 // -€-€ SHARE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function healthRatePercent() {
+  const field = document.getElementById('nhisRate');
+  const rate = field.valueAsNumber;
+  return Number.isFinite(rate) && rate >= 0 && rate <= 15 ? rate : 5;
+}
+
 function getPartagerState() {
   if (!RESULT) return {};
   const state = { g: RESULT.gross, r: REGIME };
   if (isOn('pension')) state.p = 1;
   if (isOn('nhf')) state.n = 1;
-  if (isOn('nhis')) state.h = 1;
+  if (isOn('nhis')) {
+    state.h = 1;
+    state.hr = healthRatePercent();
+  }
   if (isOn('life')) state.li = parseNum(document.getElementById('lifeAmt').value);
   if (isOn('homeloan')) state.hl = parseNum(document.getElementById('homeloanAmt').value);
   if (REGIME === 'nta') {
@@ -1943,13 +1952,13 @@ function getPartagerState() {
 
 function shareCalc() {
   if (!RESULT) return;
-  const text = `My Nigeria tax breakdown: Gross ${fmt(RESULT.gross)}/yr → Take-home ${fmt(RESULT.netMonthly)}/mo (${pct(RESULT.effectiveRate)} effective rate)`;
-  AfroTools.shareState.share({ title: 'My Nigeria Tax Breakdown', text, state: getPartagerState(), toolId: 'ng-paye' });
+  const text = `Mon bulletin de salaire au Nigeria : brut ${fmt(RESULT.gross)}/an → net ${fmt(RESULT.netMonthly)}/mois (${pct(RESULT.effectiveRate)} de taux effectif)`;
+  AfroTools.shareState.share({ title: 'Mon salaire net au Nigeria', text, state: getPartagerState(), toolId: 'ng-paye' });
 }
 
 function whatsappPartager() {
   if (!RESULT) return;
-  AfroTools.shareState.whatsappPartager({
+  AfroTools.shareState.whatsappShare({
     headline: 'Mon salaire net',
     mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
@@ -1971,19 +1980,35 @@ function copyLink() {
 function restoreFromUrl() {
   if (!window.AfroTools || !window.AfroTools.shareState || !window.AfroTools.shareState.hasState()) return;
   const s = window.AfroTools.shareState.decode();
-  if (s.g) {
-    document.getElementById('grossSalary').value = Math.round(s.g).toLocaleString('en-NG');
-    slider.value = Math.min(Math.max(s.g, 500000), 50000000);
-    document.getElementById('sliderVal').textContent = fmt(s.g);
-    updateSliderFill(slider);
-  }
+  // Tracking and AI-prefill parameters are not a shared calculation.
+  if (typeof s.g !== 'number' || !Number.isFinite(s.g) || s.g <= 0) return;
+  document.getElementById('grossSalary').value = Math.round(s.g).toLocaleString('en-NG');
+  slider.value = Math.min(Math.max(s.g, 500000), 50000000);
+  document.getElementById('sliderVal').textContent = fmt(s.g);
+  updateSliderFill(slider);
   // Older salary links omitted the regime when PITA was the default.
   const sharedNta = s.r === 'nta';
   setRegime(sharedNta ? 'nta' : 'pita', document.getElementById(sharedNta ? 'tabNta' : 'tabPita'));
-  // Restore toggles
-  ['pension', 'nhf', 'nhis'].forEach(t => {
-    const el = document.querySelector(`[data-tog="${t}"]`);
-    if (el) { if (s[t[0]] || s.p || s.n || s.h) el.classList.add('on'); else el.classList.remove('on'); }
+  // Shared links include only enabled deductions; restore each one independently.
+  [['pension', 'p'], ['nhf', 'n'], ['nhis', 'h']].forEach(([toggle, key]) => {
+    const enabled = s[key] === 1 || s[key] === true;
+    const el = document.querySelector(`[data-tog="${toggle}"]`);
+    el.classList.toggle('on', enabled);
+    el.setAttribute('aria-checked', String(enabled));
+    if (toggle === 'nhis') {
+      document.getElementById('nhisField').classList.toggle('on', enabled);
+      const rate = enabled && Number.isFinite(s.hr) && s.hr >= 0 && s.hr <= 15 ? s.hr : 5;
+      document.getElementById('nhisRate').value = rate;
+      document.getElementById('nhisRateLabel').textContent = rate + '%';
+    }
+  });
+  [['life', 'li', 'lifeAmt', 'lifeField'], ['homeloan', 'hl', 'homeloanAmt', 'homeloanField']].forEach(([toggle, key, inputId, fieldId]) => {
+    const enabled = Object.prototype.hasOwnProperty.call(s, key) && typeof s[key] === 'number' && Number.isFinite(s[key]) && s[key] >= 0;
+    const el = document.querySelector(`[data-tog="${toggle}"]`);
+    el.classList.toggle('on', enabled);
+    el.setAttribute('aria-checked', String(enabled));
+    document.getElementById(fieldId).classList.toggle('on', enabled);
+    if (enabled) document.getElementById(inputId).value = s[key].toLocaleString('en-NG', { maximumFractionDigits: 20 });
   });
   if (s.pe) document.getElementById('pensionableAmt').value = Math.round(s.pe).toLocaleString('en-NG');
   if (s.rt) document.getElementById('annualRent').value = Math.round(s.rt).toLocaleString('en-NG');
@@ -2239,7 +2264,7 @@ document.addEventListener('afro:lazy-script-chain-complete', () => {
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <!-- french-finance-export-contract:start -->
 <script type="application/json" id="afrotools-fr-finance-export-contract">{"schemaVersion":1,"englishId":"ng-paye","englishRoute":"/nigeria/ng-salary-tax","frenchRoute":"/fr/nigeria/ng-salary-tax","formats":["copy","pdf"]}</script>
-<script src="/assets/js/pages/french-finance-export-contract.js?v=170231e1" defer></script>
+<script src="/assets/js/pages/french-finance-export-contract.js?v=f60c8c38" defer></script>
 <!-- french-finance-export-contract:end -->
 </body>
 </html>
