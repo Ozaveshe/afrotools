@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "diff-checker": {
+    "title": "Comparer deux textes",
+    "tool": "/fr/tools/comparateur-texte/",
+    "frame": "document-pdf-diff-checker",
+    "script": "document-pdf/diff-checker.js"
+  },
+  "word-counter": {
+    "title": "Compteur de mots",
+    "tool": "/fr/tools/compteur-mots/",
+    "frame": "document-pdf-word-counter",
+    "script": "document-pdf/word-counter.js"
+  }
+,
+
   "regex-tester": {
     "title": "Testeur d’expressions régulières",
     "tool": "/fr/tools/testeur-regex/",
