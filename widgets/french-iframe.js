@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "jwt-decoder": {
+    "title": "Décodage d’un jeton JWT",
+    "tool": "/fr/tools/decodeur-jwt/",
+    "frame": "developer-jwt-decoder",
+    "script": "developer/jwt-decoder.js"
+  }
+,
+
   "css-gradient": {
     "title": "Générateur de dégradés CSS",
     "tool": "/fr/tools/generateur-degrade-css/",
