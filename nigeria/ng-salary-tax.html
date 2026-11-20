@@ -415,11 +415,11 @@
 <!-- REGIME TABS -->
 <div class="regime-bar" role="tablist" aria-label="Tax regime selection">
   <div class="container">
-    <button type="button" class="regime-tab active" role="tab" aria-selected="true" id="tabPita" onclick="setRegime('pita',this)">
+    <button type="button" class="regime-tab" role="tab" aria-selected="false" id="tabPita" onclick="setRegime('pita',this)">
       Old System &mdash; PITA
       <small>2025 tax year &middot; CRA applies</small>
     </button>
-    <button type="button" class="regime-tab" role="tab" aria-selected="false" id="tabNta" onclick="setRegime('nta',this)">
+    <button type="button" class="regime-tab active" role="tab" aria-selected="true" id="tabNta" onclick="setRegime('nta',this)">
       New System &mdash; NTA 2026
       <small>Effective Jan 1 2026 &middot; Rent Relief</small>
     </button>
@@ -1187,7 +1187,7 @@
 let RESULT = null;
 // The existing saved-scenario adapter reads these fields from window.
 var PERIOD = 'monthly';
-var REGIME = 'pita';
+var REGIME = 'nta';
 var CALC_MODE = 'gross'; // 'gross' | 'net'
 var SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
 let CHAT_HISTORY = [];
@@ -1734,7 +1734,7 @@ function toggleBands(header) {
   arr.classList.toggle('open');
   header.setAttribute('aria-expanded', body.classList.contains('open'));
 }
-updateBands();
+setRegime(REGIME, document.getElementById('tabNta'));
 
 // -€-€ CHARTS (lazy-loaded) -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function loadChartAndRender() {
@@ -1978,9 +1978,9 @@ function restoreFromUrl() {
   slider.value = Math.min(Math.max(s.g, 500000), 50000000);
   document.getElementById('sliderVal').textContent = fmt(s.g);
   updateSliderFill(slider);
-  if (s.r === 'nta') {
-    setRegime('nta', document.getElementById('tabNta'));
-  }
+  // Older salary links omitted the regime when PITA was the default.
+  const sharedNta = s.r === 'nta';
+  setRegime(sharedNta ? 'nta' : 'pita', document.getElementById(sharedNta ? 'tabNta' : 'tabPita'));
   // Shared links include only enabled deductions; restore each one independently.
   [['pension', 'p'], ['nhf', 'n'], ['nhis', 'h']].forEach(([toggle, key]) => {
     const enabled = s[key] === 1 || s[key] === true;

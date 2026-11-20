@@ -365,11 +365,11 @@
 <!-- REGIME TABS -->
 <div class="regime-bar" role="tablist" aria-label="Zaben tsarin haraji">
   <div class="container">
-    <button type="button" class="regime-tab active" role="tab" aria-selected="true" id="tabPita" onclick="setRegime('pita',this)">
+    <button type="button" class="regime-tab" role="tab" aria-selected="false" id="tabPita" onclick="setRegime('pita',this)">
       Tsohon tsari &mdash; PITA
       <small>Shekarar haraji 2025 &middot; CRA na aiki</small>
     </button>
-    <button type="button" class="regime-tab" role="tab" aria-selected="false" id="tabNta" onclick="setRegime('nta',this)">
+    <button type="button" class="regime-tab active" role="tab" aria-selected="true" id="tabNta" onclick="setRegime('nta',this)">
       Sabon tsari &mdash; NTA 2026
       <small>Ya fara Jan 1 2026 &middot; Saukin haya</small>
     </button>
@@ -1125,7 +1125,7 @@
 // -€-€ STATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 let RESULT = null;
 var PERIOD = 'monthly';
-var REGIME = 'pita';
+var REGIME = 'nta';
 var CALC_MODE = 'gross'; // 'gross' | 'net'
 var SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
 let CHAT_HISTORY = [];
@@ -1639,7 +1639,7 @@ function toggleBands(header) {
   arr.classList.toggle('open');
   header.setAttribute('aria-expanded', body.classList.contains('open'));
 }
-updateBands();
+setRegime(REGIME, document.getElementById('tabNta'));
 
 // -€-€ CHARTS (lazy-loaded) -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function loadChartAndRender() {
@@ -1879,9 +1879,9 @@ function restoreFromUrl() {
     document.getElementById('sliderVal').textContent = fmt(s.g);
     updateSliderFill(slider);
   }
-  if (s.r === 'nta') {
-    setRegime('nta', document.getElementById('tabNta'));
-  }
+  // Older salary links omitted the regime when PITA was the default.
+  const sharedNta = s.r === 'nta';
+  setRegime(sharedNta ? 'nta' : 'pita', document.getElementById(sharedNta ? 'tabNta' : 'tabPita'));
   // Restore toggles
   ['pension', 'nhf', 'nhis'].forEach(t => {
     const el = document.querySelector(`[data-tog="${t}"]`);

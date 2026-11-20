@@ -449,11 +449,11 @@ window.addEventListener('load', function() {
 <!-- REGIME TABS -->
 <div class="regime-bar" role="tablist" aria-label="Selection du regime fiscal">
   <div class="container">
-    <button type="button" class="regime-tab active" role="tab" aria-selected="true" id="tabPita" onclick="setRegime('pita',this)">
+    <button type="button" class="regime-tab" role="tab" aria-selected="false" id="tabPita" onclick="setRegime('pita',this)">
       Ancien systeme &mdash; PITA
       <small>Annee fiscale 2025 &middot; CRA applicable</small>
     </button>
-    <button type="button" class="regime-tab" role="tab" aria-selected="false" id="tabNta" onclick="setRegime('nta',this)">
+    <button type="button" class="regime-tab active" role="tab" aria-selected="true" id="tabNta" onclick="setRegime('nta',this)">
       New System &mdash; NTA 2026
       <small>Effective Jan 1 2026 &middot; Rent Relief</small>
     </button>
@@ -1219,7 +1219,7 @@ window.addEventListener('load', function() {
 // -€-€ STATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 let RESULT = null;
 var PERIOD = 'monthly';
-var REGIME = 'pita';
+var REGIME = 'nta';
 var CALC_MODE = 'gross'; // 'gross' | 'net'
 var SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
 let CHAT_HISTORY = [];
@@ -1733,7 +1733,7 @@ function toggleBands(header) {
   arr.classList.toggle('open');
   header.setAttribute('aria-expanded', body.classList.contains('open'));
 }
-updateBands();
+setRegime(REGIME, document.getElementById('tabNta'));
 
 // -€-€ CHARTS (lazy-loaded) -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function loadChartAndRender() {
@@ -1977,9 +1977,9 @@ function restoreFromUrl() {
     document.getElementById('sliderVal').textContent = fmt(s.g);
     updateSliderFill(slider);
   }
-  if (s.r === 'nta') {
-    setRegime('nta', document.getElementById('tabNta'));
-  }
+  // Older salary links omitted the regime when PITA was the default.
+  const sharedNta = s.r === 'nta';
+  setRegime(sharedNta ? 'nta' : 'pita', document.getElementById(sharedNta ? 'tabNta' : 'tabPita'));
   // Restore toggles
   ['pension', 'nhf', 'nhis'].forEach(t => {
     const el = document.querySelector(`[data-tog="${t}"]`);
