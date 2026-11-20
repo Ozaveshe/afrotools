@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "car-insurance": {
+    "title": "Assurance auto",
+    "tool": "/fr/tools/assurance-auto/",
+    "frame": "insurance-car-insurance",
+    "script": "insurance/car-insurance.js"
+  },
+  "japa-calculator": {
+    "title": "Budget de déménagement",
+    "tool": "/fr/tools/calculateur-japa/",
+    "frame": "african-japa-calculator",
+    "script": "african/japa-calculator.js"
+  }
+,
+
   "bmi-calculator": {
     "title": "Indice de masse corporelle",
     "tool": "/fr/tools/calculateur-imc/",
