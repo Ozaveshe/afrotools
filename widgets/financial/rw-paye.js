@@ -1,1 +1,44 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.rw_paye=function(a,s){s=s||{};var e=function(a){return"RWF "+Math.round(a).toLocaleString("en-RW")};a.innerHTML='<div class="aw-title">🇷🇼 Rwanda PAYE Calculator</div><div class="aw-field"><label class="aw-label">Monthly Gross Salary (RWF)</label><input class="aw-input" id="awRwGross" type="text" inputmode="numeric" placeholder="e.g. 500,000"></div><button class="aw-btn aw-btn--primary" id="awRwCalc">Calculate PAYE</button><div id="awRwResult"></div>'+(s.footerHTML||""),a.querySelector("#awRwCalc").addEventListener("click",function(){var s=parseFloat((a.querySelector("#awRwGross").value||"").replace(/[^0-9.]/g,""))||0;if(s){var t=function(a){var s=.06*a,e=Math.max(0,a-s),t=function(a){var s=Math.max(0,a);if(s<=6e4)return{tax:0};var e=0;return s>6e4&&(e+=.1*Math.min(s-6e4,4e4)),s>1e5&&(e+=.2*Math.min(s-1e5,1e5)),s>2e5&&(e+=.3*(s-2e5)),{tax:e}}(e),n=.06*a,r=.003*a,i=.003*a,l=a-s-t.tax-i;return{gross:a,rssb:s,taxable:e,tax:t.tax,empMaternity:i,net:l,empRssb:n,maternity:r,effectiveRate:a>0?t.tax/a*100:0}}(s);a.querySelector("#awRwResult").innerHTML='<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home (RRA 2026)</div><div class="aw-result-main">'+e(t.net)+'</div></div><div style="margin-top:12px"><div class="aw-result-row"><span>Gross Salary</span><span>'+e(t.gross)+'</span></div><div class="aw-result-row"><span>RSSB Pension (6%)</span><span>-'+e(t.rssb)+'</span></div><div class="aw-result-row"><span>Taxable Income</span><span>'+e(t.taxable)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span>PAYE Tax</span><span style="color:#dc2626">-'+e(t.tax)+'</span></div><div class="aw-result-row"><span>Effective Rate</span><span>'+t.effectiveRate.toFixed(1)+'%</span></div><div class="aw-result-row"><span>Maternity (0.3%)</span><span style="color:#dc2626">-'+e(t.empMaternity)+'</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#0062CC">'+e(t.net)+'</span></div><div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#0062CC">'+e(12*t.net)+'</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-size:12px;opacity:.7"><span>Employer RSSB (6%)</span><span>'+e(t.empRssb)+'</span></div><div class="aw-result-row" style="font-size:12px;opacity:.7"><span>Employer Maternity (0.3%)</span><span>'+e(t.maternity)+"</span></div></div>"}}),a.querySelector("#awRwGross").addEventListener("keydown",function(s){"Enter"===s.key&&a.querySelector("#awRwCalc").click()})}}();
+(function () {
+  'use strict';
+  window.AfroWidgets = window.AfroWidgets || {};
+  window.AfroWidgets.rw_paye = function (container, options) {
+    const format = value => 'RWF ' + Math.round(value).toLocaleString('en-RW');
+    container.innerHTML = '<div class="aw-title">Rwanda PAYE Calculator</div>' +
+      '<label class="aw-field"><span class="aw-label">Monthly gross taxable salary (RWF)</span>' +
+      '<input class="aw-input" id="awRwGross" type="text" inputmode="numeric" placeholder="e.g. 500,000"></label>' +
+      '<button class="aw-btn aw-btn--primary" id="awRwCalc" type="button">Calculate PAYE</button>' +
+      '<div id="awRwResult" aria-live="polite"></div>' + (options?.footerHTML || '');
+    const input = container.querySelector('#awRwGross');
+    const result = container.querySelector('#awRwResult');
+    function calculate() {
+      const gross = Number(input.value.replace(/[ ,]/g, ''));
+      if (!Number.isFinite(gross) || gross <= 0) {
+        result.textContent = 'Enter a positive monthly salary in RWF.';
+        return;
+      }
+      const paye = Math.ceil((Math.min(Math.max(gross - 60000, 0), 40000) +
+        2 * Math.min(Math.max(gross - 100000, 0), 100000) +
+        3 * Math.max(gross - 200000, 0)) / 10);
+      const pension = gross * 0.06;
+      const maternity = gross * 0.003;
+      const beforeCbhi = gross - pension - maternity - paye;
+      const cbhi = Math.round(beforeCbhi * 0.005 / 1.005);
+      const net = beforeCbhi - cbhi;
+      const hazard = gross * 0.02;
+      const rows = [
+        ['Gross salary', format(gross)], ['Taxable income', format(gross)],
+        ['PAYE tax', format(paye)], ['Effective PAYE rate', (paye / gross * 100).toFixed(1) + '%'],
+        ['Employee pension (6%)', format(pension)], ['Employee maternity (0.3%)', format(maternity)],
+        ['Employee CBHI (0.5% of net)', format(cbhi)], ['Annual net salary', format(net * 12)],
+        ['Employer pension (6%)', format(pension)], ['Employer maternity (0.3%)', format(maternity)],
+        ['Employer occupational hazard (2%)', format(hazard)],
+        ['Total monthly employer cost', format(gross + pension + maternity + hazard)]
+      ];
+      result.innerHTML = '<div class="aw-result-box"><div class="aw-result-label">Monthly take-home pay</div>' +
+        '<div class="aw-result-main">' + format(net) + '</div></div>' +
+        rows.map(([label, value]) => '<div class="aw-result-row"><span>' + label + '</span><span>' + value + '</span></div>').join('');
+    }
+    container.querySelector('#awRwCalc').addEventListener('click', calculate);
+    input.addEventListener('keydown', event => { if (event.key === 'Enter') calculate(); });
+  };
+})();

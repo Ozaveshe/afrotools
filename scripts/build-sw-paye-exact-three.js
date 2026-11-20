@@ -81,7 +81,7 @@ const TARGETS = {
     authority: 'RRA',
     period: '2025/26',
     checkedDate: '3 Agosti 2026',
-    fixture: { gross: 300000, tax: 48600, employeeSocial: 19157, net: 231343, employerCost: 324900 },
+    fixture: { gross: 300000, tax: 54000, employeeSocial: 19130, net: 225970, employerCost: 324900 },
     seoDescription: 'Kokotoa PAYE ya Rwanda pamoja na pensheni na uzazi wa RSSB, CBHI ya lazima ya 0.5% ya mshahara halisi, na mchango wa hatari ya kazi wa mwajiri 2%.',
     hero: 'PAYE ya RRA yenye mabanda ya 0%, 10%, 20% na 30%; pensheni ya RSSB 6% kwa kila upande; uzazi 0.3% kwa kila upande; CBHI 0.5% ya mshahara halisi wa mfanyakazi; na hatari ya kazi ya mwajiri 2%.',
     fact: '<strong>Ukweli Muhimu wa sasa:</strong> PAYE ni 0% hadi RWF 60,000, 10% hadi RWF 100,000, 20% hadi RWF 200,000 na 30% zaidi ya hapo. Pensheni ya RSSB ni 6% kwa kila upande, uzazi ni 0.3% kwa kila upande, CBHI ni 0.5% ya mshahara halisi wa mfanyakazi, na hatari ya kazi ni 2% kwa mwajiri.',
@@ -89,13 +89,13 @@ const TARGETS = {
     toggles: `
               <div class="tog on" data-tog="rssb" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label" id="rssbLabel">RSSB Pensheni</div><div class="tog-rate">6% mfanyakazi — inapunguza mapato ya PAYE</div></div>
+                <div><div class="tog-label" id="rssbLabel">RSSB Pensheni</div><div class="tog-rate">6% mfanyakazi — hukatwa kwenye mshahara</div></div>
               </div>
               <div class="tog" data-tog="secondary" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div><div class="tog-label">Ajira ya Pili</div><div class="tog-rate">Kiwango tambarare 30% kwa ghafi</div></div>
               </div>`,
-    note: 'Pensheni ya RSSB ya mfanyakazi ni 6% na hupunguza mapato yanayotozwa PAYE. Uzazi ni 0.3% kwa kila upande. CBHI ya lazima ni 0.5% ya mshahara halisi wa mfanyakazi na hutatuliwa pamoja na halisi; mwajiri hukusanya na kuwasilisha. Mwajiri pia hulipa 2% kwa hatari ya kazi.',
+    note: 'Pensheni ya RSSB ya mfanyakazi ni 6% na hupunguza mshahara halisi baada ya kukokotoa PAYE. Uzazi ni 0.3% kwa kila upande. CBHI ya lazima ni 0.5% ya mshahara halisi wa mfanyakazi na hutatuliwa pamoja na halisi; mwajiri hukusanya na kuwasilisha. Mwajiri pia hulipa 2% kwa hatari ya kazi.',
     bandsComment: 'RRA TAX BANDS',
     nextComment: 'RSSB & MATERNITY',
     cards: `
@@ -107,7 +107,7 @@ const TARGETS = {
           <div class="band-row"><span class="band-range">RWF 60,001 – 100,000</span><span class="band-rate">10%</span></div>
           <div class="band-row"><span class="band-range">RWF 100,001 – 200,000</span><span class="band-rate">20%</span></div>
           <div class="band-row"><span class="band-range">Zaidi ya RWF 200,000</span><span class="band-rate">30%</span></div>
-          <p class="band-note">Mabanda hutumika kwa mapato baada ya RSSB ya mfanyakazi. Ajira ya pili hutumia 30% kwa ghafi.</p>
+          <p class="band-note">Viwango vya PAYE hutumika kwa mshahara ghafi unaotozwa kodi. Ajira ya pili hutumia 30% kwa ghafi.</p>
         </div>
       </div>
       <!-- RSSB & MATERNITY -->
@@ -119,26 +119,26 @@ const TARGETS = {
           <div class="band-row"><span class="band-range">Mchango wa uzazi</span><span class="band-rate">0.3% mfanyakazi + 0.3% mwajiri</span></div>
           <div class="band-row"><span class="band-range">CBHI ya lazima</span><span class="band-rate">0.5% ya mshahara halisi</span></div>
           <div class="band-row"><span class="band-range">Hatari ya kazi</span><span class="band-rate">2% mwajiri</span></div>
-          <p class="band-note">Kwa RWF 300,000, pensheni ni RWF 18,000 kwa kila upande, uzazi ni RWF 900 kwa kila upande, CBHI ni RWF 1,157 baada ya kutatua 0.5% ya mshahara halisi, na hatari ya kazi ya mwajiri ni RWF 6,000.</p>
+          <p class="band-note">Kwa RWF 300,000, pensheni ni RWF 18,000 kwa kila upande, uzazi ni RWF 900 kwa kila upande, CBHI ni RWF 1,130 baada ya kutatua 0.5% ya mshahara halisi, na hatari ya kazi ya mwajiri ni RWF 6,000.</p>
         </div>
       </div>`,
     faqs: [
       ['Mabanda ya PAYE ya Rwanda ni yapi?', 'PAYE ni 0% hadi RWF 60,000, 10% kwa RWF 60,001–100,000, 20% kwa RWF 100,001–200,000, na 30% kwa sehemu inayozidi RWF 200,000 kwa mwezi.'],
-      ['Kiwango cha RSSB ni kiasi gani?', 'RSSB ni 6% ya mshahara ghafi kwa mfanyakazi na 6% kwa mwajiri. Mchango wa mfanyakazi hupunguza mapato yanayotozwa PAYE.'],
+      ['Kiwango cha RSSB ni kiasi gani?', 'RSSB ni 6% ya mshahara ghafi kwa mfanyakazi na 6% kwa mwajiri. Mchango wa mfanyakazi hupunguza mshahara halisi baada ya kukokotoa PAYE.'],
       ['CBHI na hatari ya kazi hulipwa na nani?', 'CBHI ya lazima ni 0.5% ya mshahara halisi wa mfanyakazi na hukusanywa na kuwasilishwa na mwajiri. Mwajiri hulipa mchango wa hatari ya kazi wa 2%; hakuna sehemu ya mfanyakazi katika mchango huo.'],
-      ['Mfano wa RWF 300,000 unatoka vipi?', 'Kwa RWF 300,000: PAYE ni RWF 48,600; pensheni ya mfanyakazi ni RWF 18,000; uzazi wa mfanyakazi ni RWF 900; CBHI ni RWF 1,157; halisi ni RWF 231,343; na gharama ya mwajiri ni RWF 324,900.'],
+      ['Mfano wa RWF 300,000 unatoka vipi?', 'Kwa RWF 300,000: PAYE ni RWF 54,000; pensheni ya mfanyakazi ni RWF 18,000; uzazi wa mfanyakazi ni RWF 900; CBHI ni RWF 1,130; halisi ni RWF 225,970; na gharama ya mwajiri ni RWF 324,900.'],
     ],
     guide: [
       'Kikokotoo hutumia mabanda manne ya kila mwezi ya RRA: 0% hadi RWF 60,000, 10% hadi RWF 100,000, 20% hadi RWF 200,000, na 30% kwa ziada.',
       'Pensheni ya RSSB ni 6% kwa mfanyakazi na 6% kwa mwajiri. Uzazi ni 0.3% kwa kila upande; CBHI ni 0.5% ya mshahara halisi wa mfanyakazi. Kwa kuwa notisi ya RSSB haielezi mpangilio wa mzunguko, kikokotoo hutumia CBHI = round((halisi kabla ya CBHI × 0.5%) / 1.005); thibitisha mzunguko wa malipo na RSSB. Hatari ya kazi ya mwajiri ni 2%.',
-      '<strong>Mfano uliokaguliwa:</strong> ghafi RWF 300,000 → PAYE RWF 48,600; pensheni RWF 18,000; uzazi RWF 900; CBHI RWF 1,157; halisi RWF 231,343; gharama ya mwajiri RWF 324,900.',
+      '<strong>Mfano uliokaguliwa:</strong> ghafi RWF 300,000 → PAYE RWF 54,000; pensheni RWF 18,000; uzazi RWF 900; CBHI RWF 1,130; halisi RWF 225,970; gharama ya mwajiri RWF 324,900.',
     ],
     sources: [
-      ['RRA — tovuti rasmi ya mamlaka ya kodi', 'https://rra.gov.rw'],
-      ['RSSB — mpango wa CBHI', 'https://www.rssb.rw/scheme/cbhi-scheme'],
-      ['RSSB — notisi kwa waajiri: CBHI 0.5% ya mshahara halisi', 'https://www.rssb.rw/fileadmin/user_upload/Announcement_to_all_employers_.pdf'],
-      ['Gazeti Rasmi — Agizo la Waziri Mkuu N° 034/01, 13 Februari 2020', 'https://www.rssb.rw/fileadmin/user_upload/Prime_Minister_s_order_CBHI-subsidies_13th_February_2020.pdf'],
-      ['RSSB — hatari ya kazi 2% ya mwajiri', 'https://www.rssb.rw/scheme/occupational-hazards'],
+      ['RRA — kikokotoo rasmi cha PAYE', 'https://www.rra.gov.rw/en/tax-calculator/paye-calculator'],
+      ['RSSB — mpango wa CBHI', 'https://www.rssb.rw/schemes/cbhi-scheme'],
+      ['RRA — mchango wa mfanyakazi: CBHI 0.5% ya mshahara halisi', 'https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution'],
+      ['RRA — sheria ya kodi ya mapato na marekebisho yake', 'https://www.rra.gov.rw/en/taxes-fees/domestic-taxes/income-tax/about-income-tax'],
+      ['RSSB — hatari ya kazi 2% ya mwajiri', 'https://www.rssb.rw/schemes/oh-scheme'],
     ],
     law: 'Mabanda ya RRA 0%/10%/20%/30% · pensheni RSSB 6% kila upande · uzazi 0.3% kila upande · CBHI 0.5% ya mshahara halisi wa mfanyakazi · hatari ya kazi 2% mwajiri.',
   },
@@ -410,17 +410,17 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   let tax = 0;
   bandBreakdown.push({ rate: 0, income: 60000, tax: 0 });
   const second = Math.min(income - 60000, 40000);
-  tax += second * 0.10;
-  bandBreakdown.push({ rate: 0.10, income: second, tax: second * 0.10 });
+  tax += Math.ceil(second / 10);
+  bandBreakdown.push({ rate: 0.10, income: second, tax: Math.ceil(second / 10) });
   if (income > 100000) {
     const third = Math.min(income - 100000, 100000);
-    tax += third * 0.20;
-    bandBreakdown.push({ rate: 0.20, income: third, tax: third * 0.20 });
+    tax += Math.ceil(third / 5);
+    bandBreakdown.push({ rate: 0.20, income: third, tax: Math.ceil(third / 5) });
   }
   if (income > 200000) {
     const top = income - 200000;
-    tax += top * 0.30;
-    bandBreakdown.push({ rate: 0.30, income: top, tax: top * 0.30 });
+    tax += Math.ceil(top * 3 / 10);
+    bandBreakdown.push({ rate: 0.30, income: top, tax: Math.ceil(top * 3 / 10) });
   }
   return { tax, bandBreakdown: bandBreakdown.filter((band) => band.income > 0) };
 }
@@ -445,9 +445,9 @@ function calculate() {
   const employeeMaternity = gross * 0.003;
   const employerMaternity = gross * 0.003;
   const employerOccupationalHazard = gross * 0.02;
-  const taxableIncome = Math.max(0, gross - rssb);
+  const taxableIncome = gross;
   const taxResult = isSecondary
-    ? { tax: gross * 0.30, bandBreakdown: [{ rate: 0.30, income: gross, tax: gross * 0.30, isFlat: true }] }
+    ? { tax: Math.ceil(gross * 3 / 10), bandBreakdown: [{ rate: 0.30, income: gross, tax: Math.ceil(gross * 3 / 10), isFlat: true }] }
     : calcMonthlyPAYE(taxableIncome);
   const monthlyPAYE = taxResult.tax;
   const employeeCbhi = solveEmployeeCbhi(gross - rssb - employeeMaternity - monthlyPAYE);
@@ -1205,6 +1205,7 @@ function applyRwandaEnglishContract() {
   const relativePath = 'rwanda/rw-paye.html';
   const absolute = path.join(ROOT, relativePath);
   let source = fs.readFileSync(absolute, 'utf8');
+  if (source.includes('https://www.rra.gov.rw/en/tax-calculator/paye-calculator') && source.includes('const taxableIncome = gross;')) return false;
   const before = source;
   const description = 'Calculate Rwanda PAYE with RSSB pension and maternity, mandatory CBHI at 0.5% of employee net salary, and the employer-only 2% occupational-hazard contribution.';
   source = source

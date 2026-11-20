@@ -1,0 +1,47 @@
+{
+  "reviewedBy": "AfroTools Rwanda payroll source review",
+  "reviewedAt": "2026-11-20",
+  "sourceUrl": "https://www.rra.gov.rw/en/tax-calculator/paye-calculator",
+  "reason": "Apply PAYE to gross earnings, round monthly tax upwards, and estimate employee CBHI on net salary as required by RRA guidance. Official worked example: RWF 310,000 gross produces RWF 57,000 PAYE.",
+  "formulaIds": [
+    "paye-server-rw",
+    "route-rw-paye",
+    "route-rw-paye-fr"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-rw-defaults",
+      "formulaId": "paye-server-rw",
+      "before": {
+        "deductions.totalDeductions": 84700,
+        "result.netAnnual": 915300,
+        "result.netMonthly": 76275,
+        "tax.netTax": 21700
+      },
+      "after": {
+        "deductions.totalDeductions": 95532,
+        "result.netAnnual": 904468,
+        "result.netMonthly": 75372,
+        "tax.netTax": 28008
+      },
+      "reason": "Apply PAYE to gross earnings, round monthly tax upwards, and estimate employee CBHI on net salary as required by RRA guidance."
+    },
+    {
+      "fixtureId": "paye-rw-large-decimal",
+      "formulaId": "paye-server-rw",
+      "before": {
+        "deductions.totalDeductions": 343668000,
+        "result.netAnnual": 656332001,
+        "result.netMonthly": 54694333,
+        "tax.netTax": 280668000
+      },
+      "after": {
+        "deductions.totalDeductions": 365739312,
+        "result.netAnnual": 634260689,
+        "result.netMonthly": 52855057,
+        "tax.netTax": 299568012
+      },
+      "reason": "Apply PAYE to gross earnings, round monthly tax upwards, and estimate employee CBHI on net salary as required by RRA guidance."
+    }
+  ]
+}

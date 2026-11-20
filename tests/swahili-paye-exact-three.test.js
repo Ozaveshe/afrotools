@@ -10,12 +10,12 @@ const UgandaPaye = require('../assets/js/engines/ug-paye.js');
 const EXACT_IDS = ['bi-paye', 'rw-paye', 'ug-paye'];
 const TAXABLE_FIXTURES = {
   'bi-paye': 482000,
-  'rw-paye': 282000,
+  'rw-paye': 300000,
   'ug-paye': 1900000,
 };
 const COPY_ORACLES = {
   'bi-paye': [/0%/, /20%/, /30%/, /450,000/, /80,000/, /84,600/, /529,400/],
-  'rw-paye': [/60,000/, /100,000/, /200,000/, /6%/, /0\.3%/, /CBHI/, /0\.5%/, /mshahara halisi/, /hatari ya kazi/, /2%/, /48,600/, /1,157/, /231,343/, /324,900/],
+  'rw-paye': [/60,000/, /100,000/, /200,000/, /6%/, /0\.3%/, /CBHI/, /0\.5%/, /mshahara halisi/, /hatari ya kazi/, /2%/, /54,000/, /1,130/, /225,970/, /324,900/],
   'ug-paye': [/16 Septemba 2026/, /485,000/, /335,000/, /410,000/, /10,000,000/, /nyongeza ya 10%/, /Asiye Mkazi/, /imezimwa kwa chaguo-msingi/, /mshahara ghafi/, /420,000/, /30,000/, /358,000/, /458,250/, /1,341,750/],
 };
 const STALE_COPY = {
@@ -26,11 +26,11 @@ const STALE_COPY = {
 const OFFICIAL_SOURCES = {
   'bi-paye': ['https://obr.gov.bi'],
   'rw-paye': [
-    'https://rra.gov.rw',
-    'https://www.rssb.rw/scheme/cbhi-scheme',
-    'https://www.rssb.rw/fileadmin/user_upload/Announcement_to_all_employers_.pdf',
-    'https://www.rssb.rw/fileadmin/user_upload/Prime_Minister_s_order_CBHI-subsidies_13th_February_2020.pdf',
-    'https://www.rssb.rw/scheme/occupational-hazards',
+    'https://www.rra.gov.rw/en/tax-calculator/paye-calculator',
+    'https://www.rssb.rw/schemes/cbhi-scheme',
+    'https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution',
+    'https://www.rra.gov.rw/en/taxes-fees/domestic-taxes/income-tax/about-income-tax',
+    'https://www.rssb.rw/schemes/oh-scheme',
   ],
   'ug-paye': [
     'https://ura.go.ug/en/domestic-taxes/paye-rates/',
@@ -88,7 +88,7 @@ function runRwandaNetCbhiOracle(html, gross) {
   const calculate = new Function(`${taxSource};${cbhiSource}; return function (monthlyGross) {
     const pension = monthlyGross * 0.06;
     const maternity = monthlyGross * 0.003;
-    const paye = calcMonthlyPAYE(Math.max(0, monthlyGross - pension)).tax;
+    const paye = calcMonthlyPAYE(monthlyGross).tax;
     const cbhi = solveEmployeeCbhi(monthlyGross - pension - maternity - paye);
     const net = monthlyGross - pension - maternity - paye - cbhi;
     return { gross: monthlyGross, pension, maternity, paye, cbhi, net, fixedPoint: Math.round(net * 0.005) };
@@ -183,9 +183,9 @@ for (const config of Object.values(TARGETS)) {
     const boundaries = [60000, 100000, 200000, 300000];
     const expected = [
       { gross: 60000, pension: 3600, maternity: 180, paye: 0, cbhi: 280, net: 55940, fixedPoint: 280 },
-      { gross: 100000, pension: 6000, maternity: 300, paye: 3400, cbhi: 449, net: 89851, fixedPoint: 449 },
-      { gross: 200000, pension: 12000, maternity: 600, paye: 21600, cbhi: 825, net: 164975, fixedPoint: 825 },
-      { gross: 300000, pension: 18000, maternity: 900, paye: 48600, cbhi: 1157, net: 231343, fixedPoint: 1157 },
+      { gross: 100000, pension: 6000, maternity: 300, paye: 4000, cbhi: 446, net: 89254, fixedPoint: 446 },
+      { gross: 200000, pension: 12000, maternity: 600, paye: 24000, cbhi: 813, net: 162587, fixedPoint: 813 },
+      { gross: 300000, pension: 18000, maternity: 900, paye: 54000, cbhi: 1130, net: 225970, fixedPoint: 1130 },
     ];
     assert.deepStrictEqual(boundaries.map((gross) => runRwandaNetCbhiOracle(english, gross)), expected, 'rw-paye English net-salary CBHI boundaries');
     assert.deepStrictEqual(boundaries.map((gross) => runRwandaNetCbhiOracle(swahili, gross)), expected, 'rw-paye Swahili net-salary CBHI boundaries');
@@ -205,9 +205,9 @@ for (const token of [
   'const employerOccupationalHazard = gross * 0.02',
   'Mandatory employee CBHI (0.5%)',
   'Occupational Hazard Contribution (2%, employer only)',
-  'https://www.rssb.rw/scheme/cbhi-scheme',
-  'https://www.rssb.rw/fileadmin/user_upload/Prime_Minister_s_order_CBHI-subsidies_13th_February_2020.pdf',
-  'https://www.rssb.rw/scheme/occupational-hazards',
+  'https://www.rssb.rw/schemes/cbhi-scheme',
+  'https://www.rra.gov.rw/en/taxes-fees/domestic-taxes/income-tax/about-income-tax',
+  'https://www.rssb.rw/schemes/oh-scheme',
 ]) assert.ok(rwandaEnglish.includes(token), `Rwanda English current contribution parity: ${token}`);
 assert.doesNotMatch(rwandaEnglish, /employeeCbhi\s*=\s*gross\s*\*\s*0\.005/, 'Rwanda English must not use gross-salary CBHI');
 assert.match(rwandaEnglish, /"@type":"WebApplication"[^\n]*0\.5% of employee net salary[^\n]*2% occupational-hazard contribution/, 'Rwanda English WebApplication schema carries current contributions');

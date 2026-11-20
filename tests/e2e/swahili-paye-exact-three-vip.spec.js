@@ -18,15 +18,15 @@ const CASES = [
     country: 'rwanda',
     englishRoute: '/rwanda/rw-paye.html',
     gross: 300000,
-    expected: { tax: 48600, employeeSocial: 19157, net: 231343, employerCost: 324900 },
+    expected: { tax: 54000, employeeSocial: 19130, net: 225970, employerCost: 324900 },
     fields: { tax: 'monthlyPAYE', employeeSocial: 'social|rssb', net: 'netMonthly', employerCost: 'totalEmployerCostMonthly' },
-    aiContext: [/6%/, /0\.3%/, /CBHI/, /0\.5%/, /mshahara halisi/i, /hatari ya kazi/i, /2%/, /48,600/, /1,157/, /231,343/],
+    aiContext: [/6%/, /0\.3%/, /CBHI/, /0\.5%/, /mshahara halisi/i, /hatari ya kazi/i, /2%/, /54,000/, /1,130/, /225,970/],
     officialSources: [
-      'https://rra.gov.rw',
-      'https://www.rssb.rw/scheme/cbhi-scheme',
-      'https://www.rssb.rw/fileadmin/user_upload/Announcement_to_all_employers_.pdf',
-      'https://www.rssb.rw/fileadmin/user_upload/Prime_Minister_s_order_CBHI-subsidies_13th_February_2020.pdf',
-      'https://www.rssb.rw/scheme/occupational-hazards',
+      'https://www.rra.gov.rw/en/tax-calculator/paye-calculator',
+      'https://www.rssb.rw/schemes/cbhi-scheme',
+      'https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution',
+      'https://www.rra.gov.rw/en/taxes-fees/domestic-taxes/income-tax/about-income-tax',
+      'https://www.rssb.rw/schemes/oh-scheme',
     ],
   },
   {
@@ -466,9 +466,9 @@ for (const payeCase of CASES) {
     if (payeCase.id === 'rw-paye') {
       const boundaries = [
         { gross: 60000, paye: 0, pension: 3600, maternity: 180, cbhi: 280, net: 55940 },
-        { gross: 100000, paye: 3400, pension: 6000, maternity: 300, cbhi: 449, net: 89851 },
-        { gross: 200000, paye: 21600, pension: 12000, maternity: 600, cbhi: 825, net: 164975 },
-        { gross: 300000, paye: 48600, pension: 18000, maternity: 900, cbhi: 1157, net: 231343 },
+        { gross: 100000, paye: 4000, pension: 6000, maternity: 300, cbhi: 446, net: 89254 },
+        { gross: 200000, paye: 24000, pension: 12000, maternity: 600, cbhi: 813, net: 162587 },
+        { gross: 300000, paye: 54000, pension: 18000, maternity: 900, cbhi: 1130, net: 225970 },
       ];
       for (const fixture of boundaries) {
         await gross.fill(String(fixture.gross));
@@ -528,8 +528,8 @@ for (const payeCase of CASES) {
     }
     if (payeCase.id === 'rw-paye') {
       expect(artifact.text).toMatch(/CBHI.*0\.5%.*mshahara halisi/i);
-      expect(artifact.text).toMatch(/1,157/);
-      expect(artifact.text).toMatch(/231,343/);
+      expect(artifact.text).toMatch(/1,130/);
+      expect(artifact.text).toMatch(/225,970/);
     }
     expect(artifact.sections).toBeGreaterThanOrEqual(3);
     const pdfBuffer = await popup.pdf({ format: 'A4', printBackground: true });
@@ -542,8 +542,8 @@ for (const payeCase of CASES) {
     }
     if (payeCase.id === 'rw-paye') {
       expect(reopenedPdf.text).toMatch(/CBHI\s+0\.5% ya mshahara halisi wa mfanyakazi/i);
-      expect(reopenedPdf.text).toMatch(/1,157/);
-      expect(reopenedPdf.text).toMatch(/231,343/);
+      expect(reopenedPdf.text).toMatch(/1,130/);
+      expect(reopenedPdf.text).toMatch(/225,970/);
     }
     await expect.poll(() => popup.evaluate(() => Boolean(window.__afroPrintCalled))).toBe(true);
     await popup.close();

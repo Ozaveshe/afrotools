@@ -1164,7 +1164,10 @@ document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==
 
 // Net-to-Gross: register forward function
 window._grossToNet = function(g) {
-  var d=isOn('rssb')?g*0.06:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+  const pension = isOn('rssb') ? g * 0.06 : 0;
+  const tax = isOn('secondary') ? Math.ceil(g * 3 / 10) : calcMonthlyPAYE(g).tax;
+  const beforeCbhi = g - pension - g * 0.003 - tax;
+  return beforeCbhi - solveEmployeeCbhi(beforeCbhi);
 };
 </script>
 <script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script>

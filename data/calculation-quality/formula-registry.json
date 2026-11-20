@@ -16484,7 +16484,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:dd9433a36b68800a4a2cd92b8768917858814e76b7b2dbeced3cffcc944a7dd9",
+      "artifactDigest": "sha256:542a0c90b5ec80659f54c31602f5e47b02563c01f8bdbbcd30b6b500b02993e3",
       "artifactPath": "netlify/functions/_engines/rw-paye.js",
       "currency": "RWF",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
@@ -16494,7 +16494,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-server",
-      "formulaVersion": "2026-03-01+sha256.dd9433a36b68",
+      "formulaVersion": "2026-11-20+sha256.542a0c90b5ec",
       "id": "paye-server-rw",
       "jurisdictions": [
         "RW"
@@ -16502,7 +16502,7 @@
       "knownExclusions": [
         "Special regimes, treaties, sector rules, regional reliefs, and individual filing adjustments may not be modeled."
       ],
-      "lastVerified": "2025-03-01",
+      "lastVerified": "2026-11-20",
       "owner": "AfroTools formula review owners",
       "parameters": {
         "mode": "schema-exposed-runtime-parameters",
@@ -16510,15 +16510,15 @@
           "bandType": "progressive",
           "bands": [
             [
-              720000,
+              60000,
               0
             ],
             [
-              480000,
+              40000,
               0.1
             ],
             [
-              1200000,
+              100000,
               0.2
             ],
             [
@@ -16526,6 +16526,7 @@
               0.3
             ]
           ],
+          "cbhiRateOnNet": 0.005,
           "employerSS": [
             {
               "key": "pension",
@@ -16536,13 +16537,19 @@
               "key": "maternity",
               "label": "Maternity (0.3%)",
               "rate": 0.003
+            },
+            {
+              "key": "occupationalHazard",
+              "label": "Occupational hazard (2%)",
+              "rate": 0.02
             }
           ],
-          "isMonthly": false,
+          "isMonthly": true,
           "personalRelief": 0,
           "regimes": [
             "STANDARD"
           ],
+          "roundMonthlyTaxUp": true,
           "socialSecurity": [
             {
               "key": "pension",
@@ -16554,14 +16561,15 @@
               "label": "Maternity (0.3%)",
               "rate": 0.003
             }
-          ]
+          ],
+          "ssDeductibleFromTaxable": false
         }
       },
       "protectedDuplicates": [],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
       "rounding": {
-        "calculationNote": "Unrounded intermediate amounts feed later stages unless the implementation explicitly applies Math.round.",
+        "calculationNote": "Round monthly PAYE upward; estimate CBHI at 0.5% of net salary rounded to the nearest franc. Annualize the monthly payroll.",
         "method": "nearest-integer",
         "stages": [
           "individual statutory deductions",
@@ -16579,15 +16587,22 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "rra.gov.rw",
-          "url": "https://rra.gov.rw"
+          "title": "RRA gross-pay calculator",
+          "url": "https://www.rra.gov.rw/en/tax-calculator/paye-calculator"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "rssb.gov.rw",
-          "url": "https://rssb.gov.rw"
+          "title": "RRA employee CBHI contribution",
+          "url": "https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "RSSB occupational hazards",
+          "url": "https://www.rssb.rw/schemes/oh-scheme"
         }
       ],
       "supportStatus": "registered",
@@ -27075,7 +27090,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:8dd44bf5981cfce4f00227362ee72051739d2deba210e082e085903312915f10",
+      "artifactDigest": "sha256:4e1d1943aff69cfd512fc6082ab25bf370bc7a53db7e4943a5f502bdd09cab93",
       "artifactPath": "rwanda/rw-paye.html",
       "currency": "RWF",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -27085,7 +27100,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "Last-verified:-March-2025-·-Source:-RRA-(rra+sha256.8dd44bf5981c",
+      "formulaVersion": "RRA-PAYE-2026-·-Law-027/2022-as-amended+sha256.4e1d1943aff6",
       "id": "route-rw-paye",
       "jurisdictions": [
         "RW"
@@ -27095,10 +27110,10 @@
         "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
         "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
       ],
-      "lastVerified": "2025-03-01",
+      "lastVerified": "2026-11-20",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:8dd44bf5981cfce4f00227362ee72051739d2deba210e082e085903312915f10",
+        "artifactDigest": "sha256:4e1d1943aff69cfd512fc6082ab25bf370bc7a53db7e4943a5f502bdd09cab93",
         "artifactPath": "rwanda/rw-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -27121,15 +27136,22 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "rra.gov.rw",
-          "url": "https://rra.gov.rw"
+          "title": "RRA gross-pay calculator",
+          "url": "https://www.rra.gov.rw/en/tax-calculator/paye-calculator"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "rssb.gov.rw",
-          "url": "https://rssb.gov.rw"
+          "title": "RRA employee CBHI contribution",
+          "url": "https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "RSSB occupational hazards",
+          "url": "https://www.rssb.rw/schemes/oh-scheme"
         }
       ],
       "supportStatus": "legacy-protected",
@@ -27140,7 +27162,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:288b69f126b7cff653fd9e6e7d9b9505df1ec586482638c4022aaa7857f1d861",
+      "artifactDigest": "sha256:061fb9e11787103c5e47e84d9a6c1d310058b6371327f0b11684a1cfd06d4c71",
       "artifactPath": "fr/rwanda/rw-paye.html",
       "currency": "RWF",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -27150,7 +27172,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.288b69f126b7",
+      "formulaVersion": "RRA-PAYE-2026-·-Law-027/2022-as-amended+sha256.061fb9e11787",
       "id": "route-rw-paye-fr",
       "jurisdictions": [
         "RW"
@@ -27160,10 +27182,10 @@
         "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
         "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
       ],
-      "lastVerified": "2026-03-28",
+      "lastVerified": "2026-11-20",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:288b69f126b7cff653fd9e6e7d9b9505df1ec586482638c4022aaa7857f1d861",
+        "artifactDigest": "sha256:061fb9e11787103c5e47e84d9a6c1d310058b6371327f0b11684a1cfd06d4c71",
         "artifactPath": "fr/rwanda/rw-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -27186,15 +27208,22 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "rra.gov.rw",
-          "url": "https://rra.gov.rw"
+          "title": "RRA — calculateur PAYE",
+          "url": "https://www.rra.gov.rw/en/tax-calculator/paye-calculator"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "rssb.gov.rw",
-          "url": "https://rssb.gov.rw"
+          "title": "RRA — contribution CBHI",
+          "url": "https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "RSSB — risques professionnels",
+          "url": "https://www.rssb.rw/schemes/oh-scheme"
         }
       ],
       "supportStatus": "legacy-protected",
@@ -32488,8 +32517,9 @@
         "/rwanda/rw-paye"
       ],
       "sourceUrls": [
-        "https://rra.gov.rw",
-        "https://rssb.gov.rw"
+        "https://www.rra.gov.rw/en/tax-calculator/paye-calculator",
+        "https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution",
+        "https://www.rssb.rw/schemes/oh-scheme"
       ],
       "toolId": "rw-paye"
     },
@@ -32499,8 +32529,9 @@
         "/fr/rwanda/rw-paye"
       ],
       "sourceUrls": [
-        "https://rra.gov.rw",
-        "https://rssb.gov.rw"
+        "https://www.rra.gov.rw/en/tax-calculator/paye-calculator",
+        "https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions/cbhi-contribution",
+        "https://www.rssb.rw/schemes/oh-scheme"
       ],
       "toolId": "rw-paye-fr"
     },
