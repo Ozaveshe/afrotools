@@ -146,7 +146,7 @@ test('ng-cit Swahili parity preserves the reviewed source and DOM-free engine co
   assert.ok(verification.routes.includes('/sw/zana/kikokotoo-cit-nigeria/'));
   assert.deepEqual(verification.source_urls, [
     'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
-    'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+    'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
     'https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/',
   ]);
   const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'nigeria-cit-2026-source');
