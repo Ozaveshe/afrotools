@@ -89,10 +89,29 @@ test('all blocked storage reads settle independently and do not manufacture data
   const response = await request(owner), body = JSON.parse(response.body);
   assert(delays.length >= 4); assert(delays.every(delay => delay > 0 && delay <= 3000));
   assert.equal(body.metadata.available, false); assert.equal(body.metadata.status, 'error');
-  assert.equal(body.categories.shipping.availability, 'unavailable'); assert.equal(body.categories.shipping.updatedAt, null);
-  assert.equal(body.categories.shipping.current_prices, false); assert.equal(body.categories.shipping.reference_reviewed_at, null);
+  assert.equal(body.categories.shipping.availability, 'unknown'); assert.equal(body.categories.shipping.updatedAt, null);
+  assert.equal(body.categories.shipping.read_status, 'timeout'); assert.equal(body.categories.shipping.status, 'unknown');
+  assert.equal(body.categories.shipping.records_count, null); assert.equal(body.categories.shipping.current_prices, false); assert.equal(body.categories.shipping.reference_reviewed_at, null);
   assert.equal(body.scholarship.available, false); assert.equal(body.automation_watchdog.available, false);
   assert.equal(body.overall_health, 'stale'); assert(Number.isFinite(Date.parse(body.checked_at)));
+});
+
+test('aggregate reports timeout, missing snapshots and confirmed zero counts separately', async () => {
+  const owner = load({
+    data: {meta: {forex: {updatedAt: SAVED, source: 'test feed', records_count: 0}},
+      'fuel-latest': never, 'shipping-rates-latest': never},
+    timers: {setTimeout: fn => setTimeout(fn, 10)}
+  });
+  const response = await owner.handler({httpMethod: 'GET', headers: {}, queryStringParameters: {}});
+  const rows = JSON.parse(response.body).categories;
+  for (const key of ['fuel', 'shipping']) {
+    assert.equal(rows[key].status, 'unknown');
+    assert.equal(rows[key].read_status, 'timeout');
+    assert.equal(rows[key].records_count, null);
+  }
+  assert.equal(rows.forex.records_count, 0);
+  assert.equal(rows.electricity.status, 'offline');
+  assert.equal(rows.electricity.blob_present, false);
 });
 
 test('a remaining request budget shortens the read deadline and an expired budget starts no adapter', async () => {

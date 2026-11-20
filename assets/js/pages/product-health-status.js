@@ -63,6 +63,15 @@
     Object.keys(map).forEach(function (key) {
       var row = payload.categories[key];
       if (!row) return;
+      if (row.read_status === 'timeout') {
+        replaceRow(snapshot.products, map[key], {
+          status: api.STATUS.UNKNOWN,
+          status_label: 'Freshness check timed out',
+          reason: 'The latest read took too long. Any saved source date is shown below.',
+          next_expected_check: null
+        });
+        return;
+      }
       var status = api.normalizeStatus(row.status);
       if (status === api.STATUS.OPERATIONAL && (!row.updatedAt || !row.source || row.records_count === 0)) status = api.STATUS.UNKNOWN;
       var update = {

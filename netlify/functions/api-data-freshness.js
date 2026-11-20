@@ -255,7 +255,7 @@ async function buildCategoryStatus(cat, config, meta, now, read = getData) {
     source,
     source_type: catMeta.source_type || null,
     age_minutes: age,
-    records_count: catMeta.records_count || null,
+    records_count: catMeta.records_count ?? null,
     confidence: catMeta.confidence || null,
     blob_key: config.blobKey,
     blob_present: blobPresent,
@@ -458,8 +458,10 @@ exports.handler = async function(event) {
       try {
         categories[cat] = await buildCategoryStatus(cat, config, meta, now, read);
       } catch (error) {
-        categories[cat] = { ...await buildCategoryStatus(cat, config, {}, now, async () => null),
-          available: false, error: sanitizeError(error) };
+        categories[cat] = { status: 'unknown', availability: 'unknown', blob_key: config.blobKey,
+          updatedAt: null, source: null, age_minutes: null, reference_reviewed_at: null, current_prices: false,
+          read_status: error.name === 'TimeoutError' ? 'timeout' : 'error',
+          available: null, records_count: null, blob_present: null, error: sanitizeError(error) };
       }
     })),
     buildMarketDataSummary(includeAdmin, deadline),
