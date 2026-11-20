@@ -18,8 +18,13 @@ for(const route of ['/tools/cv-builder/','/fr/tools/generateur-cv/','/sw/zana/mj
  await page.evaluate(f=>{Object.assign(CVApp.getState().data,f);CVApp.getState().country='NG';CVApp.renderAll();},fixture);
  const ids=await page.evaluate(()=>CVTemplateRegistry.all().map(r=>r.id));expect(ids).toHaveLength(30);
  for(const id of ids.slice(group*5,group*5+5)){
-  await page.locator('.cv-selected-template-card').press('Enter');
-  await page.locator('.cv-template-drawer-shell [data-template-use="'+id+'"]').filter({visible:true}).first().press('Enter');
+  const templateCard=page.locator('.cv-selected-template-card');
+  let gallery=page.locator('.cv-template-landing-grid');
+  if(await templateCard.isVisible()){
+   await templateCard.press('Enter');
+   gallery=page.locator('.cv-template-drawer-shell');
+  }
+  await gallery.locator('[data-template-use="'+id+'"]').filter({visible:true}).first().press('Enter');
   const result=await page.evaluate(id=>{const row=CVTemplateRegistry.get(id),el=document.querySelector('#cvpreview');const expected=document.createElement('div');expected.innerHTML=CVTemplateRegistry.render(id,CVApp.getState().data,'NG');return{state:CVApp.getState().template,same:CVTemplates===window.CVTemplates&&CVTemplates[id]===row.previewRenderer,body:el.textContent,gallery:expected.textContent,photo:el.querySelectorAll('img').length,photoSupport:row.photoSupport,production:!el.querySelector('.cv-expanded-template'),layout:el.querySelector('[data-layout]')?.getAttribute('data-layout')||null};},id);
   expect(result.state).toBe(id);expect(result.same).toBe(true);
   expect(result.production).toBe(['pan-african-minimal','lagos-corporate','nairobi-tech','accra-graduate','creative-portfolio'].includes(id));

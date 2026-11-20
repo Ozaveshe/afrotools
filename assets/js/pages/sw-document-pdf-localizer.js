@@ -650,6 +650,11 @@
   });
 
   Object.assign(phrases, {
+    'Draft bullets': 'Andika rasimu ya hoja za CV',
+    'Improve bullets': 'Boresha hoja za CV',
+    'Turn rough wins into proof bullets': 'Eleza mafanikio yako kwa hoja fupi zenye ushahidi',
+    'Compare summary, skills, and bullets': 'Linganisha muhtasari, ujuzi na hoja za CV',
+    'Download backup': 'Pakua nakala rudufu',
     'Master CV and role-specific versions': 'CV kuu na matoleo kwa nafasi mbalimbali za kazi',
     'Master CV': 'CV kuu',
     'Master CV for all targeted versions': 'CV kuu inayotumiwa kuunda matoleo kwa nafasi mbalimbali za kazi',
@@ -757,6 +762,8 @@
     var trimmed = text.trim();
     if (!trimmed) return text;
     if (phrases[trimmed]) return text.replace(trimmed, phrases[trimmed]);
+    var galleryIntro = /^Choose from (\d+) export-ready templates\. Use filters for role type, market, ATS safety, and application style\.$/.exec(trimmed);
+    if (galleryIntro) return text.replace(trimmed, 'Chagua kati ya violezo ' + galleryIntro[1] + ' vya CV unavyoweza kupakua. Chuja kwa aina ya kazi, soko, ulinganifu na mifumo ya ATS, au mtindo wa maombi.');
     var normalized = trimmed.replace(/\s+/g, ' ');
     if (phrases[normalized]) return text.replace(trimmed, phrases[normalized]);
     return translatePartial(text);
