@@ -13,6 +13,7 @@
       "Selling price / unit": "Prix de vente unitaire",
       "Planned units (optional)": "Quantité prévue (facultatif)",
       Calculate: "Calculer",
+      "Values changed. Calculate again.": "Valeurs modifiées. Relancez le calcul.",
       "Whole units to sell": "Quantité entière à vendre",
       "Exact break-even units": "Quantité exacte au seuil",
       "Exact threshold revenue": "Chiffre d’affaires au seuil exact",
@@ -29,6 +30,15 @@
         return i + "-" + e;
       };
       e.innerHTML = '<div class="aw-title">' + translate("Break-Even Calculator") + '</div><p class="aw-result-label" style="margin:-8px 0 14px">' + translate("Formula-only. Your values stay in this browser.") + "</p>" + l(a("fixed"), translate("Fixed costs"), "0") + l(a("variable"), translate("Variable cost / unit"), "0") + l(a("price"), translate("Selling price / unit"), "") + (t.lite ? "" : l(a("planned"), translate("Planned units (optional)"), "")) + '<button class="aw-btn aw-btn--primary" type="button">' + translate("Calculate") + '</button><p class="aw-result-label" role="alert" data-error style="display:none;color:#b42318;margin-top:10px;font-weight:700"></p><div class="aw-result-box" data-result style="display:none" aria-live="polite"></div>',
+      e.addEventListener("input", function () {
+        var result = e.querySelector("[data-result]");
+        var error = e.querySelector("[data-error]");
+        if (result.style.display === "none" && error.style.display === "none") return;
+        error.style.display = "none";
+        error.textContent = "";
+        result.textContent = translate("Values changed. Calculate again.");
+        result.style.display = "block";
+      });
       e.querySelector(".aw-btn").addEventListener("click", u), e.querySelectorAll("input").forEach(function(e) {
         e.addEventListener("keyup", function(e) {
           "Enter" === e.key && u();
