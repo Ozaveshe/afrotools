@@ -231,7 +231,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       </div>
       <div class="field">
         <label class="f-label" for="inpRawTonnes">Raw Cassava per Batch <span class="f-hint">(tonnes)</span></label>
-        <input class="f-input" id="inpRawTonnes" type="number" min="0.1" step="0.1" value="1">
+        <input class="f-input" id="inpRawTonnes" type="number" required min="0.1" step="0.1" value="1">
       </div>
       <div class="field">
         <label class="f-label" for="selBatches">Batches per Month</label>
@@ -265,11 +265,11 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     <div class="form-grid">
       <div class="field">
         <label class="f-label" for="inpCassavaPrice">Raw Cassava Price <span class="f-hint">(USh per tonne)</span></label>
-        <input class="f-input" id="inpCassavaPrice" type="number" min="1" step="1" value="500000">
+        <input class="f-input" id="inpCassavaPrice" type="number" required min="1" step="1" value="500000">
       </div>
       <div class="field">
         <label class="f-label" for="inpSellPrice">Selling Price of Product <span class="f-hint">(USh per kg)</span></label>
-        <input class="f-input" id="inpSellPrice" type="number" min="1" step="1" value="2000">
+        <input class="f-input" id="inpSellPrice" type="number" required min="1" step="1" value="2000">
         <div style="font-size:0.72rem;color:#64748b;margin-top:4px;" id="priceHint">Pre-filled with typical Uganda market price. Adjust for your location.</div>
       </div>
     </div>
@@ -286,7 +286,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     <div class="form-grid">
       <div class="field">
         <label class="f-label" for="inpLaborDay">Labour Rate <span class="f-hint">(USh per day)</span></label>
-        <input class="f-input" id="inpLaborDay" type="number" min="1" step="1" value="20000">
+        <input class="f-input" id="inpLaborDay" type="number" required min="1" step="1" value="20000">
       </div>
       <div class="field">
         <label class="f-label" for="inpDistanceKm">Distance to Market <span class="f-hint">(km, 0 = exclude)</span></label>
@@ -506,6 +506,16 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   window.onLevelChange = onLevelChange;
 
   function calculate() {
+    var batchFields = ['inpRawTonnes', 'inpCassavaPrice', 'inpLaborDay', 'inpDistanceKm'];
+    if (document.getElementById('selPathway').value !== 'compare') batchFields.push('inpSellPrice');
+    for (var fieldId of batchFields) {
+      var field = document.getElementById(fieldId);
+      if (!field.reportValidity()) {
+        document.getElementById('resultsPanel').classList.remove('on');
+        field.focus();
+        return;
+      }
+    }
     var pw      = document.getElementById('selPathway').value;
     var rawT    = parseFloat(document.getElementById('inpRawTonnes').value)  || 1;
     var batches = parseFloat(document.getElementById('selBatches').value)     || 12;
