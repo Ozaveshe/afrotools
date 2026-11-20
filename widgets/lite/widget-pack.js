@@ -10,8 +10,8 @@ function frenchPoultryResult(result) {
     note: "Estimation indicative. Vérifiez vos prix et vos coûts avant de prendre une décision."
   };
 }
-const frenchUnits = { hours: "heures", months: "mois", units: "unités", "currency units": "unités monétaires", days: "jours", fish: "poissons", "fish/m2": "poissons/m²", m2: "m²", m3: "m³" };
-const frenchRows = { "Base quantity": "Quantité de base", "Buffer": "Marge", "Percentage component": "Part proportionnelle", "Fixed component": "Part fixe", "Days added": "Durée ajoutée" };
+const frenchUnits = { learners: "élèves", day: "jour", "currency units/hour": "unités monétaires/heure", hours: "heures", months: "mois", units: "unités", "currency units": "unités monétaires", days: "jours", fish: "poissons", "fish/m2": "poissons/m²", m2: "m²", m3: "m³" };
+const frenchRows = {"Distance": "Distance du trajet", "Rate": "Tarif par unité", "Numerator": "Numérateur", "Denominator": "Dénominateur", "Target date": "Date cible", "First value": "Première valeur", "Second value": "Deuxième valeur", "Total": "Total", "Parts": "Nombre de parts", "Net result": "Résultat net", "Revenue": "Recettes", "Cost": "Coût", "Volumetric weight": "Poids volumétrique", "Actual weight": "Poids réel", "Base quantity": "Quantité de base", "Buffer": "Marge", "Percentage component": "Part proportionnelle", "Fixed component": "Part fixe", "Days added": "Durée ajoutée" };
 
 function frenchWidgetResult(result, spec, locale) {
   const labels = Object.assign({}, frenchRows);
@@ -21,6 +21,10 @@ function frenchWidgetResult(result, spec, locale) {
   }
   Object.assign(labels, locale.rowLabels);
   function value(text) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+      const [year, month, day] = text.split("-");
+      return day + "/" + month + "/" + year;
+    }
     return String(text).replace(/^(-?[0-9,.]+)(?: (.*))?$/, (_, digits, unit) =>
       digits.replace(/,/g, " ").replace(".", ",") + (unit ? " " + (frenchUnits[unit] || unit) : ""));
   }
@@ -32,6 +36,412 @@ function frenchWidgetResult(result, spec, locale) {
   };
 }
 const frenchWidgets = {
+
+  "crop-cover-budget": {
+    "title": "Budget d’assurance récolte",
+    "description": "Estimez la prime et les frais de dossier pour une récolte.",
+    "fields": {
+      "value": "Valeur de la récolte",
+      "rate": "Taux de couverture appliqué",
+      "admin": "Frais de dossier"
+    },
+    "resultLabel": "Budget de couverture",
+    "note": "Utilisez le taux figurant sur votre devis et exprimez tous les frais dans la même devise."
+  },
+  "visa-budget-widget": {
+    "title": "Budget de demande de visa",
+    "description": "Additionnez les dépenses liées au dépôt d’une demande.",
+    "fields": {
+      "fee": "Frais de visa",
+      "biometrics": "Biométrie",
+      "documents": "Documents et traductions",
+      "travel": "Trajet jusqu’au rendez-vous"
+    },
+    "resultLabel": "Budget pour la demande",
+    "note": "Reportez les frais demandés par le consulat pour votre destination et votre type de visa."
+  },
+  "trip-budget-widget": {
+    "title": "Budget de voyage",
+    "description": "Évaluez le coût du séjour avec une réserve pour imprévus.",
+    "fields": {
+      "flight": "Vol",
+      "stay": "Hébergement",
+      "food": "Repas",
+      "transport": "Transports sur place",
+      "buffer": "Réserve pour imprévus"
+    },
+    "resultLabel": "Budget du séjour",
+    "note": "Convertissez tous les montants dans une même devise avant de les additionner."
+  },
+  "flight-change-cost": {
+    "title": "Coût d’une modification de vol",
+    "description": "Additionnez les pénalités et la différence de tarif.",
+    "fields": {
+      "airline": "Frais de modification de la compagnie",
+      "fare": "Différence de tarif",
+      "agency": "Frais d’agence"
+    },
+    "resultLabel": "Coût de modification",
+    "note": "Reprenez les montants proposés lors de la modification du billet."
+  },
+  "airport-transfer-cost": {
+    "title": "Coût du transfert depuis l’aéroport",
+    "description": "Divisez le trajet par la distance facturée par unité, puis appliquez le tarif unitaire.",
+    "fields": {
+      "distance": "Distance du trajet",
+      "km": "Distance par unité facturée",
+      "rate": "Prix d’une unité facturée"
+    },
+    "resultLabel": "Coût du transfert",
+    "note": "Pour un tarif au kilomètre, saisissez 1 km comme distance par unité. Ajoutez les péages séparément."
+  },
+  "per-diem-widget": {
+    "title": "Indemnité de déplacement",
+    "description": "Calculez l’indemnité totale pour la durée de votre mission.",
+    "fields": {
+      "daily": "Indemnité journalière",
+      "days": "Nombre de jours"
+    },
+    "resultLabel": "Indemnité totale",
+    "note": "Utilisez le montant journalier convenu pour la mission."
+  },
+  "travel-forex-buffer": {
+    "title": "Réserve pour frais de change",
+    "description": "Estimez le supplément à prévoir pour le change et les frais fixes.",
+    "fields": {
+      "budget": "Dépenses à convertir",
+      "buffer": "Marge de change",
+      "fixed": "Frais fixes"
+    },
+    "resultLabel": "Réserve de change",
+    "note": "Ajoutez cette réserve à votre budget de départ pour obtenir votre enveloppe totale."
+  },
+  "classroom-capacity": {
+    "title": "Capacité d’une salle de classe",
+    "description": "Divisez la surface disponible par la surface prévue par élève.",
+    "fields": {
+      "area": "Surface disponible",
+      "perLearner": "Surface prévue par élève"
+    },
+    "resultLabel": "Capacité indicative",
+    "note": "Arrondissez à l’entier inférieur et vérifiez les règles de sécurité applicables.",
+    "rowLabels": {
+      "Numerator": "Surface disponible",
+      "Denominator": "Surface par élève"
+    }
+  },
+  "exam-countdown-widget": {
+    "title": "Compte à rebours avant un examen",
+    "description": "Comptez les jours entre aujourd’hui et la date de l’épreuve.",
+    "fields": {
+      "exam": "Date de l’examen"
+    },
+    "resultLabel": "Jours avant l’examen",
+    "note": "Une valeur négative indique que la date est passée.",
+    "rowLabels": {
+      "Target date": "Date de l’examen"
+    }
+  },
+  "boarding-school-cost": {
+    "title": "Budget d’internat",
+    "description": "Additionnez les dépenses prévues pour une période scolaire.",
+    "fields": {
+      "boarding": "Internat",
+      "meals": "Repas",
+      "uniform": "Uniforme",
+      "extras": "Autres frais"
+    },
+    "resultLabel": "Coût de la période",
+    "note": "Utilisez la même durée pour chaque poste, par exemple un trimestre."
+  },
+  "school-fees-budget": {
+    "title": "Budget scolaire",
+    "description": "Préparez le budget de scolarité en regroupant les principaux postes.",
+    "fields": {
+      "tuition": "Scolarité",
+      "boarding": "Internat",
+      "transport": "Transport",
+      "books": "Livres",
+      "exam": "Frais d’examen"
+    },
+    "resultLabel": "Budget scolaire total",
+    "note": "Utilisez les tarifs de l’établissement pour une même période scolaire."
+  },
+  "study-hours-planner": {
+    "title": "Planification des révisions",
+    "description": "Estimez le temps total consacré aux matières de votre programme.",
+    "fields": {
+      "subjects": "Nombre de matières",
+      "weeks": "Nombre de semaines",
+      "hours": "Heures par matière et par semaine"
+    },
+    "resultLabel": "Durée totale des révisions",
+    "note": "Le calcul suppose le même nombre d’heures pour chaque matière."
+  },
+  "scholarship-gap": {
+    "title": "Reste à financer après bourse",
+    "description": "Soustrayez la bourse obtenue du coût des études.",
+    "fields": {
+      "cost": "Coût total des études",
+      "award": "Montant de la bourse"
+    },
+    "resultLabel": "Reste à financer",
+    "note": "Un résultat négatif correspond à un excédent de financement.",
+    "rowLabels": {
+      "First value": "Coût total des études",
+      "Second value": "Bourse accordée"
+    }
+  },
+  "contract-deposit-widget": {
+    "title": "Acompte sur contrat",
+    "description": "Calculez l’acompte prévu et ajoutez les frais fixes.",
+    "fields": {
+      "value": "Montant du contrat",
+      "rate": "Taux d’acompte",
+      "fixed": "Frais fixes"
+    },
+    "resultLabel": "Acompte et frais à verser",
+    "note": "Reprenez le taux et les frais figurant dans votre contrat."
+  },
+  "legal-aid-eligibility": {
+    "title": "Préparation d’une demande d’aide juridique",
+    "description": "Évaluez quatre éléments de votre dossier sur une échelle de zéro à dix.",
+    "fields": {
+      "income": "Faiblesse des ressources",
+      "urgency": "Urgence de la situation",
+      "documents": "Préparation des documents",
+      "risk": "Niveau de risque du dossier"
+    },
+    "resultLabel": "Score indicatif de préparation",
+    "note": "Ce score ne décide pas de l’admissibilité. Vérifiez les critères auprès de l’organisme d’aide juridique compétent."
+  },
+  "court-fee-widget": {
+    "title": "Estimation des frais de dépôt",
+    "description": "Appliquez le taux au montant de la demande et ajoutez les frais fixes.",
+    "fields": {
+      "claim": "Montant de la demande",
+      "rate": "Taux des frais",
+      "fixed": "Frais fixes"
+    },
+    "resultLabel": "Frais de dépôt estimés",
+    "note": "Vérifiez le barème et les exemptions éventuelles auprès du greffe compétent."
+  },
+  "notice-period-widget": {
+    "title": "Fin de préavis",
+    "description": "Ajoutez le nombre de jours du préavis à sa date de début.",
+    "fields": {
+      "start": "Date de début",
+      "days": "Durée du préavis"
+    },
+    "resultLabel": "Date de fin indicative",
+    "note": "Le calcul utilise des jours calendaires. Vérifiez les modalités de décompte prévues pour votre situation."
+  },
+  "contractor-vs-employee": {
+    "title": "Prestataire ou salarié",
+    "description": "Comparez les deux coûts sur un même mois.",
+    "fields": {
+      "contractor": "Honoraires mensuels du prestataire",
+      "employee": "Coût mensuel total du salarié"
+    },
+    "resultLabel": "Surcoût du prestataire",
+    "note": "Un résultat négatif signifie que le prestataire coûte moins cher.",
+    "rowLabels": {
+      "First value": "Honoraires du prestataire",
+      "Second value": "Coût du salarié"
+    }
+  },
+  "employer-cost-widget": {
+    "title": "Coût mensuel employeur",
+    "description": "Ajoutez les charges patronales au salaire mensuel.",
+    "fields": {
+      "salary": "Salaire mensuel",
+      "rate": "Taux des charges patronales"
+    },
+    "resultLabel": "Coût mensuel total",
+    "note": "Utilisez le taux applicable à votre entreprise et à ce salaire.",
+    "rowLabels": {
+      "Fixed component": "Salaire mensuel",
+      "Percentage component": "Charges patronales"
+    }
+  },
+  "severance-estimator": {
+    "title": "Indemnité de départ",
+    "description": "Multipliez le salaire mensuel de référence par le nombre de mois dus.",
+    "fields": {
+      "salary": "Salaire mensuel de référence",
+      "months": "Nombre de mois dus"
+    },
+    "resultLabel": "Indemnité estimée",
+    "note": "Vérifiez les éléments du salaire de référence et le nombre de mois applicable à votre situation."
+  },
+  "leave-days-widget": {
+    "title": "Solde de congés",
+    "description": "Soustrayez les jours déjà pris des droits annuels.",
+    "fields": {
+      "entitlement": "Droits annuels",
+      "used": "Jours déjà pris"
+    },
+    "resultLabel": "Jours de congé restants",
+    "note": "Utilisez la même convention de décompte pour les jours acquis et pris.",
+    "rowLabels": {
+      "First value": "Droits annuels",
+      "Second value": "Jours pris"
+    }
+  },
+  "freelance-rate-widget": {
+    "title": "Tarif horaire indépendant",
+    "description": "Répartissez votre objectif mensuel sur les seules heures facturables.",
+    "fields": {
+      "target": "Objectif de revenu mensuel",
+      "hours": "Heures facturables par mois"
+    },
+    "resultLabel": "Tarif horaire visé",
+    "note": "Intégrez vos charges dans l’objectif mensuel si vous souhaitez couvrir ces dépenses.",
+    "rowLabels": {
+      "Numerator": "Revenu mensuel visé",
+      "Denominator": "Heures facturables"
+    }
+  },
+  "maternal-care-budget": {
+    "title": "Budget de suivi de grossesse",
+    "description": "Additionnez les dépenses de suivi, d’accouchement et de transport.",
+    "fields": {
+      "visits": "Consultations prénatales",
+      "delivery": "Accouchement",
+      "tests": "Examens et échographies",
+      "transport": "Transport"
+    },
+    "resultLabel": "Budget prévisionnel",
+    "note": "Utilisez les devis de votre établissement et ses indications sur les prestations prises en charge."
+  },
+  "medicine-cost-planner": {
+    "title": "Budget d’un traitement",
+    "description": "Estimez le coût à partir des quantités prescrites et du prix unitaire.",
+    "fields": {
+      "daily": "Unités prescrites par jour",
+      "days": "Nombre de jours prescrits",
+      "price": "Prix par unité"
+    },
+    "resultLabel": "Coût du traitement",
+    "note": "Reprenez les quantités de l’ordonnance sans modifier le traitement."
+  },
+  "clinic-visit-budget": {
+    "title": "Budget d’une consultation",
+    "description": "Estimez vos dépenses pour la visite et le déplacement.",
+    "fields": {
+      "consultation": "Consultation",
+      "tests": "Examens",
+      "medicine": "Médicaments",
+      "transport": "Transport"
+    },
+    "resultLabel": "Budget de la visite",
+    "note": "Saisissez les prix de votre établissement ou de la pharmacie."
+  },
+  "insurance-gap-health": {
+    "title": "Reste à charge santé",
+    "description": "Déduisez la prise en charge prévue de la facture estimée.",
+    "fields": {
+      "bill": "Facture estimée",
+      "cover": "Montant pris en charge"
+    },
+    "resultLabel": "Écart après prise en charge",
+    "note": "Un résultat positif représente le montant restant à financer. Vérifiez les plafonds du contrat.",
+    "rowLabels": {
+      "First value": "Facture estimée",
+      "Second value": "Prise en charge"
+    }
+  },
+  "landed-cost-lite": {
+    "title": "Droits et frais d’importation",
+    "description": "Calculez les droits sur la valeur des marchandises et ajoutez le fret et les frais.",
+    "fields": {
+      "value": "Valeur des marchandises",
+      "duty": "Taux des droits et taxes",
+      "fees": "Fret et frais"
+    },
+    "resultLabel": "Droits, fret et frais",
+    "note": "Le prix d’achat des marchandises est exclu du résultat. Utilisez le taux applicable à votre importation."
+  },
+  "afcfta-duty-saving": {
+    "title": "Économie de droits de douane",
+    "description": "Comparez les droits au tarif normal et au tarif préférentiel.",
+    "fields": {
+      "normal": "Droits au tarif normal",
+      "preferential": "Droits au tarif préférentiel"
+    },
+    "resultLabel": "Économie potentielle",
+    "note": "Vérifiez l’origine préférentielle du produit et les justificatifs requis auprès des douanes.",
+    "rowLabels": {
+      "First value": "Droits au tarif normal",
+      "Second value": "Droits préférentiels"
+    }
+  },
+  "customs-time-buffer": {
+    "title": "Délai de dédouanement",
+    "description": "Ajoutez les marges de contrôle et de documentation à la durée de traitement.",
+    "fields": {
+      "base": "Durée de traitement",
+      "inspection": "Marge pour inspection",
+      "documents": "Marge pour les documents"
+    },
+    "resultLabel": "Délai prévisionnel",
+    "note": "Utilisez des délais exprimés dans une même convention de jours."
+  },
+  "export-margin-widget": {
+    "title": "Rentabilité d’une exportation",
+    "description": "Rapportez le bénéfice aux coûts de marchandise et de logistique.",
+    "fields": {
+      "revenue": "Recettes d’exportation",
+      "cost": "Coût des produits et de la logistique"
+    },
+    "resultLabel": "Rentabilité sur coûts",
+    "note": "Un bénéfice de 50 pour un coût de 100 correspond ici à 50 %."
+  },
+  "container-split-cost": {
+    "title": "Partage du coût d’un conteneur",
+    "description": "Divisez la facture en parts égales.",
+    "fields": {
+      "total": "Coût total du conteneur",
+      "parties": "Nombre de parts"
+    },
+    "resultLabel": "Coût par part",
+    "note": "Utilisez une part par participant ou par lot si la répartition est uniforme."
+  },
+  "freight-weight-widget": {
+    "title": "Poids facturable du fret",
+    "description": "Comparez le poids réel au poids volumétrique pour déterminer le poids facturable.",
+    "fields": {
+      "length": "Longueur",
+      "width": "Largeur",
+      "height": "Hauteur",
+      "actual": "Poids réel",
+      "divisor": "Diviseur volumétrique"
+    },
+    "resultLabel": "Poids facturable",
+    "note": "Utilisez le diviseur de votre transporteur pour des dimensions exprimées en centimètres."
+  },
+  "fx-landed-price": {
+    "title": "Supplément de droits et logistique",
+    "description": "Appliquez la majoration à la valeur fournisseur en devise locale et ajoutez les frais.",
+    "fields": {
+      "local": "Valeur fournisseur en devise locale",
+      "uplift": "Majoration pour droits et logistique",
+      "fees": "Frais fixes"
+    },
+    "resultLabel": "Supplément en devise locale",
+    "note": "Ajoutez la valeur fournisseur à ce supplément pour obtenir le coût total."
+  },
+  "demurrage-risk-widget": {
+    "title": "Coût des surestaries",
+    "description": "Calculez le coût du retard après la période de franchise.",
+    "fields": {
+      "days": "Jours facturés au-delà de la franchise",
+      "rate": "Tarif journalier de surestaries"
+    },
+    "resultLabel": "Coût estimé des surestaries",
+    "note": "Si le tarif change par tranche de jours, calculez chaque tranche séparément."
+  }
+,
 
   "battery-backup-time": {
     "title": "Autonomie de la batterie",
