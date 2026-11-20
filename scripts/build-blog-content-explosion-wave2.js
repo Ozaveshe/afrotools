@@ -219,6 +219,12 @@ function renderArticle(record) {
   const canonical = `https://afrotools.com/blog/${record.slug}/`;
   const image = `https://afrotools.com/assets/img/tools/${record.image}.webp`;
   const alternateLinks = renderAlternateLinks(record, canonical);
+  const languageNames = { sw: 'Kiswahili', fr: 'Français', ha: 'Hausa', yo: 'Yorùbá' };
+  const readerLinks = (record.alternates || []).map(([lang, href]) =>
+    `<a lang="${esc(lang)}" hreflang="${esc(lang)}" href="${esc(href)}">${esc(languageNames[lang] || lang)}</a>`
+  ).join(' · ');
+  const languageNav = readerLinks ? `<nav aria-label="Article languages">${readerLinks}</nav>` : '';
+
   const faqs = faqItems(record).map(({ name, answer }) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } }));
   const body = articleBody(record);
   const wordCount = body.replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
@@ -271,7 +277,7 @@ ${alternateLinks}
 </head>
 <body class="top-level-page-ui-refresh">
 <div class="reading-progress" id="readingProgress"></div><afro-navbar></afro-navbar>
-<section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span class="sep">&#8250;</span> <a href="/blog/">Blog</a> <span class="sep">&#8250;</span> ${esc(record.country)}</nav><span class="category-badge category-badge--${cluster.cat}">${cluster.category}</span><h1>${esc(record.title)}</h1><div class="article-meta-hero"><span>By AfroTools Team</span><span class="dot"></span><time datetime="${data.published}">${data.reviewedLabel}</time><span class="dot"></span><span>${readMinutes} min read</span></div></div></section>
+<section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span class="sep">&#8250;</span> <a href="/blog/">Blog</a> <span class="sep">&#8250;</span> ${esc(record.country)}</nav>${languageNav}<span class="category-badge category-badge--${cluster.cat}">${cluster.category}</span><h1>${esc(record.title)}</h1><div class="article-meta-hero"><span>By AfroTools Team</span><span class="dot"></span><time datetime="${data.published}">${data.reviewedLabel}</time><span class="dot"></span><span>${readMinutes} min read</span></div></div></section>
 <div class="article-featured-img"><div class="article-featured-img-inner"><img width="600" height="400" src="/assets/img/tools/${record.image}.webp" alt="${esc(record.title)}" loading="eager"></div></div>
 <main class="article-layout"><nav class="article-toc" aria-label="Table of contents"><div class="article-toc-title">In this article</div><ol><li><a href="#quick-answer">Quick answer</a></li><li><a href="#workflow">Workflow</a></li><li><a href="#detail-1">Detailed method</a></li><li><a href="#scenarios">Stress test</a></li><li><a href="#sources">Sources</a></li><li><a href="#faq">FAQs</a></li></ol></nav><article class="article-body">${body}</article></main>
 <afro-footer></afro-footer><script src="/blog/assets/js/blog-reading.js" defer></script>
