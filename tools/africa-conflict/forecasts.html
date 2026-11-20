@@ -101,7 +101,8 @@
       var json = await res.json();
       var fc = json.data;
       if (!fc) {
-        el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">🔮</div><div class="acd-empty-title">No forecast recorded for this conflict yet.<br>Admin can add one via the <a href="/admin/conflict" style="color:var(--acd-accent)">admin panel</a>.</div></div>';
+        el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">🔮</div><div class="acd-empty-title">No forecast has been published for this conflict.<br><a data-conflict-overview style="color:var(--acd-accent)">Read the conflict overview</a></div></div>';
+        el.querySelector('[data-conflict-overview]').href = conflictUrl(slug);
         return;
       }
       el.innerHTML =

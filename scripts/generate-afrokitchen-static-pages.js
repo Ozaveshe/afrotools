@@ -6,6 +6,7 @@ const attributedRecipes = require("../engines/src/afrokitchen-engine");
 const path = require("path");
 const { imageSizeFromUrl } = require('./lib/image-size');
 const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
+const reviewedGallery = require('../data/image-generation/kitchen-gallery-descriptions.json');
 const artworkBySlug = new Map(generatedArtwork.map(image => [image.slug, image]));
 const artworkByPath = new Map(generatedArtwork.map(image => [image.target, image]));
 const reusedArtwork = [
@@ -1029,10 +1030,11 @@ function addGalleryImage(images, seen, src, alt, caption, credit) {
   if (seen.has(key)) return;
   seen.add(key);
 
+  const reviewed = reviewedGallery[key];
   images.push({
     src: input,
-    alt: artworkByPath.get(input)?.alt || reusedArtworkByPath.get(input)?.alt || alt || "AfroKitchen recipe photo",
-    caption: artworkByPath.get(input)?.caption || (artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · Recipe illustration` : caption || ""),
+    alt: reviewed?.alt || artworkByPath.get(input)?.alt || reusedArtworkByPath.get(input)?.alt || alt || "AfroKitchen recipe photo",
+    caption: reviewed?.caption || artworkByPath.get(input)?.caption || (artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · Recipe illustration` : caption || ""),
     credit: credit || null
   });
 }
@@ -1513,6 +1515,8 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
   const renderedGallery = renderRecipePhotoGallery(recipe, galleryImages);
+  const reviewedPhotos = galleryImages.length > 0 && galleryImages.every(image => reviewedGallery[image.src]);
+  const photoLabel = reviewedPhotos ? galleryImages.length + (galleryImages.length === 1 ? ' photo' : ' photos') : 'photos';
   const sourceReference = renderRecipeSourceReference(recipe);
   const renderedInsightCards = renderRecipeIntelligenceCards(recipe, recipeInsight);
   const renderedPairingRail = renderRecipePairingRail(recipe, recipeInsight);
@@ -1832,7 +1836,7 @@ ${renderCookbookNav()}
         </div>
       </div>
 
-      <details class="ak-cookbook-more"><summary>Cooking notes, photos &amp; serving ideas</summary>
+      <details class="ak-cookbook-more"><summary>Cooking notes, ${photoLabel} &amp; serving ideas</summary>
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe context</div>
         <h2 class="ak-section-title">More about this dish</h2>

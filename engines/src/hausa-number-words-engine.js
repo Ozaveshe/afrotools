@@ -57,19 +57,33 @@
     return parts.join(" da ");
   }
 
+  function parseAmount(value, currencyCode) {
+    var raw = String(value == null ? "" : value).trim();
+    var code = String(currencyCode || "NGN").toUpperCase();
+    if (code === "NGN") raw = raw.replace(/^₦\s*/, "");
+    if (raw.toUpperCase().startsWith(code)) raw = raw.slice(code.length).trimStart();
+    if (/^\.\d{1,2}$/.test(raw)) raw = "0" + raw;
+    if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,2})?$/.test(raw)) {
+      throw new Error("Saka adadi kamar 1,250.50 ba tare da alamar ragi ba. Iyakar lambobin bayan digo biyu ce.");
+    }
+    var parts = raw.replace(/,/g, "").split(".");
+    var major = Number(parts[0]);
+    if (!Number.isSafeInteger(major) || major > 999999999999999) {
+      throw new Error("Adadin ya yi yawa. Matsakaici shi ne 999,999,999,999,999.99.");
+    }
+    var fraction = (parts[1] || "").padEnd(2, "0");
+    return { major: major, minor: Number(fraction), exact: major + "." + fraction };
+  }
+
   function amount(value, currencyCode) {
-    var numeric = Number(value);
     var code = String(currencyCode || "NGN").toUpperCase();
     var units = UNITS[code];
-    if (!Number.isFinite(numeric) || numeric < 0 || numeric > 999999999999999.99) {
-      throw new Error("Adadin ya wuce iyakar da ake iya rubutawa.");
-    }
     if (!units) throw new Error("Ba a tallafa wa wannan nau'in kuɗi ba.");
-    var major = Math.floor(numeric);
-    var minor = Math.round((numeric - major) * 100);
-    if (minor === 100) { major += 1; minor = 0; }
+    var parsed = parseAmount(value, code);
+    var major = parsed.major;
+    var minor = parsed.minor;
     return units[0] + " " + integer(major) + (minor ? " da " + units[1] + " " + integer(minor) : "") + " kacal";
   }
 
-  return { integer: integer, amount: amount, units: UNITS };
+  return { integer: integer, amount: amount, parseAmount: parseAmount, units: UNITS };
 });

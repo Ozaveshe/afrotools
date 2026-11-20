@@ -45,8 +45,14 @@ for (const route of routes) {
     await page.locator('[data-action="csv"]').click();
     const csvPath = await (await csvDownload).path();
     const csv = fs.readFileSync(csvPath, 'utf8');
-    expect(csv.split(/\r?\n/).filter(Boolean)).toHaveLength(32);
-    expect(csv).toContain('total_contributed');
+    const [csvHeader, ...annualRows] = csv.trimEnd().split(/\r?\n/);
+    expect(csvHeader).toBe('"age","balance","total_contributed","currency","country_code","projection_as_of"');
+    expect(annualRows).toHaveLength(record.result.base.yearly.length);
+    for (const [index, row] of record.result.base.yearly.entries()) {
+      const fields = [row.age, row.balance.toFixed(2), row.totalContributed.toFixed(2),
+        record.inputs.currency, record.inputs.countryCode, record.inputs.asOfDate];
+      expect(annualRows[index]).toBe(fields.map(value => '"' + value + '"').join(','));
+    }
 
     const txtDownload = page.waitForEvent('download');
     await page.locator('[data-action="txt"]').click();

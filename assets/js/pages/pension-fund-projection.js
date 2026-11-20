@@ -96,7 +96,13 @@
   }
   function record() { return { schemaVersion: 1, locale: locale, englishId: 'pension-projection', route: location.pathname, generatedAt: new Date().toISOString(), inputs: last.inputs, result: last }; }
   function csv() {
-    var rows = [['age','balance','total_contributed']].concat(last.base.yearly.map(function (row) { return [row.age,row.balance.toFixed(2),row.totalContributed.toFixed(2)]; }));
+    var inputs = last.inputs;
+    var rows = [['age', 'balance', 'total_contributed', 'currency', 'country_code', 'projection_as_of']].concat(
+      last.base.yearly.map(function (row) {
+        return [row.age, row.balance.toFixed(2), row.totalContributed.toFixed(2),
+          inputs.currency, inputs.countryCode, inputs.asOfDate];
+      })
+    );
     return rows.map(function (row) { return row.map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n') + '\r\n';
   }
   function download(content, type, name) {
