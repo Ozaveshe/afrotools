@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "due-date": {
+    "title": "Date prévue d’accouchement",
+    "tool": "/fr/tools/date-accouchement/",
+    "frame": "health-due-date",
+    "script": "health/due-date.js"
+  },
+  "ovulation": {
+    "title": "Période probable d’ovulation",
+    "tool": "/fr/tools/calculateur-ovulation/",
+    "frame": "health-ovulation",
+    "script": "health/ovulation.js"
+  }
+,
+
   "mobile-money-fees": {
     "title": "Frais de paiement mobile",
     "tool": "/fr/tools/frais-mobile-money/",
