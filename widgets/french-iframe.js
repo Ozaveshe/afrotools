@@ -1,6 +1,26 @@
 (function () {
   const widgets = {
 
+  "water-intake": {
+    "title": "Planifier les boissons",
+    "tool": "/fr/tools/apport-eau/",
+    "frame": "health-water-intake",
+    "script": "health/water-intake.js"
+  },
+  "calorie-calculator": {
+    "title": "Dépense énergétique",
+    "tool": "/fr/tools/compteur-calories/",
+    "frame": "health-calorie-calculator",
+    "script": "health/calorie.js"
+  },
+  "blood-pressure": {
+    "title": "Tension artérielle",
+    "tool": "/fr/tools/tension-arterielle/",
+    "frame": "health-blood-pressure",
+    "script": "health/blood-pressure.js"
+  }
+,
+
   "car-insurance": {
     "title": "Assurance auto",
     "tool": "/fr/tools/assurance-auto/",
