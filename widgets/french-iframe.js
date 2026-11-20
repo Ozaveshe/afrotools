@@ -1,5 +1,6 @@
 (function () {
   const widgets = {
+    "staking-rewards": {"title": "Récompenses de staking", "tool": "/fr/tools/impot-crypto/", "frame": "crypto-staking-rewards", "script": "crypto/staking-rewards.js"},
 
   "mortgage-calculator": {
     "title": "Simulation de prêt immobilier",
