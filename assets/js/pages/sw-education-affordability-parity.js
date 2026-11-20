@@ -118,6 +118,13 @@
     setTimeout(function () { URL.revokeObjectURL(link.href); }, 500);
   }
 
+  form.addEventListener('input', function () {
+    if (!lastPayload && !errorBox.textContent) return;
+    lastPayload = null;
+    resultBox.hidden = true;
+    errorBox.textContent = '';
+    statusBox.textContent = 'Umebadilisha taarifa. Kokotoa tena ili kupata matokeo mapya.';
+  });
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     errorBox.textContent = '';
