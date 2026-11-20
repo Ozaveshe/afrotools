@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "bmi-calculator": {
+    "title": "Indice de masse corporelle",
+    "tool": "/fr/tools/calculateur-imc/",
+    "frame": "health-bmi-calculator",
+    "script": "health/bmi.js"
+  },
+  "waist-hip": {
+    "title": "Rapport taille-hanches",
+    "tool": "/fr/tools/ratio-taille-hanches/",
+    "frame": "health-waist-hip",
+    "script": "health/waist-hip.js"
+  }
+,
+
   "due-date": {
     "title": "Date prévue d’accouchement",
     "tool": "/fr/tools/date-accouchement/",
