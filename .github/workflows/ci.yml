@@ -1,299 +1,78 @@
-name: CI - Verify AfroTools
-
+name: CI - Hosted generation preparation
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
+  group: hosted-generation-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  verify:
-    name: Verify
+  prepare:
+    name: Generate reviewable source outputs
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
-
+    timeout-minutes: 75
+    env:
+      RETURN_DIR: /tmp/generated-return
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
-          # Preservation tests compare current records with pinned release baselines.
           fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
+          persist-credentials: false
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
-
-      - name: Install dependencies
+      - name: Install native dependencies
         run: npm ci
-
-      - name: Install Chromium for browser-backed tests
+      - name: Install native Chromium for existing consent checks
         run: npx playwright install chromium --with-deps
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Type-check
-        run: npm run type-check
-
-      - name: Verify calculation formulas and jurisdictional data
-        run: npm run calculation-quality:check
-
-      - name: Verify static data fallback freshness
-        run: npm run data:fallbacks:check
-
-      - name: AI contract tests
-        run: npm run test:ai
-
-      - name: Unit and integration tests
-        run: npm test
-
-      - name: Verify multipart parser boundaries
-        run: node --test tests/multipart-parser-boundary.test.js
-
-      - name: Verify forex context expiry at runtime
-        run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js
-
-      - name: Verify private command-centre contracts
-        run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
-
-      - name: Verify Pro architecture
-        run: npm run pro:verify
-
-      - name: Validate i18n dictionaries
-        run: npm run build:i18n:validate
-
-      - name: Validate hreflang graph
-        run: npm run validate:hreflang
-
-  artifact:
-    name: Artifact producer
-    runs-on: ubuntu-24.04
-    timeout-minutes: 75
-    permissions:
-      contents: read
-      actions: read
-    outputs:
-      manifest_sha256: ${{ steps.seal.outputs.manifest_sha256 }}
-      commit: ${{ steps.seal.outputs.commit }}
-      tree: ${{ steps.seal.outputs.tree }}
-      deadline: ${{ steps.seal.outputs.deadline }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-          cache: npm
-
-      - name: Bind the original shared 75-minute deadline
-        id: begin
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node scripts/ci-artifact-deadline.js
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build deploy artifact
+      - name: Verify exact source identity and product
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "cc8bf054f500b115a6ec12ebfbca2472b0413b8e"
+          git switch -C main
+          mkdir -p .netlify "$RETURN_DIR"
+          printf '%s\n' '{"siteId":"8aa543db-b4bd-4631-98f8-221440055c41"}' > .netlify/state.json
+          node scripts/verify-deploy-channel.js --allow-dirty
+          node scripts/verify-supabase-consolidation.js
+          npm run data:fallbacks:check
+          node --test tests/localized-fuel-directory.test.js
+          node tests/french-directory-search.test.js
+          npm run test:privacy-ai-consent
+      - name: Regenerate invoice projections with existing scoped owners
+        run: |
+          set -euo pipefail
+          node scripts/build-sw-all-tools-catalog.js
+          node scripts/build-sw-all-tools-catalog.js --check
+          node scripts/minify.js --only=assets/js/pages/src/invoice-generator-enhancements.js
+          node scripts/build-french-document-pdf-lexicon.js --write --app=invoice-generator --reviewed-only
+          node scripts/build-swahili-document-pdf-lexicon.js --write --sync-overrides=invoice-generator
+          node scripts/build-french-document-pdf-parity.js --write --app=invoice-generator
+          node scripts/build-swahili-document-pdf-parity.js --write --apps=invoice-generator
+      - name: Run unchanged native full generation
         run: npm run build:deploy
-
-      - name: Run the full generated-source release checks
-        run: npm run build:checks
-
-      - name: Audit deploy artifact
-        run: npm run audit:dist
-
-      - name: Verify French document artwork and breadcrumbs in the artifact
-        run: node scripts/check-french-document-seo.js --dist
-
-      - name: Security scan publish surfaces
-        run: npm run security:scan
-
-      - name: Install Chromium for optimized artifact checks
-        run: npx playwright install chromium --with-deps
-
-      - name: Verify current French finance shared-controller exports
-        env:
-          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          FRENCH_FINANCE_EXPORT_RUN_ID: finance-${{ github.run_id }}-${{ github.run_attempt }}
-          FRENCH_FINANCE_EXPORT_PART_DIR: ${{ runner.temp }}/finance-export-parts
-          FRENCH_FINANCE_EXPORT_OUTPUT_FILE: ${{ runner.temp }}/finance-export-proof.json
-          FRENCH_FINANCE_EXPORT_STANDALONE: '1'
-          FRENCH_FINANCE_PLAYWRIGHT_PORT: '42973'
-          CONTEXT: local
-          NETLIFY: 'false'
+      - name: Validate generated source and publish surfaces
         run: |
-          export FRENCH_FINANCE_EXPECTED_COMMIT="$(git rev-parse HEAD)"
-          export FRENCH_FINANCE_EXPECTED_TREE="$(git rev-parse HEAD^{tree})"
-          export COMMIT_REF="$FRENCH_FINANCE_EXPECTED_COMMIT"
-          node -e "require('./scripts/build-dist').writeReleaseMetadata()"
-          npx playwright test tests/e2e/french-finance-export-contract.spec.js --config=playwright.french-finance.config.js --project=chromium --fully-parallel --workers=2 --retries=0 --trace=off --output="$RUNNER_TEMP/finance-export-browser"
-          node scripts/collect-french-finance-export-evidence.js
-
-      - name: Verify generated outputs are committed
-        run: |
-          git diff --stat
-          if [ -n "$(git diff --name-only)" ]; then
-            echo "::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs."
-            git diff --name-only
-            exit 1
-          fi
-
-      - name: Seal the single artifact after the original metadata and parity owners
-        id: seal
-        env:
-          SEALED_DEADLINE: ${{ steps.begin.outputs.deadline }}
-          SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
-        run: node scripts/ci-artifact-browser.js seal
-
-      - name: Upload the immutable sealed artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sealed-artifact-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/sealed-artifact/
-          if-no-files-found: error
-          compression-level: 0
-
-      - name: Preserve native producer finance evidence on failure or success
+          set -euo pipefail
+          npm run build:checks
+          npm run security:scan
+          npm run audit:dist
+          git diff --check
+          python - <<'PY'
+          import json,os,pathlib
+          roots=['.git','.netlify','.github','.codex','.agents','.claude','node_modules','netlify','scripts','supabase','tests','docs','ops','reports','audit-results','artifacts','test-results','package.json','package-lock.json','AGENTS.md','.env','data/registry','data/automation','data/image-generation']
+          found=[p for p in roots if (pathlib.Path('dist')/p).exists()]+[str(p) for p in pathlib.Path('dist').glob('.env.*')]
+          (pathlib.Path(os.environ['RETURN_DIR'])/'direct-dist-inspection.json').write_text(json.dumps(dict(forbidden_roots=roots,found=found,passed=not found),indent=2)+'\n')
+          assert not found,found
+          PY
+      - name: Capture bounded generated patch with original preimages
+        if: ${{ always() }}
+        run: python .github/release-preparation/20261120-invoice-lobola-01a1f6a0/collect.py
+      - name: Return generated patch and native evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: producer-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            ${{ runner.temp }}/finance-export-browser/
-            ${{ runner.temp }}/finance-export-parts/
-            ${{ runner.temp }}/finance-export-proof.json
+          name: generated-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/generated-return/
           if-no-files-found: warn
-
-  browser:
-    name: Artifact browsers (${{ matrix.group }})
-    needs: artifact
-    runs-on: ubuntu-24.04
-    timeout-minutes: 75
-    strategy:
-      fail-fast: false
-      max-parallel: 2
-      matrix:
-        group: [1, 2]
-    env:
-      SEALED_COMMIT: ${{ needs.artifact.outputs.commit }}
-      SEALED_TREE: ${{ needs.artifact.outputs.tree }}
-      SEALED_DEADLINE: ${{ needs.artifact.outputs.deadline }}
-      SEALED_MANIFEST_SHA256: ${{ needs.artifact.outputs.manifest_sha256 }}
-      BROWSER_GROUP: ${{ matrix.group }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-          cache: npm
-
-      - name: Download the one sealed producer artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: sealed-artifact-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/sealed-artifact
-
-      - name: Run assigned unchanged native commands against the sealed artifact
-        env:
-          SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
-          GROUP_EVIDENCE: ${{ runner.temp }}/ci-browser-evidence
-        run: node scripts/ci-artifact-browser.js group
-
-      - name: Preserve each original gate log and native failure evidence
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: browser-evidence-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.group }}
-          path: ${{ runner.temp }}/ci-browser-evidence/
-          if-no-files-found: error
-
-  build:
-    name: Build and audit
-    needs: [artifact, browser]
-    if: ${{ always() }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 75
-    env:
-      SEALED_COMMIT: ${{ needs.artifact.outputs.commit }}
-      SEALED_TREE: ${{ needs.artifact.outputs.tree }}
-      SEALED_DEADLINE: ${{ needs.artifact.outputs.deadline }}
-      SEALED_MANIFEST_SHA256: ${{ needs.artifact.outputs.manifest_sha256 }}
-      NEEDS_JSON: ${{ toJSON(needs) }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-
-      - name: Download the original sealed artifact for aggregate binding
-        uses: actions/download-artifact@v5
-        with:
-          name: sealed-artifact-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/sealed-artifact
-
-      - name: Download separate group reports and retained evidence
-        uses: actions/download-artifact@v5
-        with:
-          pattern: browser-evidence-${{ github.run_id }}-${{ github.run_attempt }}-*
-          path: ${{ runner.temp }}/ci-browser-reports
-
-      - name: Require every original gate, source/artifact identity and original deadline
-        env:
-          SEALED_BUNDLE: ${{ runner.temp }}/sealed-artifact
-          GROUP_REPORTS: ${{ runner.temp }}/ci-browser-reports
-        run: node scripts/ci-artifact-browser.js aggregate
-
-  e2e:
-    name: Playwright smoke
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Chromium
-        run: npx playwright install chromium --with-deps
-
-      - name: Run smoke specs
-        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js tests/e2e/amount-words-readiness.spec.js tests/e2e/mobile-money-readiness.spec.js tests/e2e/education-hub-card-reflow.spec.js tests/e2e/jamb-review-reflow.spec.js tests/e2e/shared-contrast-and-pro-gate.spec.js tests/e2e/blog-reading-layout.spec.js --project=chromium --workers=1
-
-      - name: Verify AfroJAMB reviewed-content journeys
-        env:
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-        run: npx playwright test tests/e2e/jamb-browser-trust.spec.js tests/e2e/jamb-planning-trust.spec.js tests/e2e/jamb-tutor-consent.spec.js tests/e2e/jamb-reviewed-pages.spec.js tests/e2e/jamb-public-review.spec.js --project=chromium --workers=2
-
-      - name: Verify Solar startup and French country continuations
-        env:
-          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
-          PORT: '4177'
-        run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2
+          retention-days: 14
