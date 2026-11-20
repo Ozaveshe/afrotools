@@ -1035,7 +1035,7 @@ Unmapped means unresolved in the authoritative mapping, not proof that no implem
 | kcse-calculator | Unmapped | unmapped | not-reviewed |
 | national-service-gh | Unmapped | unmapped | not-reviewed |
 | university-admission | Unmapped | unmapped | not-reviewed |
-| student-budget | /ha/kayan-aiki/kasafin-dalibi/ | localized-shell-candidate | not-reviewed |
+| student-budget | /ha/kayan-aiki/kasafin-dalibi/ | partial-workflow | partial-workflow |
 | coding-bootcamp | Unmapped | unmapped | not-reviewed |
 | african-proverbs | Unmapped | unmapped | not-reviewed |
 | afroprices | Unmapped | unmapped | not-reviewed |
