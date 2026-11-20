@@ -199,7 +199,8 @@ function primaryVehicleImage(vehicle) {
 
 function vehicleImageHTML(vehicle) {
   const asset = primaryVehicleImage(vehicle);
-  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="${asset.width || 640}" height="${asset.height || 400}"><figcaption>${escapeHtml((asset.sourceUrl && asset.caption) || (asset.sourceType === "generated" ? asset.caption || "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."))}${asset.sourceUrl && /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(asset.sourceUrl) ? ` <a href="${escapeHtml(asset.sourceUrl)}" target="_blank" rel="noopener noreferrer">Photo source and reuse rights</a>` : ""}</figcaption></figure>` : "";
+  const attributed = asset?.license === "CC BY-SA 4.0" && asset.creator && asset.licenseUrl === "https://creativecommons.org/licenses/by-sa/4.0/";
+  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="${asset.width || 640}" height="${asset.height || 400}"><figcaption>${escapeHtml((asset.sourceUrl && asset.caption) || ((asset.sourceType === "generated" || attributed) ? asset.caption || "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."))}${asset.sourceUrl && /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(asset.sourceUrl) ? ` <a href="${escapeHtml(asset.sourceUrl)}" target="_blank" rel="noopener noreferrer">Photo source and reuse rights</a>` : ""}${attributed ? ` <a href="${escapeHtml(asset.licenseUrl)}">CC BY-SA 4.0 licence</a>` : ""}</figcaption></figure>` : "";
 }
 
 function sourceMarketEvidenceHTML(vehicle) {
@@ -301,7 +302,7 @@ function vehicleDetailHTML(vehicle, country) {
   const rows = specs.map(([label, value]) => `<tr><th scope="row">${escapeHtml(label)}</th><td>${escapeHtml(String(value))}</td></tr>`).join("\n");
   return `<section class="cars-panel cars-static-summary">
 <h2>${escapeHtml(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)} — ${escapeHtml(country.name)} planning snapshot</h2>
-${marketObservation(country, vehicle) ? vehicleImageHTML(vehicle) : ""}
+${marketObservation(country, vehicle) || (country.code === "NG" && vehicle.id === "mercedes-g-wagon-2022" && primaryVehicleImage(vehicle)?.modelReview?.status === "source-identified-model-year") ? vehicleImageHTML(vehicle) : ""}
 <table>
 <tbody>
 ${rows}
