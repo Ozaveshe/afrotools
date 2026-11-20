@@ -29,5 +29,6 @@ window.AfroWidgets.mobileMoneyFees = function(root, options) {
    if(manual.value!==""){const fee=manual.valueAsNumber;if(!(fee>=0))return say("Enter a nonnegative fee.","Saisissez des frais positifs ou nuls.");return say("Entered fee","Frais saisis")+" "+num(fee)+" · "+num(fee/n*100)+" %";}
    if(!catalog||!provider.value)return say("Enter the fee shown by your operator.","Saisissez les frais affichés par votre opérateur.");
    const result=window.MobileMoneyQuoteEngine.quoteTariff(catalog,{providerId:provider.value,action:op.value,amount:n});if(!result.available)return say("Outside the published bands. Enter the operator’s quote above.","Ce montant est hors du barème publié. Saisissez les frais annoncés ci-dessus.");
-   return say("Fee","Frais")+" "+num(result.fee)+" "+result.currency+" · "+say("Total debited","Débit total")+" "+num(result.totalDebited)+" "+result.currency+" · "+num(result.fee/n*100)+" %";});
+   const total=result.totalIncludesAllCharges?say("Total debited","Débit total")+" "+num(result.totalDebited):say("Amount plus published fee, before additional taxes","Montant avec les frais publiés, avant taxes supplémentaires")+" "+num(result.amountPlusPublishedFee);
+    return say("Fee","Frais")+" "+num(result.fee)+" "+result.currency+" · "+total+" "+result.currency+" · "+num(result.fee/n*100)+" %";});
 };
