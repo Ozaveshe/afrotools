@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "working-days": {
+    "title": "Calculateur de jours ouvrés",
+    "tool": "/fr/tools/jours-ouvrables/",
+    "frame": "data-productivity-working-days",
+    "script": "data-productivity/working-days.js"
+  }
+,
+
   "age-calculator": {
     "title": "Calculateur d’âge",
     "tool": "/fr/tools/calculateur-age/",
