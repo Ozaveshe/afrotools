@@ -7,10 +7,12 @@
 const CACHE_VERSION = '18f583c7';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
+const FRENCH_OFFLINE_URL = '/fr/offline.html';
 
 const PRECACHE = [
   '/',
-  '/offline.html',
+  OFFLINE_URL,
+  FRENCH_OFFLINE_URL,
   '/assets/css/design-system.min.css',
   '/assets/css/tokens.min.css',
   '/assets/css/skeleton.css',
@@ -29,7 +31,11 @@ const PRECACHE = [
 ];
 
 async function cachedNavigationResponse(request) {
-  const response = await caches.match(request) || await caches.match(OFFLINE_URL);
+  const { pathname } = new URL(request.url);
+  const isFrench = pathname === '/fr' || pathname.startsWith('/fr/');
+  const response = await caches.match(request) ||
+    (isFrench && await caches.match(FRENCH_OFFLINE_URL)) ||
+    await caches.match(OFFLINE_URL);
   // Pretty-URL redirects can be retained in a cached page's response. A
   // navigation uses manual redirects, so the browser rejects that response.
   // Retain the cached body and headers without its completed redirect chain.

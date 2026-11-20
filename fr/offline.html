@@ -31,7 +31,18 @@ p{font-size:.95rem;color:rgba(255,255,255,.6);line-height:1.65;margin-bottom:1.5
 <div class="icon">&#128268;</div>
 <h1>Accès hors connexion</h1>
 <p>Les calculateurs déjà ouverts peuvent fonctionner hors connexion. Reconnectez-vous pour accéder aux autres pages et aux données en direct.</p>
-<a href="/fr/" class="btn">Accéder à l’accueil AfroTools</a>
+<a href="/fr/" class="btn" id="offline-action">Accéder à l’accueil AfroTools</a>
+<script>
+  if (!/^\/fr\/offline(?:\.html)?\/?$/.test(location.pathname)) {
+    const action = document.getElementById('offline-action');
+    action.textContent = 'Réessayer';
+    action.href = location.href;
+    action.addEventListener('click', function (event) {
+      event.preventDefault();
+      location.reload();
+    });
+  }
+</script>
 </div>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>
