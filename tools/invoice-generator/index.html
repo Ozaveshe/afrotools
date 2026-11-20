@@ -653,6 +653,7 @@
             <option value="net-30" selected>Net 30</option>
             <option value="net-45">Net 45</option>
             <option value="net-60">Net 60</option>
+            <option value="custom">Custom due date</option>
           </select>
         </div>
       </div>
@@ -1108,7 +1109,7 @@ const TAX_RATES = {
 
 const TERMS_MAP = {
   'due-receipt':'Due on Receipt','net-7':'Net 7 days','net-15':'Net 15 days',
-  'net-30':'Net 30 days','net-45':'Net 45 days','net-60':'Net 60 days'
+  'net-30':'Net 30 days','net-45':'Net 45 days','net-60':'Net 60 days','custom':'Custom due date'
 };
 
 const DOCUMENT_TYPES = {
@@ -1169,13 +1170,37 @@ function nextInvoiceNumber() {
 }
 
 /* ── INIT DATES ── */
-function initDates() {
-  const today = new Date();
-  $('invoiceDate').value = today.toISOString().slice(0,10);
-  const due = new Date(today);
-  due.setDate(due.getDate() + 30);
-  $('dueDate').value = due.toISOString().slice(0,10);
+function dueDateForTerms() {
+  const invoiceDay = $('invoiceDate').valueAsNumber;
+  const terms = $('paymentTerms').value;
+  if (!Number.isFinite(invoiceDay) || !terms || terms === 'custom') return '';
+  const days = terms === 'due-receipt' ? 0 : Number(terms.slice(4));
+  return new Date(invoiceDay + days * 86400000).toISOString().slice(0, 10);
 }
+
+function applyPaymentTerms() {
+  const due = dueDateForTerms();
+  if (due) $('dueDate').value = due;
+}
+
+function keepEnteredDueDate() {
+  if ($('dueDate').value && $('dueDate').value !== dueDateForTerms()) $('paymentTerms').value = 'custom';
+}
+
+function initDates() {
+  // Rebase a saved template with custom terms by its original calendar-day interval.
+  const oldInterval = $('dueDate').valueAsNumber - $('invoiceDate').valueAsNumber;
+  $('invoiceDate').value = new Date().toISOString().slice(0,10);
+  if ($('paymentTerms').value === 'custom' && Number.isFinite(oldInterval)) {
+    $('dueDate').valueAsNumber = $('invoiceDate').valueAsNumber + oldInterval;
+  } else {
+    applyPaymentTerms();
+  }
+}
+
+$('paymentTerms').addEventListener('change', applyPaymentTerms);
+$('invoiceDate').addEventListener('change', applyPaymentTerms);
+$('dueDate').addEventListener('change', keepEnteredDueDate);
 
 /* ── LOGO UPLOAD ── */
 let logoDataURL = null;
@@ -1734,6 +1759,8 @@ function restoreState(s) {
     if (s.dt !== undefined && $('documentType')) $('documentType').value = DOCUMENT_TYPES[s.dt] ? s.dt : 'invoice';
     if (s.cu !== undefined) $('currency').value = s.cu;
     if (s.pt !== undefined) $('paymentTerms').value = s.pt;
+    if (s.dd) keepEnteredDueDate();
+    else if (s.pt !== undefined || s.id !== undefined) applyPaymentTerms();
     if (s.tt !== undefined) $('taxType').value = s.tt;
     if (s.tr !== undefined) $('taxRate').value = s.tr;
     if (s.dp !== undefined) $('discountPercent').value = s.dp;
@@ -1837,8 +1864,8 @@ function startNewInvoice(options) {
   if ($('documentType')) $('documentType').value = options.documentType || 'invoice';
   $('invoiceNumber').value = nextInvoiceNumber();
   $('invAutoNum').textContent = 'Auto: ' + $('invoiceNumber').value;
-  initDates();
   $('paymentTerms').value = options.documentType === 'receipt' ? 'due-receipt' : 'net-30';
+  initDates();
   $('discountPercent').value = '0';
   $('amountPaid').value = '0';
   $('withholdingPercent').value = '0';
@@ -2125,7 +2152,7 @@ init();
   else bind();
 })();
 </script>
-<script src="/assets/js/pages/invoice-generator-enhancements.js?v=a7ec0e4a"></script>
+<script src="/assets/js/pages/invoice-generator-enhancements.js?v=863a0614"></script>
 <script>
 (function(){
   window.exportInvoiceJsonFallback = function(event) {

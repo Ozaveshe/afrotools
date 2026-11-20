@@ -97,7 +97,8 @@
         "net-15": "Net 15 days",
         "net-30": "Net 30 days",
         "net-45": "Net 45 days",
-        "net-60": "Net 60 days"
+        "net-60": "Net 60 days",
+        custom: "Custom due date"
     };
     function invoiceCopy(value) {
         var language = (document.documentElement.lang || "en").split("-")[0], map = {
@@ -188,6 +189,7 @@
                 "Net 30 days": "Sous 30 jours",
                 "Net 45 days": "Sous 45 jours",
                 "Net 60 days": "Sous 60 jours",
+                "Custom due date": "Échéance personnalisée",
                 "invoice-": "facture-",
                 "PDF downloaded": "PDF téléchargé",
                 "Share sheet opened": "Options de partage ouvertes",
@@ -324,6 +326,7 @@
                 "Net 30 days": "Inalipwa ndani ya siku 30",
                 "Net 45 days": "Inalipwa ndani ya siku 45",
                 "Net 60 days": "Inalipwa ndani ya siku 60",
+                "Custom due date": "Tarehe maalumu ya malipo",
                 "invoice-": "ankara-",
                 "PDF downloaded": "PDF imepakuliwa",
                 "Share sheet opened": "Chaguo za kushiriki zimefunguliwa",
