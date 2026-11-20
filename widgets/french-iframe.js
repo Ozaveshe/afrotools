@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "electricity-tariff": {
+    "title": "Estimer la facture d’électricité",
+    "tool": "/fr/tools/tarifs-electricite/",
+    "frame": "energy-electricity-tariff",
+    "script": "energy/electricity-tariff.js"
+  }
+,
+
   "prepaid-meter": {
     "title": "Estimation de recharge électrique",
     "tool": "/fr/tools/compteur-prepaye/",

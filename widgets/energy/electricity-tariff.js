@@ -1,1 +1,72 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{};var a={NG:{name:"Nigeria",sym:"₦",res:68,com:85,ind:75,bands:[{lbl:"Band A (20+hrs)",r:225},{lbl:"Band B (16-20hrs)",r:63.36},{lbl:"Band C (12-16hrs)",r:50},{lbl:"Band D (8-12hrs)",r:43},{lbl:"Band E (4-8hrs)",r:40}]},KE:{name:"Kenya",sym:"KES ",res:25.4,com:20,ind:15,bands:[]},ZA:{name:"South Africa",sym:"R",res:3.5,com:2.8,ind:2.2,bands:[{lbl:"Lifeline (≤350kWh)",r:1.2},{lbl:"Standard (350+kWh)",r:3.5}]},GH:{name:"Ghana",sym:"GH₵",res:1.26,com:1.68,ind:1.08,bands:[]},EG:{name:"Egypt",sym:"E£",res:1,com:1.5,ind:1.25,bands:[]},ET:{name:"Ethiopia",sym:"ETB ",res:.69,com:1.04,ind:.86,bands:[]},TZ:{name:"Tanzania",sym:"TSh ",res:292,com:369,ind:252,bands:[]},UG:{name:"Uganda",sym:"USh ",res:786,com:918,ind:715,bands:[]},RW:{name:"Rwanda",sym:"RWF ",res:221,com:276,ind:194,bands:[]},SN:{name:"Senegal",sym:"CFA ",res:101,com:121,ind:89,bands:[]},MA:{name:"Morocco",sym:"MAD ",res:1.3,com:1.7,ind:1.15,bands:[]}};window.AfroWidgets.electricityTariff=function(e,s){s=s||{};var l=Object.keys(a).map(function(e){return'<option value="'+e+'">'+a[e].name+"</option>"}).join("");e.innerHTML='<div class="aw-title">⚡ Electricity Bill Calculator</div><div class="aw-row"><div class="aw-field"><label class="aw-label">Country</label><select class="aw-select" id="aw-et-ctry">'+l+'</select></div><div class="aw-field"><label class="aw-label">Customer Type</label><select class="aw-select" id="aw-et-type"><option value="res">Residential</option><option value="com">Commercial</option><option value="ind">Industrial</option></select></div></div><div class="aw-field"><label class="aw-label">Monthly Usage (kWh)</label><input class="aw-input" id="aw-et-kwh" type="number" min="0" inputmode="decimal" placeholder="e.g. 200"></div><button class="aw-btn" id="aw-et-calc">Calculate Bill</button><div class="aw-result-box" id="aw-et-res" style="display:none"></div>'+(s.footerHTML||""),e.querySelector("#aw-et-calc").addEventListener("click",function(){var s=e.querySelector("#aw-et-ctry").value,l=e.querySelector("#aw-et-type").value,n=parseFloat(e.querySelector("#aw-et-kwh").value)||0;if(n){var i,t=a[s],r="com"===l?t.com:"ind"===l?t.ind:t.res,d="";if("res"===l&&t.bands&&t.bands.length){var c=n;i=0;var o=n/t.bands.length;t.bands.forEach(function(a){var e=Math.min(c,o);i+=e*a.r,c-=e,d+='<div class="aw-result-row"><span class="aw-result-label">'+a.lbl+"</span><span>"+t.sym+a.r.toFixed(2)+"/kWh</span></div>"}),c>0&&(i+=c*t.bands[t.bands.length-1].r),r=i/n}else i=n*r;var u=i/30,m=e.querySelector("#aw-et-res");m.style.display="block",m.innerHTML='<div class="aw-result-label">Monthly Bill ('+t.name+')</div><div class="aw-result-main">'+w(i)+'</div><hr class="aw-divider">'+d+'<div class="aw-result-row"><span class="aw-result-label">Daily Cost</span><span>'+w(u)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Annual Bill</span><span>'+w(12*i)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Avg Rate</span><span>'+t.sym+r.toFixed(2)+"/kWh</span></div>"}function w(a){return t.sym+Math.round(a).toLocaleString()}}),e.querySelectorAll("input,select").forEach(function(a){a.addEventListener("change",function(){})}),e.querySelector("#aw-et-kwh").addEventListener("keyup",function(a){"Enter"===a.key&&e.querySelector("#aw-et-calc").click()})}}();
+window.AfroWidgets = window.AfroWidgets || {};
+window.AfroWidgets.electricityTariff = function (root, options) {
+  const fr = root.ownerDocument.documentElement.dataset.afroWidgetLocale === "fr";
+  const say = (en, native) => fr ? native : en;
+  const fmt = value => value.toLocaleString(fr ? "fr" : "en", {maximumFractionDigits: 3});
+  const form = document.createElement("form");
+  form.noValidate = true;
+  form.style.cssText = "display:grid;gap:12px";
+  const title = document.createElement("h2");
+  const status = document.createElement("output");
+  status.setAttribute("aria-live","polite");
+  form.append(title);
+  root.replaceChildren(form);
+  function field(text, type, id, value) {
+    const label = document.createElement("label");
+    label.textContent = text;
+    const element = document.createElement(type === "select" ? "select" : "input");
+    element.className = type === "select" ? "aw-select" : "aw-input";
+    element.style.cssText = "display:block;width:100%;box-sizing:border-box;min-height:40px";
+    if (type !== "select") { element.type="number"; element.step="any"; element.min="0"; }
+    element.dataset.field = id;
+    if(value !== undefined) element.value = value;
+    label.append(element);form.append(label);
+    return element;
+  }
+  const country=field(say("Country and currency","Pays et devise"),"select","country");
+  const currencies={NG:"NGN",KE:"KES",ZA:"ZAR",GH:"GHS",EG:"EGP",ET:"ETB",TZ:"TZS",UG:"UGX",RW:"RWF",MA:"MAD",SN:"XOF"};
+  const countries=new Intl.DisplayNames([fr?"fr":"en"],{type:"region"});
+  for (const [region,code] of Object.entries(currencies)) country.add(new Option(countries.of(region)+" · "+code,region));
+  const money=value=>new Intl.NumberFormat(fr?"fr":"en",{style:"currency",currency:currencies[country.value]}).format(value);
+  const note=document.createElement("p");form.append(note);
+  const rate=field(say("Price per kWh from your bill","Prix du kWh indiqué sur votre facture"),"number","rate");
+  const calculate=document.createElement("button");calculate.className="aw-btn";calculate.type="submit";
+  function finish(run) {
+    form.append(calculate,status);
+    if(options?.footerHTML) root.insertAdjacentHTML("beforeend",options.footerHTML);
+    form.addEventListener("input",()=>{status.textContent="";});
+    country.addEventListener("change",()=>{rate.value="";status.textContent="";});
+    form.addEventListener("submit",event=>{event.preventDefault();status.textContent=run();});
+  }
+  title.textContent=say("Electricity bill estimate","Estimer la facture d’électricité");
+  note.textContent=say("Use the unit price from your supplier for your service class. For a progressive tariff, add each block in order. Fixed fees and taxes can be entered below.","Utilisez le prix du kWh indiqué par votre fournisseur pour votre catégorie de service. Pour un tarif progressif, ajoutez les tranches dans l’ordre. Vous pouvez saisir les frais fixes et les taxes ci-dessous.");
+  const usage=field(say("Consumption this billing period (kWh)","Consommation de la période (kWh)"),"number","usage");
+  const fees=field(say("Other fees and taxes for the period","Autres frais et taxes de la période"),"number","fees",0);
+  const add=document.createElement("button");add.type="button";add.textContent=say("Add a tariff block","Ajouter une tranche");form.append(add);
+  const tiers=[];const first={rate};tiers.push(first);
+  function clear(){status.textContent="";}
+  function addBlock(){
+   const previous=tiers[tiers.length-1];
+   previous.limit=field(say("Cumulative upper limit for block ","Plafond cumulé en kWh de la tranche ")+tiers.length,"number","limit"+tiers.length);
+   const nextRate=field(say("Price per kWh above this limit","Prix du kWh au-delà du plafond"),"number","rate"+(tiers.length+1));
+   const group=document.createElement("fieldset");const legend=document.createElement("legend");legend.textContent=say("Tariff change","Changement de tarif");group.append(legend,previous.limit.parentElement,nextRate.parentElement);
+   form.insertBefore(group,add);tiers.push({rate:nextRate,group});clear();
+  }
+  add.addEventListener("click",addBlock);
+  const remove=document.createElement("button");remove.type="button";remove.textContent=say("Remove last block","Retirer la dernière tranche");form.append(remove);
+  function pop(){if(tiers.length===1)return;tiers.pop().group.remove();delete tiers[tiers.length-1].limit;clear();}
+  remove.addEventListener("click",pop);
+  country.addEventListener("change",()=>{while(tiers.length>1)pop();fees.value="0";});
+  calculate.textContent=say("Estimate bill","Estimer la facture");
+  finish(()=>{
+   const total=usage.valueAsNumber,extra=fees.valueAsNumber;
+   if(!(total>=0&&extra>=0))return say("Enter consumption and nonnegative fees.","Indiquez la consommation et des frais positifs ou nuls.");
+   let prior=0,cost=0;const rows=[];
+   for(const tier of tiers){
+   const upper=tier.limit?tier.limit.valueAsNumber:Infinity,price=tier.rate.valueAsNumber;
+   if(!(upper>prior&&price>=0))return say("Enter a price for each block and increasing cumulative limits in kWh.","Renseignez le prix de chaque tranche et des plafonds cumulés croissants en kWh.");
+   const units=Math.max(0,Math.min(total,upper)-prior);if(units>0){cost+=units*price;rows.push(fmt(units)+" kWh × "+money(price));}prior=upper;
+   }
+   return say("Estimated bill","Facture estimée")+" "+money(cost+extra)+" · "+(rows.length?rows.join(" + ")+" · ":"")+say("Other fees","Autres frais")+" "+money(extra);
+  });
+};
