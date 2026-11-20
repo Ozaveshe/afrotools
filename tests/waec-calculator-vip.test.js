@@ -53,3 +53,15 @@ assert.equal(incomplete.value, null);
 assert.equal(incomplete.complete, false);
 
 console.log('WAEC/NECO planner verified: Nigeria planning index, credit audit, Ghana programme-core aggregate, and incomplete-state guard.');
+const repeatedRows = [
+  { name: 'English Language', grade: 'C6' }, { name: ' Mathematics', grade: 'A1' },
+  { name: 'mathematics ', grade: 'B2' }, { name: 'Physics', grade: 'C6' },
+  { name: 'Chemistry', grade: 'D7' }, { name: 'Biology', grade: 'E8' }
+];
+const repeated = engine.calculateNigeria(repeatedRows);
+assert.deepEqual(repeated.duplicates, ['Mathematics']);
+assert.equal(repeated.credits, 2);
+assert.equal(repeated.complete, false);
+assert.equal(repeated.value, null);
+assert.equal(engine.calculateNigeria(repeatedRows.slice(1).concat({name:'MATHEMATICS',grade:'C6'})).duplicates.length, 1);
+assert.equal(engine.calculateNigeria(repeatedRows.filter((_, i) => i !== 2)).complete, true);

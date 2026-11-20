@@ -32,11 +32,23 @@
   }
 
   function scoredRows(rows) {
-    return cleanRows(rows).filter(function (row) {
+    var completed = cleanRows(rows).filter(function (row) {
       return row.name && row.grade;
     }).map(function (row) {
       return Object.assign({}, row, { points: GRADES[row.grade].points });
     });
+    var names = new Map();
+    var duplicates = new Set();
+    function key(row) { return row.name.toLowerCase().replace(/\s+/g, ' '); }
+    completed.forEach(function (row) {
+      var name = key(row);
+      if (names.has(name)) duplicates.add(name);
+      else names.set(name, row.name);
+    });
+    return {
+      distinct: completed.filter(function (row) { return !duplicates.has(key(row)); }),
+      duplicates: Array.from(duplicates, function (name) { return names.get(name); })
+    };
   }
 
   function creditCount(rows) {
@@ -58,20 +70,22 @@
   }
 
   function calculateNigeria(rows) {
-    var scored = scoredRows(rows);
+    var assessment = scoredRows(rows);
+    var scored = assessment.distinct;
     var selected = scored.slice().sort(function (a, b) {
       return a.points - b.points;
     }).slice(0, 5);
     return {
+      duplicates: assessment.duplicates,
       system: 'ng-waec-neco',
       metricLabel: 'Best-five planning index',
-      value: selected.length === 5 ? selected.reduce(function (sum, row) {
+      value: !assessment.duplicates.length && selected.length === 5 ? selected.reduce(function (sum, row) {
         return sum + row.points;
       }, 0) : null,
       selected: selected,
       entered: scored.length,
       credits: creditCount(scored),
-      complete: selected.length === 5,
+      complete: !assessment.duplicates.length && selected.length === 5,
       checks: [
         { label: 'Five credit-level results recorded', pass: creditCount(scored) >= 5 },
         { label: 'English Language credit recorded', pass: subjectCredit(scored, 'English Language') },
@@ -82,7 +96,8 @@
   }
 
   function calculateGhana(rows, pathway) {
-    var scored = scoredRows(rows);
+    var assessment = scoredRows(rows);
+    var scored = assessment.distinct;
     var programmeCore = pathway === 'non-science' ? 'Social Studies' : 'Integrated Science';
     var coreNames = ['English Language', 'Core Mathematics', programmeCore];
     var core = coreNames.map(function (name) {
@@ -100,8 +115,9 @@
       return a.points - b.points;
     }).slice(0, 3);
     var selected = core.concat(electives);
-    var complete = core.length === 3 && electives.length === 3;
+    var complete = !assessment.duplicates.length && core.length === 3 && electives.length === 3;
     return {
+      duplicates: assessment.duplicates,
       system: 'gh-wassce',
       metricLabel: 'Ghana WASSCE planning aggregate',
       value: complete ? selected.reduce(function (sum, row) {

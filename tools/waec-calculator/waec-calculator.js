@@ -259,8 +259,9 @@
     var resultStatus = !result.complete ? 'Add the required results' : creditGaps.length
       ? 'Review: ' + creditGaps.map(function (check) { return check.label.replace(/ recorded$/, ''); }).join('; ')
       : 'Ready for official requirement checks';
+    if (result.duplicates.length) resultStatus = 'Enter each subject once: ' + result.duplicates.join(', ') + '. Repeated entries are excluded until corrected.';
     setResultText('classBadge', resultStatus);
-    setResultText('mobileClass', !result.complete ? 'Incomplete' : creditGaps.length ? creditGaps.length + (creditGaps.length === 1 ? ' credit check needs attention' : ' credit checks need attention') : 'Plan ready');
+    setResultText('mobileClass', result.duplicates.length ? 'Correct repeated subjects' : !result.complete ? 'Incomplete' : creditGaps.length ? creditGaps.length + (creditGaps.length === 1 ? ' credit check needs attention' : ' credit checks need attention') : 'Plan ready');
     setResultText('aggMaxLabel', state.system === 'gh-wassce' ? '54 (Highest)' : '45 (Highest)');
 
     var resultLabel = document.querySelector('.wc-result-label');
@@ -339,6 +340,7 @@
       (state.examType === 'waec' ? 'Nigeria — WAEC WASSCE' : state.examType === 'neco' ? 'Nigeria — NECO SSCE' : SYSTEMS[state.system].name);
     return examName + '\n' +
       result.metricLabel + ': ' + (result.value === null ? 'Incomplete' : result.value) + '\n' +
+      (result.duplicates.length ? 'Correct repeated subjects: ' + result.duplicates.join(', ') + '\n' : '') +
       'Credits recorded: ' + result.credits + '\n' +
       result.note + '\nhttps://afrotools.com/tools/waec-calculator/';
   }
