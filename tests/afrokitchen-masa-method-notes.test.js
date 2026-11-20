@@ -17,7 +17,7 @@ test("Masa method notes describe blended, fermented batter and a set cake", () =
 
 test("recipe-specific method notes leave every other recipe and non-method advice unchanged", () => {
   const originalRules = structuredClone(rules);
-  delete originalRules.recipe_notes;
+  delete originalRules.recipe_notes["masa-waina-ng"];
   const before = build(originalRules);
   const after = build(rules);
   assert.ok(Object.keys(after.recipes).length >= 400);
