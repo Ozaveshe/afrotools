@@ -12,15 +12,15 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | englishFallback | 32 |
 | unavailable | 20 |
 | deprecated | 0 |
-| indexableEligible | 7877 |
-| sitemapEligible | 7877 |
+| indexableEligible | 7878 |
+| sitemapEligible | 7878 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | en | default | 6144 | 6144 | 0 | 0 | 0 | 0 | 4022 | 180 |
-| fr | launched | 3657 | 2046 | 1611 | 0 | 0 | 0 | 2166 | 180 |
+| fr | launched | 3657 | 2046 | 1611 | 0 | 0 | 0 | 2167 | 180 |
 | sw | launched | 1597 | 764 | 828 | 5 | 0 | 0 | 1585 | 180 |
 | yo | partial | 46 | 10 | 13 | 3 | 20 | 0 | 23 | 180 |
 | ha | launched | 106 | 24 | 58 | 24 | 0 | 0 | 81 | 180 |
@@ -33,7 +33,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | Page type | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | api | 3 | 3 | 0 | 0 | 0 | 0 | 3 |
-| article | 546 | 546 | 0 | 0 | 0 | 0 | 424 |
+| article | 546 | 546 | 0 | 0 | 0 | 0 | 425 |
 | auth | 3 | 2 | 0 | 1 | 0 | 0 | 0 |
 | category | 695 | 695 | 0 | 0 | 0 | 0 | 691 |
 | country-tool | 510 | 186 | 324 | 0 | 0 | 0 | 510 |

@@ -7,7 +7,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7878 |
 | Permanent and temporary redirects | 3212 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
@@ -15,7 +15,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
 | Documented fallbacks | 15070 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7878 |
 
 ## Locale Coverage
 
@@ -4870,7 +4870,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5f2b93af32da: en=`/tools/afrokitchen/collections/senegalese-rice-and-yassa-table/`; x-default=`/tools/afrokitchen/collections/senegalese-rice-and-yassa-table/`
 - equivalence:5f3ede759461: en=`/jamb/physics/1993/`; x-default=`/jamb/physics/1993/`
 - equivalence:5f41b8c6977c: en=`/jamb/english/2008/`; x-default=`/jamb/english/2008/`
-- equivalence:5f9f00343126: en=`/blog/flutterwave-vs-paystack-fees/`; x-default=`/blog/flutterwave-vs-paystack-fees/`
 - equivalence:5fa7773400c8: en=`/tools/africa-conflict/economy`; x-default=`/tools/africa-conflict/economy`
 - equivalence:5ff88b0c8f0c: en=`/agriculture/crop-yield/senegal`, fr=`/fr/agriculture/crop-yield/senegal`, sw=`/sw/kilimo/mavuno/senegal/`; x-default=`/agriculture/crop-yield/senegal`
 - equivalence:600163bfba62: en=`/tools/creator-thumb/`, fr=`/fr/tools/miniature-pour-createur/`, sw=`/sw/zana/thumbnail-ya-mtayarishi/`; x-default=`/tools/creator-thumb/`
@@ -7131,6 +7130,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e6447ae08b4d: fr=`/fr/widgets/calculateur-pourboire/`; x-default=`/fr/widgets/calculateur-pourboire/`
 - equivalence:e64739415821: en=`/jamb/government/2001/`; x-default=`/jamb/government/2001/`
 - equivalence:e649eac390ed: en=`/agriculture/harvest-date/togo`; x-default=`/agriculture/harvest-date/togo`
+- equivalence:e6982c59fda2: en=`/blog/flutterwave-vs-paystack-fees/`, fr=`/fr/blog/flutterwave-vs-paystack-fees/`; x-default=`/blog/flutterwave-vs-paystack-fees/`
 - equivalence:e6a412b917b1: en=`/tools/afrokitchen/countries/guinea/`; x-default=`/tools/afrokitchen/countries/guinea/`
 - equivalence:e6beb1d6bfa9: en=`/tools/afrostream/rankings`; x-default=`/tools/afrostream/rankings`
 - equivalence:e6fcdb4a59c3: sw=`/sw/zana/kikokotoo-gharama-iliyofika/`; x-default=`/sw/zana/kikokotoo-gharama-iliyofika/`
