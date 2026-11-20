@@ -65,3 +65,12 @@ assert.equal(repeated.complete, false);
 assert.equal(repeated.value, null);
 assert.equal(engine.calculateNigeria(repeatedRows.slice(1).concat({name:'MATHEMATICS',grade:'C6'})).duplicates.length, 1);
 assert.equal(engine.calculateNigeria(repeatedRows.filter((_, i) => i !== 2)).complete, true);
+
+for (const subject of ['English Language', 'Mathematics']) {
+  for (const [grade, expected] of [['C6', 'credit recorded'], ['D7', 'below credit level'], ['', 'enter a grade']]) {
+    const result = engine.calculateNigeria([{name:subject, grade}]);
+    const check = result.checks.find(item => item.label.startsWith(subject));
+    assert.ok(check.label.includes(expected));
+    assert.equal(check.pass, grade === 'C6');
+  }
+}

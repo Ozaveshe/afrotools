@@ -257,7 +257,7 @@
     var creditGaps = result.checks.filter(function (check) { return !check.pass; });
     var checksReady = result.complete && creditGaps.length === 0;
     var resultStatus = !result.complete ? 'Add the required results' : creditGaps.length
-      ? 'Review: ' + creditGaps.map(function (check) { return check.label.replace(/ recorded$/, ''); }).join('; ')
+      ? 'Review: ' + creditGaps.map(function (check) { return check.label; }).join('; ')
       : 'Ready for official requirement checks';
     if (result.duplicates.length) resultStatus = 'Enter each subject once: ' + result.duplicates.join(', ') + '. Repeated entries are excluded until corrected.';
     setResultText('classBadge', resultStatus);
@@ -342,6 +342,7 @@
       result.metricLabel + ': ' + (result.value === null ? 'Incomplete' : result.value) + '\n' +
       (result.duplicates.length ? 'Correct repeated subjects: ' + result.duplicates.join(', ') + '\n' : '') +
       'Credits recorded: ' + result.credits + '\n' +
+      result.checks.map(function (check) { return check.label; }).join('\n') + '\n' +
       result.note + '\nhttps://afrotools.com/tools/waec-calculator/';
   }
 

@@ -64,9 +64,14 @@
     });
   }
 
-  function subjectCredit(rows, name) {
+  function subjectCreditCheck(rows, name, duplicates) {
     var row = findSubject(rows, name);
-    return Boolean(row && row.points <= 6);
+    if (!row) {
+      var repeated = duplicates.some(function (duplicate) { return duplicate.toLowerCase() === name.toLowerCase(); });
+      return {label: name + (repeated ? ': enter the subject once' : ': enter a grade'), pass: false};
+    }
+    var pass = row.points <= 6;
+    return {label: name + ' (' + row.grade + '): ' + (pass ? 'credit recorded' : 'below credit level'), pass: pass};
   }
 
   function calculateNigeria(rows) {
@@ -87,9 +92,9 @@
       credits: creditCount(scored),
       complete: !assessment.duplicates.length && selected.length === 5,
       checks: [
-        { label: 'Five credit-level results recorded', pass: creditCount(scored) >= 5 },
-        { label: 'English Language credit recorded', pass: subjectCredit(scored, 'English Language') },
-        { label: 'Mathematics credit recorded', pass: subjectCredit(scored, 'Mathematics') }
+        { label: 'Credit-level results: ' + creditCount(scored) + ' (five needed)', pass: creditCount(scored) >= 5 },
+        subjectCreditCheck(scored, 'English Language', assessment.duplicates),
+        subjectCreditCheck(scored, 'Mathematics', assessment.duplicates)
       ],
       note: 'This index organises results; it is not an official Nigerian admission aggregate or eligibility decision.'
     };
@@ -128,9 +133,9 @@
       credits: creditCount(scored),
       complete: complete,
       checks: coreNames.map(function (name) {
-        return { label: name + ' credit recorded', pass: subjectCredit(scored, name) };
+        return subjectCreditCheck(scored, name, assessment.duplicates);
       }).concat([
-        { label: 'Three elective credits recorded', pass: electives.filter(function (row) { return row.points <= 6; }).length === 3 }
+        { label: 'Elective credits needed: three', pass: electives.filter(function (row) { return row.points <= 6; }).length === 3 }
       ]),
       note: 'Programme and institution rules still decide which subjects count and the maximum accepted aggregate.'
     };
