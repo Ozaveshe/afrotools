@@ -7,7 +7,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7878 |
 | Permanent and temporary redirects | 3212 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
@@ -15,7 +15,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 4262 |
 | Documented fallbacks | 15070 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7878 |
 
 ## Locale Coverage
 
@@ -5245,7 +5245,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:75c009fad3ed: en=`/tools/pdf-watermark/`, fr=`/fr/tools/filigrane-pdf/`, sw=`/sw/zana/watermark-pdf/`; x-default=`/tools/pdf-watermark/`
 - equivalence:75d58e4082ef: en=`/tools/motor-third-party/niger`; x-default=`/tools/motor-third-party/niger`
 - equivalence:75ddf2f1d42b: en=`/tools/child-support/`, fr=`/fr/tools/pension-alimentaire-enfant/`, sw=`/sw/zana/matunzo-ya-mtoto/`; x-default=`/tools/child-support/`
-- equivalence:75e4d75fdd1a: en=`/blog/domiciliary-account-nigeria/`; x-default=`/blog/domiciliary-account-nigeria/`
 - equivalence:75e528bc4db8: en=`/blog/small-business-waste-audit-checklist-africa/`; x-default=`/blog/small-business-waste-audit-checklist-africa/`
 - equivalence:75e88a6bad0f: en=`/tools/university-ranking/`, fr=`/fr/tools/classement-universites/`, sw=`/sw/zana/orodha-vyuo-vikuu/`; x-default=`/tools/university-ranking/`
 - equivalence:75fafd1cc8d8: en=`/tools/afrokitchen/recipes/fakoye-ml/`; x-default=`/tools/afrokitchen/recipes/fakoye-ml/`
@@ -7046,6 +7045,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e1d93ff51076: en=`/agriculture/seed-rate/lesotho`, fr=`/fr/agriculture/seed-rate/lesotho`, sw=`/sw/kilimo/kiwango-cha-mbegu/lesotho/`; x-default=`/agriculture/seed-rate/lesotho`
 - equivalence:e1f3b68df92a: en=`/tools/afrokitchen/recipes/tibs-et/`; x-default=`/tools/afrokitchen/recipes/tibs-et/`
 - equivalence:e1f59970fee1: en=`/agriculture/export-docs/zimbabwe`; x-default=`/agriculture/export-docs/zimbabwe`
+- equivalence:e1f92cbe1914: en=`/blog/domiciliary-account-nigeria/`, fr=`/fr/blog/domiciliary-account-nigeria/`; x-default=`/blog/domiciliary-account-nigeria/`
 - equivalence:e205aca3a833: en=`/agriculture/vaccination-schedule/nigeria`; x-default=`/agriculture/vaccination-schedule/nigeria`
 - equivalence:e20e2275a2e2: fr=`/fr/widgets/taux-freelance/`; x-default=`/fr/widgets/taux-freelance/`
 - equivalence:e212618d40d2: en=`/jamb/biology/1997/`; x-default=`/jamb/biology/1997/`
