@@ -585,18 +585,27 @@ function _initFrenchSalaryTaxHub() {
   var activeQuery = "";
   var currentPage = 1;
 
+  function searchWords(value) {
+    return String(value || "")
+      .replace(/&#(\d+);/g, function (entity, code) { return String.fromCharCode(Number(code)); })
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+      .replace(/œ/g, "oe").split(/[^a-z0-9]+/).filter(Boolean);
+  }
+
   function getWorkingSet() {
     var set = activeHub === "all" ? allAvailable.slice() : toolsByHub[activeHub].slice();
     if (!activeQuery) return set;
-    var query = activeQuery.toLowerCase();
+    var words = searchWords(activeQuery);
     return set.filter(function (tool) {
-      var blob = [
-        tool.name || "",
-        tool.desc || "",
-        tool.tag || "",
-        (tool.countries || []).join(" ")
-      ].join(" ").toLowerCase();
-      return blob.indexOf(query) !== -1;
+      var countries = (tool.countries || []).map(function (code) {
+        return code + " " + (COUNTRY_NAMES_FR[code] || "");
+      });
+      var aliases = {
+        "mortgage-calculator": "hypothèque hypothécaire crédit immobilier prêt immobilier",
+        "mortgage-affordability": "capacité emprunt prêt immobilier"
+      };
+      var text = searchWords([tool.name, tool.desc, tool.tag, countries.join(" "), /(?:^|-)paye(?:-|$)/.test(tool.id) ? "salaire net paie PAYE" : "", aliases[tool.id]].join(" ")).join(" ");
+      return words.every(function (word) { return text.indexOf(word) !== -1; });
     });
   }
 
