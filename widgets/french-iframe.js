@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "waec-calculator": {
+    "title": "Points par matière WAEC / NECO",
+    "tool": "/fr/tools/calculateur-waec/",
+    "frame": "education-waec-calculator",
+    "script": "education/waec.js"
+  }
+,
+
   "gpa-calculator": {
     "title": "Moyenne pondérée et cumulée",
     "tool": "/fr/tools/calculateur-gpa/",
