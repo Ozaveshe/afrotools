@@ -47,10 +47,10 @@ test("three dated asking ads retain their individual amount, trim, condition and
   }
 });
 
-test("generated examples preserve three exact Jiji links and label their evidence limits", () => {
+test("generated examples preserve two traceable Jiji links and one historical amount and label their evidence limits", () => {
   const html = api.askingExamplesHTML(ng, vehicle);
+  assert.match(html, /original listing could not be reopened/);
   const urls = [
-    "https://jiji.ng/asokoro/cars/mercedes-benz-g-class-g-63-amg-2022-black-kk6G4z7wgeFOt7Ahe4RXYUw8.html",
     "https://jiji.ng/jahi/cars/mercedes-benz-g-class-g-63-amg-2022-gray-969bvoDvBmiejkCPKewRCHxL.html",
     "https://jiji.ng/lekki/cars/mercedes-benz-g-class-g-63-amg-2022-gray-66oE5enpAZbahr6U4ObXTKeD.html"
   ];

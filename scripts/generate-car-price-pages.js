@@ -169,12 +169,22 @@ function askingExamplesHTML(country, vehicle) {
     return `<li><h3>${escapeHtml(`${entry.modelYear} ${entry.variant} — ${entry.area}, ${entry.city}`)}</h3>
 <p><strong>${escapeHtml(formatObservedMoney(entry.askingPrice, entry.currency))} asking</strong> · ${escapeHtml(entry.condition)} · ${escapeHtml(entry.color)}</p>
 <p>Observed <time datetime="${escapeHtml(entry.observedDate)}">${escapeHtml(entry.observedDate)}</time>.</p>
-<div class="cars-evidence-links"><a href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open ${escapeHtml(entry.area)} listing on Jiji</a></div></li>`;
+${entry.archivedSource ? "<p>Historical asking price. The original listing could not be reopened.</p>" : `<div class="cars-evidence-links"><a href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open ${escapeHtml(entry.area)} listing on Jiji</a></div>`}</li>`;
   }).join("\n");
   return `<section id="asking-examples" class="cars-panel cars-static-summary cars-market-evidence" aria-labelledby="asking-examples-title">
 <h2 id="asking-examples-title">Dated 2022 Mercedes-AMG G63 asking examples</h2>
 <p>Selected foreign-used ads in Abuja and Lagos. These are asking prices, not completed sales or a market valuation. G550 listings are not included.</p>
 <ol>${rows}</ol>
+<form id="g63-quote-comparison">
+<h3>Compare a local quote with your import budget</h3>
+<label>Local purchase total (NGN) <input name="local" type="number" min="1" step="1" required></label>
+<label>Total landed import cost (NGN) <input name="landed" type="number" min="1" step="1" required></label>
+<p>Use the same trim and condition. Include shipping, insurance, duties and clearing in the import total.</p>
+<button type="submit" class="cars-button">Compare totals</button>
+<output aria-live="polite"></output>
+</form>
+<p><a href="/cars/import-vs-local/nigeria/mercedes-benz/g-wagon/2022/#carsReport">Get the 2022 G-Wagon import estimate</a></p>
+<script src="/assets/js/pages/ng-g63-quote-comparison.js" defer></script>
 <p>Seller-stated year, trim and condition. Check the listing for its current price and availability.</p>
 </section>`;
 }
