@@ -10,7 +10,7 @@ const SENTINEL = [
   'branch=codex/sw-agriculture-seed-rate-source-repair-8354-20260802',
   'base=8354e321ff34caf60a33a3393cd0dcddfb00c023',
 ].join('\n');
-const FAO_TOMATO = 'https://www.fao.org/land-water/databases-and-software/crop-information/tomato/en/';
+const FAO_TOMATO = 'https://www.fao.org/fileadmin/user_upload/faowater/docs/AquaCropV40Annexes.pdf#page=37';
 const ENGLISH_SOURCE_FRAGMENT = /Data sources|Tomato planning parameters also reference|also reference|FAO crop information|crop guidance|national agricultural authority|World Bank/i;
 
 function watchRuntime(page) {

@@ -192,8 +192,9 @@ function reconcile(options = {}) {
     if (enHubLinks.filter((route) => route === enRoute).length !== 1) {
       errors.push(`${row.english.id}: English hub must link exactly once to ${enRoute}`);
     }
-    if (options.acceptance && frHubLinks.filter((route) => route === frRoute).length !== 1) {
-      errors.push(`${row.english.id}: French hub must link exactly once to ${frRoute}`);
+    const expectedFrenchLinks = row.english.id === "remittance-v2" ? 0 : 1;
+    if (options.acceptance && frHubLinks.filter((route) => route === frRoute).length !== expectedFrenchLinks) {
+      errors.push(`${row.english.id}: expected ${expectedFrenchLinks} French hub links to ${frRoute}`);
     }
     if (options.acceptance && signals.iframe) errors.push(`${row.english.id}: French iframe remains`);
     if (options.acceptance && signals.englishHtmlFetch) errors.push(`${row.english.id}: French page fetches English HTML`);

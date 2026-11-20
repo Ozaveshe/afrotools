@@ -495,6 +495,102 @@
     return { input: input };
   }
 
+  var ingredientNames = {
+    "long-grain parboiled rice": "riz long grain étuvé",
+    "fresh Roma tomatoes": "tomates Roma fraîches",
+    "red bell peppers (tatashe)": "poivrons rouges (tatashe)",
+    "scotch bonnet peppers (ata rodo)": "piments Scotch Bonnet (ata rodo)",
+    "onion": "oignon",
+    "tomato paste": "concentré de tomates",
+    "vegetable oil or groundnut oil": "huile végétale ou huile d’arachide",
+    "bay leaves": "feuilles de laurier",
+    "dried thyme": "thym séché",
+    "curry powder": "poudre de curry",
+    "seasoning cubes (Maggi/Knorr)": "cubes de bouillon (Maggi/Knorr)",
+    "salt": "sel",
+    "chicken stock or water": "bouillon de poulet ou eau",
+    "butter": "beurre",
+    "white maize flour (unga)": "farine de maïs blanc (unga)",
+    "water": "eau",
+    "sukuma wiki (collard greens)": "sukuma wiki (chou-feuille)",
+    "vegetable oil or cooking fat": "huile végétale ou matière grasse de cuisson",
+    "tomatoes": "tomates",
+    "Royco seasoning": "assaisonnement Royco",
+    "chicken": "poulet",
+    "red onions": "oignons rouges",
+    "berbere spice blend": "mélange d’épices berbéré",
+    "niter kibbeh (Ethiopian spiced butter)": "niter kibbeh (beurre éthiopien aux épices)",
+    "garlic": "ail",
+    "fresh ginger": "gingembre frais",
+    "hard-boiled eggs": "œufs durs",
+    "water or chicken stock": "eau ou bouillon de poulet",
+    "lemon juice": "jus de citron",
+    "black pepper": "poivre noir",
+    "minced beef or lamb": "viande hachée de bœuf ou d’agneau",
+    "onions": "oignons",
+    "turmeric": "curcuma",
+    "white bread": "pain blanc",
+    "apricot jam": "confiture d’abricots",
+    "vinegar": "vinaigre",
+    "raisins or sultanas": "raisins secs ou sultanines",
+    "eggs": "œufs",
+    "milk": "lait",
+    "whole white fish (thiof/grouper)": "poisson blanc entier (thiof/mérou)",
+    "parsley": "persil",
+    "scotch bonnet pepper": "piment Scotch Bonnet",
+    "vegetable oil": "huile végétale",
+    "dried fish (gédj)": "poisson séché (gédj)",
+    "tamarind ball": "boule de tamarin",
+    "cassava": "manioc",
+    "carrots": "carottes",
+    "cabbage": "chou",
+    "eggplant": "aubergines",
+    "broken rice (riz brisé)": "riz brisé",
+    "Egyptian rice": "riz égyptien",
+    "brown lentils": "lentilles brunes",
+    "elbow macaroni": "macaronis coudés",
+    "chickpeas (canned)": "pois chiches en conserve",
+    "crushed tomatoes": "tomates concassées",
+    "white vinegar": "vinaigre blanc",
+    "cumin": "cumin",
+    "chili flakes": "flocons de piment",
+    "vegetable oil for frying": "huile végétale pour la friture",
+    "preserved lemons": "citrons confits",
+    "green olives": "olives vertes",
+    "ground ginger": "gingembre moulu",
+    "saffron threads": "filaments de safran",
+    "olive oil": "huile d’olive",
+    "fresh coriander": "coriandre fraîche",
+    "rice": "riz",
+    "black-eyed peas or red beans": "niébé ou haricots rouges",
+    "dried sorghum leaf stalks (waakye leaves)": "tiges séchées de feuilles de sorgho (feuilles de waakye)",
+    "baking soda": "bicarbonate de soude"
+  };
+  var ingredientUnits = {
+    "cup": ["tasse", "tasses"],
+    "cups": ["tasse", "tasses"],
+    "piece": ["pièce", "pièces"],
+    "pieces": ["pièce", "pièces"],
+    "large": "gros calibre",
+    "medium": "calibre moyen",
+    "teaspoon": "c. à café",
+    "tablespoon": "c. à soupe",
+    "tablespoons": "c. à soupe",
+    "large bunch": ["grosse botte", "grosses bottes"],
+    "bunch": ["botte", "bottes"],
+    "cubes": ["cube", "cubes"],
+    "whole": ["entier", "entiers"],
+    "cloves": ["gousse", "gousses"],
+    "slices": ["tranche", "tranches"]
+  };
+
+  function kitchenUnit(unit, amount) {
+    var label = ingredientUnits[unit];
+    if (!label) return unit;
+    if (!Array.isArray(label)) return label;
+    return label[Math.abs(amount) <= 1 ? 0 : 1];
+  }
+
   function prepareKitchen(input) {
     var kitchen = root.AfroKitchenEngine;
     if (!kitchen) return { error: { status: "invalid", field: "recipe", code: "records_required" } };
@@ -503,7 +599,11 @@
     delegateState.recipe = recipe;
     input.originalServings = recipe.default_servings;
     input.ingredients = (recipe.ingredients || []).map(function (ingredient) {
-      return { name: ingredient.name, amount: ingredient.amount, unit: ingredient.unit };
+      return {
+        name: ingredientNames[ingredient.name] || ingredient.name,
+        amount: ingredient.amount,
+        unit: kitchenUnit(ingredient.unit, ingredient.amount)
+      };
     });
     var original = document.querySelector('[data-ua-field="originalServings"]');
     if (original) original.value = recipe.default_servings;
@@ -597,7 +697,13 @@
     else if (contract.id === "africa-conflict") prepared = await prepareConflict(input);
     else if (contract.id === "afroprices") prepared = await preparePrices(input);
     if (prepared.error) return prepared.error;
-    return engine.calculate(contract.id, prepared.input);
+    var result = engine.calculate(contract.id, prepared.input);
+    if (contract.id === "afrokitchen" && result.status === "ok") {
+      result.rows.forEach(function (row, index) {
+        row.unit = kitchenUnit(delegateState.recipe.ingredients[index].unit, row.scaledAmount);
+      });
+    }
+    return result;
   }
 
   function populateSelect(fieldKey, items, valueKey, labelKey) {
