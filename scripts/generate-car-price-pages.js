@@ -105,6 +105,37 @@ function marketObservation(country, vehicle) {
   return marketObservations.find((entry) => entry.countryCode === country.code && entry.vehicleId === vehicle.id) || null;
 }
 
+function nigeriaMercedesEvidence(country, makeSlug) {
+  if (!country || country.code !== "NG" || makeSlug !== "mercedes-benz") return null;
+  return marketObservations.find((entry) => entry.countryCode === "NG"
+    && entry.vehicleId === "mercedes-e-class-2017" && entry.searchIndexEligible !== false
+    && entry.currency === "NGN" && Number.isFinite(entry.median) && entry.median > 0
+    && entry.sampleSize > 0 && /^\d{4}-\d{2}-\d{2}$/.test(entry.reviewedAt)
+    && entry.sourceUrl && entry.method && entry.limitations) || null;
+}
+
+function nigeriaMercedesGuideHTML(meta) {
+  const observation = meta.pageType === "make" && nigeriaMercedesEvidence(meta.countryObj, meta.makeSlug);
+  if (!observation) return "";
+  const vehicles = meta.listVehicles.slice().sort((left, right) => {
+    const priority = (vehicle) => vehicle.id === observation.vehicleId ? 0 : vehicle.id === "mercedes-g-wagon-2022" ? 1 : 2;
+    return priority(left) - priority(right);
+  });
+  const eClass = vehicles.find((vehicle) => vehicle.id === observation.vehicleId);
+  const gClass = vehicles.find((vehicle) => vehicle.id === "mercedes-g-wagon-2022");
+  const examples = askingPriceExamples.filter((entry) => entry.countryCode === "NG" && entry.vehicleId === "mercedes-g-wagon-2022");
+  const rows = vehicles.map((vehicle) => {
+    const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
+    const detail = vehicle.id === observation.vehicleId
+      ? `${escapeHtml(observation.sampleVariant)}: ${escapeHtml(formatMoney(observation.median, observation.currency))} median; middle half ${escapeHtml(formatMoney(observation.lowerQuartile, observation.currency))}–${escapeHtml(formatMoney(observation.upperQuartile, observation.currency))}. ${observation.sampleSize} ${escapeHtml(observation.condition)} asks in ${escapeHtml(observation.market)}, reviewed ${escapeHtml(observation.reviewedAt)}.`
+      : vehicle.id === "mercedes-g-wagon-2022" && examples.length
+        ? `Selected 2022 G63 asking examples: ${examples.map((entry) => `${escapeHtml(formatMoney(entry.askingPrice, entry.currency))} (${escapeHtml(entry.area)}, observed ${escapeHtml(entry.observedDate)})`).join("; ")}. Individual ads, not a market range or a G550 valuation.`
+        : "Bring a current quote for the exact year, trim and condition; this profile has source-market planning inputs but no reviewed Nigerian asking-price sample.";
+    return `<li><h3><a href="${route}">${escapeHtml(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</a></h3><p>${detail}</p><a href="${route}">Open ${escapeHtml(vehicle.model)} prices and import options</a></li>`;
+  }).join("");
+  return `<section class="cars-panel cars-static-summary cars-market-evidence" aria-labelledby="ng-mercedes-prices-title"><h2 id="ng-mercedes-prices-title">Mercedes-Benz prices in Nigeria: compare the model and condition</h2><p>Compare dated Nigerian asking prices for specific Benz models, then open a car to check sources or price an import.</p><ul>${rows}</ul><p>These are dated asking prices, not completed sales or confirmed availability. Source-market budgets elsewhere on this page exclude Nigerian import costs and are not local dealer prices.</p><details><summary>Check the E300 sample, method and original source</summary>${marketEvidenceHTML(meta.countryObj, eClass)}</details>${gClass && examples.length ? `<details><summary>Check the individual G63 ads and observation dates</summary>${askingExamplesHTML(meta.countryObj, gClass)}</details>` : ""}<p>For a useful import comparison, enter the actual vehicle quote, freight and insurance; review customs, port and registration costs separately. The Nigeria tariff pack still needs policy review, so confirm current assessed charges before committing to a purchase.</p></section>`;
+}
+
 function sourceMarketObservation(vehicle) {
   return sourceMarketObservations.find((entry) => entry.vehicleId === vehicle.id) || null;
 }
@@ -167,7 +198,7 @@ function askingExamplesHTML(country, vehicle) {
       throw new Error("Invalid G63 asking-price example");
     }
     return `<li><h3>${escapeHtml(`${entry.modelYear} ${entry.variant} — ${entry.area}, ${entry.city}`)}</h3>
-<p><strong>${escapeHtml(formatObservedMoney(entry.askingPrice, entry.currency))} asking</strong> · ${escapeHtml(entry.condition)} · ${escapeHtml(entry.color)}</p>
+<p><strong>${escapeHtml(formatObservedMoney(entry.askingPrice, entry.currency))} asking</strong> Â· ${escapeHtml(entry.condition)} Â· ${escapeHtml(entry.color)}</p>
 <p>Observed <time datetime="${escapeHtml(entry.observedDate)}">${escapeHtml(entry.observedDate)}</time>.</p>
 <div class="cars-evidence-links"><a href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open ${escapeHtml(entry.area)} listing on Jiji</a></div></li>`;
   }).join("\n");
@@ -422,7 +453,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
 </head>
 <body class="cars-page">
   <afro-navbar active="transport"></afro-navbar>
-  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}${nigeriaMercedesGuideHTML(meta)}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
@@ -511,7 +542,12 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
       make: makeName,
       makeSlug,
       pageType: "make",
-      noindex: true,
+      noindex: !nigeriaMercedesEvidence(country, makeSlug),
+      ...(nigeriaMercedesEvidence(country, makeSlug) ? {
+        title: "Mercedes-Benz Prices in Nigeria | Dated E300 and G63 Asking Prices",
+        description: "Compare dated Nigerian Mercedes-Benz E300 and G63 asking evidence, check model and condition, and open a vehicle quote for an import-cost comparison.",
+        lastmod: "2026-11-20"
+      } : {}),
       listVehicles: data.vehicles.filter((vehicle) => vehicle.makeSlug === makeSlug)
     });
   });
