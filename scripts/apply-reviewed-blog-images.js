@@ -10,7 +10,8 @@ const cohort=require('../data/image-generation/placement-review-cohort.json');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
 const generatedArtwork=new Map([
  ...require('../data/image-generation/blog-generated-2026-10-09.json').images,
- ...require('../data/image-generation/blog-generated-2026-10-13.json').images
+ ...require('../data/image-generation/blog-generated-2026-10-13.json').images,
+ ...require('../data/image-generation/blog-generated-2026-11-20-tyres.json').images
 ].map(row=>[row.slug,row]));
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
