@@ -218,10 +218,11 @@ details[open] summary::after{content:'\2212'}
 
     <div class="results" id="flightResults">
       <div class="flight-hero">
-        <div class="fh-label">Static Planning Range (Economy)</div>
+        <div class="fh-label">Estimated one-way budget per traveller</div>
         <div class="fh-price" id="flightPriceDisplay">$0</div>
         <div class="fh-range" id="flightRangeSub">Replace with a current carrier quote</div>
       </div>
+      <p>Carriers listed for this route. Confirm service and compare current quotes including baggage.</p>
       <div class="airline-grid" id="flightAirlines"></div>
       <div class="route-details" id="flightRouteDetails"></div>
       <div class="price-tips" id="flightTips"></div>
@@ -336,25 +337,21 @@ function calcFlightPrice() {
   var fmt = function(n){ return data.currency + ' ' + Math.round(n).toLocaleString(); };
 
   document.getElementById('flightPriceDisplay').textContent = fmt(midPrice);
-  document.getElementById('flightRangeSub').textContent = 'Range: ' + fmt(prices[0]) + ' – ' + fmt(prices[1]) + ' | ' + (booking === 'advance' ? 'Best time to book' : booking === 'week' ? '1-2 weeks ahead' : 'Last minute premium');
+  document.getElementById('flightRangeSub').textContent = 'Range: ' + fmt(prices[0]) + ' – ' + fmt(prices[1]) + ' | ' + (booking === 'advance' ? 'Advance booking estimate' : booking === 'week' ? '1-2 weeks ahead' : 'Last-minute estimate');
 
-  var cheapest = route.airlines[0];
-  document.getElementById('flightAirlines').innerHTML = route.airlines.slice(0, 4).map(function(airline, i) {
-    var variance = (i === 0 ? 1.0 : (1 + i * 0.15));
-    var price = Math.round(midPrice * variance);
-    var isCheapest = i === 0;
-    return '<div class="airline-card' + (isCheapest ? ' cheapest' : '') + '">' +
-      '<div class="airline-name">&#x2708;&#xfe0f; ' + airline + '</div>' +
-      '<div class="airline-price">' + fmt(price) + '</div>' +
-      '<div class="airline-class">' + (cabinClass === 'economy' ? 'Economy' : 'Business') + ' class</div>' +
-      (isCheapest ? '<div class="airline-badge">Typically Cheapest</div>' : '') +
-      '</div>';
-  }).join('');
+  var carriers = document.getElementById('flightAirlines');
+  carriers.replaceChildren();
+  route.airlines.forEach(function (airline) {
+    var card = document.createElement('div');
+    card.className = 'airline-card';
+    card.textContent = airline;
+    carriers.appendChild(card);
+  });
 
   document.getElementById('flightRouteDetails').innerHTML = [
     [route.km + ' km', 'Distance'],
     [route.duration + ' min', 'Flight Time'],
-    [fmt(prices[0]), 'Minimum Fare'],
+    [fmt(prices[0]), 'Lower planning estimate'],
     [route.airlines.length + ' airlines', 'Options']
   ].map(function(d){
     return '<div class="rd-box"><div class="rd-val">' + d[0] + '</div><div class="rd-label">' + d[1] + '</div></div>';
