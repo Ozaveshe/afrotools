@@ -365,6 +365,7 @@ function summarizeRecipeForCollection(recipe) {
     difficulty: recipe.difficulty,
     total_time_minutes: recipe.total_time_minutes,
     default_servings: recipe.default_servings,
+    ...(recipe.serving_unit && recipe.serving_unit !== "servings" ? { serving_unit: recipe.serving_unit } : {}),
     diet_tags: Array.isArray(recipe.diet_tags) ? recipe.diet_tags : [],
     generated_in_wave: recipe.generated_in_wave,
     is_featured: Boolean(recipe.is_featured),

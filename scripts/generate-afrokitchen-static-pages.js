@@ -676,7 +676,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
   const diet = recipeDietLabel(recipe);
   const region = recipe.region || "";
   const time = classifyRecipeDuration(recipe.total_time_minutes).kind === "known" ? `${recipe.total_time_minutes} min` : "Not recorded";
-  const servings = recipe.default_servings ? `Serves ${recipe.default_servings}` : "";
+  const servings = recipe.default_servings ? attributedRecipes.formatRecipeYield(recipe) : "";
   const imageAlt = recipeImageAlt(recipe);
   const thumb = hasImage
     ? `<span class="ak-static-recipe-card-thumb"><img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async"${recipeImageAttributes(imageSrc, 640, 480, true)}></span>`
@@ -693,7 +693,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
       <span class="ak-static-recipe-card-desc">${escapeHtml(excerpt(recipe.description, 126))}</span>
       <span class="ak-static-recipe-card-meta">
         ${staticCardMeta("time", "Time", time)}
-        ${staticCardMeta("servings", "Servings", servings)}
+        ${staticCardMeta("servings", attributedRecipes.hasUnitYield(recipe) ? "Yield" : "Servings", servings)}
         ${staticCardMeta("difficulty", "Difficulty", titleCaseLabel(recipe.difficulty || "medium"))}
         ${staticCardMeta("diet", "Diet", diet)}
         ${staticCardMeta("country", "Region", region)}
@@ -1755,7 +1755,7 @@ ${renderCookbookNav()}
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Region</div><div class="ak-stat-val">${escapeHtml(recipe.region)}</div></div>
            <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages ? "Pressure stages" : kisraStages ? "Ferment" : maheuStages ? "Cook" : kunuStages ? "Soak" : "Time"}</div><div class="ak-stat-val accent">${pressureStages ? pressureStages.join(" + ") + " min" : kisraStages ? kisraStages.ferment : maheuStages ? maheuStages.cook : kunuStages ? kunuStages.soak : escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))}</div></div>
-           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages || kisraStages || maheuStages || kunuStages ? 'Batch' : recipe.yield_status === 'not-recorded' ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : kisraStages ? kisraStages.batch : maheuStages ? maheuStages.batch : kunuStages ? kunuStages.batch : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</div></div>
+           <div class="ak-stat"><div class="ak-stat-lbl">${pressureStages || kisraStages || maheuStages || kunuStages ? 'Batch' : recipe.yield_status === 'not-recorded' || engine.hasUnitYield(recipe) ? 'Yield' : 'Serves'}</div><div class="ak-stat-val">${pressureStages ? '1 kg beef + vegetables' : kisraStages ? kisraStages.batch : maheuStages ? maheuStages.batch : kunuStages ? kunuStages.batch : recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(engine.hasUnitYield(recipe) ? engine.formatRecipeYield(recipe) : String(recipe.default_servings || 1))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
         <div class="ak-hero-actions">
@@ -1789,10 +1789,10 @@ ${renderCookbookNav()}
         <div class="ak-visual-intro"><div class="ak-panel-kicker">01 / Get ready</div><h2 class="ak-panel-title">Everything you need</h2><p class="ak-panel-helper">Tap each ingredient as you gather it. Illustrations are visual guides; follow the ingredient names and quantities.</p></div>
         <div class="ak-static-serving-bar">
             <div class="ak-servings"${recipe.yield_status === 'not-recorded' ? ' hidden style="display:none"' : ''}>
-            <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
+            <span class="ak-servings-label">${engine.hasUnitYield(recipe) ? escapeHtml(titleCaseLabel(recipe.serving_unit)) : "Servings"}</span>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease ${engine.hasUnitYield(recipe) ? "yield" : "servings"}">-</button>
             <span class="ak-servings-val" id="ak-static-servings">${recipe.yield_status === 'not-recorded' ? 'Not recorded' : escapeHtml(String(recipe.default_servings || 1))}</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase ${engine.hasUnitYield(recipe) ? "yield" : "servings"}">+</button>
           </div>
             <p class="ak-static-serving-note">${recipe.yield_status === 'not-recorded' ? 'The source does not state portions. Quantities are shown as listed; serving scaling and meal-plan portions are unavailable.' : 'Scale the dish before you shop, then use the checklist while you cook.'}</p>
         </div>

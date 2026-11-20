@@ -311,9 +311,9 @@
           <p class="ak-planner-help" id="ak-plan-time-help">Keep weeknight cooking realistic.</p>
         </div>
         <div class="ak-planner-field">
-          <label for="ak-plan-servings">Servings</label>
+          <label for="ak-plan-servings">Quantity per recipe</label>
           <input id="ak-plan-servings" type="number" min="1" max="30" step="1" value="4" required aria-describedby="ak-plan-servings-help ak-plan-servings-error">
-          <p class="ak-planner-help" id="ak-plan-servings-help">Scales the grouped shopping list.</p>
+          <p class="ak-planner-help" id="ak-plan-servings-help">Each recipe uses its own unit, such as servings, bowls or pieces. The shopping list scales with this quantity.</p>
           <p class="ak-planner-help" id="ak-plan-servings-error" hidden></p>
         </div>
         <div class="ak-planner-field">
@@ -1295,7 +1295,7 @@
         '<p class="ak-recipe-card-desc">' + esc(excerptText(r.description, 122)) + '</p>' +
         '<div class="ak-recipe-card-meta">' +
           recipeMetaItem('time', 'Time', totalMin ? totalMin + ' min' : 'Time varies') +
-          recipeMetaItem('servings', 'Servings', r.default_servings ? 'Serves ' + r.default_servings : '') +
+          recipeMetaItem('servings', AK.hasUnitYield(r) ? 'Yield' : 'Servings', r.default_servings ? AK.formatRecipeYield(r) : '') +
           recipeMetaItem('difficulty', 'Difficulty', titleCase(r.difficulty || 'medium')) +
           recipeMetaItem('diet', 'Diet', diet) +
         '</div>' +
@@ -1458,7 +1458,7 @@
         '<div class="ak-featured-overlay">' +
           '<div class="ak-featured-label">Featured recipe</div>' +
           '<h3>' + r.name + '</h3>' +
-          '<p class="ak-featured-meta"><strong>' + (country.flag || '') + ' ' + r.country_name + '</strong> · ' + (methodPending ? 'Time and yield not recorded' : totalMin + ' min · Serves ' + r.default_servings) + '</p>' +
+          '<p class="ak-featured-meta"><strong>' + (country.flag || '') + ' ' + r.country_name + '</strong> · ' + (methodPending ? 'Time and yield not recorded' : totalMin + ' min · ' + esc(AK.formatRecipeYield(r))) + '</p>' +
           '<p class="ak-featured-desc">' + description + '</p>' +
           '<span class="ak-featured-link">' + (methodPending ? 'View dish information' : 'Cook this dish') + '</span>' +
         '</div>' +
@@ -1785,11 +1785,11 @@
       clearPlanServingsError();
       return true;
     }
-    var message = 'Enter a whole number of servings from 1 to 30.';
+    var message = 'Enter a whole number from 1 to 30.';
     var error = document.getElementById('ak-plan-servings-error');
     if (field) field.setAttribute('aria-invalid', 'true');
     if (error) { error.textContent = message; error.hidden = false; }
-    renderPlanEmpty('Choose a valid servings count before generating a weekly plan.');
+    renderPlanEmpty('Choose a quantity from 1 to 30 before generating a weekly plan.');
     setPlanStatus(message);
     setPlanButtonState('idle');
     revealPlanControl(field);
@@ -2137,7 +2137,7 @@
     if ((recipes || []).some(hasUnrecordedPlanYield)) return 'Plan unavailable: a recipe has no recorded person-yield. Your saved choices remain unchanged.';
     var lines = [
       'AfroKitchen ' + inputs.days + '-day recipe plan',
-      'Servings per recipe: ' + inputs.servings,
+      (recipes.some(function (recipe) { return AK.hasUnitYield(recipe); }) ? 'Quantity per recipe: ' : 'Servings per recipe: ') + inputs.servings,
       'Max time: ' + (inputs.maxTime >= 999 ? 'Any time' : inputs.maxTime + ' minutes'),
       'Diet: ' + (inputs.diet ? titleCase(inputs.diet) : 'Any diet'),
       'Country: ' + (inputs.country && AK.COUNTRIES[inputs.country] ? AK.COUNTRIES[inputs.country].name : 'Any country'),
@@ -2149,7 +2149,7 @@
       lines.push('Country: ' + recipe.country_name);
       lines.push('Category: ' + titleCase(recipe.category || 'recipe'));
       lines.push('Time: ' + recipeTotalMinutes(recipe) + ' minutes');
-      lines.push('Servings: ' + inputs.servings);
+      lines.push(AK.hasUnitYield(recipe) ? 'Yield: ' + AK.formatRecipeYield(recipe, inputs.servings) : 'Servings: ' + inputs.servings);
       lines.push('Recipe: ' + window.location.origin + plannedRecipeUrl(recipe.slug, inputs.servings));
       lines.push('');
     });
@@ -2311,7 +2311,7 @@
           '<h4><a href="' + esc(href) + '">' + esc(recipe.name) + '</a></h4>' +
           '<div class="ak-plan-day-meta">' +
             '<span>' + planIcon('time') + '<strong>' + recipeTotalMinutes(recipe) + ' min</strong></span>' +
-            '<span>' + planIcon('servings') + '<strong>Serves ' + inputs.servings + '</strong></span>' +
+            '<span>' + planIcon('servings') + '<strong>' + esc(AK.formatRecipeYield(recipe, inputs.servings)) + '</strong></span>' +
             '<span>' + planIcon('difficulty') + '<strong>' + esc(titleCase(recipe.difficulty || 'medium')) + '</strong></span>' +
             (diet ? '<span>' + planIcon('diet') + '<strong>' + esc(diet) + '</strong></span>' : '') +
             ((recipe.region || countryInfo.region) ? '<span>' + planIcon('country') + '<strong>' + esc(recipe.region || countryInfo.region) + '</strong></span>' : '') +

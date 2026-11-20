@@ -42,6 +42,7 @@ function buildRecipeIndex(manifest) {
     .map((recipe) => ({
       ...Object.fromEntries(RECIPE_FIELDS.map((field) => [field, recipe[field] == null ? null : recipe[field]])),
       ...(recipe.wait_time_minutes > 0 ? { total_time_minutes: recipe.total_time_minutes, wait_time_minutes: recipe.wait_time_minutes, serving_plan: recipe.serving_plan } : {}),
+      ...(attributedRecipes.hasUnitYield(recipe) ? { serving_unit: recipe.serving_unit } : {}),
       ...projectCuratedDetail(recipe),
       ingredients: (recipe.ingredients || []).map((item) => ({
         name: item.name,
