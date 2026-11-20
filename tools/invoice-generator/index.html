@@ -1912,6 +1912,10 @@ function init() {
   $('invAutoNum').textContent = 'Auto: ' + num;
   initDates();
 
+  // Apply the guide's starting currency before restoring shared or saved invoices.
+  const entryCountry = new URLSearchParams(window.location.search).get('country');
+  if (entryCountry === 'ZA') $('currency').value = 'ZAR';
+
   // Set default tax rate
   $('taxRate').value = TAX_RATES[$('currency').value] || 0;
 
