@@ -298,7 +298,7 @@
         <input type="text" id="amount" aria-describedby="amountHelp amountError" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal" disabled data-amount-control>
       </div>
     </div>
-    <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to two places, with 5 rounded up.</p>
+    <p id="amountHelp">For naira, you can paste ₦1,250.75 or NGN 1,250.75. Extra decimal places are rounded to two places, with 5 rounded up.</p>
     <p id="amountError" role="status" aria-live="polite">Loading converter…</p>
     <div class="format-display" id="formatted"></div>
   </div>
@@ -625,7 +625,11 @@ function convert() {
   document.getElementById('toast').textContent = '';
   document.getElementById('toast').classList.remove('show');
   var input = document.getElementById('amount');
-  var amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999999');
+  var rawAmount = input.value.trim();
+  if (document.getElementById('currency').value === 'NGN') {
+    rawAmount = rawAmount.replace(/^(?:₦|NGN)\s*(?=\d|\.\d)/i, '');
+  }
+  var amount = window.AfroTools.engines.amountWordsInput.parse(rawAmount, '999999999999999');
   var card = document.getElementById('resultCard');
   var formatted = document.getElementById('formatted');
   lastWords = '';
