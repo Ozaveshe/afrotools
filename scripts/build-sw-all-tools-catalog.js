@@ -54,6 +54,25 @@ function renderSwAppCatalog() {
 }
 
 function updateSwDirectory(html, publishedCount = getSelector(buildCanonicalRegistry(), 'tools.locale.sw.published').value) {
+  // Display names follow navigation; preserve the existing search-score aliases.
+  const labels = Object.fromEntries(SWAHILI_CATEGORIES.map(category => [category.key, category.title]));
+  const displayBlock = '    // sw-category-display:start\n    var categoryDisplayLabels = ' + JSON.stringify(labels, null, 2).replace(/</g, '\\u003c').replace(/\n/g, '\n    ') + ';\n    // sw-category-display:end\n';
+  const existingDisplay = /    \/\/ sw-category-display:start[\s\S]*?    \/\/ sw-category-display:end\n/g;
+  const matches = html.match(existingDisplay) || [];
+  if (matches.length > 1) throw new Error('Ambiguous Swahili category display labels');
+  if (matches.length === 1) html = html.replace(existingDisplay, displayBlock);
+  else {
+    if (html.includes('sw-category-display:')) throw new Error('Incomplete Swahili category display labels');
+    const anchor = '    section.hidden = false;';
+    if (html.indexOf(anchor) < 0 || html.indexOf(anchor) !== html.lastIndexOf(anchor)) throw new Error('Missing or ambiguous Swahili results anchor');
+    html = html.replace(anchor, displayBlock + anchor);
+  }
+  const oldLabel = 'categoryLabels[requestedCategory] || requestedCategory';
+  if (!html.includes('categoryDisplayLabels[requestedCategory]')) {
+    if (html.indexOf(oldLabel) < 0 || html.indexOf(oldLabel) !== html.lastIndexOf(oldLabel)) throw new Error('Missing or ambiguous selected Swahili category label');
+    html = html.replace(oldLabel, 'categoryDisplayLabels[requestedCategory] || ' + oldLabel);
+  }
+
   function replaceOnce(original, replacement, installed) {
     if (html.includes(installed)) return;
     const at = html.indexOf(original);
