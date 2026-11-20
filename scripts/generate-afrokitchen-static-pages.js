@@ -1058,6 +1058,21 @@ function recipeOccasionText(recipe) {
   return occasion || "everyday meals";
 }
 
+function filterSupersededRecipeCover(images, recipe, media) {
+  const stem = require('../data/image-generation/recipe-image-aliases.json').versioned_covers?.[recipe.slug];
+  if (!stem) return images;
+  const currentPath = '/assets/img/kitchen/' + stem + '.webp';
+  const oldPath = '/assets/img/kitchen/' + recipe.slug + '.webp';
+  function localPath(value) {
+    try {
+      const url = new URL(value, SITE_ORIGIN);
+      return url.origin === SITE_ORIGIN ? url.pathname : null;
+    } catch (_) { return null; }
+  }
+  if (localPath(media.pageImage) !== currentPath || !images.some(image => localPath(image.src) === currentPath)) return images;
+  return images.filter(image => localPath(image.src) !== oldPath);
+}
+
 function collectRecipeGalleryImages(recipe, media, recipeImages) {
   const images = [];
   const seen = new Set();
@@ -1146,7 +1161,7 @@ function collectRecipeGalleryImages(recipe, media, recipeImages) {
     );
   });
 
-  return images.slice(0, 5);
+  return filterSupersededRecipeCover(images, recipe, media).slice(0, 5);
 }
 
 function renderRecipePhotoGallery(recipe, galleryImages) {
@@ -3526,4 +3541,4 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { sourceReferenceLinkHtml, renderRecipeSourceReference, refreshRecipeSourceReference, planRecipeSourceReferences, projectReviewedManifest, buildPendingMethodPageHtml, buildCollectionPageHtml, buildCountryPageHtml, applyRecipeResearchPatch, isoDurationFromMinutes, collectRecipeGalleryImages, buildRecipeSchemas, buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
+module.exports = { filterSupersededRecipeCover, sourceReferenceLinkHtml, renderRecipeSourceReference, refreshRecipeSourceReference, planRecipeSourceReferences, projectReviewedManifest, buildPendingMethodPageHtml, buildCollectionPageHtml, buildCountryPageHtml, applyRecipeResearchPatch, isoDurationFromMinutes, collectRecipeGalleryImages, buildRecipeSchemas, buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
