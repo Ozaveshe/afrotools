@@ -1,6 +1,26 @@
 (function () {
   const widgets = {
 
+  "json-formatter": {
+    "title": "Mise en forme de JSON",
+    "tool": "/fr/tools/formateur-json/",
+    "frame": "developer-json-formatter",
+    "script": "developer/json-formatter.js"
+  },
+  "hash-generator": {
+    "title": "Empreintes SHA d’un texte",
+    "tool": "/fr/tools/generateur-hash/",
+    "frame": "developer-hash-generator",
+    "script": "developer/hash-generator.js"
+  },
+  "uuid-generator": {
+    "title": "Générateur d’identifiants UUID",
+    "tool": "/fr/tools/generateur-uuid/",
+    "frame": "developer-uuid-generator",
+    "script": "developer/uuid-generator.js"
+  }
+,
+
   "base64": {
     "title": "Encodeur et décodeur Base64",
     "tool": "/fr/tools/encodeur-base64/",
