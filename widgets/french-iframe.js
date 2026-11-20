@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "stamp-duty": {
+    "title": "Droits d’enregistrement",
+    "tool": "/fr/tools/droits-enregistrement/",
+    "frame": "legal-stamp-duty",
+    "script": "legal/stamp-duty.js"
+  },
+  "vat-calculator": {
+    "title": "Calcul de la TVA",
+    "tool": "/fr/tools/calculateur-tva/",
+    "frame": "financial-vat-calculator",
+    "script": "financial/vat-calc.js"
+  }
+,
+
   "shipping-calc": {
     "title": "Estimation du fret",
     "tool": "/fr/tools/estimateur-fret/",
