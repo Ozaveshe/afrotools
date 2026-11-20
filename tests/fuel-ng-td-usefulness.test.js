@@ -7,7 +7,7 @@ test('Nigeria source update supplies weekly national planning values without ove
  const ng=data.markets.find(m=>m.market_id==='ng-national');
  assert.deepEqual(ng.fuels.map(r=>r.price),[1161.75,1675]);
  for(const r of ng.fuels){assert.equal(r.effective_date,'2026-11-16');assert.equal(r.price_kind,'weekly-national-benchmark');assert.equal(observations.status(r,ngReview).available,true);assert.ok(r.previous_record);}
- const outlet=data.markets.find(m=>m.market_id==='ng-abuja-nnpc-observed');assert.equal(outlet.fuels[0].price,1405);assert.equal(outlet.granularity,'city');
+ const outlet=data.markets.find(m=>m.market_id==='ng-abuja-nnpc-observed');assert.equal(outlet.fuels[0].price_kind,'outlet-observation');assert.equal(outlet.granularity,'city');
  const stale={countries:[{code:'NG',name:'Nigeria',currency:'NGN',last_updated:'2026-08-10',source_url:'https://www.globalpetrolprices.com/Nigeria/gasoline_prices/',petrol:{price:1202.75,unit:'liter'},diesel:{price:1661,unit:'liter'}}]};
  assert.deepEqual(observations.merge(data.markets,stale,now).find(m=>m.market_id==='ng-national'),ng);
 });
