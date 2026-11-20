@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kíriíro ìwé owó ni Yorùbá | AfroTools</title>
   <meta name="description" content="Ṣẹda ìwé owó fun iṣowo Naijiria pẹlu VAT, laini ọja, iye ti a san, iye to ku, ati oju titẹ fun alabara.">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <meta name="tool-id" content="yoruba-invoice-generator">
   <meta name="content-language" content="yo">
   <meta property="og:type" content="website">
@@ -88,19 +88,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kíriíro ìwé owó ni Yorùbá | AfroTools">
 <meta name="twitter:description" content="Ṣẹda ìwé owó fun iṣowo Naijiria pẹlu VAT, laini ọja, iye ti a san, iye to ku, ati oju titẹ fun alabara.">
-<link rel="stylesheet" href="/assets/css/yoruba-fallback.css?v=72ea27b7" data-yoruba-fallback-style>
 <link rel="canonical" href="https://afrotools.com/yo/awon-ise/kiriiro-invoice/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-factures/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-ankara/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-invoice/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/kiriiro-invoice/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/">
 </head>
 <body class="top-level-page-ui-refresh"><afro-navbar active="document-pdf"></afro-navbar>
-<!-- yoruba-fallback:start -->
-<aside class="yoruba-fallback" data-yoruba-fallback role="note" aria-labelledby="yoruba-fallback-title">
-  <div class="yoruba-fallback__inner">
-    <h2 id="yoruba-fallback-title">Iṣẹ́ yìí kò tíì ṣetan.</h2>
-    <p>Yan iṣẹ́ mìíràn nínú àkójọ àwọn irinṣẹ́ Yorùbá.</p>
-    <a href="/yo/awon-ise/">Àwọn irinṣẹ́ Yorùbá</a>
-  </div>
-</aside>
-<!-- yoruba-fallback:end -->
 
 <section class="hero">
   <div class="wrap">
@@ -144,13 +140,9 @@
 </main>
 <section class="faq" data-tool-verification-panel="invoice-generator-yo">
   <div class="note">
-    <strong>Sources & verification - last reviewed 2026.</strong>
-    Methodology: this page adds invoice lines, quantity, unit price, VAT rate, paid amount, total due, and balance, then lets you copy the summary or print/save as PDF from the browser.
-    Source check: confirm VAT treatment, TIN, invoice numbering, e-invoicing, and record rules with FIRS or your accountant before filing.
-    Disclaimer: planning invoice only, not an official tax invoice, legal advice, tax advice, or government filing.
-    Privacy: values stay in your browser unless you choose to copy, print, or share them.
+    <strong>Bí a ṣe ń ṣírò rẹ̀</strong> Iye ẹyọ àti owó ẹyọ kọ̀ọ̀kan ló ń pinnu àpapọ̀. A fi VAT kún un, a sì yọ iye tí oníbàárà ti san kí a lè fi iyókù hàn. Ṣàyẹ̀wò owó orí àti àwọn àkọsílẹ̀ rẹ pẹ̀lú akántá rẹ. Àwọn iye tí o tẹ wà lórí ẹ̀rọ rẹ.
   </div>
-  <details open><summary>Next workflow</summary><p>Build the invoice, copy the summary, then print or save as PDF. For a branded invoice widget or client workflow, use <a href="/business-enquiry/?offer=widget-demo&amp;tool=invoice-generator-yo&amp;source=/yo/awon-ise/kiriiro-invoice/">business enquiry</a>, <a href="/widgets/">widgets</a>, or <a href="/custom-calculators/">custom calculators</a>.</p></details>
+  <details open><summary>Fífi àbájáde pamọ́</summary><p>Ṣàyẹ̀wò àpapọ̀, ṣe ẹ̀dà àkótán, tàbí tẹ̀ ẹ́ jáde. O tún lè yan PDF nínú àṣàyàn ìtẹ̀wé.</p></details>
 </section>
 <section class="faq">
   <div class="note">Oju yii ko yipada oṣuwọn VAT tabi ilana ìṣirò. Ti iṣowo rẹ ba nilo iwe aṣẹ owo-orí, jẹrisi pẹlu akántà tabi FIRS.</div>
@@ -188,6 +180,11 @@
       price:parse(row.querySelector('.price').value)
     }));
   }
+  function asText(value){
+    const el=document.createElement("span");
+    el.textContent=value;
+    return el.innerHTML;
+  }
   function build(){
     const rows=collect();
     const subtotal=rows.reduce((sum,row)=>sum+(row.qty*row.price),0);
@@ -196,8 +193,8 @@
     const total=subtotal+vat;
     const paid=parse(document.getElementById('paid').value);
     const balance=Math.max(total-paid,0);
-    const list=rows.map((row)=>'<tr><td>'+row.desc+'</td><td>'+row.qty+'</td><td>'+money(row.price)+'</td><td>'+money(row.qty*row.price)+'</td></tr>').join('');
-    paper.innerHTML='<div class="paper-top"><div><h3>ÌWÉ OWÓ</h3><div class="muted">'+document.getElementById('invoiceNo').value+'</div></div><div><strong>'+document.getElementById('seller').value+'</strong><br><span class="muted">Ọjọ́: '+document.getElementById('date').value+'<br>Ìpari: '+document.getElementById('due').value+'</span></div></div><p><strong>Alabara:</strong> '+document.getElementById('client').value+'</p><table class="yo-table"><thead><tr><th>Apejuwe</th><th>Iye</th><th>Owó</th><th>Àpapọ̀</th></tr></thead><tbody>'+list+'</tbody></table><div class="summary"><div><span>Àpapọ̀ ṣaaju VAT</span><b>'+money(subtotal)+'</b></div><div><span>VAT '+vatRate+'%</span><b>'+money(vat)+'</b></div><div><span>Lapapọ̀</span><strong>'+money(total)+'</strong></div><div><span>Ti a san</span><b>'+money(paid)+'</b></div><div><span>To ku</span><strong>'+money(balance)+'</strong></div></div><p class="muted">'+document.getElementById('terms').value+'</p>';
+    const list=rows.map((row)=>'<tr><td>'+asText(row.desc)+'</td><td>'+row.qty+'</td><td>'+money(row.price)+'</td><td>'+money(row.qty*row.price)+'</td></tr>').join('');
+    paper.innerHTML='<div class="paper-top"><div><h3>ÌWÉ OWÓ</h3><div class="muted">'+asText(document.getElementById('invoiceNo').value)+'</div></div><div><strong>'+asText(document.getElementById('seller').value)+'</strong><br><span class="muted">Ọjọ́: '+asText(document.getElementById('date').value)+'<br>Ìpari: '+asText(document.getElementById('due').value)+'</span></div></div><p><strong>Alabara:</strong> '+asText(document.getElementById('client').value)+'</p><table class="yo-table"><thead><tr><th>Apejuwe</th><th>Iye</th><th>Owó</th><th>Àpapọ̀</th></tr></thead><tbody>'+list+'</tbody></table><div class="summary"><div><span>Àpapọ̀ ṣaaju VAT</span><b>'+money(subtotal)+'</b></div><div><span>VAT '+vatRate+'%</span><b>'+money(vat)+'</b></div><div><span>Lapapọ̀</span><strong>'+money(total)+'</strong></div><div><span>Ti a san</span><b>'+money(paid)+'</b></div><div><span>To ku</span><strong>'+money(balance)+'</strong></div></div><p class="muted">'+asText(document.getElementById('terms').value)+'</p>';
     const recipientId=document.getElementById('recipientTaxId').value.trim();
     if(recipientId){
       const detail=document.createElement('p');

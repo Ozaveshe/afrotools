@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkuletan JAMB ni Yorùbá | AfroTools</title>
   <meta name="description" content="Ṣe iṣiro àpapọ̀ àmì JAMB, UTME, Post-UTME ati O-Level ni Yorùbá fún ìmúrasílẹ̀ ìwọlé yunifásítì Naijiria.">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <meta name="tool-id" content="jamb-aggregate-yo">
   <meta name="content-language" content="yo">
   <meta property="og:type" content="website">
@@ -103,19 +103,15 @@
 .mixed-education-trust a{color:#0057b8;font-weight:800}
 @media(max-width:720px){.mixed-education-export{grid-template-columns:1fr}.mixed-education-actions{justify-content:stretch}.mixed-education-actions button{width:100%}}
 </style>
-<link rel="stylesheet" href="/assets/css/yoruba-fallback.css?v=72ea27b7" data-yoruba-fallback-style>
 <link rel="canonical" href="https://afrotools.com/yo/awon-ise/kalkuletan-jamb/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/jamb-aggregate/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-jamb/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-jamb/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kalkuletan-jamb/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/kalkuletan-jamb/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jamb-aggregate/">
 </head>
 <body class="top-level-page-ui-refresh"><afro-navbar active="education"></afro-navbar>
-<!-- yoruba-fallback:start -->
-<aside class="yoruba-fallback" data-yoruba-fallback role="note" aria-labelledby="yoruba-fallback-title">
-  <div class="yoruba-fallback__inner">
-    <h2 id="yoruba-fallback-title">Iṣẹ́ yìí kò tíì ṣetan.</h2>
-    <p>Yan iṣẹ́ mìíràn nínú àkójọ àwọn irinṣẹ́ Yorùbá.</p>
-    <a href="/yo/awon-ise/">Àwọn irinṣẹ́ Yorùbá</a>
-  </div>
-</aside>
-<!-- yoruba-fallback:end -->
 
 <section class="hero">
   <div class="wrap">
@@ -276,7 +272,7 @@
 <script data-mixed-education-batch="export-js">
 (function(){
   function fieldLines(){
-    return Array.prototype.slice.call(document.querySelectorAll('label')).map(function(label){
+    return Array.prototype.slice.call(document.querySelectorAll('main label')).map(function(label){
       var target = label.getAttribute('for') ? document.getElementById(label.getAttribute('for')) : label.querySelector('input,select,textarea');
       if(!target || target.type === 'hidden') return '';
       var labelText = label.textContent.replace(/\s+/g, ' ').trim();
@@ -289,7 +285,7 @@
     return Array.prototype.slice.call(document.querySelectorAll('#result,#aidResult,#budgetResult,#nysc-result,.ha-result,.result-box')).map(function(el){
       var visible = el.offsetParent !== null || el.classList.contains('show') || el.style.display === 'block';
       if(!visible && !el.textContent.trim()) return '';
-      return el.textContent.replace(/\s+/g, ' ').trim();
+      return el.innerText.trim();
     }).filter(Boolean);
   }
   function brief(panel){

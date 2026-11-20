@@ -6,7 +6,7 @@
   <meta name="view-transition" content="same-origin">
   <title>Ìṣirò Owó Ilé Ìwòsàn ni Yorùbá | AfroTools</title>
   <meta name="description" content="Ṣe àfiyèsí owó ilé ìwòsàn fun ìbẹ̀wò, malaria, ìbí, X-ray, CT, MRI ati yàrá ìdánwò. Alaye nikan ni; jẹ́risi pẹlu kílíníkì tabi ọjọgbọn ilera.">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <meta name="tool-id" content="hospital-cost-yo">
   <meta name="content-language" content="yo">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -64,19 +64,15 @@
 .localized-health-trust a{color:#0057b8;font-weight:800}
 @media(max-width:720px){.localized-health-export{grid-template-columns:1fr}.localized-health-actions{justify-content:stretch}.localized-health-actions button{width:100%}}
 </style>
-<link rel="stylesheet" href="/assets/css/yoruba-fallback.css?v=72ea27b7" data-yoruba-fallback-style>
 <link rel="canonical" href="https://afrotools.com/yo/awon-ise/owo-ile-iwosan/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/hospital-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-hospitalier/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-hospitali/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kudin-asibiti/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/owo-ile-iwosan/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/hospital-cost/">
 </head>
 <body class="top-level-page-ui-refresh"><afro-navbar active="health"></afro-navbar>
-<!-- yoruba-fallback:start -->
-<aside class="yoruba-fallback" data-yoruba-fallback role="note" aria-labelledby="yoruba-fallback-title">
-  <div class="yoruba-fallback__inner">
-    <h2 id="yoruba-fallback-title">Iṣẹ́ yìí kò tíì ṣetan.</h2>
-    <p>Yan iṣẹ́ mìíràn nínú àkójọ àwọn irinṣẹ́ Yorùbá.</p>
-    <a href="/yo/awon-ise/">Àwọn irinṣẹ́ Yorùbá</a>
-  </div>
-</aside>
-<!-- yoruba-fallback:end -->
 
 <section class="hero">
   <div class="wrap">
@@ -94,13 +90,16 @@
           <div class="field"><label for="country">Orílẹ̀-èdè</label><select id="country"><option value="ng">Naijiria</option><option value="ke">Kenya</option><option value="za">South Africa</option><option value="gh">Ghana</option><option value="tz">Tanzania</option><option value="ug">Uganda</option></select></div>
           <div class="field"><label for="facility">Irú ibi ìtọju</label><select id="facility"><option value="public">Ti ìjọba</option><option value="teaching">Ti ẹ̀kọ́ oníṣègùn</option><option value="private">Ti aládani</option></select></div>
           <div class="field full"><label for="procedure">Iṣẹ́ tabi ìtọju</label><select id="procedure"><option value="consultation">Ìbẹ̀wò gbogbogbo</option><option value="malaria">Ìtọju malaria lai sun nibẹ</option><option value="caesarean">Ìbí nipasẹ iṣẹ́ abẹ</option><option value="normal-delivery">Ìbí deede</option><option value="appendectomy">Iṣẹ́ abẹ appendix</option><option value="hernia">Ìtúnṣe hernia</option><option value="fracture">Ìtọju egungun fifọ</option><option value="dialysis">Dialysis, igba kan</option><option value="ct-scan">CT scan</option><option value="mri">MRI scan</option><option value="xray">X-ray</option><option value="blood-test">Ìdánwò ẹ̀jẹ̀ FBC</option><option value="dental-extraction">Yíyọ eyín</option><option value="eye-cataract">Iṣẹ́ abẹ cataract</option><option value="admission">Ìsinmi lori ibusun, alẹ́ kan</option></select></div>
+          <div class="field full"><label for="basis">Orísun iye owó</label><select id="basis"><option value="quote">Iye tí ilé ìwòsàn fún mi</option><option value="example">Àpẹẹrẹ fún ìṣètò nìkan</option></select></div>
+          <div class="field" id="quote-field"><label for="quote">Owó tí ilé ìwòsàn sọ</label><input id="quote" type="number" min="0" step="any" required inputmode="decimal"></div>
+          <div class="field" id="cover-field"><label for="cover">Owó tí iṣeduro yóò san</label><input id="cover" type="number" min="0" step="any" value="0" required inputmode="decimal"></div>
           <div class="field full"><button class="btn" type="button" id="estimateBtn">Ṣe àfiyèsí owó</button></div>
         </div>
       </div>
       <section class="card result" id="resultCard">
         <h2>Àbájáde owó</h2>
         <div class="metrics" id="resultGrid"></div>
-        <h3>Ìfiwéra irú ibi ìtọju</h3>
+        <h3 id="example-heading">Àpẹẹrẹ iye owó fún ìṣètò; ṣàyẹ̀wò iye òde òní pẹ̀lú ilé ìwòsàn.</h3>
         <div class="table-wrap"><table class="table" id="costTable"></table></div>
         <div class="note" style="margin-top:14px">Àfiyèsí nikan ni. Owó gidi le yato nitori ìlú, kílíníkì, ilé ìwòsàn, ọjọgbọn, wahala iṣẹ́, oogun, yàrá ìdánwò, iṣeduro ati akoko. Beere fun àlàyé owó kikọ ṣaaju ipinnu kankan.</div>
       </section>
@@ -124,28 +123,7 @@
   </div>
 </main>
 
-<section class="localized-health-export" data-localized-health-batch="export" data-health-title="Owo ile iwosan" data-health-source="/tools/hospital-cost/" data-health-note="Afiyesi owo nikan ni. Owo gidi le yato nitori ilu, ile iwosan, idanwo, oogun, insurance ati ipo alaisan.">
-  <div class="localized-health-export__copy">
-    <span class="localized-health-kicker">Local-first export</span>
-    <h2>Fi eto owo ile iwosan pamo</h2>
-    <p>afiwe owo iwosan, ibi itoju, iru ise ati ibeere fun clinic. Alaye re wa ninu browser nikan. Oju iwe yii ko ran alaye ilera tabi owo si server.</p>
-  </div>
-  <div class="localized-health-actions">
-    <button type="button" data-health-copy>Kopi eto</button>
-    <button type="button" data-health-download>Gba .txt</button>
-    <span data-health-status aria-live="polite"></span>
-  </div>
-</section>
-<section class="localized-health-trust" data-tool-verification-panel data-localized-health-batch="trust">
-  <span class="localized-health-kicker">Source / freshness / methodology</span>
-  <h2>Orisun, igba imudojuiwon ati opin</h2>
-  <div class="localized-health-trust-grid">
-    <p><strong>Source:</strong> Based on the AfroTools source workflow at <a href="/tools/hospital-cost/">/tools/hospital-cost/</a>. Verify any health, lab, facility, insurance or price decision with a qualified provider.</p>
-    <p><strong>Freshness:</strong> Freshness: owo ilera n yipada. Jerisi owo pelu ile iwosan, clinic tabi insurance ki o to sanwo.</p>
-    <p><strong>Methodology:</strong> Methodology: oju iwe n lo tabili owo AfroTools fun orile-ede, iru ile iwosan ati ise itoju, leyin naa o fi afiwe han.</p>
-    <p><strong>Limitations:</strong> Limitations: kii se invoice osise, kii se medical advice, ko si ropo emergency care tabi diagnosis.</p>
-  </div>
-</section>
+<section class="localized-health-export" data-localized-health-batch="export" data-health-title="Ìṣúná ìtọ́jú" data-health-note="Jẹ́rìí iye owó pẹ̀lú ilé ìwòsàn àti ilé iṣeduro rẹ."><div><h2>Fi àbájáde pamọ́</h2><p>Jẹ́rìí iye owó pẹ̀lú ilé ìwòsàn àti ilé iṣeduro rẹ.</p></div><div class="localized-health-actions"><button type="button" data-health-copy>Da àkótán kọ́</button><button type="button" data-health-download>Gba TXT</button><span data-health-status aria-live="polite"></span></div></section>
 <afro-footer></afro-footer>
 <script>
 (function(){
@@ -162,14 +140,30 @@
   function fmt(cur,n){return n===0?cur+'0 tabi ìrànwọ́ ìjọba':cur+n.toLocaleString('en');}
   function estimate(){
     var c=byId('country').value,f=byId('facility').value,p=byId('procedure').value,item=COSTS[c],costs=item[p],idx=f==='public'?0:f==='teaching'?1:2,fac=byId('facility').selectedOptions[0].textContent,proc=byId('procedure').selectedOptions[0].textContent;
+    const manual = byId('basis').value === 'quote';
+    byId('example-heading').hidden = manual;
+    byId('costTable').hidden = manual;
+    if (manual) {
+      if (!byId('quote').reportValidity() || !byId('cover').reportValidity()) return;
+      const charge = byId('quote').valueAsNumber, cover = byId('cover').valueAsNumber;
+      byId('resultGrid').textContent = proc + ' · '+fac+' · Owó tí ilé ìwòsàn sọ: '+item.cur+charge.toLocaleString('en')+
+        '. Iye tí ìwọ yóò san: '+item.cur+Math.max(0,charge-cover).toLocaleString('en')+'.';
+    } else {
     byId('resultGrid').innerHTML='<div class="metric"><strong>'+fmt(item.cur,costs[idx])+'</strong><span>'+proc+' - '+fac+'</span></div><div class="metric"><strong>'+fmt(item.cur,costs[0])+'</strong><span>Ti ìjọba</span></div><div class="metric"><strong>'+fmt(item.cur,costs[2])+'</strong><span>Ti aládani</span></div>';
     var keys=['consultation','malaria','caesarean','normal-delivery','appendectomy','hernia','fracture','dialysis','ct-scan','mri','xray','blood-test','dental-extraction','eye-cataract','admission'];
     var html='<tr><th>Iṣẹ́</th><th>Ìjọba</th><th>Ẹ̀kọ́ oníṣègùn</th><th>Aládani</th></tr>';
     keys.forEach(function(k){html+='<tr><td>'+procLabels[k]+'</td>';item[k].forEach(function(v){html+='<td>'+fmt(item.cur,v)+'</td>';});html+='</tr>';});
     byId('costTable').innerHTML=html;
+    }
     byId('resultCard').classList.add('on');
     byId('resultCard').scrollIntoView({behavior:'smooth',block:'nearest'});
   }
+  document.querySelector('main').addEventListener('input', function(){
+    byId('resultCard').classList.remove('on');
+    const manual = byId('basis').value === 'quote';
+    byId('quote-field').hidden = byId('cover-field').hidden = !manual;
+    byId('quote').disabled = byId('cover').disabled = !manual;
+  });
   byId('estimateBtn').addEventListener('click',estimate);
 })();
 </script>
@@ -192,20 +186,20 @@
   }
   function resultLines(){
     return Array.prototype.slice.call(document.querySelectorAll('.ha-results.on,.result.on,#results.on,#mp-results.on')).map(function(el){
-      return el.textContent.replace(/\s+/g, ' ').trim();
+      return el.innerText.trim();
     }).filter(Boolean);
   }
   function brief(panel){
     var title = panel.getAttribute('data-health-title') || textOf(document, 'h1') || 'AfroTools health tool';
     var note = panel.getAttribute('data-health-note') || '';
     var source = panel.getAttribute('data-health-source') || location.pathname;
-    var lines = ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Source workflow: ' + source, ''];
+    var lines = ['AfroTools - ' + title, 'Ojú-ìwé: ' + location.pathname, ''];
     var fields = fieldLines();
-    if(fields.length) lines.push('Inputs', fields.join('\n'), '');
+    if(fields.length) lines.push('Àwọn iye tí o tẹ', fields.join('\n'), '');
     var results = resultLines();
-    if(results.length) lines.push('Current result', results.join('\n\n'), '');
-    lines.push('Assumptions and limits', note, 'This is a planning estimate or educational summary, not official medical, lab, billing, insurance, legal or emergency advice.');
-    lines.push('', 'Privacy: generated locally in this browser.');
+    if(results.length) lines.push('Àbájáde', results.join('\n\n'), '');
+    lines.push('Ààlà ìlò', note);
+    lines.push('', 'A ṣe àkótán yìí lórí ẹ̀rọ rẹ.');
     return lines.join('\n');
   }
   function downloadText(filename, text){
@@ -226,7 +220,7 @@
     var download = panel.querySelector('[data-health-download]');
     if(copy) copy.addEventListener('click', function(){
       var text = brief(panel);
-      function done(){ if(status) status.textContent = 'Copied locally.'; }
+      function done(){ if(status) status.textContent = 'A ti da àkótán kọ́.'; }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(text).then(done).catch(function(){ if(status) status.textContent = text; });
       } else if(status) {
@@ -235,7 +229,7 @@
     });
     if(download) download.addEventListener('click', function(){
       downloadText('afrotools-' + title + '.txt', brief(panel));
-      if(status) status.textContent = 'Downloaded locally.';
+      if(status) status.textContent = 'A ti gba fáìlì náà.';
     });
   });
 })();
