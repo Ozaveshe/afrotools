@@ -1,5 +1,6 @@
 (function () {
   const widgets = {
+    "ielts-band": {"title": "Note globale IELTS", "tool": "/fr/tools/calculateur-ielts/", "frame": "education-ielts-band", "script": "education/ielts.js"},
 
   "working-days": {
     "title": "Calculateur de jours ouvrés",
