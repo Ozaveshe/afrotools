@@ -80,7 +80,6 @@
       return { ok: false, code: 'invalid-cac-directors' };
     }
     var useAgent = input.useAgent;
-    var express = input.express === true || input.express === 'yes';
     var items = [];
     if (type === 'bn') {
       items.push({ item: 'Business Name Registration Fee (CAC)', amount: 20000 });
@@ -88,50 +87,29 @@
       if (useAgent === 'agent') items.push({ item: 'Agent / Accredited Lawyer Fee', amount: 25000 });
       if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 5000 });
       if (input.addStatusReport) items.push({ item: 'Company Status Report', amount: 5000 });
-    } else if (type === 'llc') {
-      var regFee = 25000;
-      if (shareCapital > 1000000 && shareCapital <= 5000000) regFee = 35000;
-      else if (shareCapital > 5000000 && shareCapital <= 25000000) regFee = 50000;
-      else if (shareCapital > 25000000 && shareCapital <= 100000000) regFee = 100000;
-      else if (shareCapital > 100000000) regFee = 200000;
-      items.push({ item: 'Company Registration Fee (CAC)', amount: regFee });
-      items.push({ item: 'Name Reservation Fee', amount: 500 });
-      items.push({ item: 'Stamp Duty on Share Capital (0.75%)', amount: Math.round(shareCapital * 0.0075) });
-      items.push({ item: 'CAC Filing Fee (MEMART)', amount: 5000 });
-      items.push({ item: 'Certified True Copy (CTC) of Certificate', amount: 3000 });
-      if (directors > 2) items.push({ item: 'Extra Director Forms (' + (directors - 2) + ' × ₦2,000)', amount: (directors - 2) * 2000 });
-      if (useAgent === 'agent') items.push({ item: 'Lawyer Fee (MEMART drafting + filing)', amount: 55000 });
-      if (express) items.push({ item: 'Express Processing', amount: 15000 });
-      if (input.addStatusReport) items.push({ item: 'Company Status Report (for bank account)', amount: 5000 });
-      if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 5000 });
-    } else if (type === 'llp') {
-      var llpRegFee = shareCapital > 5000000 ? 50000 : shareCapital > 1000000 ? 35000 : 25000;
-      items.push({ item: 'LLP Registration Fee (CAC)', amount: llpRegFee });
-      items.push({ item: 'Name Reservation Fee', amount: 500 });
-      items.push({ item: 'Partnership Deed Filing', amount: 5000 });
-      if (useAgent === 'agent') items.push({ item: 'Lawyer Fee (Deed drafting + filing)', amount: 45000 });
-      if (express) items.push({ item: 'Express Processing', amount: 10000 });
-      if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 5000 });
-    } else if (type === 'ngo') {
-      items.push({ item: 'Incorporated Trustee / NGO Registration (CAC)', amount: 20000 });
-      items.push({ item: 'Name Reservation Fee', amount: 500 });
-      items.push({ item: 'Trustees Declaration Filing', amount: 5000 });
-      items.push({ item: 'Newspaper Publication (required by law)', amount: 15000 });
-      if (input.addScuml) items.push({ item: 'SCUML Registration', amount: 0 });
-      if (useAgent === 'agent') items.push({ item: 'Lawyer Fee (Constitution + filing)', amount: 50000 });
-      if (express) items.push({ item: 'Express Processing', amount: 10000 });
-      if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 3000 });
-    } else if (type === 'plc') {
-      var plcRegFee = shareCapital > 500000000 ? 500000 : shareCapital > 100000000 ? 350000 : 200000;
-      items.push({ item: 'PLC Registration Fee (CAC)', amount: plcRegFee });
-      items.push({ item: 'Name Reservation Fee', amount: 500 });
-      items.push({ item: 'Stamp Duty on Share Capital (0.75%)', amount: Math.round(shareCapital * 0.0075) });
-      items.push({ item: 'CAC Filing Fee (MEMART)', amount: 15000 });
-      items.push({ item: 'Certified True Copy (CTC)', amount: 5000 });
-      if (directors > 2) items.push({ item: 'Extra Director Forms (' + (directors - 2) + ' × ₦2,000)', amount: (directors - 2) * 2000 });
-      if (useAgent === 'agent') items.push({ item: 'Lawyer Fee (MEMART + SEC filing)', amount: 150000 });
-      if (input.addStatusReport) items.push({ item: 'Company Status Report', amount: 5000 });
-      if (input.addAnnualReturns) items.push({ item: 'Annual Returns Filing (Year 1)', amount: 10000 });
+    } else if (['llc', 'plc', 'llp', 'ngo'].includes(type)) {
+      var company = type === 'llc' || type === 'plc';
+      if (company && shareCapital < (type === 'plc' ? 2000000 : 100000)) {
+        return {ok: false, code: 'invalid-cac-share-capital'};
+      }
+      var publicCompany = type === 'plc';
+      var reservation = type === 'ngo' || input.restrictedName ? 5000 : 1000;
+      items.push({item: 'Name Reservation Fee', amount: reservation});
+      if (company) {
+        items.push({item: 'Company incorporation filing', amount: Math.ceil(shareCapital / 1000000) * (publicCompany ? 20000 : 10000)});
+        items.push({item: 'Stamp Duty on Share Capital (0.75%)', amount: Math.round(shareCapital * 0.0075)});
+      } else {
+        items.push({item: 'Registration including certified documents', amount: 40000});
+      }
+      if (input.addStatusReport) items.push({item: 'Company Status Report', amount: publicCompany ? 10000 : 5000});
+      if (input.addAnnualReturns) {
+        var annual = type === 'llp' ? 10000 : 5000;
+        if (company && shareCapital > 100000000) annual = shareCapital <= 500000000 ? 100000 : shareCapital <= 1000000000 ? 150000 : 200000;
+        items.push({item: 'Annual Returns Filing (Year 1)', amount: annual});
+      }
+      var extras = Number(input.externalQuote || 0);
+      if (!Number.isFinite(extras) || extras < 0) return {ok: false, code: 'invalid-cac-quote'};
+      if (extras) items.push({item: 'External services (your quote)', amount: extras});
     }
     var total = items.reduce(function (sum, item) { return sum + item.amount; }, 0);
     return { ok: Boolean(items.length), kind: 'cac-cost', entityType: type, items: items, total: total, usdEquivalent: Math.round(total / USD_RATE), usdRate: USD_RATE };
