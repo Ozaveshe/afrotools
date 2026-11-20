@@ -2671,7 +2671,13 @@
       return registered || Object.assign({}, tool, override);
     }
 
+    var actionQuery = normalizeSearchText(query);
+    var actionRoute = '';
+    if (/^(?:tengeneza|unda) ankara$/.test(actionQuery)) actionRoute = '/sw/zana/kizalishaji-ankara/';
+    if (/^(?:hesabu|kokotoa) (?:mahari|lobola)$/.test(actionQuery)) actionRoute = '/sw/zana/kikokotoo-lobola-na-mahari/';
+
     function score(tool, tokens) {
+      if (actionRoute && tool.href === actionRoute) return Number.MAX_SAFE_INTEGER;
       var name = normalizeSearchText(tool.name);
       var blob = [
         tool.name,
