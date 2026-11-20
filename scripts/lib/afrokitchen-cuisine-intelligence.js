@@ -190,9 +190,11 @@ function buildChefNotes(recipe, rules) {
     ? recipe.best_served_with
     : "Use the country hub to pick a matching side, starch, sauce, salad, or drink.";
 
+  // Method-specific notes take precedence over broad ingredient keywords.
+  const recipeNotes = (rules.recipe_notes || {})[recipe.slug] || {};
   return {
-    common_mistakes: unique(mistakes.concat(defaults.mistakes || [])).slice(0, 4),
-    readiness_cues: unique(readiness.concat(defaults.readiness || [])).slice(0, 4),
+    common_mistakes: unique(Array.isArray(recipeNotes.common_mistakes) ? recipeNotes.common_mistakes : mistakes.concat(defaults.mistakes || [])).slice(0, 4),
+    readiness_cues: unique(Array.isArray(recipeNotes.readiness_cues) ? recipeNotes.readiness_cues : readiness.concat(defaults.readiness || [])).slice(0, 4),
     pantry_notes: pantry,
     technique_notes: techniques,
     serve_with: serveWith
