@@ -1,5 +1,6 @@
 (function () {
   const widgets = {
+    "color-contrast": {"title": "Contraste des couleurs", "tool": "/fr/tools/contraste-couleurs/", "frame": "image-design-color-contrast", "script": "image-design/color-contrast.js"},
     "ielts-band": {"title": "Note globale IELTS", "tool": "/fr/tools/calculateur-ielts/", "frame": "education-ielts-band", "script": "education/ielts.js"},
 
   "working-days": {
