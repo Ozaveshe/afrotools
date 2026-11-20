@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "unit-converter": {
+    "title": "Convertisseur d’unités",
+    "tool": "/fr/tools/convertisseur-unites/",
+    "frame": "data-productivity-unit-converter",
+    "script": "data-productivity/unit-converter.js"
+  }
+,
+
   "time-zone": {
     "title": "Convertisseur de fuseaux horaires",
     "tool": "/fr/tools/fuseaux-horaires/",
