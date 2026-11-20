@@ -1,6 +1,26 @@
 (function () {
   const widgets = {
 
+  "css-gradient": {
+    "title": "Générateur de dégradés CSS",
+    "tool": "/fr/tools/generateur-degrade-css/",
+    "frame": "developer-css-gradient",
+    "script": "developer/css-gradient.js"
+  },
+  "password-generator": {
+    "title": "Générateur de mots de passe",
+    "tool": "/fr/tools/generateur-mot-de-passe/",
+    "frame": "developer-password-generator",
+    "script": "developer/password-generator.js"
+  },
+  "color-picker": {
+    "title": "Sélecteur de couleur",
+    "tool": "/fr/tools/selecteur-couleur/",
+    "frame": "developer-color-picker",
+    "script": "developer/color-picker.js"
+  }
+,
+
   "json-formatter": {
     "title": "Mise en forme de JSON",
     "tool": "/fr/tools/formateur-json/",
