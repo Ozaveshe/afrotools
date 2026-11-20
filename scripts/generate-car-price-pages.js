@@ -137,7 +137,7 @@ function camryYearComparison(country, vehicles) {
     return `<li><a href="/cars/nigeria/toyota/camry/${year}/">${year} Camry</a>: <strong>${escapeHtml(formatObservedMoney(sample.median, sample.currency))}</strong> median asking price · ${escapeHtml(sample.condition)} · ${sample.sampleSize} listings in ${escapeHtml(sample.market)}, reviewed ${escapeHtml(sample.reviewedAt)}. <a href="${escapeHtml(sample.sourceUrl)}">Check the ${year} source</a></li>`;
   });
   if (rows.some(row => !row)) return "";
-  return `<section class="cars-panel cars-static-summary"><h2>Compare Nigerian Camry asking prices by year</h2><ul>${rows.join("")}</ul><p>The 2005 sample covers locally used cars; the later samples cover foreign-used cars advertised in Nigeria. Condition, trim and mileage also affect the price. Open a year for the asking range, sources and import guidance.</p></section>`;
+  return `<section class="cars-panel cars-static-summary"><h2 id="local-year-comparison">Compare Nigerian Camry asking prices by year</h2><ul>${rows.join("")}</ul><p>The 2005 sample covers locally used cars; the later samples cover foreign-used cars advertised in Nigeria. Condition, trim and mileage also affect the price. Open a year for the asking range, sources and import guidance.</p></section>`;
 }
 
 function marketEvidenceHTML(country, vehicle) {
@@ -332,6 +332,11 @@ function rootObservationLinksHTML() {
     .join("");
 }
 
+function isNigerianCamryYear(meta) {
+  return meta.pageType === "vehicle" && meta.countryObj?.code === "NG" &&
+    meta.vehicleObj?.modelSlug === "camry" && Boolean(marketObservation(meta.countryObj, meta.vehicleObj));
+}
+
 function staticContentHTML(meta) {
   if (meta.pageType === "root") {
     const options = catalogOptionsHTML();
@@ -357,7 +362,7 @@ function staticContentHTML(meta) {
     return vehicleTableHTML(vehicles, country, `/cars/${country.slug}`, `${meta.make} ${meta.model} year variants in ${country.name}`);
   }
   if (meta.pageType === "vehicle" || meta.pageType === "import-vs-local") {
-    return vehicleDetailHTML(meta.vehicleObj, country) + sourceMarketEvidenceHTML(meta.vehicleObj) + (country.code === "NG" && meta.vehicleObj.id === "toyota-corolla-2018" ? "" : marketEvidenceHTML(country, meta.vehicleObj));
+    return vehicleDetailHTML(meta.vehicleObj, country) + sourceMarketEvidenceHTML(meta.vehicleObj) + (isNigerianCamryYear(meta) || (country.code === "NG" && meta.vehicleObj.id === "toyota-corolla-2018") ? "" : marketEvidenceHTML(country, meta.vehicleObj));
   }
   return "";
 }
@@ -413,7 +418,7 @@ function schema(meta, routePath) {
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
   const hasExamples = (vehicle) => askingPriceExamples.some((entry) => entry.countryCode === meta.countryObj.code && entry.vehicleId === vehicle.id && entry.modelYear === vehicle.year);
-  const leadWithLocal = ["vehicle", "import-vs-local"].includes(meta.pageType) && meta.countryObj?.code === "NG" && meta.vehicleObj?.id === "toyota-corolla-2018";
+  const leadWithLocal = isNigerianCamryYear(meta) || ["vehicle", "import-vs-local"].includes(meta.pageType) && meta.countryObj?.code === "NG" && meta.vehicleObj?.id === "toyota-corolla-2018";
   const askingVehicle = meta.pageType === "model"
     ? meta.listVehicles.find(hasExamples)
     : ["vehicle", "import-vs-local"].includes(meta.pageType) && hasExamples(meta.vehicleObj) ? meta.vehicleObj : null;
@@ -449,7 +454,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
 </head>
 <body class="cars-page">
   <afro-navbar active="transport"></afro-navbar>
-  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}${meta.pageType === "model" ? camryYearComparison(meta.countryObj, meta.listVehicles) : ""}${leadWithLocal ? marketEvidenceHTML(meta.countryObj, meta.vehicleObj) : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript>${askingVehicle ? askingExamplesHTML(meta.countryObj, askingVehicle) : ""}${meta.pageType === "model" ? camryYearComparison(meta.countryObj, meta.listVehicles) : ""}${leadWithLocal ? marketEvidenceHTML(meta.countryObj, meta.vehicleObj) : ""}${isNigerianCamryYear(meta) ? '<p><a href="/cars/nigeria/toyota/camry/#local-year-comparison">Compare Nigerian Camry asking prices by year</a></p>' : ""}<div id="carsApp"></div>${staticContentHTML(meta)}</main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
