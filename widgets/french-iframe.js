@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "age-calculator": {
+    "title": "Calculateur d’âge",
+    "tool": "/fr/tools/calculateur-age/",
+    "frame": "data-productivity-age-calculator",
+    "script": "data-productivity/age-calculator.js"
+  }
+,
+
   "random-picker": {
     "title": "Tirage au sort",
     "tool": "/fr/tools/selecteur-aleatoire/",
