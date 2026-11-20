@@ -62,7 +62,7 @@
       var gap = result.difference;
       items.push({
         title: 'Benchmark comparison',
-        detail: gap >= 0
+        detail: gap === 0 ? 'The planning result matches the benchmark you entered. This is not an admission prediction.' : gap > 0
           ? 'The planning result is ' + gap.toFixed(2) + ' points above the benchmark you entered. This is not an admission prediction.'
           : 'The planning result is ' + Math.abs(gap).toFixed(2) + ' points below the benchmark you entered.'
       });
@@ -113,7 +113,7 @@
     var benchmark = lastResult.benchmark === null ? 'Not entered' : lastResult.benchmark.toFixed(2);
     var comparison = lastResult.benchmark === null
       ? 'Verify officially'
-      : (lastResult.difference >= 0 ? 'Above entered benchmark' : 'Below entered benchmark');
+      : (lastResult.difference === 0 ? 'Matches entered benchmark' : lastResult.difference > 0 ? 'Above entered benchmark' : 'Below entered benchmark');
     summary.innerHTML = [
       ['Planning aggregate', lastResult.aggregate.toFixed(2)],
       ['Published benchmark', benchmark],
@@ -131,7 +131,7 @@
     if (!result.ok) {
       invalidateResult();
       setStatus(result.error, 'error');
-      field(result.error.indexOf('UTME score') === 0 ? 'utme' : 'postUtme')?.focus();
+      field(result.field)?.focus();
       return;
     }
     lastResult = result;

@@ -50,6 +50,13 @@ assert.match(engine.calculate({
   benchmark: 101
 }).error, /benchmark/);
 
+for (const key of ['utme', 'postUtme', 'utmeWeight', 'postUtmeWeight']) {
+  const values = { utme: 0, postUtme: 0, utmeWeight: 50, postUtmeWeight: 50, benchmark: 0 };
+  assert.equal(engine.calculate(values).aggregate, 0);
+  assert.equal(engine.calculate({ ...values, [key]: ' ' }).field, key);
+}
+assert.equal(engine.calculate({ utme: 280, postUtme: 68, utmeWeight: 50, postUtmeWeight: 50, benchmark: 'oops' }).field, 'publishedBenchmark');
+
 const page = fs.readFileSync(path.join(__dirname, '../tools/jamb-aggregate/index.html'), 'utf8');
 assert.doesNotMatch(page, /var (?:FORMULAS|CUTOFFS)\s*=/);
 assert.doesNotMatch(page, /Competitive courses like Medicine|Cutoff data sourced|16,000\+/);
