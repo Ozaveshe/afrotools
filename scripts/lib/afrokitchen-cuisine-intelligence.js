@@ -204,6 +204,13 @@ function localImagePathExists(relativePath) {
   return fs.existsSync(path.join(ROOT, relativePath.replace(/^\//, "")));
 }
 
+const versionedCovers = require('../../data/image-generation/recipe-image-aliases.json').versioned_covers || {};
+
+function currentCoverSources(slug, sources) {
+  const oldPath = '/assets/img/kitchen/' + slug + '.webp';
+  return unique(versionedCovers[slug] ? sources.filter(source => source !== oldPath) : sources);
+}
+
 function collectLocalImagePaths(slug) {
   const safeSlug = slugify(slug);
   const stems = [safeSlug, `${safeSlug}-1`, `${safeSlug}-2`, `${safeSlug}-3`, `${safeSlug}-4`, `${safeSlug}-5`];
@@ -217,7 +224,7 @@ function collectLocalImagePaths(slug) {
       if (localImagePathExists(relativePath)) matches.push(relativePath);
     });
   });
-  return unique(matches);
+  return currentCoverSources(safeSlug, matches);
 }
 
 function collectRecipeImageSources(recipe, recipeImages) {
@@ -246,7 +253,7 @@ function collectRecipeImageSources(recipe, recipeImages) {
       }
     });
 
-  return unique(sources);
+  return currentCoverSources(recipe.slug, sources);
 }
 
 function buildImageStatus(recipe, recipeImages, rules) {
@@ -256,7 +263,8 @@ function buildImageStatus(recipe, recipeImages, rules) {
   const status = galleryCount >= 3 ? "gallery-ready" : galleryCount >= 1 ? "hero-ready" : "missing";
   const missingRoles = roles.slice(galleryCount).map((role) => role.role);
   const shots = roles.map((role) => {
-    const filename = `${recipe.slug}${role.suffix || ""}.webp`;
+    const stem = role.suffix ? recipe.slug : versionedCovers[recipe.slug] || recipe.slug;
+    const filename = `${stem}${role.suffix || ""}.webp`;
     return {
       role: role.role,
       label: role.label,
