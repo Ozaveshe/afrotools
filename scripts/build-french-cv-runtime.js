@@ -172,6 +172,36 @@ function localizeCountryAdvice(source, filename, copy = COUNTRY_COPY) {
   return { output, edits: edits.length };
 }
 
+const EXPORT_COPY = {
+  "Content density": "Densité du contenu",
+  "Comfortable": "Aérée",
+  "Compact": "Compacte",
+  "One-page attempt": "Essayer de tenir sur une page",
+  "Page break controls": "Sauts de page",
+  "Avoid splitting major sections": "Éviter de couper les grandes rubriques",
+  "Break before experience": "Saut avant l’expérience professionnelle",
+  "Break before education": "Saut avant la formation",
+  "Break before projects": "Saut avant les projets",
+  "Break before references": "Saut avant les références",
+  "Density saved": "Densité enregistrée",
+  "One-page attempt selected": "Mise en page sur une seule page sélectionnée",
+  "CV changed. Review the preview again.": "Le CV a changé. Vérifiez de nouveau l’aperçu.",
+  "ATS plain ready": "Version ATS simple prête",
+  "Text exported": "Texte exporté",
+  "Text version downloaded": "Version texte téléchargée",
+  "JSON backup exported": "Sauvegarde JSON exportée",
+  "JSON backup downloaded": "Sauvegarde JSON téléchargée",
+  "Export Options": "Options d’exportation",
+  "Target role for filename": "Poste visé pour le nom du fichier",
+  "PDF uses the live preview. ATS Plain removes columns, images, icons, photo, and risky formatting.": "Le PDF reprend l’aperçu. La version ATS simple retire les colonnes, les images, les icônes et la mise en forme complexe.",
+  "ATS Plain Text": "Texte ATS simple",
+  "Download text version": "Télécharger la version texte",
+  "Download PDF": "Télécharger le PDF",
+  "JSON Backup": "Sauvegarde JSON",
+  "Ready": "Prêt",
+  "e.g. Data Analyst": "Ex. : analyste de données"
+};
+
 function localizeSource(source, filename) {
   if (['cv-country-rules.js', 'cv-country-advisor-compact.js'].includes(filename)) {
     return localizeCountryAdvice(source, filename);
@@ -257,7 +287,9 @@ function localizeSource(source, filename) {
       const translated = isTrackerHeader ? trackerHeaderLabels[node.value] || node.value
         : filename === 'cv-job-tracker.js' && parent.type === 'ConditionalExpression' && ['yes', 'no'].includes(node.value)
           ? node.value === 'yes' ? 'oui' : 'non'
-          : isPackModule ? packValue(node.value) : translateValue(node.value);
+          : filename === 'cv-export-upgrade.js'
+            ? EXPORT_COPY[node.value] || translateMarkup(translateValue(node.value), value => EXPORT_COPY[value] || exact(value))
+            : isPackModule ? packValue(node.value) : translateValue(node.value);
       if (translated !== node.value) {
         edits.push({ start: node.start, end: node.end, value: JSON.stringify(translated) });
       }
