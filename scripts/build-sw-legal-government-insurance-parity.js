@@ -371,12 +371,50 @@ function legalContracts() {
   });
 }
 
+function courtFeeQuoteContract(row) {
+  const references = {
+  "NG": [
+    "Nigeria",
+    "Edo State Judiciary: ada za mahakama za hakimu, Benin City (2022)",
+    "https://edojudiciary.gov.ng/wp-content/uploads/2022/05/Practice-Direction-on-Newly-Revised-Fees-and-Fines-for-Magistrates-Courts-Benin-City.pdf"
+  ],
+  "SN": [
+    "Senegal",
+    "Wizara ya Haki ya Senegal: mahakama za biashara",
+    "https://justice.sec.gouv.sn/pouvoir-judiciaire/tribunaux-de-commerce/"
+  ],
+  "CI": [
+    "Côte d’Ivoire",
+    "Masjala ya Tribunal de Commerce d’Abidjan",
+    "https://tribunalcommerceabidjan.ci/presentation_greffe"
+  ],
+  "ZA": [
+    "Afrika Kusini",
+    "Government Gazette, 24 Oktoba 2025: marekebisho ya ada za mahakama za hakimu",
+    "https://justice.gov.za/legislation/notices/2025/20251024-gg53572rg11899gon6752-RB-MC.pdf"
+  ]
+};
+  const jurisdictionSources = Object.fromEntries(Object.entries(references).map(([code, [jurisdiction, label, url]]) =>
+    [code, { jurisdiction, label, url, availability: 'external-reference', checkedAt: '2026-11-20',
+      confidence: 'Rejea hii ina upeo uliotajwa kwenye jina lake. Thibitisha ada za shauri lako na masjala ya mahakama uliyochagua.' }]
+  ));
+  return { ...row, description: "Panga gharama za kufungua shauri nchini Nigeria, Senegal, Côte d’Ivoire au Afrika Kusini. Andika ada ulizopewa na masjala ya mahakama yako, kwa sarafu ya nchi husika.", source: jurisdictionSources.NG, jurisdictionSources,
+    workflowControl: 'Jumlisha ada nilizopewa', resultIntro: 'Bajeti hii inatokana na ada ulizoingiza kwa mahakama na tarehe iliyoonyeshwa.',
+    fields: [...row.fields.filter(field => ['country', 'courtLevel', 'claimType'].includes(field.name)),
+      { name: 'courtName', type: 'text', label: 'Jina la mahakama au masjala iliyotoa ada', required: true, initialValue: '' },
+      { name: 'quoteDate', type: 'date', label: 'Tarehe ya bei uliyopewa', required: true, initialValue: '' },
+      ...[['filingQuote', 'Ada ya kufungua shauri'], ['serviceQuote', 'Ada ya kupeleka nyaraka']].map(([name, label]) =>
+        ({ name, type: 'number', label, required: true, min: 0, step: 'any', initialValue: '' }))],
+    resultLabels: {...row.resultLabels, courtName: 'Mahakama au masjala', quoteDate: 'Tarehe ya bei', currency: 'Sarafu'} };
+}
+
 function publicLegalConfig(rows) {
   const pick = (record, keys) => Object.fromEntries(
     keys.filter((key) => Object.hasOwn(record, key)).map((key) => [key, record[key]])
   );
   const sourceKeys = ['jurisdiction', 'availability', 'url', 'label', 'checkedAt', 'confidence'];
   return { rows: rows.map((row) => {
+    if (row.englishId === 'court-fees') row = courtFeeQuoteContract(row);
     const config = pick(row, [
       'englishId', 'name', 'swahiliRoute', 'sharedEngine', 'engineMode', 'workflowControl',
       'resultIntro', 'resultLabels', 'clearStaleOnInput', 'parserValidPdf', 'countryPresets'
@@ -466,6 +504,7 @@ function ownedControlContrastCss() {
 }
 
 function legalPage(contract) {
+  if (contract.englishId === 'court-fees') contract = courtFeeQuoteContract(contract);
   const sourceOwner = contract.sourceOwner || 'scripts/build-sw-legal-government-insurance-parity.js';
   const categoryHub = contract.categoryHub || '/sw/nyumba-na-ardhi/';
   const categoryLabel = contract.categoryLabel || 'Nyumba na ardhi';

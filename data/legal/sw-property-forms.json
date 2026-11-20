@@ -3214,8 +3214,8 @@
       "swahiliRoute": "/sw/zana/ada-za-mahakama/",
       "sharedEngine": "mortgage-property-english-owner",
       "engineMode": "court-fees",
-      "workflowControl": "Kokotoa au kagua maingizo",
-      "resultIntro": "Ada za mahakama: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "workflowControl": "Jumlisha ada nilizopewa",
+      "resultIntro": "Bajeti hii inatokana na ada ulizoingiza kwa mahakama na tarehe iliyoonyeshwa.",
       "resultLabels": {
         "pays": "Nchi",
         "montantDemande": "Kiasi cha madai",
@@ -3223,7 +3223,10 @@
         "typeDemande": "Aina ya madai",
         "fraisDepot": "Ada ya kuwasilisha",
         "fraisSignification": "Ada ya kuhudumia nyaraka",
-        "total": "Jumla"
+        "total": "Jumla",
+        "courtName": "Mahakama au masjala",
+        "quoteDate": "Tarehe ya bei",
+        "currency": "Sarafu"
       },
       "clearStaleOnInput": true,
       "parserValidPdf": true,
@@ -3251,13 +3254,6 @@
             ]
           ],
           "initialValue": "NG"
-        },
-        {
-          "name": "claimAmount",
-          "type": "number",
-          "label": "Kiasi cha madai",
-          "options": [],
-          "initialValue": "1000"
         },
         {
           "name": "courtLevel",
@@ -3310,14 +3306,81 @@
             ]
           ],
           "initialValue": "debt"
+        },
+        {
+          "name": "courtName",
+          "type": "text",
+          "label": "Jina la mahakama au masjala iliyotoa ada",
+          "required": true,
+          "initialValue": ""
+        },
+        {
+          "name": "quoteDate",
+          "type": "date",
+          "label": "Tarehe ya bei uliyopewa",
+          "required": true,
+          "initialValue": ""
+        },
+        {
+          "name": "filingQuote",
+          "type": "number",
+          "label": "Ada ya kufungua shauri",
+          "required": true,
+          "min": 0,
+          "step": "any",
+          "initialValue": ""
+        },
+        {
+          "name": "serviceQuote",
+          "type": "number",
+          "label": "Ada ya kupeleka nyaraka",
+          "required": true,
+          "min": 0,
+          "step": "any",
+          "initialValue": ""
         }
       ],
       "source": {
+        "jurisdiction": "Nigeria",
         "availability": "external-reference",
-        "url": "https://edojudiciary.gov.ng/legislations-and-rules/",
-        "label": "Rejea ya edojudiciary.gov.ng iliyounganishwa na mmiliki wa Kiingereza",
-        "checkedAt": "2026-07-29",
-        "confidence": "Injini inarudia tabia ya mmiliki wa Kiingereza kwa maingizo haya. Sheria, ada, mamlaka, ustahiki na kukubalika hubadilika; thibitisha chanzo rasmi au mtaalamu katika eneo husika kabla ya hatua yoyote."
+        "url": "https://edojudiciary.gov.ng/wp-content/uploads/2022/05/Practice-Direction-on-Newly-Revised-Fees-and-Fines-for-Magistrates-Courts-Benin-City.pdf",
+        "label": "Edo State Judiciary: ada za mahakama za hakimu, Benin City (2022)",
+        "checkedAt": "2026-11-20",
+        "confidence": "Rejea hii ina upeo uliotajwa kwenye jina lake. Thibitisha ada za shauri lako na masjala ya mahakama uliyochagua."
+      },
+      "jurisdictionSources": {
+        "NG": {
+          "jurisdiction": "Nigeria",
+          "availability": "external-reference",
+          "url": "https://edojudiciary.gov.ng/wp-content/uploads/2022/05/Practice-Direction-on-Newly-Revised-Fees-and-Fines-for-Magistrates-Courts-Benin-City.pdf",
+          "label": "Edo State Judiciary: ada za mahakama za hakimu, Benin City (2022)",
+          "checkedAt": "2026-11-20",
+          "confidence": "Rejea hii ina upeo uliotajwa kwenye jina lake. Thibitisha ada za shauri lako na masjala ya mahakama uliyochagua."
+        },
+        "SN": {
+          "jurisdiction": "Senegal",
+          "availability": "external-reference",
+          "url": "https://justice.sec.gouv.sn/pouvoir-judiciaire/tribunaux-de-commerce/",
+          "label": "Wizara ya Haki ya Senegal: mahakama za biashara",
+          "checkedAt": "2026-11-20",
+          "confidence": "Rejea hii ina upeo uliotajwa kwenye jina lake. Thibitisha ada za shauri lako na masjala ya mahakama uliyochagua."
+        },
+        "CI": {
+          "jurisdiction": "Côte d’Ivoire",
+          "availability": "external-reference",
+          "url": "https://tribunalcommerceabidjan.ci/presentation_greffe",
+          "label": "Masjala ya Tribunal de Commerce d’Abidjan",
+          "checkedAt": "2026-11-20",
+          "confidence": "Rejea hii ina upeo uliotajwa kwenye jina lake. Thibitisha ada za shauri lako na masjala ya mahakama uliyochagua."
+        },
+        "ZA": {
+          "jurisdiction": "Afrika Kusini",
+          "availability": "external-reference",
+          "url": "https://justice.gov.za/legislation/notices/2025/20251024-gg53572rg11899gon6752-RB-MC.pdf",
+          "label": "Government Gazette, 24 Oktoba 2025: marekebisho ya ada za mahakama za hakimu",
+          "checkedAt": "2026-11-20",
+          "confidence": "Rejea hii ina upeo uliotajwa kwenye jina lake. Thibitisha ada za shauri lako na masjala ya mahakama uliyochagua."
+        }
       }
     },
     {

@@ -256,6 +256,32 @@
     return field.fixtureValue;
   }
 
+  function courtFeeQuote(input) {
+    var currency = { NG: 'NGN', SN: 'XOF', CI: 'XOF', ZA: 'ZAR' }[input.country];
+    var filing = Number(input.filingQuote);
+    var service = Number(input.serviceQuote);
+    var scale = currency === 'XOF' ? 1 : 100;
+    var minor = [filing, service].map(function (amount) { return Math.round(amount * scale); });
+    if (!currency || !input.filingQuote || !input.serviceQuote || !Number.isSafeInteger(minor[0] + minor[1]) ||
+        [filing, service].some(function (amount, i) { return amount < 0 || Math.abs(amount * scale - minor[i]) > 0.000001; })) {
+      return { ok: false };
+    }
+    return { ok: true, resultFields: { pays: input.country, niveauJuridiction: input.courtLevel, typeDemande: input.claimType,
+      courtName: input.courtName, quoteDate: input.quoteDate, currency: currency,
+      fraisDepot: filing, fraisSignification: service, total: (minor[0] + minor[1]) / scale } };
+  }
+
+  function updateCourtCurrency() {
+    if (englishId !== 'court-fees') return;
+    var currency = { NG: 'NGN', SN: 'XOF', CI: 'XOF', ZA: 'ZAR' }[form.elements.country.value];
+    ['filingQuote', 'serviceQuote'].forEach(function (name) {
+      var field = contract.fields.find(function (item) { return item.name === name; });
+      var control = form.elements[name];
+      control.step = currency === 'XOF' ? '1' : '0.01';
+      control.labels[0].querySelector('span').textContent = field.label + ' (' + currency + ')';
+    });
+  }
+
   function applyInitialValues() {
     contract.fields.forEach(function (field) {
       var control = form.elements[field.name];
@@ -287,7 +313,7 @@
       return;
     }
     lastInput = collect();
-    var result = window.AfroTools.FrenchMortgagePropertyEngine.run(contract, lastInput, {
+    var result = englishId === 'court-fees' ? courtFeeQuote(lastInput) : window.AfroTools.FrenchMortgagePropertyEngine.run(contract, lastInput, {
       legalEngine: window.AfroTools.LegalEngine
     });
     if (!result || !result.ok) {
@@ -313,6 +339,10 @@
 
   form.addEventListener('change', function (event) {
     if (!contract || event.target.name !== 'country') return;
+    if (englishId === 'court-fees') {
+      ['courtName', 'quoteDate', 'filingQuote', 'serviceQuote'].forEach(function (name) { form.elements[name].value = ''; });
+    }
+    updateCourtCurrency();
     applyCountryPreset(event.target.value);
     updateSourcePanel({ country: event.target.value });
   });
@@ -324,6 +354,7 @@
     if (action === 'reset') {
       form.reset();
       applyInitialValues();
+      updateCourtCurrency();
       updateSourcePanel();
       output.hidden = true;
       output.innerHTML = '';
@@ -367,12 +398,17 @@
       try {
         var payload = JSON.parse(String(reader.result || ''));
         if (payload.lugha !== 'sw' || payload.englishId !== englishId || !payload.inputs) throw new Error('owner');
+        if (englishId === 'court-fees' && ['courtName','quoteDate','filingQuote','serviceQuote'].some(function (key) {
+          return !Object.prototype.hasOwnProperty.call(payload.inputs, key);
+        })) throw new Error('quote');
         contract.fields.forEach(function (field) {
           var control = form.elements[field.name];
           if (!control || !Object.prototype.hasOwnProperty.call(payload.inputs, field.name)) return;
           if (field.type === 'checkbox') control.checked = Boolean(payload.inputs[field.name]);
           else control.value = String(payload.inputs[field.name]);
         });
+        updateCourtCurrency();
+        updateSourcePanel();
         form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
         say('JSON imefunguliwa tena na matokeo yamekokotolewa upya kwenye kivinjari.');
       } catch (_) {
@@ -395,6 +431,7 @@
       if (!contract) throw new Error('contract');
       fieldsRoot.innerHTML = contract.fields.map(fieldMarkup).join('');
       applyInitialValues();
+      updateCourtCurrency();
       updateSourcePanel();
       root.querySelector('[data-workflow-control]').textContent = contract.workflowControl;
       root.setAttribute('data-workflow-ready', 'true');
