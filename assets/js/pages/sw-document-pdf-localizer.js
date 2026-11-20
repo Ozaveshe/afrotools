@@ -650,6 +650,14 @@
   });
 
   Object.assign(phrases, {
+    'Master CV and role-specific versions': 'CV kuu na matoleo kwa nafasi mbalimbali za kazi',
+    'Master CV': 'CV kuu',
+    'Master CV for all targeted versions': 'CV kuu inayotumiwa kuunda matoleo kwa nafasi mbalimbali za kazi',
+    'Save current as master': 'Hifadhi CV hii kama CV kuu',
+    'Load master': 'Fungua CV kuu',
+    'Create version from master': 'Unda toleo kutoka kwenye CV kuu',
+    'Master CV saved locally.': 'CV kuu imehifadhiwa kwenye kifaa hiki.',
+    'Master CV loaded.': 'CV kuu imefunguliwa.',
     'Create an account to download this report': 'Fungua akaunti ili kupakua ripoti hii',
     'Free account required': 'Akaunti ya bure inahitajika',
     'Download and save this report': 'Pakua na uhifadhi ripoti hii',
