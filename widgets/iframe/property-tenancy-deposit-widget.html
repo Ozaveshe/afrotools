@@ -19,16 +19,24 @@ body.dark{background:#0a1628;color:#fafaf8}
 </head>
 <body>
 <div id="widget-root" class="aw aw--light"></div>
-<div class="aw-footer"><a href="https://afrotools.com/legal/?utm_source=widget&utm_medium=embed&utm_campaign=tenancy-deposit-widget" target="_blank" rel="noopener noreferrer">Powered by AfroTools</a></div>
-<script src="/widgets/lite/widget-pack.js?v=a04de757"></script>
+<div class="aw-footer"><a href="https://afrotools.com/property/rent-buy/?utm_source=widget&utm_medium=embed&utm_campaign=tenancy-deposit-widget" target="_blank" rel="noopener noreferrer">Powered by AfroTools</a></div>
+<script src="/widgets/lite/widget-pack.js?v=477bfe58"></script>
 <script>
 (function(){
   var params = new URLSearchParams(window.location.search);
   var theme = params.get("theme") || "light";
   var root = document.getElementById("widget-root");
+  var locale = params.get("lang") === "fr" && true ? "fr" : "en";
+  if (locale === "fr") {
+    document.documentElement.lang = "fr";
+    document.title = "Dépôt de garantie locative - AfroTools";
+    var attribution = document.querySelector(".aw-footer a");
+    attribution.textContent = "Propulsé par AfroTools";
+    attribution.href = "/fr/property/rent-buy/?utm_source=widget&utm_medium=embed&utm_campaign=tenancy-deposit-widget";
+  }
   if (theme === "dark") document.body.classList.add("dark");
   root.className = "aw aw--" + theme;
-  window.AfroWidgets.renderLiteWidget(root, { widgetId: "tenancy-deposit-widget", theme: theme });
+  window.AfroWidgets.renderLiteWidget(root, { widgetId: "tenancy-deposit-widget", theme: theme, locale: locale });
   if ("ResizeObserver" in window) {
     var ro = new ResizeObserver(function(){
       window.parent.postMessage({ type: "afrotools:resize", height: document.body.scrollHeight }, "*");

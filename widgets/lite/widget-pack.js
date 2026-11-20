@@ -10,15 +10,16 @@ function frenchPoultryResult(result) {
     note: "Estimation indicative. Vérifiez vos prix et vos coûts avant de prendre une décision."
   };
 }
-const frenchUnits = { "currency units": "unités monétaires", days: "jours", fish: "poissons", "fish/m2": "poissons/m²", m2: "m²", m3: "m³" };
+const frenchUnits = { months: "mois", units: "unités", "currency units": "unités monétaires", days: "jours", fish: "poissons", "fish/m2": "poissons/m²", m2: "m²", m3: "m³" };
 const frenchRows = { "Base quantity": "Quantité de base", "Buffer": "Marge", "Percentage component": "Part proportionnelle", "Fixed component": "Part fixe", "Days added": "Durée ajoutée" };
 
-function frenchAgriculturalResult(result, spec, locale) {
-  const labels = Object.assign({}, frenchRows, locale.rowLabels);
+function frenchWidgetResult(result, spec, locale) {
+  const labels = Object.assign({}, frenchRows);
   for (const field of spec.fields) {
     labels[field.id.replace(/([A-Z])/g, " $1").replace(/-/g, " ")] = locale.fields[field.id];
     labels[field.label] = locale.fields[field.id];
   }
+  Object.assign(labels, locale.rowLabels);
   function value(text) {
     return String(text).replace(/^(-?[0-9,.]+)(?: (.*))?$/, (_, digits, unit) =>
       digits.replace(/,/g, " ").replace(".", ",") + (unit ? " " + (frenchUnits[unit] || unit) : ""));
@@ -31,6 +32,257 @@ function frenchAgriculturalResult(result, spec, locale) {
   };
 }
 const frenchWidgets = {
+
+  "business-license-budget": {
+    "title": "Budget de création d’entreprise",
+    "description": "Additionnez les frais prévus pour immatriculer votre entreprise et obtenir les documents nécessaires.",
+    "fields": {
+      "registration": "Immatriculation",
+      "permit": "Permis et autorisations",
+      "tax": "Attestation de régularité fiscale",
+      "professional": "Honoraires professionnels"
+    },
+    "resultLabel": "Budget total de création",
+    "note": "Saisissez les montants dans une même devise. Indiquez zéro pour les démarches qui ne vous concernent pas.",
+    "rowLabels": {
+      "Registration": "Immatriculation",
+      "Permit": "Permis et autorisations",
+      "Tax clearance": "Attestation de régularité fiscale",
+      "Professional support": "Honoraires professionnels"
+    }
+  },
+  "markup-planner": {
+    "title": "Prix de vente à partir du coût",
+    "description": "Calculez un prix de vente en ajoutant au coût unitaire une majoration de votre choix.",
+    "fields": {
+      "cost": "Coût unitaire",
+      "markup": "Majoration du coût"
+    },
+    "resultLabel": "Prix de vente unitaire",
+    "note": "Une majoration de 35 % sur un coût de 3 000 donne un prix de vente de 4 050.",
+    "rowLabels": {
+      "Percentage component": "Montant de la majoration",
+      "Fixed component": "Coût unitaire"
+    }
+  },
+  "meeting-cost-widget": {
+    "title": "Coût d’une réunion",
+    "description": "Estimez le coût du temps de travail mobilisé en fonction de la durée et du nombre de participants.",
+    "fields": {
+      "people": "Nombre de participants",
+      "hours": "Durée en heures",
+      "rate": "Coût horaire moyen par personne"
+    },
+    "resultLabel": "Coût de la réunion",
+    "note": "Pour une réunion d’une heure et demie, comptez 1,5 heure par personne.",
+    "rowLabels": {
+      "people": "Nombre de participants",
+      "hours": "Durée en heures",
+      "rate": "Coût horaire moyen par personne"
+    }
+  },
+  "freelancer-quote": {
+    "title": "Devis de prestation indépendante",
+    "description": "Ajoutez au prix de base une provision pour les imprévus et vos frais fixes.",
+    "fields": {
+      "base": "Prix de base de la prestation",
+      "buffer": "Provision pour imprévus",
+      "fixed": "Frais fixes à ajouter"
+    },
+    "resultLabel": "Montant du devis",
+    "note": "La provision s’applique au prix de base. Ajoutez uniquement les frais qui ne sont pas déjà inclus.",
+    "rowLabels": {
+      "Percentage component": "Provision pour imprévus",
+      "Fixed component": "Frais fixes"
+    }
+  },
+  "invoice-fee-widget": {
+    "title": "Frais d’encaissement d’une facture",
+    "description": "Estimez les frais prélevés sur un paiement selon la commission et le montant fixe de votre prestataire.",
+    "fields": {
+      "invoice": "Montant de la facture",
+      "rate": "Taux de commission",
+      "fixed": "Frais fixes par paiement"
+    },
+    "resultLabel": "Frais d’encaissement estimés",
+    "note": "Utilisez le tarif de votre prestataire pour le moyen de paiement choisi.",
+    "rowLabels": {
+      "Percentage component": "Commission proportionnelle",
+      "Fixed component": "Frais fixes"
+    }
+  },
+  "subscription-margin": {
+    "title": "Rentabilité d’une offre par abonnement",
+    "description": "Mesurez le gain mensuel dégagé pour chaque unité monétaire dépensée pour fournir le service.",
+    "fields": {
+      "revenue": "Chiffre d’affaires mensuel récurrent",
+      "cost": "Coût mensuel de fourniture du service"
+    },
+    "resultLabel": "Gain mensuel en pourcentage des coûts",
+    "note": "Le calcul divise la différence entre recettes et coûts par les coûts. Avec 150 de recettes et 100 de coûts, le résultat est de 50 %.",
+    "rowLabels": {
+      "Net result": "Gain mensuel",
+      "Revenue": "Recettes mensuelles",
+      "Cost": "Coûts mensuels"
+    }
+  },
+  "cash-flow-runway": {
+    "title": "Autonomie de trésorerie",
+    "description": "Estimez combien de mois votre entreprise peut financer avec sa trésorerie disponible.",
+    "fields": {
+      "cash": "Trésorerie disponible",
+      "burn": "Sorties nettes de trésorerie par mois"
+    },
+    "resultLabel": "Autonomie de trésorerie estimée",
+    "note": "Utilisez un montant mensuel positif correspondant aux décaissements diminués des encaissements.",
+    "rowLabels": {
+      "Cash available": "Trésorerie disponible",
+      "Monthly burn": "Sorties nettes mensuelles"
+    }
+  },
+  "startup-runway": {
+    "title": "Autonomie financière d’une jeune entreprise",
+    "description": "Estimez la durée de financement de l’activité à partir des fonds disponibles et des sorties nettes mensuelles.",
+    "fields": {
+      "cash": "Trésorerie et fonds confirmés",
+      "burn": "Sorties nettes de trésorerie par mois"
+    },
+    "resultLabel": "Durée de financement estimée",
+    "note": "Comptez chaque encaissement une seule fois, soit dans les fonds disponibles, soit dans le calcul des sorties nettes mensuelles.",
+    "rowLabels": {
+      "Cash available": "Fonds disponibles",
+      "Monthly burn": "Sorties nettes mensuelles"
+    }
+  },
+  "customer-ltv-widget": {
+    "title": "Valeur d’un client sur la durée",
+    "description": "Estimez la marge brute cumulée sur la durée prévue de la relation client.",
+    "fields": {
+      "spend": "Dépense mensuelle moyenne du client",
+      "months": "Durée de la relation client",
+      "margin": "Taux de marge brute"
+    },
+    "resultLabel": "Marge brute cumulée par client",
+    "note": "Le calcul multiplie la dépense mensuelle par le nombre de mois, puis applique le taux de marge brute.",
+    "rowLabels": {
+      "spend": "Dépense mensuelle moyenne du client",
+      "months": "Durée de la relation client",
+      "margin": "Taux de marge brute"
+    }
+  },
+  "land-size-converter": {
+    "title": "Conversion d’acres en mètres carrés",
+    "description": "Saisissez la superficie du terrain en acres pour obtenir son équivalent en mètres carrés.",
+    "fields": {
+      "acres": "Superficie en acres"
+    },
+    "resultLabel": "Superficie en mètres carrés",
+    "note": "Un acre correspond à environ 4 047 m².",
+    "rowLabels": {
+      "acres": "Superficie en acres"
+    }
+  },
+  "tenancy-deposit-widget": {
+    "title": "Dépôt de garantie locative",
+    "description": "Calculez le dépôt de garantie prévu par votre bail à partir du loyer mensuel.",
+    "fields": {
+      "rent": "Loyer mensuel",
+      "months": "Nombre de mois de loyer demandés"
+    },
+    "resultLabel": "Dépôt de garantie",
+    "note": "Reprenez le nombre de mois indiqué dans le bail. Les loyers payés d’avance se comptent séparément.",
+    "rowLabels": {
+      "rent": "Loyer mensuel",
+      "months": "Nombre de mois de loyer demandés"
+    }
+  },
+  "property-management-fee": {
+    "title": "Frais de gestion locative",
+    "description": "Estimez les honoraires annuels à partir du loyer annuel, du taux de gestion et des frais fixes.",
+    "fields": {
+      "annual": "Loyer annuel",
+      "rate": "Taux des honoraires de gestion",
+      "fixed": "Frais fixes annuels"
+    },
+    "resultLabel": "Frais de gestion annuels",
+    "note": "Si les frais fixes sont mensuels, multipliez-les par douze avant de les saisir.",
+    "rowLabels": {
+      "Percentage component": "Honoraires proportionnels",
+      "Fixed component": "Frais fixes annuels"
+    }
+  },
+  "rent-vs-buy-widget": {
+    "title": "Coût annuel de la location et de l’achat",
+    "description": "Comparez le loyer annuel au coût annuel que vous avez estimé pour le même logement en tant que propriétaire.",
+    "fields": {
+      "rent": "Loyer annuel",
+      "ownership": "Coût annuel du logement en tant que propriétaire"
+    },
+    "resultLabel": "Loyer en pourcentage du coût de propriété",
+    "note": "Un résultat de 80 % signifie que le loyer représente quatre cinquièmes du coût annuel de propriété saisi.",
+    "rowLabels": {
+      "Numerator": "Loyer annuel",
+      "Denominator": "Coût annuel de propriété"
+    }
+  },
+  "rent-affordability-widget": {
+    "title": "Budget de loyer mensuel",
+    "description": "Fixez la part de votre revenu mensuel que vous souhaitez consacrer au loyer.",
+    "fields": {
+      "income": "Revenu mensuel du ménage",
+      "ratio": "Part du revenu consacrée au loyer"
+    },
+    "resultLabel": "Loyer mensuel correspondant",
+    "note": "Un revenu mensuel de 600 000 et une part de 30 % donnent un budget de loyer de 180 000 par mois.",
+    "rowLabels": {
+      "Income used": "Part du revenu retenue",
+      "Annual equivalent": "Budget de loyer annuel"
+    }
+  },
+  "vacancy-loss-widget": {
+    "title": "Perte de loyers en période de vacance",
+    "description": "Estimez les loyers qui ne seront pas perçus pendant la période où le logement reste inoccupé.",
+    "fields": {
+      "rent": "Loyer mensuel",
+      "months": "Durée de vacance en mois"
+    },
+    "resultLabel": "Loyers non perçus",
+    "note": "Pour six semaines de vacance environ, vous pouvez saisir 1,5 mois.",
+    "rowLabels": {
+      "rent": "Loyer mensuel",
+      "months": "Durée de vacance en mois"
+    }
+  },
+  "rental-yield-widget": {
+    "title": "Rendement locatif brut",
+    "description": "Rapportez douze mois de loyer à la valeur du bien.",
+    "fields": {
+      "rent": "Loyer mensuel",
+      "value": "Valeur du bien"
+    },
+    "resultLabel": "Rendement locatif brut annuel",
+    "note": "Le calcul suppose douze mois de location et exclut les charges, les impôts et les travaux.",
+    "rowLabels": {
+      "Numerator": "Loyer mensuel",
+      "Denominator": "Valeur du bien"
+    }
+  },
+  "property-roi-widget": {
+    "title": "Rentabilité d’un investissement immobilier",
+    "description": "Comparez les sommes récupérées sur l’investissement à son coût d’acquisition total.",
+    "fields": {
+      "return": "Loyers encaissés et prix de revente total",
+      "cost": "Prix d’achat et frais d’acquisition"
+    },
+    "resultLabel": "Rentabilité sur la période",
+    "note": "Incluez le prix de revente total avec les loyers. Le calcul déduit le coût d’acquisition, puis divise le gain obtenu par ce coût.",
+    "rowLabels": {
+      "Revenue": "Loyers et prix de revente",
+      "Cost": "Coût d’acquisition",
+      "Net result": "Gain ou perte sur la période"
+    }
+  }
+,
 
   "seed-rate": {
     "title": "Quantité de semences",
@@ -190,4 +442,4 @@ const frenchWidgets = {
     }
   }
 };
-function d(e,t){var a=i((t=t||{}).widgetId)||r[0],fr=t.locale==="fr"&&frenchWidgets[a.id],l="aw-lite-"+a.id+"-"+Math.random().toString(36).slice(2,7),u=a.fields.map(function(e){var t=l+"-"+e.id,a="date"===e.type?s():e.value;return'<div class="aw-field"><label class="aw-label" for="'+t+'">'+n(fr?fr.fields[e.id]:e.label)+(e.unit?" ("+n(fr ? frenchUnits[e.unit] || e.unit : e.unit)+")":"")+'</label><input class="aw-input" id="'+t+'" data-field="'+n(e.id)+'" type="'+("date"===e.type?"date":"number")+'" inputmode="decimal" step="any" value="'+n(a)+'"></div>'}).join("");e.innerHTML='<div class="aw-title">'+n(fr?fr.title:a.title)+'</div><p class="aw-result-label" style="margin:-8px 0 14px">'+n(fr?fr.description:a.description)+"</p>"+u+'<button class="aw-btn aw-btn--primary" type="button">'+(fr?"Calculer":"Calculate")+'</button><div class="aw-result-box" style="display:none"></div>'+(t.footerHTML||"");var d=e.querySelector(".aw-result-box");function p(){var t={};return e.querySelectorAll("[data-field]").forEach(function(e){t[e.getAttribute("data-field")]="date"===e.type?e.value:o(e.value)}),t}function m(){var e=c(a,p(),fr?"fr-FR":"en-GB");if(fr)e=fr.result?fr.result(e):frenchAgriculturalResult(e,a,fr);d.style.display="block",d.innerHTML='<div class="aw-result-label">'+n(e.label)+'</div><div class="aw-result-main">'+n(e.value)+"</div>"+(e.rows.length?'<hr class="aw-divider">'+e.rows.map(function(e){return'<div class="aw-result-row"><span class="aw-result-label">'+n(e.label)+"</span><span>"+n(e.value)+"</span></div>"}).join(""):"")+'<p class="aw-result-label" style="margin-top:10px">'+n(e.note)+"</p>"}e.querySelector(".aw-btn").addEventListener("click",m),e.querySelectorAll("input").forEach(function(e){e.addEventListener("change",m),e.addEventListener("keyup",function(e){"Enter"===e.key&&m()})}),m()}return{specs:r,byId:i,frenchWidget:function(id){return frenchWidgets[id]},install:function(e){var t=e.AfroWidgets=e.AfroWidgets||{};t.renderLiteWidget=d,r.forEach(function(e){var a=function(t,a){(a=a||{}).widgetId=e.id,d(t,a)};t[function(e){return e.replace(/-/g,"_")}(e.id)]=a,t[function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()})}(e.id)]=a})},renderLiteWidget:d}}();"undefined"!=typeof module&&module.exports&&(module.exports=t),e&&(e.AfroWidgetLitePack=t,e.document&&t.install(e))}("undefined"!=typeof window?window:globalThis);
+function d(e,t){var a=i((t=t||{}).widgetId)||r[0],fr=t.locale==="fr"&&frenchWidgets[a.id],l="aw-lite-"+a.id+"-"+Math.random().toString(36).slice(2,7),u=a.fields.map(function(e){var t=l+"-"+e.id,a="date"===e.type?s():e.value;return'<div class="aw-field"><label class="aw-label" for="'+t+'">'+n(fr?fr.fields[e.id]:e.label)+(e.unit?" ("+n(fr ? frenchUnits[e.unit] || e.unit : e.unit)+")":"")+'</label><input class="aw-input" id="'+t+'" data-field="'+n(e.id)+'" type="'+("date"===e.type?"date":"number")+'" inputmode="decimal" step="any" value="'+n(a)+'"></div>'}).join("");e.innerHTML='<div class="aw-title">'+n(fr?fr.title:a.title)+'</div><p class="aw-result-label" style="margin:-8px 0 14px">'+n(fr?fr.description:a.description)+"</p>"+u+'<button class="aw-btn aw-btn--primary" type="button">'+(fr?"Calculer":"Calculate")+'</button><div class="aw-result-box" style="display:none"></div>'+(t.footerHTML||"");var d=e.querySelector(".aw-result-box");function p(){var t={};return e.querySelectorAll("[data-field]").forEach(function(e){t[e.getAttribute("data-field")]="date"===e.type?e.value:o(e.value)}),t}function m(){var e=c(a,p(),fr?"fr-FR":"en-GB");if(fr)e=fr.result?fr.result(e):frenchWidgetResult(e,a,fr);d.style.display="block",d.innerHTML='<div class="aw-result-label">'+n(e.label)+'</div><div class="aw-result-main">'+n(e.value)+"</div>"+(e.rows.length?'<hr class="aw-divider">'+e.rows.map(function(e){return'<div class="aw-result-row"><span class="aw-result-label">'+n(e.label)+"</span><span>"+n(e.value)+"</span></div>"}).join(""):"")+'<p class="aw-result-label" style="margin-top:10px">'+n(e.note)+"</p>"}e.querySelector(".aw-btn").addEventListener("click",m),e.querySelectorAll("input").forEach(function(e){e.addEventListener("change",m),e.addEventListener("keyup",function(e){"Enter"===e.key&&m()})}),m()}return{specs:r,byId:i,frenchWidget:function(id){return frenchWidgets[id]},install:function(e){var t=e.AfroWidgets=e.AfroWidgets||{};t.renderLiteWidget=d,r.forEach(function(e){var a=function(t,a){(a=a||{}).widgetId=e.id,d(t,a)};t[function(e){return e.replace(/-/g,"_")}(e.id)]=a,t[function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()})}(e.id)]=a})},renderLiteWidget:d}}();"undefined"!=typeof module&&module.exports&&(module.exports=t),e&&(e.AfroWidgetLitePack=t,e.document&&t.install(e))}("undefined"!=typeof window?window:globalThis);
