@@ -73,6 +73,13 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/blog/igbo-market-days/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/blog/igbo-market-days/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/blog/igbo-market-days/">
+<style>
+@media (max-width: 480px) { .article-hero { padding-top: 1rem; }
+.article-hero .article-hero-inner h1 { font-size: clamp(1.8rem, 7.5vw, 2.1rem); } }
+.market-day-today { margin: 1rem 0; }
+.market-day-today p { margin: 0 0 .35rem; font-weight: 700; }
+.market-day-today a { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -80,6 +87,10 @@
  <nav class="breadcrumb"><a href="/">Home</a> <span class="sep">&rsaquo;</span> <a href="/blog/">Blog</a> <span class="sep">&rsaquo;</span> Igbo Market Days</nav>
  <span class="category-badge category-badge--african">Uniquely African</span>
  <h1>How Igbo Market Days Work: Eke, Orie, Afor and Nkwo</h1>
+ <div class="market-day-today">
+  <p id="guide-market-day" hidden></p>
+  <a href="/tools/market-days/#market-day-lookup">Find a market day by date or town &rarr;</a>
+ </div>
  <div class="article-meta-hero"><span>By <a href="/authors/idris-diallo/">Idris Diallo</a></span><span class="dot"></span><span>Published Mar 19, 2026</span><span class="dot"></span><span>8 min read</span></div>
 </div></section>
 <!-- seo-quick-answer-block:start -->
@@ -301,5 +312,24 @@
 <afro-footer></afro-footer>
 <script src="/blog/assets/js/blog-reading.js?v=13e3bb9e" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/engines/igbo-market-days.js"></script>
+<script>
+(function () {
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.igboMarketDays;
+  if (!engine) return;
+  var answer = document.getElementById("guide-market-day");
+  function updateToday() {
+    var date = engine.getTodayDateKey("Africa/Lagos");
+    answer.textContent = "Today in Nigeria: " + engine.getMarketDay(date).alias + " (" + engine.formatDate(date) + ").";
+    answer.hidden = false;
+  }
+  function scheduleUpdate() {
+    updateToday();
+    window.setTimeout(scheduleUpdate, 60000 - Date.now() % 60000);
+  }
+  scheduleUpdate();
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) updateToday(); });
+}());
+</script>
 </body>
 </html>
