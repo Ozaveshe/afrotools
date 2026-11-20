@@ -77,6 +77,7 @@ function recipeExportText() {
     ? ['Time: Not recorded', 'Prep: ' + i.formatRecipeMinutes(timing.prep), 'Cook: ' + (timing.cook === null ? '' : 'About ') + i.formatRecipeMinutes(timing.cook) + ' (see method for checks)']
     : ['Time: ' + timing.total + ' minutes'];
   var t = [n.name, n.country_name + (n.region ? ' | ' + n.region : ''), pressureStages ? 'Batch: 1 kg beef + vegetables' : kisraStages ? 'Batch: ' + kisraStages.batch : maheuStages ? 'Batch: ' + maheuStages.batch : kunuStages ? 'Batch: ' + kunuStages.batch : n.yield_status === 'not-recorded' ? 'Yield: Not recorded; source quantities' : 'Servings: ' + s.servings + ' ' + (n.serving_unit || 'servings')].concat(timeLines, ['', n.description || '']);
+  if (n.serving_plan) t.push(n.serving_plan);
   if (n.method_revision) t.push(n.story || '', illustration);
   t.push('', 'Ingredients');
   var a = '';

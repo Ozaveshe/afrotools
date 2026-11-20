@@ -1272,7 +1272,7 @@
 
   function renderRecipeCard(r) {
     var country = AK.COUNTRIES[r.country_code] || {};
-    var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+    var totalMin = recipeTotalMinutes(r);
     var countryName = r.country_name || country.name || 'Africa';
     var category = categoryLabel(r.category);
     var diet = primaryDietTag(r);
@@ -1408,7 +1408,7 @@
     }
     if (filters.maxTime) {
       recipes = (recipes || []).filter(function (recipe) {
-        var total = (Number(recipe.prep_time_minutes) || 0) + (Number(recipe.cook_time_minutes) || 0);
+        var total = recipeTotalMinutes(recipe);
         return total > 0 && total <= filters.maxTime;
       });
     }
@@ -1441,7 +1441,7 @@
     var r = recipes && recipes[0];
     if (!r) return;
     var country = AK.COUNTRIES[r.country_code] || {};
-    var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+    var totalMin = recipeTotalMinutes(r);
     var methodPending = typeof AK.isPendingRecipeMethod === 'function' && AK.isPendingRecipeMethod(r);
     var description = (r.description || '').slice(0, 140);
     if (r.description && r.description.length > 140) {
@@ -1546,7 +1546,7 @@
   }
 
   function recipeTotalMinutes(recipe) {
-    return Number(recipe.prep_time_minutes || 0) + Number(recipe.cook_time_minutes || 0);
+    return recipe.total_time_minutes ?? (Number(recipe.prep_time_minutes || 0) + Number(recipe.cook_time_minutes || 0));
   }
 
   function getPlanImageMarkup(recipe) {

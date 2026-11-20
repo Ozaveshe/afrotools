@@ -41,6 +41,7 @@ function buildRecipeIndex(manifest) {
     .map(recipe => { const projected = attributedRecipes.projectAttributedRecipe(recipe); if (!projected) throw new Error("Attributed index identity mismatch"); return projected; })
     .map((recipe) => ({
       ...Object.fromEntries(RECIPE_FIELDS.map((field) => [field, recipe[field] == null ? null : recipe[field]])),
+      ...(recipe.wait_time_minutes > 0 ? { total_time_minutes: recipe.total_time_minutes, wait_time_minutes: recipe.wait_time_minutes, serving_plan: recipe.serving_plan } : {}),
       ...projectCuratedDetail(recipe),
       ingredients: (recipe.ingredients || []).map((item) => ({
         name: item.name,

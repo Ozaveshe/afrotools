@@ -195,7 +195,7 @@
 
     recipes.forEach(function (r) {
       var country = AK.COUNTRIES[r.country_code] || {};
-      var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+      var totalMin = r.total_time_minutes ?? ((r.prep_time_minutes || 0) + (r.cook_time_minutes || 0));
       var methodPending = typeof AK.isPendingRecipeMethod === 'function' && AK.isPendingRecipeMethod(r);
       var card = document.createElement('a');
       card.className = 'ak-recipe-card';

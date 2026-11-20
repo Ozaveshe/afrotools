@@ -1542,6 +1542,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     prep_time_minutes: recipe.prep_time_minutes,
     cook_time_minutes: recipe.cook_time_minutes,
     total_time_minutes: recipe.total_time_minutes,
+    ...(recipe.serving_plan ? { serving_plan: recipe.serving_plan, wait_time_minutes: recipe.wait_time_minutes } : {}),
     country_name: recipe.country_name,
     country_code: recipe.country_code,
     region: recipe.region,
@@ -1828,6 +1829,7 @@ ${renderCookbookNav()}
               <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(engine.formatRecipeMinutes(engine.getRecipeTiming(recipe).total))} total</span>`}
               <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>
             </div>
+            ${recipe.serving_plan ? `<p class="ak-method-sub"><strong>When to start</strong> ${escapeHtml(recipe.serving_plan)}</p>` : ""}
             <div class="ak-steps">${renderedSteps}</div>
             <div class="ak-static-helper-note">
               <p>${akIcon("warning", "ak-icon-sm ak-icon-accent")}<span>${escapeHtml(recipe.regional_variations || (recipe.method_revision ? "Regional variations have not been documented for this adaptation." : "Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen."))}</span></p>
