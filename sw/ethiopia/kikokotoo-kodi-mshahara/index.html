@@ -970,11 +970,32 @@ window._grossToNet = function(g) {
   function getFavs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[];}}
   function isSaved(){return getFavs().indexOf(TOOL_ID)>-1;}
 
+  function finishRequestedSave(){
+    if(!isLoggedIn()) return;
+    if(!isSaved()) window.toggleSaveTool();
+    updateSaveUI();
+  }
+  function resumeRequestedSave(){
+    if(location.hash !== '#save-tool' || !isLoggedIn()) return;
+    var pending;
+    try {
+      pending = sessionStorage.getItem('afro:pending-payroll-bookmark');
+      if(pending !== location.pathname) return;
+      sessionStorage.removeItem('afro:pending-payroll-bookmark');
+    } catch (_) { return; }
+    history.replaceState(history.state, '', location.pathname + location.search);
+    finishRequestedSave();
+  }
   window.toggleSaveTool=function(){
     if(!isLoggedIn()){
       if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
-        AfroAuth.openModal('login',function(){updateSaveUI();});
-      }else{window.location.href='/sw/auth/?mode=login&next=%2Fsw%2Fdashboard%2F';}
+        AfroAuth.openModal('login',finishRequestedSave);
+      }else{var target = location.pathname;
+        try {
+          sessionStorage.setItem('afro:pending-payroll-bookmark', target);
+          target += '#save-tool';
+        } catch (_) { /* Return to the calculator for a manual save. */ }
+        window.location.href='/sw/auth/?mode=login&next='+encodeURIComponent(target);}
       return;
     }
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
@@ -1038,6 +1059,8 @@ window._grossToNet = function(g) {
   // Run on load + auth changes
   document.addEventListener('DOMContentLoaded',updateSaveUI);
   window.addEventListener('afro-auth-change',updateSaveUI);
+  window.addEventListener('afro-auth-change',resumeRequestedSave);
+  document.addEventListener('DOMContentLoaded',resumeRequestedSave);
 })();
 </script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
