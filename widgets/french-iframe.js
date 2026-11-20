@@ -1,6 +1,14 @@
 (function () {
   const widgets = {
 
+  "public-holidays": {
+    "title": "Calendrier des jours fériés",
+    "tool": "/fr/tools/jours-feries/",
+    "frame": "african-public-holidays",
+    "script": "african/public-holidays.js"
+  }
+,
+
   "water-intake": {
     "title": "Planifier les boissons",
     "tool": "/fr/tools/apport-eau/",
