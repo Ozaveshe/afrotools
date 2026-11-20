@@ -96,3 +96,22 @@ test('rates API labels annual inflation context and returns no invented yield da
   assert.equal(yields.body.available, false);
   assert.deepEqual(yields.body.countries, []);
 });
+
+test('regional lookups partition verified policy observations even when source rows omit geography', async () => {
+  activeSnapshot = structuredClone(snapshot);
+  activeSnapshot.countries.forEach(row => { delete row.region; });
+  const all = (await request()).body.countries;
+  const country = (await request({ country: 'NG' })).body.country;
+  assert.equal(country.region, 'west');
+  const west = (await request({ region: 'west' })).body.countries;
+  assert.deepEqual(west.map(row => row.code).sort(), ['CI', 'GH', 'NG', 'SN']);
+  assert.deepEqual(west.find(row => row.code === 'NG'), country);
+  const islands = (await request({ region: 'indian-ocean' })).body.countries;
+  assert.deepEqual(islands.map(row => row.code), ['MU']);
+  const represented = new Set(all.map(row => row.region));
+  assert.ok(!represented.has(''));
+  const east = (await request({ region: 'east' })).body.countries;
+  assert.ok(east.some(row => row.code === 'KE'));
+  assert.ok(!east.some(row => row.code === 'RW'));
+  assert.equal((await request({ region: 'unknown' })).statusCode, 400);
+});

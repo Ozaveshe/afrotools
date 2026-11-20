@@ -18,6 +18,17 @@ const { getAllowedOrigin } = require('./utils/cors');
 const { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
 const ratesEvidence = require('../../assets/js/engines/afrorates-verified');
 
+const countryRegistry = require('../../data/registry/countries.json');
+const regionIds = {
+  'West Africa': 'west',
+  'East Africa': 'east',
+  'Southern Africa': 'south',
+  'North Africa': 'north',
+  'Central Africa': 'central',
+  'Indian Ocean': 'indian-ocean'
+};
+const countryRegions = new Map(countryRegistry.map(country => [country.isoCode, regionIds[country.region]]));
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
@@ -117,7 +128,10 @@ exports.handler = async function (event) {
   _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
 
   const evidenceCoverage = ratesEvidence.coverage(data, { maxAgeDays: 45 });
-  let countries = ratesEvidence.selectVerified(data, { maxAgeDays: 45 });
+  let countries = ratesEvidence.selectVerified(data, { maxAgeDays: 45 }).map(country => ({
+    ...country,
+    region: country.region || countryRegions.get(country.code) || ''
+  }));
   if (!countries.length) {
     return jsonResponse(503, {
       error: 'No policy-rate rows currently pass the official-source evidence gate.',
@@ -149,7 +163,7 @@ exports.handler = async function (event) {
   // --- Region filter: ?region=west ---
   if (params.region) {
     const region = params.region.toLowerCase();
-    const validRegions = ['west', 'east', 'south', 'north', 'central'];
+    const validRegions = Object.values(regionIds);
     if (!validRegions.includes(region)) {
       return jsonResponse(400, {
         error: `Invalid region. Valid regions: ${validRegions.join(', ')}`,
