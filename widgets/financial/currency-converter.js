@@ -29,17 +29,41 @@ window.AfroWidgets.currency_converter = function(root, options) {
     manual.parentElement.firstChild.nodeValue=msg("Your provider rate (optional): ","Cours de votre prestataire (facultatif) : ")+to.value+msg(" for 1 "," pour 1 ")+unit;
     if(!crypto && from.value===to.value){manual.disabled=true;quote={rate:1,source:msg("Same currency","Même devise")};status.textContent=quote.source;return;}
     manual.disabled=false;status.textContent=msg("Looking up a dated rate. You can enter your quote now.","Recherche d’un cours daté. Vous pouvez saisir votre propre cours.");
-    const base="https://afrotools.com";const urls=crypto?["https://api.coingecko.com/api/v3/simple/price?ids="+from.value+"&vs_currencies="+to.value.toLowerCase()+"&include_last_updated_at=true"]:[base+"/api/forex?base=USD",base+"/data/forex/latest.json"];
-    (async()=>{for(const url of urls){try{
-      const response=await fetch(url,{cache:"no-cache",signal:AbortSignal.timeout(5000)});if(!response.ok)continue;
-      const data=await response.json();if(id!==revision)return;
-      const coin=data[from.value],rate=crypto?Number(coin?.[to.value.toLowerCase()]):Number(to.value==="USD"?1:data.rates?.[to.value])/Number(from.value==="USD"?1:data.rates?.[from.value]);
-      const date=crypto?new Date(Number(coin?.last_updated_at)*1000):new Date(data.as_of||data.timestamp||data.updatedAt);
-      const age=Date.now()-date.getTime();
-      if(!Number.isFinite(rate)||rate<=0||!Number.isFinite(age)||age< -60000||age>(crypto?600000:604800000)||(!crypto && data.base && data.base!=="USD"))continue;
-      quote={rate,source:(crypto?"CoinGecko":"AfroTools FX")+" · "+date.toLocaleString(locale,{dateStyle:"medium",timeStyle:"short"})};status.textContent=quote.source;return;
-    }catch{}}
-    if(id===revision)status.textContent=msg("Enter your provider’s rate to convert this pair.","Saisissez le cours de votre prestataire pour convertir cette paire.");
+    const sourceCurrency=from.value,targetCurrency=to.value;
+    const endpoint="https://afrotools.com/api/forex?";
+    async function request(query) {
+      const response=await fetch(endpoint+query,{cache:"no-cache",signal:AbortSignal.timeout(5000)});
+      // A refusal can be delivered as HTTP 503 with the reason in the JSON.
+      const body=await response.json();
+      return {body,ok:response.ok};
+    }
+    (async()=>{
+      let body,ok,transportFailed=false;
+      try {({body,ok}=await request(new URLSearchParams({from:sourceCurrency,to:targetCurrency})));}
+      catch {transportFailed=true;}
+      if(id!==revision)return;
+      let rate,qualification;
+      if(transportFailed){
+        try{
+          const list=await request(new URLSearchParams({base:sourceCurrency}));
+          if(id!==revision)return;
+          if(list.ok && list.body.base===sourceCurrency && list.body.status==="available"){
+            const row=list.body.qualification?.[targetCurrency];
+            if(row?.status==="available"){rate=list.body.rates?.[targetCurrency];qualification=row;}
+          }
+        }catch{}
+      }else if(ok && body?.status==="available" && body.pair===sourceCurrency+"/"+targetCurrency){
+        rate=body.rate;qualification=body.qualification;
+      }
+      if(id!==revision)return;
+      const observations=[qualification?.base,qualification?.target];
+      if(Number.isFinite(rate)&&rate>0&&observations.every(row=>row?.status==="available"&&Number.isFinite(Date.parse(row.observed_at)))){
+        const date=new Date(Math.min(...observations.map(row=>Date.parse(row.observed_at))));
+        quote={rate,source:"AfroTools FX · "+date.toLocaleString(locale,{dateStyle:"medium",timeStyle:"short"})};
+        status.textContent=quote.source;
+      }else{
+        status.textContent=msg("Enter your provider’s rate to convert this pair.","Saisissez le cours de votre prestataire pour convertir cette paire.");
+      }
     })();
   }
   from.addEventListener("change",refresh);to.addEventListener("change",refresh);form.addEventListener("input",()=>{result.textContent="";});
