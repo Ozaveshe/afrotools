@@ -9,7 +9,7 @@ for (const sw of [false, true]) {
   const loaded = load(html, 180000, '108000');
   const {context, nodes, result} = loaded;
   assert.strictEqual(result.annualPAYE, 38112);
-  assert.strictEqual(result.netAnnual, sw ? 132888 : 131808);
+  assert.strictEqual(result.netAnnual, 131808);
   for (const period of ['annual', 'monthly']) {
     vm.runInContext(`PERIOD='${period}';renderSelectedPeriod()`, context);
     const divisor = period === 'monthly' ? 12 : 1;
@@ -19,7 +19,7 @@ for (const sw of [false, true]) {
     assert(nodes.get('resLabel').textContent.includes(sw ? (period === 'monthly' ? 'Mwezi' : 'Mwaka') : (period === 'monthly' ? 'Monthly' : 'Annual')));
   }
   vm.runInContext('calculate()', context);
-  assert(nodes.get(sw ? 'resKiasi' : 'resAmount').textContent.includes(sw ? '11,074' : '10,984'));
+  assert(nodes.get(sw ? 'resKiasi' : 'resAmount').textContent.includes('10,984'));
   context.CALC_MODE = 'net';
   vm.runInContext('renderSelectedPeriod()', context);
   assert(nodes.get(sw ? 'resKiasi' : 'resAmount').textContent.includes('15,000'));

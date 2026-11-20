@@ -137,11 +137,14 @@
       "englishId": "zm-paye",
       "countrySlug": "zambia",
       "previousHash": "4795173d673ef543989b41a8e688393afaaf6040a64d300af837c0c47bb24316",
-      "currentHash": "8bce35aeb42c1a9457e5855849b3053cb04c66f3b5650f48545f683d871c827d",
-      "sourceCommit": "60828812e4f3bbd6e8f2f5ff7d5c3fc096162356",
-      "reviewEvidence": "reports/zambia-period-owner-review-2026-11-21.json",
+      "currentHash": "4a946cf85435571a405b99976ce4700552f3ca63b7a9e1ac96a3081e5cf28e5f",
+      "sourceCommit": "ce517903437e15688e878977c617a5edea1b7e6f",
+      "reviewEvidence": "data/calculation-quality/reviews/zambia-en-sw-2026-11-21.json",
       "reviewedAt": "2026-11-21",
-      "reason": "Repair selected-period presentation and monthly result consumers, clear invalid results, and use Zambia annual inverse adapter. Forward RESULT objects unchanged in 14 cases. No tax-parameter or fixture change; Swahili still has its older ceiling and no NHIMA pending a separately sourced correction."
+      "reason": "Align the2026 employee calculation with the reviewed English owner: NAPSA5% capped1861.80/month, NHIMA1% of entered basic salary, PAYE on gross. Preserve annual inputs and period/export behavior. Reviewed numeric overlay explicitly replaces historical no-NHIMA expectations; historical receipt unchanged.",
+      "previousCurrentHash": "8bce35aeb42c1a9457e5855849b3053cb04c66f3b5650f48545f683d871c827d",
+      "previousSourceCommit": "60828812e4f3bbd6e8f2f5ff7d5c3fc096162356",
+      "previousReviewEvidence": "reports/zambia-period-owner-review-2026-11-21.json"
     }
   ],
   "verification": {
@@ -187,14 +190,43 @@
     {
       "englishId": "zm-paye",
       "previousHash": "2d652773ec0240091700022aba9c0f4ae7e1179a97ae3cb34b22462ad2ccf674",
-      "currentHash": "782ed77cc0d09319826dc7f948e2237de5fdbcb3c3e48a15d166d3cd4da21d63",
-      "sourceCommit": "60828812e4f3bbd6e8f2f5ff7d5c3fc096162356",
-      "reviewEvidence": "reports/zambia-period-owner-review-2026-11-21.json",
-      "reason": "Period-only presentation refresh in the existing calculate declaration. Annual forward RESULT objects are identical at seven salary values with NAPSA on/off. The Zambia-specific inverse controller preserves annual input semantics. Statutory parameters and all historical numeric expectations remain unchanged; the separate Swahili NHIMA/ceiling reconciliation is pending.",
-      "previousCurrentHash": "029bdd043a5d3c433b24a5001f957de8b2c8062240212220538cdf4b3e98ec17",
-      "previousSourceCommit": "e0f5e5ae86220eafd1a76dffdc252d1c73d4c515",
-      "previousReviewEvidence": "reports/sw-paye-english-owner-review-2026-09-24.md",
+      "currentHash": "d7535008dd514741b8025f03632cafef80c32c1a271b775d44ecef13632d37ab",
+      "sourceCommit": "ce517903437e15688e878977c617a5edea1b7e6f",
+      "reviewEvidence": "data/calculation-quality/reviews/zambia-en-sw-2026-11-21.json",
+      "reason": "Employer-cost label now identifies modeled subtotal. Forward arithmetic unchanged; FAQ/top-band base and source references corrected outside the controller.",
+      "previousCurrentHash": "782ed77cc0d09319826dc7f948e2237de5fdbcb3c3e48a15d166d3cd4da21d63",
+      "previousSourceCommit": "60828812e4f3bbd6e8f2f5ff7d5c3fc096162356",
+      "previousReviewEvidence": "reports/zambia-period-owner-review-2026-11-21.json",
       "reviewedAt": "2026-11-21"
+    }
+  ],
+  "numericReviews": [
+    {
+      "englishId": "zm-paye",
+      "reviewEvidence": "data/calculation-quality/reviews/zambia-en-sw-2026-11-21.json",
+      "previousExpected": {
+        "tax": 27012,
+        "net": 115488,
+        "employeeSocial": 7500,
+        "employerCost": 157500
+      },
+      "expected": {
+        "tax": 27012,
+        "net": 113988,
+        "employeeSocial": 7500,
+        "employerCost": 159000,
+        "employeeHealth": 1500,
+        "employerHealth": 1500
+      },
+      "fields": {
+        "tax": "annualPAYE",
+        "net": "netAnnual",
+        "employeeSocial": "napsa",
+        "employerCost": "totalEmployerCostAnnual",
+        "employeeHealth": "nhima",
+        "employerHealth": "empNhima"
+      },
+      "reason": "Default annual gross150000 is treated as all-basic when basic is blank. Add1500 employee NHIMA and1500 employer NHIMA to historical no-health fixture. PAYE and NAPSA unchanged; preserve historical acceptance."
     }
   ]
 }
