@@ -1,6 +1,20 @@
 (function () {
   const widgets = {
 
+  "mobile-money-fees": {
+    "title": "Frais de paiement mobile",
+    "tool": "/fr/tools/frais-mobile-money/",
+    "frame": "african-mobile-money-fees",
+    "script": "african/mobile-money-fees.js"
+  },
+  "remittance-compare": {
+    "title": "Comparer les transferts d’argent",
+    "tool": "/fr/tools/transfert-argent/",
+    "frame": "african-remittance-compare",
+    "script": "african/remittance-compare.js"
+  }
+,
+
   "stamp-duty": {
     "title": "Droits d’enregistrement",
     "tool": "/fr/tools/droits-enregistrement/",
