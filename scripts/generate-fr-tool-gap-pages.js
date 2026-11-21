@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (page.enSlug === "work-permit-cost/algeria") {
+    return fs.readFileSync(path.join(__dirname, "templates", "fr-algeria-work-permit.html"), "utf8");
+  }
   const frenchTravelPage = FRENCH_TRAVEL.pageForEnSlug(page.enSlug);
   if (frenchTravelPage) return FRENCH_TRAVEL.renderPage(frenchTravelPage);
   if (page.enSlug === "route-fares") {

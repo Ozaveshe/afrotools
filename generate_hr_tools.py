@@ -437,6 +437,9 @@ def gen_country_page(tool, code, cslug, cname, flag):
             form_html += f'<div class="hr-field"><label class="hr-f-label" for="{f["id"]}">{f["label"]}{opt}</label>{inp}</div>\n'
         form_html += '</div>\n<button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>\n'
 
+    if slug == "work-permit-cost" and code == "DZ":
+        form_html = '<p>Sources checked on 21 November 2026. <a href="https://www.joradp.dz/FTP/jo-francais/2021/F2021100.pdf#page=34">Official Gazette, 30 December 2021, article 88 (stamp duty)</a>. <a href="https://www.mtess.gov.dz/fr/guide-de-procedures/">Labour Ministry employer filing guide (procedure)</a>. The guide cites an earlier fee schedule.</p>'
+
     # Build inline script
     if tmpl in STATIC_DISPLAY:
         script = STATIC_DISPLAY[tmpl].replace("__CC__", code)
