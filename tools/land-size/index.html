@@ -71,7 +71,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the size of a standard Nigerian plot?","acceptedAnswer":{"@type":"Answer","text":"A standard Nigerian plot measures 60 feet by 120 feet, which equals approximately 648 square meters. A half plot is 60 by 60 feet (324 sqm). Actual sizes can vary slightly depending on the surveyor and location."}},{"@type":"Question","name":"What is a South African Morgen?","acceptedAnswer":{"@type":"Answer","text":"A Morgen is a traditional South African unit of land measurement equal to approximately 8,567 square meters (about 2.12 acres). It was historically used by Dutch settlers and is still referenced in some rural property dealings."}},{"@type":"Question","name":"Which units does the calculator support?","acceptedAnswer":{"@type":"Answer","text":"Square meters, square feet, hectares, acres, Nigerian plots (648 sqm), half plots, SA Morgen (8567 sqm), and Kenyan acres. You can input by dimensions (length x width) or enter area directly."}},{"@type":"Question","name":"How does the visual preview work?","acceptedAnswer":{"@type":"Answer","text":"When you enter dimensions (length x width), a scaled rectangle is drawn on the canvas showing the proportions of the land. This gives you a visual sense of whether the land is a square, wide rectangle, or narrow strip."}},{"@type":"Question","name":"How does the price calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter the price per square meter in your local currency. The calculator multiplies that by the total area in square meters to give the total land cost. This helps you quickly estimate land purchase prices."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many square metres is a plot of land in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Use the dimensions or area on your survey plan. A rectangular 60 ft × 120 ft plot covers 668.90 m²; 60 ft × 60 ft covers 334.45 m². A plot measured as 18 m × 36 m covers 648 m²."}},{"@type":"Question","name":"What is a South African Morgen?","acceptedAnswer":{"@type":"Answer","text":"A Morgen is a traditional South African unit of land measurement equal to approximately 8,567 square meters (about 2.12 acres). It was historically used by Dutch settlers and is still referenced in some rural property dealings."}},{"@type":"Question","name":"Which units does the calculator support?","acceptedAnswer":{"@type":"Answer","text":"Square meters, square feet, hectares, acres, 60 × 120 ft plot equivalents (668.90 m²), 60 × 60 ft half plots, SA Morgen (8567 sqm), and Kenyan acres. You can input by dimensions (length x width) or enter area directly."}},{"@type":"Question","name":"How does the visual preview work?","acceptedAnswer":{"@type":"Answer","text":"When you enter dimensions (length x width), a scaled rectangle is drawn on the canvas showing the proportions of the land. This gives you a visual sense of whether the land is a square, wide rectangle, or narrow strip."}},{"@type":"Question","name":"How does the price calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter the price per square meter in your local currency. The calculator multiplies that by the total area in square meters to give the total land cost. This helps you quickly estimate land purchase prices."}}]}
 </script>
 <style>
   :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; }
@@ -234,9 +234,9 @@
                   <option value="sqft">Square Feet</option>
                   <option value="ha">Hectares</option>
                   <option value="acre">Acres</option>
-                  <option value="plot">Nigerian Plot (648 sqm)</option>
-                  <option value="halfplot">Half Plot (324 sqm)</option>
-                  <option value="gplot">Ghana Standard Plot (650 sqm)</option>
+                  <option value="plot">60 × 120 ft plot (668.90 m²)</option>
+                  <option value="halfplot">60 × 60 ft half plot (334.45 m²)</option>
+                  <option value="gplot">Ghana 70 × 100 ft plot (650.32 m²)</option>
                   <option value="keighth">Kenya 1/8 Acre (506 sqm)</option>
                   <option value="morgen">SA Morgen (8567 sqm)</option>
                   <option value="kacre">Kenyan Acre (4047 sqm)</option>
@@ -250,7 +250,7 @@
             <div class="zfun" id="funCards"></div>
             <div class="zfun-dyk">
               <div class="zfun-dyk-title">Did You Know?</div>
-              <div class="zfun-dyk-text">A standard Nigerian plot (60ft x 120ft) is exactly 648 square metres. But in Lagos, that same plot costs more than a mansion in most other African cities! Location, location, location.</div>
+              <div class="zfun-dyk-text">A 60 × 120 ft rectangle covers 7,200 ft², or 668.90 m². An 18 × 36 m rectangle covers 648 m². Use your survey plan’s area for an irregular parcel.</div>
             </div>
           </div>
 
@@ -290,14 +290,16 @@
             </div>
             <div class="plan-grid">
               <div class="field">
-                <label class="f-label" for="planPlotUnit">Local Plot Standard</label>
+                <label class="f-label" for="planPlotUnit">Plot size for subdivision</label>
                 <select class="f-select" id="planPlotUnit" onchange="updateLandPlan()">
                   <option value="plot">Nigeria 60x120ft</option>
                   <option value="gplot">Ghana 70x100ft</option>
                   <option value="keighth">Kenya 1/8 acre</option>
                   <option value="halfplot">Half plot</option>
                   <option value="acre">Acre</option>
+                  <option value="survey">My measured plot area</option>
                 </select>
+                <div id="surveyPlotField" hidden><label for="surveyPlotSqm" class="f-label">Area of one planned plot (m²)</label><input type="number" id="surveyPlotSqm" class="f-input" min="0.01" step="any" oninput="updateLandPlan()"></div>
               </div>
               <div class="field">
                 <label class="f-label">Access/Setback Reserve %</label>
@@ -329,13 +331,13 @@
         <div class="info-text">
           <table class="ref-table">
             <tr><th>Country</th><th>Name</th><th>Size</th></tr>
-            <tr><td>Nigeria</td><td>Standard Plot</td><td>60x120ft (648 sqm)</td></tr>
-            <tr><td>Nigeria</td><td>Half Plot</td><td>60x60ft (324 sqm)</td></tr>
-            <tr><td>Nigeria</td><td>Corner Piece</td><td>60x120ft (648 sqm)</td></tr>
+            <tr><td>Nigeria</td><td>Example plot</td><td>60 × 120 ft (668.90 m²)</td></tr>
+            <tr><td>Nigeria</td><td>Half of that plot</td><td>60 × 60 ft (334.45 m²)</td></tr>
+            <tr><td>Nigeria</td><td>Metric example</td><td>18 × 36 m (648 m²)</td></tr>
             <tr><td>Ghana</td><td>Standard Plot</td><td>70x100ft (650 sqm)</td></tr>
             <tr><td>Ghana</td><td>Town Plot</td><td>80x80ft (594 sqm)</td></tr>
-            <tr><td>Kenya</td><td>1/8 Acre</td><td>50x100ft (506 sqm)</td></tr>
-            <tr><td>Kenya</td><td>1/4 Acre</td><td>100x100ft (1012 sqm)</td></tr>
+            <tr><td>Kenya</td><td>1/8 Acre</td><td>505.86 m²</td></tr>
+            <tr><td>Kenya</td><td>1/4 Acre</td><td>1,011.71 m²</td></tr>
             <tr><td>South Africa</td><td>Morgen</td><td>8567 sqm</td></tr>
             <tr><td>South Africa</td><td>Typical erf</td><td>500-1000 sqm</td></tr>
           </table>
@@ -346,8 +348,8 @@
         <div class="info-text">
           &bull; 1 Hectare = 10,000 sqm<br>
           &bull; 1 Acre = 4,046.86 sqm<br>
-          &bull; 1 sqm = 10.764 sqft<br>
-          &bull; 1 Nigerian Plot = 648 sqm<br>
+          &bull; 1 sqm ≈ 10.764 sqft<br>
+          &bull; 60 × 120 ft ≈ 668.90 m² (<a href="https://www.nist.gov/system/files/documents/2024/04/09/NIST%20HB44%202024%20Appendix%20C.pdf">NIST unit definitions</a>)<br>
           &bull; 1 SA Morgen = 8,567 sqm<br>
           &bull; 1 Kenyan Acre = 4,047 sqm
         </div>
@@ -367,11 +369,11 @@
   <div class="faq-list">
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
       <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-        What is the size of a standard Nigerian plot?
+        How many square metres is a plot of land in Nigeria?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        A standard Nigerian plot measures 60 feet by 120 feet, which equals approximately 648 square meters. A half plot is 60 by 60 feet (324 sqm). Actual sizes can vary slightly depending on the surveyor and location.
+        Use the dimensions or area on your survey plan. A rectangular 60 ft × 120 ft plot covers 668.90 m²; 60 ft × 60 ft covers 334.45 m². A plot measured as 18 m × 36 m covers 648 m².
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -389,7 +391,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Square meters, square feet, hectares, acres, Nigerian plots (648 sqm), half plots, SA Morgen (8567 sqm), and Kenyan acres. You can input by dimensions (length x width) or enter area directly.
+        Square meters, square feet, hectares, acres, 60 × 120 ft plot equivalents (668.90 m²), 60 × 60 ft half plots, SA Morgen (8567 sqm), and Kenyan acres. You can input by dimensions (length x width) or enter area directly.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -430,28 +432,31 @@
   var currentLength = 0;
   var currentWidth = 0;
 
+  var dimToM = { ft: 0.3048, m: 1, yd: 0.9144 };
+  var squareFoot = dimToM.ft * dimToM.ft;
+  var acre = 43560 * squareFoot;
   var unitToSqm = {
     sqm: 1,
-    sqft: 0.092903,
+    sqft: squareFoot,
     ha: 10000,
-    acre: 4046.86,
-    plot: 648,
-    halfplot: 324,
-    gplot: 650,
-    keighth: 505.86,
+    acre: acre,
+    plot: 60 * 120 * squareFoot,
+    halfplot: 60 * 60 * squareFoot,
+    gplot: 70 * 100 * squareFoot,
+    keighth: acre / 8,
     morgen: 8567,
     kacre: 4047
   };
 
-  var dimToM = { ft: 0.3048, m: 1, yd: 0.9144 };
+
 
   var convUnits = [
     { key: 'sqm', label: 'Square Meters', fmt: 2 },
     { key: 'sqft', label: 'Square Feet', fmt: 1 },
     { key: 'ha', label: 'Hectares', fmt: 4 },
     { key: 'acre', label: 'Acres', fmt: 4 },
-    { key: 'plot', label: 'Nigerian Plots', fmt: 3 },
-    { key: 'halfplot', label: 'Half Plots', fmt: 3 },
+    { key: 'plot', label: '60 × 120 ft plots', fmt: 3 },
+    { key: 'halfplot', label: '60 × 60 ft half plots', fmt: 3 },
     { key: 'gplot', label: 'Ghana Plots', fmt: 3 },
     { key: 'keighth', label: 'Kenya 1/8 Acres', fmt: 3 },
     { key: 'morgen', label: 'SA Morgen', fmt: 4 },
@@ -474,7 +479,7 @@
     var unit = document.getElementById('dimUnit').value;
     var lm = l * dimToM[unit];
     var wm = w * dimToM[unit];
-    currentSqm = lm * wm;
+    currentSqm = l > 0 && w > 0 && Number.isFinite(lm * wm) ? lm * wm : 0;
     currentLength = lm;
     currentWidth = wm;
     updateConversions();
@@ -485,7 +490,8 @@
   function calcFromArea() {
     var val = parseFloat(document.getElementById('areaVal').value) || 0;
     var unit = document.getElementById('areaUnit').value;
-    currentSqm = val * unitToSqm[unit];
+    var area = val * unitToSqm[unit];
+    currentSqm = area > 0 && Number.isFinite(area) ? area : 0;
     currentLength = 0;
     currentWidth = 0;
     updateConversions();
@@ -516,7 +522,7 @@
     if (currentSqm <= 0) { funZone.style.display = 'none'; return; }
     funZone.style.display = 'block';
     var pitches = currentSqm / 7140;
-    var plots = currentSqm / 648;
+    var plots = currentSqm / unitToSqm.plot;
     var hectares = currentSqm / 10000;
     var maizeBags = Math.round(hectares * 20);
     var parkingSpaces = Math.floor(currentSqm / 12);
@@ -613,19 +619,26 @@
   function updateLandPlan() {
     var output = document.getElementById('landPlanOutput');
     if (!output) return;
+    var plotUnit = document.getElementById('planPlotUnit').value;
+    document.getElementById('surveyPlotField').hidden = plotUnit !== 'survey';
     if (currentSqm <= 0) {
       output.className = 'plan-empty';
       output.textContent = 'Enter land dimensions or area to see subdivision and due-diligence guidance.';
       lastLandBrief = 'Land size brief: enter dimensions or area before planning subdivision.';
       return;
     }
-    var plotUnit = document.getElementById('planPlotUnit').value;
     var reservePct = Math.max(0, parseFloat(document.getElementById('planReserve').value) || 0);
     var closingPct = Math.max(0, parseFloat(document.getElementById('planClosing').value) || 0);
     var use = document.getElementById('planUse').value;
     var price = parseFloat(document.getElementById('pricePerUnit').value) || 0;
     var sellable = currentSqm * Math.max(0, 1 - reservePct / 100);
-    var plotSize = unitToSqm[plotUnit] || 648;
+    var plotSize = plotUnit === 'survey' ? document.getElementById('surveyPlotSqm').valueAsNumber : unitToSqm[plotUnit];
+    if (!Number.isFinite(plotSize) || plotSize <= 0) {
+      lastLandBrief = '';
+      output.className = 'plan-empty';
+      output.textContent = 'Enter the area of one planned plot in square metres.';
+      return;
+    }
     var equivalentPlots = sellable / plotSize;
     var totalValue = price ? currentSqm * price : 0;
     var projectBuffer = totalValue * closingPct / 100;
@@ -636,7 +649,7 @@
       farm: 'Ask for soil and water access notes, right-of-way, community land claims, and whether the area is affected by seasonal flooding.',
       hold: 'Document title chain, tax or ground rent obligations, access road status, and realistic resale comparables.'
     }[use];
-    lastLandBrief = 'Land brief: gross area ' + formatNum(currentSqm, 2) + ' sqm; sellable after ' + reservePct + '% reserve is ' + formatNum(sellable, 2) + ' sqm; equivalent local plots ' + equivalentPlots.toFixed(2) + '; total value ' + (price ? moneyLand(totalValue) : 'not priced') + '; closing/survey buffer ' + (price ? moneyLand(projectBuffer) : closingPct + '% of purchase budget') + '. ' + useAdvice;
+    lastLandBrief = 'Land brief: gross area ' + formatNum(currentSqm, 2) + ' sqm; sellable after ' + reservePct + '% reserve is ' + formatNum(sellable, 2) + ' sqm; equivalent local plots ' + equivalentPlots.toFixed(2) + '; plot basis ' + formatNum(plotSize, 2) + ' sqm per plot; total value ' + (price ? moneyLand(totalValue) : 'not priced') + '; closing/survey buffer ' + (price ? moneyLand(projectBuffer) : closingPct + '% of purchase budget') + '. ' + useAdvice;
     output.className = '';
     output.innerHTML = '<div class="plan-output">' +
       '<div class="plan-card"><div class="plan-value">' + formatNum(sellable, 2) + '</div><div class="plan-label">Sellable sqm</div></div>' +
@@ -650,6 +663,7 @@
   if (copyLandPlanBtn) {
     copyLandPlanBtn.addEventListener('click', function () {
       updateLandPlan();
+      if (!lastLandBrief) return;
       navigator.clipboard.writeText(lastLandBrief).catch(function () {
         window.prompt('Copy land brief', lastLandBrief);
       });
