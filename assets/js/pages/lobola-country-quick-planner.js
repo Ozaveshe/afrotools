@@ -9,10 +9,6 @@
     return Number.isFinite(number) && number > 0 ? number : 0;
   }
 
-  function formatAmount(symbol, value) {
-    return symbol + Math.round(Math.max(0, value)).toLocaleString('en-US');
-  }
-
   function copyText(text, status, labels) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () {
@@ -36,6 +32,10 @@
     var defaultPerHead = safeNumber(root.getAttribute('data-per-head'));
     var defaultCash = safeNumber(root.getAttribute('data-cash'));
     var locale = root.getAttribute('data-locale') === 'fr' ? 'fr' : 'en';
+    function formatAmount(symbol, value) {
+      if (locale === 'fr') return currency + ' ' + value.toLocaleString('fr-FR', { maximumFractionDigits: 2 });
+      return symbol + Math.round(Math.max(0, value)).toLocaleString('en-US');
+    }
     var labels = locale === 'fr' ? {
       stepTitle: 'Commencez par ce que les familles ont discuté',
       stepHelp: 'Chaque montant est modifiable. Saisissez zéro si un élément n’a pas encore été discuté.',
@@ -50,7 +50,7 @@
       livestock: 'Référence bétail',
       copy: 'Copier le résumé',
       share: 'Partager sur WhatsApp',
-      full: 'Ouvrir le planificateur familial complet',
+      full: 'Reprendre ces montants et ajouter une marge',
       meetingAction: 'Préparer la rencontre familiale',
       summaryTitle: ' — résumé de planification de la lobola',
       currency: 'Devise',
@@ -92,7 +92,7 @@
       planYours: 'Plan yours'
     };
     var prefix = 'lobola-' + countryCode + '-';
-    var fullPlannerUrl = '/tools/lobola-calculator/?country=' + encodeURIComponent(countryCode) + '&currency=' + encodeURIComponent(currency) + '#lobola-planner';
+    var fullPlannerUrl = locale === 'fr' ? '/fr/tools/calculateur-lobola/' : '/tools/lobola-calculator/?country=' + encodeURIComponent(countryCode) + '&currency=' + encodeURIComponent(currency) + '#lobola-planner';
 
     root.innerHTML =
       '<div class="lc-quick-layout">' +
@@ -115,7 +115,7 @@
           '<div class="lc-quick-actions">' +
             '<button class="lc-btn lc-copy-summary" type="button">' + labels.copy + '</button>' +
             '<button class="lc-btn lc-share-summary" type="button">' + labels.share + '</button>' +
-            '<a class="lc-btn" href="' + fullPlannerUrl + '">' + labels.full + '</a>' +
+            '<a class="lc-btn lc-full-planner" href="' + fullPlannerUrl + '">' + labels.full + '</a>' +
             '<a class="lc-btn" href="' + (locale === 'fr' ? '/fr/tools/checklist-negociation-dot/' : '/tools/lobola-negotiation-checklist/') + '">' + labels.meetingAction + '</a>' +
           '</div>' +
           '<p class="lc-status" aria-live="polite"></p>' +
@@ -127,6 +127,11 @@
     var breakdown = root.querySelector('.lc-quick-breakdown');
     var status = root.querySelector('.lc-status');
     var lastSummary = '';
+    if (locale === 'fr') {
+      Array.prototype.forEach.call(form.querySelectorAll('[inputmode="decimal"]'), function (input) {
+        input.step = '0.01';
+      });
+    }
 
     function calculate() {
       var data = new FormData(form);
@@ -137,6 +142,22 @@
       var meeting = safeNumber(data.get('meeting'));
       var livestock = cattle * perHead;
       var planningTotal = livestock + cash + gifts + meeting;
+
+      if (locale === 'fr') {
+        var valid = form.checkValidity() && Number.isSafeInteger(Math.round(planningTotal * 100));
+        root.querySelector('.lc-quick-actions').style.display = valid ? '' : 'none';
+        if (!valid) {
+          total.textContent = '—';
+          breakdown.replaceChildren();
+          status.textContent = 'Vérifiez les montants et saisissez un nombre entier de têtes entre 0 et 100.';
+          return;
+        }
+        var transfer = new URLSearchParams({
+          currency: currency, familyExpectation: (livestock + cash).toFixed(2),
+          giftValue: gifts.toFixed(2), ceremonyCost: meeting.toFixed(2)
+        });
+        root.querySelector('.lc-full-planner').hash = transfer.toString();
+      }
 
       total.textContent = formatAmount(symbol, planningTotal);
       breakdown.innerHTML =
@@ -169,7 +190,7 @@
       copyText(lastSummary, status, labels);
     });
     root.querySelector('.lc-share-summary').addEventListener('click', function () {
-      window.open('https://wa.me/?text=' + encodeURIComponent(lastSummary + '\n\n' + labels.planYours + ': https://afrotools.com' + fullPlannerUrl), '_blank', 'noopener');
+      window.open('https://wa.me/?text=' + encodeURIComponent(lastSummary + '\n\n' + labels.planYours + ': https://afrotools.com' + (locale === 'fr' ? location.pathname : fullPlannerUrl)), '_blank', 'noopener');
       status.textContent = labels.shareOpened;
     });
 

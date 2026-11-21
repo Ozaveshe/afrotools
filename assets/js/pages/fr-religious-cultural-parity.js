@@ -331,5 +331,17 @@
   });
   if (useSavedPlanButton) useSavedPlanButton.addEventListener('click', useSavedPlan);
 
+  if (config.sourceId === 'lobola-calculator' && location.hash.startsWith('#currency=')) {
+    const transfer = new URLSearchParams(location.hash.slice(1));
+    const currency = transfer.get('currency');
+    const names = ['familyExpectation', 'giftValue', 'ceremonyCost'];
+    const supported = Array.from(form.elements.currency.options).some(option => option.value === currency);
+    if (supported && names.every(name => /^\d+(?:\.\d{1,2})?$/.test(transfer.get(name)))) {
+      form.elements.currency.value = currency;
+      names.forEach(name => { form.elements[name].value = transfer.get(name); });
+      form.elements.buffer.value = 0;
+      history.replaceState(history.state, '', location.pathname + location.search);
+    }
+  }
   calculate();
 })();

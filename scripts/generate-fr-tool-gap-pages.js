@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (page.enSlug.startsWith("lobola-calculator/")) {
+    return require("./lib/french-lobola-country-page").render(page);
+  }
   const frenchTravelPage = FRENCH_TRAVEL.pageForEnSlug(page.enSlug);
   if (frenchTravelPage) return FRENCH_TRAVEL.renderPage(frenchTravelPage);
   if (page.enSlug === "route-fares") {
