@@ -416,8 +416,14 @@ function extendTerms(html) {
 }
 
 for (const [id, frSlug] of OWNERS) {
+  const selected = process.argv.find(arg => arg.startsWith("--slugs="));
+  if (selected && !selected.slice(8).split(",").includes(id)) continue;
   const en = read(`tools/${id}/index.html`);
   const frFile = `fr/tools/${frSlug}/index.html`;
+  if (["book-publishing-cost", "self-publishing-royalty"].includes(id)) {
+    write(frFile, require("./lib/french-publishing-planner").render(id, frSlug, en));
+    continue;
+  }
   let fr = readFoundation(frFile);
   if (!fr) {
     fr = missingShell(id, MISSING_META[id]);
