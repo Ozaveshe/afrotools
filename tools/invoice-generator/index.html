@@ -414,6 +414,7 @@
 <afro-navbar active="ecommerce"></afro-navbar>
 
 <div class="inv-page page-shell">
+  <p id="convertedInvoiceNotice" hidden role="status">This is a separate unsaved invoice. Its total starts with no additional tax. Review the item description and tax treatment, then save or export your invoice before leaving.</p>
 
 <!-- ══════ SAVED INVOICES ══════ -->
 <div id="inv-saved-section" style="display:none;max-width:1140px;margin:0 auto;padding:20px 20px 0;">
@@ -641,6 +642,8 @@
           <option value="SCR">SCR - Seychelles</option>
           <option value="BWP">BWP - Botswana</option>
           <option value="MZN">MZN - Mozambique</option>
+          <option value="MWK">MWK - Malawi</option>
+          <option value="ZMW">ZMW - Zambia</option>
           <option value="USD">USD - US Dollar</option>
           <option value="GBP">GBP - British Pound</option>
           <option value="EUR">EUR - Euro</option>
@@ -1928,6 +1931,30 @@ function init() {
   renderClients();
   renderTemplates();
 
+  // Consume only a confirmed, same-tab converter transfer.
+  if (location.hash === '#converted-total' && !location.search) {
+    try {
+      const key = 'afrotools.invoice.converted-total';
+      const raw = sessionStorage.getItem(key);
+      sessionStorage.removeItem(key);
+      history.replaceState(history.state, '', location.pathname);
+      const transfer = JSON.parse(raw);
+      if (transfer && Array.from($('currency').options).some(opt => opt.value === transfer.currency)
+          && typeof transfer.amount === 'string' && /^\d{1,15}\.\d{2}$/.test(transfer.amount)
+          && Number(transfer.amount).toFixed(2) === transfer.amount
+          && typeof transfer.words === 'string' && transfer.words.length <= 1000) {
+        if (restoreState({cu: transfer.currency, tt: 'none', tr: '0', nt: transfer.words,
+            items: [{d: 'Invoice total', q: '1', p: transfer.amount, t: '0'}]})) {
+          document.body.dataset.invoiceTemporaryDraft = '1';
+          $('convertedInvoiceNotice').hidden = false;
+          $('taxType').dispatchEvent(new Event('change'));
+          updatePreview();
+          return;
+        }
+      }
+    } catch { /* Continue with ordinary invoice recovery when tab storage is unavailable. */ }
+  }
+
   // Check for shared state in URL
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.decode) {
     const shared = AfroTools.shareState.decode();
@@ -2230,7 +2257,7 @@ init();
   },true);
 })();
 </script>
-<script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=bc1a2d3c" defer></script>
+<script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=60ffa040" defer></script>
 <!-- Saved invoices are managed by invoice-generator-enhancements.js. -->
 
 <script src="/assets/js/ai/prefill-adapters.js?v=3671b9a1" defer></script>
