@@ -31,6 +31,13 @@ for (const variant of [{ width: 320, theme: 'light' }, { width: 390, theme: 'dar
       await dialog.locator('[data-ak-cook-close]').click();
       await expect(dialog).toBeHidden();
       await expect(open).toBeFocused();
+      await expect(page.locator('.ak-visual-pager [role=status]')).toHaveText('Step 2 of 6');
+      await page.locator('[data-ak-visual-next]').click();
+      await open.click();
+      await expect(progress).toHaveText('Step 3 of 6');
+      await dialog.locator('[data-ak-cook-prev]').click();
+      await dialog.locator('[data-ak-cook-close]').click();
+      await expect(page.locator('.ak-visual-pager [role=status]')).toHaveText('Step 2 of 6');
       await open.click();
       await expect(progress).toHaveText('Step 2 of 6');
       await page.keyboard.press('Escape');

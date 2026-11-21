@@ -83,6 +83,7 @@
       else { pager.querySelector('p').textContent = 'Method complete. Check any running timers before serving.'; }
     });
     function render(focus) {
+      method.dataset.akCurrentStep = String(current);
       steps.forEach(function (step, index) { step.hidden = !full && index !== current; });
       buttons.forEach(function (button, index) {
         if (!full && index === current) button.setAttribute('aria-current', 'step');
@@ -101,7 +102,11 @@
     }
     render(false);
     var dialog = document.querySelector('.ak-cook-dialog');
-    if (dialog) dialog.addEventListener('close', function () { render(false); });
+    if (dialog) dialog.addEventListener('close', function () {
+      var cookStep = Number(method.dataset.akCurrentStep);
+      if (Number.isInteger(cookStep) && cookStep >= 0 && cookStep < steps.length) current = cookStep;
+      render(false);
+    });
 
     var running = document.createElement('div');
     running.className = 'ak-running-timers';

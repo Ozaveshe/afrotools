@@ -72,7 +72,9 @@
     ingredientsDetails.className = 'ak-cook-ingredients';
     ingredientsDetails.innerHTML = '<summary>Ingredients checklist</summary>';
     var index = 0, placeholder, ingredientsPlaceholder, previousHidden;
+    var method = layout.querySelector('#recipe-method');
     function renderStep() {
+      if (method) method.dataset.akCurrentStep = String(index);
       steps.forEach(function (step, position) { step.hidden = position !== index; });
       dialog.querySelector('[data-ak-cook-progress]').textContent = 'Step ' + (index + 1) + ' of ' + steps.length;
       dialog.querySelector('[data-ak-cook-prev]').disabled = index === 0;
@@ -80,6 +82,8 @@
       dialog.scrollTop = 0;
     }
     open.addEventListener('click', function () {
+      var methodIndex = method ? Number(method.dataset.akCurrentStep) : NaN;
+      if (Number.isInteger(methodIndex) && methodIndex >= 0 && methodIndex < steps.length) index = methodIndex;
       previousHidden = steps.map(function (step) { return step.hidden; });
       placeholder = document.createComment('Cook mode layout returns here');
       layout.before(placeholder);
@@ -97,7 +101,12 @@
     dialog.querySelector('[data-ak-cook-close]').addEventListener('click', function () { dialog.close(); });
     dialog.querySelector('[data-ak-cook-prev]').addEventListener('click', function () { if (index > 0) { index--; renderStep(); } });
     dialog.querySelector('[data-ak-cook-next]').addEventListener('click', function () {
-      if (index === steps.length - 1) { index = 0; dialog.close(); return; }
+      if (index === steps.length - 1) {
+        index = 0;
+        if (method) method.dataset.akCurrentStep = '0';
+        dialog.close();
+        return;
+      }
       index++; renderStep();
     });
     function restoreLayout() {
