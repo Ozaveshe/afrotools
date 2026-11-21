@@ -7841,6 +7841,9 @@ function htmlFor(page) {
   if (page.enSlug.startsWith("generator-fuel/")) {
     return require("./lib/french-generator-fuel-country").render(page);
   }
+  if (page.enSlug.startsWith("gas-lpg-cost/")) {
+    return require("./lib/french-lpg-country").render(page);
+  }
   if (page.enSlug.startsWith("lobola-calculator/")) {
     return require("./lib/french-lobola-country-page").render(page);
   }
