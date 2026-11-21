@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (page.enSlug === "afrokitchen/recipes/banku-tilapia-gh") {
+    return require("./lib/french-banku-recipe").render(page);
+  }
   if (page.enSlug.startsWith("afrostream/university/")) {
     return require("./lib/french-afrostream-university").render(page);
   }
