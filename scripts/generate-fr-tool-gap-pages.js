@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (page.enSlug.startsWith("car-import-cost/")) {
+    return require("./lib/french-vehicle-import-country").render(page);
+  }
   if (page.enSlug.startsWith("freelancer-rate/")) {
     return require("./build-fr-small-business-parity").renderFreelanceCountry(page);
   }
