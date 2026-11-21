@@ -81,14 +81,15 @@ test('acceptance is fail-closed per English ID and every accepted check has conc
   }
 });
 
-test('missing-artwork queue is explicit and limited to the blocked SARS eFiling row', () => {
+test('SARS eFiling artwork exists while app acceptance remains blocked', () => {
   const queue = readJson(ARTWORK);
-  assert.equal(queue.missingCount, 1);
-  assert.deepEqual(queue.rows, [{
-    englishId: 'sars-efiling',
-    expectedArtwork: 'assets/img/tools/sars-efiling.webp',
-    status: 'missing',
-  }]);
+  assert.ok(fs.statSync(path.join(ROOT, 'assets/img/tools/sars-efiling.webp')).size > 0);
+  assert.equal(queue.missingCount, 0);
+  assert.deepEqual(queue.rows, []);
+  const sars = readJson(RECEIPT).rows.find((row) => row.englishId === 'sars-efiling');
+  assert.equal(sars.status, 'blocked');
+  assert.equal(sars.proof, null);
+  assert.match(sars.blocker, /editorial route guide.*not a calculator app/);
 });
 
 test('localized microfinance labels preserve shared engine enum values', () => {
@@ -146,7 +147,7 @@ test('ng-cit Swahili parity preserves the reviewed source and DOM-free engine co
   assert.ok(verification.routes.includes('/sw/zana/kikokotoo-cit-nigeria/'));
   assert.deepEqual(verification.source_urls, [
     'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
-    'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+    'https://fmino.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
     'https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/',
   ]);
   const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'nigeria-cit-2026-source');

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-11-21",
+  "baseCommit": "ce517903437e15688e878977c617a5edea1b7e6f",
+  "periodDependency": "zambia-period-parity-20261121-01",
+  "scope": "Regular2026 employee payroll estimate; annual input divided by12 for monthly equivalent. No2027 parameters applied.",
+  "sources": [
+    {
+      "url": "https://www.zra.org.zm/tax-information/",
+      "retrieval": "DirectHTTP200 and current indexed content",
+      "supports": "2026 monthly bands0/20/30/37%; PAYE3176 at gross15000; tax on gross without prior pension deduction."
+    },
+    {
+      "url": "https://www.linkedin.com/posts/national-pension-scheme-authority_public-notice-revision-in-contribution-ceiling-activity-7417941633180090368-y4Dr",
+      "retrieval": "Official NAPSA account notice read through web tool",
+      "supports": "2026 maximum employee1861.80/month; combined3723.60; gross-earnings ceiling37236; rate10%combined."
+    },
+    {
+      "url": "https://media.zambialii.org/media/legislation/41897/source_file/e1932f4e1b7838ef/zm-act-si-2019-63-publication-document.pdf#page=35",
+      "retrieval": "Primary Government Gazette reproduction,38-page PDF opened and Third Schedule read through web tool; local download403, no local PDF inspection claimed.",
+      "supports": "SI63of2019, gazetted20September2019, printedpage301: employee1%basic and employer1%basic, monthly; no ceiling specified in schedule."
+    }
+  ],
+  "fixtureDelta": {
+    "englishId": "zm-paye",
+    "reviewEvidence": "data/calculation-quality/reviews/zambia-en-sw-2026-11-21.json",
+    "previousExpected": {
+      "tax": 27012,
+      "net": 115488,
+      "employeeSocial": 7500,
+      "employerCost": 157500
+    },
+    "expected": {
+      "tax": 27012,
+      "net": 113988,
+      "employeeSocial": 7500,
+      "employerCost": 159000,
+      "employeeHealth": 1500,
+      "employerHealth": 1500
+    },
+    "fields": {
+      "tax": "annualPAYE",
+      "net": "netAnnual",
+      "employeeSocial": "napsa",
+      "employerCost": "totalEmployerCostAnnual",
+      "employeeHealth": "nhima",
+      "employerHealth": "empNhima"
+    },
+    "reason": "Default annual gross150000 is treated as all-basic when basic is blank. Add1500 employee NHIMA and1500 employer NHIMA to historical no-health fixture. PAYE and NAPSA unchanged; preserve historical acceptance."
+  },
+  "knownLimits": [
+    "Regular12-month planning estimate; irregular pay periods/benefits require payroll-specific treatment.",
+    "Employer subtotal excludes SDL, workers compensation and other employment benefits.",
+    "November2026 press reporting suggests a January2027 gross-basis change. Final2027 implementing rules are not verified and are not applied.",
+    "Historical Swahili acceptance receipt and its numeric fixture remain unchanged; current-source overlay explicitly documents their replacement."
+  ],
+  "reviewedBy": "AfroTools publisher automated technical artifact review",
+  "sourceUrl": "https://www.zra.org.zm/tax-information/",
+  "reason": "Technical protected-artifact review only. English calcAnnualPAYE is byte-identical to production60828812; all23 calculate statements through complete RESULT assignment and the _grossToNet assignment are AST-identical. Selected-period presentation, invalid-result clearing, precise report formatting and explicit per-send optional AI consent changed the enclosing protected inline script. Existing English rates, bands, caps, numerical rounding and golden expected values remain unchanged. Current Swahili statutory parity and its separate historical overlay delta are documented above and validated by18paired scenarios. No new statutory parameter or source-freshness claim is introduced by registering this artifact.",
+  "formulaIds": [
+    "route-zm-paye"
+  ],
+  "fixtureDeltas": [],
+  "publisherTechnicalArtifactReview": {
+    "reviewed_at": "2026-11-21T01:28:00.317921+00:00",
+    "review_kind": "automated technical artifact review; not a claimed human review or statutory amendment",
+    "baseline_commit": "60828812e4f3bbd6e8f2f5ff7d5c3fc096162356",
+    "reviewed_source_commit": "26ac24384671966bcdd219b384f7ce81835f5831",
+    "before_digest": "sha256:6957aa9f95b2c1ecd772e460c46a16dc97c477d84aae05ef822cf55da4091d05",
+    "after_digest": "sha256:a84a93fafe184cbf93f5d09b47b59d57a7c6d71f853d5805602e384c1cc3b767",
+    "numeric_equivalence": [
+      {
+        "name": "calcAnnualPAYE",
+        "source_sha256": "edb4c7979af2c94a87426df4ce39bd45d5c211bc37a61a97dc95fbc1eaa27690",
+        "bytes_exact": true
+      },
+      {
+        "name": "calculate through complete RESULT assignment",
+        "statements": 23,
+        "ast_sha256": "a74b14046434c6a39c35e1e85859f45ea01dcef3f1909851b63888d0d8414d7e",
+        "exact": true
+      },
+      {
+        "name": "existing _grossToNet assignment",
+        "ast_sha256": "e7046e3bc8755c95096c667a7eb32eeb96112c9ade3923ded6447506e6e41565",
+        "ast_exact": true
+      }
+    ],
+    "validation_commands": [
+      "node tests/zambia-paye-period-contract.test.js",
+      "node tests/zambia-paye-2026-parity.test.js",
+      "node tests/swahili-paye-26-parity.test.js",
+      "node tests/swahili-paye-report-language.test.js",
+      "node tests/swahili-paye-local-exports.test.js"
+    ],
+    "validation_scope": "All named source suites passed; independent320px and390px actual browser arithmetic, inverse, share and parsed-export checks passed. Supplemental maintained320px all-POST assertion remains failed on separately verified baseline analytics metadata and is not claimed passing."
+  }
+}
