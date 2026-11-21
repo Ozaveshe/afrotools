@@ -7849,6 +7849,9 @@ function htmlFor(page) {
   if (page.frenchSecurityNative === true) {
     return require("./lib/french-security-page.js").render(page);
   }
+  if (page.enSlug.startsWith("outage-cost/")) {
+    return require("./lib/french-outage-country.js").render(page);
+  }
   const enUrl = `${SITE}/tools/${page.enSlug}/`;
   const frUrl = `${SITE}/fr/tools/${page.frSlug}/`;
   const terms = JSON.stringify([...page.terms, ...COMMON_TERMS]);

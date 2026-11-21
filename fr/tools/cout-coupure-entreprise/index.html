@@ -435,6 +435,7 @@ window.addEventListener('load', function() {
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/outage-incident.js"></script>
 <script src="/assets/js/energy-tool-assistant.js?v=8a8281d8"></script>
 <script>
 (function(){
@@ -519,16 +520,11 @@ window.addEventListener('load', function() {
     var backupInvestment = Math.max(0, num("backupInvestment", 0));
     var uncoveredShare = 1 - backupCoveragePct;
 
-    var grossRevenueAtRisk = revenuePerHour * outageHours;
-    var lostRevenue = grossRevenueAtRisk * revenueLossPct * uncoveredShare;
-    var staffCost = staffIdleCost * outageHours * uncoveredShare;
-    var backupCost = backupCostHour * outageHours;
-    var spoilageCost = spoiledInventory * spoilagePct;
-    var riskCost = spoilageCost + internetPaymentCost;
-    var subtotal = lostRevenue + staffCost + backupCost + riskCost;
-    var recoveryBuffer = subtotal * recoveryBufferPct;
-    var totalCost = subtotal + recoveryBuffer;
-    var monthlyExposure = totalCost * monthlyOutages;
+    var { grossRevenueAtRisk, lostRevenue, staffCost, backupCost, spoilageCost, riskCost,
+      subtotal, recoveryBuffer, totalCost, monthlyExposure } = window.AfroTools.calculateOutageIncident({
+      outageHours, revenuePerHour, revenueLossPct, uncoveredShare, staffIdleCost, backupCostHour,
+      spoiledInventory, spoilagePct, internetPaymentCost, recoveryBufferPct, monthlyOutages
+    });
     var avoidableBase = lostRevenue + staffCost + riskCost;
     var avoidableRecovery = avoidableBase * recoveryBufferPct;
     var avoidableIncidentLoss = avoidableBase + avoidableRecovery;
