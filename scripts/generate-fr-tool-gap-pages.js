@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (page.enSlug.startsWith("generator-fuel/")) {
+    return require("./lib/french-generator-fuel-country").render(page);
+  }
   if (page.enSlug.startsWith("lobola-calculator/")) {
     return require("./lib/french-lobola-country-page").render(page);
   }
