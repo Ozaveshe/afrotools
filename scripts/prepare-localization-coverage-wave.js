@@ -448,7 +448,7 @@ function validateManifest(manifest) {
 function refreshDerivedCopy(manifest) {
   const nativeByOwner = new Map(FRENCH_NATIVE_ROUTES.map((entry) => [entry.enSlug, entry]));
   manifest.french = manifest.french.map((entry) => {
-    if (entry.enSlug.startsWith("employee-cost/")) return { ...entry, native: true };
+    if (/^(employee-cost|contractor-vs-employee)\//.test(entry.enSlug)) return { ...entry, native: true };
     const native = nativeByOwner.get(entry.enSlug);
     return native
       ? { ...entry, ...native }

@@ -269,7 +269,7 @@ ${tool.swahiliRoute ? `  <link rel="alternate" hreflang="sw" href="https://afrot
 
     <section class="fr-hr-source" aria-labelledby="method-title">
       <h2 id="method-title">Méthode, fraîcheur et confiance</h2>
-      ${tool.country ? `<p>Le coût mensuel récurrent comprend le salaire, les cotisations et les autres charges saisies. Le coût mensuel planifié ajoute une fraction des frais ponctuels selon la durée choisie. Le coût de première année inclut douze mois récurrents et la totalité des frais ponctuels.</p>
+      ${tool.country && tool.id === "contractor-vs-employee" ? `<p>Pour le salarié, additionnez le salaire mensuel, les cotisations, les avantages et les autres charges. Pour le prestataire, additionnez le devis mensuel et vos frais supplémentaires. Un écart positif signifie que le prestataire coûte davantage. Le budget annuel suppose douze mois identiques.</p><p>Utilisez un devis et un budget de paie datés, exprimés dans la même devise. Cette comparaison ne détermine pas le statut juridique du travailleur.</p>` : tool.country ? `<p>Le coût mensuel récurrent comprend le salaire, les cotisations et les autres charges saisies. Le coût mensuel planifié ajoute une fraction des frais ponctuels selon la durée choisie. Le coût de première année inclut douze mois récurrents et la totalité des frais ponctuels.</p>
       <p>Pour consulter le modèle par composante, ouvrez le <a href="${escapeHtml(tool.englishRoute)}" hreflang="en" lang="fr">calculateur de ${escapeHtml(tool.country.displayNames.fr)} en anglais</a>. Vérifiez les taux applicables avant de les utiliser.</p>` : "<p>La formule reproduit le contrat arithmétique de la version anglaise, sans modifier son moteur. La confiance ne dépasse jamais « moyenne » : elle indique seulement la récence de la source que vous avez saisie, pas sa validité juridique. Une source de plus de 90 jours est signalée comme ancienne.</p>"}
     </section>
   </main>
@@ -351,32 +351,38 @@ function hubHtml() {
   return enhanceCategory(rawHubHtml(), "fr");
 }
 
-function employeeCountryOutputs() {
+function countryOutputs(ownerId) {
   const wave = require("../data/localization/coverage-wave-2026-07.json");
-  const owner = manifest.tools.find(tool => tool.id === "employee-cost");
-  return wave.french.filter(entry => entry.enSlug.startsWith("employee-cost/")).map(entry => {
+  const owner = manifest.tools.find(tool => tool.id === ownerId);
+  const contractor = ownerId === "contractor-vs-employee";
+  return wave.french.filter(entry => entry.enSlug.startsWith(ownerId + "/")).map(entry => {
     const slug = entry.enSlug.split("/")[1];
     const country = countries.find(item => item.routeSlug === (slug === "republic-of-congo" ? "congo" : slug));
     if (!country || !entry.native) throw new Error("Missing country or native route owner: " + entry.enSlug);
     const tool = {
       ...owner, country, title: entry.name, shortTitle: entry.name,
       route: `/fr/tools/${entry.frSlug}/`, englishRoute: `/tools/${entry.enSlug}/`, swahiliRoute: null,
-      description: `Établissez un budget employeur en ${country.currency} à partir du salaire et des charges mensuelles que vous avez vérifiées pour le pays. Les frais ponctuels peuvent être étalés sur plusieurs mois.`,
+      description: contractor
+        ? `Comparez le coût d’un salarié et le devis d’un prestataire en ${country.currency}, par mois et sur douze mois, à partir de vos propres montants.`
+        : `Établissez un budget employeur en ${country.currency} à partir du salaire et des charges mensuelles que vous avez vérifiées pour le pays. Les frais ponctuels peuvent être étalés sur plusieurs mois.`,
       fields: owner.fields.map(([name, label, type, value]) =>
-        [name, label, type, name === "allocationMonths" ? value : name === "salary" ? "" : "0"])
+        [name, label, type, name === "allocationMonths" ? value : ["salary", "employeeBase", "contractorQuote"].includes(name) ? "" : "0"])
     };
     return [fileForRoute(tool.route), pageHtml(tool)];
   });
 }
 
 const hubOnly = process.argv.includes("--hub-only");
-const countriesOnly = process.argv.includes("--employee-countries-only");
+const employeeOnly = process.argv.includes("--employee-countries-only");
+const contractorOnly = process.argv.includes("--contractor-countries-only");
+const countriesOnly = employeeOnly || contractorOnly;
 const selectedOutputs = [];
 if (!countriesOnly) selectedOutputs.push([fileForRoute(manifest.hubRoute), hubHtml()]);
 if (!hubOnly && !countriesOnly) {
   selectedOutputs.push(...manifest.tools.map(tool => [fileForRoute(tool.route), pageHtml(tool)]));
 }
-if (!hubOnly) selectedOutputs.push(...employeeCountryOutputs());
+if (!hubOnly && !contractorOnly) selectedOutputs.push(...countryOutputs("employee-cost"));
+if (!hubOnly && !employeeOnly) selectedOutputs.push(...countryOutputs("contractor-vs-employee"));
 
 let failed = false;
 for (const [file, content] of selectedOutputs) {
