@@ -420,6 +420,10 @@ for (const [id, frSlug] of OWNERS) {
   if (selected && !selected.slice(8).split(",").includes(id)) continue;
   const en = read(`tools/${id}/index.html`);
   const frFile = `fr/tools/${frSlug}/index.html`;
+  if (["engagement-rate", "podcast-monetization", "photography-pricing"].includes(id)) {
+    write(frFile, require("./lib/french-creative-calculators").render(id, frSlug, en));
+    continue;
+  }
   if (["book-publishing-cost", "self-publishing-royalty"].includes(id)) {
     write(frFile, require("./lib/french-publishing-planner").render(id, frSlug, en));
     continue;
