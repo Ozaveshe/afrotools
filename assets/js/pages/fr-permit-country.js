@@ -11,6 +11,7 @@
     const iso = fields.feeCurrency.value.toUpperCase();
     const foreign = iso.length === 3 && iso !== currency;
     exchange.hidden = !foreign;
+    fields.rate.disabled = !foreign;
     fields.rate.required = foreign;
     exchange.querySelector('span').textContent = 'Votre taux de change : 1 ' + iso + ' en ' + currency;
     fields.dependantFee.required = Number(fields.dependants.value) > 0;
@@ -25,6 +26,7 @@
     update();
   });
   form.addEventListener('input', update);
+  fields.feeCurrency.addEventListener('input', () => { fields.rate.value = ''; });
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (!form.reportValidity()) return;
