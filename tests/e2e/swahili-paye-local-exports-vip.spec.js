@@ -2,7 +2,14 @@ const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 const CONTRACT = require('../../data/localization/sw-paye-26-parity.json');
 
-const ENTRIES = CONTRACT.entries;
+const CURRENT_REVIEW = require('../../data/localization/sw-paye-current-source-review.json');
+const ENTRIES = CONTRACT.entries.map((entry) => {
+  const review = (CURRENT_REVIEW.numericReviews || []).find((item) => item.englishId === entry.englishId);
+  if (!review) return entry;
+  expect(review.previousExpected).toEqual(entry.expected);
+  expect(review.reviewEvidence).toBeTruthy();
+  return { ...entry, expected: review.expected, fields: review.fields };
+});
 
 for (const entry of ENTRIES) {
   const country = entry.countrySlug;
