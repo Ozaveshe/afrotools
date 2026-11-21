@@ -128,33 +128,12 @@
     <nav class="breadcrumb"><a href="/fr/">Accueil</a> &gt; <a href="/fr/all-tools/">Outils</a> &gt; Répartition des revenus entre créateurs</nav>
     <p class="eyebrow">Outil pratique</p>
     <h1>Répartition des revenus entre créateurs</h1>
-    <p class="lead">Préparez votre démarche avec l’outil « Répartition des revenus entre créateurs » dans une interface française claire.</p>
+    <p class="lead">Indiquez le revenu, la devise et la part de chaque collaborateur. Vérifiez le montant de chacun et téléchargez la répartition.</p>
     <div class="route-note">
       <span>Interface en français</span>
       <span>Calculateur complet disponible</span><span>Estimation à vérifier localement</span>
     </div>
-    <div class="action-row">
-      <a class="primary-action" href="/fr/tools/repartition-des-revenus-entre-createurs/app">Ouvrir le calculateur</a><a class="secondary-action" href="#verification">Comprendre le résultat</a>
-    </div>
-    <section class="prep-panel" aria-label="Préparation rapide">
-      <h2>Préparez votre saisie</h2>
-      <p>Notez les trois informations utiles avant de lancer l'outil. Rien n'est envoyé: ce brouillon reste dans votre navigateur.</p>
-      <form class="prep-form" data-fr-prep>
-        <div class="prep-fields">
-          <label>Pays ou devise<input name="country" autocomplete="off" placeholder="Ex: Sénégal, XOF"></label>
-          <label>Montant ou volume<input name="amount" autocomplete="off" placeholder="Ex: 250000"></label>
-          <label>Objectif<input name="goal" autocomplete="off" placeholder="Ex: comparer deux scénarios"></label>
-          <label>Fichier de travail<input name="file" type="file" aria-label="Fichier de travail local"></label>
-        </div>
-        <output class="prep-output" data-prep-output>Ajoutez un pays, un montant ou un objectif pour préparer votre résumé.</output>
-        <div class="prep-actions">
-          <button type="button" data-copy-prep>Copier le résumé</button>
-          <button type="button" data-download-prep>Télécharger le brief</button>
-          <span class="prep-note" data-copy-status aria-live="polite"></span>
-        </div>
-        <p class="privacy-note"><strong>Confidentialité locale 2026:</strong> le fichier sélectionné et le brouillon restent dans votre navigateur; ne collez pas de données sensibles dans un service externe sans accord explicite.</p>
-      </form>
-    </section>
+    <div class="action-row"><a class="primary-action" href="/fr/tools/repartition-des-revenus-entre-createurs/app">Calculer les parts</a></div>
     <div id="tool-mount" class="source-launch"><h2>Calculateur complet en français</h2><p>Répartissez un revenu entre les collaborateurs, exigez un total exact de 100 %, puis copiez l’accord ou téléchargez les résultats JSON et TXT. Tout reste dans votre navigateur.</p><a class="primary-action" href="/fr/tools/repartition-des-revenus-entre-createurs/app">Calculer une répartition</a></div>
     <div class="support-grid" id="verification" data-tool-verification-panel>
       <section><h2>Usage recommandé</h2><p>Utilisez cette page pour rassembler les informations utiles avant d’ouvrir le flux complet de l’outil.</p></section>
@@ -213,69 +192,7 @@
   window.frToolGapLocalizer = { localize: localize, watch: watch };
 })();
 </script>
-  <script>
-(function () {
-  var pageName = "Répartition des revenus entre créateurs";
-  var useCase = "Utilisez cette page pour rassembler les informations utiles avant d’ouvrir le flux complet de l’outil.";
-  var form = document.querySelector('[data-fr-prep]');
-  if (!form) return;
-  var output = form.querySelector('[data-prep-output]');
-  var status = form.querySelector('[data-copy-status]');
-  function field(name) {
-    var input = form.querySelector('[name="' + name + '"]');
-    return input && input.value ? input.value.trim() : '';
-  }
-  function summary() {
-    var parts = [];
-    var country = field('country');
-    var amount = field('amount');
-    var goal = field('goal');
-    var file = form.querySelector('[name="file"]');
-    var fileText = file && file.files && file.files.length ? file.files.length + ' fichier(s) local/localises' : '';
-    if (country) parts.push('Pays/devise: ' + country);
-    if (amount) parts.push('Montant/volume: ' + amount);
-    if (goal) parts.push('Objectif: ' + goal);
-    if (fileText) parts.push(fileText);
-    if (!parts.length) return 'Ajoutez un pays, un montant ou un objectif pour preparer votre resume.';
-    return pageName + ' - ' + parts.join(' | ') + '. Usage: ' + useCase;
-  }
-  function render() {
-    output.textContent = summary();
-    if (status) status.textContent = '';
-  }
-  form.addEventListener('input', render);
-  var copy = form.querySelector('[data-copy-prep]');
-  if (copy) {
-    copy.addEventListener('click', function () {
-      var text = summary();
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () {
-          if (status) status.textContent = 'Resume copie.';
-        }).catch(function () {
-          if (status) status.textContent = text;
-        });
-      } else if (status) {
-        status.textContent = text;
-      }
-    });
-  }
-  var download = form.querySelector('[data-download-prep]');
-  if (download) {
-    download.addEventListener('click', function () {
-      var blob = new Blob([summary()], { type: 'text/plain' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = pageName.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-brief.txt';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      if (status) status.textContent = 'Brief telecharge.';
-    });
-  }
-})();
-</script>
+
 
   <script src="/assets/js/pages/creative/fr-creative-consent-analytics.js?v=9c65a0d9" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>

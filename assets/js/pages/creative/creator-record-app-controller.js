@@ -183,7 +183,7 @@
         var cams = devices.filter(function(d) { return d.kind === 'videoinput'; });
         cameraSelect.innerHTML = '';
         if (cams.length === 0) {
-          cameraSelect.innerHTML = '<option>' + t('noCameras', 'No cameras found') + '</option>';
+          cameraSelect.innerHTML = '<option value="">' + t('noCameras', 'No cameras found') + '</option>';
           return;
         }
         cams.forEach(function(c, i) {
@@ -641,7 +641,15 @@
         }
 
       } catch(err) {
-        if (err.name === 'NotAllowedError') {
+        var policy = document.permissionsPolicy || document.featurePolicy;
+        var needsCamera = state.mode === 'webcam' || state.mode === 'both';
+        if (policy && ((needsCamera && !policy.allowsFeature('camera')) || (state.mic && !policy.allowsFeature('microphone')))) {
+          showToast(t('policyBlocked', 'Device capture is blocked by this page policy.'));
+        } else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
+          showToast(t('missingDevice', 'The selected device is unavailable. Choose another device.'));
+        } else if (err.name === 'NotReadableError') {
+          showToast(t('deviceBusy', 'The device is busy or cannot be opened.'));
+        } else if (err.name === 'NotAllowedError') {
           showToast(t('permissionDenied', 'Permission denied — please allow access'));
         } else {
           showToast(t('errorPrefix', 'Error:') + ' ' + err.message);
@@ -671,7 +679,13 @@
       if (state.mode !== 'audio') {
         recorderOptions.videoBitsPerSecond = { '1080': 8000000, '720': 4000000, '480': 2000000 }[qualitySelect.value] || 4000000;
       }
-      state.mediaRecorder = new MediaRecorder(state.combinedStream, recorderOptions);
+      try {
+        state.mediaRecorder = new MediaRecorder(state.combinedStream, recorderOptions);
+      } catch (error) {
+        stopAllStreams();
+        showToast(t('codecUnsupported', 'The browser could not create a recorder for this format.'));
+        return;
+      }
 
       state.mediaRecorder.ondataavailable = function(e) {
         if (e.data && e.data.size > 0) state.chunks.push(e.data);
@@ -683,7 +697,13 @@
         onRecordingComplete();
       };
 
-      state.mediaRecorder.start(100);
+      try {
+        state.mediaRecorder.start(100);
+      } catch (error) {
+        stopAllStreams();
+        showToast(t('codecUnsupported', 'The browser could not create a recorder for this format.'));
+        return;
+      }
       state.recording = true;
       state.paused = false;
 
@@ -1093,14 +1113,7 @@
     ============================================ */
     renderHistory();
 
-    // Request permissions early to populate camera list
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then(function(s) {
-          s.getTracks().forEach(function(t) { t.stop(); });
-          enumerateCameras();
-        })
-        .catch(function() {});
-    }
+    // Enumerate without opening a device; capture starts from the Record button.
+    enumerateCameras();
 
   })();

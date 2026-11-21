@@ -234,6 +234,37 @@ test('CreatorClip imports, exports, and reopens a synthetic WebM clip', async ({
   expect(reopened.height).toBeGreaterThan(0);
 });
 
+test('CreatorClip exports the selected interval from a ten-second video', async ({ page }) => {
+  await page.goto(MEDIA_ROUTES.clip, { waitUntil: 'domcontentloaded' });
+  await page.locator('#fileInput').setInputFiles(require('node:path').join(__dirname, 'fixtures/creator-clip-gray-ramp.webm'));
+  await expect(page.locator('#editor')).toHaveClass(/active/);
+  const timeline = page.locator('#timelineStrip');
+  await timeline.scrollIntoViewIfNeeded();
+  const strip = await timeline.boundingBox();
+  for (const [selector, fraction] of [['#trimStart', 0.2], ['#trimEnd', 0.8]]) {
+    const handle = await page.locator(selector).boundingBox();
+    await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(strip.x + strip.width * fraction, strip.y + strip.height / 2, {steps: 6});
+    await page.mouse.up();
+  }
+  const trim = await page.locator('#trimRegion').evaluate(node => ({
+    start: parseFloat(node.style.left), width: parseFloat(node.style.width)
+  }));
+  expect(trim.start).toBeGreaterThan(15);
+  expect(trim.width).toBeLessThan(68);
+  await page.locator('[data-tab="export"]').click();
+  const pending = page.waitForEvent('download');
+  await page.locator('#exportBtn').click();
+  const data = await readDownload(await pending);
+  await page.reload({waitUntil: 'domcontentloaded'});
+  await page.locator('#fileInput').setInputFiles({name:'selection.webm', mimeType:'video/webm', buffer:data});
+  await expect(page.locator('#editor')).toHaveClass(/active/);
+  const seconds = await page.locator('video').first().evaluate(video => video.duration);
+  expect(seconds).toBeGreaterThan(4.5);
+  expect(seconds).toBeLessThan(7.5);
+});
+
 if (process.env.FR_CREATIVE_MEDIA === '1') {
   for (const [id, route] of Object.entries(MEDIA_ROUTES)) {
     test(`French Creator ${id} workspace has native locale, privacy, and reflow`, async ({ page }) => {
@@ -254,7 +285,8 @@ if (process.env.FR_CREATIVE_MEDIA === '1') {
       await page.goto(route, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/fr\/tools\/.+\/app$/);
-      await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+      await expect(page.locator('link[hreflang]')).toHaveCount(0);
       await expect(page.locator('body')).toContainText(/Enregistrer|Exporter|Modifier|Nouvelle vidéo/i);
       await page.evaluate(() => {
         document.documentElement.setAttribute('data-theme', 'dark');

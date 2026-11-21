@@ -20,8 +20,8 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f9debbdd">
 <link rel="stylesheet" href="/assets/css/creator-media-reflow.css?v=0c5b3e2d">
 <script src="/assets/js/lib/dark-mode.js?v=81f51395" defer></script>
-<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css?v=73b034f6">
 <link rel="canonical" href="https://afrotools.com/fr/tools/enregistrement-pour-createur/app">
+<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css">
 </head>
 <body class="crd-app top-level-page-ui-refresh">
 
@@ -34,7 +34,7 @@
       <span class="crd-rec-dot"></span> REC
     </div>
     <div class="crd-header-actions">
-      <button type="button" class="crd-btn-icon" id="historyToggleBtn" title="History">&#128197;</button>
+      <button type="button" class="crd-btn-icon" id="historyToggleBtn" title="Historique">&#128197;</button>
     </div>
   </header>
 
@@ -45,31 +45,31 @@
     <div class="crd-modes" id="modeSelector">
       <div class="crd-mode-card active" data-mode="screen">
         <span class="crd-mode-icon">&#128187;</span>
-        <div class="crd-mode-label">Screen Only</div>
-        <div class="crd-mode-desc">Record your screen, tab, or window</div>
+        <div class="crd-mode-label">Écran uniquement</div>
+        <div class="crd-mode-desc">Enregistrez votre écran, un onglet ou une fenêtre</div>
       </div>
       <div class="crd-mode-card" data-mode="webcam">
         <span class="crd-mode-icon">&#128247;</span>
-        <div class="crd-mode-label">Webcam Only</div>
-        <div class="crd-mode-desc">Record from your camera</div>
+        <div class="crd-mode-label">Webcam uniquement</div>
+        <div class="crd-mode-desc">Enregistrez depuis votre caméra</div>
       </div>
       <div class="crd-mode-card" data-mode="both">
         <span class="crd-mode-icon">&#127909;</span>
-        <div class="crd-mode-label">Screen + Webcam</div>
-        <div class="crd-mode-desc">PiP webcam overlay on screen</div>
+        <div class="crd-mode-label">Écran + webcam</div>
+        <div class="crd-mode-desc">Webcam en incrustation sur l'écran</div>
       </div>
       <div class="crd-mode-card" data-mode="audio">
         <span class="crd-mode-icon">&#127908;</span>
-        <div class="crd-mode-label">Audio Only</div>
-        <div class="crd-mode-desc">Record mic and system audio</div>
+        <div class="crd-mode-label">Audio uniquement</div>
+        <div class="crd-mode-desc">Enregistrez le micro et l'audio système</div>
       </div>
     </div>
 
     <!-- CONTROLS -->
     <div class="crd-controls">
-      <button type="button" class="crd-ctrl-btn" id="pauseBtn" disabled title="Pause/Resume (P)">&#9208;&#65039;</button>
-      <button type="button" class="crd-record-btn" id="recordBtn" title="Record (R)"></button>
-      <button type="button" class="crd-ctrl-btn stop" id="stopBtn" disabled title="Stop (S)">&#9632;</button>
+      <button type="button" class="crd-ctrl-btn" id="pauseBtn" disabled title="Mettre en pause ou reprendre (P)">&#9208;&#65039;</button>
+      <button type="button" class="crd-record-btn" id="recordBtn" title="Enregistrer (R)"></button>
+      <button type="button" class="crd-ctrl-btn stop" id="stopBtn" disabled title="Arrêter (S)">&#9632;</button>
       <div class="crd-timer" id="timerDisplay">00:00</div>
     </div>
 
@@ -83,37 +83,37 @@
         <div class="crd-panel" id="audioPanel">
           <div class="crd-panel-title">&#127908; Audio</div>
           <div class="crd-toggle-row">
-            <span class="crd-toggle-label">System audio</span>
-            <button type="button" class="crd-toggle on" id="sysAudioToggle" aria-label="Toggle system audio"></button>
+            <span class="crd-toggle-label">Son du système</span>
+            <button type="button" class="crd-toggle on" id="sysAudioToggle" aria-label="Activer ou couper le son du système"></button>
           </div>
           <div class="crd-toggle-row">
             <span class="crd-toggle-label">Microphone</span>
-            <button type="button" class="crd-toggle on" id="micToggle" aria-label="Toggle microphone"></button>
+            <button type="button" class="crd-toggle on" id="micToggle" aria-label="Activer ou couper le microphone"></button>
           </div>
           <div class="crd-volume-meter"><div class="crd-volume-bar" id="volumeBar"></div></div>
           <div class="crd-toggle-row" style="margin-top:10px">
-            <span class="crd-toggle-label">Noise suppression</span>
-            <button type="button" class="crd-toggle" id="noiseToggle" aria-label="Toggle noise reduction"></button>
+            <span class="crd-toggle-label">Réduction du bruit</span>
+            <button type="button" class="crd-toggle" id="noiseToggle" aria-label="Activer ou couper la réduction du bruit"></button>
           </div>
         </div>
 
         <!-- WEBCAM SETTINGS -->
         <div class="crd-panel" id="webcamPanel" style="display:none">
           <div class="crd-panel-title">&#128247; Webcam</div>
-          <label class="crd-toggle-label" style="margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)" for="cameraSelect">Camera</label>
-          <select class="crd-select" id="cameraSelect"><option>chargement cameras...</option></select>
+          <label class="crd-toggle-label" style="margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)" for="cameraSelect">Caméra</label>
+          <select class="crd-select" id="cameraSelect"><option>Chargement des caméras…</option></select>
 
           <div class="crd-toggle-row" style="margin-top:12px">
-            <span class="crd-toggle-label">Mirror</span>
-            <button type="button" class="crd-toggle on" id="mirrorToggle" aria-label="Toggle mirror preview"></button>
+            <span class="crd-toggle-label">Miroir</span>
+            <button type="button" class="crd-toggle on" id="mirrorToggle" aria-label="Activer ou couper l’aperçu miroir"></button>
           </div>
 
-          <label class="crd-toggle-label" style="margin-top:12px;margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)">Shape</label>
+          <label class="crd-toggle-label" style="margin-top:12px;margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)">Forme</label>
           <div class="crd-shapes" id="shapeSelector">
-            <button type="button" class="crd-shape-btn active" data-shape="circle" title="Circle">
+            <button type="button" class="crd-shape-btn active" data-shape="circle" title="Cercle">
               <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>
             </button>
-            <button type="button" class="crd-shape-btn" data-shape="rounded" title="Rounded Rectangle">
+            <button type="button" class="crd-shape-btn" data-shape="rounded" title="Rectangle arrondi">
               <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="4"/></svg>
             </button>
             <button type="button" class="crd-shape-btn" data-shape="rect" title="Rectangle">
@@ -121,7 +121,7 @@
             </button>
           </div>
 
-          <label class="crd-toggle-label" style="margin-top:4px;margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)">PiP Position</label>
+          <label class="crd-toggle-label" style="margin-top:4px;margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)">Position de l’incrustation</label>
           <div class="crd-pip-grid" id="pipGrid">
             <div class="crd-pip-pos" data-pos="tl" title="Top Left"></div>
             <div class="crd-pip-pos" data-pos="tr" title="Top Right"></div>
@@ -134,8 +134,8 @@
         <div class="crd-panel">
           <div class="crd-panel-title">&#9881;&#65039; Options</div>
           <div class="crd-toggle-row">
-            <span class="crd-toggle-label">3-2-1 countdown</span>
-            <button type="button" class="crd-toggle on" id="countdownToggle" aria-label="Toggle countdown"></button>
+            <span class="crd-toggle-label">Compte à rebours</span>
+            <button type="button" class="crd-toggle on" id="countdownToggle" aria-label="Activer ou couper le compte à rebours"></button>
           </div>
         </div>
 
@@ -148,8 +148,8 @@
         <div class="crd-preview" id="previewArea">
           <div class="crd-preview-empty" id="previewEmpty">
             <div class="crd-preview-empty-icon">&#127916;</div>
-            <div class="crd-preview-empty-text">Preview appears here</div>
-            <div class="crd-preview-empty-hint">Pick a mode and hit record</div>
+            <div class="crd-preview-empty-text">L’aperçu apparaîtra ici</div>
+            <div class="crd-preview-empty-hint">Choisissez un mode, puis lancez l’enregistrement</div>
           </div>
           <video id="liveVideo" style="display:none" autoplay muted playsinline></video>
           <video id="playbackVideo" style="display:none" controls playsinline></video>
@@ -157,13 +157,13 @@
 
           <!-- ANNOTATION BAR -->
           <div class="crd-annotation-bar" id="annotationBar">
-            <button type="button" class="crd-anno-btn active" data-tool="pen" title="Pen (red)">&#9997;&#65039;</button>
-            <button type="button" class="crd-anno-btn" data-tool="highlight" title="Highlighter (yellow)">&#128221;</button>
-            <button type="button" class="crd-anno-btn" data-tool="arrow" title="Arrow">&#10145;&#65039;</button>
-            <button type="button" class="crd-anno-btn" data-tool="text" title="Text">T</button>
+            <button type="button" class="crd-anno-btn active" data-tool="pen" title="Stylo rouge">&#9997;&#65039;</button>
+            <button type="button" class="crd-anno-btn" data-tool="highlight" title="Surligneur jaune">&#128221;</button>
+            <button type="button" class="crd-anno-btn" data-tool="arrow" title="Flèche">&#10145;&#65039;</button>
+            <button type="button" class="crd-anno-btn" data-tool="text" title="Texte">T</button>
             <div class="crd-anno-sep"></div>
-            <button type="button" class="crd-anno-btn" data-tool="eraser" title="Eraser">&#128465;&#65039;</button>
-            <button type="button" class="crd-anno-btn" id="clearAnnotations" title="Clear All">&#10060;</button>
+            <button type="button" class="crd-anno-btn" data-tool="eraser" title="Gomme">&#128465;&#65039;</button>
+            <button type="button" class="crd-anno-btn" id="clearAnnotations" title="Tout effacer">&#10060;</button>
           </div>
         </div>
 
@@ -202,7 +202,7 @@
     <div class="crd-history" id="historyPanel" style="display:none">
       <div class="crd-history-title">&#128197; Recent Recordings</div>
       <div class="crd-history-list" id="historyList">
-        <div class="crd-history-empty">No recordings yet</div>
+        <div class="crd-history-empty">Aucun enregistrement</div>
       </div>
     </div>
 
@@ -210,16 +210,17 @@
 
   <!-- KEYBOARD HINTS -->
   <div class="crd-shortcuts" id="shortcutHints">
-    <kbd>R</kbd> Record &nbsp; <kbd>P</kbd> Pause &nbsp; <kbd>S</kbd> Stop &nbsp; <kbd>Esc</kbd> Cancel
+    <kbd>R</kbd> Enregistrer &nbsp; <kbd>P</kbd> Pause &nbsp; <kbd>S</kbd> Arrêter &nbsp; <kbd>Esc</kbd> Annuler
   </div>
 
   <!-- TOAST -->
   <div class="crd-toast" id="toast"></div>
 
-  <script src="/assets/js/pages/creative/creator-record-app-controller.js?v=79ab5cb2"></script>
+  <script src="/assets/js/pages/creative/fr-creator-media-localizer.js?v=c2fc4e17"></script>
+<script src="/assets/js/pages/creative/creator-record-app-controller.js?v=8013abfc"></script>
 
 <script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
-<script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js?v=c86f0290" defer></script>
+<script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js" defer></script>
 </body>
 </html>

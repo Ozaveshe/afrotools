@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5">
-  <link rel="stylesheet" href="/tools/creator-clip/style.css?v=1ae1e258">
+  <link rel="stylesheet" href="/tools/creator-clip/style.css?v=c643b595">
   <script src="/assets/js/supabase-auth.js?v=67629e34" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <meta property="og:url" content="https://afrotools.com/fr/tools/decoupe-de-video-pour-createur/app">
@@ -20,8 +20,8 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f9debbdd">
 <link rel="stylesheet" href="/assets/css/creator-media-reflow.css?v=0c5b3e2d">
 <script src="/assets/js/lib/dark-mode.js?v=81f51395" defer></script>
-<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css?v=73b034f6">
 <link rel="canonical" href="https://afrotools.com/fr/tools/decoupe-de-video-pour-createur/app">
+<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css">
 </head>
 <body class="ccl-app top-level-page-ui-refresh">
 
@@ -31,9 +31,9 @@
       <span>&#127916;</span> CreatorClip
     </a>
     <div class="ccl-header-actions">
-      <button type="button" class="ccl-btn-icon" id="saveProjectBtn" title="enregistrer Project">&#128190;</button>
-      <button type="button" class="ccl-btn-icon" id="loadProjectBtn" title="Load Project">&#128194;</button>
-      <button type="button" class="ccl-btn-primary" id="newVideoBtn">+ New Video</button>
+      <button type="button" class="ccl-btn-icon" id="saveProjectBtn" title="Enregistrer le projet">&#128190;</button>
+      <button type="button" class="ccl-btn-icon" id="loadProjectBtn" title="Charger le projet">&#128194;</button>
+      <button type="button" class="ccl-btn-primary" id="newVideoBtn">+ Nouvelle vidéo</button>
     </div>
   </header>
 
@@ -43,9 +43,9 @@
     <!-- UPLOAD ZONE -->
     <div class="ccl-dropzone" id="dropzone">
       <span class="ccl-dropzone-icon">&#127916;</span>
-      <div class="ccl-dropzone-title">Drop your video here</div>
-      <div class="ccl-dropzone-desc">or click to browse files</div>
-      <button class="ccl-dropzone-btn" type="button">Choose Video</button>
+      <div class="ccl-dropzone-title">Déposez votre vidéo ici</div>
+      <div class="ccl-dropzone-desc">ou cliquez pour parcourir les fichiers</div>
+      <button class="ccl-dropzone-btn" type="button">Choisir une vidéo</button>
       <div class="ccl-dropzone-formats">MP4, WebM, MOV &mdash; up to 500MB</div>
       <input aria-label="FileInput" type="file" id="fileInput" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov">
     </div>
@@ -72,8 +72,8 @@
       <!-- TIMELINE -->
       <div class="ccl-timeline" id="timeline">
         <div class="ccl-timeline-label">
-          <span>TIMELINE</span>
-          <span id="trimLabel">Full video</span>
+          <span>Chronologie</span>
+          <span id="trimLabel">Vidéo entière</span>
         </div>
         <div class="ccl-timeline-strip" id="timelineStrip">
           <div class="ccl-timeline-progress" id="timelineProgress"></div>
@@ -91,13 +91,13 @@
 
       <!-- TABS -->
       <div class="ccl-tabs">
-        <button type="button" class="ccl-tab active" data-tab="captions">Captions</button>
+        <button type="button" class="ccl-tab active" data-tab="captions">Sous-titres</button>
         <button type="button" class="ccl-tab" data-tab="styles">Styles</button>
-        <button type="button" class="ccl-tab" data-tab="resize">Resize</button>
-        <button type="button" class="ccl-tab" data-tab="overlays">Text</button>
-        <button type="button" class="ccl-tab" data-tab="export">Export</button>
-        <button type="button" class="ccl-tab" data-tab="filters">Filters</button>
-        <button type="button" class="ccl-tab" data-tab="speed">Speed</button>
+        <button type="button" class="ccl-tab" data-tab="resize">Redimensionner</button>
+        <button type="button" class="ccl-tab" data-tab="overlays">Texte</button>
+        <button type="button" class="ccl-tab" data-tab="export">Exporter</button>
+        <button type="button" class="ccl-tab" data-tab="filters">Filtres</button>
+        <button type="button" class="ccl-tab" data-tab="speed">Vitesse</button>
         <button type="button" class="ccl-tab" data-tab="audio">Audio</button>
       </div>
 
@@ -105,15 +105,15 @@
       <div class="ccl-tab-panel active" id="panel-captions">
         <div class="ccl-caption-actions-bar">
           <button type="button" class="ccl-generate-captions-btn" id="genCaptionsBtn">
-            <span class="ccl-spinner"></span>Auto-Generate Captions
+            <span class="ccl-spinner"></span>Créer les sous-titres
           </button>
-          <button type="button" class="ccl-topbar-btn" id="addCaptionBtn">+ Add Caption</button>
-          <button type="button" class="ccl-topbar-btn" id="clearCaptionsBtn">Clear All</button>
+          <button type="button" class="ccl-topbar-btn" id="addCaptionBtn">+ Ajouter un sous-titre</button>
+          <button type="button" class="ccl-topbar-btn" id="clearCaptionsBtn">Tout effacer</button>
         </div>
         <div class="ccl-caption-list" id="captionList">
           <div class="ccl-empty" id="captionEmpty">
             <div class="ccl-empty-icon">&#128172;</div>
-            <div class="ccl-empty-text">No captions yet. Click "Auto-Generate" to create captions from audio, or add them manually.</div>
+            <div class="ccl-empty-text">Aucun sous-titre. Lancez la génération depuis la piste audio ou ajoutez-les manuellement.</div>
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@
           </div>
           <div class="ccl-style-card" data-style="gradient">
             <div class="ccl-style-preview gradient-text">Sample</div>
-            <div class="ccl-style-name">Gradient</div>
+            <div class="ccl-style-name">Dégradé</div>
           </div>
           <div class="ccl-style-card" data-style="custom">
             <div class="ccl-style-preview custom">Custom</div>
@@ -159,7 +159,7 @@
         <!-- Custom controls -->
         <div class="ccl-custom-controls" id="customControls">
           <div class="ccl-control-row">
-            <span class="ccl-control-label">Font</span>
+            <span class="ccl-control-label">Police</span>
             <select class="ccl-control-select" id="customFont" aria-label="Custom Font">
               <option value="DM Sans">DM Sans</option>
               <option value="Sora">Sora</option>
@@ -170,25 +170,25 @@
             </select>
           </div>
           <div class="ccl-control-row">
-            <span class="ccl-control-label">Size</span>
+            <span class="ccl-control-label">Taille</span>
             <input aria-label="CustomSize" type="range" class="ccl-control-input" id="customSize" min="14" max="48" value="24" style="flex:1">
             <span id="customSizeVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:30px">24px</span>
           </div>
           <div class="ccl-control-row">
-            <span class="ccl-control-label">Color</span>
+            <span class="ccl-control-label">Couleur</span>
             <input aria-label="CustomColor" type="color" class="ccl-color-input" id="customColor" value="#ffffff">
           </div>
           <div class="ccl-control-row">
-            <span class="ccl-control-label">BG Color</span>
+            <span class="ccl-control-label">Couleur de fond</span>
             <input aria-label="CustomBg" type="color" class="ccl-color-input" id="customBg" value="#000000">
-            <label style="font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px"><input aria-label="CustomBgOn" type="checkbox" id="customBgOn"> Enable BG</label>
+            <label style="font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px"><input aria-label="CustomBgOn" type="checkbox" id="customBgOn"> Activer le fond</label>
           </div>
           <div class="ccl-control-row">
             <span class="ccl-control-label">Position</span>
             <select class="ccl-control-select" id="customPos" aria-label="Custom Pos">
-              <option value="bottom">Bottom</option>
-              <option value="center">Center</option>
-              <option value="top">Top</option>
+              <option value="bottom">Bas</option>
+              <option value="center">Centre</option>
+              <option value="top">Haut</option>
             </select>
           </div>
         </div>
@@ -201,7 +201,7 @@
           <div class="ccl-resize-card ccl-resize-16-9 active" data-ratio="16-9">
             <div class="ccl-resize-icon">16:9</div>
             <div class="ccl-resize-label">YouTube</div>
-            <div class="ccl-resize-sub">Landscape</div>
+            <div class="ccl-resize-sub">Paysage</div>
           </div>
           <div class="ccl-resize-card ccl-resize-9-16" data-ratio="9-16">
             <div class="ccl-resize-icon">9:16</div>
@@ -211,7 +211,7 @@
           <div class="ccl-resize-card ccl-resize-1-1" data-ratio="1-1">
             <div class="ccl-resize-icon">1:1</div>
             <div class="ccl-resize-label">IG Feed</div>
-            <div class="ccl-resize-sub">Square</div>
+            <div class="ccl-resize-sub">Carré</div>
           </div>
           <div class="ccl-resize-card ccl-resize-4-5" data-ratio="4-5">
             <div class="ccl-resize-icon">4:5</div>
@@ -220,12 +220,12 @@
           </div>
         </div>
         <div style="margin-top:16px">
-          <div class="ccl-section-title">Background Fill</div>
+          <div class="ccl-section-title">Remplissage du fond</div>
           <div class="ccl-pills" id="bgFillPills">
-            <span class="ccl-pill active" data-val="blur">Blur</span>
-            <span class="ccl-pill" data-val="black">Black</span>
-            <span class="ccl-pill" data-val="white">White</span>
-            <span class="ccl-pill" data-val="gradient">Gradient</span>
+            <span class="ccl-pill active" data-val="blur">Flou</span>
+            <span class="ccl-pill" data-val="black">Noir</span>
+            <span class="ccl-pill" data-val="white">Blanc</span>
+            <span class="ccl-pill" data-val="gradient">Dégradé</span>
           </div>
         </div>
       </div>
@@ -239,7 +239,7 @@
             <div class="ccl-empty-text">No text overlays yet. Add text that appears at specific points in your video.</div>
           </div>
         </div>
-        <button type="button" class="ccl-add-overlay-btn" id="addOverlayBtn">+ Add Text Overlay</button>
+        <button type="button" class="ccl-add-overlay-btn" id="addOverlayBtn">+ Ajouter du texte</button>
       </div>
 
       <!-- TAB: EXPORT -->
@@ -247,7 +247,7 @@
         <div class="ccl-export-panel">
           <div class="ccl-export-title">&#128229; Export Video</div>
           <div class="ccl-export-row">
-            <span class="ccl-export-label">Quality</span>
+            <span class="ccl-export-label">Qualité</span>
             <div class="ccl-pills" id="qualityPills">
               <span class="ccl-pill active" data-val="1080">1080p</span>
               <span class="ccl-pill" data-val="720">720p</span>
@@ -260,10 +260,10 @@
               <span class="ccl-pill active">WebM</span>
             </div>
           </div>
-          <button type="button" class="ccl-export-btn" id="exportBtn">Export Video</button>
+          <button type="button" class="ccl-export-btn" id="exportBtn">Exporter la vidéo</button>
           <div class="ccl-progress-wrap" id="exportProgress">
             <div class="ccl-progress-bar"><div class="ccl-progress-fill" id="progressFill"></div></div>
-            <div class="ccl-progress-text" id="progressText">Preparing...</div>
+            <div class="ccl-progress-text" id="progressText">Préparation…</div>
           </div>
         </div>
       </div>
@@ -274,11 +274,11 @@
         <div class="ccl-style-grid" id="filterGrid">
           <div class="ccl-style-card active" data-filter="none">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#333,#555);height:48px;border-radius:8px"></div>
-            <div class="ccl-style-name">None</div>
+            <div class="ccl-style-name">Aucun</div>
           </div>
           <div class="ccl-style-card" data-filter="grayscale">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#888,#aaa);height:48px;border-radius:8px"></div>
-            <div class="ccl-style-name">Grayscale</div>
+            <div class="ccl-style-name">Niveaux de gris</div>
           </div>
           <div class="ccl-style-card" data-filter="sepia">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#704214,#a0522d);height:48px;border-radius:8px"></div>
@@ -286,11 +286,11 @@
           </div>
           <div class="ccl-style-card" data-filter="warm">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#FF6347,#FFD700);height:48px;border-radius:8px"></div>
-            <div class="ccl-style-name">Warm</div>
+            <div class="ccl-style-name">Chaud</div>
           </div>
           <div class="ccl-style-card" data-filter="cool">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#4682B4,#87CEEB);height:48px;border-radius:8px"></div>
-            <div class="ccl-style-name">Cool</div>
+            <div class="ccl-style-name">Froid</div>
           </div>
           <div class="ccl-style-card" data-filter="vintage">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#8B7355,#BC8F8F);height:48px;border-radius:8px"></div>
@@ -298,7 +298,7 @@
           </div>
           <div class="ccl-style-card" data-filter="highcontrast">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#000,#fff);height:48px;border-radius:8px"></div>
-            <div class="ccl-style-name">High Contrast</div>
+            <div class="ccl-style-name">Contraste élevé</div>
           </div>
           <div class="ccl-style-card" data-filter="cinematic">
             <div class="ccl-style-preview" style="background:linear-gradient(135deg,#1a1a2e,#16213e);height:48px;border-radius:8px"></div>
@@ -306,14 +306,14 @@
           </div>
         </div>
         <div style="margin-top:16px">
-          <div class="ccl-section-title">Adjustments</div>
+          <div class="ccl-section-title">Réglages</div>
           <div class="ccl-control-row" style="margin-bottom:8px">
-            <span class="ccl-control-label">Brightness</span>
+            <span class="ccl-control-label">Luminosité</span>
             <input aria-label="BrightnessSlider" type="range" class="ccl-control-input" id="brightnessSlider" min="50" max="200" value="100" style="flex:1">
             <span id="brightnessVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
           </div>
           <div class="ccl-control-row" style="margin-bottom:8px">
-            <span class="ccl-control-label">Contrast</span>
+            <span class="ccl-control-label">Contraste</span>
             <input aria-label="ContrastSlider" type="range" class="ccl-control-input" id="contrastSlider" min="50" max="200" value="100" style="flex:1">
             <span id="contrastVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
           </div>
@@ -350,8 +350,8 @@
         </div>
         <div class="ccl-pills" style="margin-bottom:16px">
           <span class="ccl-pill" id="muteBtn">&#128263; Mute</span>
-          <span class="ccl-pill" id="fadeInAudioBtn">Fade In</span>
-          <span class="ccl-pill" id="fadeOutAudioBtn">Fade Out</span>
+          <span class="ccl-pill" id="fadeInAudioBtn">Fondu en ouverture</span>
+          <span class="ccl-pill" id="fadeOutAudioBtn">Fondu en fermeture</span>
         </div>
       </div>
 
@@ -361,16 +361,17 @@
   <!-- BOTTOM NAV -->
   <nav class="ccl-bottom-nav">
     <a href="app.html" class="active"><span class="ccl-bnav-icon">&#127916;</span>Clip</a>
-    <a href="/tools/creator-captions/app"><span class="ccl-bnav-icon">&#9997;&#65039;</span>Captions</a>
-    <a href="index.html"><span class="ccl-bnav-icon">&#8505;&#65039;</span>About</a>
+    <a href="/tools/creator-captions/app"><span class="ccl-bnav-icon">&#9997;&#65039;</span>Sous-titres</a>
+    <a href="index.html"><span class="ccl-bnav-icon">&#8505;&#65039;</span>À propos</a>
   </nav>
 
   <!-- TOAST -->
   <div class="ccl-toast" id="toast"></div>
 
-<script src="/assets/js/pages/creative/creator-clip-app-controller.js?v=7e6f9e3f"></script>
+<script src="/assets/js/pages/creative/fr-creator-media-localizer.js?v=c2fc4e17"></script>
+<script src="/assets/js/pages/creative/creator-clip-app-controller.js?v=dd035f3d"></script>
 <script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
-<script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js?v=c86f0290" defer></script>
+<script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js" defer></script>
 </body>
 </html>

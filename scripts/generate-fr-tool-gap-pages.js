@@ -8198,7 +8198,7 @@ function main() {
     // Accent/elision repair at generation time: legacy PAGES copy is partly
     // ASCII-only French; this keeps regeneration from undoing the sitewide repair.
     const { processHtml: repairFrenchAccents } = require("./repair-fr-accents.js");
-    writeFileSyncWithRetry(output, repairFrenchAccents(htmlFor(page)), "utf8");
+    writeFileSyncWithRetry(output, repairFrenchAccents(require("./lib/french-creator-entries").enhance(htmlFor(page), page.frSlug)), "utf8");
     pagesWritten += 1;
     if (ensureEnglishHreflang(page)) englishUpdated += 1;
   }

@@ -6,7 +6,17 @@ const {
   localizeVisibleLanguage,
 } = require("./lib/french-visible-language");
 
+const { createHash } = require("node:crypto");
+const { translate } = require("../assets/js/pages/creative/fr-creator-media-localizer");
+function translateControls(html) {
+  return html.split(/(<(?:script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)>)/gi).map(part => {
+    if (/^<(script|style)\b/i.test(part)) return part;
+    return part.replace(/>([^<>]+)</g, (_, text) => ">" + translate(text) + "<")
+      .replace(/\b(title|placeholder|aria-label)="([^"]*)"/g, (_, attr, text) => attr + '="' + translate(text) + '"');
+  }).join("");
+}
 const root = path.resolve(__dirname, "..");
+const localizerHash = createHash("sha256").update(fs.readFileSync(require.resolve("../assets/js/pages/creative/fr-creator-media-localizer"))).digest("hex").slice(0, 8);
 const owners = [
   ["creator-clip", "decoupe-de-video-pour-createur", "Espace de découpe vidéo CreatorClip"],
   ["creator-record", "enregistrement-pour-createur", "Espace d'enregistrement CreatorRecord"],
@@ -42,20 +52,20 @@ for (const [id, slug, title] of owners) {
     .replaceAll(englishUrl, frenchUrl)
     .replace(
       /<link rel="canonical"[^>]*>/,
-      `<link rel="canonical" href="${frenchUrl}">\n<link rel="alternate" hreflang="en" href="${englishUrl}">\n<link rel="alternate" hreflang="fr" href="${frenchUrl}">\n<link rel="alternate" hreflang="x-default" href="${englishUrl}">`
+      `<link rel="canonical" href="${frenchUrl}">`
     )
     .replace(
       /href="style\.css\?/g,
       `href="/tools/${id}/style.css?`
     )
     .replace(
-      `<script src="/assets/js/pages/creative/${id}-app-controller.js"></script>`,
-      `<script src="/assets/js/pages/creative/fr-creator-media-localizer.js"></script>\n<script src="/assets/js/pages/creative/${id}-app-controller.js"></script>`
+      new RegExp('<script src="/assets/js/pages/creative/' + id + '-app-controller\\.js(?:\\?[^"]*)?"[^>]*></script>'),
+      tag => `<script src="/assets/js/pages/creative/fr-creator-media-localizer.js?v=${localizerHash}"></script>\n` + tag
     );
   fs.mkdirSync(path.dirname(destination), { recursive: true });
   fs.writeFileSync(
     destination,
-    ensureRouteRealProofAssets(localizeVisibleLanguage(html))
+    ensureRouteRealProofAssets(localizeVisibleLanguage(translateControls(html)))
   );
   const landing = path.join(root, "fr/tools", slug, "index.html");
   let landingHtml = fs.readFileSync(landing, "utf8");
@@ -76,6 +86,6 @@ for (const [id, slug, title] of owners) {
       /<a class="secondary-action" href="\/tools\/[^"]+\/">[^<]+<\/a>/,
       '<a class="secondary-action" href="app.html">Ouvrir l’espace complet</a>'
     );
-  fs.writeFileSync(landing, ensureRouteRealProofAssets(landingHtml));
+  fs.writeFileSync(landing, ensureRouteRealProofAssets(require("./lib/french-creator-entries").enhance(landingHtml, slug)));
   process.stdout.write(`${id} -> fr/tools/${slug}/app.html\n`);
 }

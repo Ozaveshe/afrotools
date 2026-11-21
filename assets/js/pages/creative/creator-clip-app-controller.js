@@ -238,10 +238,11 @@
       var rect = timelineStrip.getBoundingClientRect();
       var pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
       var time = pct * state.duration;
+      var minimum = Math.min(0.5, state.duration / 10);
       if (isStart) {
-        state.trimStart = Math.min(time, state.trimEnd - 0.5);
+        state.trimStart = Math.max(0, Math.min(time, state.trimEnd - minimum));
       } else {
-        state.trimEnd = Math.max(time, state.trimStart + 0.5);
+        state.trimEnd = Math.min(state.duration, Math.max(time, state.trimStart + minimum));
       }
       updateTrimDisplay();
     }
@@ -699,12 +700,17 @@
     exportVideo.volume = 1;
 
     exportVideo.onloadedmetadata = function() {
-      exportVideo.currentTime = state.trimStart;
-
+      // Some device-created WebMs have no seek index. Play those up to the
+      // requested start before capturing, so no preceding frames are exported.
+      if (!state.trimStart || !Number.isFinite(exportVideo.duration)) {
+        startRecording();
+        return;
+      }
       exportVideo.onseeked = function() {
         exportVideo.onseeked = null;
         startRecording();
       };
+      exportVideo.currentTime = state.trimStart;
     };
 
     function startRecording() {
@@ -754,13 +760,21 @@
         setTimeout(function() { progressWrap.classList.remove('active'); }, 3000);
       };
 
-      recorder.start(100);
-      exportVideo.play();
+      exportVideo.play().then(drawFrame).catch(function() {
+        btn.disabled = false;
+        progressWrap.classList.remove('active');
+        toast(sw ? 'Video haikuweza kuchezwa.' : 'Video playback failed.');
+      });
 
       var trimDuration = state.trimEnd - state.trimStart;
 
       function drawFrame() {
-        if (exportVideo.paused || exportVideo.ended || exportVideo.currentTime >= state.trimEnd) {
+        if (exportVideo.currentTime < state.trimStart && !exportVideo.ended) {
+          requestAnimationFrame(drawFrame);
+          return;
+        }
+        if (recorder.state === 'inactive') recorder.start(100);
+        if (exportVideo.ended || exportVideo.currentTime >= state.trimEnd) {
           exportVideo.pause();
           recorder.stop();
           return;
@@ -821,7 +835,6 @@
         requestAnimationFrame(drawFrame);
       }
 
-      drawFrame();
     }
   });
 
