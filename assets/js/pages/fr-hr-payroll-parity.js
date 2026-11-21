@@ -21,6 +21,21 @@
     return;
   }
 
+  if (config.id === "domestic-worker") {
+    function selectLinkedCountry() {
+      var option = form.querySelector('select[name="country"] option:target[data-currency]');
+      if (!option) return;
+      Array.from(option.parentElement.options).forEach(function (item) {
+        item.defaultSelected = item === option;
+      });
+      option.selected = true;
+      form.elements.jurisdiction.value = form.elements.jurisdiction.defaultValue = option.textContent;
+      form.elements.currency.value = form.elements.currency.defaultValue = option.dataset.currency;
+    }
+    window.addEventListener("load", selectLinkedCountry, { once: true });
+    window.addEventListener("hashchange", function () { selectLinkedCountry(); invalidate(); });
+  }
+
   function setStatus(message, isError) {
     status.textContent = message;
     status.classList.toggle("is-error", Boolean(isError));

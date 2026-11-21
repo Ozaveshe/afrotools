@@ -123,7 +123,15 @@ function inputHtml(tool, field) {
     if (value !== ownerValues[0]) {
       throw new Error(`Selector default drifted from English owner for ${tool.id}/${name}: ${value} != ${ownerValues[0]}`);
     }
-    return `<div class="fr-hr-field"><label for="${id}">${escapeHtml(label)}</label><select id="${id}" name="${name}"${attributes}>${options.map(([optionValue, optionLabel]) => `<option value="${escapeHtml(optionValue)}"${optionValue === value ? " selected" : ""}>${escapeHtml(optionLabel)}</option>`).join("")}</select></div>`;
+    const optionTags = options.map(([optionValue, optionLabel]) => {
+      let target = "";
+      if (tool.id === "domestic-worker" && name === "country") {
+        const country = countries.find(row => row.routeSlug === optionValue);
+        target = ` id="pays-${escapeHtml(optionValue)}" data-currency="${escapeHtml(country.currency)}"`;
+      }
+      return `<option value="${escapeHtml(optionValue)}"${optionValue === value ? " selected" : ""}${target}>${escapeHtml(optionLabel)}</option>`;
+    });
+    return `<div class="fr-hr-field"><label for="${id}">${escapeHtml(label)}</label><select id="${id}" name="${name}"${attributes}>${optionTags.join("")}</select></div>`;
   }
   if (contract.element === "textarea") {
     const placeholder = settings.placeholder ? ` placeholder="${escapeHtml(settings.placeholder)}"` : "";

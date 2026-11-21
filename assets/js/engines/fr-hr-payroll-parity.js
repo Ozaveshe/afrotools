@@ -113,6 +113,29 @@
     ]);
   }
 
+  function monthlyEquivalent(amount, period, hoursPerWeek, daysPerWeek) {
+    if (period === "hourly") return amount * hoursPerWeek * (52 / 12);
+    if (period === "daily") return amount * daysPerWeek * (52 / 12);
+    if (period === "weekly") return amount * (52 / 12);
+    return amount;
+  }
+
+  function domesticBudget({
+    basePay, payPeriod, hoursPerWeek, daysPerWeek, overtimeHours = 0, overtimeMultiplier = 1,
+    allowances = 0, inKind = 0, employerPct = 0, leavePct = 0, adminCost = 0,
+    annualBonus = 0, setupCost = 0
+  }) {
+    var baseMonthly = monthlyEquivalent(basePay, payPeriod, hoursPerWeek, daysPerWeek);
+    var regularMonthlyHours = hoursPerWeek * (52 / 12);
+    var effectiveHourly = baseMonthly / regularMonthlyHours;
+    var overtimePay = overtimeHours * effectiveHourly * Math.max(1, overtimeMultiplier || 1);
+    var contributionBase = baseMonthly + overtimePay + allowances;
+    var employerContribution = contributionBase * (employerPct / 100);
+    var leaveReserve = contributionBase * (leavePct / 100);
+    var monthlyCost = baseMonthly + overtimePay + allowances + inKind + employerContribution + leaveReserve + adminCost + annualBonus / 12 + setupCost / 12;
+    return { baseMonthly, overtimePay, employerContribution, leaveReserve, monthlyCost, annualCost: monthlyCost * 12 };
+  }
+
   function domestic(input) {
     var errors = [], ev = evidence(input, errors);
     var country = choice(input.country, "un pays du plan d'emploi", [
@@ -130,14 +153,8 @@
     var payPeriod = choice(input.payPeriod, "une périodicité de rémunération", ["hourly", "daily", "weekly", "monthly"], errors);
     var legalFloor = nonNegative(input.legalFloor, "Le plancher de rémunération vérifié", errors, true);
     var floorPeriod = choice(input.floorPeriod, "une périodicité du plancher", ["hourly", "daily", "weekly", "monthly"], errors);
-    function monthlyEquivalent(amount, period) {
-      if (period === "hourly") return amount * hoursPerWeek * (52 / 12);
-      if (period === "daily") return amount * daysPerWeek * (52 / 12);
-      if (period === "weekly") return amount * (52 / 12);
-      return amount;
-    }
-    var baseMonthly = monthlyEquivalent(basePay, payPeriod);
-    var floorMonthly = monthlyEquivalent(legalFloor, floorPeriod);
+
+    var floorMonthly = monthlyEquivalent(legalFloor, floorPeriod, hoursPerWeek, daysPerWeek);
     var overtimeHours = nonNegative(input.overtimeHours, "Les heures supplémentaires mensuelles", errors, true);
     if (overtimeHours > 160) errors.push("Les heures supplémentaires mensuelles ne peuvent pas dépasser 160.");
     var overtimeMultiplier = number(input.overtimeMultiplier || 1);
@@ -159,13 +176,10 @@
     var payRecord = choice(input.payRecord, "l'état du processus de paiement", ["no", "partial", "yes"], errors);
     var restDays = choice(input.restDays, "l'état du plan de repos", ["no", "partial", "yes"], errors);
     var notes = String(input.notes || "").trim();
-    var regularMonthlyHours = hoursPerWeek * (52 / 12);
-    var effectiveHourly = baseMonthly / regularMonthlyHours;
-    var overtimePay = overtimeHours * effectiveHourly * Math.max(1, overtimeMultiplier || 1);
-    var contributionBase = baseMonthly + overtimePay + allowances;
-    var employerContribution = contributionBase * (employerPct / 100);
-    var leaveReserve = contributionBase * (leavePct / 100);
-    var monthlyCost = baseMonthly + overtimePay + allowances + inKind + employerContribution + leaveReserve + adminCost + annualBonus / 12 + setupCost / 12;
+    var { baseMonthly, overtimePay, employerContribution, leaveReserve, monthlyCost } = domesticBudget({
+      basePay, payPeriod, hoursPerWeek, daysPerWeek, overtimeHours, overtimeMultiplier,
+      allowances, inKind, employerPct, leavePct, adminCost, annualBonus, setupCost
+    });
     var floorGap = baseMonthly - floorMonthly;
     var readiness = 30;
     if (floorGap >= 0) readiness += 22;
@@ -395,6 +409,7 @@
     calculate: function (toolId, input) {
       return calculators[toolId] ? calculators[toolId](input || {}) : { valid: false, toolId: toolId, errors: ["Outil inconnu."] };
     },
+    domesticBudget: domesticBudget,
     freshness: freshness,
     toolIds: Object.keys(calculators)
   };

@@ -7849,6 +7849,9 @@ function htmlFor(page) {
   if (page.frenchSecurityNative === true) {
     return require("./lib/french-security-page.js").render(page);
   }
+  if (page.enSlug.startsWith("domestic-worker/")) {
+    return require("./lib/french-domestic-country.js").render(page);
+  }
   if (page.enSlug.startsWith("outage-cost/")) {
     return require("./lib/french-outage-country.js").render(page);
   }
