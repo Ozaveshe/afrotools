@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (["afropayroll-os", "compliance-calendar", "regulatory-alerts"].includes(page.enSlug)) {
+    return require("./lib/french-employment-workflows").render(page);
+  }
   if (page.enSlug === "work-permit-cost/algeria") {
     return fs.readFileSync(path.join(__dirname, "templates", "fr-algeria-work-permit.html"), "utf8");
   }
