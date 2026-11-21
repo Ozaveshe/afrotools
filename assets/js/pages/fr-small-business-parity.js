@@ -164,6 +164,10 @@
     if (typeof value === "boolean") return value ? "Oui" : "Non";
     if (typeof value === "number") {
       const formatted = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(value);
+      if (config.country && config.id === "freelancer-rate") {
+        const unit = { requiredBilling: "mois", dayRate: "jour", hourlyRate: "h" }[key];
+        if (unit) return `${formatted} ${form.elements.currency.value}/${unit}`;
+      }
       return isPercent(key) ? `${formatted} %` : formatted;
     }
     return String(value);
@@ -227,7 +231,10 @@
   }
 
   function exportPayload() {
-    if (config.export === "json") return { mime: "application/json;charset=utf-8", extension: "json", content: `${JSON.stringify({ tool: config.id, result: current, exportedAt: new Date().toISOString() }, null, 2)}\n` };
+    if (config.export === "json") {
+      const context = config.country ? { country: config.country, inputs: collect() } : {};
+      return { mime: "application/json;charset=utf-8", extension: "json", content: `${JSON.stringify({ tool: config.id, ...context, result: current, exportedAt: new Date().toISOString() }, null, 2)}\n` };
+    }
     if (config.export === "csv") {
       const rows = current.values.rows;
       if (Array.isArray(rows) && rows.length) {
@@ -254,6 +261,17 @@
     status.textContent = `Fichier ${payload.extension.toUpperCase()} téléchargé.`;
   }
 
+  if (config.country) {
+    form.addEventListener("input", () => {
+      if (!current) return;
+      current = null;
+      results.hidden = true;
+      copyButton.disabled = true;
+      exportButton.disabled = true;
+      status.dataset.state = "changed";
+      status.textContent = "Saisie modifiée. Relancez le calcul.";
+    });
+  }
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!engine || typeof engine.calculate !== "function") {
@@ -261,7 +279,10 @@
       status.textContent = "Le moteur de calcul local n’est pas disponible.";
       return;
     }
-    const result = engine.calculate(config.id, collect());
+    let result = engine.calculate(config.id, collect());
+    if (config.country && result.ok && Object.values(result.values).some(value => !Number.isFinite(value))) {
+      result = { ok: false, error: "Montants trop élevés. Vérifiez les valeurs saisies." };
+    }
     if (!result.ok) {
       current = null;
       results.hidden = true;

@@ -29,7 +29,7 @@ function fieldHtml(field) {
     control = `<textarea ${common} class="form-input" rows="4">${escapeHtml(field.value)}</textarea>`;
   } else {
     const bounds = `${field.min != null ? ` min="${field.min}"` : ""}${field.max != null ? ` max="${field.max}"` : ""}${field.step ? ` step="${field.step}"` : ""}`;
-    control = `<input ${common} class="form-input" type="${field.type}" value="${escapeHtml(field.value)}"${bounds}>`;
+    control = `<input ${common} class="form-input" type="${field.type}" value="${escapeHtml(field.value)}"${bounds}${field.required ? " required" : ""}>`;
   }
   return `<div class="form-field"><label class="form-label" for="${id}">${escapeHtml(field.label)}</label>${control}</div>`;
 }
@@ -46,7 +46,7 @@ function schema(route) {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     isAccessibleForFree: true,
-    isBasedOn: `https://afrotools.com/tools/${route.id}/`
+    isBasedOn: `https://afrotools.com/tools/${route.englishSlug || route.id}/`
   });
 }
 
@@ -61,9 +61,9 @@ function inheritedAlternates(englishFile) {
 
 function page(route) {
   const frenchPath = `/fr/tools/${route.slug}/`;
-  const englishPath = `/tools/${route.id}/`;
-  const inherited = inheritedAlternates(path.join(ROOT, "tools", route.id, "index.html"));
-  const config = JSON.stringify({ id: route.id, export: route.export, title: route.title });
+  const englishPath = `/tools/${route.englishSlug || route.id}/`;
+  const inherited = inheritedAlternates(path.join(ROOT, "tools", route.englishSlug || route.id, "index.html"));
+  const config = JSON.stringify({ id: route.id, export: route.export, title: route.title, country: route.country });
   return `<!doctype html>
 <html lang="fr" data-theme-choice="auto">
 <head>
@@ -131,7 +131,7 @@ ${inherited}
       <section class="sme-card" aria-labelledby="sme-form-title">
         <h2 id="sme-form-title">Vos données de travail</h2>
         <p>Les valeurs restent dans ce navigateur. Aucun compte, envoi ou calcul réseau n’est requis.</p>
-        <form data-sme-form novalidate>
+        <form data-sme-form${route.country ? "" : " novalidate"}>
           <div class="sme-grid">${route.fields.map(fieldHtml).join("")}</div>
           <div class="sme-actions">
             <button class="btn btn-primary" type="submit">Calculer</button>
@@ -149,14 +149,17 @@ ${route.id === "freelance-contract" ? '            <button class="btn btn-ghost"
         </section>
       </section>
       <aside class="sme-card sme-aside">
-        <h2>Avant de décider</h2>
+        ${route.country ? `<h2>Comment estimer votre tarif</h2>
+        <p>La facturation mensuelle doit couvrir votre revenu et vos frais après mise en réserve du pourcentage choisi. Divisez cette facturation par les jours facturables du mois pour obtenir le tarif par jour, puis par les heures facturables de la journée pour obtenir le tarif horaire.</p>
+        <p>Comptez uniquement le temps que vous pouvez facturer. Le résultat est un seuil de planification personnel. Le tarif convenu avec le client dépend du périmètre de la mission.</p>
+        <p><a href="${englishPath}" hreflang="en">Consulter la fiche pays en anglais</a></p>` : `<h2>Avant de décider</h2>
         <ul>
           <li>Utilisez des devis, relevés ou exports datés.</li>
           <li>Conservez le même périmètre lorsque vous comparez deux scénarios.</li>
           <li>Confirmez les règles fiscales, douanières, juridiques ou réglementaires auprès de la source compétente.</li>
         </ul>
         <p><a href="/ai/?tool=${encodeURIComponent(route.id)}&lang=fr">Demander une explication à AfroTools AI</a>. L’ouverture de l’assistant est volontaire; les valeurs de ce formulaire ne sont pas envoyées.</p>
-        <p><a href="${englishPath}" hreflang="en">Voir la version anglaise</a></p>
+        <p><a href="${englishPath}" hreflang="en">Voir la version anglaise</a></p>`}
       </aside>
     </div>
   </main>
@@ -260,4 +263,28 @@ function build() {
   console.log(`Built ${routes.length} native French SME owners plus /fr/small-business/ (${accepted ? "accepted" : "pending proof"}).`);
 }
 
-build();
+function renderFreelanceCountry(entry) {
+  const countries = require("../data/registry/countries.json");
+  const slug = entry.enSlug.split("/")[1];
+  const country = countries.find(item => item.routeSlug === slug);
+  if (!country) throw new Error("Unknown freelance country: " + slug);
+  const owner = routes.find(route => route.id === "freelancer-rate");
+  const currency = country.currency;
+  const settings = {
+    currency: { options: [{ value: currency, label: currency }], value: currency },
+    income: { label: `Revenu personnel visé par mois (${currency})`, value: "", min: 0.01 },
+    overhead: { label: `Frais professionnels mensuels (${currency})`, value: 0 },
+    reservePct: { label: "Part de la facturation à mettre en réserve (%)", value: 0, max: 99.99 },
+    billableDays: { label: "Jours facturables par mois", min: 0.01, max: 31 },
+    hoursPerDay: { label: "Heures facturables par jour", min: 0.01, max: 24 }
+  };
+  return page({
+    ...owner, country: country.isoCode, slug: entry.frSlug, englishSlug: entry.enSlug,
+    title: entry.name,
+    description: `Estimez vos tarifs en ${currency} à partir du revenu que vous souhaitez conserver, de vos frais professionnels et du temps réellement facturable.`,
+    fields: owner.fields.map(field => ({ ...field, ...settings[field.name], required: true }))
+  });
+}
+
+if (require.main === module) build();
+module.exports = { renderFreelanceCountry };

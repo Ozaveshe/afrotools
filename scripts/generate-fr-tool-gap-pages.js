@@ -7838,6 +7838,9 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  if (page.enSlug.startsWith("freelancer-rate/")) {
+    return require("./build-fr-small-business-parity").renderFreelanceCountry(page);
+  }
   if (page.enSlug.startsWith("generator-fuel/")) {
     return require("./lib/french-generator-fuel-country").render(page);
   }
