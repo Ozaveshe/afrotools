@@ -6,7 +6,7 @@ const NATIVE_ROUTES = [
     route: "/fr/tools/palette-couleurs-africaines/",
     canonical:
       "https://afrotools.com/fr/tools/palette-couleurs-africaines/",
-    action: /Tailwind Config/i,
+    action: /Configuration Tailwind/i,
     expected: /module\.exports|colors/i,
     result: "#tw-code",
   },

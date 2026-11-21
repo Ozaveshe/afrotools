@@ -1,0 +1,16 @@
+(() => {
+ 'use strict';
+ const industries={software:'Développement logiciel',product:'Gestion de produit',marketing:'Marketing',finance:'Finance et comptabilité',hr:'Ressources humaines',sales:'Développement commercial',data:'Analyse de données',consulting:'Conseil et stratégie',healthcare:'Santé',legal:'Droit',creative:'Création et médias',operations:'Opérations et logistique'};
+ const levels={student:'Études et début de carrière',junior:'Junior',mid:'Confirmé',senior:'Expérimenté',manager:'Encadrement',exec:'Direction'};
+ const checks={photo:['Photo professionnelle','Ajoutez une photo adaptée à votre activité.'],headline:['Titre personnalisé','Indiquez votre spécialité et le public que vous aidez.'],about:['Présentation rédigée','Décrivez votre expérience et un résultat concret.'],experience:['Expériences décrites','Précisez vos responsabilités dans chaque poste.'],education:['Formation renseignée','Ajoutez votre cursus ou vos certifications.'],skills:['Compétences listées','Choisissez les compétences pertinentes pour le poste visé.'],endorsements:['Compétences confirmées','Sollicitez les personnes ayant travaillé avec vous.'],recommendations:['Recommandations reçues','Demandez un témoignage lié à une mission précise.'],featured:['Réalisations en sélection','Présentez un projet ou une publication.'],creator:['Outils de création','Vérifiez les options de publication disponibles sur votre compte.'],banner:['Bannière personnalisée','Choisissez un visuel en lien avec votre activité.'],location:['Localisation renseignée','Vérifiez la ville indiquée sur votre profil.']};
+ const localized={};
+ document.querySelectorAll('input[id^=chk_]').forEach(input=>{
+   const id=input.id.slice(4),info=checks[id]||checks[Object.keys(checks).find(key=>id.startsWith(key.slice(0,5)))]||['Élément du profil','Vérifiez cette rubrique sur votre profil.'];
+   localized[input.id]={label:info[0],tip:info[1]};localized[id]=localized[input.id];
+   const label=input.closest('label');if(label){for(const text of label.childNodes)if(text.nodeType===3)text.textContent=' '+info[0];}input.setAttribute('aria-label',info[0]);
+ });
+ for(const [id,names] of [['industry',industries],['level',levels]]) {
+   const select=document.getElementById(id);if(select)for(const option of select.options)if(names[option.value])option.textContent=names[option.value];
+ }
+ window.AfroToolsLinkedInOptimizerLocale={industries,levels,checks:localized,strings:{points:'pts',allStar:'Profil très complet',notAllStar:'Points restants pour le seuil du modèle',morePoints:'pts',allStarSummary:'Vos rubriques principales sont renseignées.',incompleteSummary:'Choisissez une rubrique à compléter dans la liste.',headlineIntro:'Adaptez une proposition à votre expérience.',recommended:'Proposition pour votre niveau',level:'Niveau',postingStrategy:'Publications en'},headline:(industry,level)=>[industries[industry],levels[level],'Précisez votre spécialité et un résultat concret'].filter(Boolean).join(' · '),growthTips:{0:'Commencez par vos collègues et anciens camarades.',1:'Contactez des professionnels travaillant dans votre domaine.',2:'Reprenez contact avec les personnes avec qui vous avez collaboré.'},postingStrategy:'Partagez un projet concret et expliquez votre contribution.'};
+})();

@@ -1,3 +1,4 @@
+function paletteText(english,french){return document.documentElement.lang==='fr'?french:english;}
 var PALETTE_ENGINE=window.AfroTools&&window.AfroTools.AfricanPaletteEngine;
 if(!PALETTE_ENGINE)throw new Error('AfricanPaletteEngine is unavailable');
 var PALETTES=PALETTE_ENGINE.palettes;
@@ -32,7 +33,7 @@ function renderPalette(){
   var disp=document.getElementById('palette-display');
   disp.innerHTML=p.colors.map(function(c){
     return '<div class="palette-swatch" style="background:'+c.hex+'" title="'+c.name+'">'+
-      '<button type="button" class="palette-swatch-copy" onclick="copyHex(\''+c.hex+'\',event)">Copy</button>'+
+      '<button type="button" class="palette-swatch-copy" onclick="copyHex(\''+c.hex+'\',event)">'+paletteText('Copy','Copier')+'</button>'+
       '<span class="palette-swatch-hex">'+c.hex+'</span>'+
     '</div>';
   }).join('');
@@ -109,8 +110,8 @@ function renderPalette(){
       '<div style="width:24px;height:24px;border-radius:6px;background:'+c.hex+';border:1px solid rgba(0,0,0,.1);flex-shrink:0"></div>'+
       '<span style="flex:1;font-size:.84rem;font-weight:600">'+c.name+' ('+c.hex+')</span>'+
       '<span class="contrast-score">'+ratio.toFixed(2)+':1</span>'+
-      '<span class="contrast-badge '+(aa?'aa-pass':'aa-fail')+'">'+(aa?'AA Pass':'AA Fail')+'</span>'+
-      '<span class="contrast-badge '+(aaLg?'aa-pass':'aa-fail')+'">'+(aaLg?'AA Lg Pass':'AA Lg Fail')+'</span>'+
+      '<span class="contrast-badge '+(aa?'aa-pass':'aa-fail')+'">'+(aa?paletteText('AA Pass','AA conforme'):paletteText('AA Fail','AA insuffisant'))+'</span>'+
+      '<span class="contrast-badge '+(aaLg?'aa-pass':'aa-fail')+'">'+(aaLg?paletteText('AA Lg Pass','Grand texte : conforme'):paletteText('AA Lg Fail','Grand texte : insuffisant'))+'</span>'+
     '</div>';
   }).join('');
 }
@@ -123,11 +124,12 @@ function copyHex(hex,e){
   });
 }
 
-function copyTabCode(id){
+function copyTabCode(id,btn){
+  btn=btn || document.activeElement;
   var txt=document.getElementById(id).textContent;
   navigator.clipboard.writeText(txt).then(function(){
-    var btn=event.target;btn.textContent='✅ Copied!';btn.classList.add('copied');
-    setTimeout(function(){btn.textContent='📋 Copy '+(id.includes('css')?'CSS':'Config');btn.classList.remove('copied');},2000);
+    if(!btn)return;btn.textContent=paletteText('Copied!','Copié !');btn.classList.add('copied');
+    setTimeout(function(){btn.textContent=paletteText('Copy ','Copier ')+(id.includes('css')?'CSS':'Config');btn.classList.remove('copied');},2000);
   });
 }
 
