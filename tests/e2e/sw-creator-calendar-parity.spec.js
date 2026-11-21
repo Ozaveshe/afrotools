@@ -66,6 +66,7 @@ test("invalid calculate and reopen JSON CSV", async ({ page }) => {
   await page.locator('[name="platform"][value="instagram"]').check();
   await page.locator('[name="platform"][value="tiktok"]').check();
   await page.locator('[name="topic"]').fill("Biashara za ubunifu");
+  await page.locator('[name="startDate"]').fill("2026-08-01");
   await page.locator('[name="days"]').fill("5");
   await page.locator('[data-creator-calendar-native] button[type="submit"]').click();
   await expect(page.locator("tbody tr")).toHaveCount(5);

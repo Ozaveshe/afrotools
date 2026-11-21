@@ -10,6 +10,11 @@
   var status = root.querySelector("[data-status]");
   var actions = root.querySelector("[data-export-actions]");
   var lastPlan = null;
+  var started = false;
+  var today = new Date();
+  if (!form.elements.startDate.value) {
+    form.elements.startDate.value = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, "0"), String(today.getDate()).padStart(2, "0")].join("-");
+  }
   var words = fr ? {
     invalid: "Vérifiez le sujet, la date, la durée et choisissez au moins une plateforme.",
     ready: "Calendrier créé localement. Vérifiez les horaires proposés selon votre audience.",
@@ -59,8 +64,7 @@
     setTimeout(function () { URL.revokeObjectURL(link.href); }, 0);
     status.textContent = words.downloaded;
   }
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
+  function updatePlan() {
     try {
       lastPlan = window.CreatorCalendarEngine.buildLocalPlan({
         topic: form.elements.topic.value,
@@ -77,7 +81,17 @@
       actions.hidden = true;
       status.textContent = words.invalid;
     }
+  }
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    started = true;
+    updatePlan();
   });
+  function refreshAfterEdit() {
+    if (started) updatePlan();
+  }
+  form.addEventListener("input", refreshAfterEdit);
+  form.addEventListener("change", refreshAfterEdit);
   root.querySelector("[data-json]").addEventListener("click", function () {
     if (lastPlan) download("creator-calendar.json", "application/json", JSON.stringify(lastPlan, null, 2));
   });
