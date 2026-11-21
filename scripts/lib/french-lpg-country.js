@@ -1,0 +1,53 @@
+"use strict";
+
+const countries = require("../../data/registry/countries.json");
+
+function render(page) {
+  const slug = page.enSlug.split("/")[1];
+  const country = countries.find(entry => entry.routeSlug === slug);
+  if (!country) throw new Error("Unknown LPG country: " + slug);
+  const name = country.displayNames.fr;
+  const currency = country.currency;
+  const title = `Budget de gaz en bouteille — ${name}`;
+  const description = `Calculez le prix du GPL au kilogramme et votre budget mensuel en ${currency} avec le prix de votre recharge et la quantité de gaz achetée.`;
+  const canonical = `https://afrotools.com/fr/tools/${page.frSlug}/`;
+  const english = `https://afrotools.com/tools/${page.enSlug}/`;
+  return `<!doctype html>
+<html lang="fr"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="afrotools-content-id" content="fr-tool-gap:${page.frSlug}"><meta name="afrotools-source-owner" content="scripts/generate-fr-tool-gap-pages.js">
+  <title>${title} | AfroTools</title><meta name="description" content="${description}">
+  <meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/gas-lpg-cost.webp"><meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="${canonical}"><link rel="alternate" hreflang="fr" href="${canonical}"><link rel="alternate" hreflang="en" href="${english}"><link rel="alternate" hreflang="x-default" href="${english}">
+  <link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+  <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"WebApplication",name:title,url:canonical,inLanguage:"fr",description,applicationCategory:"UtilitiesApplication",operatingSystem:"Web"})}</script>
+  <script src="/assets/js/analytics-bootstrap.js" async></script>
+</head><body>
+  <afro-navbar active="energy"></afro-navbar>
+  <header class="en-tool-hero"><div class="container"><nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> › <a href="/fr/energy/">Énergie</a> › ${name}</nav><h1>${title}</h1><p class="en-tool-hero-sub">${description}</p></div></header>
+  <main class="en-main">
+    <form id="lpg-form" class="en-card" data-currency="${currency}"><div class="en-card-body">
+      <div class="en-form-grid">
+        <div class="en-field"><label class="en-label" for="kg">Quantité de gaz par recharge (kg)</label><input class="en-input" id="kg" name="kg" type="number" step="any" min="0" inputmode="decimal" required aria-describedby="kg-help"><small id="kg-help">Indiquez le poids net de gaz, sans le poids de la bouteille vide.</small></div>
+        <div class="en-field"><label class="en-label" for="price">Prix payé pour une recharge (${currency})</label><input class="en-input" id="price" name="price" type="number" step="any" min="0" inputmode="decimal" required aria-describedby="price-help"><small id="price-help">Utilisez votre ticket ou un devis local. Excluez la consigne de la bouteille.</small></div>
+        <div class="en-field"><label class="en-label" for="refills">Nombre moyen de recharges par mois</label><input class="en-input" id="refills" name="refills" type="number" step="any" min="0" inputmode="decimal" required value="1" aria-describedby="refill-help"><small id="refill-help">Une recharge tous les deux mois correspond à 0,5 recharge par mois.</small></div>
+      </div><button type="submit" class="en-btn">Calculer mon budget</button>
+      <noscript>Divisez le prix par le poids de gaz pour obtenir le prix au kilogramme. Multipliez le prix par le nombre de recharges pour obtenir le budget mensuel.</noscript>
+    </div></form>
+    <p id="lpg-status" role="status"></p>
+    <section id="lpg-result" class="en-card" hidden><div class="en-card-body"><h2 tabindex="-1">Votre budget GPL</h2>
+      <table class="en-results-table"><tbody>
+        <tr><th scope="row">Prix par kilogramme</th><td data-value="pricePerKg"></td></tr>
+        <tr><th scope="row">Gaz consommé par mois</th><td data-value="monthlyKg"></td></tr>
+        <tr><th scope="row">Budget mensuel</th><td data-value="monthlyCost"></td></tr>
+        <tr><th scope="row">Budget sur douze mois au même prix</th><td data-value="annualCost"></td></tr>
+      </tbody></table></div></section>
+    <p><a href="/fr/tools/cout-gaz-lpg/">Estimer la durée d’une bouteille selon vos habitudes de cuisson</a></p>
+  </main><afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+  <script src="/assets/js/pages/fr-lpg-country.js" defer></script><script src="/assets/js/lazy-analytics.js" defer></script>
+</body></html>
+`;
+}
+
+module.exports = { render };
