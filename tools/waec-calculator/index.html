@@ -158,6 +158,7 @@
 </style>
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
 <link rel="stylesheet" href="/assets/css/education-tool-journey.css?v=f350336d">
+<noscript><style>#tab-converter{display:block}</style></noscript>
 <link rel="canonical" href="https://afrotools.com/tools/waec-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/waec-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-waec/">
@@ -176,8 +177,9 @@
         <span>WAEC/NECO Calculator</span>
     </nav>
     <div class="wc-badge">Education Tool</div>
-    <h1>WAEC / NECO <span class="accent">Result Planner</span></h1>
+    <h1>WAEC / NECO <span class="accent">Result Calculator</span></h1>
     <p class="wc-subtitle">Organise Nigeria WAEC or NECO results, count credit passes, or calculate a transparent Ghana WASSCE planning aggregate before checking official admission rules.</p>
+    <p><a href="#tab-converter">Look up WAEC grades and their points</a></p>
     <div class="wc-stats">
         <span class="wc-stat-pill"><span class="dot"></span> Nigeria + Ghana workflows</span>
         <span class="wc-stat-pill"><span class="dot"></span> Local-only result entry</span>
@@ -218,7 +220,7 @@
 <nav class="wc-tabs" role="tablist" aria-label="Calculator tabs">
     <button type="button" class="wc-tab active" role="tab" aria-selected="true" data-tab="tab-aggregate">Result planner</button>
     <button type="button" class="wc-tab" role="tab" aria-selected="false" data-tab="tab-admission">Official checks</button>
-    <button type="button" class="wc-tab" role="tab" aria-selected="false" data-tab="tab-converter">Grade reference</button>
+    <button type="button" class="wc-tab" role="tab" aria-selected="false" data-tab="tab-converter">Grades and points</button>
     <button type="button" class="wc-tab" role="tab" aria-selected="false" data-tab="tab-requirements">Application checklist</button>
 </nav>
 
@@ -273,9 +275,26 @@
 
         <div class="wc-tab-content" id="tab-converter" role="tabpanel">
             <div class="wc-section">
-                <h2>A1–F9 planning points</h2>
-                <p class="desc">The point values make this page's summaries transparent. School examination grades do not reliably convert into a university GPA.</p>
-                <div id="converterTable"></div>
+                <h2>WAEC grades and their planning points</h2>
+                <p class="desc">Find the grade printed beside each subject on your result slip. A1 through C6 count towards your credit total. D7 and E8 are passes below credit level.</p>
+                <div id="converterTable">
+                  <table class="wc-ref-table">
+                    <thead><tr><th scope="col">Grade</th><th scope="col">Planning points</th><th scope="col">Meaning</th><th scope="col">Counts as a credit?</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">A1</th><td>1</td><td>Excellent</td><td>Yes</td></tr>
+                        <tr><th scope="row">B2</th><td>2</td><td>Very good</td><td>Yes</td></tr>
+                        <tr><th scope="row">B3</th><td>3</td><td>Good</td><td>Yes</td></tr>
+                        <tr><th scope="row">C4</th><td>4</td><td>Credit</td><td>Yes</td></tr>
+                        <tr><th scope="row">C5</th><td>5</td><td>Credit</td><td>Yes</td></tr>
+                        <tr><th scope="row">C6</th><td>6</td><td>Credit</td><td>Yes</td></tr>
+                        <tr><th scope="row">D7</th><td>7</td><td>Pass</td><td>No</td></tr>
+                        <tr><th scope="row">E8</th><td>8</td><td>Pass</td><td>No</td></tr>
+                        <tr><th scope="row">F9</th><td>9</td><td>Fail</td><td>No</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="wc-check-note">For example, A1, B2, B3, C4 and C6 give five credits and a Nigerian best-five planning index of 1 + 2 + 3 + 4 + 6 = 16. Check the subjects your programme requires in <a href="https://ibass.jamb.gov.ng/">JAMB IBASS</a>. For a Ghanaian programme, check which core subjects and electives the institution counts.</p>
+                <p><a href="#tab-aggregate">Enter your subjects and calculate your result</a></p>
             </div>
         </div>
 
@@ -480,7 +499,7 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/bundles/core.25fd2009.min.js" defer></script>
 <script src="/tools/waec-calculator/waec-engine.js?v=48229d04" defer></script>
-<script src="/tools/waec-calculator/waec-calculator.js?v=60e450d4" defer></script>
+<script src="/tools/waec-calculator/waec-calculator.js?v=00d0cf85" defer></script>
 
 <script>
 (function(){

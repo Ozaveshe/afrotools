@@ -2,6 +2,15 @@
 
 const assert = require('node:assert/strict');
 const engine = require('../tools/waec-calculator/waec-engine.js');
+const fs = require('node:fs');
+
+// The public grade reference must agree with the calculator even before JavaScript runs.
+const landing = fs.readFileSync(require.resolve('../tools/waec-calculator/index.html'), 'utf8');
+const reference = landing.split('id="converterTable">')[1].split('</table>')[0];
+const referenceRows = Array.from(reference.matchAll(/<th scope="row">([^<]+)<\/th><td>(\d+)<\/td><td>([^<]+)<\/td><td>(Yes|No)<\/td>/g),
+  ([, grade, points, meaning, credit]) => [grade, Number(points), meaning, credit]);
+assert.deepEqual(referenceRows, Object.entries(engine.grades).map(([grade, detail]) =>
+  [grade, detail.points, detail.label, detail.points <= 6 ? 'Yes' : 'No']));
 
 const nigeria = engine.calculateNigeria([
   { name: 'English Language', grade: 'B3' },

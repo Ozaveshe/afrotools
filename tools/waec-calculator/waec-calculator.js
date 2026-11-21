@@ -165,7 +165,7 @@
       gradeSelect.innerHTML = '<option value="">Select grade</option>' +
         Object.keys(window.WAECPlannerEngine.grades).map(function (grade) {
           var detail = window.WAECPlannerEngine.grades[grade];
-          return '<option value="' + grade + '">' + grade + ' — ' + detail.label + '</option>';
+          return '<option value="' + grade + '">' + grade + ' — ' + detail.points + (detail.points === 1 ? ' pt' : ' pts') + ' · ' + detail.label + '</option>';
         }).join('');
       gradeSelect.value = subject.grade || '';
       gradeSelect.addEventListener('change', function () {
@@ -286,9 +286,10 @@
     if (selected) {
       selected.style.display = result.selected.length ? '' : 'none';
       selected.innerHTML = result.selected.length
-        ? '<strong>Counted:</strong> ' + result.selected.map(function (row) {
-          return escapeHtml(row.name) + ' (' + row.grade + ')';
-        }).join(', ')
+        ? (result.value === null ? '<strong>Entered for this calculation:</strong> ' : '<strong>Counted:</strong> ') + result.selected.map(function (row) {
+          return escapeHtml(row.name) + ' (' + row.grade + ', ' + row.points + (row.points === 1 ? ' point)' : ' points)');
+        }).join(', ') + (result.value === null ? '' : '<br><strong>Point sum:</strong> ' +
+          result.selected.map(function (row) { return row.points; }).join(' + ') + ' = ' + result.value)
         : '';
     }
     renderChecks(result);
@@ -303,21 +304,13 @@
     trackResultReady(result);
   }
 
-  function renderReference() {
-    var table = byId('converterTable');
-    if (!table) return;
-    table.innerHTML = '<table class="wc-ref-table"><thead><tr><th>Result grade</th><th>Planning point</th><th>Result category</th></tr></thead><tbody>' +
-      Object.keys(window.WAECPlannerEngine.grades).map(function (grade) {
-        var detail = window.WAECPlannerEngine.grades[grade];
-        return '<tr><td><strong>' + grade + '</strong></td><td>' + detail.points + '</td><td>' + detail.label + '</td></tr>';
-      }).join('') +
-      '</tbody></table><p class="wc-check-note">These points support the planning summaries on this page. They are not a university GPA conversion.</p>';
-  }
-
   function setupTabs() {
     document.querySelectorAll('.wc-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
         var target = this.getAttribute('data-tab');
+        if (window.location.hash.indexOf('#tab-') === 0 && window.location.hash !== '#' + target) {
+          window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search);
+        }
         document.querySelectorAll('.wc-tab').forEach(function (item) {
           item.classList.remove('active');
           item.setAttribute('aria-selected', 'false');
@@ -431,8 +424,16 @@
     if (!state.subjects.length) state.subjects = freshSubjects();
     renderSystemControls();
     renderSubjects();
-    renderReference();
     setupTabs();
+    function openLinkedTab(event) {
+      var id = window.location.hash.slice(1);
+      if (!id && event && /#tab-(converter|aggregate)$/.test(event.oldURL)) id = 'tab-aggregate';
+      if (id !== 'tab-converter' && id !== 'tab-aggregate') return;
+      document.querySelector('.wc-tab[data-tab="' + id + '"]').click();
+      if (window.location.hash) byId(id).scrollIntoView();
+    }
+    window.addEventListener('hashchange', openLinkedTab);
+    openLinkedTab();
     setupShare();
     setupFaq();
 
