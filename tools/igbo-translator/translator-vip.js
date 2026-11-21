@@ -17,10 +17,12 @@
       var text = [
         vip.name + ' app-local draft phrasebook',
         'Coverage: ' + phrases.length + ' unreviewed starter records; boundaries checked ' + vip.checked + '.',
-        'Important wording needs qualified review. Tone marks, pronunciation cues, and dialect coverage are incomplete.',
-        'English\tIgbo\tPronunciation guide\tCategory\tUsage note'
+        'Sources apply only to the linked spelling and meaning. No entry has qualified-speaker sign-off. Important wording needs qualified review. Tone marks, pronunciation cues, and dialect coverage are incomplete.',
+        'English\tIgbo\tPronunciation guide\tCategory\tUsage note\tWording reference\tSource URL'
       ].concat(phrases.map(function (phrase) {
-        return [phrase.en, phrase.lang, phrase.pron, phrase.cat, phrase.note || ''].join('\t');
+        var ref = phrase.reference && IGBO_REFERENCES[phrase.reference];
+        return [phrase.en, phrase.lang, phrase.pron, phrase.cat, phrase.note || '',
+          ref ? ref.title : 'Draft: no entry reference', ref ? ref.url : ''].join('\t');
       })).join('\n');
       var url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
       var link = document.createElement('a');
