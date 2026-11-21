@@ -7849,6 +7849,10 @@ function htmlFor(page) {
   if (page.frenchSecurityNative === true) {
     return require("./lib/french-security-page.js").render(page);
   }
+  if (page.enSlug.startsWith("work-permit-cost/")) {
+    const permit = require("./lib/french-permit-country.js").render(page);
+    if (permit) return permit;
+  }
   if (page.enSlug.startsWith("domestic-worker/")) {
     return require("./lib/french-domestic-country.js").render(page);
   }
