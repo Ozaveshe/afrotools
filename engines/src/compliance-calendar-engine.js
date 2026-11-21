@@ -286,43 +286,49 @@
     country: "ZA",
     type: "paye",
     name: "Monthly PAYE/UIF/SDL (EMP201)",
-    desc: "Submit SARS EMP201 declaration and pay PAYE + UIF (1% employee + 1% employer) + SDL (1% employer) for all employees.",
+    desc: "Submit the monthly employer declaration and pay any PAYE, UIF and SDL due to SARS.",
     frequency: "monthly",
-    due_day: 25,
+    due_day: 7,
+    due_rule: "za-emp201",
     due_month_offset: 1,
-    penalty: "10% of outstanding amount + 10% interest per annum",
+    penalty: "Late payment may incur a 10% penalty and interest at the prescribed rate.",
     authority: "SARS",
     authority_url: "https://efiling.sars.gov.za",
-    notes: "Electronic (eFiling): 25th of following month. Manual filers: 7th. EMP201 must be submitted even with no employees.",
-    last_verified: "2026-01-01"
+    notes: "File EMP201 and pay any amount due by the 7th of the following month, or the preceding business day.",
+    source_url: "https://www.sars.gov.za/types-of-tax/pay-as-you-earn/completing-the-monthly-employer-declaration-emp201/",
+    last_verified: "2026-11-21"
   }, {
     id: "za-uif",
     country: "ZA",
     type: "social-security",
     name: "UIF Contribution",
-    desc: "Unemployment Insurance Fund — 1% employee + 1% employer. Max employee contribution R177.12/month. Filed as part of EMP201.",
+    desc: "For employers paying UIF through SARS, include the applicable contribution in EMP201.",
     frequency: "monthly",
-    due_day: 25,
+    due_day: 7,
+    due_rule: "za-emp201",
     due_month_offset: 1,
-    penalty: "10% penalty (same as EMP201)",
+    penalty: "Late payment may incur a 10% penalty and interest at the prescribed rate.",
     authority: "SARS / UIF",
     authority_url: "https://efiling.sars.gov.za",
-    notes: "Submitted with EMP201. Domestic workers use UIF u-Filing at ufiling.labour.gov.za. Separate from COIDA.",
-    last_verified: "2026-01-01"
+    notes: "This date applies to UIF payable through SARS with EMP201. Direct UIF declarations follow the applicable Department of Employment and Labour process.",
+    source_url: "https://www.sars.gov.za/types-of-tax/pay-as-you-earn/completing-the-monthly-employer-declaration-emp201/",
+    last_verified: "2026-11-21"
   }, {
     id: "za-sdl",
     country: "ZA",
     type: "levy",
     name: "SDL (Skills Development Levy)",
-    desc: "Skills Development Levy — 1% of total payroll. Exempt if annual payroll below R500,000. Filed with EMP201.",
+    desc: "For employers liable for SDL, include the levy in the EMP201 declaration and payment.",
     frequency: "monthly",
-    due_day: 25,
+    due_day: 7,
+    due_rule: "za-emp201",
     due_month_offset: 1,
-    penalty: "10% of outstanding amount",
+    penalty: "Late payment may incur a 10% penalty and interest at the prescribed rate.",
     authority: "SARS / SETA",
     authority_url: "https://efiling.sars.gov.za",
-    notes: "Claimable back via your SETA for approved training. Payroll < R500k/year: SDL-exempt. Submitted in EMP201.",
-    last_verified: "2026-01-01"
+    notes: "This is part of the monthly SARS EMP201 obligation for liable employers.",
+    source_url: "https://www.sars.gov.za/types-of-tax/pay-as-you-earn/completing-the-monthly-employer-declaration-emp201/",
+    last_verified: "2026-11-21"
   }, {
     id: "za-emp501-oct",
     country: "ZA",
@@ -414,7 +420,49 @@
   function r(e, t) {
     return new Date(e, t, 0).getDate();
   }
+  // Gregorian Easter Sunday (Meeus/Jones/Butcher). Good Friday and Family Day
+  // are the Friday before and Monday after Easter in the Public Holidays Act.
+  function easterSunday(year) {
+    var cycle = year % 19, century = Math.floor(year / 100), yearInCentury = year % 100;
+    var adjustment = Math.floor((century - Math.floor((century + 8) / 25) + 1) / 3);
+    var epact = (19 * cycle + century - Math.floor(century / 4) - adjustment + 15) % 30;
+    var weekday = (32 + 2 * (century % 4) + 2 * Math.floor(yearInCentury / 4) - epact - yearInCentury % 4) % 7;
+    var correction = Math.floor((cycle + 11 * epact + 22 * weekday) / 451);
+    var encoded = epact + weekday - 7 * correction + 114;
+    return new Date(year, Math.floor(encoded / 31) - 1, encoded % 31 + 1);
+  }
+  function localDateKey(date) {
+    return date.getFullYear() + "-" + o(date.getMonth() + 1) + "-" + o(date.getDate());
+  }
+  function southAfricanHolidays(year) {
+    var holidays = new Set();
+    // https://www.gov.za/about-sa/public-holidays
+    var dates = ["01-01", "03-21", "04-27", "05-01", "06-16", "08-09", "09-24", "12-16", "12-25", "12-26"];
+    dates.forEach(function (monthDay) {
+      var date = new Date(year, Number(monthDay.slice(0, 2)) - 1, Number(monthDay.slice(3)));
+      holidays.add(localDateKey(date));
+      if (date.getDay() === 0) {
+        date.setDate(date.getDate() + 1);
+        holidays.add(localDateKey(date));
+      }
+    });
+    var easter = easterSunday(year);
+    [-2, 1].forEach(function (offset) {
+      holidays.add(localDateKey(new Date(year, easter.getMonth(), easter.getDate() + offset)));
+    });
+    // https://www.gov.za/news/media-statements/president-cyril-ramaphosa-declares-election-day
+    if (year === 2026) holidays.add("2026-11-04");
+    return holidays;
+  }
   function i(e, t, n) {
+    if (e.due_rule === "za-emp201") {
+      var due = new Date(n, t - 1, e.due_day);
+      var holidays = southAfricanHolidays(n);
+      while (due.getDay() === 0 || due.getDay() === 6 || holidays.has(localDateKey(due))) {
+        due.setDate(due.getDate() - 1);
+      }
+      return due;
+    }
     if ("annual" === e.frequency || "bi-annual" === e.frequency) {
       var a = Math.min(e.due_day, r(n, e.annual_month));
       return new Date(n, e.annual_month - 1, a);
@@ -464,7 +512,7 @@
       var o = t[e.country] || {
         name: e.country
       };
-      a.push([ o.name, e.name, n[e.type] || e.type, e.dueDate ? e.dueDate.toISOString().slice(0, 10) : "", e.frequency, e.authority, e.penalty ]);
+      a.push([ o.name, e.name, n[e.type] || e.type, e.dueDate ? localDateKey(e.dueDate) : "", e.frequency, e.authority, e.penalty ]);
     }), a.map(function(e) {
       return e.map(function(e) {
         return '"' + String(e).replace(/"/g, '""') + '"';
@@ -476,8 +524,9 @@
       u(e, a, t).forEach(function(e) {
         var t = e.dueDate, a = "" + t.getFullYear() + o(t.getMonth() + 1) + o(t.getDate());
         n.push("BEGIN:VEVENT"), n.push("UID:" + e.id + "-" + a + "@afrotools.com"), n.push("DTSTART;VALUE=DATE:" + a),
-        n.push("DTEND;VALUE=DATE:" + a), n.push("SUMMARY:[" + e.country + "] " + e.name + " — Due"),
-        n.push("DESCRIPTION:Penalty: " + e.penalty.replace(/,/g, "\\,") + "\\nAuthority: " + e.authority + "\\nPortal: " + e.authority_url),
+        n.push("SUMMARY:[" + e.country + "] " + e.name + " — Due"),
+        n.push("DESCRIPTION:Penalty: " + e.penalty.replace(/,/g, "\\,") + "\\nAuthority: " + e.authority + "\\nPortal: " + e.authority_url +
+          (e.due_rule === "za-emp201" ? "\\nCheck special holidays or extensions with SARS: " + e.source_url : "")),
         n.push("URL:" + e.authority_url), n.push("BEGIN:VALARM"), n.push("TRIGGER:-P7D"),
         n.push("ACTION:DISPLAY"), n.push("DESCRIPTION:Reminder: " + e.name + " due in 7 days"),
         n.push("END:VALARM"), n.push("END:VEVENT");
@@ -511,7 +560,7 @@
       for (var r = {}, i = [], l = a.getMonth() + 1, y = a.getFullYear(), s = 0; s < 4; s++) {
         var c = l + s, m = y;
         c > 12 && (c -= 12, m += 1), u(n, c, m).forEach(function(e) {
-          var t = e.id + "_" + e.dueDate.toISOString().slice(0, 10);
+          var t = e.id + "_" + localDateKey(e.dueDate);
           r[t] || (r[t] = !0, e.dueDate >= a && e.dueDate <= o && i.push(e));
         });
       }

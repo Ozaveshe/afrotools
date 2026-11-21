@@ -409,6 +409,7 @@ html[data-theme="dark"] .ccal-urgency-pill.ok{background:#24364c}
     <div class="ccal-drawer-row">
       <div class="ccal-drawer-row-label">Notes</div>
       <div class="ccal-drawer-row-val" id="ccal-drawer-notes"></div>
+      <p id="ccal-emp201-guidance" hidden>Check any specially declared holiday, extension or SARS notice for your period. <a href="https://www.sars.gov.za/types-of-tax/pay-as-you-earn/completing-the-monthly-employer-declaration-emp201/">SARS EMP201 filing rule</a> · <a href="https://www.gov.za/about-sa/public-holidays">Government holiday calendar</a></p>
     </div>
     <div class="ccal-drawer-row">
       <div class="ccal-drawer-row-label">Last Verified</div>
@@ -433,7 +434,7 @@ html[data-theme="dark"] .ccal-urgency-pill.ok{background:#24364c}
 </div>
 
 <!-- Engine + App Script -->
-<script src="/engines/compliance-calendar-engine.js?v=f5dc93a1"></script>
+<script src="/engines/compliance-calendar-engine.js?v=4ceb3d48"></script>
 <script>
 (function () {
   'use strict';
@@ -829,7 +830,11 @@ html[data-theme="dark"] .ccal-urgency-pill.ok{background:#24364c}
       '<span style="text-transform:capitalize">' + esc(ev.frequency) + '</span>';
     document.getElementById('ccal-drawer-penalty').textContent = ev.penalty;
     document.getElementById('ccal-drawer-desc').textContent = ev.desc;
-    document.getElementById('ccal-drawer-notes').textContent = ev.notes || '—';
+    var emp201 = ev.due_rule === 'za-emp201';
+    document.getElementById('ccal-emp201-guidance').hidden = !emp201;
+    var period = new Date(ev.dueDate.getFullYear(), ev.dueDate.getMonth() - 1, 1);
+    document.getElementById('ccal-drawer-notes').textContent = (emp201 ?
+      'Payroll period: ' + E.MONTH_NAMES[period.getMonth()] + ' ' + period.getFullYear() + '. ' : '') + (ev.notes || '—');
     document.getElementById('ccal-drawer-verified').textContent = ev.last_verified ? 'Verified ' + ev.last_verified : 'AfroTools team';
 
     var portalLink = document.getElementById('ccal-portal-link');
