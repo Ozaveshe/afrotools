@@ -61,8 +61,7 @@ function originStatus(pathname) {
 }
 
 // Netlify runs edge functions on Deno, which treats a bare .js file as ESM.
-// Node does not, so load the module by inlining its one import (the generated
-// route map) and evaluating the result as a data: URL. This also asserts the
+// Load the generated route map and shared policy as ES modules. This also asserts the
 // generated map still has the shape the function expects.
 async function loadRouteFallback() {
   assert.equal(
@@ -83,7 +82,10 @@ async function loadRouteFallback() {
   const aliases = JSON.parse(aliasMatch[1]);
 
   const fnSource = fs.readFileSync(path.join(EDGE_DIR, 'route-fallback.js'), 'utf8');
-  const inlined = fnSource.replace(
+  const policyPath = './_shared/tool-document-policy.js';
+  const policySource = fs.readFileSync(path.join(EDGE_DIR, policyPath), 'utf8');
+  const policyUrl = 'data:text/javascript;base64,' + Buffer.from(policySource).toString('base64');
+  const inlined = fnSource.replace(policyPath, policyUrl).replace(
     /^import LOCALE_ROUTES.*$/m,
     `const LOCALE_ROUTES = ${JSON.stringify(map)};\nconst ALIASES = ${JSON.stringify(aliases)};`
   );
@@ -108,6 +110,25 @@ async function request(pathname) {
   };
   const response = await routeFallback(new Request(`https://afrotools.com${pathname}`), context);
   return { status: response.status, location: response.headers.get('Location') };
+}
+
+const denied = 'camera=(), microphone=(), geolocation=(), payment=()';
+for (const [route, expected] of [
+  ['/fr/tools/enregistrement-pour-createur/app', 'camera=(self), microphone=(self), geolocation=(), payment=()'],
+  ['/tools/creator-voice/app.html', 'camera=(), microphone=(self), geolocation=(), payment=()'],
+  ['/sw/zana/ufuatiliaji-bei-za-mafuta/', 'camera=(), microphone=(), geolocation=(self), payment=()'],
+  ['/fr/tools/decoupe-de-video-pour-createur/app', denied],
+  ['/tools/creator-record/', denied]
+]) {
+  const response = await routeFallback(new Request('https://afrotools.com' + route), {
+    next: () => new Response('document', {headers: {
+      'Content-Type': 'text/html', 'Permissions-Policy': denied,
+      'Content-Security-Policy': "default-src 'self'"
+    }})
+  });
+  assert.equal(response.headers.get('Permissions-Policy'), expected, route);
+  const media = /(?:app(?:\.html)?$)/.test(route);
+  assert.equal(response.headers.get('Content-Security-Policy').includes("media-src 'self' blob:"), media, route);
 }
 
 let failures = 0;

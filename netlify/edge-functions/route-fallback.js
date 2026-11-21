@@ -17,6 +17,7 @@
 //    trailing-slash function: only redirect when the origin would 404 and the
 //    trailing-slash form actually resolves.
 import LOCALE_ROUTES, { ALIASES } from './_shared/locale-route-map.js';
+import { applyToolPolicy, policyForTool } from './_shared/tool-document-policy.js';
 
 // Locale path prefix -> map letter. 'e' is the unprefixed (English) root.
 const LOCALE_LETTERS = { fr: 'f', sw: 's', ha: 'h', yo: 'y' };
@@ -113,6 +114,7 @@ function permanentRedirect(url) {
 export default async (request, context) => {
   const url = new URL(request.url);
   const path = url.pathname;
+  const features = request.method === "GET" || request.method === "HEAD" ? policyForTool(path) : undefined;
 
   if (isApiEndpoint(path)) {
     const response = await context.next({ sendConditionalRequest: true });
@@ -125,7 +127,7 @@ export default async (request, context) => {
     });
   }
 
-  if (isSkippablePath(path)) return context.next();
+  if (!features && isSkippablePath(path)) return context.next();
 
   // Give real files, rewrites, and explicit `_redirects` rules first refusal.
   // Edge Functions run before Netlify's static redirect layer. Relocating from
@@ -134,7 +136,7 @@ export default async (request, context) => {
   //   /fr/tools/remittance-v2 -> /fr/tools/transfert-v2/
   // Locale recovery is only a fallback for an origin-level 404.
   const originResponse = await context.next();
-  if (originResponse.status !== 404) return originResponse;
+  if (originResponse.status !== 404) return features ? applyToolPolicy(originResponse, features) : originResponse;
 
   // ── 1. Cross-locale relocation ──────────────────────────────────────────
   const relocated = resolveLocaleRoute(path);
