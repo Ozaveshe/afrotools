@@ -76,12 +76,32 @@ test("manifest owns exactly the six canonical HR & Payroll apps", () => {
   assert.equal(manifest.hubRoute, "/fr/hr-payroll/");
 });
 
-test("dedicated generator is current and limited to the hub plus six owners", () => {
+test("dedicated generator is current for the hub, six owners and 54 employee cost country pages", () => {
   const result = spawnSync(process.execPath, ["scripts/build-french-hr-payroll-parity.js", "--check"], {
     cwd: ROOT, encoding: "utf8"
   });
   assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.match(result.stdout, /6\/6 apps plus hub/);
+  assert.match(result.stdout, /61 pages/);
+});
+
+test("each employee country route binds its French calculator to its jurisdiction and currency", () => {
+  const wave = require("../data/localization/coverage-wave-2026-07.json");
+  const countries = require("../data/registry/countries.json");
+  const entries = wave.french.filter(entry => entry.enSlug.startsWith("employee-cost/"));
+  assert.equal(entries.length, 54);
+  for (const entry of entries) {
+    const slug = entry.enSlug.split("/")[1];
+    const country = countries.find(item => item.routeSlug === (slug === "republic-of-congo" ? "congo" : slug));
+    assert.equal(entry.native, true, entry.enSlug);
+    const html = fs.readFileSync(path.join(ROOT, "fr/tools", entry.frSlug, "index.html"), "utf8");
+    const controls = controlsIn(html);
+    const value = name => controls.find(item => item.attributes.name === name).attributes.value;
+    assert.equal(value("currency"), country.currency);
+    assert.equal(value("jurisdiction"), country.displayNames.fr.replace(/'/g, "&#39;"));
+    assert.ok(html.includes('id="fr-hr-payroll-form"'), entry.frSlug);
+    assert.ok(html.includes(`href="https://afrotools.com/tools/${entry.enSlug}/"`), entry.frSlug);
+    assert.ok(!html.includes("data-fr-prep"), entry.frSlug);
+  }
 });
 
 test("structured oracle matches all 77 English owner controls and generated French DOM contracts exactly", () => {

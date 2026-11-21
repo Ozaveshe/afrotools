@@ -170,7 +170,7 @@ function pageHtml(tool) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="afrotools-content-id" content="fr-hr-payroll-parity:${escapeHtml(tool.id)}">
+  <meta name="afrotools-content-id" content="fr-hr-payroll-parity:${escapeHtml(tool.country ? tool.id + "/" + tool.country.isoCode : tool.id)}">
   <meta name="afrotools-source-owner" content="scripts/build-french-hr-payroll-parity.js">
   <title>${escapeHtml(tool.title)} — AfroTools</title>
   <meta name="description" content="${escapeHtml(tool.description)} Calcul local, source datée et exports privés.">
@@ -232,8 +232,8 @@ ${tool.swahiliRoute ? `  <link rel="alternate" hreflang="sw" href="https://afrot
         <div id="fr-hr-payroll-errors" class="fr-hr-errors" role="alert" tabindex="-1" hidden></div>
         <form id="fr-hr-payroll-form" novalidate>
           <div class="fr-hr-grid">
-            <div class="fr-hr-field"><label for="fr-hr-jurisdiction">Pays ou juridiction applicable</label><input id="fr-hr-jurisdiction" name="jurisdiction" autocomplete="off" required placeholder="Ex. Sénégal"></div>
-            ${sharedInputHtml(tool, "currency", "Code ou symbole monétaire", "XOF")}
+            <div class="fr-hr-field"><label for="fr-hr-jurisdiction">Pays ou juridiction applicable</label><input id="fr-hr-jurisdiction" name="jurisdiction" autocomplete="off" required${tool.country ? ` value="${escapeHtml(tool.country.displayNames.fr)}"` : ' placeholder="Ex. Sénégal"'}></div>
+            ${sharedInputHtml(tool, "currency", "Code ou symbole monétaire", tool.country?.currency || "XOF")}
             ${tool.fields.map((field) => inputHtml(tool, field)).join("\n            ")}
             ${sharedInputHtml(tool, "sourceLabel", "Source officielle ou professionnelle consultée", "", "Titre du texte ou organisme")}
             ${inputHtml(tool, ["sourceDate", "Date de la source ou de sa vérification", "date", ""])}
@@ -269,7 +269,8 @@ ${tool.swahiliRoute ? `  <link rel="alternate" hreflang="sw" href="https://afrot
 
     <section class="fr-hr-source" aria-labelledby="method-title">
       <h2 id="method-title">Méthode, fraîcheur et confiance</h2>
-      <p>La formule reproduit le contrat arithmétique de la version anglaise, sans modifier son moteur. La confiance ne dépasse jamais « moyenne » : elle indique seulement la récence de la source que vous avez saisie, pas sa validité juridique. Une source de plus de 90 jours est signalée comme ancienne.</p>
+      ${tool.country ? `<p>Le coût mensuel récurrent comprend le salaire, les cotisations et les autres charges saisies. Le coût mensuel planifié ajoute une fraction des frais ponctuels selon la durée choisie. Le coût de première année inclut douze mois récurrents et la totalité des frais ponctuels.</p>
+      <p>Pour consulter le modèle par composante, ouvrez le <a href="${escapeHtml(tool.englishRoute)}" hreflang="en" lang="fr">calculateur de ${escapeHtml(tool.country.displayNames.fr)} en anglais</a>. Vérifiez les taux applicables avant de les utiliser.</p>` : "<p>La formule reproduit le contrat arithmétique de la version anglaise, sans modifier son moteur. La confiance ne dépasse jamais « moyenne » : elle indique seulement la récence de la source que vous avez saisie, pas sa validité juridique. Une source de plus de 90 jours est signalée comme ancienne.</p>"}
     </section>
   </main>
   <afro-footer></afro-footer>
@@ -350,11 +351,32 @@ function hubHtml() {
   return enhanceCategory(rawHubHtml(), "fr");
 }
 
-const outputs = [
-  [fileForRoute(manifest.hubRoute), hubHtml()],
-  ...manifest.tools.map((tool) => [fileForRoute(tool.route), pageHtml(tool)])
-];
-const selectedOutputs = process.argv.includes("--hub-only") ? outputs.slice(0, 1) : outputs;
+function employeeCountryOutputs() {
+  const wave = require("../data/localization/coverage-wave-2026-07.json");
+  const owner = manifest.tools.find(tool => tool.id === "employee-cost");
+  return wave.french.filter(entry => entry.enSlug.startsWith("employee-cost/")).map(entry => {
+    const slug = entry.enSlug.split("/")[1];
+    const country = countries.find(item => item.routeSlug === (slug === "republic-of-congo" ? "congo" : slug));
+    if (!country || !entry.native) throw new Error("Missing country or native route owner: " + entry.enSlug);
+    const tool = {
+      ...owner, country, title: entry.name, shortTitle: entry.name,
+      route: `/fr/tools/${entry.frSlug}/`, englishRoute: `/tools/${entry.enSlug}/`, swahiliRoute: null,
+      description: `Établissez un budget employeur en ${country.currency} à partir du salaire et des charges mensuelles que vous avez vérifiées pour le pays. Les frais ponctuels peuvent être étalés sur plusieurs mois.`,
+      fields: owner.fields.map(([name, label, type, value]) =>
+        [name, label, type, name === "allocationMonths" ? value : name === "salary" ? "" : "0"])
+    };
+    return [fileForRoute(tool.route), pageHtml(tool)];
+  });
+}
+
+const hubOnly = process.argv.includes("--hub-only");
+const countriesOnly = process.argv.includes("--employee-countries-only");
+const selectedOutputs = [];
+if (!countriesOnly) selectedOutputs.push([fileForRoute(manifest.hubRoute), hubHtml()]);
+if (!hubOnly && !countriesOnly) {
+  selectedOutputs.push(...manifest.tools.map(tool => [fileForRoute(tool.route), pageHtml(tool)]));
+}
+if (!hubOnly) selectedOutputs.push(...employeeCountryOutputs());
 
 let failed = false;
 for (const [file, content] of selectedOutputs) {
@@ -377,4 +399,4 @@ for (const [file, content] of selectedOutputs) {
 }
 
 if (failed) process.exitCode = 1;
-else console.log(`French HR & Payroll parity ${check ? "verified" : "built"}: ${manifest.tools.length}/6 apps plus hub.`);
+else console.log(`French HR & Payroll parity ${check ? "verified" : "built"}: ${selectedOutputs.length} pages.`);
