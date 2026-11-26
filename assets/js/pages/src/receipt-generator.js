@@ -727,11 +727,27 @@
                 !function(t, a) {
                     for (var n = t.split("."), r = e, i = 0; i < n.length - 1; i += 1) r = r[n[i]];
                     r[n[n.length - 1]] = a;
-                }(a, r), "country" === a && (n = s[e.country] || s.NG, e.currency = n.currency,
-                e.taxLabel = n.taxLabel, e.totals.taxRate = n.taxRate, e.payment.provider && R().includes(e.payment.method) || (e.payment.provider = n.provider,
-                e.payment.method = n.methods[0] || "Cash"), w()), "status" === a && "DECLINED" === e.status && (e.docType = "declined"),
-                "docType" === a && "refund" === e.docType && (e.status = "REFUNDED"), "docType" === a && "declined" === e.docType && (e.status = "DECLINED"),
-                "payment.method" !== a || e.payment.provider || (e.payment.provider = e.payment.method),
+                }(a, r);
+                if (a === "country") {
+                    n = s[e.country] || s.NG;
+                    e.currency = n.currency;
+                    e.taxLabel = n.taxLabel;
+                    e.totals.taxRate = n.taxRate;
+                    if (!R().includes(e.payment.method)) {
+                        e.payment.method = n.methods[0] || "Cash";
+                        e.payment.provider = e.payment.method === "Cash" ? "" : n.provider;
+                    } else if (!e.payment.provider && e.payment.method !== "Cash") {
+                        e.payment.provider = n.provider;
+                    }
+                    w();
+                }
+                if (a === "status" && e.status === "DECLINED") e.docType = "declined";
+                if (a === "docType" && e.docType === "refund") e.status = "REFUNDED";
+                if (a === "docType" && e.docType === "declined") e.status = "DECLINED";
+                if (a === "payment.method") {
+                    if (r === "Cash") e.payment.provider = "";
+                    else if (!e.payment.provider && r === "Mobile money") e.payment.provider = s[e.country].provider;
+                }
                 M(), N();
             });
         }), c("itemsList").addEventListener("input", function(t) {
