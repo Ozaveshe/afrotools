@@ -4,7 +4,7 @@ const data=require('../data/fuel/markets.json'),engine=require('../assets/js/eng
 const market=code=>data.markets.find(m=>m.country_code===code);
 test('official national references validate without fabricated station coordinates or LPG',()=>{
  assert.equal(engine.validateDataset(data).valid,true);
- for(const code of ['MU','CV']){const m=market(code);assert.equal(data.markets.filter(x=>x.country_code===code).length,1);assert.equal(m.latitude,null);assert.equal(m.longitude,null);assert.equal(m.granularity,'national');assert.deepEqual(m.fuels.map(r=>r.fuel_type),['petrol','diesel']);for(const r of m.fuels){assert.equal(r.unit,'litre');assert.equal(r.date_basis,'effective');assert.equal(r.last_verified_at,'2026-11-07');assert.equal(observations.status(r,'2026-11-07').available,true);}}
+ for(const code of ['MU','CV']){const m=market(code);assert.equal(data.markets.filter(x=>x.country_code===code).length,1);assert.equal(m.latitude,null);assert.equal(m.longitude,null);assert.equal(m.granularity,'national');assert.deepEqual(m.fuels.map(r=>r.fuel_type),['petrol','diesel']);for(const r of m.fuels){assert.equal(r.unit,'litre');assert.equal(r.date_basis,'effective');assert.equal(r.last_verified_at,code==='CV'?'2026-11-20':'2026-11-07');assert.equal(observations.status(r,r.last_verified_at).available,true);}}
 });
 test('20 litre budgets use actual official product values and currencies',()=>{
  for(const [code,currency,values,totals] of [['MU','MUR',[77.7,78.35],[1554,1567]],['CV','CVE',[189.3,185.8],[3786,3716]]])for(let i=0;i<2;i++){const r=market(code).fuels[i];assert.equal(r.price,values[i]);assert.equal(r.currency,currency);assert.equal(engine.calculateFillCost({pricePerLitre:r.price,quantity:20}).totalCost,totals[i]);}
