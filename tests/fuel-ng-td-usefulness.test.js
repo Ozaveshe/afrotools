@@ -2,13 +2,14 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const data=require('../data/fuel/markets.json'),observations=require('../assets/js/lib/fuel-market-observations'),engine=require('../assets/js/engines/fuel-tracker-engine'),copy=require('../assets/js/lib/fuel-market-copy');
 const now='2026-11-07T12:00:00Z';
+const nationalReview='2026-11-26T12:00:00Z';
 test('Nigeria source update supplies weekly national planning values without overwriting outlet scope',()=>{
  const ng=data.markets.find(m=>m.market_id==='ng-national');
- assert.deepEqual(ng.fuels.map(r=>r.price),[1298,1810]);
- for(const r of ng.fuels){assert.equal(r.effective_date,'2026-11-02');assert.equal(r.price_kind,'weekly-national-benchmark');assert.equal(observations.status(r,now).available,true);assert.ok(r.previous_record);}
+ assert.deepEqual(ng.fuels.map(r=>r.price),[1057.75,1580]);
+ for(const r of ng.fuels){assert.equal(r.effective_date,'2026-11-23');assert.equal(r.price_kind,'weekly-national-benchmark');assert.equal(observations.status(r,nationalReview).available,true);assert.ok(r.previous_record);}
  const outlet=data.markets.find(m=>m.market_id==='ng-abuja-nnpc-observed');assert.equal(outlet.fuels[0].price,1405);assert.equal(outlet.granularity,'city');
  const stale={countries:[{code:'NG',name:'Nigeria',currency:'NGN',last_updated:'2026-08-10',source_url:'https://www.globalpetrolprices.com/Nigeria/gasoline_prices/',petrol:{price:1202.75,unit:'liter'},diesel:{price:1661,unit:'liter'}}]};
- assert.deepEqual(observations.merge(data.markets,stale,now).find(m=>m.market_id==='ng-national'),ng);
+ assert.deepEqual(observations.merge(data.markets,stale,nationalReview).find(m=>m.market_id==='ng-national'),ng);
 });
 test('all eight September INSEED city averages retain their real period, locality and distinct fuels',()=>{
  const expected={"N'Djamena":[700,800],'Abéché':[770,870],Moundou:[740,840],Doba:[755,855],Sarh:[775,875],Mongo:[755,855],'Am-Timan':[1120,1288],Bol:[740,840]};
@@ -43,7 +44,7 @@ async function visitor(locale='en',failLoads=false,asOf=now,search='',beforeLoad
  return {get,root,calls,report:()=>window.AfroTools.fuelFillReport(),download:async()=>{get('fuel-fill-txt').fire('click');return blob.text();}};
 }
 test('normal Nigeria visitor gets 20-litre budget and can replace benchmark with a real pump quote',async()=>{
- const v=await visitor();assert.equal(v.get('fuel-market').value,'ng-national');assert.equal(v.get('fuel-price').value,'1298');v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,25960);assert.equal(v.report().market.priceKind,'weekly-national-benchmark');
+ const v=await visitor('en',false,nationalReview);assert.equal(v.get('fuel-market').value,'ng-national');assert.equal(v.get('fuel-price').value,'1057.75');v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,21155);assert.equal(v.report().market.priceKind,'weekly-national-benchmark');
  v.get('fuel-price').value='1350';v.get('fuel-fill-form').fire('input',{target:v.get('fuel-price')});assert.equal(v.report(),null);v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,27000);assert.equal(v.report().priceBasis,'manual');assert.equal(v.report().market,null);
 });
 test('Chad visitor can select every city, compare petrol and diesel, and keep period in TXT and JSON',async()=>{
@@ -75,7 +76,7 @@ test('a market continuation selects only the known reference once and later visi
  v.get('fuel-country').value='GH';v.get('fuel-country').fire('change');assert.equal(v.get('fuel-market').value,'gh-goil-pumply-observed');v.get('fuel-price').value='17';v.get('fuel-fill-form').fire('input',{target:v.get('fuel-price')});v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,340);assert.equal(v.report().priceBasis,'manual');
 });
 test('unknown, malformed and ambiguous market identifiers fall back without location requests or price injection',async()=>{
- for(const search of ['?market=not-a-maintained-market','?market=%3Cscript%3E','?market=za-gauteng-9c-petrol95-2026-11&market=ng-national','?latitude=-26.2096&longitude=28.0462&price=1']){const v=await visitor('en',false,now,search);assert.equal(v.get('fuel-market').value,'ng-national');assert.equal(v.get('fuel-price').value,'1298');}
+ for(const search of ['?market=not-a-maintained-market','?market=%3Cscript%3E','?market=za-gauteng-9c-petrol95-2026-11&market=ng-national','?latitude=-26.2096&longitude=28.0462&price=1']){const v=await visitor('en',false,nationalReview,search);assert.equal(v.get('fuel-market').value,'ng-national');assert.equal(v.get('fuel-price').value,'1057.75');}
 });
 test('a manual price entered before loading is never replaced by the linked market',async()=>{
  const v=await visitor('en',false,now,'?market=za-gauteng-9c-petrol95-2026-11',({get,root})=>{get('fuel-price').value='31';get('fuel-currency').value='ZAR';get('fuel-fill-form').fire('input',{target:get('fuel-price')});root.fire('input');});assert.equal(v.get('fuel-price').value,'31');v.get('fuel-fill-form').fire('submit');assert.equal(v.report().calculation.totalCost,620);assert.equal(v.report().priceBasis,'manual');assert.equal(v.report().market,null);

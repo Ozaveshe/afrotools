@@ -25,9 +25,42 @@
     return status(record,nowValue).valid?record:null;
    }).filter(Boolean);
    if(!fuels.length)return;
-   var existing=rows.find(function(m){return m.country_code===row.code&&m.granularity==='national';});
+   var existing=rows.find(function(m){
+    if(m.country_code!==row.code||m.granularity!=='national')return false;
+    // National regulator schedules and third-party pump benchmarks are distinct markets.
+    var matched=false;
+    var compatible=m.fuels.every(function(prior){
+     var replacement=fuels.find(function(record){return record.fuel_type===prior.fuel_type;});
+     // Only the benchmark provider's national rows are maintained by this feed.
+     // A regulator schedule must keep its identity, including its other products.
+     try {
+      var priorHost=new URL(prior.source_url).hostname.replace(/^www\./,'');
+      if(prior.official_verified===true||priorHost!=='globalpetrolprices.com')return false;
+      if(!replacement)return true;
+      var nextHost=new URL(replacement.source_url).hostname.replace(/^www\./,'');
+      if(priorHost!==nextHost)return false;
+      matched=true;
+      return true;
+     } catch (_) { return false; }
+    });
+    return compatible&&matched;
+   });
    if(existing){fuels.forEach(function(record){var index=existing.fuels.findIndex(function(r){return r.fuel_type===record.fuel_type;});var old=existing.fuels[index];if(!old||date(record.last_verified_at)>date(old.last_verified_at)){if(old)record.previous_record=old;if(index<0)existing.fuels.push(record);else existing.fuels[index]=record;}});}
-   else rows.push({market_id:row.code.toLowerCase()+'-national-observation',country_code:row.code,country_name:row.name,locality_name:row.name,granularity:'national',latitude:null,longitude:null,coverage_note:'Country benchmark; no city or station coverage is implied.',fuels:fuels});
+   else {
+    // A legacy row date alone cannot establish a newer product observation.
+    fuels = fuels.filter(function(record) {
+     if (record.date_basis !== 'snapshot') return true;
+     return !rows.some(function(market) {
+      return market.country_code === row.code && market.granularity === 'national' &&
+       market.fuels.some(function(prior) {
+        return prior.fuel_type === record.fuel_type && status(prior, nowValue).available &&
+         date(prior.effective_date) > date(record.effective_date);
+       });
+     });
+    });
+    if (!fuels.length) return;
+    rows.push({market_id:row.code.toLowerCase()+'-national-observation',country_code:row.code,country_name:row.name,locality_name:row.name,granularity:'national',latitude:null,longitude:null,coverage_note:'Country benchmark; no city or station coverage is implied.',fuels:fuels});
+   }
   });
   return rows;
  }

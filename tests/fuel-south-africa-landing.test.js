@@ -6,11 +6,14 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'scripts/generate-fuel-tracker-country-pages.js'), 'utf8');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data/fuel/latest.json'), 'utf8'));
+// Pin the national baseline to the historical scenario exercised by the November clock.
+const historicalNationalRow = require('./fixtures/fuel/south-africa-national-2026-03-01.json');
+snapshot.countries = snapshot.countries.map(row => row.code === 'ZA' ? historicalNationalRow : row);
 const markets = JSON.parse(fs.readFileSync(path.join(root, 'data/fuel/markets.json'), 'utf8'));
-function generate(data, now='2026-11-07T12:00:00Z') {
+function generate(data, now='2026-11-07T12:00:00Z', nationalSnapshot=snapshot) {
  const Clock=class extends Date { constructor(...args){super(...(args.length?args:[now]));} };
  const outputs = new Map();
- const inputs = new Map([[path.join(root,'data/fuel/latest.json'),JSON.stringify(snapshot)],[path.join(root,'data/fuel/markets.json'),JSON.stringify(data)]]);
+ const inputs = new Map([[path.join(root,'data/fuel/latest.json'),JSON.stringify(nationalSnapshot)],[path.join(root,'data/fuel/markets.json'),JSON.stringify(data)]]);
  const guardedFS = {
   readFileSync(file) { assert.ok(inputs.has(file), `unexpected generator read: ${file}`); return inputs.get(file); },
   existsSync(file) { return fs.existsSync(file); },
@@ -54,4 +57,17 @@ test('November landing uses the published period while expired October remains a
 test('Gauteng continuations preserve the exact market and clearly separate the old national generator example',()=>{
  const html=generate(markets).get(route);assert.match(html,/<h2 id="generator-estimate">Historical national generator estimate<\/h2>/);assert.match(html,/national snapshot dated Mar 1, 2026 at ZAR 23\.74\/L, not the Gauteng regional price above/);assert.match(html,/Historical monthly estimate/);assert.match(html,/Historical national price basis/);assert.match(html,/Assumes 1\.5 litres per hour/);assert.match(html,/href="\/tools\/fuel-tracker\/\?market=za-gauteng-9c-petrol95-2026-11#fuel-finder">Calculate a Gauteng fill with an editable price/);
  const old=generate({...markets,markets:markets.markets.filter(m=>m.market_id!=='za-gauteng-9c-petrol95-2026-11')}).get(route);assert.match(old,/\?market=za-gauteng-9c-petrol95-2026-10#fuel-finder/);
+});
+
+test('country cards distinguish product dates from the row date and a retained undated LPG price',()=>{
+ const html=generate(markets).get(route);
+ const cards=[...html.matchAll(/<div class="fuel-price-row"><span>(Petrol|Diesel|LPG)<\/span><div>(.*?)<\/div><\/div>/gs)];
+ assert.equal(cards.length,3);
+ for(const [,fuel,body] of cards) assert.match(body,/Observation date unavailable/,fuel);
+ const baseline=snapshot.countries.find(row=>row.code==='ZA');
+ const withDates={...baseline,petrol:{...baseline.petrol,observed_at:'2026-02-28'},diesel:{...baseline.diesel,observed_at:'2026-02-25'}};
+ const dated=generate(markets,undefined,{...snapshot,countries:snapshot.countries.map(row=>row.code==='ZA'?withDates:row)}).get(route);
+ assert.match(dated,/<span>Petrol<\/span><div>[^\n]*Observed Feb 28, 2026/);
+ assert.match(dated,/<span>Diesel<\/span><div>[^\n]*Observed Feb 25, 2026/);
+ assert.match(dated,/<span>LPG<\/span><div>[^\n]*Observation date unavailable/);
 });
