@@ -5,6 +5,9 @@ const data = require('../data/agriculture/farm-size-data.json');
 const engine = require('../engines/src/farm-size-engine');
 
 const keys = Object.keys(data.units);
+assert.equal(engine.calculate({ amount: 60 * 120, fromKey: 'sqft', toKey: 'sqm' }, data).result.toFixed(6), '668.901888');
+assert.equal(engine.calculate({ amount: 1, fromKey: 'plot_ng_standard', toKey: 'sqm' }, data).result, 18 * 36);
+
 let scenarios = 0;
 for (const fromKey of keys) {
   for (const toKey of keys) {

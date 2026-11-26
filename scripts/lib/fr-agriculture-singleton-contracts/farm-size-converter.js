@@ -5,7 +5,7 @@ const data = require('../../../data/agriculture/farm-size-data.json');
 
 const UNIT_LABELS = Object.freeze({
   hectare:'Hectare (ha)',acre:'Acre',sqm:'Mètre carré (m²)',sqkm:'Kilomètre carré (km²)',sqft:'Pied carré (ft²)',
-  plot_ng_standard:'Parcelle — standard Nigeria (648 m²)',plot_ng_450:'Parcelle — Nigeria 450 m²',
+  plot_ng_standard:'Parcelle — Nigeria 18 m × 36 m (648 m²)',plot_ng_450:'Parcelle — Nigeria 450 m²',
   plot_ng_460:'Parcelle — Nigeria FCT/Abuja (460 m²)',plot_ng_930:'Parcelle — Nigeria 930 m² (demi-acre)',
   feddan:'Feddan (Égypte / Soudan)',kirat:'Kirat (Égypte)',sahm:'Sahm (Égypte)',qasaba:'Qasaba carrée (Égypte)',
   morgen:'Morgen (Afrique du Sud / Namibie)',timad:'Timad (Éthiopie)',tseri:'Tseri (Éthiopie / Érythrée)',
@@ -20,7 +20,7 @@ const CATEGORY_LABELS = Object.freeze({
   ghana:'Ghana',francophone:'Afrique francophone',reference:'Repères visuels',
 });
 const NOTES = Object.freeze({
-  plot_ng_standard:'60 ft × 120 ft, soit environ 18 m × 36 m. Format courant à Lagos, Ogun et Oyo.',
+  plot_ng_standard:'Pour une parcelle de 18 m × 36 m. Pour 60 ft × 120 ft, saisissez 7200 pieds carrés.',
   plot_ng_450:'15 m × 30 m. Format rencontré notamment à Abuja, Kaduna et Enugu.',
   plot_ng_460:'Parcelle de référence AGIS dans le Territoire de la capitale fédérale, Abuja.',
   plot_ng_930:'Désignée localement comme un demi-acre dans certaines zones du nord.',
