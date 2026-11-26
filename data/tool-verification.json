@@ -5995,34 +5995,24 @@
       "tool_id": "ss-vat",
       "jurisdiction": "South Sudan",
       "routes": [
+        "/south-sudan/ss-vat",
         "/fr/south-sudan/ss-vat",
-        "/south-sudan/ss-vat"
+        "/sw/south-sudan/kikokotoo-vat/"
       ],
       "source_urls": [
-        "https://nra.gov.ss",
-        "https://financialministry.gov.sd",
-        "https://cms.nra.gov.ss/uploads/FINANCIAL_Act_FY_2023_2024_MAIL_97b32cab38.pdf",
-        "https://docs.southsudanngoforum.org/regulation/legislation",
-        "https://cms.nra.gov.ss/uploads/South_Sudan_Taxation_Act_2009_fc9418fd5d.pdf"
+        "https://mofp.gov.ss/wp-content/uploads/2025/02/Finance-Act-Book__2024-2025.pdf"
       ],
       "source_titles": [
-        "nra.gov.ss",
-        "financialministry.gov.sd",
-        "Loi de finances 2023/24",
-        "Employment Law Library National Social Insurance Fund Act 2023 Employee and employer NSIF contribution framework used on this page.",
-        "Loi fiscale de 2009"
+        "South Sudan Ministry of Finance and Planning, Finance Act FY 2024/25, chapters 5–7"
       ],
-      "last_verified": "2026-01-01",
+      "last_verified": "2026-11-27",
       "verified_by": "AfroTools source audit",
       "risk_level": "high",
       "disclaimer_type": "tax",
-      "law_or_version": "Last verified: 2026 · Source: SRTD (financialministry",
-      "methodology_markdown": "The calculator splits the entered amount into net amount, VAT, and VAT-inclusive total using the displayed standard or custom VAT rate. Zero-rated and exempt categories are treated as decision guidance and must be confirmed against the linked authority material before filing.",
+      "law_or_version": "User-entered rate scenario; FY 2024/25 Finance Act provides historical context.",
+      "methodology_markdown": "Apply the entered rate to the supplied taxable amount, or extract it from an inclusive amount.",
       "known_limitations": [
-        "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Product classification, exemption, and zero-rating rules can require invoice-level review.",
-        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
-        "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
+        "The visitor supplies the rate and taxable amount. The tool does not determine a statutory rate, tax base, exemption or registration duty."
       ],
       "change_history": [
         {
@@ -6032,14 +6022,14 @@
       ],
       "test_cases": [
         {
-          "input": "Net amount: 1,000 at the displayed standard VAT rate.",
-          "expected_output": "VAT equals 1,000 multiplied by the displayed rate; total equals net amount plus VAT.",
-          "why": "Confirms the core VAT-exclusive calculation path and makes the rate dependency auditable."
+          "input": "1,000 SSP before tax at a user-entered 10%.",
+          "expected_output": "100 SSP tax; 1,100 SSP total.",
+          "why": "Validates addition using a synthetic rate."
         },
         {
-          "input": "VAT-inclusive amount with the displayed standard VAT rate.",
-          "expected_output": "Net amount equals total divided by 1 plus the rate; VAT equals total minus net amount.",
-          "why": "Confirms reverse VAT handling for invoices that already include tax."
+          "input": "1,100 SSP including a user-entered 10%.",
+          "expected_output": "1,000 SSP before tax; 100 SSP tax.",
+          "why": "Validates extraction using a synthetic rate."
         }
       ]
     },

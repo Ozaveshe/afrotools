@@ -12,17 +12,6 @@ const TEMPLATE = fs.readFileSync(path.join(ROOT, 'sudan/sd-vat.html'), 'utf8');
 
 const COUNTRIES = [
   {
-    name: 'South Sudan', slug: 'south-sudan', code: 'ss', currency: 'SSP', symbol: 'SSP',
-    rate: 18, authority: 'NRA', continent: 'East Africa',
-    exemptions: 'Basic food staples, Medical services, Educational materials',
-    zeroRated: 'Exports',
-    faq: [
-      { q: 'What is the South Sudan VAT rate?', a: 'South Sudan applies an 18% standard VAT rate on most goods and services.' },
-      { q: 'What is exempt from VAT in South Sudan?', a: 'Basic food staples, medical services, and educational materials are exempt from VAT in South Sudan.' },
-      { q: 'Who administers VAT in South Sudan?', a: 'The National Revenue Authority (NRA) administers VAT collection in South Sudan.' }
-    ]
-  },
-  {
     name: 'Libya', slug: 'libya', code: 'ly', currency: 'LYD', symbol: 'LD',
     rate: 0, authority: 'TDA', continent: 'North Africa',
     exemptions: 'N/A — Libya currently has no VAT system',

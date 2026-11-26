@@ -1005,6 +1005,13 @@ function buildRegistry(asOf) {
         entry.displayDisclaimer = 'Morocco VAT planning estimate only. Confirm the exact CGI classification, taxable scope, export evidence, invoice, deduction, withholding, filing and payment with DGI or a qualified tax professional.';
       }
     }
+    if (country === 'SS') {
+      entry.sourceName = "South Sudan Ministry of Finance and Planning: FY 2024/25 Finance Act";
+      entry.sourceUrl = "https://mofp.gov.ss/wp-content/uploads/2025/02/Finance-Act-Book__2024-2025.pdf";
+      entry.notes = "Chapters 5–7 distinguish sales tax on produced goods, hospitality and imports for FY 2024/25. Current transaction rates are user entered.";
+      entry.displayDisclaimer = "Use the taxable base and rate for the transaction and fiscal year. No rate is preselected.";
+      entry.routes = ["/south-sudan/ss-vat", "/fr/south-sudan/ss-vat", "/sw/south-sudan/kikokotoo-vat/"];
+    }
     add(entry);
   });
 
