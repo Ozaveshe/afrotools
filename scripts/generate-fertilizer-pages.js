@@ -185,6 +185,11 @@ countries.forEach(c => {
     throw new Error(`[FERTILIZER_COUNTRY_ARTWORK_MISMATCH] ${c.slug} is missing ${socialArtwork}`);
   }
 
+  if (c.code === 'KE') {
+    html = html.replace('<p class="hint" id="fertPriceBasis">',
+      '<p class="hint">On 8 September 2026, Kenya’s agriculture ministry announced a subsidized price of KSh 2,000 per 50 kg bag for a consignment distributed through KTDA. Confirm the applicable product and eligibility before using this figure. <a href="https://kilimo.go.ke/ps-ronoh-flags-off-99000-metric-tonnes-of-subsidised-fertiliser-at-the-port-of-mombasa/">Read the ministry announcement</a>.</p>\n        ' + '<p class="hint" id="fertPriceBasis">');
+  }
+
   const outPath = path.join(OUTPUT_DIR, `${c.slug}.html`);
   fs.writeFileSync(outPath, html, 'utf8');
   count++;
