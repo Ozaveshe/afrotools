@@ -120,7 +120,7 @@ function createEngine(config) {
         : periodTaxable;
 
       // Calculate tax
-      const calcFn = bandType === 'cumulative' ? calcCumulativeBands : calcProgressiveBands;
+      const calcFn = config.calculateBands || (bandType === 'cumulative' ? calcCumulativeBands : calcProgressiveBands);
       const { tax: rawTax, bands: bandDetail } = calcFn(calcAmount, bands);
       const annualTax = isMonthly ? rawTax * 12 : rawTax;
       const relief = isMonthly ? personalRelief * 12 : personalRelief;

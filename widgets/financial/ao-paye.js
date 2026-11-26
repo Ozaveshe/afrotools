@@ -1,1 +1,74 @@
-!function(){"use strict";window.AfroWidgets=window.AfroWidgets||{},window.AfroWidgets.ao_paye=function(a,e){e=e||{};var t=function(a){return"AOA "+Math.round(a).toLocaleString("en")},s=[{limit:1e5,rate:0},{limit:5e4,rate:.1},{limit:5e4,rate:.15},{limit:1e5,rate:.2},{limit:2e5,rate:.215},{limit:5e5,rate:.225},{limit:5e5,rate:.235},{limit:5e5,rate:.245},{limit:1/0,rate:.25}];a.innerHTML='<div class="aw-title">🇦🇴 Angola PAYE Calculator</div><div class="aw-field"><label class="aw-label">Monthly Gross Salary (AOA)</label><input class="aw-input" id="awAoGross" type="text" inputmode="numeric" placeholder="e.g. 500,000"></div><button class="aw-btn aw-btn--primary" id="awAoCalc">Calculate PAYE</button><div id="awAoResult"></div>'+(e.footerHTML||""),a.querySelector("#awAoCalc").addEventListener("click",function(){var e=parseFloat((a.querySelector("#awAoGross").value||"").replace(/[^0-9.]/g,""))||0;if(e){var i=function(a){for(var e=.03*a,t=Math.max(0,a-e),i=0,l=t,n=0;n<s.length&&!(l<=0);n++){var r=s[n],o=Math.min(l,isFinite(r.limit)?r.limit:l);i+=o*r.rate,l-=o}return{gross:a,inss:e,taxable:t,tax:i,net:a-e-i,effectiveRate:a>0?i/a*100:0}}(e);a.querySelector("#awAoResult").innerHTML='<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home (AGT 2026)</div><div class="aw-result-main">'+t(i.net)+'</div></div><div style="margin-top:12px"><div class="aw-result-row"><span>Gross Salary</span><span>'+t(i.gross)+'</span></div><div class="aw-result-row"><span>INSS (3%)</span><span>-'+t(i.inss)+'</span></div><div class="aw-result-row"><span>Taxable Income</span><span>'+t(i.taxable)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span>IRT Tax</span><span style="color:#dc2626">-'+t(i.tax)+'</span></div><div class="aw-result-row"><span>Effective Rate</span><span>'+i.effectiveRate.toFixed(1)+'%</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#0062CC">'+t(i.net)+'</span></div><div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#0062CC">'+t(12*i.net)+"</span></div></div>"}}),a.querySelector("#awAoGross").addEventListener("keydown",function(e){"Enter"===e.key&&a.querySelector("#awAoCalc").click()})}}();
+/* Angola 2026 budget, article 21(3), Annex I. Monthly group A taxable pay.
+ * Each legal row specifies a fixed amount plus a rate on the excess. */
+(function (root, factory) {
+  const engine = factory();
+  if (typeof module === 'object' && module.exports) module.exports = engine;
+  else root.AngolaIRT = engine;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  const bands = [
+    // Upper bound (inclusive), fixed tax, rate on excess over preceding bound.
+    [150000, 0, 0],
+    [200000, 12500, 0.16],
+    [300000, 31250, 0.18],
+    [500000, 49250, 0.19],
+    [1000000, 87250, 0.20],
+    [1500000, 187250, 0.21],
+    [2000000, 292250, 0.22],
+    [2500000, 402250, 0.23],
+    [5000000, 517250, 0.24],
+    [10000000, 1117250, 0.245],
+    [Infinity, 2342250, 0.25]
+  ];
+  function withholding(taxable) {
+    let lower = 0;
+    for (const [upper, fixed, rate] of bands) {
+      if (taxable <= upper) {
+        const excess = Math.max(0, taxable - lower);
+        return { tax: fixed + excess * rate, lower, excess, fixed, rate };
+      }
+      lower = upper;
+    }
+    throw new RangeError('Taxable earnings must be finite.');
+  }
+  function breakpoints(employeeRate, periods) {
+    return bands.slice(0, -1).map(([upper]) => Math.floor(upper * periods / (1 - employeeRate)));
+  }
+  return { bands, withholding, breakpoints };
+});
+
+(function () {
+  window.AfroWidgets = window.AfroWidgets || {};
+  window.AfroWidgets.ao_paye = function (container, options = {}) {
+    const money = value => 'AOA ' + Math.round(value).toLocaleString('en');
+    container.innerHTML = '<div class="aw-title">🇦🇴 Angola PAYE Calculator</div>' +
+      '<div class="aw-field"><label class="aw-label" for="awAoGross">Monthly Gross Salary (AOA)</label>' +
+      '<input class="aw-input" id="awAoGross" inputmode="decimal" placeholder="e.g. 500,000"></div>' +
+      '<button class="aw-btn aw-btn--primary" id="awAoCalc">Calculate PAYE</button>' +
+      '<div id="awAoResult" aria-live="polite"></div>' + (options.footerHTML || '');
+    const input = container.querySelector('#awAoGross');
+    const output = container.querySelector('#awAoResult');
+    function calculate() {
+      const gross = Number(input.value.replace(/,/g, '').trim());
+      if (!Number.isFinite(gross) || gross <= 0) {
+        output.textContent = 'Enter a positive monthly gross salary.';
+        return;
+      }
+      const inss = gross * 0.03;
+      const taxable = gross - inss;
+      const tax = window.AngolaIRT.withholding(taxable).tax;
+      const net = taxable - tax;
+      const rows = [
+        ['Gross salary', money(gross)], ['INSS (3%)', money(inss)],
+        ['Taxable pay', money(taxable)], ['Monthly IRT', money(tax)],
+        ['Effective tax rate', (100 * tax / gross).toFixed(1) + '%'],
+        ['Net salary', money(net)], ['Annual net', money(net * 12)]
+      ];
+      output.innerHTML = '<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home</div>' +
+        '<div class="aw-result-main">' + money(net) + '</div></div>' +
+        rows.map(([label, value]) => '<div class="aw-result-row"><span>' +
+          label + '</span><span>' + value + '</span></div>').join('');
+    }
+    container.querySelector('#awAoCalc').addEventListener('click', calculate);
+    input.addEventListener('keydown', event => { if (event.key === 'Enter') calculate(); });
+  };
+})();

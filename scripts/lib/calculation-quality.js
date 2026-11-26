@@ -421,6 +421,7 @@ function classifyArtifact(relativePath) {
   if (value === "assets/js/engines/ci-birth-leave.js" || value === "assets/js/engines/senegal-child-leave.js" || value === "assets/js/engines/ghana-maternity-leave.js" || /import-landed-cost/.test(value)) {
     riskDomain = "legal_regulatory";
   } else if (
+    value === "assets/js/engines/angola-irt.js" ||
     /paye|payroll|payslip|employee-cost|staff-cost|(^|-)tax|(^|-)cit|tva|(^|-)vat|(^|-)wht|withholding|creator-invoice/.test(
       value,
     )
@@ -1510,6 +1511,8 @@ function buildInventoryAndFormulas(root) {
   const routeBuild = buildRouteFormulas(root, toolVerification, countries);
   const formulas = routeBuild.formulas.slice();
   const formulaIdsByArtifact = routeBuild.formulaIdsByArtifact;
+  // The same statutory schedule powers the protected Angola route and API.
+  formulaIdsByArtifact.set("assets/js/engines/angola-irt.js", ["route-ao-paye", "paye-server-ao"]);
   const inventory = [];
 
   for (const artifactPath of discoverEngineArtifacts(root)) {

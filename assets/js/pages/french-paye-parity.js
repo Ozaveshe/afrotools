@@ -6,8 +6,8 @@
   var CONFIGS = {
     'ao-paye': {
       country: 'Angola', currency: 'AOA', symbol: 'Kz', period: 'monthly',
-      checkedOn: '2026-03-26', employeeRate: 0.03, employerRate: 0.08, employeeDeductible: true,
-      bands: [[100000, 0], [150000, 0.10], [200000, 0.15], [300000, 0.20], [500000, 0.215], [1000000, 0.225], [1500000, 0.235], [2000000, 0.245], [Infinity, 0.25]]
+      checkedOn: '2026-11-26', employeeRate: 0.03, employerRate: 0.08, employeeDeductible: true,
+      angolaIRT: true
     },
     'bw-paye': {
       country: 'Botswana', currency: 'BWP', symbol: 'P', period: 'annual',
@@ -179,7 +179,7 @@
       0,
       grossBasis - (config.employeeDeductible ? employeeBasis : 0) - (config.personalAllowance || 0)
     );
-    var taxResult = progressiveTax(taxable, config.bands);
+    var taxResult = config.angolaIRT ? global.AngolaIRT.withholding(taxable) : progressiveTax(taxable, config.bands);
     var taxBasis = taxResult.tax;
     if (config.exclusionAdjustments) {
       config.exclusionAdjustments.forEach(function (entry) {

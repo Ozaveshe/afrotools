@@ -12346,7 +12346,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:c25e2e8661b8b84beebd0cb0103567bcf49d8be4bd3ae4ee3007d42b104487b6",
+      "artifactDigest": "sha256:e7620687fae9e09a6ea80567623c8ee831a5c0a40f099ffdbcf40a85c980d29c",
       "artifactPath": "netlify/functions/_engines/ao-paye.js",
       "currency": "AOA",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
@@ -12356,7 +12356,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-server",
-      "formulaVersion": "2026-03-01+sha256.c25e2e8661b8",
+      "formulaVersion": "2026-11-26+sha256.e7620687fae9",
       "id": "paye-server-ao",
       "jurisdictions": [
         "AO"
@@ -12369,43 +12369,62 @@
       "parameters": {
         "mode": "schema-exposed-runtime-parameters",
         "values": {
-          "bandType": "progressive",
+          "bandType": "fixed-plus-excess",
           "bands": [
             [
-              70000,
+              150000,
+              0,
               0
             ],
             [
-              30000,
-              0.1
-            ],
-            [
-              50000,
-              0.13
-            ],
-            [
-              100000,
+              200000,
+              12500,
               0.16
             ],
             [
-              250000,
+              300000,
+              31250,
               0.18
             ],
             [
-              2500000,
+              500000,
+              49250,
               0.19
             ],
             [
-              5000000,
+              1000000,
+              87250,
               0.2
             ],
             [
-              10000000,
+              1500000,
+              187250,
               0.21
             ],
             [
-              "Infinity",
+              2000000,
+              292250,
               0.22
+            ],
+            [
+              2500000,
+              402250,
+              0.23
+            ],
+            [
+              5000000,
+              517250,
+              0.24
+            ],
+            [
+              10000000,
+              1117250,
+              0.245
+            ],
+            [
+              "Infinity",
+              2342250,
+              0.25
             ]
           ],
           "employerSS": [
@@ -18476,7 +18495,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:98b7f55dabe2540f92eda9ae114d1146cc73e041a5e3e9eaa63d7275afe8fbd1",
+      "artifactDigest": "sha256:a97f3ef8c11c2a5646aec737c35ca3bfddf7efd5139505f1cbd1cb9f6c482828",
       "artifactPath": "angola/ao-paye.html",
       "currency": "AOA",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -18486,7 +18505,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.98b7f55dabe2",
+      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.a97f3ef8c11c",
       "id": "route-ao-paye",
       "jurisdictions": [
         "AO"
@@ -18499,7 +18518,7 @@
       "lastVerified": "2026-03-26",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:98b7f55dabe2540f92eda9ae114d1146cc73e041a5e3e9eaa63d7275afe8fbd1",
+        "artifactDigest": "sha256:a97f3ef8c11c2a5646aec737c35ca3bfddf7efd5139505f1cbd1cb9f6c482828",
         "artifactPath": "angola/ao-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
