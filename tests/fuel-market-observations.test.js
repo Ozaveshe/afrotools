@@ -16,7 +16,7 @@ const copy=require('../assets/js/lib/fuel-market-copy');
 const {build}=require('../scripts/build-fuel-market-locales');
 const now='2026-10-23T12:00:00.000Z';
 // The live inventory includes dated Tanzania and Burkina Faso references reviewed on November 12.
-const marketInventoryReviewTime='2026-11-18T12:00:00Z';
+const marketInventoryReviewTime='2026-11-26T12:00:00Z';
 const valid={fuel_type:'petrol',price:100,currency:'NGN',unit:'litre',effective_date:'2026-10-09',last_verified_at:'2026-10-09',source_name:'Dated outlet report',source_url:'https://example.com/prices',date_basis:'observation'};
 test('a recent observation remains dated and calculable without claiming a new effective tariff',()=>{const status=observations.status(valid,now);assert.equal(status.available,true);assert.equal(status.basis,'dated-observation');assert.equal(engine.calculateFillCost({pricePerLitre:valid.price,quantity:20}).totalCost,2000);});
 test('historical and expired prices stay valid planning inputs, never current references',()=>{for(const record of [{...valid,effective_date:'2026-07-01',last_verified_at:'2026-07-01'},{...valid,valid_to:'2026-10-10'}]){const status=observations.status(record,now);assert.equal(status.valid,true);assert.equal(status.available,false);assert.equal(status.historical,true);assert.equal(status.basis,'historical-estimate');}});
@@ -45,4 +45,23 @@ test('scheduled national observations merge without replacing city/outlet refere
 test('empty, incomplete, unsafe and future scheduled products preserve useful committed references',()=>{
  const defaults=observations.merge(markets.markets,latest,now);
  for(const feed of [null,{}, {countries:[]},{countries:[{code:'NG',name:'Nigeria',currency:'NGN',last_updated:'2026-10-21',petrol:{price:0,unit:'liter'}}]},{countries:[{code:'NG',name:'Nigeria',currency:'NGN',last_updated:'2026-10-21',petrol:{price:1,unit:'liter',observed_at:'2026-10-24',source_url:'https://example.test/prices'}}]}])assert.deepEqual(observations.merge(defaults,feed,now),defaults);
+});
+
+
+test('Mogadishu weekly survey retains city scope, USD prices and prior petrol source', () => {
+  const market = currentMarkets.markets.find(row => row.market_id === 'so-mogadishu-fmmu');
+  assert.equal(market.granularity, 'city');
+  assert.equal(market.manual_selection_only, true);
+  for (const [fuel, expected] of [['petrol', 1.16], ['diesel', 1.14]]) {
+    const record = market.fuels.find(row => row.fuel_type === fuel);
+    assert.equal(record.price, expected);
+    assert.equal(record.currency, 'USD');
+    assert.equal(record.effective_date, '2026-11-23');
+    assert.equal(record.source_url, 'https://www.sra.so/fuel-prices/');
+    assert.match(record.notes, /one report/);
+    assert.equal(observations.status(record, marketInventoryReviewTime).available, true);
+  }
+  const previous = market.fuels.find(row => row.fuel_type === 'petrol').previous_record;
+  assert.equal(previous.source_url, 'https://qiimaha.gov.so/');
+  assert.equal(previous.effective_date, '2026-06-18');
 });

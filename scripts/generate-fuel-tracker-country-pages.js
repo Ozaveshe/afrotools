@@ -297,11 +297,11 @@ function regionalPetrolCard(reference) {
 function cityFuelReferences(countryCode) {
   if (!['SO', 'DJ'].includes(countryCode)) return [];
   const data = readJson(path.join(ROOT, 'data', 'fuel', 'markets.json'));
-  const source = countryCode === 'SO' ? 'https://qiimaha.gov.so/' : 'https://data.humdata.org/dataset/wfp-food-prices-for-djibouti';
+  const sources = countryCode === 'SO' ? ['https://qiimaha.gov.so/', 'https://www.sra.so/fuel-prices/'] : ['https://data.humdata.org/dataset/wfp-food-prices-for-djibouti'];
   return data.markets.filter(market => market.country_code === countryCode && market.granularity === 'city')
     .map(market => ({
       market,
-      prices: market.fuels.filter(record => record.source_url === source && ['petrol', 'diesel'].includes(record.fuel_type) && record.unit === 'litre' && record.price > 0)
+      prices: market.fuels.filter(record => sources.includes(record.source_url) && ['petrol', 'diesel'].includes(record.fuel_type) && record.unit === 'litre' && record.price > 0)
     }))
     .filter(entry => entry.prices.length);
 }
@@ -309,19 +309,23 @@ function cityFuelReferences(countryCode) {
 function cityFuelCard(entries) {
   if (!entries.length) return '';
   const first = entries[0].prices[0];
+  const mixedSources = entries.some(({ prices }) => prices.some(record => record.source_url !== first.source_url));
   const links = entries.map(({ market, prices }) => {
     const details = prices.map(record => {
       const fuel = record.fuel_type === 'petrol' ? 'Petrol' : 'Diesel';
       const date = record.date_basis === 'survey-period' ? new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(record.effective_date + 'T00:00:00Z')) : formatDate(record.effective_date);
-      return `${fuel} ${escapeHtml(record.currency)} ${escapeHtml(formatNumber(record.price))}/L (${escapeHtml(date)})`;
+      const surveyWeek = record.source_url === 'https://www.sra.so/fuel-prices/' ? 'week of ' : '';
+      return `${fuel} ${escapeHtml(record.currency)} ${escapeHtml(formatNumber(record.price))}/L (${surveyWeek}${escapeHtml(date)})`;
     }).join(' · ');
-    return `<li><a href="/tools/fuel-tracker/?market=${encodeURIComponent(market.market_id)}#fuel-finder">Calculate a fill in ${escapeHtml(market.locality_name)}</a><br>${details}</li>`;
+    const credit = mixedSources ? `<br><a href="${escapeHtml(prices[0].source_url)}">${escapeHtml(prices[0].source_name)}</a>` : '';
+    const scope = prices[0].source_url === 'https://www.sra.so/fuel-prices/' ? ' · One report' : '';
+    return `<li><a href="/tools/fuel-tracker/?market=${encodeURIComponent(market.market_id)}#fuel-finder">Calculate a fill in ${escapeHtml(market.locality_name)}</a><br>${details}${scope}${credit}</li>`;
   }).join('\n');
   return `<section class="fuel-price-card fuel-regional-reference" aria-labelledby="city-fuel-heading">
           <h2 id="city-fuel-heading">Fuel prices by city</h2>
           <p>Choose a city to estimate your fill using its dated market price, or enter the price at your pump.</p>
-          <ul>${links}</ul>
-          <p><a href="${escapeHtml(first.source_url)}">${escapeHtml(first.source_name)}</a></p>
+          <ul>${links}</ul>${mixedSources ? '' : `
+          <p><a href="${escapeHtml(first.source_url)}">${escapeHtml(first.source_name)}</a></p>`}
         </section>`;
 }
 
