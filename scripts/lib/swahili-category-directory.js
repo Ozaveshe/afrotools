@@ -32,7 +32,7 @@ const SWAHILI_CATEGORIES = [
   ['religious-cultural','Dini na utamaduni','/sw/dini-na-utamaduni/','DU','Bajeti, kalenda na maandalizi yanayoheshimu dini, mila na mamlaka ya jamii mbalimbali.'],
   ['climate','Hali ya hewa na mazingira','/sw/hali-ya-hewa-na-mazingira/','HAL','Maji, carbon, hali ya hewa, taka, hatari na mipango ya uendelevu.'],
   ['sports','Michezo na burudani','/sw/michezo/','MIC','Utendaji, timu, matukio, mazoezi na zana za kupanga shughuli za michezo.'],
-  ['mining','Madini na uchimbaji','/sw/zana-zote/?category=mining','MAD','Leseni, uzalishaji, royalties, gharama na uchumi wa shughuli za uchimbaji.']
+  ['mining','Madini na uchimbaji','/sw/mining/','MAD','Leseni, uzalishaji, royalties, gharama na uchumi wa shughuli za uchimbaji.']
 ].map(([key,title,href,icon,description])=>({key,title,href,icon,description}));
 
 module.exports = { SWAHILI_CATEGORIES };

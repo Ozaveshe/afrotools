@@ -301,7 +301,7 @@ function categories(locale) {
     : "Vinjari makundi 32 ya AfroTools kwa utafutaji wa kifaani na viungo vya katalogi ya Kiswahili.";
   const cards = CATEGORY_ROWS.map(
     ([slug, frName, swName]) =>
-      `<article class="li-card" data-category-card data-search="${esc(`${slug} ${fr ? frName : swName}`.toLowerCase())}"><h2>${esc(fr ? frName : swName)}</h2><p>${fr ? "Ouvrir les outils, guides et preuves disponibles dans cette catégorie." : "Fungua zana, miongozo na ushahidi unaopatikana kwenye kundi hili."}</p><a href="${!fr && slug === 'hr-payroll' ? '/sw/hr-payroll/' : !fr && slug === 'ecommerce' ? '/sw/biashara-mtandaoni/' : `${c.tools}?category=${slug}`}">${fr ? "Voir les outils" : "Ona zana"}</a></article>`,
+      `<article class="li-card" data-category-card data-search="${esc(`${slug} ${fr ? frName : swName}`.toLowerCase())}"><h2>${esc(fr ? frName : swName)}</h2><p>${fr ? "Ouvrir les outils, guides et preuves disponibles dans cette catégorie." : "Fungua zana, miongozo na ushahidi unaopatikana kwenye kundi hili."}</p><a href="${!fr && ['crypto','mining'].includes(slug) ? '/sw/' + slug + '/' : !fr && slug === 'hr-payroll' ? '/sw/hr-payroll/' : !fr && slug === 'ecommerce' ? '/sw/biashara-mtandaoni/' : `${c.tools}?category=${slug}`}">${fr ? "Voir les outils" : "Ona zana"}</a></article>`,
   ).join("");
   const directoryCards = fr ? categoryFallback(pricingRegistry, "fr") : cards;
   const frenchCount = fr ? getSelector(pricingRegistry, "tools.locale.fr.published").value : 0;
