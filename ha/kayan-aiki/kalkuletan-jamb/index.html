@@ -162,6 +162,7 @@
                     <select class="jamb-select" id="courseSelect"><option value="">-- Da farko zabi jami'a --</option></select>
                 </div>
             </div>
+            <p id="scoreError" role="alert"></p>
             <div class="jamb-btn-group">
                 <button type="button" class="jamb-btn jamb-btn-primary" onclick="calculate()">Lissafa aggregate</button>
                 <button type="button" class="jamb-btn jamb-btn-secondary" onclick="resetForm()">Goge</button>
@@ -461,6 +462,7 @@
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('.jamb-tab').forEach(function(t) { t.classList.remove('active'); });
                     tab.classList.add('active');
+                    clearResult();
                     selectedFormula = tab.dataset.formula;
                     document.getElementById('formulaDesc').textContent = FORMULAS[selectedFormula].desc;
                     document.getElementById('olevelCard').classList.toggle('hidden', !FORMULAS[selectedFormula].needsOlevel);
@@ -479,12 +481,34 @@
             return total;
         }
 
+        function clearResult() {
+            document.getElementById('resultCard').classList.add('hidden');
+            document.getElementById('cutoffResult').classList.add('hidden');
+            document.getElementById('aggregateScore').textContent = '--';
+            ['formulaUsed', 'breakdown', 'cutoffUni', 'cutoffCourse', 'cutoffVal', 'passStatus'].forEach(function(id) {
+                document.getElementById(id).textContent = '';
+            });
+            document.getElementById('scoreError').textContent = '';
+            document.querySelectorAll('[aria-invalid="true"][aria-describedby="scoreError"]').forEach(function(field) {
+                field.removeAttribute('aria-invalid');
+                field.removeAttribute('aria-describedby');
+            });
+        }
+        function scoreError(id, message) {
+            var field = document.getElementById(id);
+            document.getElementById('scoreError').textContent = message;
+            field.setAttribute('aria-invalid', 'true');
+            field.setAttribute('aria-describedby', 'scoreError');
+            field.focus();
+        }
         function calculate() {
+            clearResult();
             var utme = parseFloat(document.getElementById('utme').value);
             var postUtme = parseFloat(document.getElementById('postUtme').value);
-            if (isNaN(utme) || isNaN(postUtme)) { AfroTools.toast.error('Shigar da UTME da Post-UTME scores.'); return; }
-            if (utme < 0 || utme > 400) { AfroTools.toast.error('UTME score dole ya kasance tsakanin 0 da 400.'); return; }
-            if (postUtme < 0 || postUtme > 100) { AfroTools.toast.error('Post-UTME score dole ya kasance tsakanin 0 da 100.'); return; }
+            if (!Number.isFinite(utme)) return scoreError('utme', 'Shigar da maki na UTME.');
+            if (!Number.isFinite(postUtme)) return scoreError('postUtme', 'Shigar da maki na Post-UTME.');
+            if (utme < 0 || utme > 400) return scoreError('utme', 'UTME score dole ya kasance tsakanin 0 da 400.');
+            if (postUtme < 0 || postUtme > 100) return scoreError('postUtme', 'Post-UTME score dole ya kasance tsakanin 0 da 100.');
 
             var aggregate = 0, steps = '';
             var olevel = getOlevelTotal();
@@ -495,11 +519,11 @@
                     steps = 'UTME: ' + utme + ' / 8 = ' + (utme/8).toFixed(2) + '\nPost-UTME: ' + postUtme + ' / 2 = ' + (postUtme/2).toFixed(2) + '\nJimilla: ' + (utme/8).toFixed(2) + ' + ' + (postUtme/2).toFixed(2) + ' = ' + aggregate.toFixed(2);
                     break;
                 case 'ui':
-                    var hasEmptyOlevel = false;
                     for (var j = 0; j < 5; j++) {
-                        if (document.getElementById('subj' + j).value === '') { hasEmptyOlevel = true; break; }
+                        if (document.getElementById('subj' + j).value === '') {
+                            return scoreError('subj' + j, "Zaɓi maki ga duk darussan O'Level guda biyar.");
+                        }
                     }
-                    if (hasEmptyOlevel) { AfroTools.toast.error('Zabi maki ga duk darussan O\'Level guda 5.'); return; }
                     aggregate = ((utme / 4) * 0.375) + (postUtme * 0.25) + (olevel * 0.375);
                     steps = 'UTME: (' + utme + ' / 4) × 0.375 = ' + ((utme/4)*0.375).toFixed(2) + '\nPost-UTME: ' + postUtme + ' × 0.25 = ' + (postUtme*0.25).toFixed(2) + '\nO\'Level: ' + olevel + ' × 0.375 = ' + (olevel*0.375).toFixed(2) + '\nJimilla: ' + ((utme/4)*0.375).toFixed(2) + ' + ' + (postUtme*0.25).toFixed(2) + ' + ' + (olevel*0.375).toFixed(2) + ' = ' + aggregate.toFixed(2);
                     break;
@@ -558,10 +582,15 @@
             for (var i = 0; i < 5; i++) document.getElementById('subj' + i).value = '';
             document.getElementById('uniSelect').value = '';
             document.getElementById('courseSelect').innerHTML = "<option value=\"\">-- Da farko zabi jami'a --</option>";
-            document.getElementById('resultCard').classList.add('hidden');
+            clearResult();
         }
 
         init();
+        ['utme', 'postUtme', 'subjectsGrid', 'uniSelect', 'courseSelect'].forEach(function(id) {
+            var field = document.getElementById(id);
+            field.addEventListener('input', clearResult);
+            field.addEventListener('change', clearResult);
+        });
     </script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
     <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
