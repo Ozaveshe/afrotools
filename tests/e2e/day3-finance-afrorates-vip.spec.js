@@ -94,3 +94,25 @@ test('AfroRates remains usable at 320px, 768px and 200% zoom', async ({ page }) 
   await page.setViewportSize({ width: 1200, height: 800 });
   await page.screenshot({ path: 'test-results/afrorates-vip-1200-light.png', fullPage: true });
 });
+
+for (const [country, name, value, host] of [
+  ['NG', 'Nigeria', '14.06%', 'microdata.nigerianstat.gov.ng'],
+  ['NA', 'Namibia', '5.6%', 'nsa.org.na'],
+]) {
+  test(`AfroRates opens the dated ${name} headline CPI bulletin`, async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-26T12:00:00Z') });
+    await page.goto(`/tools/afrorates/?country=${country}&metric=inflation`);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(`${name} headline inflation`);
+    await expect(page.locator('[data-cpi-reading]')).toHaveText(
+      `Consumer prices rose ${value} year on year in October 2026 compared with October 2025.`
+    );
+    const source = page.getByRole('link', { name: /October 2026 CPI bulletin/ });
+    expect(new URL(await source.getAttribute('href')).hostname).toBe(host);
+    await expect(page.locator('#ar-body')).toHaveCount(0);
+
+    await page.clock.setSystemTime(new Date('2027-02-01T12:00:00Z'));
+    await page.reload();
+    await expect(page.locator('[data-cpi-reading]')).toBeHidden();
+    await expect(page.getByRole('link', { name: `Latest CPI releases for ${name}` })).toBeVisible();
+  });
+}

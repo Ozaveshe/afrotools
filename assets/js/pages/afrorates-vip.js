@@ -54,6 +54,20 @@
   var state = { rows: [], candidates: 0, source: '', timestamp: '' };
   var params = new URLSearchParams(location.search);
   var requestedCountry = String(params.get('country') || '').toUpperCase();
+  if (params.get('metric') === 'inflation') {
+    var bulletin = Array.from(root.querySelectorAll('template[data-country-name]')).find(function (item) {
+      return item.id === 'ar-inflation-' + requestedCountry || item.dataset.countryName.toUpperCase() === requestedCountry;
+    });
+    if (bulletin) {
+      var panel = bulletin.content.cloneNode(true);
+      var checked = panel.querySelector('[data-cpi-checked]').dateTime;
+      panel.querySelector('[data-cpi-reading]').hidden = engine.ageDays(checked) > 45;
+      document.title = panel.querySelector('h1').textContent + ' | AfroRates';
+      root.replaceChildren(panel);
+      return;
+    }
+  }
+
   var status = document.getElementById('ar-status');
   var body = document.getElementById('ar-body');
   var search = document.getElementById('ar-search');
