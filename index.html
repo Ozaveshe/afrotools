@@ -3238,8 +3238,8 @@ document.addEventListener('DOMContentLoaded', function() {
       results.forEach(function(r, i) {
         var tool = r.t;
         var isLive = tool.status === 'live' || tool.status === 'new';
-        var cat = isGlobalFuelFinder(tool) ? 'Choose a supported market or enter your own price' : (CATEGORY_LABELS[tool.category] || tool.category);
-        var badge = isLive
+        var cat = isGlobalFuelFinder(tool) ? 'Compare dated fuel prices or enter your pump price' : (CATEGORY_LABELS[tool.category] || tool.category);
+        var badge = isGlobalFuelFinder(tool) ? '' : isLive
           ? '<span class="sd-badge sd-badge-live">● Live</span>'
           : '<span class="sd-badge sd-badge-soon">Coming Soon</span>';
         var tag = isLive ? 'a' : 'div';
