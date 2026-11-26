@@ -13,25 +13,55 @@
             "/assets/fonts/noto-sans/NotoSans-Regular.ttf",
             "/assets/fonts/noto-sans/NotoSans-Bold.ttf"
         ]);
-        var warming = false;
-        async function warm() {
-            if (warming || !navigator.serviceWorker.controller || !navigator.onLine) return;
-            warming = true;
-            try {
-                // Fetch only the public blank page and static dependencies. No form state,
-                // shared-link query, authenticated response or saved record enters the cache.
-                await Promise.all([path].concat(assets).map(async function(url) {
-                    if (await caches.match(url)) return;
-                    var options = { credentials: "omit" };
-                    if (url === path) options.headers = { Accept: "text/html" };
-                    await fetch(url, options);
-                }));
-            } catch (_) { /* A later online/controller event can finish the public cache. */ }
-            finally { warming = false; }
+        var status = document.createElement("p");
+        status.id = "invoiceOfflineReadiness";
+        status.className = "action-hint";
+        status.setAttribute("role", "status");
+        var hint = document.getElementById("invoiceActionHint");
+        if (hint) hint.after(status);
+        var required = [path].concat(assets);
+        var generation = 0;
+        function announce(message) {
+            if (status.textContent !== message) status.textContent = message;
         }
-        // Keep this listener for a worker upgrade: activation can remove an older cache.
+        function cachedAsset(url) {
+            return caches.match(url).then(function(response) {
+                if (!response || !response.ok) return false;
+                var mime = response.headers.get("Content-Type") || "";
+                return url === path ? /text\/html/i.test(mime) : !/text\/html/i.test(mime);
+            });
+        }
+        async function warm() {
+            var attempt = ++generation;
+            announce("Preparing this invoice editor for offline use. Stay online until it is ready.");
+            if (!navigator.serviceWorker.controller) return;
+            try {
+                var cached = await Promise.all(required.map(cachedAsset));
+                if (navigator.onLine) {
+                    await Promise.all(required.map(async function(url, index) {
+                        if (cached[index]) return;
+                        var options = { credentials: "omit" };
+                        if (url === path) options.headers = { Accept: "text/html" };
+                        var response = await fetch(url, options);
+                        if (!response.ok) throw new Error("Asset unavailable");
+                    }));
+                }
+                // The service worker can finish writing a successful response after fetch resolves.
+                for (var retry = 0; retry < 6 && attempt === generation; retry++) {
+                    var verified = await Promise.all(required.map(cachedAsset));
+                    if (verified.every(Boolean)) {
+                        announce("Ready to edit and download invoice PDFs offline on this device.");
+                        return;
+                    }
+                    if (!navigator.onLine) break;
+                    await new Promise(function(resolve) { setTimeout(resolve, 500); });
+                }
+            } catch (_) { /* The editor and online PDF action remain available. */ }
+            if (attempt === generation) announce("Offline preparation is incomplete. Reconnect and reload before working offline.");
+        }
         navigator.serviceWorker.addEventListener("controllerchange", warm);
         window.addEventListener("online", warm);
+        window.addEventListener("offline", warm);
         warm();
     }
 
