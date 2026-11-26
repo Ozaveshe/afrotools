@@ -27,6 +27,7 @@ var CACHE_OPTS = { browserTTL: 1800, cdnTTL: 3600, staleTTL: 7200 };
 var { checkRateLimit } = require('./_shared/rate-limit');
 
 exports.handler = async function(event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   var origin = getAllowedOrigin(event);
   var CORS = {
     'Access-Control-Allow-Origin': origin,

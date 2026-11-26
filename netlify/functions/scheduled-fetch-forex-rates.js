@@ -184,6 +184,7 @@ async function fetchFromFawazAhmed() {
  * Main scheduled handler
  */
 exports.handler = async function (event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   console.log('[forex-fetch] Starting scheduled forex rate fetch...');
 
   const sources = [

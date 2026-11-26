@@ -389,6 +389,7 @@ function validateFuelData(nextData) {
 }
 
 exports.handler = async function(event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   return runScraper({
     id: 'fuel-prices',
     blobKey: 'fuel-latest',

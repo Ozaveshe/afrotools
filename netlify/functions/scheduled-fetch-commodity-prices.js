@@ -484,6 +484,7 @@ function validateCommodityPrices(newData, oldData) {
 }
 
 exports.handler = async function(event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   return runScraper({
     id: 'commodity-prices',
     blobKey: 'commodity-prices-latest',

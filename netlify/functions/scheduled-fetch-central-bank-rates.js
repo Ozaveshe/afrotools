@@ -714,7 +714,8 @@ exports._private = {
   cleanHtmlText
 };
 
-exports.handler = async function () {
+exports.handler = async function (event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   console.log('[rates-fetch] Starting scheduled central bank rates check...');
 
   var now = new Date();
