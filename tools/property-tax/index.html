@@ -266,7 +266,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f9debbdd">
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which African country has the lowest property tax?","acceptedAnswer":{"@type":"Answer","text":"Mauritius has no annual property tax at all, making it highly attractive for property investors. Nigeria (Lagos) has very low rates at 0.0394% for owner-occupied residential property, and Rwanda charges just 0.1% of market value. However, low annual tax may be offset by higher transfer costs at purchase."}},{"@type":"Question","name":"How is Lagos Land Use Charge (LUC) calculated?","acceptedAnswer":{"@type":"Answer","text":"Lagos LUC is calculated on the assessed property value. Rates are 0.0394% for owner-occupied residential, 0.0789% for rental residential, and 0.132% for commercial properties. Properties valued under NGN 4 million are exempt, and pensioners receive a 50% discount."}},{"@type":"Question","name":"Do I pay capital gains tax when selling property in Africa?","acceptedAnswer":{"@type":"Answer","text":"Most African countries impose CGT on property sales. South Africa charges 18% (individuals) on 40% of the gain with a R2M primary residence exclusion. Kenya charges 15% CGT. Nigeria charges 10% CGT. Some countries offer exemptions for primary residences or properties held for long periods."}},{"@type":"Question","name":"What are the transfer costs when buying property in South Africa?","acceptedAnswer":{"@type":"Answer","text":"South Africa has a progressive transfer duty scale: 0% for properties under R1.1 million, scaling up to 13% for portions above R11 million. Add 1-2% for conveyancing fees, plus potential bond registration costs. Total buyer costs typically range from 5-15% of the purchase price."}},{"@type":"Question","name":"Is rental income taxed in African countries?","acceptedAnswer":{"@type":"Answer","text":"Yes, most African countries tax rental income. In Nigeria, rental income is taxed at personal income tax rates (up to 24%). Kenya applies a simplified 7.5% tax on gross rent (or standard rates). South Africa taxes net rental income at marginal rates (up to 45%). Egypt charges 10% of rental value after deductions."}},{"@type":"Question","name":"Are there property tax exemptions for the African diaspora?","acceptedAnswer":{"@type":"Answer","text":"Most countries do not offer specific diaspora exemptions. However, some countries like Rwanda and Mauritius actively encourage foreign property investment with favorable tax regimes. Non-residents may face different withholding tax rates on rental income and may not qualify for primary residence CGT exemptions."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which African country has the lowest property tax?","acceptedAnswer":{"@type":"Answer","text":"Mauritius has no annual property tax at all, making it highly attractive for property investors. Nigeria (Lagos) has very low rates at 0.0394% for owner-occupied residential property, and Rwanda charges just 0.1% of market value. However, low annual tax may be offset by higher transfer costs at purchase."}},{"@type":"Question","name":"How is Lagos Land Use Charge (LUC) calculated?","acceptedAnswer":{"@type":"Answer","text":"Use the rateable value on the Lagos assessment. The estimate applies the rate for the selected use before any exemptions or relief. Confirm eligibility and the amount payable with the Lagos State Ministry of Finance."}},{"@type":"Question","name":"Do I pay capital gains tax when selling property in Africa?","acceptedAnswer":{"@type":"Answer","text":"Most African countries impose CGT on property sales. South Africa charges 18% (individuals) on 40% of the gain with a R2M primary residence exclusion. Kenya charges 15% CGT. Nigeria charges 10% CGT. Some countries offer exemptions for primary residences or properties held for long periods."}},{"@type":"Question","name":"What are the transfer costs when buying property in South Africa?","acceptedAnswer":{"@type":"Answer","text":"South Africa has a progressive transfer duty scale: 0% for properties under R1.1 million, scaling up to 13% for portions above R11 million. Add 1-2% for conveyancing fees, plus potential bond registration costs. Total buyer costs typically range from 5-15% of the purchase price."}},{"@type":"Question","name":"Is rental income taxed in African countries?","acceptedAnswer":{"@type":"Answer","text":"Yes, most African countries tax rental income. In Nigeria, rental income is taxed at personal income tax rates (up to 24%). Kenya applies a simplified 7.5% tax on gross rent (or standard rates). South Africa taxes net rental income at marginal rates (up to 45%). Egypt charges 10% of rental value after deductions."}},{"@type":"Question","name":"Are there property tax exemptions for the African diaspora?","acceptedAnswer":{"@type":"Answer","text":"Most countries do not offer specific diaspora exemptions. However, some countries like Rwanda and Mauritius actively encourage foreign property investment with favorable tax regimes. Non-residents may face different withholding tax rates on rental income and may not qualify for primary residence CGT exemptions."}}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/property-tax/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/property-tax/">
@@ -330,7 +330,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <option value="CI">Cote d'Ivoire</option>
 </select></div>
 <div class="pt-field"><label class="pt-label">City / Region</label>
-<select class="pt-select" id="at-city" aria-label="At City"></select></div>
+<select class="pt-select" id="at-city" onchange="AT.updateUse()" aria-label="At City"></select></div>
 </div>
 <div class="pt-row" style="margin-bottom:16px">
 <div class="pt-field"><label class="pt-label">Property Use</label>
@@ -342,7 +342,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 </select></div>
 <div class="pt-field"><label class="pt-label">Property Value</label>
 <input aria-label="At value" class="pt-input" type="number" id="at-value" value="50000000" min="0" step="1000000">
-<p class="pt-hint">Market value in local currency</p></div>
+<p class="pt-hint"><span id="at-value-hint">Market value in local currency</span></p></div>
 </div>
 <div class="pt-field">
 <label class="pt-label">Property Value Slider</label>
@@ -634,7 +634,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-haven-card"><div class="pt-hc-flag">&#127474;&#127482;</div><div class="pt-hc-name">Mauritius</div><div class="pt-hc-rate">0%</div><div class="pt-hc-note">No annual property tax</div></div>
 <div class="pt-haven-card"><div class="pt-hc-flag">&#127479;&#127484;</div><div class="pt-hc-name">Rwanda</div><div class="pt-hc-rate">0.1%</div><div class="pt-hc-note">Of market value</div></div>
 <div class="pt-haven-card"><div class="pt-hc-flag">&#127463;&#127484;</div><div class="pt-hc-name">Botswana</div><div class="pt-hc-rate">0.25%</div><div class="pt-hc-note">Of improved value</div></div>
-<div class="pt-haven-card"><div class="pt-hc-flag">&#127475;&#127468;</div><div class="pt-hc-name">Nigeria</div><div class="pt-hc-rate">0.04%</div><div class="pt-hc-note">Lagos owner-occupied</div></div>
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127475;&#127468;</div><div class="pt-hc-name">Nigeria</div><div class="pt-hc-rate">0.0394%</div><div class="pt-hc-note">Lagos owner-occupied</div></div>
 <div class="pt-haven-card"><div class="pt-hc-flag">&#127481;&#127487;</div><div class="pt-hc-name">Tanzania</div><div class="pt-hc-rate">0.15%</div><div class="pt-hc-note">Urban property</div></div>
 <div class="pt-haven-card"><div class="pt-hc-flag">&#127466;&#127481;</div><div class="pt-hc-name">Ethiopia</div><div class="pt-hc-rate">0.5%</div><div class="pt-hc-note">Of market value</div></div>
 </div>
@@ -648,7 +648,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-card">
 <div class="pt-card-head"><span class="pt-card-title">Property Tax Rates</span></div>
 <div class="pt-card-body" id="sidebar-rates">
-<p><strong>Nigeria (Lagos):</strong> Land Use Charge = 0.0394% (owner-occupied) to 0.132% (commercial) of assessed value. Properties under NGN 4M are exempt.</p>
+<p><strong>Nigeria (Lagos):</strong> The general rate is 0.0394% for a home solely occupied by its owner and 0.394% for commercial property. Confirm the assessed value, relief and exemptions on the <a href="https://luc.lagosstate.gov.ng/">Lagos State Land Use Charge portal</a>.</p>
 <p><strong>Kenya:</strong> Land rates vary by county. Nairobi ~0.5-2.5% of unimproved site value. 4% stamp duty on urban transfers.</p>
 <p><strong>South Africa:</strong> Municipal rates 0.5-1.5% of market value. Transfer duty from 0% (under R1.1M) up to 13%.</p>
 <p><strong>Ghana:</strong> Property rate 0.5-1% of rateable value. Stamp duty 0.25-0.5% on transfers.</p>
@@ -695,7 +695,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 
 <div class="pt-faq">
 <details><summary>Which African country has the lowest property tax?</summary><div><p>Mauritius has no annual property tax at all, making it highly attractive for property investors. Nigeria (Lagos) has very low rates at 0.0394% for owner-occupied residential property, and Rwanda charges just 0.1% of market value. However, low annual tax may be offset by higher transfer costs at purchase.</p></div></details>
-<details><summary>How is Lagos Land Use Charge (LUC) calculated?</summary><div><p>Lagos LUC is calculated on the assessed property value. Rates are 0.0394% for owner-occupied residential, 0.0789% for rental residential, and 0.132% for commercial properties. Properties valued under NGN 4 million are exempt, and pensioners receive a 50% discount.</p></div></details>
+<details><summary>How is Lagos Land Use Charge (LUC) calculated?</summary><div><p>Use the rateable value on the Lagos assessment. The estimate applies the rate for the selected use before any exemptions or relief. Confirm eligibility and the amount payable with the Lagos State Ministry of Finance.</p></div></details>
 <details><summary>Do I pay capital gains tax when selling property in Africa?</summary><div><p>Most African countries impose CGT on property sales. South Africa charges 18% (individuals) on 40% of the gain with a R2M primary residence exclusion. Kenya charges 15% CGT. Nigeria charges 10% CGT. Some countries offer exemptions for primary residences or properties held for long periods.</p></div></details>
 <details><summary>What are the transfer costs when buying property in South Africa?</summary><div><p>South Africa has a progressive transfer duty scale: 0% for properties under R1.1 million, scaling up to 13% for portions above R11 million. Add 1-2% for conveyancing fees, plus potential bond registration costs. Total buyer costs typically range from 5-15% of the purchase price.</p></div></details>
 <details><summary>Is rental income taxed in African countries?</summary><div><p>Yes, most African countries tax rental income. In Nigeria, rental income is taxed at personal income tax rates (up to 24%). Kenya applies a simplified 7.5% tax on gross rent (or standard rates). South Africa taxes net rental income at marginal rates (up to 45%). Egypt charges 10% of rental value after deductions.</p></div></details>
@@ -904,7 +904,7 @@ const COUNTRIES = {
   NG: {
     name: 'Nigeria', currency: 'NGN', flag: '\u{1F1F3}\u{1F1EC}',
     cities: {
-      lagos: { name: 'Lagos', rates: { residential: 0.000394, rental: 0.000789, commercial: 0.00132, industrial: 0.00132 }},
+      lagos: { name: 'Lagos', rates: { residential: 0.000394, rental: 0.00394, mixed: 0.00132, commercial: 0.00394, industrial: 0.00132 }},
       abuja: { name: 'Abuja (FCT)', rates: { residential: 0.0005, rental: 0.001, commercial: 0.0015, industrial: 0.0015 }},
       rivers: { name: 'Rivers', rates: { residential: 0.0004, rental: 0.0008, commercial: 0.0012, industrial: 0.0012 }},
       ogun: { name: 'Ogun', rates: { residential: 0.0003, rental: 0.0007, commercial: 0.001, industrial: 0.001 }}
@@ -1067,7 +1067,7 @@ const COUNTRIES = {
 function fmt(currency, n) {
   return currency + ' ' + Math.round(n).toLocaleString('en');
 }
-function fmtPct(n) { return (n * 100).toFixed(2) + '%'; }
+function fmtPct(n) { return Number((n * 100).toFixed(4)).toString() + '%'; }
 
 function createDonut(containerId, segments, centerText, centerLabel) {
   const container = document.getElementById(containerId);
@@ -1134,6 +1134,16 @@ const AT = {
     for (const key in cities) {
       sel.innerHTML += `<option value="${key}">${cities[key].name}</option>`;
     }
+    this.updateUse();
+  },
+  updateUse() {
+    const lagos = document.getElementById('at-country').value === 'NG' && document.getElementById('at-city').value === 'lagos';
+    const select = document.getElementById('at-use');
+    select.querySelector('[value="rental"]').textContent = lagos ? 'Residential (wholly let to third parties)' : 'Residential (Rental/Investment)';
+    const mixed = select.querySelector('[value="mixed"]');
+    if (lagos && !mixed) select.add(new Option('Residential (owner and tenants)', 'mixed'));
+    if (!lagos && mixed) mixed.remove();
+    document.getElementById('at-value-hint').textContent = lagos ? 'Rateable value from your Lagos assessment. The estimate excludes relief and exemptions.' : 'Market value in local currency';
   },
   calculate() {
     const cc = document.getElementById('at-country').value;
@@ -1147,6 +1157,12 @@ const AT = {
       { country: cc, city: cityKey, use, propertyValue: value },
       c
     );
+    if (!semantic.ok) {
+      document.getElementById('at-results').style.display = 'block';
+      document.getElementById('at-table').textContent = '';
+      document.getElementById('at-result-grid').textContent = 'Enter a positive property value to calculate the estimate.';
+      return;
+    }
     const rate = semantic.rate;
     const annualTax = semantic.annualTax;
     const monthlyTax = semantic.monthlyTax;

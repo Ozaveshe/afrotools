@@ -20,7 +20,7 @@ const sourceBank = {
   aripo: ['ARIPO trademarks', 'https://www.aripo.org/ip-services/trademarks'],
   oapi: ['OAPI trademarks', 'https://oapi.int/en/protect-the-pi/brand/'],
   wipoMadrid: ['WIPO Madrid System', 'https://www.wipo.int/madrid/en/members/index.html'],
-  ndpc: ['Nigeria Data Protection Commission', 'https://www.ndpc.gov.ng/ndp-act-2023/'],
+  ndpc: ['Nigeria Data Protection Commission', 'https://ndpc.gov.ng/wp-content/uploads/2024/03/Nigeria_Data_Protection_Act_2023.pdf'],
   ndpcHome: ['NDPC services', 'https://www.ndpc.gov.ng/'],
   odpcBreach: ['Kenya ODPC breach reporting', 'https://www.odpc.go.ke/report-a-data-breach/'],
   odpcFaq: ['Kenya ODPC FAQs', 'https://www.odpc.go.ke/faqs/'],
@@ -50,7 +50,7 @@ const sourceBank = {
   govZaVisa: ['South African Government visa information', 'https://www.gov.za/services/temporary-residence/visa'],
   nisVisa: ['Nigeria Immigration Service visas', 'https://immigration.gov.ng/nigerian-visa/'],
   gisVisa: ['Ghana Immigration Service visas', 'https://gis.gov.gh/visas/'],
-  kenyaEvisa: ['Kenya electronic visa information', 'https://ebusiness.go.ke/about-evisa.html'],
+  kenyaEvisa: ['Kenya Electronic Travel Authorisation and exemptions', 'https://etakenya.go.ke/general-information/'],
 };
 
 const competitorMatrix = {

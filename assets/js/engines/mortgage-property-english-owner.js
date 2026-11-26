@@ -23,7 +23,7 @@
 
   var POLICIES = {
     propertyTax: {
-      NG: { currency: 'NGN', cities: { lagos: { residential: 0.000394, rental: 0.000789, commercial: 0.00132, industrial: 0.00132 }, abuja: { residential: 0.0005, rental: 0.001, commercial: 0.0015, industrial: 0.0015 }, rivers: { residential: 0.0004, rental: 0.0008, commercial: 0.0012, industrial: 0.0012 }, ogun: { residential: 0.0003, rental: 0.0007, commercial: 0.001, industrial: 0.001 } } },
+      NG: { currency: 'NGN', cities: { lagos: { residential: 0.000394, rental: 0.00394, mixed: 0.00132, commercial: 0.00394, industrial: 0.00132 }, abuja: { residential: 0.0005, rental: 0.001, commercial: 0.0015, industrial: 0.0015 }, rivers: { residential: 0.0004, rental: 0.0008, commercial: 0.0012, industrial: 0.0012 }, ogun: { residential: 0.0003, rental: 0.0007, commercial: 0.001, industrial: 0.001 } } },
       SN: { currency: 'XOF', cities: { dakar: { residential: 0.05, rental: 0.075, commercial: 0.075, industrial: 0.075 }, other: { residential: 0.05, rental: 0.06, commercial: 0.06, industrial: 0.06 } } },
       CI: { currency: 'XOF', cities: { abidjan: { residential: 0.015, rental: 0.015, commercial: 0.015, industrial: 0.015 }, other: { residential: 0.012, rental: 0.012, commercial: 0.012, industrial: 0.012 } } },
       ZA: { currency: 'ZAR', cities: { johannesburg: { residential: 0.008, rental: 0.01, commercial: 0.015, industrial: 0.012 }, capetown: { residential: 0.007, rental: 0.009, commercial: 0.013, industrial: 0.011 }, durban: { residential: 0.009, rental: 0.011, commercial: 0.014, industrial: 0.012 }, pretoria: { residential: 0.008, rental: 0.01, commercial: 0.013, industrial: 0.011 } } }

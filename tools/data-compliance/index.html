@@ -217,11 +217,11 @@ select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;
 </div>
 </div>
 
-<button type="button" class="btn btn-primary" onclick="assess()">Assess Compliance</button>
+<button type="button" class="btn btn-primary" onclick="assess()">Review checklist</button>
 </div></div>
 
 <div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Compliance Score</span></div>
+<div class="card-head"><span class="card-title">Checklist progress</span></div>
 <div class="card-body" id="resultBody"></div>
 </div>
 </div>
@@ -361,7 +361,7 @@ select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;
   <div class="leg-source-row">
     <div>
       <span>Primary checks</span>
-      <div class="leg-source-links"><a href="https://www.ndpc.gov.ng/ndp-act-2023/" target="_blank" rel="noopener">Nigeria Data Protection Commission</a><a href="https://inforegulator.org.za/" target="_blank" rel="noopener">South Africa Information Regulator</a><a href="https://www.odpc.go.ke/faqs/" target="_blank" rel="noopener">Kenya ODPC FAQs</a></div>
+      <div class="leg-source-links"><a href="https://ndpc.gov.ng/wp-content/uploads/2024/03/Nigeria_Data_Protection_Act_2023.pdf" target="_blank" rel="noopener">Nigeria Data Protection Commission</a><a href="https://inforegulator.org.za/" target="_blank" rel="noopener">South Africa Information Regulator</a><a href="https://www.odpc.go.ke/faqs/" target="_blank" rel="noopener">Kenya ODPC FAQs</a></div>
     </div>
     <div>
       <span>Next best tools</span>
@@ -411,7 +411,7 @@ Escalate before filing or signing if:
 - No processor contract even though payment, cloud, CRM or analytics vendors handle personal data
 
 Primary checks:
-- Nigeria Data Protection Commission: https://www.ndpc.gov.ng/ndp-act-2023/
+- Nigeria Data Protection Commission: https://ndpc.gov.ng/wp-content/uploads/2024/03/Nigeria_Data_Protection_Act_2023.pdf
 - South Africa Information Regulator: https://inforegulator.org.za/
 - Kenya ODPC FAQs: https://www.odpc.go.ke/faqs/
 
@@ -458,11 +458,9 @@ function assess(){
   const circumference=2*Math.PI*50;
   const offset=circumference-(pct/100)*circumference;
 
-  let color,level,desc;
-  if(pct>=90){color='#16a34a';level='Strong Compliance';desc='Your organisation demonstrates strong compliance. Address any remaining gaps to achieve full compliance.';}
-  else if(pct>=70){color='#eab308';level='Moderate Compliance';desc='You have a solid foundation but several important gaps remain. Prioritise the items below.';}
-  else if(pct>=50){color='#f97316';level='Partial Compliance';desc='Significant compliance gaps exist. You are at risk of enforcement action. Immediate attention required.';}
-  else{color='#dc2626';level='Low Compliance';desc='Major compliance gaps across multiple areas. Your organisation is at serious risk. Seek professional data protection guidance urgently.';}
+  const color = '#166534';
+  const level = checked === total ? 'Checklist complete' : 'Checklist progress';
+  const desc = 'This percentage counts the items you marked. Review the applicable law and your evidence to assess compliance.';
 
   let html=`
     <div class="score-ring">
@@ -477,7 +475,7 @@ function assess(){
   `;
 
   if(gaps.length>0){
-    html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--afro-dark);margin-bottom:8px">Compliance Gaps (${gaps.length})</div>`;
+    html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--afro-dark);margin-bottom:8px">Items to review (${gaps.length})</div>`;
     html+=`<ul class="gap-list">${gaps.map(g=>`<li>${g}</li>`).join('')}</ul>`;
   }
 

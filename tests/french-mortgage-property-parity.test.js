@@ -350,7 +350,7 @@ test('all 21 checklist and reference owners have route-specific English and Fren
   const markers = {
     'data-compliance': [/COMPLIANCE SCORE 100%/, /100 %/],
     'leave-days': [/NIGERIA — STATUTORY LEAVE ENTITLEMENTS/, /congés légaux pour Nigeria/],
-    'visa-cost': [/Nigeria → .*Kenya \$30 USD/, /Nigeria vers Kenya.*USD 30/],
+    'visa-cost': [/Nigeria → .*Kenya \$30 USD/, /Nigeria vers Kenya.*USD 0/],
     'rent-intelligence': [/VERIFIED RENT LISTINGS/, /loyers vérifiés/],
     'lease-risk-check': [/0 Published risk reports/, /aucun signal publié/],
     'cac-checker': [/Name Likely Available/, /aucun mot réglementé/],

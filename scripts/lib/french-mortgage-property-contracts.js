@@ -217,8 +217,8 @@ function specialFields(englishId) {
     'visa-cost': [
       select('passport', 'Passeport', 'NG', COUNTRY_OPTIONS),
       select('destination', 'Destination', 'KE', COUNTRY_OPTIONS.concat([['KE', 'Kenya']])),
-      select('visaType', 'Type de voyage', 'evisa', [['evisa', 'Visa électronique'], ['tourism', 'Tourisme'], ['business', 'Affaires'], ['transit', 'Transit']]),
-      field('officialFee', 'Frais officiels confirmés (USD)', 'number', 30),
+      select('visaType', 'Type de voyage', 'tourism', [['evisa', 'Visa électronique'], ['tourism', 'Tourisme'], ['business', 'Affaires'], ['transit', 'Transit']]),
+      field('officialFee', 'Frais officiels confirmés (USD)', 'number', 0),
       field('serviceFee', 'Frais de service saisis (USD)', 'number', 0)
     ],
     'property-tax': [
