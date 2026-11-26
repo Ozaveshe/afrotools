@@ -25,6 +25,8 @@ const DISCOVERY_CONTRACTS = new Map(
   ])
 );
 const PEER_ROUTE_OVERRIDES = {
+  '/business-roi/': { sw: '/sw/biashara-na-faida/' },
+  '/ecommerce/': { sw: '/sw/biashara-mtandaoni/' },
   '/faq/': { fr: '/fr/faq/', sw: '/sw/maswali-ya-mara-kwa-mara/' },
   '/cookies/': { fr: '/fr/cookies/', sw: '/sw/vidakuzi/' }
 };

@@ -11,7 +11,7 @@ const SWAHILI_CATEGORIES = [
   ['insurance','Bima','/sw/bima/','BI','Panga nukuu, michango, madai, kinga ya bima na maswali ya kumuuliza mtoa huduma wa bima.'],
   ['fintech','Fintech na benki','/sw/fintech/','FT','Mobile money, malipo, ada za benki, mikopo ya kidijitali na ulinganisho wa huduma za fedha.'],
   ['agriculture','Kilimo na mifugo','/sw/kilimo/','KI','Mavuno, pembejeo, umwagiliaji, mifugo, gharama za shamba na njia za kufikia soko.'],
-  ['ecommerce','Biashara na uzingatiaji','/sw/biashara-na-uzingatiaji/','BIZ','VAT, zuio, usajili, ankara, biashara mtandaoni na wajibu wa biashara kwa nchi.'],
+  ['ecommerce','Biashara mtandaoni','/sw/biashara-mtandaoni/','BIZ','Bei ya bidhaa, faida, usafirishaji, punguzo na ada za malipo.'],
   ['legal','Nyumba, ardhi na sheria','/sw/nyumba-na-ardhi/','ARD','Makazi, mikopo ya nyumba, uhamisho wa mali, mikataba, ardhi na maandalizi ya kisheria.'],
   ['data-productivity','Data na tija','/sw/data-na-tija/','DATA','Uchambuzi, upangaji, usimamizi wa muda, jedwali, ROI na maamuzi ya biashara yanayoweza kuhakikiwa.'],
   ['language','Lugha na tafsiri','/sw/lugha-na-tafsiri/','LG','Tafsiri, transliteration, maandishi, maneno ya kitaalamu na zana za lugha za Afrika.'],
