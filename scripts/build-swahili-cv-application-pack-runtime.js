@@ -22,8 +22,6 @@ function markup(value) {
     return `>${Object.hasOwn(COPY.literals, trimmed) ? text.replace(trimmed, exact(trimmed)) : text}<`;
   }).replace(/\b(placeholder|title|aria-label|aria-description)=("|')([^"']*)\2/g,
     (match, name, quote, text) => `${name}=${quote}${exact(text)}${quote}`);
-  // The legacy module builds this placeholder around the output-name slot.
-  result = result.replace('placeholder="Generate or write your ', 'placeholder="Tengeneza au andika ');
   // This native status contains authored role/company suffixes. Its source
   // supplies all copy, so the generic DOM dictionary must not rewrite it.
   result = result.replace('data-pack-status>', 'data-pack-status translate="no" data-cv-user-text>');
