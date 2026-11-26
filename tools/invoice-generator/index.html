@@ -1918,6 +1918,11 @@ function init() {
   $('invAutoNum').textContent = 'Auto: ' + num;
   initDates();
 
+  // The guide sets the initial currency. Restored invoices supply their own values.
+  if (new URLSearchParams(window.location.search).get('country') === 'ZA') {
+    $('currency').value = 'ZAR';
+  }
+
   // Set default tax rate
   $('taxRate').value = TAX_RATES[$('currency').value] || 0;
 
