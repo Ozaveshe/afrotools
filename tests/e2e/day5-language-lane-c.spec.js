@@ -251,7 +251,10 @@ test('African names: 308 records expose provenance gaps and export no unsupporte
   page.on('request', request => requestPayloads.push(request.url() + ' ' + (request.postData() || '')));
   await page.goto('/tools/african-name-meaning/');
   await captureVisual(page, 'african-name-meaning-desktop-light');
-  await expect(page.getByRole('heading', { name: /African Name Provenance Review/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /African Name Meanings/i })).toBeVisible();
+  await page.getByLabel('Name, language or weekday').fill('Babátúndé');
+  await expect(page.locator('.name-card').first()).toContainText('The father has come back.');
+  await expect(page.locator('.name-card a').first()).toHaveAttribute('href', 'https://www.yorubaname.com/entries/Babatunde');
   await page.getByLabel('Name, language or weekday').fill('Amani');
   await expect(page.locator('#nameCount')).toHaveText(/of 308 names/);
   await expect(page.locator('.name-card').first()).toContainText('Meaning source: missing');
