@@ -44,7 +44,7 @@
     invoicePdfSource: 'Every rate and tax treatment in this summary was supplied by the user. {disclaimer}',
     line: 'Line {number}', subtotal: 'Subtotal', vat: 'VAT',
     engineUnavailable: 'The VAT calculation engine could not load.',
-    packUnavailable: 'Country presets are unavailable. Reload before calculating so rate provenance stays explicit.'
+    packUnavailable: 'Country presets are unavailable. You can calculate with a rate from your invoice.'
   }, locale.strings || {});
 
   function tr(key, values) {
@@ -307,7 +307,7 @@
     else if (navigator.clipboard) navigator.clipboard.writeText(payload.url).then(function () { setText('singleStatus', tr('shareCopied')); });
   }
 
-  function planningDisclaimer() { return locale.planningDisclaimer || pack.displayDisclaimer; }
+  function planningDisclaimer() { return locale.planningDisclaimer || (pack && pack.displayDisclaimer) || tr('customSource'); }
   function pdfSource() { return sourceLabel() + ' ' + planningDisclaimer(); }
   function savePdf(config) {
     if (!window.jspdf || !window.jspdf.jsPDF) { showStatus(config.statusId, tr('pdfUnavailable')); return; }
@@ -385,10 +385,14 @@
 
   async function init() {
     if (!engine) { showStatus('pageStatus', tr('engineUnavailable')); return; }
+    bind();
     try {
       var response = await fetch('/data/vat-business-tax/pan-african-vat-presets.json', { method: 'GET', credentials: 'same-origin' });
       if (!response.ok) throw new Error('Preset pack request failed');
-      pack = await response.json(); fillCountries(); bind();
+      var received = await response.json();
+      if (!received || !received.countries || typeof received.countries !== 'object' || Array.isArray(received.countries)) throw new Error('Invalid preset pack');
+      pack = received;
+      fillCountries();
     } catch (error) { showStatus('pageStatus', tr('packUnavailable')); }
   }
   init();
