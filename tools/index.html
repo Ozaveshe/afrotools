@@ -8252,6 +8252,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function generatedAliases(tool) {
+    if (tool.id === "remittance-compare") return "remittance comparator pro remittance-v2 money transfer compare quotes";
     var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
     var terms = [];
     if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(raw)) terms.push('fuel tracker fuel prices petrol diesel gasoline carburant');
@@ -8509,6 +8510,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Group tools by category
     var grouped = {};
     AFRO_TOOLS.forEach(function(t) {
+      // The legacy Pro registry entry opens the same public quote comparator.
+      if (t.id === "remittance-v2" && t.href === "/tools/remittance-compare/") return;
       if (activeFilter === 'live') {
         if (t.status !== 'live' && t.status !== 'new') return;
       } else if (activeFilter !== 'all') {
