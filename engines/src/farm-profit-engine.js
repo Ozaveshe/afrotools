@@ -53,6 +53,10 @@
       priceMultiplier: 3.5
     }
   };
+  function enteredRate(value, fallback) {
+    var parsed = parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
   window.AfroTools.FarmProfitEngine = {
     calculate: function(r, a, o) {
       var t = a, i = o;
@@ -91,11 +95,11 @@
       F.land = "communal" === w ? 0 : L * l;
       var B = r.mechanizationType || "none", D = parseFloat(r.tractorCostPerHa) || (i.mechanization ? i.mechanization.tractorPloughing_perHa : 0) || 0;
       F.mechanization = "tractor" === B ? D * l : "animal" === B ? .4 * D * l : 0, F.irrigation = parseFloat(r.irrigationCost) || 0;
-      var I = parseFloat(r.distanceToMarket) || 20, A = parseFloat(r.transportCostPerTonneKm) || (i.transport ? i.transport.farmToMarket_perTonne_perKm : 0) || 0, E = parseFloat(r.marketFeesPct) || (i.transport ? i.transport.marketFees_percentOfSale : 0) || 0, O = r.throughMiddleman ? parseFloat(r.middlemanCommissionPct) || 15 : 0;
+      var I = enteredRate(r.distanceToMarket, 20), A = enteredRate(r.transportCostPerTonneKm, i.transport && i.transport.farmToMarket_perTonne_perKm || 0), E = enteredRate(r.marketFeesPct, i.transport && i.transport.marketFees_percentOfSale || 0), O = r.throughMiddleman ? parseFloat(r.middlemanCommissionPct) || 15 : 0;
       F.transport = p * A * I, F.marketingFees = b * (E / 100), F.middleman = b * (O / 100);
-      var Y = parseFloat(r.storageMonths) || 0, G = parseFloat(r.storageCostPerTonneMonth) || i.storage && i.storage.perTonne_perMonth || 0;
+      var Y = parseFloat(r.storageMonths) || 0, G = enteredRate(r.storageCostPerTonneMonth, i.storage && i.storage.perTonne_perMonth || 0);
       F.storage = p * G * Y;
-      var x = parseFloat(r.loanAmount) || 0, K = parseFloat(r.loanInterestPct) || (i.finance ? i.finance.averageInterestRate_percent : 0) || 0;
+      var x = parseFloat(r.loanAmount) || 0, K = enteredRate(r.loanInterestPct, i.finance && i.finance.averageInterestRate_percent || 0);
       F.finance = x * (K / 100);
       var U = parseFloat(r.insurancePremiumPct) || 0;
       F.insurance = g * (U / 100);
