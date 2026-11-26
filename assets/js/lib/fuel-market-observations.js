@@ -25,7 +25,23 @@
     return status(record,nowValue).valid?record:null;
    }).filter(Boolean);
    if(!fuels.length)return;
-   var existing=rows.find(function(m){return m.country_code===row.code&&m.granularity==='national';});
+   var existing=rows.find(function(m){
+    if(m.country_code!==row.code||m.granularity!=='national')return false;
+    // National regulator schedules and third-party pump benchmarks are distinct markets.
+    var matched=false;
+    var compatible=m.fuels.every(function(prior){
+     var replacement=fuels.find(function(record){return record.fuel_type===prior.fuel_type;});
+     if(!replacement)return true;
+     try {
+      var priorHost=new URL(prior.source_url).hostname.replace(/^www\./,'');
+      var nextHost=new URL(replacement.source_url).hostname.replace(/^www\./,'');
+      if(priorHost!==nextHost)return false;
+      matched=true;
+      return true;
+     } catch (_) { return false; }
+    });
+    return compatible&&matched;
+   });
    if(existing){fuels.forEach(function(record){var index=existing.fuels.findIndex(function(r){return r.fuel_type===record.fuel_type;});var old=existing.fuels[index];if(!old||date(record.last_verified_at)>date(old.last_verified_at)){if(old)record.previous_record=old;if(index<0)existing.fuels.push(record);else existing.fuels[index]=record;}});}
    else rows.push({market_id:row.code.toLowerCase()+'-national-observation',country_code:row.code,country_name:row.name,locality_name:row.name,granularity:'national',latitude:null,longitude:null,coverage_note:'Country benchmark; no city or station coverage is implied.',fuels:fuels});
   });

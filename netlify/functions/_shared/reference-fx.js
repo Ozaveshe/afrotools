@@ -7,7 +7,7 @@ const REGISTERED_PROVIDERS = Object.freeze(['exchangerate-api', 'frankfurter', '
 const SUPPORTED_CURRENCIES = Object.freeze([
   'USD', 'NGN', 'KES', 'ZAR', 'GHS', 'EGP', 'TZS', 'UGX', 'RWF', 'ETB',
   'XOF', 'XAF', 'MAD', 'TND', 'DZD', 'LYD', 'SDG', 'SSP', 'MZN', 'MGA',
-  'ZMW', 'ZWL', 'MWK', 'BWP', 'NAD', 'LSL', 'SZL', 'MUR', 'SCR', 'DJF',
+  'ZMW', 'ZWG', 'MWK', 'BWP', 'NAD', 'LSL', 'SZL', 'MUR', 'SCR', 'DJF',
   'KMF', 'ERN', 'SOS', 'BIF', 'GMD', 'GNF', 'LRD', 'SLE', 'CVE', 'STN',
   'MRU', 'AOA', 'CDF', 'EUR', 'GBP', 'CNY', 'AED', 'INR', 'CAD', 'AUD', 'JPY'
 ]);

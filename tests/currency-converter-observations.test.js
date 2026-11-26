@@ -30,19 +30,19 @@ function runtime(locale) {
   return { context, node, radio, run, accept };
 }
 const snapshot = () => ({ schemaVersion: 1, base: 'USD', source: 'fawazahmed',
-  timestamp: '2026-10-09T00:00:00Z', rates: { NGN: 1500, KES: 130, ZWL: 6800 }, retained_rate_codes: ['ZWL'] });
+  timestamp: '2026-10-09T00:00:00Z', rates: { NGN: 1500, KES: 130, MWK: 6800 }, retained_rate_codes: ['MWK'] });
 
 for (const locale of ['en', 'fr', 'sw']) {
   test(locale + ' rejects missing, expired, future and unsupported retained observations', () => {
     const { accept } = runtime(locale);
-    assert.equal(accept(snapshot()).rates.ZWL, undefined);
+    assert.equal(accept(snapshot()).rates.MWK, undefined);
     for (const change of [{ observed_at: '2026-09-01T00:00:00Z' },
       { observed_at: '2026-10-11T00:00:00Z' }, { observed_at: 'invalid' },
       { source: 'unknown' }, { rate: 6801 }]) {
-      const data = snapshot(); data.rate_observations = { ZWL: { rate: 6800,
+      const data = snapshot(); data.rate_observations = { MWK: { rate: 6800,
         source: 'frankfurter', observed_at: '2026-10-08T00:00:00Z', ...change } };
       const before = JSON.stringify(data);
-      assert.equal(accept(data).rates.ZWL, undefined);
+      assert.equal(accept(data).rates.MWK, undefined);
       assert.equal(JSON.stringify(data), before);
     }
     for (const change of [{ base: 'EUR' }, { source: 'unknown' },
@@ -52,10 +52,10 @@ for (const locale of ['en', 'fr', 'sw']) {
   });
   test(locale + ' preserves the original date/provider for a valid retained cross-rate', () => {
     const r = runtime(locale), data = snapshot();
-    data.rate_observations = { ZWL: { rate: 6800, source: 'frankfurter', observed_at: '2026-10-08T00:00:00Z' } };
+    data.rate_observations = { MWK: { rate: 6800, source: 'frankfurter', observed_at: '2026-10-08T00:00:00Z' } };
     r.context.accepted = r.accept(data);
     r.run('state.rates=accepted.rates;state.observations=accepted.observations');
-    const pair = r.run("pairObservation('NGN','ZWL')");
+    const pair = r.run("pairObservation('NGN','MWK')");
     assert.equal(pair.date, '2026-10-08T00:00:00.000Z');
     assert.match(pair.source, /frankfurter/i);
     r.node('fxAmount').value = '100'; r.node('fxFrom').value = 'USD'; r.node('fxTo').value = 'NGN';
@@ -203,3 +203,48 @@ for (const locale of ['en', 'fr', 'sw']) {
     await h.reply(delayedSnapshot()); assert.deepEqual(h.pair(), ['EUR', 'XOF']);
   });
 }
+
+for (const locale of ['en', 'fr', 'sw']) {
+  test(locale + ' handles current and historical Zimbabwe links without changing the requested units', async () => {
+    const input = snapshot();
+    input.rates.ZWG = 26.53;
+    input.rates.ZWL = 6800;
+    input.retained_rate_codes = [];
+    const current = runtime(locale);
+    const accepted = current.accept(input);
+    assert.equal(accepted.rates.ZWG, 26.53);
+    assert.equal(accepted.rates.ZWL, undefined);
+    current.context.accepted = accepted;
+    current.run('state.rates=accepted.rates');
+    assert.equal(current.run("rateFor('USD','ZWG')") * 100, 2653);
+    assert.equal(current.run("rateFor('ZWG','USD')") * 26.53, 1);
+    const saved = pendingSnapshotRuntime(locale, '?from=ZWL&to=USD');
+    await saved.reply(delayedSnapshot());
+    assert.deepEqual(saved.pair(), ['ZWL', 'USD']);
+    saved.node('fxAmount').value = '100';
+    saved.submit();
+    assert.match(saved.node('fxAmountError').textContent, /ZWL.*ZWG/);
+    assert.equal(saved.node('fxResult').hidden, true);
+  });
+}
+
+test('widget cache and provider never treat saved ZWL amounts as current Zimbabwe Gold', async () => {
+  const widget = require('../widgets/engines/currency-utils');
+  const originalStore = global.sessionStorage;
+  const originalFetch = global.fetch;
+  global.sessionStorage = {getItem: () => JSON.stringify({USD_ZWL:{r:6800,t:Date.now()}}), setItem() {}};
+  let requests = 0;
+  global.fetch = async () => { requests++; return {json: async () => ({rates:{ZWG:26.5269,ZWL:26.5269}})}; };
+  try {
+    assert.equal(widget.getCached('USD_ZWL'), null);
+    await assert.rejects(widget.fetchRate('USD','ZWL'), /historical/);
+    await assert.rejects(widget.fetchRate('zwl','USD'), /historical/);
+    assert.equal(requests, 0);
+    assert.equal(await widget.fetchRate('USD','ZWG'), 26.5269);
+    assert.equal(requests, 1);
+    assert.equal(widget.CURRENCIES.ZWG.name, 'Zimbabwe Gold');
+  } finally {
+    if (originalStore === undefined) delete global.sessionStorage; else global.sessionStorage = originalStore;
+    global.fetch = originalFetch;
+  }
+});

@@ -112,7 +112,7 @@ test('real collector maps each fetched URL and preserves reused diesel beside fr
     }
     const country = countries.find(c => requested === url(c.slug, 'gasoline'));
     if (!country) throw new Error('Unexpected source URL');
-    return '<h1>19-Oct-2026</h1><table><tr><td>' + country.currency + '</td><td>14</td></tr></table>';
+    return '<h1>' + country.name + ' Gasoline prices, liter, 19-Oct-2026</h1><table><tr><th>' + country.name + ' Gasoline prices</th><th>Liter</th><th>Gallon</th></tr><tr><td>' + country.currency + '</td><td>14</td><td>53</td></tr><tr><td>USD</td><td>1.2</td><td>4.54</td></tr></table>';
   } });
   const rows = await runner.context.fetchFromGlobalPetrolPrices();
   assert.equal(rows.length, countries.length);
@@ -131,4 +131,27 @@ test('real collector maps each fetched URL and preserves reused diesel beside fr
   }
   assert.deepEqual(previous, before);
   assert.equal(runner.context.validateFuelData(runner.context.transformFuelData(rows)).valid, true);
+});
+
+test('current local and USD quotes require matching country, fuel, unit, currency and real date', () => {
+  const parse=load().context.parseCountryFuelQuote;
+  const country={name:'Nigeria',slug:'Nigeria',currency:'NGN'};
+  const html='<h1>Nigeria Gasoline prices, 23-Nov-2026</h1><p>The current gasoline price in Nigeria is NGN 1,057.75 per liter or USD 0.78 per liter and was updated on 23-Nov-2026.</p>';
+  assert.deepEqual(copy(parse(html,country,'gasoline')), {local:1057.75,usd:0.78,observed_at:'2026-11-23'});
+  for(const input of [html.replace('in Nigeria','in Kenya'),html.replace('NGN','KES'),html.replace('per liter','per gallon'),html.replace('on 23-Nov','on 22-Nov'),html.replaceAll('23-Nov','31-Nov'),html.replace('1,057','10,57')]) assert.equal(parse(input,country,'gasoline'),null);
+  assert.equal(parse(html,country,'diesel'),null);
+  const diesel=html.replaceAll('Gasoline','Diesel').replace('gasoline price','price of diesel fuel').replace('and was updated on','based on the latest update from');
+  assert.equal(parse(diesel,country,'diesel').local,1057.75);
+});
+test('wholly unavailable source cannot count saved rows as a new source collection', async () => {
+  const countries=copy(load().context.COUNTRIES);
+  const runner=load({previous:{countries},html:()=>'<h1>World prices</h1>'});
+  await assert.rejects(runner.context.fetchFromGlobalPetrolPrices(),/no usable dated local prices/);
+});
+
+test('legacy table identifies the actual litre column even when gallon is first', () => {
+  const parse=load().context.parseCountryFuelQuote, country={name:'Angola',slug:'Angola',currency:'AOA'};
+  const html='<h1>Angola Diesel prices, liter, 23-Nov-2026</h1><table><tr><th>Angola Diesel prices</th><th>Gallon</th><th>Liter</th></tr><tr><td>AOA</td><td>1135.5</td><td>300</td></tr><tr><td>USD</td><td>1.23</td><td>0.327</td></tr></table>';
+  assert.equal(parse(html,country,'diesel').local,300);
+  for(const input of [html.replace('>Liter<','>Gallon<'),html.replace('>AOA<','>KES<'),html.replace('>Angola Diesel prices</th>','>Kenya Diesel prices</th>')]) assert.equal(parse(input,country,'diesel'),null);
 });

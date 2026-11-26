@@ -130,6 +130,7 @@ function sandboxFuelResponse(params) {
 }
 
 exports.handler = async function (event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };

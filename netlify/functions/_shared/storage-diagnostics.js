@@ -10,7 +10,7 @@ const DATASETS = new Set([
   'meta', 'scraper_runs', 'data_confidence',
 ]);
 const OPERATIONS = new Set([
-  'supabase-read', 'supabase-write', 'supabase-insert', 'blob-read',
+  'supabase-read', 'supabase-write', 'supabase-insert', 'blob-read', 'blob-write',
   'static-read', 'meta-update', 'failure-metadata', 'failure-log', 'fallback-refresh',
 ]);
 const CODES = new Set([
@@ -30,6 +30,7 @@ function storageDiagnostic(operation, dataset, error, status) {
     else if (CODES.has(error.code)) code = error.code;
     else if (error.name === 'AbortError') code = 'ABORTED';
     else if (error.name === 'TimeoutError') code = 'TIMEOUT';
+    else if (error.name === 'MissingBlobsEnvironmentError') code = 'BLOBS_CONTEXT_MISSING';
   }
   return 'operation=' + (OPERATIONS.has(operation) ? operation : 'unlisted') +
     ' dataset=' + (DATASETS.has(dataset) ? dataset : 'unlisted') + ' code=' + code;

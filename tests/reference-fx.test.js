@@ -70,3 +70,20 @@ test('expired snapshot cannot date an unverified retained rate',()=>{
  assert.equal(quote.status,'unavailable');assert.equal(quote.rate,null);
  assert.equal(quote.source,null);assert.equal(quote.observed_at,null);
 });
+
+test('public current pairs and rates use ZWG and reject ZWL on either side of a pair', () => {
+  const api = require('../netlify/functions/_shared/forex-response');
+  const data = valid();
+  data.rates.ZWL = 6800;
+  data.rates.ZWG = 26.5269;
+  assert.equal(api.pairResponse(data,'USD','ZWG',options.now).rate,26.5269);
+  assert.equal(api.pairResponse(data,'ZWG','USD',options.now).rate,0.037698);
+  for(const [from,to] of [['ZWL','USD'],['USD','ZWL'],['ZWL','ZWL']]) {
+    const quote = api.pairResponse(data,from,to,options.now);
+    assert.equal(quote.reason,'invalid-currency');
+    assert.equal(quote.rate,null);
+  }
+  const current = api.ratesResponse(data,'USD',options.now);
+  assert.equal(current.rates.ZWG,26.5269);
+  assert.equal(Object.hasOwn(current.rates,'ZWL'),false);
+});

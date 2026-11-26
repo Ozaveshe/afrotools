@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-11-26",
+  "reviewedBy": "AfroTools publisher automated technical artifact review",
+  "sourceUrl": "https://www.boz.zm/monetary-policy/monetary-policy-rate",
+  "formulaIds": [
+    "formula-assets-js-engines-afrorates-verified"
+  ],
+  "fixtureDeltas": [],
+  "reason": "The exact source diff adds only bnr.rw and boz.zm to the official central-bank host set. No qualification age thresholds, calculation code, amounts, rounding, or golden expected values change. Current sourced Rwanda/Zambia observations require their own dated primary evidence. Record the protected digest after reviewing this bounded allowlist change; do not waive digest checking.",
+  "technicalReview": {
+    "baseCommit": "36eaea7a7ec5688bd27d031e6e645adc52daadbd",
+    "producerCommit": "440bd637731abbdcc4cc5b72ff1e6abb7fb3bea9",
+    "artifactPath": "assets/js/engines/afrorates-verified.js",
+    "beforeDigest": "sha256:eacb2c5b11ea84bc13860f5a0941ba23001a8f694222dc1ed15561d469b414b7",
+    "afterDigest": "sha256:b77c16b41b99974bcde9c8fdcf95fd623a6463cd6f12fb301821cccfb43c8b86",
+    "changedFormulaIds": [
+      "formula-assets-js-engines-afrorates-verified"
+    ],
+    "goldenFixturesUnchanged": true,
+    "fixtureDeltasUnchanged": true,
+    "officialAndLookalikeHostChecks": [
+      {
+        "url": "https://www.bnr.rw/monetary-policy",
+        "expected": true,
+        "result": true
+      },
+      {
+        "url": "https://www.bnr.rw.invalid/monetary-policy",
+        "expected": false,
+        "result": false
+      },
+      {
+        "url": "https://invalid.example/bnr.rw",
+        "expected": false,
+        "result": false
+      },
+      {
+        "url": "https://www.boz.zm/monetary-policy",
+        "expected": true,
+        "result": true
+      },
+      {
+        "url": "https://www.boz.zm.invalid/monetary-policy",
+        "expected": false,
+        "result": false
+      },
+      {
+        "url": "https://invalid.example/boz.zm",
+        "expected": false,
+        "result": false
+      }
+    ],
+    "validation": [
+      "236 combined tests passed across13suites",
+      "15 actual assembled country API replays pass with dated sources",
+      "Rwanda and Zambia remain subject to exact official-source and date qualification; Zambia recheck required on/afterNovember27."
+    ]
+  }
+}
