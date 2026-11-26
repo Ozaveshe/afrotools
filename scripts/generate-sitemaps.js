@@ -710,29 +710,29 @@ for (const [cat, fileName] of Object.entries(categoryToFile)) {
 // Consume only reciprocal, validated equivalence groups from the route contract.
 const primaryEntries = Object.values(groups).flat();
 const lastmodByRoute = new Map(primaryEntries.map((entry) => [new URL(entry.url).pathname, entry.lastmod]));
+const existingI18nDates = readXmlLastmods(path.join(ROOT, 'sitemap-i18n.xml'), 'url');
 const i18nEntries = ROUTE_GRAPH.equivalenceGroups
   .filter((group) => Object.keys(group.routes || {}).length > 1)
-  .map((group) => ({
-    langs: group.routes,
-    xDefault: group.xDefault,
-    lastmod: Object.values(group.routes)
-      .map((route) => lastmodByRoute.get(route))
-      .filter(Boolean)
-      .sort()
-      .slice(-1)[0] || TODAY
-  }));
+  .map((group) => ({ langs: group.routes, xDefault: group.xDefault }));
 
 if (i18nEntries.length > 0) {
+  let i18nLastmod = '';
   let i18nXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   i18nXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
   i18nXml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 
   for (const entry of i18nEntries) {
     const langs = entry.langs;
-    for (const [lang, urlPath] of Object.entries(langs)) {
+    for (const urlPath of Object.values(langs)) {
+      const loc = BASE_URL + urlPath;
+      const primaryDate = lastmodByRoute.get(urlPath) || '';
+      const previousDate = REFRESH_LASTMOD ? '' : existingI18nDates.get(loc) || '';
+      // A reviewed change in one language does not date the other translations.
+      const pageDate = lastmodOverrideFor(loc) || [primaryDate, previousDate].sort().pop();
+      if (pageDate > i18nLastmod) i18nLastmod = pageDate;
       i18nXml += '  <url>\n';
       i18nXml += `    <loc>${BASE_URL}${urlPath}</loc>\n`;
-      i18nXml += `    <lastmod>${entry.lastmod}</lastmod>\n`;
+      if (pageDate) i18nXml += `    <lastmod>${pageDate}</lastmod>\n`;
       for (const [hl, hp] of Object.entries(langs)) {
         i18nXml += `    <xhtml:link rel="alternate" hreflang="${hl}" href="${BASE_URL}${hp}" />\n`;
       }
@@ -743,7 +743,7 @@ if (i18nEntries.length > 0) {
   i18nXml += '</urlset>\n';
 
   writeFileSyncWithRetry(path.join(ROOT, 'sitemap-i18n.xml'), i18nXml, 'utf8');
-  const i18nLastmod = i18nEntries.reduce((latest, entry) => entry.lastmod > latest ? entry.lastmod : latest, i18nEntries[0].lastmod);
+
   sitemapFileNames.push({ file: 'sitemap-i18n.xml', lastmod: i18nLastmod });
   const i18nCount = (i18nXml.match(/<url>/g) || []).length;
   console.log(`  sitemap-i18n.xml: ${i18nCount} hreflang entries (${i18nEntries.length} page pairs)`);
