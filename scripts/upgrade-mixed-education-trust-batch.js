@@ -3,6 +3,7 @@ const path = require('path');
 
 const ROOT = process.cwd();
 
+// The Hausa and Yoruba NYSC calculators own their budget-specific exports.
 const pages = [
   {
     file: 'yo/awon-ise/kalkuletan-waec-neco/index.html',
@@ -21,15 +22,6 @@ const pages = [
     official: 'Confirm current JAMB rules, school formulas, cut-offs, subject combinations and admission notices with JAMB or the institution.',
     method: 'The page applies the selected formula to UTME, Post-UTME and optional O-Level inputs, then compares against a planning cutoff.',
     limit: 'This is a planning calculator, not an official JAMB portal, admission offer, cut-off guarantee or school-specific ruling.'
-  },
-  {
-    file: 'yo/awon-ise/alawus-na-nysc/index.html',
-    title: 'NYSC allowance calculator',
-    source: '/tools/nysc-allowance/',
-    prompt: 'NYSC allowance, state top-up, side income, expenses and monthly savings plan',
-    official: 'Verify allowance, state top-up, posting rules, PPA rules and payment notices with NYSC, the state or your PPA.',
-    method: 'The page totals federal allowance, selected state top-up and side income, then subtracts monthly expenses to show surplus or gap.',
-    limit: 'This is a budget estimate, not an official NYSC payment notice, employment rule, financial advice or guarantee of state allowance.'
   },
   {
     file: 'ha/kayan-aiki/neman-tallafin-karatu/index.html',
@@ -60,16 +52,6 @@ const pages = [
     official: 'Ka tabbatar da sabuwar manhaja, ranar jarrabawa, bukatun darasi da kaidar admission daga JAMB ko makaranta.',
     method: 'Shafin yana tattara abin da dalibi yake son karantawa sannan ya kai shi atisayen Fisiks na AfroJAMB da ya dace.',
     limit: 'Wannan taimakon bita ne, ba ajiyar tambayoyin hukuma ba ne, ba makin jarrabawa ko alkawarin admission ba ne, kuma ba kayan magudi ba ne.'
-  },
-  {
-    file: 'ha/kayan-aiki/alawus-na-nysc/index.html',
-    title: 'Kalkuletan alawus na NYSC',
-    source: '/tools/nysc-allowance/',
-    lang: 'ha',
-    prompt: 'alawus na NYSC, karin kudin jiha, karin samun kudi, kashe kudi da shirin ajiyar wata',
-    official: 'Ka tabbatar da alawus, karin kudin jiha, dokar posting, kaidar PPA da sanarwar biyan kudi daga NYSC, jiha ko PPA dinka.',
-    method: 'Shafin yana tara alawus na tarayya, karin kudin jihar da aka zaba da sauran samun kudi, sannan ya cire kashe kudin wata domin nuna ragi ko gibi.',
-    limit: 'Wannan kiyasin kasafi ne, ba sanarwar biyan kudi ta NYSC ba ce, ba dokar aiki ko shawarar kudi ba ce, kuma ba tabbacin karin kudin jiha ba ne.'
   },
   {
     file: 'ha/kayan-aiki/kasafin-dalibi/index.html',
@@ -247,10 +229,10 @@ for (const page of pages) {
   const fullPath = path.join(ROOT, page.file);
   let html = fs.readFileSync(fullPath, 'utf8');
   if (html.includes('data-mixed-education-batch="export"')) {
-    if (page.file === 'ha/kayan-aiki/kasafin-dalibi/index.html') {
+    if (page.lang === 'ha') {
       const sections = /<section class="mixed-education-export"[^>]*>[\s\S]*?<\/section>\s*<section class="mixed-education-trust"[^>]*>[\s\S]*?<\/section>/;
       const script = /<script data-mixed-education-batch="export-js">[\s\S]*?<\/script>/;
-      if (!sections.test(html) || !script.test(html)) throw new Error('Student budget export sections missing.');
+      if (!sections.test(html) || !script.test(html)) throw new Error('Education export sections missing: ' + page.file);
       const refreshed = html.replace(sections, () => section(page).trim()).replace(script, () => scriptBlock().trim());
       if (refreshed !== html) {
         fs.writeFileSync(fullPath, refreshed);

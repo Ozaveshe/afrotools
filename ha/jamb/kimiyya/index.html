@@ -66,7 +66,7 @@
 <div class="ha-action-method"><strong>Aiki:</strong> Hanya: yi amfani da wannan a matsayin tsarin farko. Tabbatar da farashi, dokoki, jadawali, fayil ko bayanan hukuma kafin yanke shawara.</div>
 </section>
 <main id="main" class="ha-main"><div class="ha-wrap ha-layout"><section><div class="ha-card"><div class="ha-card-head"><h2>Abubuwan atisaye</h2></div><div class="ha-card-body ha-grid"><div class="ha-mini"><strong>Atom da jadawali</strong>Ka fahimci proton, neutron, electron da yanayin sinadari.</div><div class="ha-mini"><strong>Ma'auni</strong>Daidaita ma'aunin sinadarai kafin lissafi.</div><div class="ha-mini"><strong>Acid da alkali</strong>Rarrabe pH, daidaitawa da gishiri.</div><div class="ha-mini"><strong>Sinadaran carbon</strong>Ka gane rukuni, suna da martani na yau da kullum.</div></div></div><div class="ha-card"><div class="ha-card-head"><h2>Hanyoyin atisaye</h2></div><div class="ha-card-body ha-link-grid"><a class="ha-link-card" href="/jamb/chemistry/"><small>Shafi na Turanci</small><strong>Tsoffin tambayoyi</strong><p>Tarin tambayoyin Kimiyya na JAMB.</p></a><a class="ha-link-card" href="/jamb/cbt/"><small>Shafi na Turanci</small><strong>Gwajin CBT</strong><p>Yi atisaye da lokaci.</p></a><a class="ha-link-card" href="/ha/kayan-aiki/kalkuletan-jamb/"><small>Akwai da Hausa</small><strong>Kalkuletan JAMB</strong><p>Kokoto jimillar maki.</p></a><a class="ha-link-card" href="/jamb/tutor/"><small>Shafi na Turanci</small><strong>Taimakon karatu</strong><p>Nemi karin bayani kan batun da ya makale.</p></a></div></div></section><aside><div class="ha-note">Tambayoyin shekara-shekara suna nan a shafin Turanci; wannan shafi jagora ne na Hausa zuwa hanyar da ta dace.</div></aside></div></main>
-<section class="mixed-education-export" data-mixed-education-batch="export" data-education-title="JAMB Kimiyya" data-education-source="/jamb/chemistry/" data-education-prompt="chemistry topics, weak areas, past-question practice and timed revision plan" data-education-limit="Wannan taimakon bita ne, ba ajiyar tambayoyin hukuma ba ne, ba makin jarrabawa ko alkawarin admission ba ne, kuma ba kayan magudi ba ne.">
+<section class="mixed-education-export" data-mixed-education-batch="export" data-education-lang="ha" data-education-title="JAMB Kimiyya" data-education-source="/jamb/chemistry/" data-education-prompt="batutuwan kimiyya, wuraren rauni, atisayen tsoffin tambayoyi da shirin bita mai lokaci" data-education-limit="Wannan taimakon bita ne, ba ajiyar tambayoyin hukuma ba ne, ba makin jarrabawa ko alkawarin admission ba ne, kuma ba kayan magudi ba ne.">
   <div>
     <span class="mixed-education-kicker">Fitarwa a cikin burauza</span>
     <h2>Ajiye shirin ko sakamako</h2>
@@ -80,9 +80,9 @@
 </section>
 <section class="mixed-education-trust" data-tool-verification-panel data-mixed-education-batch="trust">
   <span class="mixed-education-kicker">Tushe, sabuntawa da hanyar aiki</span>
-  <h2>Verification, freshness and limits</h2>
+  <h2>Tabbatarwa, sabuntawa da iyaka</h2>
   <div class="mixed-education-trust-grid">
-    <p><strong>Tushe:</strong> Based on the AfroTools workflow at <a href="/jamb/chemistry/">/jamb/chemistry/</a>.</p>
+    <p><strong>Tushe:</strong> An tsara shi bisa hanyar AfroTools a <a href="/jamb/chemistry/">/jamb/chemistry/</a>.</p>
     <p><strong>Tabbacin hukuma:</strong> Ka tabbatar da sabuwar manhaja, ranar jarrabawa, bukatun darasi da kaidar admission daga JAMB ko makaranta.</p>
     <p><strong>Hanyar aiki:</strong> Shafin yana tattara abin da dalibi yake son karantawa sannan ya kai shi atisayen Kimiyya na AfroJAMB da ya dace.</p>
     <p><strong>Iyaka:</strong> Wannan taimakon bita ne, ba ajiyar tambayoyin hukuma ba ne, ba makin jarrabawa ko alkawarin admission ba ne, kuma ba kayan magudi ba ne.</p>
@@ -115,22 +115,27 @@
     return Array.prototype.slice.call(document.querySelectorAll('#result,#aidResult,#budgetResult,#nysc-result,.ha-result,.result-box')).map(function(el){
       var visible = el.offsetParent !== null || el.classList.contains('show') || el.style.display === 'block';
       if(!visible && !el.textContent.trim()) return '';
-      return el.textContent.replace(/\s+/g, ' ').trim();
+      return (el.innerText || el.textContent).replace(/\s+/g, ' ').trim();
     }).filter(Boolean);
   }
   function brief(panel){
+    var ha = panel.getAttribute('data-education-lang') === 'ha';
     var title = panel.getAttribute('data-education-title') || 'Education tool';
     var source = panel.getAttribute('data-education-source') || location.pathname;
     var prompt = panel.getAttribute('data-education-prompt') || 'education planning';
     var limit = panel.getAttribute('data-education-limit') || '';
-    var lines = ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Workflow: ' + source, 'Focus: ' + prompt, ''];
+    var lines = ha
+      ? ['AfroTools - ' + title, 'Hanya: ' + location.pathname, 'Tsarin aiki: ' + source, 'Abin da za a maida hankali a kai: ' + prompt, '']
+      : ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Workflow: ' + source, 'Focus: ' + prompt, ''];
     var fields = fieldLines();
-    if(fields.length) lines.push('Inputs', fields.join('\n'), '');
+    if(fields.length) lines.push(ha ? 'Bayanan da aka shigar' : 'Inputs', fields.join('\n'), '');
     var results = resultLines();
-    if(results.length) lines.push('Current result', results.join('\n\n'), '');
-    lines.push('Verification', 'Confirm official dates, fees, rules, eligibility, scores or payment details with the responsible exam body, school, funder, NYSC office or official portal.');
-    if(limit) lines.push('', 'Limitations', limit);
-    lines.push('', 'Privacy: generated locally in this browser.');
+    if(results.length) lines.push(ha ? 'Sakamakon yanzu' : 'Current result', results.join('\n\n'), '');
+    lines.push(ha ? 'Tabbatarwa' : 'Verification', ha
+      ? 'Ka tabbatar da ranaku, caji, dokoki, cancanta, maki ko bayanin biya daga hukumar jarrabawa, makaranta, mai bayar da tallafi, ofishin NYSC ko portal na hukuma.'
+      : 'Confirm official dates, fees, rules, eligibility, scores or payment details with the responsible exam body, school, funder, NYSC office or official portal.');
+    if(limit) lines.push('', ha ? 'Iyaka' : 'Limitations', limit);
+    lines.push('', ha ? 'Sirri: an gina wannan a cikin burauzarka.' : 'Privacy: generated locally in this browser.');
     return lines.join('\n');
   }
   function downloadText(filename, text){
@@ -151,7 +156,7 @@
     var download = panel.querySelector('[data-education-download]');
     if(copy) copy.addEventListener('click', function(){
       var text = brief(panel);
-      function done(){ if(status) status.textContent = 'Copied locally.'; }
+      function done(){ if(status) status.textContent = panel.getAttribute('data-education-lang') === 'ha' ? 'An kwafa takaitawar.' : 'Copied locally.'; }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(text).then(done).catch(function(){ if(status) status.textContent = text; });
       } else if(status) {
@@ -160,7 +165,7 @@
     });
     if(download) download.addEventListener('click', function(){
       downloadText('afrotools-' + title + '.txt', brief(panel));
-      if(status) status.textContent = 'Downloaded locally.';
+      if(status) status.textContent = panel.getAttribute('data-education-lang') === 'ha' ? 'An sauke takaitawar.' : 'Downloaded locally.';
     });
   });
 })();
