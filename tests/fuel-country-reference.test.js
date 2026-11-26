@@ -15,7 +15,15 @@ test('a newer compatible national product replaces only that fuel', () => {
   assert.equal(algeria.petrol.usd,null);
   assert.equal(productDate(algeria,'lpg'),'2026-03-01');
   const original = snapshot.countries.find(r => r.code === 'ZW');
-  assert.equal(rows.find(r => r.code === 'ZW').petrol.price,original.petrol.price);
+  const zw = rows.find(r => r.code === 'ZW');
+  assert.equal(original.currency, 'ZWL');
+  assert.equal(zw.currency, 'ZWG');
+  for (const [type, price, usd, unit, observed] of [
+    ['petrol',54.70,2.05,'liter','2026-10-08'],
+    ['diesel',54.55,2.04,'liter','2026-10-08'],
+    ['lpg',49.61,1.87,'kg','2026-11-10']
+  ]) assert.deepEqual(zw[type], {price, usd, unit, observed_at:observed});
+  assert.equal(zw.references.lpg.valid_to, '2026-11-30');
   const national = markets.markets.find(m => m.market_id === 'ng-national');
   const product = {...national.fuels[0], currency:original.currency};
   for (const market of [

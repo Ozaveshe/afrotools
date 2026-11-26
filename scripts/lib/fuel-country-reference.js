@@ -6,10 +6,39 @@ function productDate(row, type) {
   return row[type].observed_at || row[type].snapshot_date || row.last_updated;
 }
 
+// Dual-currency orders publish both prices directly. Never convert a historical
+// snapshot (including a pre-ZiG ZWL figure) to construct an official rate.
+function publishedDualCurrencyRow(original, market, now) {
+  if (!market || !market.lpg_notice) return null;
+  const records = [...market.fuels, market.lpg_notice];
+  const references = {};
+  const row = {...original};
+  for (const type of ['petrol', 'diesel', 'lpg']) {
+    const ref = records.find(item => item.fuel_type === type);
+    const local = ref?.published_local_price;
+    const unit = type === 'lpg' ? 'kg' : 'litre';
+    if (!local || local.currency !== 'ZWG' || ref.currency !== 'USD' ||
+        ref.unit !== unit || local.unit !== unit || !Number.isFinite(local.price) || !Number.isFinite(ref.price) ||
+        local.price <= 0 || ref.price <= 0 ||
+        ref.effective_date <= productDate(original,type) || ref.effective_date > now.slice(0,10)) return null;
+    const age = (Date.parse(now) - Date.parse(ref.effective_date)) / 86400000;
+    const historical = ref.valid_to ? now.slice(0,10) > ref.valid_to : age > 45;
+    references[type] = {...ref, historical};
+    row[type] = {price:local.price, usd:ref.price, unit:type === 'lpg' ? 'kg' : 'liter', observed_at:ref.effective_date};
+  }
+  row.currency = 'ZWG';
+  row.references = references;
+  row.lpgDateKnown = true;
+  row.last_updated = records.map(ref => ref.effective_date).sort().at(-1);
+  return row;
+}
+
 function countryPageRows(snapshot, marketData, now = new Date().toISOString()) {
   return snapshot.countries.map(original => {
     const row = {...original};
     const candidates = marketData.markets.filter(m => m.country_code === row.code && m.granularity === 'national');
+    const dual = publishedDualCurrencyRow(original, candidates.find(m => m.lpg_notice), now);
+    if (dual) return dual;
     for (const type of ['petrol', 'diesel']) {
       if (!row[type] || !['liter', 'litre'].includes(row[type].unit)) continue;
       const currentDate = productDate(original, type);
@@ -49,17 +78,17 @@ function sourceLine(row, type, lang, formatDate, escapeHtml) {
   const ref = row.references[type];
   const french = lang === 'fr';
   const date = formatDate(productDate(row, type));
-  if (!ref) return escapeHtml((french ? 'Date du relevé : ' : 'Dataset snapshot: ') + date);
+  if (!ref) return escapeHtml((french ? 'Date du relevÃ© : ' : 'Dataset snapshot: ') + date);
   const kind = ref.price_kind || '';
   const label = kind === 'weekly-national-benchmark' ? (french ? 'Indice national hebdomadaire' : 'Weekly national benchmark')
-    : kind.startsWith('regulated-') ? (french ? 'Tarif réglementé' : 'Regulated retail price')
-    : kind === 'official-national-retail' ? (french ? 'Prix publié par l’autorité' : 'Authority-published retail price')
-    : (french ? 'Prix national publié' : 'Reported national price');
+    : kind.startsWith('regulated-') ? (french ? 'Tarif rÃ©glementÃ©' : 'Regulated retail price')
+    : kind === 'official-national-retail' ? (french ? 'Prix publiÃ© par lâ€™autoritÃ©' : 'Authority-published retail price')
+    : (french ? 'Prix national publiÃ©' : 'Reported national price');
   const dateLabel = ref.date_basis === 'effective' ? (french ? 'applicable le ' : 'effective ')
-    : ref.date_basis === 'observation' ? (french ? 'observé le ' : 'observed ') : (french ? 'relevé du ' : 'snapshot ');
-  const end = ref.valid_to ? (french ? ' · fin de période : ' : ' · period ends ') + formatDate(ref.valid_to) : '';
-  const history = ref.historical ? (french ? 'Historique · ' : 'Historical · ') : '';
-  return escapeHtml(history + label + ' · ' + dateLabel + date + end) + ' · <a href="' + escapeHtml(ref.source_url) + '">' + escapeHtml(ref.source_name) + '</a>';
+    : ref.date_basis === 'observation' ? (french ? 'observÃ© le ' : 'observed ') : (french ? 'relevÃ© du ' : 'snapshot ');
+  const end = ref.valid_to ? (french ? ' Â· fin de pÃ©riode : ' : ' Â· period ends ') + formatDate(ref.valid_to) : '';
+  const history = ref.historical ? (french ? 'Historique Â· ' : 'Historical Â· ') : '';
+  return escapeHtml(history + label + ' Â· ' + dateLabel + date + end) + ' Â· <a href="' + escapeHtml(ref.source_url) + '">' + escapeHtml(ref.source_name) + '</a>';
 }
 
 function regionalComparison(row, rows, fuel) {
@@ -79,9 +108,9 @@ function datedProperties(row, fuel, french) {
   if (!row.references) return [];
   const ref = row.references[fuel];
   const basis = ref?.date_basis;
-  const label = basis === 'effective' ? (french ? 'Date d’application' : 'Effective date')
-    : basis === 'observation' ? (french ? 'Date d’observation' : 'Observation date')
-    : (french ? 'Date du relevé' : 'Dataset snapshot date');
+  const label = basis === 'effective' ? (french ? 'Date dâ€™application' : 'Effective date')
+    : basis === 'observation' ? (french ? 'Date dâ€™observation' : 'Observation date')
+    : (french ? 'Date du relevÃ©' : 'Dataset snapshot date');
   const properties = [{'@type':'PropertyValue', name:label, value:productDate(row, fuel)}];
   if (ref) properties.push({'@type':'PropertyValue', name:'Source', value:ref.source_url});
   return properties;
