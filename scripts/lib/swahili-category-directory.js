@@ -2,7 +2,7 @@
 
 const SWAHILI_CATEGORIES = [
   ['financial','Fedha, mshahara na kodi','/sw/mshahara-na-kodi/','FI','Mshahara halisi, PAYE, michango, akiba, mikopo, fedha za kigeni na mipango ya kaya.'],
-  ['hr-payroll','Malipo na rasilimali watu','/sw/zana-zote/?category=hr-payroll','HR','Gharama ya mwajiri, likizo, muda wa ziada, malipo ya mwisho na uendeshaji wa payroll.'],
+  ['hr-payroll','Malipo na rasilimali watu','/sw/hr-payroll/','HR','Gharama ya mwajiri, likizo, muda wa ziada, malipo ya mwisho na uendeshaji wa payroll.'],
   ['document-pdf','Hati na PDF','/sw/hati-na-pdf/','PDF','Unda, unganisha, punguza, badilisha, saini na panga hati ndani ya kivinjari.'],
   ['image-design','Picha na ubunifu','/sw/picha-na-design/','PIC','Badilisha ukubwa na muundo wa picha, panga rangi, tengeneza michoro na pakua matokeo.'],
   ['developer','Zana za wasanidi programu','/sw/zana-za-developer/','DEV','JSON, API, code, maandishi, encoding, hashing na zana za kiufundi zisizotuma data kimya kimya.'],

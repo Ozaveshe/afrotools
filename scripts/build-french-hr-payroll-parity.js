@@ -311,6 +311,7 @@ function rawHubHtml() {
   <meta name="description" content="Six outils RH et paie en français : calculs locaux, hypothèses explicites, sources datées et exports privés.">
   <link rel="canonical" href="https://afrotools.com/fr/hr-payroll/">
   <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/hr-payroll/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/hr-payroll/">
   <link rel="alternate" hreflang="en" href="https://afrotools.com/hr-payroll/">
   <link rel="alternate" hreflang="x-default" href="https://afrotools.com/hr-payroll/">
   <meta property="og:type" content="website">
