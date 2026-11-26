@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7878 |
 | Permanent and temporary redirects | 3212 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4262 |
+| Genuine equivalence groups | 4263 |
 | Documented fallbacks | 15070 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7878 |
 
 ## Locale Coverage
 
@@ -5727,6 +5727,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:92b8fe97a58a: en=`/tools/afrokitchen/recipes/achu-soup-cm/`; x-default=`/tools/afrokitchen/recipes/achu-soup-cm/`
 - equivalence:93049b80ad57: en=`/tools/business-license/`, fr=`/fr/tools/licence-entreprise/`, sw=`/sw/zana/leseni-ya-biashara/`; x-default=`/tools/business-license/`
 - equivalence:930ffcca0a3e: en=`/tools/solar-vs-generator/senegal/`; x-default=`/tools/solar-vs-generator/senegal/`
+- equivalence:93157a99f47b: ha=`/ha/kayan-aiki/kwatanta-kudin-makaranta/`; x-default=`/ha/kayan-aiki/kwatanta-kudin-makaranta/`
 - equivalence:9316b96fc4e1: en=`/tools/fire-calc/`, fr=`/fr/tools/calculateur-fire/`, sw=`/sw/zana/kikokotoo-fire/`; x-default=`/tools/fire-calc/`
 - equivalence:93172924c16f: en=`/tools/business-insurance/kenya`; x-default=`/tools/business-insurance/kenya`
 - equivalence:931892fb7997: en=`/blog/egypt-vat-guide-2026/`; x-default=`/blog/egypt-vat-guide-2026/`
