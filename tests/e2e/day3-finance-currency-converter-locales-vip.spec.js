@@ -23,7 +23,7 @@ const routes = [
   {
     locale: 'sw',
     path: '/sw/zana/kibadilishaji-sarafu/?from=USD&to=NGN',
-    ready: 'Snapshot yenye tarehe iko tayari',
+    ready: 'Kiwango chenye tarehe kiko tayari',
     manual: 'Kiwango cha mtoa huduma',
     stale: 'Viwango vya marejeo vimepitwa na wakati',
     result: /175[\s,]?700/,

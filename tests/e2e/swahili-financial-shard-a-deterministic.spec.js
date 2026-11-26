@@ -52,7 +52,7 @@ test('Swahili currency converter calculates locally and exports a parsed CSV at 
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto('/sw/zana/kibadilishaji-sarafu/?from=USD&to=NGN');
 
-  await expect(page.locator('#fxStatus')).toHaveText('Snapshot yenye tarehe iko tayari');
+  await expect(page.locator('#fxStatus')).toHaveText('Kiwango chenye tarehe kiko tayari');
   await page.locator('#fxAmount').fill('0');
   await page.locator('#fxConvert').click();
   await expect(page.locator('#fxAmountError')).not.toBeEmpty();
