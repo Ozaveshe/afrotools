@@ -167,7 +167,7 @@ for (const [locale, route] of Object.entries(routes)) {
 }
 
 for (const [locale, route] of Object.entries(routes)) {
-  test(`${locale} oversized rotated watermark clipping matches the actual PDF preview`, async ({page}) => {
+  test(`${locale} centered rotated watermark fits the page and matches the actual PDF preview`, async ({page}) => {
     await page.goto(route); await upload(page);
     await page.locator('#watermarkText').fill('NEW MARK'); await page.locator('#fontSize').fill('60'); await page.locator('#rotation').fill('-45');
     await apply(page); await previewReady(page);
@@ -175,7 +175,14 @@ for (const [locale, route] of Object.entries(routes)) {
     const result=await page.evaluate(async bytes=>{const doc=await pdfjsLib.getDocument({data:new Uint8Array(bytes)}).promise;const p=await doc.getPage(1),full=p.getViewport({scale:1}),view=p.getViewport({scale:Math.min(340/full.width,460/full.height,1.3)});const c=document.createElement('canvas');c.width=Math.floor(view.width);c.height=Math.floor(view.height);await p.render({canvasContext:c.getContext('2d'),viewport:view,background:'white'}).promise;return {actual:c.toDataURL(),preview:document.querySelector('#previewCanvas').toDataURL(),view:p.view,text:(await p.getTextContent()).items.map(t=>t.str).join(' ')};},[...bytes]);
     expect(result.preview).toBe(result.actual);expect(result.view).toEqual([0,0,320,420]);expect(result.text).toContain('ORIGINAL PAGE 1');
     const lib=require('../../assets/vendor/pdf-lib/pdf-lib.min.js');const doc=await PDFDocument.load(bytes);const stream=doc.getPage(0).node.Contents().asArray().map(ref=>Buffer.from(lib.decodePDFRawStream(doc.context.lookup(ref)).decode()).toString()).join('\n');
-    expect(stream).toContain('<4E4557204D41524B> Tj');expect(stream).toMatch(/-8\.299999999999983 175\.2 Tm/);
+    expect(stream).toContain('<4E4557204D41524B> Tj');const placement = stream.match(/([\d.+-]+) ([\d.+-]+) Tm\s*<4E4557204D41524B>/);
+    expect(placement).toBeTruthy();
+    const font = await doc.embedFont(lib.StandardFonts.HelveticaBold);
+    const halfWidth = font.widthOfTextAtSize('NEW MARK', 60) / 2;
+    const middleY = font.heightAtSize(60, {descender:false}) - font.heightAtSize(60) / 2;
+    const diagonal = Math.SQRT1_2;
+    expect(Number(placement[1]) + (halfWidth + middleY) * diagonal).toBeCloseTo(160, 2);
+    expect(Number(placement[2]) + (middleY - halfWidth) * diagonal).toBeCloseTo(210, 2);
     fs.writeFileSync(test.info().outputPath('oversized-preview-match.pdf'),bytes);fs.writeFileSync(test.info().outputPath('oversized-preview-match.png'),Buffer.from(result.preview.split(',')[1],'base64'));
   });
 }

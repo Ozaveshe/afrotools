@@ -284,7 +284,25 @@
             };
         }(t, a);
         if ("tile" !== t.pattern) {
-            var l = S(t.position, r.width, r.height, o.width, o.height, t);
+            // PDF rotates around the drawing origin. Anchor the rotated bounds to
+            // the selected position, then translate back to the drawing origin.
+            var angle = t.rotation * Math.PI / 180;
+            var cosine = Math.cos(angle), sine = Math.sin(angle);
+            var top = o.height, bottom = 0;
+            if (t.type === "text") {
+                top = a.font.heightAtSize(t.fontSize, { descender: false });
+                bottom = top - a.font.heightAtSize(t.fontSize)
+                    - (t.text.split(/\r?\n/).length - 1) * o.lineHeight;
+            }
+            var xCorners = [0, o.width * cosine];
+            var yCorners = [0, o.width * sine];
+            var minX = Math.min(...xCorners) + Math.min(-bottom * sine, -top * sine);
+            var maxX = Math.max(...xCorners) + Math.max(-bottom * sine, -top * sine);
+            var minY = Math.min(...yCorners) + Math.min(bottom * cosine, top * cosine);
+            var maxY = Math.max(...yCorners) + Math.max(bottom * cosine, top * cosine);
+            var l = S(t.position, r.width, r.height, maxX - minX, maxY - minY, t);
+            l.x -= minX;
+            l.y -= minY;
             if ("image" === t.type) e.drawImage(a.image, {
                 x: l.x,
                 y: l.y,
