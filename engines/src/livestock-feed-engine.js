@@ -105,6 +105,7 @@
       symbol: s,
       alt: Q,
       schedule: V,
+      dailyBudgetPerAnimal: Number.isFinite(Number(e.maxBudget)) && Number(e.maxBudget) > 0 ? Number(e.maxBudget) : null,
       overBudget: J,
       countryNote: l.note || ""
     };
@@ -163,6 +164,7 @@
     return {
       items: p,
       dailyCost: t(v, 2),
+      dailyTotal: t(v * (parseInt(n.numAnimals) || 1), 2),
       cp_g: t(y, 0),
       tdn_g: t(_, 0)
     };
@@ -181,7 +183,7 @@
     }), a.forEach(function(n) {
       r.push(n);
     }), [ {
-      period: "Morning (6–7 am)",
+      period: "Morning (6â€“7 am)",
       items: r,
       note: "Mix concentrates and minerals. Offer fresh roughage after concentrates."
     }, {
@@ -189,7 +191,7 @@
       items: [],
       note: "Ensure clean fresh water is always available. Provide salt lick free-choice."
     }, {
-      period: "Evening (5–6 pm)",
+      period: "Evening (5â€“6 pm)",
       items: i,
       note: "Remaining concentrates + ad-lib roughage overnight."
     } ];

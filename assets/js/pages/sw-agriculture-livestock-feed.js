@@ -145,10 +145,11 @@
       malishoMakavuKg: result.dmi,
       mahitaji: { protiniG: result.req.cp_g, tdnG: result.req.tdn_g, nishatiMj: result.req.me_mj },
       kilichotolewa: { protiniG: result.prov.cp_g, tdnG: result.prov.tdn_g, protiniAsilimia: result.prov.cp_pct_diet, tdnAsilimia: result.prov.tdn_pct_diet },
-      uwiano: { protiniImetimia: result.balance.cp_ok, tdnImetimia: result.balance.tdn_ok },
+      uwiano: { protiniImetimia: result.prov.cp_g >= result.req.cp_g, tdnImetimia: result.prov.tdn_g >= result.req.tdn_g },
       gharama: result.costs,
       gharamaMbadalaKwaSiku: result.alt.dailyCost,
       imezidiBajeti: result.overBudget,
+      ulinganishoWaMgao: root.AfroTools.LivestockRationFeedback.describe(result,'sw'),
       sarafu: result.currency,
       mgao: result.ration.map(function (item) {
         return {
@@ -189,6 +190,7 @@
       'Malisho makavu: ' + number(result.malishoMakavuKg) + ' kg kwa mnyama kwa siku',
       'Protini: ' + number(result.kilichotolewa.protiniG, 0) + ' / ' + number(result.mahitaji.protiniG, 0) + ' g',
       'TDN: ' + number(result.kilichotolewa.tdnG, 0) + ' / ' + number(result.mahitaji.tdnG, 0) + ' g',
+      result.ulinganishoWaMgao.join(' · '),
       'Gharama kwa mnyama kwa siku: ' + money(result.gharama.dailyPerAnimal),
       'Gharama ya kundi kwa mwezi: ' + money(result.gharama.monthlyTotal),
       'Gharama ya kundi kwa mwaka: ' + money(result.gharama.annualTotal),
@@ -207,6 +209,7 @@
   function render(result) {
     byId('emptyState').hidden = true;
     byId('resultPanel').hidden = false;
+    root.AfroTools.LivestockRationFeedback.render(byId('resultPanel'),result,'sw');
     byId('dailyCost').textContent = money(result.costs.dailyPerAnimal);
     byId('dmi').textContent = number(result.dmi) + ' kg';
     byId('protein').textContent = number(result.prov.cp_g, 0) + ' / ' + number(result.req.cp_g, 0) + ' g';
