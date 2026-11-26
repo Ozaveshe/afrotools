@@ -70,6 +70,21 @@ test('English Tractor Calculator delegates calculation to shared engine', async 
   expect(errors).toEqual([]);
 });
 
+test('English tractor financing preserves a zero rate and deposit', async ({ page }) => {
+  await page.goto('/agriculture/tractor-calculator/');
+  await page.check('[name=finance][value=loan]');
+  await page.fill('#inp-price', '1200000');
+  await page.selectOption('#inp-term', '5');
+  await page.fill('#inp-rate', '0');
+  await page.fill('#inp-down', '0');
+  await page.getByRole('button', { name: /Compare Buy vs Hire vs Lease/ }).click();
+
+  const stats = page.locator('#fin-stats .f-stat');
+  await expect(stats.filter({ hasText: 'Down Payment (0%)' }).locator('.fv')).toHaveText('₦0');
+  await expect(stats.filter({ hasText: 'Monthly Payment' }).locator('.fv')).toHaveText('₦20,000');
+  await expect(stats.filter({ hasText: 'Total Interest Paid' }).locator('.fv')).toHaveText('₦0');
+});
+
 test('French Tractor Calculator physical route acceptance', async ({ page, context }) => {
   await sentinel(page);
   const errors = failures(page);
