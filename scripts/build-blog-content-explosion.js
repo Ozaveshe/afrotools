@@ -110,6 +110,22 @@ function tailoredSection(record) {
 <blockquote><p>Hello [Name], our records show invoice [Number] for [Amount and Currency] became due on [Date] and remains outstanding. Please confirm payment by [Response Date], or tell me today if there is a query preventing payment.</p></blockquote>
 <h3>Firm escalation</h3>
 <blockquote><p>Dear [Name], this is a formal business follow-up on invoice [Number]. The outstanding balance is [Amount and Currency], originally due on [Date]. Please pay or provide a written dispute by [Deadline]. If I do not hear from you, I will review the next step available under our agreement.</p></blockquote>
+${record.slug === 'whatsapp-payment-reminder-message-templates' ? `<h3>Partial payment</h3>
+<blockquote><p>Thanks for sending [Amount]. I’ve applied it to invoice [Number]. The balance is [Balance and Currency]. When should we expect the rest?</p></blockquote>
+<h3>Payment already sent</h3>
+<blockquote><p>Thanks for the update. Could you share the transfer date and payment reference for invoice [Number]? I’ll match it to our records before following up again.</p></blockquote>
+<h3>Disputed invoice</h3>
+<blockquote><p>Thanks for flagging invoice [Number]. Which item or amount should I review? I’ll check it against our agreement and get back to you by [Date].</p></blockquote>
+<h3>Corrected invoice</h3>
+<blockquote><p>Hi [Name], I’ve attached the corrected invoice [Number] for [Amount and Currency]. Please use this version and confirm the revised due date of [Date].</p></blockquote>
+<h3>Agreed instalment</h3>
+<blockquote><p>Hi [Name], a reminder that the next instalment of [Amount and Currency] for invoice [Number] is due on [Date], as agreed.</p></blockquote>
+<h3>Requested extension</h3>
+<blockquote><p>Thanks for letting me know. What payment date can you commit to for invoice [Number]? I’ll confirm whether we can accept the revised date.</p></blockquote>
+<h3>Missing invoice copy</h3>
+<blockquote><p>Hi [Name], here’s another copy of invoice [Number]. Please confirm you can open it and see the amount and due date.</p></blockquote>
+<h3>Wrong billing contact</h3>
+<blockquote><p>Hi [Name], who handles invoice [Number] on your team? Please send their business contact details so I can follow up with the right person.</p></blockquote>` : ''}
 <p>A final reminder should remain factual. It should not claim that court action, account suspension, credit reporting or collection fees are automatic. If legal escalation is genuinely being considered, have the final letter reviewed in the relevant jurisdiction.</p>`;
   }
   if (record.cluster === 'payslip') {
