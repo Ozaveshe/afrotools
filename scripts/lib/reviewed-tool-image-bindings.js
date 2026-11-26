@@ -80,6 +80,11 @@ function applyReviewedBindings(source, bindings = loadBindings()) {
     const matches = nodes.get(id) || [];
     if (matches.length !== 1) throw new Error('Ambiguous registry declaration: ' + id);
     const node = matches[0];
+    if (binding.show_directory_artwork === true && row.image === false) {
+      const visibility = node.properties.find(p => p.type === 'Property' && (p.key.name || p.key.value) === 'image');
+      if (!visibility || visibility.value.value !== false) throw new Error('Ambiguous directory artwork flag: ' + id);
+      edits.push({ start: visibility.value.start, end: visibility.value.end, text: 'true' });
+    }
     const property = node.properties.find(p => p.type === 'Property' && (p.key.name || p.key.value) === 'imageId');
     if (!property) {
       const last = node.properties[node.properties.length - 1];
