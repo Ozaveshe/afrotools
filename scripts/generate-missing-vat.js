@@ -23,17 +23,6 @@ const COUNTRIES = [
     ]
   },
   {
-    name: 'Libya', slug: 'libya', code: 'ly', currency: 'LYD', symbol: 'LD',
-    rate: 0, authority: 'TDA', continent: 'North Africa',
-    exemptions: 'N/A — Libya currently has no VAT system',
-    zeroRated: 'N/A',
-    faq: [
-      { q: 'Does Libya have VAT?', a: 'No. Libya does not currently impose a Value Added Tax. Revenue is primarily from oil exports.' },
-      { q: 'Is there any sales tax in Libya?', a: 'Libya has no general sales tax or VAT. Some customs duties apply on imports.' },
-      { q: 'Will Libya introduce VAT?', a: 'There have been discussions but no VAT has been formally enacted as of 2026.' }
-    ]
-  },
-  {
     name: 'Somalia', slug: 'somalia', code: 'so', currency: 'SOS', symbol: 'Sh',
     rate: 0, authority: 'MoF', continent: 'East Africa',
     exemptions: 'N/A — Somalia currently has no VAT system',

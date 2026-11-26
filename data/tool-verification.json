@@ -3259,19 +3259,22 @@
       "jurisdiction": "Libya",
       "routes": [
         "/fr/libya/ly-paye",
-        "/libya/ly-paye"
+        "/libya/ly-paye",
+        "/sw/libya/kikokotoo-kodi-mshahara/"
       ],
       "source_urls": [
-        "https://financialministry.gov.sd"
+        "https://mof.gov.ly/uploads/2022/08/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%A7%D9%84%D8%B6%D8%B1%D8%A7%D9%8A%D9%94%D8%A8.pdf",
+        "https://tax.gov.ly/Law1.aspx"
       ],
       "source_titles": [
-        "financialministry.gov.sd"
+        "Libyan Ministry of Finance: Income Tax Law 7/2010, article 58",
+        "Libyan Tax Authority legislation index"
       ],
-      "last_verified": "2026-01-01",
+      "last_verified": "2026-11-27",
       "verified_by": "AfroTools source audit",
       "risk_level": "high",
       "disclaimer_type": "tax",
-      "law_or_version": "Last verified: 2025 · Currency: LYD Also see: Libya VAT Calculator 2025 Key Facts: Income tax: progressive 5%–10% (LYD 1,000/mo threshold)",
+      "law_or_version": "Annual employment income tax: 5% on the first LYD 12,000 of taxable income and 10% on the excess. This citation covers income tax bands only.",
       "methodology_markdown": "The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.",
       "known_limitations": [
         "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
@@ -3302,25 +3305,25 @@
       "jurisdiction": "Libya",
       "routes": [
         "/fr/libya/ly-vat",
-        "/libya/ly-vat"
+        "/libya/ly-vat",
+        "/sw/libya/kikokotoo-vat/"
       ],
       "source_urls": [
-        "https://financialministry.gov.sd"
+        "https://www.afdb.org/sites/default/files/documents/publications/libya_country_focus_report_2025.pdf",
+        "https://tax.gov.ly/Law1.aspx"
       ],
       "source_titles": [
-        "financialministry.gov.sd"
+        "African Development Bank: Libya Country Focus Report 2025",
+        "Libyan Tax Authority legislation index"
       ],
-      "last_verified": "2026-01-01",
+      "last_verified": "2026-11-27",
       "verified_by": "AfroTools source audit",
       "risk_level": "high",
       "disclaimer_type": "tax",
-      "law_or_version": "Last verified: 2026 · Source: SRTD (financialministry",
-      "methodology_markdown": "The calculator splits the entered amount into net amount, VAT, and VAT-inclusive total using the displayed standard or custom VAT rate. Zero-rated and exempt categories are treated as decision guidance and must be confirmed against the linked authority material before filing.",
+      "law_or_version": "The AfDB country report explicitly confirms no national VAT. The tool adds invoice lines and independently documented fees in LYD; it does not estimate stamp duties or other charges.",
+      "methodology_markdown": "Sum line totals and user-entered fees using LYD thousandths. No national VAT is added.",
       "known_limitations": [
-        "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Product classification, exemption, and zero-rating rules can require invoice-level review.",
-        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
-        "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
+        "No stamp-duty or sector-specific fee is inferred."
       ],
       "change_history": [
         {
@@ -3330,14 +3333,9 @@
       ],
       "test_cases": [
         {
-          "input": "Net amount: 1,000 at the displayed standard VAT rate.",
-          "expected_output": "VAT equals 1,000 multiplied by the displayed rate; total equals net amount plus VAT.",
-          "why": "Confirms the core VAT-exclusive calculation path and makes the rate dependency auditable."
-        },
-        {
-          "input": "VAT-inclusive amount with the displayed standard VAT rate.",
-          "expected_output": "Net amount equals total divided by 1 plus the rate; VAT equals total minus net amount.",
-          "why": "Confirms reverse VAT handling for invoices that already include tax."
+          "input": "120.500 and 29.500 LYD plus 3 LYD in fees.",
+          "expected_output": "Domestic VAT 0 LYD; total 153 LYD.",
+          "why": "Checks the distinction between invoice fees and VAT."
         }
       ]
     },

@@ -606,6 +606,12 @@ function buildRegistry(asOf) {
         entry.notes = 'South Sudan employment-tax estimates use the last primary five-band monthly schedule located in the Financial Act FY 2023/24, the 30% PIT surtax in the Taxation Amendment Act 2012, and the 8% employee/17% employer NSIF scenario in the 2023 framework. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
         entry.displayDisclaimer = 'Statutory-reference planning estimate only. Confirm later amendments, national or state administration, taxpayer scope, approved-pension treatment, filing and remittance with the South Sudan Revenue Authority or a qualified professional.';
       }
+      if (country === 'LY') {
+        entry.sourceName = "Libyan Ministry of Finance: Income Tax Law 7/2010, article 58";
+        entry.sourceUrl = "https://mof.gov.ly/uploads/2022/08/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%A7%D9%84%D8%B6%D8%B1%D8%A7%D9%8A%D9%94%D8%A8.pdf";
+        entry.notes = "Annual employment income tax: 5% on the first LYD 12,000 of taxable income and 10% on the excess. This citation covers income tax bands only.";
+        entry.routes = ["/fr/libya/ly-paye", "/libya/ly-paye", "/sw/libya/kikokotoo-kodi-mshahara/"];
+      }
       add(entry);
     });
 
@@ -1004,6 +1010,13 @@ function buildRegistry(asOf) {
         entry.notes = 'Morocco CGI 2026 Article 99 uses the 20% standard rate and exact listed 10% treatment; former 14% and 7% bands are retired. Article 92 I.1 qualifying exports are exemptions with deduction and require exact transaction evidence. Article 89 merchant taxable-scope and Article 108 filing thresholds are not universal registration rules. Formula status: reviewed; version: ' + formula.formulaVersion + '.';
         entry.displayDisclaimer = 'Morocco VAT planning estimate only. Confirm the exact CGI classification, taxable scope, export evidence, invoice, deduction, withholding, filing and payment with DGI or a qualified tax professional.';
       }
+    }
+    if (country === 'LY') {
+      entry.sourceName = "African Development Bank: Libya Country Focus Report 2025";
+      entry.sourceUrl = "https://www.afdb.org/sites/default/files/documents/publications/libya_country_focus_report_2025.pdf";
+      entry.notes = "The AfDB country report explicitly confirms no national VAT. The tool adds invoice lines and independently documented fees in LYD; it does not estimate stamp duties or other charges.";
+      entry.routes = ["/fr/libya/ly-vat", "/libya/ly-vat", "/sw/libya/kikokotoo-vat/"];
+      entry.displayDisclaimer = "No national VAT is added. Enter only documented additional fees.";
     }
     add(entry);
   });
