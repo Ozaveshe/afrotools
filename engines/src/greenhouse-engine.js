@@ -4,7 +4,7 @@
     return Math.round(e).toLocaleString("en-US");
   }
   function r(e) {
-    return (Math.round(10 * e) / 10).toFixed(1) + "%";
+    return Number.isFinite(e) ? (Math.round(10 * e) / 10).toFixed(1) + "%" : "N/A";
   }
   function n(e) {
     return !isFinite(e) || e <= 0 ? "N/A" : e < 1 ? "< 1 year" : e >= 20 ? "> 20 years" : (Math.round(10 * e) / 10).toFixed(1) + " yrs";
@@ -26,7 +26,7 @@
       "borehole" === p ? (D = .08 * b, l && (D += g / 15)) : "rain" === p && (D = .08 * -b);
       var N = b + S + w + D;
       N < 0 && (N = 0);
-      var O = f.yield, G = a * O * u, H = G * f.price.low, R = G * f.price.mid, U = G * f.price.high, M = R - N, P = A > 0 ? M / A * 100 : 0, k = M > 0 ? A / M : 1 / 0, F = N / f.price.mid, L = a > 0 ? F / a : 0, K = a * (y ? y.openFieldYieldPerM2 : 0), Y = K * f.price.low, j = .42 * b, x = Y - j, C = {
+      var O = f.yield, G = a * O * u, H = G * f.price.low, R = G * f.price.mid, U = G * f.price.high, M = R - N, capitalBasis = l && A > 0 ? A : null, P = capitalBasis === null ? null : M / capitalBasis * 100, k = capitalBasis !== null && M > 0 ? capitalBasis / M : null, F = N / f.price.mid, L = a > 0 ? F / a : 0, K = a * (y ? y.openFieldYieldPerM2 : 0), Y = K * f.price.low, j = .42 * b, x = Y - j, C = {
         low: {
           revenue: H,
           profit: H - N
@@ -55,7 +55,7 @@
           fertigation: h,
           inputs: m,
           borehole: g,
-          total: A
+          total: l ? A : null
         },
         running: {
           production: b,
@@ -72,6 +72,7 @@
           high: U
         },
         netProfit: M,
+        capitalBasis: capitalBasis,
         roi: P,
         payback: k,
         breakEvenKg: F,

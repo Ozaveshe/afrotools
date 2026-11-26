@@ -132,15 +132,15 @@
       'Aina: ' + result.aina, 'Zao: ' + result.zao,
       'Eneo: ' + number(result.eneoM2) + ' m²',
       'Mizunguko kwa mwaka: ' + result.mizungukoKwaMwaka,
-      'Gharama za kuanzisha: ' + money(result.gharamaKuanzisha),
+      'Gharama za kuanzisha: ' + (result.gharamaKuanzisha == null ? 'Haijajumuishwa' : money(result.gharamaKuanzisha)),
       'Gharama za mwaka: ' + money(result.gharamaKuendeshaMwaka),
       'Mavuno ya mwaka: ' + number(result.mavunoKg) + ' kg',
       'Mapato ya chini: ' + money(result.mapatoChini),
       'Mapato ya kati: ' + money(result.mapatoKati),
       'Mapato ya juu: ' + money(result.mapatoJuu),
       'Faida halisi ya mwaka: ' + money(result.faidaHalisi),
-      'ROI: ' + number(result.roiAsilimia) + '%',
-      'Muda wa kurejesha gharama: ' + (result.kurejeshaMiaka == null ? 'Hauhesabiki' : number(result.kurejeshaMiaka) + ' miaka'),
+      'ROI: ' + (result.roiAsilimia == null ? 'Mtaji wa awali haujaingizwa' : number(result.roiAsilimia) + '%'),
+      'Muda wa kurejesha gharama: ' + (result.kurejeshaMiaka == null ? 'Hakuna muda wa kurejesha unaoweza kukadiriwa' : number(result.kurejeshaMiaka) + ' miaka'),
       '', 'Vyanzo vilivyotajwa: ' + config.sourceLabel,
       'Kiungo rasmi cha FAOSTAT: ' + config.sourceHref,
       'Upya: marejeo ya ' + config.dataReviewed + '; si data ya moja kwa moja.',
@@ -152,12 +152,12 @@
     byId('emptyState').hidden = true;
     byId('resultPanel').hidden = false;
     byId('profit').textContent = money(result.netProfit);
-    byId('setupCost').textContent = money(result.setup.total);
+    byId('setupCost').textContent = (result.setup.total == null ? 'Haijajumuishwa' : money(result.setup.total));
     byId('running').textContent = money(result.running.total);
     byId('yield').textContent = number(result.revenue.yieldKg) + ' kg';
     byId('revenue').textContent = money(result.revenue.mid);
-    byId('roi').textContent = number(result.roi) + '%';
-    byId('payback').textContent = Number.isFinite(result.payback) ? number(result.payback) + ' miaka' : 'Hauhesabiki';
+    byId('roi').textContent = (result.roi == null ? 'Mtaji wa awali haujaingizwa' : number(result.roi) + '%');
+    byId('payback').textContent = Number.isFinite(result.payback) ? number(result.payback) + ' miaka' : 'Hakuna muda wa kurejesha unaoweza kukadiriwa';
     byId('scenarios').textContent = 'Mapato kwa bei za nchi zilizohifadhiwa — chini: ' + money(result.revenue.low)
       + '; kati: ' + money(result.revenue.mid) + '; juu: ' + money(result.revenue.high) + '.';
     setActionsEnabled(true);

@@ -426,7 +426,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/greenhouse-data.js?v=8b18a737"></script>
-<script src="/engines/greenhouse-engine.js?v=86241dd0"></script>
+<script src="/engines/greenhouse-engine.js?v=976174b6"></script>
 <script>
 (function () {
   'use strict';
@@ -501,8 +501,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       { val: isNew ? fmtM(r.setup.total, sym) : 'N/A', label: 'Total Setup Cost' },
       { val: fmtM(r.running.total, sym), label: 'Annual Running Cost' },
       { val: fmtM(r.revenue.mid, sym), label: 'Annual Revenue (mid)' },
-      { val: fmtPct(r.roi), label: 'Annual ROI' },
-      { val: isFinite(r.payback) && r.payback > 0 ? (Math.round(r.payback * 10)/10).toFixed(1) + ' yrs' : 'N/A', label: 'Payback Period' },
+      { val: (r.capitalBasis === null ? 'Original capital unknown' : fmtPct(r.roi)), label: 'Annual ROI' },
+      { val: Number.isFinite(r.payback) && r.payback > 0 ? (Math.round(r.payback * 10)/10).toFixed(1) + ' yrs' : (r.capitalBasis === null ? 'Original capital unknown' : 'No recovery at this net return'), label: 'Payback Period' },
       { val: fmtN(r.revenue.yieldKg) + ' kg', label: 'Annual Yield' }
     ].forEach(function (m) {
       mg.innerHTML += '<div class="metric-card"><div class="metric-val">' + m.val + '</div><div class="metric-label">' + m.label + '</div></div>';
