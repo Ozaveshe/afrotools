@@ -4,6 +4,8 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
+const {countryPageRows} = require('../scripts/lib/fuel-country-reference');
+const markets = require('../data/fuel/markets.json');
 const { sourceDisclosure } = require("../scripts/build-french-fuel-country-pages");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -81,13 +83,16 @@ test("fuel planner declares fuel-specific units and a source-owned runtime", () 
 test("priority fuel pages disclose the row date and non-official confidence without changing rates", () => {
   const snapshot = JSON.parse(fs.readFileSync(path.join(ROOT, "data/fuel/latest.json"), "utf8"));
   for (const [code, slug] of [["TN", "tunisia"], ["TG", "togo"], ["ML", "mali"], ["NE", "niger"]]) {
-    const row = snapshot.countries.find((item) => item.code === code);
+    const row = countryPageRows(snapshot, markets).find((item) => item.code === code);
     const date = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${row.last_updated}T00:00:00Z`));
     const html = fs.readFileSync(path.join(FUEL_DIR, slug, "index.html"), "utf8");
     assert.ok(html.includes(`relevé du ${date}`), `${slug}: snippet must disclose the actual row date`);
-    if (!row.official_verified) assert.match(html, /Relevé tiers non vérifié par une source officielle/, slug);
+    if (row.references) assert.match(html, /Dates et sources indiquées pour chaque carburant/, slug);
+    else if (!row.official_verified) assert.match(html, /Relevé tiers non vérifié par une source officielle/, slug);
     assert.match(html, /Prix à revalider avant utilisation/, slug);
-    if (row.source_url) assert.ok(html.includes(`href="${row.source_url}"`), slug);
+    if (row.references) {
+      for (const ref of Object.values(row.references)) assert.ok(html.includes(ref.source_url), slug);
+    } else if (row.source_url) assert.ok(html.includes(`href="${row.source_url}"`), slug);
     else assert.match(html, /Lien de source indisponible pour cette ligne/, slug);
     for (const fuel of ["petrol", "diesel", "lpg"]) {
       assert.ok(html.includes(`data-price="${row[fuel].price}" data-unit="${fuel === "lpg" ? "kg" : "L"}" value="${fuel}"`), `${slug}/${fuel}: snapshot price must remain unchanged`);
@@ -99,7 +104,7 @@ test("priority fuel pages disclose the row date and non-official confidence with
 
 test("reviewed search snippets preserve dated data, routes and visible FAQ intent", () => {
   const { localizePage } = require("../scripts/build-french-fuel-country-pages");
-  const rows = require("../data/fuel/latest.json").countries;
+  const rows = countryPageRows(require("../data/fuel/latest.json"), markets);
   const registry = new Map(require("../data/registry/countries.json").map(row => [row.id, row]));
   for (const [code, slug] of [["TN", "tunisia"], ["TG", "togo"], ["ML", "mali"]]) {
     const row = rows.find(item => item.code === code), country = registry.get(code);

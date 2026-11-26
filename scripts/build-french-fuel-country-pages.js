@@ -7,6 +7,7 @@ const path = require("path");
 const { writeFileSyncWithRetry } = require("./lib/safe-write");
 const { stableId } = require("./lib/content-integrity");
 
+const {countryPageRows, productDate, sourceLine, regionalComparison, datedProperties} = require('./lib/fuel-country-reference');
 const ROOT = path.resolve(__dirname, "..");
 const SNAPSHOT_PATH = path.join(ROOT, "data", "fuel", "latest.json");
 const COUNTRY_REGISTRY_PATH = path.join(ROOT, "data", "registry", "countries.json");
@@ -128,6 +129,7 @@ function priceUsd(row, fuel) {
 }
 
 function sourceDisclosure(row) {
+  if (row.references) return {label: "Dates et sources indiquées pour chaque carburant", link: '<a href="/data/fuel/markets.json">Références nationales AfroFuel</a>'};
   const sourceUrl = row.official_verified === true ? row.official_source_url : row.source_url;
   const safeUrl = typeof sourceUrl === "string" && /^https:\/\//i.test(sourceUrl) ? sourceUrl : null;
   const official = row.official_verified === true && safeUrl;
@@ -154,23 +156,12 @@ function monthlyGeneratorEstimate(row) {
   };
 }
 
-function regionalAverage(rows, region, fuel) {
-  const values = rows
-    .filter((row) => row.region === region && row[fuel] && typeof row[fuel].usd === "number")
-    .map((row) => row[fuel].usd);
-  if (!values.length) return null;
-  return values.reduce((sum, value) => sum + value, 0) / values.length;
-}
-
 function relationToRegion(row, rows, fuel) {
-  const average = regionalAverage(rows, row.region, fuel);
-  if (!average || !row[fuel] || typeof row[fuel].usd !== "number") {
-    return "dans l’échantillon régional disponible";
-  }
-  const delta = ((row[fuel].usd - average) / average) * 100;
-  const region = REGION_LABELS[row.region] || "la région";
-  if (Math.abs(delta) < 5) return `proche de la moyenne en ${region}`;
-  return `${Math.abs(delta).toFixed(0)} % ${delta > 0 ? "au-dessus" : "en dessous"} de la moyenne en ${region}`;
+  const comparison = regionalComparison(row, rows, fuel);
+  if (!comparison) return 'sans comparaison régionale disponible à la même date';
+  const {date, count, delta} = comparison;
+  const relation = Math.abs(delta) < 5 ? 'proche de la moyenne' : Math.abs(delta).toFixed(0) + ' % ' + (delta > 0 ? 'au-dessus' : 'en dessous') + ' de la moyenne';
+  return relation + ' des prix en USD de ' + count + ' autres pays de la région au ' + formatDate(date);
 }
 
 function relatedCountries(row, rows) {
@@ -210,11 +201,11 @@ function localizedFaqs(row, name, estimate, date) {
   return [
     {
       q: `Quel est le prix de l’essence ${location} ?`,
-      a: `Le dernier relevé AfroFuel disponible indique ${priceLocal(row, "petrol")} pour l’essence ${location}, avec ${priceUsd(row, "petrol")} à titre de comparaison. Le prix réel peut varier selon la ville, la station, le fournisseur et la date.`,
+      a: `Le dernier relevé AfroFuel disponible indique ${priceLocal(row, "petrol")} pour l’essence ${location}${row.petrol.usd == null ? '' : ', avec ' + priceUsd(row, "petrol") + ' à titre de comparaison'}. Le prix réel peut varier selon la ville, la station, le fournisseur et la date.`,
     },
     {
       q: `Quel est le prix du diesel ${location} ?`,
-      a: `Le diesel est affiché à ${priceLocal(row, "diesel")} dans le dernier relevé disponible. La valeur de ${priceUsd(row, "diesel")} sert uniquement à comparer les pays ; ce n’est pas un devis de station-service.`,
+      a: `Le diesel est affiché à ${priceLocal(row, "diesel")} dans le dernier relevé disponible. ${row.diesel.usd == null ? '' : 'La valeur de ' + priceUsd(row, "diesel") + ' sert uniquement à comparer les pays ; ce n’est pas un devis de station-service.'}`,
     },
     {
       q: `Quel est le prix du GPL ${location} ?`,
@@ -222,7 +213,7 @@ function localizedFaqs(row, name, estimate, date) {
     },
     {
       q: `Combien coûte l’utilisation d’un groupe électrogène de 5 kVA ${location} ?`,
-      a: `Avec une hypothèse simple de 1,5 litre par heure, 8 heures par jour et 26 jours par mois, la dépense mensuelle d’essence est estimée à ${estimate.local}, soit ${estimate.usd} à titre de comparaison.`,
+      a: `Avec une hypothèse simple de 1,5 litre par heure, 8 heures par jour et 26 jours par mois, la dépense mensuelle d’essence est estimée à ${estimate.local}${row.petrol.usd == null ? '' : ', soit ' + estimate.usd + ' à titre de comparaison'}.`,
     },
     {
       q: `À quelle date ces prix du carburant ${location} ont-ils été mis à jour ?`,
@@ -258,7 +249,7 @@ function schemaBlocks(row, name, slug, description, faqs, snapshotDate) {
     description: `Dernier relevé disponible des prix de l’essence, du diesel et du GPL ${location}. Les prix peuvent varier selon la ville, la station, le fournisseur et la date.`,
     url: canonical,
     dateModified: snapshotDate,
-    temporalCoverage: snapshotDate,
+    temporalCoverage: row.references ? ['petrol','diesel','lpg'].map(t => productDate(row,t)).sort()[0] + '/' + snapshotDate : row.lpg.snapshot_date ? row.lpg.snapshot_date + "/" + snapshotDate : snapshotDate,
     inLanguage: "fr",
     creator: { "@type": "Organization", name: "AfroTools", url: `${BASE_URL}/fr/` },
     variableMeasured: [
@@ -291,6 +282,7 @@ function schemaBlocks(row, name, slug, description, faqs, snapshotDate) {
         "@type": "Thing",
         name: `Prix ${labels[fuel].article}${labels[fuel].name} ${location}`,
         additionalProperty: [
+          ...datedProperties(row, fuel, true),
           {
             "@type": "PropertyValue",
             name: `Prix ${labels[fuel].article}${labels[fuel].name} en ${row.currency}`,
@@ -365,9 +357,9 @@ function visiblePage(row, rows, country) {
       <aside class="fuel-price-card" aria-label="Résumé des prix du carburant ${escapeHtml(location)}">
         <div class="fuel-card-top"><div><strong>${escapeHtml(name)}</strong><div class="fuel-date">Date de la ligne du jeu de données : ${escapeHtml(date)}</div></div><div class="fuel-flag" aria-hidden="true">${flag}</div></div>
         <div class="fuel-price-list">
-          <div class="fuel-price-row"><span>Essence</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, "petrol"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "petrol"))} · comparaison</span></div></div>
-          <div class="fuel-price-row"><span>Diesel</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, "diesel"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "diesel"))} · comparaison</span></div></div>
-          <div class="fuel-price-row"><span>GPL</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, "lpg"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "lpg"))} · comparaison</span></div></div>
+          <div class="fuel-price-row"><span>Essence</span><div>${row.references ? '<small>' + sourceLine(row, 'petrol', 'fr', formatDate, escapeHtml) + '</small>' : ''}<strong class="fuel-local">${escapeHtml(priceLocal(row, "petrol"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "petrol"))} · comparaison</span></div></div>
+          <div class="fuel-price-row"><span>Diesel</span><div>${row.references ? '<small>' + sourceLine(row, 'diesel', 'fr', formatDate, escapeHtml) + '</small>' : ''}<strong class="fuel-local">${escapeHtml(priceLocal(row, "diesel"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "diesel"))} · comparaison</span></div></div>
+          <div class="fuel-price-row"><span>GPL${row.references && !row.lpgDateKnown ? ' · relevé du ' + escapeHtml(formatDate(row.lpg.snapshot_date)) + ', date du prix inconnue' : row.lpg.snapshot_date ? " · " + escapeHtml(formatDate(row.lpg.snapshot_date)) : ""}</span><div>${row.references?.lpg ? '<small>' + sourceLine(row, 'lpg', 'fr', formatDate, escapeHtml) + '</small>' : ''}<strong class="fuel-local">${escapeHtml(priceLocal(row, "lpg"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "lpg"))} · comparaison</span></div></div>
         </div>
         <div class="fuel-actions"><a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Consulter les relevés d’autres pays</a><a class="fuel-btn" href="${escapeHtml(generatorHref)}">Calculer un budget de groupe électrogène</a></div>
       </aside>
@@ -379,13 +371,13 @@ function visiblePage(row, rows, country) {
     <h2 id="fuel-planner-title">Planifier un budget carburant ${escapeHtml(location)}</h2>
     <p>Transformez le prix disponible en estimation mensuelle simple pour le transport, un groupe électrogène, une livraison ou le suivi des dépenses.</p>
     <div class="fuel-planner-grid">
-      <label>Type de carburant<select name="fuel_type"><option data-price="${row.petrol.price}" data-unit="L" value="petrol">Essence</option><option data-price="${row.diesel.price}" data-unit="L" value="diesel">Diesel</option><option data-price="${row.lpg.price}" data-unit="kg" value="lpg">GPL</option></select></label>
+      <label>Type de carburant<select name="fuel_type"><option data-price="${row.petrol.price}" data-unit="L" value="petrol">Essence</option><option data-price="${row.diesel.price}" data-unit="L" value="diesel">Diesel</option><option data-price="${row.lpg.price}" data-unit="kg" value="lpg">GPL${row.references && !row.lpgDateKnown ? ' · relevé du ' + escapeHtml(formatDate(row.lpg.snapshot_date)) + ', date du prix inconnue' : row.lpg.snapshot_date ? " · " + escapeHtml(formatDate(row.lpg.snapshot_date)) : ""}</option></select></label>
       <label><span data-fuel-quantity-label>Litres par jour</span><input name="litres_per_day" type="number" min="0" step="any" value="10" inputmode="decimal" aria-describedby="fuel-planner-help"></label>
       <label>Jours par mois<input name="days_per_month" type="number" min="1" max="31" step="1" value="26" inputmode="numeric"></label>
       <label><span data-fuel-price-label>Prix local par litre (facultatif)</span><input name="local_price" type="number" min="0" step="any" inputmode="decimal" aria-describedby="fuel-planner-help"></label>
     </div>
     <output class="fuel-planner-output" data-fuel-planner-output aria-live="polite">Entrez une consommation pour obtenir une estimation.</output>
-    <div class="fuel-note" id="fuel-planner-help" style="margin-top:14px"><strong>Méthode :</strong> quantité par jour × jours par mois × prix local saisi ou prix du relevé. Utilisez des litres pour l’essence et le diesel, des kilogrammes pour le GPL. <strong>Source :</strong> ${source.link}. ${escapeHtml(source.label)} ; ligne datée du ${escapeHtml(date)}. <a href="/data/fuel/latest.json">Consulter le jeu de données</a>. Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat ou un devis.</div>
+    <div class="fuel-note" id="fuel-planner-help" style="margin-top:14px"><strong>Méthode :</strong> quantité par jour × jours par mois × prix local saisi ou prix du relevé. Utilisez des litres pour l’essence et le diesel, des kilogrammes pour le GPL. <strong>Source :</strong> ${source.link}. ${escapeHtml(source.label)} ; ligne datée du ${escapeHtml(date)}.${row.references && !row.lpgDateKnown ? ' La date du prix du GPL est inconnue.' : row.lpg.snapshot_date ? " Le GPL provient du relevé historique du " + escapeHtml(formatDate(row.lpg.snapshot_date)) + "." : ""} <a href="/data/fuel/latest.json">Consulter le jeu de données</a>. Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat ou un devis.</div>
     <div class="fuel-source-row"><a href="#related-countries">Consulter les autres pays</a><a href="/fr/tools/couts-secours-energie/">Calculateur de groupe électrogène</a></div>
   </section>`;
 
@@ -393,7 +385,7 @@ function visiblePage(row, rows, country) {
     <h2 id="generator-estimate">Estimation du coût d’un groupe électrogène ${escapeHtml(location)}</h2>
     <p>Dans ce modèle de planification, un groupe à essence de ${escapeHtml(estimate.generatorSize)} fonctionnant ${estimate.hoursPerDay} heures par jour pendant ${estimate.daysPerMonth} jours consomme environ ${formatNumber(estimate.litresPerMonth)} litres par mois.</p>
     <div class="fuel-panels">
-      <div class="fuel-panel"><strong>Estimation mensuelle</strong><span>${escapeHtml(estimate.local)}</span><p>${escapeHtml(estimate.usd)} à titre de comparaison.</p></div>
+      <div class="fuel-panel"><strong>Estimation mensuelle</strong><span>${escapeHtml(estimate.local)}</span><p>${row.petrol.usd == null ? 'Comparaison en dollars indisponible.' : escapeHtml(estimate.usd) + ' à titre de comparaison.'}</p></div>
       <div class="fuel-panel"><strong>Carburant consommé</strong><span>${formatNumber(estimate.litresPerMonth)} litres/mois</span><p>Hypothèse : 1,5 litre par heure.</p></div>
       <div class="fuel-panel"><strong>Prix de référence</strong><span>${escapeHtml(priceLocal(row, "petrol"))}</span><p>Utilisez le prix local pour toute décision finale.</p></div>
     </div>
@@ -490,7 +482,7 @@ function localizePage(html, row, rows, country) {
 
 function run({ write = false } = {}) {
   const snapshot = readJson(SNAPSHOT_PATH);
-  const rows = (snapshot.countries || [])
+  const rows = countryPageRows(snapshot, readJson(path.join(ROOT, 'data/fuel/markets.json')))
     .filter((row) => row && row.code && row.name && row.petrol && row.diesel && row.lpg)
     .sort((left, right) => left.name.localeCompare(right.name));
   const registry = readJson(COUNTRY_REGISTRY_PATH);

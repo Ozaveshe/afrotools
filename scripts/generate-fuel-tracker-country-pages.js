@@ -10,11 +10,48 @@
 const fs = require('fs');
 const path = require('path');
 
+const {countryPageRows, productDate, sourceLine, regionalComparison, datedProperties} = require('./lib/fuel-country-reference');
 const ROOT = path.resolve(__dirname, '..');
 const SNAPSHOT_PATH = path.join(ROOT, 'data', 'fuel', 'latest.json');
 const OUT_DIR = path.join(ROOT, 'tools', 'fuel-tracker');
 const BASE_URL = 'https://afrotools.com';
 const CHECK = process.argv.includes('--check');
+
+const householdLpg = require('../data/fuel/household-lpg-references.json');
+
+function householdLpgPrice(code) {
+  const reference = householdLpg[code];
+  if (code === 'KE') return 'KSh ' + formatNumber(reference.priceKes) + ' per ' + reference.refillKg + ' kg refill';
+  const caps = Object.values(reference.zoneCentsPerKg);
+  return 'R' + (Math.min(...caps) / 100).toFixed(2) + ' to R' + (Math.max(...caps) / 100).toFixed(2) + ' per kg by zone';
+}
+
+function householdLpgScope(code) {
+  const reference = householdLpg[code];
+  if (code === 'KE') return reference.period + ' national average retail price. The equivalent is KSh ' + (reference.priceKes / reference.refillKg).toFixed(2) + ' per kg. Your supplier and cylinder size can change the refill price.';
+  return 'Residential maximum retail prices for ' + reference.period + '. Multiply your zone cap by the kilograms of LPG in the refill.';
+}
+
+function householdLpgRow(code) {
+  const r = householdLpg[code];
+  const table = r.zoneCentsPerKg ? '<details><summary>Find your LPG zone cap</summary><table><caption>Residential LPG caps, ' + escapeHtml(r.period) + '</caption><thead><tr><th scope="col">Zone</th><th scope="col">Rand per kg</th></tr></thead><tbody>' + Object.entries(r.zoneCentsPerKg).map(([zone, cents]) => '<tr><th scope="row">' + escapeHtml(zone) + '</th><td>' + (cents / 100).toFixed(2) + '</td></tr>').join('') + '</tbody></table></details>' : '';
+  return '<div class="fuel-price-row" id="household-lpg"><span>LPG</span><div><strong class="fuel-local">' + escapeHtml(householdLpgPrice(code)) + '</strong><p>' + escapeHtml(householdLpgScope(code)) + '</p>' + table + '<a href="' + escapeHtml(r.url) + '">' + escapeHtml(r.source) + '</a></div></div>';
+}
+
+function countryProductRow(row, fuel) {
+  if (fuel === 'lpg' && householdLpg[row.code]) return householdLpgRow(row.code);
+  const label = {petrol: 'Petrol', diesel: 'Diesel', lpg: 'LPG'}[fuel];
+  let date = '';
+  let source = '';
+  if (row.references?.[fuel]) {
+    source = '<small>' + sourceLine(row, fuel, 'en', formatDate, escapeHtml) + '</small>';
+  } else if (row.references && fuel === 'lpg' && !row.lpgDateKnown) {
+    date = ' · dataset snapshot ' + escapeHtml(formatDate(row.lpg.snapshot_date)) + ', observation date unavailable';
+  } else {
+    source = '<span class="fuel-usd">' + escapeHtml(observationLabel(row[fuel])) + '</span>';
+  }
+  return `<div class="fuel-price-row"><span>${label}${date}</span><div>${source}<strong class="fuel-local">${escapeHtml(priceLocal(row, fuel))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, fuel))} comparison</span></div></div>`;
+}
 
 const REGION_LABELS = {
   north: 'North Africa',
@@ -165,6 +202,10 @@ function observationLabel(product) {
 }
 
 function priceProperties(row, fuel) {
+  if (fuel === 'lpg' && householdLpg[row.code]) return [{
+    '@type': 'PropertyValue', name: 'Household LPG reference', value: householdLpgPrice(row.code),
+    description: householdLpgScope(row.code), url: householdLpg[row.code].url,
+  }];
   const item = row[fuel] || {};
   const label = fuel === 'lpg' ? 'LPG' : fuel.charAt(0).toUpperCase() + fuel.slice(1);
   const properties = [
@@ -186,7 +227,7 @@ function priceProperties(row, fuel) {
   }
 
   properties.push({ '@type': 'PropertyValue', name: 'Product observation date', value: item.observed_at || 'Observation date unavailable' });
-  return properties;
+  return properties.concat(datedProperties(row, fuel, false));
 }
 
 function monthlyGeneratorEstimate(row) {
@@ -205,20 +246,12 @@ function monthlyGeneratorEstimate(row) {
   };
 }
 
-function regionalAverage(rows, region, fuel) {
-  const values = rows
-    .filter((row) => row.region === region && row[fuel] && typeof row[fuel].usd === 'number')
-    .map((row) => row[fuel].usd);
-  if (!values.length) return null;
-  return values.reduce((sum, value) => sum + value, 0) / values.length;
-}
-
 function relationToRegion(row, rows, fuel) {
-  const avg = regionalAverage(rows, row.region, fuel);
-  if (!avg || !row[fuel] || typeof row[fuel].usd !== 'number') return 'within the regional comparison set';
-  const delta = ((row[fuel].usd - avg) / avg) * 100;
-  if (Math.abs(delta) < 5) return `close to the ${REGION_LABELS[row.region] || 'regional'} average`;
-  return `${Math.abs(delta).toFixed(0)}% ${delta > 0 ? 'above' : 'below'} the ${REGION_LABELS[row.region] || 'regional'} average`;
+  const comparison = regionalComparison(row, rows, fuel);
+  if (!comparison) return 'unavailable for a same-date regional comparison';
+  const {date, count, delta} = comparison;
+  const relation = Math.abs(delta) < 5 ? 'close to' : Math.abs(delta).toFixed(0) + '% ' + (delta > 0 ? 'above' : 'below');
+  return relation + ' the mean USD price in ' + count + ' other regional markets on ' + formatDate(date);
 }
 
 function relatedCountries(row, rows) {
@@ -243,19 +276,19 @@ function faqItems(row, rows, estimate) {
   return [
     {
       q: `What is the petrol price in ${row.name}?`,
-      a: `The AfroFuel snapshot dated ${date} records petrol in ${row.name} at ${priceLocal(row, 'petrol')}, with a USD comparison of ${priceUsd(row, 'petrol')}. Prices can vary between ${cities[0]}, ${cities[1]}, highways, depots, and individual stations.`,
+      a: `The AfroFuel snapshot dated ${formatDate(productDate(row, "petrol"))} records petrol in ${row.name} at ${priceLocal(row, 'petrol')}${row.petrol.usd == null ? '' : ', with a USD comparison of ' + priceUsd(row, 'petrol')}. Prices can vary between ${cities[0]}, ${cities[1]}, highways, depots, and individual stations.`,
     },
     {
       q: `What is the diesel price in ${row.name}?`,
-      a: `Diesel is shown at ${priceLocal(row, 'diesel')} in the AfroFuel snapshot dated ${date}. Use the USD comparison of ${priceUsd(row, 'diesel')} only for cross-country comparison, not as a pump quote.`,
+      a: `Diesel is shown at ${priceLocal(row, 'diesel')} in the AfroFuel snapshot dated ${formatDate(productDate(row, "diesel"))}.${row.diesel.usd == null ? '' : ' Use the USD comparison of ' + priceUsd(row, 'diesel') + ' only for cross-country comparison, not as a pump quote.'}`,
     },
     {
       q: `How much is LPG in ${row.name}?`,
-      a: `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. ${observationLabel(row.lpg)}. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
+      a: householdLpg[row.code] ? householdLpgPrice(row.code) + '. ' + householdLpgScope(row.code) : `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. ${observationLabel(row.lpg)}. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
     },
     {
       q: `How much does a 5 KVA generator cost to run in ${row.name}?`,
-      a: `Using a simple 5 KVA estimate of 1.5 litres per hour for 8 hours per day and 26 days per month, monthly petrol spend is about ${estimate.local}, or ${estimate.usd} for comparison.`,
+      a: `Using a simple 5 KVA estimate of 1.5 litres per hour for 8 hours per day and 26 days per month, monthly petrol spend is about ${estimate.local}${row.petrol.usd == null ? '' : ', or ' + estimate.usd + ' for comparison'}.`,
     },
     {
       q: `When were these ${row.name} fuel prices updated?`,
@@ -369,7 +402,7 @@ function htmlPage(row, rows) {
     description: `Petrol, diesel, and LPG snapshot for ${row.name}, dated ${date}. Prices may vary by city, station, supplier, and timing.`,
     url,
     dateModified: snapshotDate,
-    temporalCoverage: snapshotDate,
+    temporalCoverage: row.references ? ['petrol','diesel','lpg'].map(t => productDate(row,t)).sort()[0] + '/' + snapshotDate : row.lpg.snapshot_date ? row.lpg.snapshot_date + '/' + snapshotDate : snapshotDate,
     inLanguage: 'en',
     creator: {
       '@type': 'Organization',
@@ -379,7 +412,7 @@ function htmlPage(row, rows) {
     variableMeasured: [
       { '@type': 'PropertyValue', name: 'Petrol price', unitText: `${row.currency} and USD per liter` },
       { '@type': 'PropertyValue', name: 'Diesel price', unitText: `${row.currency} and USD per liter` },
-      { '@type': 'PropertyValue', name: 'LPG price', unitText: `${row.currency} and USD per kg` },
+      { '@type': 'PropertyValue', name: 'LPG price', unitText: householdLpg[row.code] ? (row.code === 'KE' ? 'KES per 13 kg refill' : 'ZAR per kg by zone') : `${row.currency} and USD per kg` },
     ],
     distribution: {
       '@type': 'DataDownload',
@@ -500,8 +533,8 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>${escapeHtml(region)} fuel prices</span></div>
         <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}
         <p class="fuel-lede">${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
-        <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
-        <p class="fuel-date">Third-party snapshot, not an officially verified price. Each price below shows its observation date when available. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
+        <p class="fuel-trust">${row.references ? 'Most recent product reference: ' : 'Dataset row dated '}${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
+        <p class="fuel-date">${row.references?.lpg ? 'ZERA publishes both currency prices. Retailers may charge less. Each fuel has its own effective date.' : row.references ? 'National references are dated by product below. The LPG entry retains its original snapshot basis.' : row.lpg.snapshot_date ? 'Petrol and diesel: national retail observations from <a href="' + escapeHtml(row.source_url) + '">GlobalPetrolPrices</a>, ' + escapeHtml(date) + '. LPG: historical snapshot from ' + escapeHtml(formatDate(row.lpg.snapshot_date)) + '.' : 'Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied.'} <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
       <aside class="fuel-price-card" aria-label="${escapeHtml(row.name)} fuel price summary">
         <div class="fuel-card-top">
@@ -512,11 +545,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
           <div class="fuel-flag" aria-hidden="true">${flag}</div>
         </div>
         <div class="fuel-price-list">
-          ${['petrol', 'diesel', 'lpg'].map(fuel => {
-            const dateLabel = observationLabel(row[fuel]);
-            const label = { petrol: 'Petrol', diesel: 'Diesel', lpg: 'LPG' }[fuel];
-            return `<div class="fuel-price-row"><span>${label}</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, fuel))}</strong><span class="fuel-usd">${escapeHtml(dateLabel)}</span><span class="fuel-usd">${escapeHtml(priceUsd(row, fuel))} comparison</span></div></div>`;
-          }).join('')}
+          ${['petrol', 'diesel', 'lpg'].map(fuel => countryProductRow(row, fuel)).join('')}
         </div>
         <div class="fuel-actions">
           <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>
@@ -531,7 +560,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
     <h2 id="generator-estimate">${regionalReference ? 'Historical national generator estimate' : 'Generator cost estimate in ' + escapeHtml(row.name)}</h2>${regionalReference ? `<p>This uses the national snapshot dated ${escapeHtml(date)} at ${escapeHtml(priceLocal(row, 'petrol'))}, not the Gauteng regional price above. <a href="/tools/fuel-tracker/?market=${encodeURIComponent(regionalReference.market.market_id)}#fuel-finder">Calculate a Gauteng fill with an editable price</a>.</p>` : ''}
     <p>A ${escapeHtml(estimate.generatorSize)} petrol generator running ${estimate.hoursPerDay} hours per day for ${estimate.daysPerMonth} days per month uses about ${formatNumber(estimate.litresPerMonth)} litres monthly in this simple planning model.</p>
     <div class="fuel-panels">
-      <div class="fuel-panel"><strong>${regionalReference ? 'Historical monthly estimate' : 'Monthly estimate'}</strong><span>${escapeHtml(estimate.local)}</span><p>${escapeHtml(estimate.usd)} for comparison.</p></div>
+      <div class="fuel-panel"><strong>${regionalReference ? 'Historical monthly estimate' : 'Monthly estimate'}</strong><span>${escapeHtml(estimate.local)}</span><p>${row.petrol.usd == null ? 'No matched USD comparison.' : escapeHtml(estimate.usd) + ' for comparison.'}</p></div>
       <div class="fuel-panel"><strong>Fuel used</strong><span>${formatNumber(estimate.litresPerMonth)} litres/month</span><p>Assumes 1.5 litres per hour.</p></div>
       <div class="fuel-panel"><strong>${regionalReference ? 'Historical national price basis' : 'Price basis'}</strong><span>${escapeHtml(priceLocal(row, 'petrol'))}</span><p>Use local pump prices for final decisions.</p></div>
     </div>
@@ -607,7 +636,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
 
 function main() {
   const snapshot = readJson(SNAPSHOT_PATH);
-  const rows = (snapshot.countries || [])
+  const rows = countryPageRows(snapshot, readJson(path.join(ROOT, 'data/fuel/markets.json')))
     .filter((row) => row && row.code && row.name && row.petrol && row.diesel && row.lpg)
     .sort((a, b) => a.name.localeCompare(b.name));
   const slugs = new Map();
