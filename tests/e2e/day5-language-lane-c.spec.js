@@ -211,12 +211,12 @@ test('African names: search, browse, and session shortlist form a useful provena
   await page.keyboard.press('ArrowLeft');
   await expect(searchTab).toHaveAttribute('aria-selected', 'true');
 
-  await page.getByLabel('Name or listed-language label').fill('Amani');
+  await page.getByLabel('Name, language or weekday').fill('Amani');
   await page.getByRole('button', { name: 'Add to session shortlist' }).first().click();
   await expect(page.locator('#shortlistCount')).toHaveText('(1 of 6)');
   await expect(page.locator('#shortlistGrid')).toContainText('Amani');
 
-  await page.getByLabel('Name or listed-language label').fill('Baraka');
+  await page.getByLabel('Name, language or weekday').fill('Baraka');
   await page.getByRole('button', { name: 'Add to session shortlist' }).first().click();
   await expect(page.locator('#shortlistCount')).toHaveText('(2 of 6)');
 
@@ -252,7 +252,7 @@ test('African names: 308 records expose provenance gaps and export no unsupporte
   await page.goto('/tools/african-name-meaning/');
   await captureVisual(page, 'african-name-meaning-desktop-light');
   await expect(page.getByRole('heading', { name: /African Name Provenance Review/i })).toBeVisible();
-  await page.getByLabel('Name or listed-language label').fill('Amani');
+  await page.getByLabel('Name, language or weekday').fill('Amani');
   await expect(page.locator('#nameCount')).toHaveText(/of 308 names/);
   await expect(page.locator('.name-card').first()).toContainText('Meaning source: missing');
   await expect(page.locator('.name-card').first()).toContainText('Country: unknown / unverified');

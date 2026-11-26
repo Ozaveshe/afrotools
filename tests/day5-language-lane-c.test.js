@@ -36,6 +36,9 @@ const nameRows = arrayBody(routes.names, 'NAMES');
 assert.equal((nameRows.match(/^\s*\{name:/gm) || []).length, 308);
 assert.equal(new Set([...nameRows.matchAll(/listedLanguage:'([^']+)'/g)].map(match => match[1])).size, 20);
 assert.doesNotMatch(nameRows, /\b(?:meaning|gender|pop|themes):/);
+const documentedDays = Object.fromEntries([...nameRows.matchAll(/name:'([^']+)',listedLanguage:'Akan',akanDay:'([^']+)'/g)].map(row=>[row[1],row[2]]));
+assert.deepEqual(documentedDays, {Kwadwo:'Monday',Adwoa:'Monday',Kwabena:'Tuesday',Abena:'Tuesday',Kwaku:'Wednesday',Akua:'Wednesday',Yaw:'Thursday',Yaa:'Thursday',Kofi:'Friday',Kwame:'Saturday',Ama:'Saturday',Kwesi:'Sunday',Akosua:'Sunday',Esi:'Sunday'});
+
 
 for (const [route, html] of Object.entries(routes)) {
   const publicHtml = visibleMarkup(html);
