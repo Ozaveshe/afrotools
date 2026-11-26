@@ -94,13 +94,21 @@ exports.handler = async function (event) {
   const id = event.queryStringParameters?.id;
   if (!/^\d{1,12}$/.test(id || '')) return { statusCode: 400, body: 'Invalid story' };
   const key = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) return { statusCode: 503, body: 'Image unavailable' };
+  const unavailable = { statusCode: 503, headers: { 'Cache-Control': 'no-store', 'Retry-After': '60' },
+    body: event.httpMethod === 'HEAD' ? '' : 'Story lookup temporarily unavailable' };
+  if (!key) return unavailable;
+  let rows;
   try {
     const response = await fetch(PROJECT + '/rest/v1/as_news?select=id,image_url&id=eq.' + id + '&is_published=eq.true&limit=1', {
       headers: { apikey: key, Authorization: 'Bearer ' + key }, signal: AbortSignal.timeout(5000)
     });
     if (!response.ok) throw new Error('Story unavailable');
-    const rows = await response.json();
+    rows = await response.json();
+    if (!Array.isArray(rows)) return unavailable;
+  } catch (_) {
+    return unavailable;
+  }
+  try {
     if (!rows[0] || U.isPlaceholderImage(rows[0].image_url)) return { statusCode: 404, headers: { 'Cache-Control': 'public,max-age=300' }, body: '' };
     const image = await fetchImage(rows[0].image_url);
     return { statusCode: 200, isBase64Encoded: true, headers: {

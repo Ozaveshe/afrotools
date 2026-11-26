@@ -10,7 +10,7 @@ const localPath = '/assets/img/afrostream/news/showmax-closes-dstv-stream-2026.w
 const localPath2 = '/assets/img/afrostream/news/jiwe-io-ma3-simulator-crowdfunding-2026.webp';
 const jpeg = Buffer.from([255,216,255,224,0,16,74,70,73,70,0,1,1,1,0,0]);
 
-function handlerFor(row, imageResponse) {
+function handlerFor(row, imageResponse, databaseResponse) {
   const calls = [];
   const exports = {};
   const source = fs.readFileSync(path.join(__dirname, '../netlify/functions/afrostream-image.js'), 'utf8');
@@ -23,6 +23,7 @@ function handlerFor(row, imageResponse) {
     fetch: async (url, options) => {
       calls.push({ url, options });
       if (url.startsWith('https://zpclagtgczsygrgztlts.supabase.co/rest/v1/as_news?')) {
+        if (databaseResponse) return databaseResponse();
         return new Response(JSON.stringify(row ? [row] : []), { headers: { 'content-type': 'application/json' } });
       }
       return imageResponse();
@@ -82,4 +83,24 @@ test('unpublished, absent and still-broken upstream images are not disguised as 
   assert.equal((await missing.handler({ httpMethod: 'GET', queryStringParameters: { id: '30' } })).statusCode, 404);
   const broken = handlerFor({ id: 13371, image_url: 'https://storage.googleapis.com/story.webp' }, () => new Response('Forbidden', { status: 403 }));
   assert.equal((await broken.handler({ httpMethod: 'GET', queryStringParameters: { id: '13371' } })).statusCode, 502);
+});
+
+test('temporary story lookup failures are retryable and never fetch an image', async () => {
+  const failures = [
+    () => new Response('offline', {status:503}),
+    () => new Response('invalid data'),
+    () => new Response('{}'),
+    () => { throw new Error('lookup timed out'); }
+  ];
+  for (const databaseResponse of failures) {
+    for (const method of ['GET','HEAD']) {
+      const instance = handlerFor(null, () => { throw new Error('Unexpected image fetch'); }, databaseResponse);
+      const result = await instance.handler({httpMethod:method, queryStringParameters:{id:'127'}});
+      assert.equal(instance.calls.length,1);
+      assert.equal(result.statusCode,503);
+      assert.equal(result.headers['Cache-Control'],'no-store');
+      assert.equal(result.headers['Retry-After'],'60');
+      if (method === 'HEAD') assert.equal(result.body,'');
+    }
+  }
 });
