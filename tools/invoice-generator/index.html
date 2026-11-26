@@ -1913,9 +1913,11 @@ $('btnNewInvoice').addEventListener('click', () => {
 /* ── INIT ── */
 function init() {
   // Auto invoice number
-  const num = nextInvoiceNumber();
-  $('invoiceNumber').value = num;
-  $('invAutoNum').textContent = 'Auto: ' + num;
+  const invoiceNumber = $('invoiceNumber');
+  if (!invoiceNumber.value.trim()) {
+    invoiceNumber.value = nextInvoiceNumber();
+    $('invAutoNum').textContent = 'Auto: ' + invoiceNumber.value;
+  }
   initDates();
 
   // Set default tax rate
