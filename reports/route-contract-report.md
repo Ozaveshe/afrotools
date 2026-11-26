@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11550 |
-| Indexable pages | 7877 |
+| Indexable pages | 7878 |
 | Permanent and temporary redirects | 3212 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4262 |
+| Genuine equivalence groups | 4263 |
 | Documented fallbacks | 15070 |
-| Routes eligible for primary sitemaps | 7877 |
+| Routes eligible for primary sitemaps | 7878 |
 
 ## Locale Coverage
 
@@ -6607,6 +6607,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c88e00c058d8: en=`/tools/car-loan-vs-cash/`, fr=`/fr/tools/voiture-credit-vs-comptant/`, sw=`/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/`; x-default=`/tools/car-loan-vs-cash/`
 - equivalence:c88f77fa24d4: en=`/tools/afrokitchen/countries/zimbabwe/`; x-default=`/tools/afrokitchen/countries/zimbabwe/`
 - equivalence:c8992c9eb74d: sw=`/sw/biashara-na-faida/`; x-default=`/sw/biashara-na-faida/`
+- equivalence:c8ac7f195715: ha=`/ha/kayan-aiki/kwatanta-kunshin-intanet/`; x-default=`/ha/kayan-aiki/kwatanta-kunshin-intanet/`
 - equivalence:c8c83ccd162d: en=`/jamb/government/1990/`; x-default=`/jamb/government/1990/`
 - equivalence:c8d82c38455f: en=`/tools/afrokitchen/recipes/umcombotsi-sz/`; x-default=`/tools/afrokitchen/recipes/umcombotsi-sz/`
 - equivalence:c8e17379933b: en=`/jamb/english/1981/`; x-default=`/jamb/english/1981/`
