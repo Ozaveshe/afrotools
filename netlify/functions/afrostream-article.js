@@ -61,20 +61,52 @@ function response(statusCode, body, robots) {
     ...(robots ? {'X-Robots-Tag':robots} : {})
   }, body };
 }
+function unavailableCollection(view, method) {
+  const news = view === 'news';
+  const path = news ? '/tools/afrostream/news' : '/tools/afrostream/';
+  const title = news ? 'AfroStream news' : 'AfroStream creator hub';
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} | AfroTools</title><link rel="canonical" href="https://afrotools.com${path}">
+<link rel="stylesheet" href="/tools/afrostream/editorial.css">
+<style>body{margin:0;font-family:system-ui,sans-serif}.as-section-list{list-style:none;padding:0;margin:1rem 0}.as-section-list li+li{border-top:1px solid var(--scene-line,#ddd)}.as-section-list a{display:block;padding:.8rem 0;font-weight:700}.as-section-list small{display:block;font-weight:400;color:var(--scene-muted,#475569)}</style>
+</head><body class="as-page as-editorial"><main class="scene-wrap scene-article">
+<p><a class="scene-link" href="/">AfroTools</a> / AfroStream</p>
+<section class="scene-empty"><h1>${title}</h1>
+<p>News stories are temporarily unavailable. You can still explore these AfroStream sections.</p>
+<nav aria-label="Available AfroStream sections"><ul class="as-section-list">
+<li><a href="/tools/afrostream/directory/">Creator directory<small>Browse African creators by country and platform.</small></a></li>
+<li><a href="/tools/afrostream/university/">Creator University<small>Explore guides for running and growing a creator business.</small></a></li>
+<li><a href="/tools/afrostream/editorial/">Editorial policy<small>See how AfroStream sources stories and handles corrections.</small></a></li>
+<li><a href="/tools/afrostream/methodology/">Ranking methodology<small>Read how creator rankings are calculated.</small></a></li>
+</ul></nav>${news ? '<p><a class="scene-link" href="/tools/afrostream/news">Retry the news feed</a></p>' : ''}
+</section></main></body></html>`;
+  const result = response(news ? 503 : 200, method === 'HEAD' ? '' : html);
+  result.headers['Cache-Control'] = 'no-store';
+  result.headers['Netlify-CDN-Cache-Control'] = 'no-store';
+  if (news) result.headers['Retry-After'] = '60';
+  return result;
+}
+function unavailable(view, method) {
+  if (view) return unavailableCollection(view, method);
+  const result = response(503, method === 'HEAD' ? '' : errorPage(503), 'noindex,follow');
+  result.headers['Retry-After'] = '60';
+  return result;
+}
 function errorPage(statusCode) {
   const title = statusCode === 404 ? 'Story not found' : 'This story is temporarily unavailable';
   const body = '<div class="scene-empty"><h1>' + title + '</h1><p>' + (statusCode === 404 ? 'This story may have been removed or its link changed.' : 'Please try again shortly.') + '</p><a href="/tools/afrostream/news">Back to the scene →</a></div>';
   return template('article.html')
     .replace(/<!-- AS_ARTICLE_META_START -->[\s\S]*?<!-- AS_ARTICLE_META_END -->/, () => '<title>' + title + ' | AfroStream</title><meta name="robots" content="noindex,follow">')
     .replace(/<!-- AS_ARTICLE_BODY_START -->[\s\S]*?<!-- AS_ARTICLE_BODY_END -->/, () => body)
-    .replace('<script src="/tools/afrostream/article.js" defer></script>', '');
+    .replace(/<script src="\/tools\/afrostream\/article\.js(?:\?[^"]*)?" defer><\/script>/, '');
 }
 exports.handler = async function (event) {
   if (!['GET','HEAD'].includes(event.httpMethod)) return {statusCode:405,headers:{Allow:'GET, HEAD'},body:''};
   const {view,slug} = route(event);
-  if (!view && !/^[a-z0-9][a-z0-9-]{0,220}$/.test(slug)) return response(404,errorPage(404),'noindex,follow');
+  if (!view && !/^[a-z0-9][a-z0-9-]{0,220}$/.test(slug)) return response(404,event.httpMethod === 'HEAD' ? '' : errorPage(404),'noindex,follow');
   const key = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) return response(503,errorPage(503),'noindex,follow');
+  if (!key) return unavailable(view, event.httpMethod);
   try {
     let query = PROJECT + '/rest/v1/as_news?select=' + PUBLIC_FIELDS + '&is_published=eq.true&published_at=lte.' + encodeURIComponent(new Date().toISOString());
     query += view ? '&order=published_at.desc&limit=50' : '&slug=eq.' + encodeURIComponent(slug) + '&limit=1';
@@ -82,11 +114,11 @@ exports.handler = async function (event) {
     if (!result.ok) throw new Error('News unavailable');
     const rows = await result.json();
     if (!Array.isArray(rows)) throw new Error('Invalid news response');
-    if (!view && !rows[0]) return response(404,errorPage(404),'noindex,follow');
+    if (!view && !rows[0]) return response(404,event.httpMethod === 'HEAD' ? '' : errorPage(404),'noindex,follow');
     const count = Number((result.headers.get('content-range') || '').split('/')[1]) || rows.length;
     const html = view ? collectionPage(rows,count,view) : articlePage(rows[0]);
     const resultResponse = response(200,event.httpMethod === 'HEAD' ? '' : html,view ? '' : U.articleMetadata(rows[0]).robots);
     return resultResponse;
-  } catch (_) { return response(503,errorPage(503),'noindex,follow'); }
+  } catch (_) { return unavailable(view, event.httpMethod); }
 };
 exports.__test = { head, json, articlePage, collectionPage, cover, route };
