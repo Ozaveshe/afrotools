@@ -63,6 +63,15 @@ const pages = [
     source: '/jamb/literature/',
     sourceFile: 'jamb/literature/index.html',
     title: 'JAMB Adabi a Hausa',
+    practice: {
+      title: 'Atisayen karatun adabi',
+      passage: 'Da ruwan sama ya fara sauka a kasuwa, iska ta watsar da littattafan wata yarinya cikin laka. Wasu suka wuce suna dariya. Hauwa ta ajiye kwandonta, ta tsince littattafan, ta kuma goge su da mayafinta. Yarinyar ta ce, “Yau kin zama mini inuwa a tsakiyar rana.”',
+      questions: [
+        { prompt: 'Wane jigo ne ya fi fitowa a labarin?', options: ['Neman riba a kasuwa', 'Taimakon juna a lokacin buƙata', 'Shirye-shiryen zuwan damina'], answer: 1, reason: 'Hauwa ta dakata domin ta taimaka wa yarinyar da littattafanta suka faɗa cikin laka. Wannan taimako shi ne abin da labarin ya fi nunawa.' },
+        { prompt: 'Mene ne yarinyar take nufi da “kin zama mini inuwa a tsakiyar rana”?', options: ['Hauwa ta ba ta wurin hutawa daga zafin rana.', 'Hauwa ta rufe littattafan da kwando.', 'Hauwa ta kawo mata sauƙi a lokacin wahala.'], answer: 2, reason: 'Inuwa tana ba da sauƙi idan rana ta yi zafi. Yarinyar ta yi amfani da wannan hoto domin ta bayyana yadda taimakon Hauwa ya sauƙaƙa mata wahala.' },
+        { prompt: 'Wane aiki ne ya fi nuna tausayin Hauwa?', options: ['Ta ajiye kwandonta, ta tsince littattafan, ta goge su.', 'Ta jira ruwan sama ya ɗauke.', 'Ta bi sauran mutanen kasuwa.'], answer: 0, reason: 'Hauwa ta dakatar da abin da take yi, ta yi amfani da mayafinta domin ta gyara abin da ya faru. Ayyukanta sun bayyana halinta.' },
+      ],
+    },
     subject: 'Adabi',
     desc: 'Jagorar Hausa don JAMB Adabi: wakoki, labari, wasan kwaikwayo, salo, jigo da fahimtar rubutu.',
     topics: ['Jigo da salo', 'Waka da karin magana', 'Labari da halaye', 'Wasan kwaikwayo da yanayi'],
@@ -518,6 +527,23 @@ ${css()}
 </head>`;
 }
 
+function jambPractice(practice) {
+  const questions = practice.questions.map((q, i) => {
+    const choices = q.options.map((choice, j) => `<label style="display:block;padding:8px 0"><input type="radio" name="adabi-q-${i + 1}" value="${j}"> ${esc(choice)}</label>`).join('\n');
+    return `<fieldset style="min-width:0;margin:1em 0;padding:12px"><legend><strong>${i + 1}. ${esc(q.prompt)}</strong></legend>
+${choices}
+<details><summary style="padding:8px 0">Duba amsar tambaya ta ${i + 1}</summary><p><strong>${esc(q.options[q.answer])}</strong> ${esc(q.reason)}</p></details>
+</fieldset>`;
+  }).join('\n');
+  return `<section id="atisayen-adabi" class="card" aria-labelledby="adabi-practice-title">
+<h2 id="adabi-practice-title">${esc(practice.title)}</h2>
+<p>AfroTools ne ya rubuta wannan labari da tambayoyi domin atisaye. Ba tsoffin tambayoyin JAMB ba ne.</p>
+<p>${esc(practice.passage)}</p>
+<p>Ka karanta labarin, ka zaɓi amsa ɗaya ga kowace tambaya, sannan ka buɗe bayanin amsar domin ka gwada fahimtarka.</p>
+${questions}
+</section>`;
+}
+
 function jambPage(page) {
   const topicCards = page.topics.map(topic => `<article class="card"><span class="tag">Darasi</span><h2>${esc(topic)}</h2><p>Ka fara da maanar kalmomi, ka rubuta gajeren bayani, sannan ka yi atisaye daga tambayoyin da ke shafin Turanci.</p></article>`).join('\n      ');
   return `${head(page)}
@@ -531,7 +557,8 @@ function jambPage(page) {
     <h1>${esc(page.title)}</h1>
     <p>${esc(page.desc)} Tambayoyin shekarun da suka gabata suna nan a shafin Turanci; wannan shafin yana taimaka maka fahimtar abin da za ka karanta a Hausa.</p>
     <div class="actions">
-      <a class="btn primary" href="${page.source}">Bude ajiyar tambayoyi ta Turanci</a>
+      ${page.practice ? '<a class="btn primary" href="#atisayen-adabi">Fara atisayen adabi</a>' : ''}
+      <a class="btn ${page.practice ? 'secondary' : 'primary'}" href="${page.source}">Bude ajiyar tambayoyi ta Turanci</a>
       <a class="btn secondary" href="/ha/jamb/cbt/">Jagorar CBT a Hausa</a>
       <a class="btn secondary" href="/ha/kayan-aiki/kalkuletan-jamb/">Kalkuletan JAMB</a>
     </div>
@@ -539,7 +566,7 @@ function jambPage(page) {
 </header>
 <main id="main">
   <div class="wrap layout">
-    <section>
+    <section>${page.practice ? jambPractice(page.practice) : ''}
       <div class="grid">
       ${topicCards}
       </div>
