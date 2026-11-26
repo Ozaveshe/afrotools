@@ -420,6 +420,7 @@ function computeOverallHealth(categories, marketData, scholarship, watchdog) {
 }
 
 exports.handler = async function(event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   const origin = getAllowedOrigin(event);
   const includeAdmin = isAdmin(event);
   const CORS = {

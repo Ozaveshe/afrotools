@@ -325,13 +325,15 @@ async function fetchOptionalHtml(url, options = {}) {
 }
 
 function extractSarbStatement(entry, text) {
-  var actionMatch = text.match(/MPC(?:\s+has)?\s+(lowered|raised|kept|reduced|increased)\s+the\s+(?:repurchase|policy)\s+rate\s+(?:unchanged,\s+)?(?:to|at)\s*(\d{1,2}(?:\.\d{1,2})?)%/i);
+  var decision = text.match(/(?:the committee decided to|the MPC decided to)\s+(keep|raise|lower|reduce|increase)\s+the\s+(?:repurchase|policy)\s+rate\s+(?:unchanged,?\s+|by\s+\d+(?:\.\d+)?\s+basis points?,?\s+)?(?:to|at)\s*(\d{1,2}(?:\.\d{1,2})?)%/i);
+  var actionMatch = decision || text.match(/MPC(?:\s+has)?\s+(lowered|raised|kept|reduced|increased)\s+the\s+(?:repurchase|policy)\s+rate\s+(?:unchanged,?\s+)?(?:to|at)\s*(\d{1,2}(?:\.\d{1,2})?)%/i);
   if (!actionMatch) return null;
 
   var effectiveDateMatch = text.match(/(?:with effect|effective) from\s+(\d{1,2}\s+[A-Za-z]+(?:\s+\d{4})?)/i);
   var action = actionMatch[1].toLowerCase();
-  if (action === 'reduced') action = 'lowered';
-  if (action === 'increased') action = 'raised';
+  if (['reduced', 'reduce', 'lower'].includes(action)) action = 'lowered';
+  if (['increased', 'increase', 'raise'].includes(action)) action = 'raised';
+  if (action === 'keep') action = 'kept';
   return {
     url: entry.pathname,
     date: entry.statement_date,
@@ -409,6 +411,7 @@ async function fetchSarbUpdates(options = {}) {
   var previousRate = previousDistinct ? previousDistinct.rate : (previous ? previous.rate : null);
 
   if (latest.action === 'kept') {
+    lastChangeDate = null;
     var lastChangeStatement = null;
     for (var k = parsed.length - 2; k >= 0; k--) {
       if (parsed[k].action !== 'kept') {
@@ -425,8 +428,6 @@ async function fetchSarbUpdates(options = {}) {
           break;
         }
       }
-    } else if (previousDistinct) {
-      lastChangeDate = previousDistinct.date;
     }
   }
 
@@ -714,7 +715,8 @@ exports._private = {
   cleanHtmlText
 };
 
-exports.handler = async function () {
+exports.handler = async function (event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   console.log('[rates-fetch] Starting scheduled central bank rates check...');
 
   var now = new Date();

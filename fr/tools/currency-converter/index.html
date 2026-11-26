@@ -1045,7 +1045,7 @@ window.addEventListener('load', function() {
     { code: 'MZN', flag: '\u{1F1F2}\u{1F1FF}', name: 'Mozambican Metical', region: 'africa' },
     { code: 'MGA', flag: '\u{1F1F2}\u{1F1EC}', name: 'Malagasy Ariary', region: 'africa' },
     { code: 'ZMW', flag: '\u{1F1FF}\u{1F1F2}', name: 'Zambian Kwacha', region: 'africa' },
-    { code: 'ZWL', flag: '\u{1F1FF}\u{1F1FC}', name: 'Zimbabwean Dollar', region: 'africa' },
+    { code: 'ZWG', flag: '\u{1F1FF}\u{1F1FC}', name: 'Or du Zimbabwe (ZiG)', region: 'africa' },
     { code: 'MWK', flag: '\u{1F1F2}\u{1F1FC}', name: 'Malawian Kwacha', region: 'africa' },
     { code: 'BWP', flag: '\u{1F1E7}\u{1F1FC}', name: 'Botswana Pula', region: 'africa' },
     { code: 'NAD', flag: '\u{1F1F3}\u{1F1E6}', name: 'Namibian Dollar', region: 'africa' },
@@ -1184,7 +1184,10 @@ window.addEventListener('load', function() {
   function loadFavorites() {
     try {
       const saved = localStorage.getItem('afrofx-favorites');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const pairs = JSON.parse(saved);
+        if (Array.isArray(pairs)) return pairs.filter(pair => typeof pair === 'string' && /^[A-Z]{3}\/[A-Z]{3}$/.test(pair));
+      }
     } catch (e) { /* ignore */ }
     return DEFAULT_FAVORITES.slice();
   }
@@ -1436,6 +1439,9 @@ window.addEventListener('load', function() {
     }
 
     let html = favorites.map(pair => {
+      if (pair.split('/').includes('ZWL')) {
+        return '<button type="button" class="fav-chip" disabled>' + pair + ' (ZWL historique)</button>';
+      }
       const isActive = pair === currentPair;
       return '<button type="button" class="fav-chip' + (isActive ? ' active' : '') + '" data-pair="' + pair + '">' + pair + '</button>';
     }).join('');
@@ -1740,7 +1746,7 @@ window.addEventListener('load', function() {
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   function renderCrypto() {
     const code = document.getElementById('cryptoCurrency').value || 'NGN';
-    const localRate = getRate(code) || 1;
+    const localRate = getRate(code);
 
     const btcUsd = crypto.BTC_USD || 87450;
     const ethUsd = crypto.ETH_USD || 3240;
@@ -1750,11 +1756,11 @@ window.addEventListener('load', function() {
     const ethLocal = ethUsd * localRate;
     const usdtLocal = usdtUsd * localRate;
 
-    document.getElementById('btcPrice').textContent = formatMoney(btcLocal, code);
+    document.getElementById('btcPrice').textContent = localRate ? formatMoney(btcLocal, code) : 'Taux indisponible';
     document.getElementById('btcUsd').textContent = '$' + btcUsd.toLocaleString();
-    document.getElementById('ethPrice').textContent = formatMoney(ethLocal, code);
+    document.getElementById('ethPrice').textContent = localRate ? formatMoney(ethLocal, code) : 'Taux indisponible';
     document.getElementById('ethUsd').textContent = '$' + ethUsd.toLocaleString();
-    document.getElementById('usdtPrice').textContent = formatMoney(usdtLocal, code);
+    document.getElementById('usdtPrice').textContent = localRate ? formatMoney(usdtLocal, code) : 'Taux indisponible';
     document.getElementById('usdtUsd').textContent = '$' + usdtUsd.toFixed(4);
   }
 

@@ -24,14 +24,14 @@ var COUNTRIES = [
   { code: 'BW', name: 'Botswana', currency: 'BWP', region: 'south', slug: 'Botswana' },
   { code: 'BF', name: 'Burkina Faso', currency: 'XOF', region: 'west', slug: 'Burkina-Faso' },
   { code: 'BI', name: 'Burundi', currency: 'BIF', region: 'east', slug: 'Burundi' },
-  { code: 'CV', name: 'Cabo Verde', currency: 'CVE', region: 'west', slug: 'Cabo-Verde' },
+  { code: 'CV', name: 'Cabo Verde', currency: 'CVE', region: 'west', slug: 'Cape-Verde' },
   { code: 'CM', name: 'Cameroon', currency: 'XAF', region: 'central', slug: 'Cameroon' },
   { code: 'CF', name: 'Central African Republic', currency: 'XAF', region: 'central', slug: 'Central-African-Republic' },
   { code: 'TD', name: 'Chad', currency: 'XAF', region: 'central', slug: 'Chad' },
   { code: 'KM', name: 'Comoros', currency: 'KMF', region: 'east', slug: 'Comoros' },
   { code: 'CG', name: 'Congo', currency: 'XAF', region: 'central', slug: 'Republic-of-the-Congo' },
   { code: 'CD', name: 'DR Congo', currency: 'CDF', region: 'central', slug: 'Democratic-Republic-of-the-Congo' },
-  { code: 'CI', name: "Côte d'Ivoire", currency: 'XOF', region: 'west', slug: 'Cote-d-Ivoire' },
+  { code: 'CI', name: "Côte d'Ivoire", currency: 'XOF', region: 'west', slug: 'Ivory-Coast' },
   { code: 'DJ', name: 'Djibouti', currency: 'DJF', region: 'east', slug: 'Djibouti' },
   { code: 'EG', name: 'Egypt', currency: 'EGP', region: 'north', slug: 'Egypt' },
   { code: 'GQ', name: 'Equatorial Guinea', currency: 'XAF', region: 'central', slug: 'Equatorial-Guinea' },
@@ -74,72 +74,69 @@ var COUNTRIES = [
   { code: 'ZW', name: 'Zimbabwe', currency: 'ZWL', region: 'south', slug: 'Zimbabwe' },
 ];
 
-/**
- * Extract a numeric price from HTML text.
- * Looks for patterns like "1.234" or "1,234.56" near currency/unit context.
- */
-function extractPrice(text) {
-  if (!text) return null;
-  // Remove thousand separators, grab the decimal number
-  var cleaned = text.replace(/,/g, '').trim();
-  var match = cleaned.match(/(\d+\.?\d*)/);
-  return match ? parseFloat(match[1]) : null;
-}
-
 function stripHtml(html) {
-  return String(html || '')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&amp;/gi, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return String(html || '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ').replace(/&#0?39;/g, "'").replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ').trim();
 }
 
-function parseCountryFuelTable(html, currency) {
-  var anchoredHtml = String(html || '');
-  var headingIndex = anchoredHtml.search(/<h1[^>]*>/i);
-  if (headingIndex >= 0) anchoredHtml = anchoredHtml.slice(headingIndex);
-
-  var tableMatch = anchoredHtml.match(/<table[^>]*>[\s\S]*?<\/table>/i);
-  if (!tableMatch) return null;
-
-  var rows = tableMatch[0].match(/<tr[^>]*>[\s\S]*?<\/tr>/gi) || [];
-  var values = {};
-
-  rows.forEach(function(row) {
-    var cells = row.match(/<(?:th|td)[^>]*>[\s\S]*?<\/(?:th|td)>/gi) || [];
-    if (cells.length < 2) return;
-    var label = stripHtml(cells[0]).replace(/^\W+/, '').toUpperCase();
-    var literValue = extractPrice(stripHtml(cells[1]));
-    if (!label || literValue === null) return;
-    values[label] = literValue;
-  });
-
-  var local = values[String(currency || '').toUpperCase()] || null;
-  var usd = values.USD || null;
-
-  if (local === null && usd === null) return null;
-
-  return { local: local, usd: usd };
+function countryKey(name) {
+  return String(name).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
 }
 
-function parseObservedDate(html) {
-  var headingMatch = String(html || '').match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-  if (!headingMatch) return null;
+function observationDate(value) {
+  const match = /^(\d{1,2})-([a-z]{3})-(\d{4})$/i.exec(value);
+  if (!match) return null;
+  const month = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(match[2].toLowerCase());
+  if (month < 0) return null;
+  const date = new Date(Date.UTC(+match[3], month, +match[1]));
+  if (date.getUTCDate() !== +match[1] || date.getTime() > Date.now()) return null;
+  return date.toISOString().slice(0, 10);
+}
 
-  var headingText = stripHtml(headingMatch[1]);
-  var dateMatch = headingText.match(/(\d{2})-([A-Za-z]{3})-(\d{4})/);
-  if (!dateMatch) return null;
+// The detail page identifies both prices, both units and the observation date
+// together. Its summary table may quote USD only and later tables contain history.
+function numericPrice(value) {
+  return /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value) ? Number(value.replace(/,/g, '')) : NaN;
+}
 
-  var monthMap = {
-    Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06',
-    Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12',
-  };
-  var month = monthMap[dateMatch[2]];
-  if (!month) return null;
+function parseLitreTable(html, identity, country, date) {
+  const table = html.match(/<table\b[^>]*>[\s\S]*?<\/table>/i);
+  if (!table) return null;
+  const rows = Array.from(table[0].matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi), row =>
+    Array.from(row[1].matchAll(/<(?:th|td)\b[^>]*>([\s\S]*?)<\/(?:th|td)>/gi), cell => stripHtml(cell[1])));
+  if (!rows.length || countryKey(rows[0][0]) !== countryKey(identity[1] + ' ' + identity[2] + ' prices')) return null;
+  const litre = rows[0].findIndex(label => /^lit(?:er|re)$/i.test(label));
+  if (litre < 1) return null;
+  const prices = {};
+  for (const row of rows.slice(1)) {
+    if (row[0] !== country.currency && row[0] !== 'USD') continue;
+    if (Object.hasOwn(prices, row[0])) return null;
+    prices[row[0]] = numericPrice(row[litre]);
+  }
+  const local = prices[country.currency], usd = prices.USD;
+  return Number.isFinite(local) && local > 0 && Number.isFinite(usd) && usd > 0 ? { local, usd, observed_at: date } : null;
+}
 
-  return dateMatch[3] + '-' + month + '-' + dateMatch[1];
+function parseCountryFuelQuote(html, country, fuelType) {
+  const heading = String(html).match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i);
+  if (!heading) return null;
+  const identity = stripHtml(heading[1]).match(/^(.+?) (gasoline|diesel) prices?(?:, liter)?, (\d{1,2}-[a-z]{3}-\d{4})$/i);
+  const keys = [countryKey(country.name), countryKey(country.slug)];
+  if (!identity || !keys.includes(countryKey(identity[1])) || identity[2].toLowerCase() !== fuelType) return null;
+  const date = observationDate(identity[3]);
+  if (!date) return null;
+  const detail = html.slice(heading.index + heading[0].length);
+  const content = stripHtml(detail);
+  const quote = content.match(/\bThe current (gasoline price|price of diesel fuel) in (?:the )?(.{1,80}?) is ([A-Z]{3}) ([\d,.]+) per lit(?:er|re) or USD ([\d,.]+) per lit(?:er|re) (?:and was updated on|based on the latest update from) (\d{1,2}-[A-Za-z]{3}-\d{4})\b/);
+  if (!quote) return parseLitreTable(detail, identity, country, date);
+  if (countryKey(quote[2]) !== countryKey(identity[1]) ||
+      (quote[1] === 'gasoline price' ? 'gasoline' : 'diesel') !== fuelType ||
+      quote[3] !== country.currency || observationDate(quote[6]) !== date) return null;
+  const local = numericPrice(quote[4]), usd = numericPrice(quote[5]);
+  if (!Number.isFinite(local) || local <= 0 || !Number.isFinite(usd) || usd <= 0) return null;
+  return { local, usd, observed_at: date };
 }
 
 function isOlderThan(candidateDate, baselineDate) {
@@ -184,11 +181,10 @@ async function fetchCountryFuelPrice(country, fuelType) {
     },
   });
   var html = await res.text();
-  var parsed = parseCountryFuelTable(html, country.currency);
+  var parsed = parseCountryFuelQuote(html, country, fuelType);
   if (!parsed) {
     throw new Error('Could not parse ' + fuelType + ' price for ' + country.code);
   }
-  parsed.observed_at = parseObservedDate(html);
   parsed.source_url = url;
   return parsed;
 }
@@ -225,6 +221,7 @@ async function fetchFromGlobalPetrolPrices() {
     });
   }
 
+  var observedProducts = 0;
   var countries = (await mapWithConcurrency(COUNTRIES, 6, async function(c) {
     try {
       var fuelResults = await Promise.all([
@@ -239,14 +236,22 @@ async function fetchFromGlobalPetrolPrices() {
 
       var petrolResult = buildFuelValue(gasoline, existing && existing.petrol, existing && existing.last_updated);
       var dieselResult = buildFuelValue(diesel, existing && existing.diesel, existing && existing.last_updated);
-      var lastUpdated = getLatestDate([
+      const acceptedPetrol = !!gasoline && !petrolResult.reusedExisting;
+      const acceptedDiesel = !!diesel && !dieselResult.reusedExisting;
+      if (!acceptedPetrol && !acceptedDiesel) return existing;
+      observedProducts += Number(acceptedPetrol) + Number(acceptedDiesel);
+      // A reused legacy price may only have a country snapshot date. Preserve
+      // that date while the newly fetched sibling carries its own observation.
+      const legacySibling = [petrolResult, dieselResult].some(item =>
+        item.reusedExisting && !item.observedAt);
+      var lastUpdated = legacySibling ? existing.last_updated : getLatestDate([
         petrolResult.observedAt,
         dieselResult.observedAt,
         existing && existing.last_updated,
-      ]) || new Date().toISOString().slice(0, 10);
+      ]);
 
       // Country-level rollup is a snapshot date, not every product's date.
-      return {
+      return Object.assign({}, existing, {
         code: c.code,
         name: c.name,
         currency: c.currency,
@@ -257,15 +262,16 @@ async function fetchFromGlobalPetrolPrices() {
         regulated: existing && typeof existing.regulated === 'boolean' ? existing.regulated : null,
         last_updated: lastUpdated,
         source: 'globalpetrolprices',
-        source_url: 'https://www.globalpetrolprices.com/' + c.slug + '/gasoline_prices/',
+        source_url: gasoline ? gasoline.source_url : (existing && existing.source_url) || diesel.source_url,
         source_state: 'third_party_snapshot',
         official_verified: false,
-      };
+      });
     } catch (err) {
       return null;
     }
   })).filter(Boolean);
 
+  if (!observedProducts) throw new Error('GPP detail pages provided no usable dated local prices');
   if (countries.length < 20) {
     throw new Error('GPP detail pages: only ' + countries.length + ' countries parsed');
   }
@@ -389,6 +395,7 @@ function validateFuelData(nextData) {
 }
 
 exports.handler = async function(event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   return runScraper({
     id: 'fuel-prices',
     blobKey: 'fuel-latest',

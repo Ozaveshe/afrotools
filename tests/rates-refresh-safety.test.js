@@ -32,6 +32,20 @@ test('SARB statement dates use the dated calendar and keep effective dates separ
   assert.equal(row.effective_date, '2026-05-29');
 });
 
+test('SARB recognises the current decision text in the November hold and September increase', () => {
+  const { api } = load('scheduled-fetch-central-bank-rates.js');
+  const entry = { pathname: 'https://www.resbank.co.za/example', year: 2026, statement_date: '2026-11-19' };
+  const parse = text => api._private.extractSarbStatement(entry, text);
+  assert.equal(parse('The MPC kept the policy rate unchanged at 7.25%.').action, 'kept');
+  assert.equal(parse('The committee decided to keep the policy rate unchanged, at 7.25%.').rate, 7.25);
+  entry.statement_date = '2026-09-23';
+  const hike = parse('The committee decided to raise the policy rate by 25 basis points, to 7.25%, effective from 25 September.');
+  assert.equal(hike.rate, 7.25);
+  assert.equal(hike.action, 'raised');
+  assert.equal(hike.effective_date, '2026-09-25');
+  assert.equal(parse('Three members favoured an increase of 25 basis points.'), null);
+});
+
 test('expired, future and undated manual reviews cannot renew verification', () => {
   const { api } = load('scheduled-fetch-central-bank-rates.js');
   for (const reviewed_at of [undefined, '2026-08-31T00:00:00Z', '2026-09-09T00:00:00Z']) {

@@ -1,11 +1,11 @@
 # Public claims report
 
-Generated: 2026-11-21
+Generated: 2026-11-26
 
 - Canonical claims: 21
 - Feature data flows: 10
 - Public HTML/shared script files scanned: 13062
-- Approved claim hits: 46690
+- Approved claim hits: 46689
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |
@@ -23,11 +23,11 @@ Generated: 2026-11-21
 | ai.optional-provider | Deterministic routing runs independently of model consent. Optional model requests require consent, use the configured provider through AfroTools functions and can be unavailable. | AI platform and privacy owner | 2026-11-12 | 2026-12-12 | 5 |
 | freshness.live-data | Live or current wording requires a successful observation with a named source, timestamp and the applicable age threshold. Cached, stale and unavailable states must be visible. | Live-data freshness owner | 2026-11-12 | 2026-12-12 | 8 |
 | authority.evidence-scope | Source and verification wording applies to the named source, record, period, jurisdiction or tested workflow. | Source-confidence owner | 2026-11-12 | 2026-12-12 | 42 |
-| performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-11-18 | 2026-11-25 | 6 |
+| performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-11-26 | 2026-12-03 | 6 |
 | statutory.jurisdiction-period | Statutory planning guidance identifies its jurisdiction, applicable period, source and review state. Filing wording requires a verified filing workflow. | Tax and statutory source owner | 2026-11-12 | 2026-12-12 | 6 |
-| account.optional-sync | Work can exist on one device; signed-in users can sync supported selected items when the authenticated workspace service succeeds. | Account workspace owner | 2026-11-18 | 2026-11-25 | 1 |
+| account.optional-sync | Work can exist on one device; signed-in users can sync supported selected items when the authenticated workspace service succeeds. | Account workspace owner | 2026-11-26 | 2026-12-03 | 1 |
 | payment.provider-processing | AfroTools starts checkout and reads subscription state. The payment provider handles payment details and confirms transaction status. Cancellation requests can require manual review. | Billing and payment owner | 2026-11-12 | 2026-12-12 | 20 |
 | analytics.consent-metadata | Persistent analytics identifiers and product events require analytics consent. Measured public pages may send limited GA4 cookieless consent-state or page measurement while analytics storage is denied. Raw sensitive workflow content is excluded. | Analytics and privacy owner | 2026-11-12 | 2026-12-12 | 196 |
 | documents.local-processing | Named local PDF and image operations process documents in the browser. Optional AI, speech, email, sync and vault actions are separate disclosed network features. | Document and PDF workflow owner | 2026-11-12 | 2026-12-12 | 1 |
-| vault.explicit-cloud-upload | Signed-in users can explicitly upload supported files to a private configured vault when the current client/service is available; local downloads remain separate. | Vault and storage owner | 2026-11-18 | 2026-11-25 | 1 |
+| vault.explicit-cloud-upload | Signed-in users can explicitly upload supported files to a private configured vault when the current client/service is available; local downloads remain separate. | Vault and storage owner | 2026-11-26 | 2026-12-03 | 1 |
 | forms.email-handling | Email and contact details are used for the disclosed submission or account purpose by the configured processor. Delivery and deletion timing are subject to that processor. | Forms, email, and privacy owner | 2026-11-12 | 2026-12-12 | 3 |

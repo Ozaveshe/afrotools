@@ -672,6 +672,7 @@
     });
     global.addEventListener('click', function (event) {
       var control = event.target.closest('button,a,input[type="button"],input[type="submit"]');
+      if (config.englishId === 'afrorates' && control && control.id === 'ar-csv') return;
       var format = controlFormat(control);
       if (!isExportControl(control, format, config)) return;
       event.preventDefault();

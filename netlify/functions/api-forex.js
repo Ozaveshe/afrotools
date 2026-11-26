@@ -51,6 +51,7 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
 }
 
 exports.handler = async function (event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
