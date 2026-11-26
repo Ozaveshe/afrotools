@@ -11,7 +11,7 @@ const sourceBank = {
   cacCamaCurrent: ['CAMA 2020 reference', 'https://icrp.cac.gov.ng/assets/docs/CAMA-NOTE%20FINAL-FULL-VERSION.pdf'],
   nrsAdministration: ['Nigeria Tax Administration Act 2025', 'https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf'],
   cac: ['Corporate Affairs Commission', 'https://www.cac.gov.ng/business-names/'],
-  cama: ['Companies and Allied Matters Act 2020', 'https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf'],
+  cama: ['Companies and Allied Matters Act 2020', 'https://icrp.cac.gov.ng/assets/docs/CAMA-NOTE%20FINAL-FULL-VERSION.pdf'],
   brs: ['Kenya Business Registration Service', 'https://brs.go.ke/companies-registry/'],
   brsPortal: ['BRS eCitizen portal', 'https://brsv2.ecitizen.go.ke/'],
   cipc: ['CIPC company records and returns', 'https://www.cipc.co.za/?page_id=15683'],
