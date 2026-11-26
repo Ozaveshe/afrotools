@@ -519,7 +519,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
     </div>
   </div>
 </header>
-<main class="fuel-country-shell fuel-main">
+<main class="fuel-country-shell fuel-main">${row.code === 'KE' ? require('./lib/kenya-fuel-city-prices').kenyaCityPrices(readJson(path.join(ROOT, 'data/fuel/markets.json')), 'en', escapeHtml) : ''}
   <section class="fuel-section" aria-labelledby="generator-estimate">
     <h2 id="generator-estimate">${regionalReference ? 'Historical national generator estimate' : 'Generator cost estimate in ' + escapeHtml(row.name)}</h2>${regionalReference ? `<p>This uses the national snapshot dated ${escapeHtml(date)} at ${escapeHtml(priceLocal(row, 'petrol'))}, not the Gauteng regional price above. <a href="/tools/fuel-tracker/?market=${encodeURIComponent(regionalReference.market.market_id)}#fuel-finder">Calculate a Gauteng fill with an editable price</a>.</p>` : ''}
     <p>A ${escapeHtml(estimate.generatorSize)} petrol generator running ${estimate.hoursPerDay} hours per day for ${estimate.daysPerMonth} days per month uses about ${formatNumber(estimate.litresPerMonth)} litres monthly in this simple planning model.</p>

@@ -376,7 +376,7 @@ function visiblePage(row, rows, country) {
 </header>`;
 
   const planner = `<section class="fuel-section fuel-planner" aria-labelledby="fuel-planner-title" data-fr-fuel-planner data-currency="${escapeHtml(row.currency)}">
-    <h2 id="fuel-planner-title">Planifier un budget carburant ${escapeHtml(location)}</h2>
+    <h2 id="fuel-planner-title">Planifier un budget carburant ${escapeHtml(location)}</h2>${row.code === 'KE' ? require('./lib/kenya-fuel-city-prices').kenyaCityPrices(readJson(path.join(ROOT, 'data/fuel/markets.json')), 'fr', escapeHtml) : ''}
     <p>Transformez le prix disponible en estimation mensuelle simple pour le transport, un groupe électrogène, une livraison ou le suivi des dépenses.</p>
     <div class="fuel-planner-grid">
       <label>Type de carburant<select name="fuel_type"><option data-price="${row.petrol.price}" data-unit="L" value="petrol">Essence</option><option data-price="${row.diesel.price}" data-unit="L" value="diesel">Diesel</option><option data-price="${row.lpg.price}" data-unit="kg" value="lpg">GPL</option></select></label>

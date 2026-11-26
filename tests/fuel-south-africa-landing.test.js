@@ -17,7 +17,7 @@ function generate(data, now='2026-11-07T12:00:00Z') {
   mkdirSync() {},
   writeFileSync(file, html) { assert.match(file.replaceAll('\\','/'), /\/tools\/fuel-tracker\/[a-z-]+\/index\.html$/); assert.equal(outputs.has(file),false); outputs.set(file,html); }
  };
- vm.runInNewContext(source,{Date:Clock,__dirname:path.join(root,'scripts'),require(name){if(name==='fs')return guardedFS;if(name==='path')return path;throw Error(`Unexpected generator import ${name}`);},process:{argv:[]},console:{log(){},error(){throw Error('Generator reported error');}}},{filename:'generate-fuel-tracker-country-pages.js',timeout:3000});
+ vm.runInNewContext(source,{Date:Clock,__dirname:path.join(root,'scripts'),require(name){if(name==='./lib/kenya-fuel-city-prices')return require('../scripts/lib/kenya-fuel-city-prices');if(name==='./lib/fuel-country-reference')return require('../scripts/lib/fuel-country-reference');if(name==='fs')return guardedFS;if(name==='path')return path;throw Error(`Unexpected generator import ${name}`);},process:{argv:[]},console:{log(){},error(){throw Error('Generator reported error');}}},{filename:'generate-fuel-tracker-country-pages.js',timeout:3000});
  return outputs;
 }
 const route=path.join(root,'tools/fuel-tracker/south-africa/index.html');
