@@ -509,6 +509,7 @@
         <!-- Details -->
         <h2 class="tl-section-title">Details</h2>
         <div id="r-details"></div>
+        <section id="ng-wage-sources" hidden><h3>Nigeria: coverage and sources</h3><p>Check section 4 if the establishment employs fewer than 25 people, the work is seasonal, the worker is paid part-time or by commission or piece, or merchant shipping or civil aviation laws apply aboard a vessel or aircraft. The cited law sets no separate national minimum for domestic workers. Federal public-service salary circulars concern the employees they name.</p><ul><li><a href="https://www.pencom.gov.ng/wp-content/uploads/2024/12/Circular-on-Implementation-of-Minimum-Wage.pdf">National Pension Commission: ₦70,000 and 29 July 2024 assent (PDF)</a></li><li><a href="https://archive.gazettes.africa/archive/ng/2019/ng-government-gazette-supplement-dated-2019-04-23-no-62.pdf">2019 Act, section 4: coverage and exemptions (PDF)</a></li><li><a href="https://nsiwc.gov.ng/circulars-on-implementation-of-the-new-minimum-wage-in-the-federal-public-service/">NSIWC: implementation circulars for the federal public service</a></li></ul></section>
 
         <!-- Sector rates -->
         <div id="sector-section" style="display:none">
@@ -1037,13 +1038,14 @@ function resetView() {
 
 /* ── Render a country ── */
 function renderCountry(c) {
+  document.getElementById("ng-wage-sources").hidden = c.code !== "NG";
   /* Summary cards */
   document.getElementById('r-monthly').textContent = c.monthly > 0 ? fmtWage(c.monthly, c.symbol) : 'Not set';
   document.getElementById('r-daily').textContent   = c.daily   > 0 ? fmtWage(c.daily,   c.symbol) : 'Not set';
   document.getElementById('r-hourly').textContent  = c.hourly  > 0 ? fmtWage(c.hourly,  c.symbol) : 'Not set';
   document.getElementById('r-monthly-sub').textContent = c.monthly > 0 ? 'per month' : '';
-  document.getElementById('r-daily-sub').textContent   = c.daily   > 0 ? 'per day (22 days)' : '';
-  document.getElementById('r-hourly-sub').textContent  = c.hourly  > 0 ? 'per hour (8hr day)' : '';
+  document.getElementById('r-daily-sub').textContent   = c.daily   > 0 ? (c.code === 'NG' ? 'estimate: 22 workdays/month' : 'per day (22 days)') : '';
+  document.getElementById('r-hourly-sub').textContent  = c.hourly  > 0 ? (c.code === 'NG' ? 'estimate: 8 hours/workday' : 'per hour (8hr day)') : '';
 
   /* USD row */
   var usd = c.usdMonthly;
@@ -1463,8 +1465,8 @@ function updateCompare() {
     html += '<div class="mw-cc-name">' + c.name + '</div>';
     html += '<div class="mw-cc-row"><span class="mw-cc-label">Monthly</span><span class="mw-cc-val">' + (c.monthly > 0 ? fmtWage(c.monthly, c.symbol) : 'Not set') + '</span></div>';
     html += '<div class="mw-cc-row"><span class="mw-cc-label">USD Equiv.</span><span class="mw-cc-val">' + (c.usdMonthly ? 'US$' + c.usdMonthly : 'N/A') + '</span></div>';
-    html += '<div class="mw-cc-row"><span class="mw-cc-label">Daily</span><span class="mw-cc-val">'   + (c.daily   > 0 ? fmtWage(c.daily,   c.symbol) : 'Not set') + '</span></div>';
-    html += '<div class="mw-cc-row"><span class="mw-cc-label">Hourly</span><span class="mw-cc-val">'  + (c.hourly  > 0 ? fmtWage(c.hourly,  c.symbol) : 'Not set') + '</span></div>';
+    html += '<div class="mw-cc-row"><span class="mw-cc-label">' + (c.code === 'NG' ? 'Daily estimate (22 days/month)' : 'Daily') + '</span><span class="mw-cc-val">'   + (c.daily   > 0 ? fmtWage(c.daily,   c.symbol) : 'Not set') + '</span></div>';
+    html += '<div class="mw-cc-row"><span class="mw-cc-label">' + (c.code === 'NG' ? 'Hourly estimate (8 hours/day)' : 'Hourly') + '</span><span class="mw-cc-val">'  + (c.hourly  > 0 ? fmtWage(c.hourly,  c.symbol) : 'Not set') + '</span></div>';
     html += '<div class="mw-cc-row"><span class="mw-cc-label">Living Wage Gap</span><span class="mw-cc-val">' + (c.livingWage && c.monthly ? Math.round(((c.livingWage - c.monthly)/c.monthly)*100) + '% gap' : 'N/A') + '</span></div>';
     html += '<div class="mw-cc-row"><span class="mw-cc-label">Effective</span><span class="mw-cc-val">' + c.effectiveDate + '</span></div>';
     html += '</div>';

@@ -111,5 +111,11 @@
     $('cr-title').textContent = currencyAmount(value) >= minimum ? copy.above : copy.below;
     $('cr-detail').textContent = (sector ? sector.name : copy.national) + '. ' + copy.salary + ': ' + fmt(value) + '; ' + copy.reference + ': ' + fmt(minimum) + '; ' + copy.difference + ': ' + fmt(currencyAmount(value) - minimum) + '. ' + (basis === 'monthly' ? copy.monthly : copy.assumptions);
     $('cr-action').textContent = copy.effective + ': ' + (sector && sector.effectiveDate || c.effectiveDate) + '. ' + c.law;
+    if (c.code === 'NG' && $('ng-wage-sources')) {
+      const sourceLink = document.createElement('a');
+      sourceLink.href = '#ng-wage-sources';
+      sourceLink.textContent = 'Check Nigerian coverage and sources';
+      $('cr-action').append(' Applies to covered employment only. ', sourceLink);
+    }
   };
 })();

@@ -4544,7 +4544,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         title: "Minimum wage",
         status: ledgerStatus(minimumWage, stateInfo),
         detail: minimumWageSummary(minimumWage),
-        links: []
+        links: minimumWage && minimumWage.sourceLinks || []
       },
       {
         title: "Pension",
@@ -4661,6 +4661,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     if (!ledger) return "No minimum-wage ledger row for this country.";
     var national = ledger.nationalMinimum || {};
     var parts = [];
+    if (ledger.sourceLinks && national.monthly) parts.push(national.monthly.toLocaleString("en") + " " + ledger.currency + " per month for covered employment. " + ledger.notes);
     if (ledger.noMinimumWage) parts.push("Ledger says no universal national minimum wage.");
     if (national.law) parts.push("Law: " + national.law + ".");
     if (national.effectiveDate) parts.push("Effective date in ledger: " + national.effectiveDate + ".");
