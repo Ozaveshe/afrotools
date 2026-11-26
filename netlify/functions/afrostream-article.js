@@ -95,7 +95,10 @@ function unavailable(view, method) {
 }
 function errorPage(statusCode) {
   const title = statusCode === 404 ? 'Story not found' : 'This story is temporarily unavailable';
-  const body = '<div class="scene-empty"><h1>' + title + '</h1><p>' + (statusCode === 404 ? 'This story may have been removed or its link changed.' : 'Please try again shortly.') + '</p><a href="/tools/afrostream/news">Back to the scene →</a></div>';
+  const navigation = statusCode === 404
+    ? '<a href="/tools/afrostream/news">Back to the scene →</a>'
+    : '<nav aria-label="Story recovery"><a href="">Retry this story</a> · <a href="/tools/afrostream/directory/">Browse the creator directory</a> · <a href="/tools/afrostream/university/">Explore Creator University</a></nav>';
+  const body = '<div class="scene-empty"><h1>' + title + '</h1><p>' + (statusCode === 404 ? 'This story may have been removed or its link changed.' : 'Please try again shortly.') + '</p>' + navigation + '</div>';
   return template('article.html')
     .replace(/<!-- AS_ARTICLE_META_START -->[\s\S]*?<!-- AS_ARTICLE_META_END -->/, () => '<title>' + title + ' | AfroStream</title><meta name="robots" content="noindex,follow">')
     .replace(/<!-- AS_ARTICLE_BODY_START -->[\s\S]*?<!-- AS_ARTICLE_BODY_END -->/, () => body)

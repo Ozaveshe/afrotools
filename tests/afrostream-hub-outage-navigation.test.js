@@ -34,6 +34,9 @@ test('collection outages leave usable navigation and recover when published rows
       }
       const story = await request(news + '/one-story/');
       assert.equal(story.statusCode, 503);
+      assert.match(story.body, /href="">Retry this story/);
+      assert.match(story.body, /href="\/tools\/afrostream\/directory\/"/);
+      assert.match(story.body, /href="\/tools\/afrostream\/university\/"/);
       assert.doesNotMatch(story.body, /src="[^"]*article\.js/);
     }
     global.fetch = async () => new Response('[]');
