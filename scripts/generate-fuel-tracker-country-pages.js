@@ -16,6 +16,27 @@ const OUT_DIR = path.join(ROOT, 'tools', 'fuel-tracker');
 const BASE_URL = 'https://afrotools.com';
 const CHECK = process.argv.includes('--check');
 
+const householdLpg = require('../data/fuel/household-lpg-references.json');
+
+function householdLpgPrice(code) {
+  const reference = householdLpg[code];
+  if (code === 'KE') return 'KSh ' + formatNumber(reference.priceKes) + ' per ' + reference.refillKg + ' kg refill';
+  const caps = Object.values(reference.zoneCentsPerKg);
+  return 'R' + (Math.min(...caps) / 100).toFixed(2) + ' to R' + (Math.max(...caps) / 100).toFixed(2) + ' per kg by zone';
+}
+
+function householdLpgScope(code) {
+  const reference = householdLpg[code];
+  if (code === 'KE') return reference.period + ' national average retail price. The equivalent is KSh ' + (reference.priceKes / reference.refillKg).toFixed(2) + ' per kg. Your supplier and cylinder size can change the refill price.';
+  return 'Residential maximum retail prices for ' + reference.period + '. Multiply your zone cap by the kilograms of LPG in the refill.';
+}
+
+function householdLpgRow(code) {
+  const r = householdLpg[code];
+  const table = r.zoneCentsPerKg ? '<details><summary>Find your LPG zone cap</summary><table><caption>Residential LPG caps, ' + escapeHtml(r.period) + '</caption><thead><tr><th scope="col">Zone</th><th scope="col">Rand per kg</th></tr></thead><tbody>' + Object.entries(r.zoneCentsPerKg).map(([zone, cents]) => '<tr><th scope="row">' + escapeHtml(zone) + '</th><td>' + (cents / 100).toFixed(2) + '</td></tr>').join('') + '</tbody></table></details>' : '';
+  return '<div class="fuel-price-row"><span>LPG</span><div><strong class="fuel-local">' + escapeHtml(householdLpgPrice(code)) + '</strong><p>' + escapeHtml(householdLpgScope(code)) + '</p>' + table + '<a href="' + escapeHtml(r.url) + '">' + escapeHtml(r.source) + '</a></div></div>';
+}
+
 const REGION_LABELS = {
   north: 'North Africa',
   west: 'West Africa',
@@ -161,6 +182,10 @@ function unitText(fuel) {
 }
 
 function priceProperties(row, fuel) {
+  if (fuel === 'lpg' && householdLpg[row.code]) return [{
+    '@type': 'PropertyValue', name: 'Household LPG reference', value: householdLpgPrice(row.code),
+    description: householdLpgScope(row.code), url: householdLpg[row.code].url,
+  }];
   const item = row[fuel] || {};
   const label = fuel === 'lpg' ? 'LPG' : fuel.charAt(0).toUpperCase() + fuel.slice(1);
   const properties = [
@@ -246,7 +271,7 @@ function faqItems(row, rows, estimate) {
     },
     {
       q: `How much is LPG in ${row.name}?`,
-      a: `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
+      a: householdLpg[row.code] ? householdLpgPrice(row.code) + '. ' + householdLpgScope(row.code) : `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
     },
     {
       q: `How much does a 5 KVA generator cost to run in ${row.name}?`,
@@ -374,7 +399,7 @@ function htmlPage(row, rows) {
     variableMeasured: [
       { '@type': 'PropertyValue', name: 'Petrol price', unitText: `${row.currency} and USD per liter` },
       { '@type': 'PropertyValue', name: 'Diesel price', unitText: `${row.currency} and USD per liter` },
-      { '@type': 'PropertyValue', name: 'LPG price', unitText: `${row.currency} and USD per kg` },
+      { '@type': 'PropertyValue', name: 'LPG price', unitText: householdLpg[row.code] ? (row.code === 'KE' ? 'KES per 13 kg refill' : 'ZAR per kg by zone') : `${row.currency} and USD per kg` },
     ],
     distribution: {
       '@type': 'DataDownload',
@@ -509,7 +534,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
         <div class="fuel-price-list">
           <div class="fuel-price-row"><span>Petrol</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'petrol'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'petrol'))} comparison</span></div></div>
           <div class="fuel-price-row"><span>Diesel</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'diesel'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'diesel'))} comparison</span></div></div>
-          <div class="fuel-price-row"><span>LPG</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'lpg'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'lpg'))} comparison</span></div></div>
+          ${householdLpg[row.code] ? householdLpgRow(row.code) : `<div class="fuel-price-row"><span>LPG</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'lpg'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'lpg'))} comparison</span></div></div>`}
         </div>
         <div class="fuel-actions">
           <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>
