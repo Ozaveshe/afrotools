@@ -133,6 +133,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/prevision-tresorerie/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-mtiririko-wa-fedha/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cash-flow-forecast/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -196,8 +197,8 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card-head"><div class="card-title">Monthly Revenue Input</div></div>
       <div class="card-body">
         <div class="toggle-row">
-          <button type="button" class="toggle-btn active" id="mode-growth-btn" onclick="setRevMode('growth')">Use Growth Rate</button>
-          <button type="button" class="toggle-btn" id="mode-manual-btn" onclick="setRevMode('manual')">Enter Each Month Manually</button>
+          <button data-business-change type="button" class="toggle-btn active" id="mode-growth-btn" onclick="setRevMode('growth')">Use Growth Rate</button>
+          <button data-business-change type="button" class="toggle-btn" id="mode-manual-btn" onclick="setRevMode('manual')">Enter Each Month Manually</button>
         </div>
 
         <div id="growth-mode">
@@ -249,7 +250,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
     </div>
 
     <!-- Results -->
-    <div id="results-section">
+    <div data-business-result id="results-section">
       <div class="card">
         <div class="card-head"><div class="card-title">12-Month Summary</div></div>
         <div class="card-body">
@@ -287,9 +288,9 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
             <span>The tool will flag negative months, year-end balance, and the next check to make before you share the forecast.</span>
           </div>
           <div class="export-actions" aria-label="Cash flow forecast export actions">
-            <button type="button" class="btn btn-secondary" onclick="copyForecastSummary()">Copy forecast summary</button>
-            <button type="button" class="btn btn-secondary" data-no-gate="true" onclick="downloadCsv()">Download CSV</button>
-            <button type="button" class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+            <button data-business-export type="button" class="btn btn-secondary" onclick="copyForecastSummary()">Copy forecast summary</button>
+            <button data-business-export type="button" class="btn btn-secondary" data-no-gate="true" onclick="downloadCsv()">Download CSV</button>
+            <button data-business-export type="button" class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
           </div>
           <div class="export-status" id="export-status" role="status" aria-live="polite"></div>
         </div>
@@ -463,6 +464,7 @@ function calculate() {
     rows.ClosingBalance.push(balance);
   }
 
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('results-section').style.display = 'block';
   lastForecast = {
     currency: document.getElementById('currency').value,
@@ -625,5 +627,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="/assets/js/pages/small-business-focus.js?v=e121adab" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".tool-main" data-status="#forecast-input-status"></script>
 </body>
 </html>

@@ -66,6 +66,7 @@ a{text-decoration:none;color:inherit}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tarification-couture/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bei-ya-ushonaji/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tailoring-pricing/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh small-business">
 <afro-navbar theme="dark" active="creative"></afro-navbar>
@@ -164,9 +165,9 @@ a{text-decoration:none;color:inherit}
   </div>
   <div class="en-form-actions">
     <button type="button" class="en-btn en-btn-full" onclick="calculate()">Calculate Quote</button>
-    <button type="button" class="en-btn" onclick="downloadTailoringTxt()">Download TXT</button><p id="tailoringStatus" role="status" aria-live="polite"></p>
+    <button data-business-export type="button" class="en-btn" onclick="downloadTailoringTxt()">Download TXT</button><p id="tailoringStatus" role="status" aria-live="polite"></p>
   </div>
-  <div class="en-results" id="results">
+  <div class="en-results" data-business-result id="results">
     <div class="en-results-hero">
       <div class="en-results-hero-inner">
         <div class="en-results-hero-grid">
@@ -257,6 +258,7 @@ function calculate(){
   var rows=[['Labour',labourCost],['Fabric',fabricCost],['Notions and trims',notionsCost],['Entered overhead',overheadCost],['Scope buffer',bufferAmount],['Markup',markupAmount],['Rush fee',rushFee]];
   document.getElementById('breakdownTable').innerHTML=rows.map(function(row){return '<tr><td>'+row[0]+'</td><td class="en-td-value">'+sym+fmt(row[1])+'</td><td>'+(finalPrice>0?(row[1]/finalPrice*100).toFixed(1):'0.0')+'%</td></tr>';}).join('')+
     '<tr><td><strong>Total quote</strong></td><td class="en-td-highlight">'+sym+fmt(finalPrice)+'</td><td>100%</td></tr>';
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('results').classList.add('on');
   status.textContent='Quote calculated from your entered costs and pricing choices.';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
@@ -279,5 +281,6 @@ function downloadTailoringTxt(){
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".en-tool-layout" data-status="#tailoringStatus"></script>
 </body>
 </html>

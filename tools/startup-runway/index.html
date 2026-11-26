@@ -139,6 +139,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/runway-startup/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/startup-runway/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/startup-runway/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -193,7 +194,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card">
         <div class="card-head" style="display:flex;justify-content:space-between;align-items:center">
           <div class="card-title">Monthly Costs (Burn)</div>
-          <button type="button" class="btn btn-sm btn-outline" onclick="addCostLine()">+ Add Line</button>
+          <button data-business-change type="button" class="btn btn-sm btn-outline" onclick="addCostLine()">+ Add Line</button>
         </div>
         <div class="card-body">
           <div id="cost-lines">
@@ -209,7 +210,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       </div>
 
       <!-- Results -->
-      <div class="card" id="results-section">
+      <div class="card" data-business-result id="results-section">
         <div class="card-head"><div class="card-title">Runway Analysis</div></div>
         <div class="card-body">
           <div id="runway-hero" class="res-hero">
@@ -235,13 +236,13 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
               <div class="res-lbl">Revenue Gap</div>
             </div>
           </div>
-          <div class="summary-actions"><button type="button" onclick="copyStartupRunwaySummary()">Copy summary</button><button type="button" onclick="downloadStartupRunwaySummary()">Download TXT</button></div>
+          <div class="summary-actions"><button data-business-export type="button" onclick="copyStartupRunwaySummary()">Copy summary</button><button data-business-export type="button" onclick="downloadStartupRunwaySummary()">Download TXT</button></div>
           <div class="summary-status" id="startup-summary-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
       <!-- Scenario Planning -->
-      <div class="card" id="scenario-section" style="display:none">
+      <div class="card" data-business-result id="scenario-section" style="display:none">
         <div class="card-head"><div class="card-title">Scenario Planning</div></div>
         <div class="card-body">
           <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">If you cut costs by X%, your runway extends to:</p>
@@ -454,6 +455,7 @@ function calculate() {
   var runway = calcRunway(cash, netBurn);
 
   // Show results
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('scenario-section').style.display = 'block';
 
@@ -548,5 +550,6 @@ function downloadStartupRunwaySummary(){ downloadToolSummary(buildStartupRunwayS
 <script src="/assets/js/pages/small-business-focus.js?v=e121adab" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".tool-main" data-status="#runway-input-status"></script>
 </body>
 </html>

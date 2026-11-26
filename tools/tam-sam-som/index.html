@@ -130,6 +130,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/taille-marche-tam-sam-som/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tam-sam-som/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tam-sam-som/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -239,7 +240,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       </div>
 
       <!-- Results -->
-      <div class="card" id="results-section">
+      <div class="card" data-business-result id="results-section">
         <div class="card-head"><div class="card-title">Market Size Results</div></div>
         <div class="card-body">
           <div id="tam-block" class="tam-block tam-bg">
@@ -270,13 +271,13 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
               </div>
             </div>
           </div>
-          <div class="summary-actions"><button type="button" onclick="copyTamSummary()">Copy summary</button><button type="button" onclick="downloadTamSummary()">Download TXT</button></div>
+          <div class="summary-actions"><button data-business-export type="button" onclick="copyTamSummary()">Copy summary</button><button data-business-export type="button" onclick="downloadTamSummary()">Download TXT</button></div>
           <div class="summary-status" id="tam-summary-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
       <!-- 5-year projection -->
-      <div class="card" id="projection-section" style="display:none">
+      <div class="card" data-business-result id="projection-section" style="display:none">
         <div class="card-head"><div class="card-title">5-Year Market Growth Projection</div></div>
         <div class="card-body">
           <div class="table-wrap">
@@ -443,6 +444,7 @@ function calculate() {
   var samCustomers = Math.round(segPop * accessiblePct);
   var somCustomers = Math.round(samCustomers * marketSharePct);
 
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('projection-section').style.display = 'block';
 
@@ -496,5 +498,6 @@ function downloadTamSummary(){ downloadToolSummary(buildTamSummary(),'tam-sam-so
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".tool-main" data-status="#tam-input-status"></script>
 </body>
 </html>

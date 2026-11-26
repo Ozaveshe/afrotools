@@ -71,6 +71,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-oee/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-oee/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oee-calculator/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh small-business">
 <afro-navbar theme="dark" active="engineering"></afro-navbar>
@@ -127,11 +128,11 @@
         </div>
       </div>
       <button type="button" class="en-btn" onclick="calcOEE()">Calculate OEE</button>
-      <button type="button" class="en-btn" onclick="downloadOeeCsv()">Download CSV</button>
+      <button data-business-export type="button" class="en-btn" onclick="downloadOeeCsv()">Download CSV</button>
       <p id="oee-status" role="status" aria-live="polite"></p>
     </div>
 
-    <div class="en-results" id="oee-results">
+    <div class="en-results" data-business-result id="oee-results">
       <div class="en-results-hero">
         <div class="oee-score" id="oee-ring" style="--pct:0;--score-color:#78716c" data-val="—"></div>
         <div class="en-results-title" id="oee-headline">OEE Score</div>
@@ -183,11 +184,13 @@ function calcOEE(){
   var speedGap=Math.max(0,idealDuringRun-produced);document.getElementById('oee-six-big').innerHTML=[['Planned excluded time',excluded+' minutes','Defined by your measurement policy'],['Unplanned downtime',downtime+' minutes','Measured stop time'],['Rate gap',Math.round(speedGap)+' units','Ideal-during-run minus actual total'],['Rejects',rejects+' units','Total minus good units']].map(function(l){return '<div class="loss-card"><h5>'+l[0]+'</h5><strong>'+l[1]+'</strong><div style="color:#64748b">'+l[2]+'</div></div>';}).join('');
   document.getElementById('oee-good').textContent=good.toLocaleString()+' units';document.getElementById('oee-max').textContent=Math.round(maxPossible).toLocaleString()+' units';document.getElementById('oee-lost').textContent=Math.round(unitsLost).toLocaleString()+' units';document.getElementById('oee-rev-lost').textContent=contribution>0?opportunity.toLocaleString()+' contribution scenario':'Enter contribution above';
   var gaps=[{name:'Availability',value:Math.max(0,1-availability)},{name:'Performance',value:Math.max(0,availability*(1-performance))},{name:'Quality',value:Math.max(0,availability*performance*(1-quality))}].sort(function(a,b){return b.value-a.value;});document.getElementById('oee-actions').innerHTML='<li>Largest measured OEE gap dimension: '+gaps[0].name+' ('+oeePct(gaps[0].value)+' contribution to the gap).</li><li>Review source records and loss codes before assigning root cause or corrective action.</li><li>Trend results only when the time boundary, ideal cycle and good/reject definitions remain consistent.</li>';
-  status.textContent=performance>1?'Calculation complete with a data-consistency warning: performance is above 100%.':'OEE calculated from the recorded-period inputs.';document.getElementById('oee-results').classList.add('on');
+  status.textContent=performance>1?'Calculation complete with a data-consistency warning: performance is above 100%.':'OEE calculated from the recorded-period inputs.';document.dispatchEvent(new Event('business-result-ready'));
+  document.getElementById('oee-results').classList.add('on');
 }
 function downloadOeeCsv(){if(!LAST_OEE_RESULT)calcOEE();var r=LAST_OEE_RESULT;if(!r)return;var rows=[['metric','value','unit'],['scheduled_period',r.scheduled,'minutes'],['planned_excluded',r.excluded,'minutes'],['planned_production',r.plannedProduction,'minutes'],['unplanned_downtime',r.downtime,'minutes'],['run_time',r.runTime,'minutes'],['ideal_cycle',r.cycle,'seconds_per_unit'],['total_units',r.produced,'units'],['rejects',r.rejects,'units'],['good_units',r.good,'units'],['availability',oeePct(r.availability),''],['performance',oeePct(r.performance),''],['quality',oeePct(r.quality),''],['oee',oeePct(r.oee),''],['max_possible_good',r.maxPossible,'units'],['good_unit_gap',r.unitsLost,'units'],['contribution_scenario',r.opportunity,'entered_currency']];var csv=rows.map(function(row){return row.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='oee-recorded-period.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('oee-status').textContent='CSV OEE record downloaded.';}
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".en-main" data-status="#oee-status"></script>
 </body>
 </html>

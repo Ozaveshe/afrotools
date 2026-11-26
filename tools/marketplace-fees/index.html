@@ -185,6 +185,7 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf7;color-scheme:dark}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/frais-marketplace/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-soko-mtandaoni/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/marketplace-fees/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh small-business-tool-focus">
 <afro-navbar theme="light" active="ecommerce"></afro-navbar>
@@ -241,11 +242,11 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf7;color-scheme:dark}
   </div>
 
   <!-- Cards grid -->
-  <div class="mf-platforms-grid" id="platforms-grid"></div>
+  <div class="mf-platforms-grid" data-business-result id="platforms-grid"></div>
 
   <!-- Table view -->
-  <div class="summary-actions"><button type="button" onclick="copyMarketplaceSummary()">Copy summary</button><button type="button" onclick="downloadMarketplaceSummary()">Download TXT</button></div>
-  <div class="summary-status" id="marketplace-summary-status" role="status" aria-live="polite"></div>
+  <div class="summary-actions"><button data-business-export type="button" onclick="copyMarketplaceSummary()">Copy summary</button><button data-business-export type="button" onclick="downloadMarketplaceSummary()">Download TXT</button></div>
+  <div class="summary-status" data-business-result id="marketplace-summary-status" role="status" aria-live="polite"></div>
 
   <!-- Why section -->
   <div class="mf-why">
@@ -432,6 +433,7 @@ function runCalculator() {
     return;
   }
   lastResults = scenarios.map(function(scenario){ return calcNet(scenario, lastPrice); });
+  document.dispatchEvent(new Event('business-result-ready'));
   renderCards(lastResults);
   status.textContent = 'Comparison ready from ' + lastResults.length + ' entered quote' + (lastResults.length === 1 ? '.' : 's.');
 }
@@ -464,5 +466,6 @@ function downloadMarketplaceSummary(){ downloadToolSummary(buildMarketplaceSumma
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".mf-main" data-status="#marketplace-input-status"></script>
 </body>
 </html>

@@ -76,6 +76,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-production/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-ya-uzalishaji/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/production-cost/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh small-business">
 <afro-navbar theme="dark" active="engineering"></afro-navbar>
@@ -154,9 +155,10 @@
         </div>
       </div>
       <button type="button" class="en-btn" onclick="calcProduction()">Calculate Production Cost</button>
+      <div class="pc-status" id="pc-status" role="status" aria-live="polite"></div>
     </div>
 
-    <div class="en-results" id="pc-results">
+    <div class="en-results" data-business-result id="pc-results">
       <div class="en-results-hero">
         <div class="en-results-title" id="pc-headline">Cost of Goods Manufactured</div>
       </div>
@@ -189,10 +191,10 @@
         </ul>
       </div>
       <div class="pc-actions">
-        <button type="button" class="pc-action-btn" onclick="copyProductionSummary()">Copy summary</button>
-        <button type="button" class="pc-action-btn" data-no-gate="true" onclick="downloadProductionSummary()">Download TXT</button>
+        <button data-business-export type="button" class="pc-action-btn" onclick="copyProductionSummary()">Copy summary</button>
+        <button data-business-export type="button" class="pc-action-btn" data-no-gate="true" onclick="downloadProductionSummary()">Download TXT</button>
       </div>
-      <div class="pc-status" id="pc-status" role="status" aria-live="polite"></div>
+
     </div>
   </div>
 
@@ -323,6 +325,7 @@ function calcProduction(){
   tips.push('Compare periods only when cost classifications, unit definition and reject policy remain consistent.');
   LAST_PRODUCTION_RESULT.tips = tips.slice();
   document.getElementById('pc-tips').innerHTML = tips.map(function(t){ return '<li>'+t+'</li>'; }).join('');
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('pc-results').classList.add('on');
   document.getElementById('pc-status').textContent = 'Summary ready to copy or download.';
   document.getElementById('pc-results').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -390,5 +393,6 @@ function downloadProductionSummary() {
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".en-main" data-status="#pc-status"></script>
 </body>
 </html>

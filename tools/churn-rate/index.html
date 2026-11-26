@@ -123,6 +123,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/taux-attrition-clients/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-churn-rate/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/churn-rate/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -148,8 +149,8 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
         <div class="card-head"><div class="card-title">Input Method</div></div>
         <div class="card-body">
           <div class="toggle-row">
-            <button type="button" class="toggle-btn active" id="method-a-btn" onclick="setMethod('A')">Method A: Know customers at end</button>
-            <button type="button" class="toggle-btn" id="method-b-btn" onclick="setMethod('B')">Method B: Know churned directly</button>
+            <button data-business-change type="button" class="toggle-btn active" id="method-a-btn" onclick="setMethod('A')">Method A: Know customers at end</button>
+            <button data-business-change type="button" class="toggle-btn" id="method-b-btn" onclick="setMethod('B')">Method B: Know churned directly</button>
           </div>
 
           <div class="row">
@@ -218,7 +219,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       </div>
 
       <!-- Results -->
-      <div class="card" id="results-section">
+      <div class="card" data-business-result id="results-section">
         <div class="card-head"><div class="card-title">Churn Analysis</div></div>
         <div class="card-body">
           <div class="row">
@@ -254,13 +255,13 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
           <div id="annual-churn-note" style="display:none;margin-top:12px;background:#f1f5f9;border-radius:8px;padding:12px;font-size:.82rem;color:#475569">
             <strong>Annual equivalent:</strong> Monthly customer churn of <span id="annual-monthly-equiv">—</span> compounds to <span id="annual-annual-equiv">—</span>% annual churn if the rate stays constant.
           </div>
-          <div class="result-actions"><button type="button" class="action-btn" onclick="copyChurnSummary()">Copy summary</button><button type="button" class="action-btn" onclick="downloadChurnSummary()">Download TXT</button></div>
+          <div class="result-actions"><button data-business-export type="button" class="action-btn" onclick="copyChurnSummary()">Copy summary</button><button data-business-export type="button" class="action-btn" onclick="downloadChurnSummary()">Download TXT</button></div>
           <div class="status-line" id="churn-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
       <!-- What-if scenarios -->
-      <div class="card" id="scenario-section" style="display:none">
+      <div class="card" data-business-result id="scenario-section" style="display:none">
         <div class="card-head"><div class="card-title">What-If: Same-Period Revenue Retained</div></div>
         <div class="card-body">
           <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">If churned revenue falls by X% relative to this period, this is the additional recurring revenue retained in the same period:</p>
@@ -399,6 +400,7 @@ function calculate() {
 
   LAST_CHURN = {period:period,custStart:custStart,custNew:custNew,churned:churned,custChurnRate:custChurnRate,mrrStart:mrrStart,mrrChurned:mrrChurned,mrrContraction:mrrContraction,mrrExpansion:mrrExpansion,mrrChurnRate:mrrChurnRate,nrr:nrr,custLifetime:custLifetime};
 
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('scenario-section').style.display = 'block';
 
@@ -446,5 +448,6 @@ function downloadChurnSummary(){var text=buildChurnSummary(),status=document.get
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".tool-main" data-status="#churn-input-status"></script>
 </body>
 </html>

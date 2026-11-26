@@ -138,6 +138,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/burn-rate-startup/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-burn-rate/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/burn-rate/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -191,7 +192,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card">
         <div class="card-head">
           <div class="card-title">Personnel Costs</div>
-          <button type="button" class="btn btn-sm btn-outline" onclick="addLine('personnel-lines')">+ Add Person</button>
+          <button data-business-change type="button" class="btn btn-sm btn-outline" onclick="addLine('personnel-lines')">+ Add Person</button>
         </div>
         <div class="card-body">
           <div id="personnel-lines"></div>
@@ -203,7 +204,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card">
         <div class="card-head">
           <div class="card-title">Office & Space</div>
-          <button type="button" class="btn btn-sm btn-outline" onclick="addLine('office-lines')">+ Add Item</button>
+          <button data-business-change type="button" class="btn btn-sm btn-outline" onclick="addLine('office-lines')">+ Add Item</button>
         </div>
         <div class="card-body">
           <div id="office-lines"></div>
@@ -215,7 +216,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card">
         <div class="card-head">
           <div class="card-title">Software & Subscriptions</div>
-          <button type="button" class="btn btn-sm btn-outline" onclick="addLine('software-lines')">+ Add Tool</button>
+          <button data-business-change type="button" class="btn btn-sm btn-outline" onclick="addLine('software-lines')">+ Add Tool</button>
         </div>
         <div class="card-body">
           <div id="software-lines"></div>
@@ -227,7 +228,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card">
         <div class="card-head">
           <div class="card-title">Marketing & Growth</div>
-          <button type="button" class="btn btn-sm btn-outline" onclick="addLine('marketing-lines')">+ Add Item</button>
+          <button data-business-change type="button" class="btn btn-sm btn-outline" onclick="addLine('marketing-lines')">+ Add Item</button>
         </div>
         <div class="card-body">
           <div id="marketing-lines"></div>
@@ -239,7 +240,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       <div class="card">
         <div class="card-head">
           <div class="card-title">Other Costs</div>
-          <button type="button" class="btn btn-sm btn-outline" onclick="addLine('other-lines')">+ Add Item</button>
+          <button data-business-change type="button" class="btn btn-sm btn-outline" onclick="addLine('other-lines')">+ Add Item</button>
         </div>
         <div class="card-body">
           <div id="other-lines"></div>
@@ -251,7 +252,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
       </div>
 
       <!-- Results -->
-      <div class="card" id="results-section">
+      <div class="card" data-business-result id="results-section">
         <div class="card-head-plain"><div class="card-title">Burn Rate Results</div></div>
         <div class="card-body">
           <div class="result-grid">
@@ -281,7 +282,7 @@ html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="d
             <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:10px">Cost Breakdown</div>
             <div id="breakdown-bars"></div>
           </div>
-          <div class="summary-actions"><button type="button" onclick="copyBurnRateSummary()">Copy summary</button><button type="button" onclick="downloadBurnRateSummary()">Download TXT</button></div>
+          <div class="summary-actions"><button data-business-export type="button" onclick="copyBurnRateSummary()">Copy summary</button><button data-business-export type="button" onclick="downloadBurnRateSummary()">Download TXT</button></div>
           <div class="summary-status" id="burn-summary-status" role="status" aria-live="polite"></div>
         </div>
       </div>
@@ -438,6 +439,7 @@ function calculate() {
   }
   inputStatus.textContent = '';
 
+  document.dispatchEvent(new Event('business-result-ready'));
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('gross-burn').textContent = fmt(grossBurn);
   document.getElementById('net-burn').textContent = netBurn > 0 ? fmt(netBurn) : "No net burn";
@@ -509,5 +511,6 @@ function downloadBurnRateSummary(){ downloadToolSummary(buildBurnRateSummary(),'
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".tool-main" data-status="#burn-input-status"></script>
 </body>
 </html>

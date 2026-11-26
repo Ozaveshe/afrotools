@@ -68,6 +68,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-emballage/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-ya-ufungashaji/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/packaging-cost/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh small-business">
 <afro-navbar theme="dark" active="engineering"></afro-navbar>
@@ -129,9 +130,10 @@
         <div class="en-field"><label class="en-label" for="pk-source-date">Quote checked on</label><input class="en-input" id="pk-source-date" type="date"></div>
       </div>
       <button type="button" class="en-btn" onclick="calcPackaging()">Calculate Packaging Cost</button>
+      <p id="pk-copy-status" style="font-size:.82rem;color:#64748b;margin:.75rem 0 0" aria-live="polite"></p>
     </div>
 
-    <div class="en-results" id="pk-results">
+    <div class="en-results" data-business-result id="pk-results">
       <div class="en-results-hero">
         <div class="en-results-title" id="pk-headline">Packaging Cost Estimate</div>
       </div>
@@ -155,10 +157,10 @@
         <h3 style="margin-bottom:.5rem">Export this packaging scenario</h3>
         <p style="font-size:.88rem;color:#64748b;margin:0 0 1rem">Copy the per-unit and monthly cost summary for supplier comparison, margin planning, or production meetings. Inputs stay local.</p>
         <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-          <button type="button" class="en-btn" id="pk-copy-summary">Copy estimate</button>
-          <button type="button" class="en-btn" id="pk-download-json">Download JSON</button>
+          <button data-business-export type="button" class="en-btn" id="pk-copy-summary">Copy estimate</button>
+          <button data-business-export type="button" class="en-btn" id="pk-download-json">Download JSON</button>
         </div>
-        <p id="pk-copy-status" style="font-size:.82rem;color:#64748b;margin:.75rem 0 0" aria-live="polite"></p>
+
       </div>
     </div>
   </div>
@@ -203,7 +205,8 @@ function calcPackaging(){
   PK_LAST_RESULT={currency:currency,product:product,packagingType:ptype,size:size,volume:volume,primary:primary,printing:printing,closure:closure,carton:carton,perCarton:perCarton,secondary:secondary,freight:freight,freightUnit:freightUnit,setup:setup,amortUnits:amortUnits,setupUnit:setupUnit,wastePct:waste,wasteCost:wasteCost,totalPerUnit:total,monthlyTotal:monthly,annualTotal:annual,sellPrice:sellPrice,percentOfSellingPrice:pct,source:source,sourceDate:sourceDate};
   document.getElementById('pk-headline').textContent=product+' · '+ptype.replace(/_/g,' ')+' · quote '+sourceDate;document.getElementById('pk-primary').textContent=fmtPack(currency,primary+printing+closure);document.getElementById('pk-sec').textContent=fmtPack(currency,secondary);document.getElementById('pk-unit-total').textContent=fmtPack(currency,total);document.getElementById('pk-monthly').textContent=fmtPack(currency,monthly);document.getElementById('pk-pct-price').textContent=pct===null?'Selling price not entered':pct.toFixed(1)+'%';document.getElementById('pk-annual').textContent=fmtPack(currency,annual);
   document.getElementById('pk-compare').innerHTML=[['Primary + print + closure',primary+printing+closure],['Outer carton allocation',secondary],['Freight allocation',freightUnit],['Setup allocation',setupUnit],['Entered wastage',wasteCost]].map(function(item){return '<div class="pack-card"><div style="font-size:.8rem;color:#64748b;margin-bottom:.25rem">'+item[0]+'</div><div class="pack-price">'+fmtPack(currency,item[1])+'</div><div style="font-size:.75rem;color:#94a3b8">per finished unit</div></div>';}).join('');
-  document.getElementById('pk-tips').innerHTML='<li>Match material, gauge, closure, print colours, finish, food/contact grade and tolerances across quotes.</li><li>Confirm MOQ, spoilage allowance, tooling ownership, plate reuse, taxes, freight, delivery terms and lead time in writing.</li><li>Run line trials before committing to a large order; the cheapest quote is not automatically the lowest total cost.</li>';status.textContent='Packaging cost calculated from the dated quote and entered allocations.';document.getElementById('pk-results').classList.add('on');
+  document.getElementById('pk-tips').innerHTML='<li>Match material, gauge, closure, print colours, finish, food/contact grade and tolerances across quotes.</li><li>Confirm MOQ, spoilage allowance, tooling ownership, plate reuse, taxes, freight, delivery terms and lead time in writing.</li><li>Run line trials before committing to a large order; the cheapest quote is not automatically the lowest total cost.</li>';status.textContent='Packaging cost calculated from the dated quote and entered allocations.';document.dispatchEvent(new Event('business-result-ready'));
+  document.getElementById('pk-results').classList.add('on');
 }
 function packagingSummary(){if(!PK_LAST_RESULT)return 'Run the Packaging Quote Cost Calculator first.';var r=PK_LAST_RESULT;return ['Packaging quote cost plan','Product: '+r.product,'Format: '+r.packagingType,'Specification: '+r.size,'Currency: '+r.currency,'Quote reference: '+r.source,'Quote checked on: '+r.sourceDate,'Production volume: '+r.volume,'Primary container/unit: '+r.primary.toFixed(4),'Print/unit: '+r.printing.toFixed(4),'Closure/unit: '+r.closure.toFixed(4),'Outer carton allocation/unit: '+r.secondary.toFixed(4),'Freight allocation/unit: '+r.freightUnit.toFixed(4),'Setup allocation/unit: '+r.setupUnit.toFixed(4),'Wastage: '+r.wastePct.toFixed(1)+'% = '+r.wasteCost.toFixed(4)+'/unit','Total packaging/unit: '+r.totalPerUnit.toFixed(4),'Period packaging total: '+r.monthlyTotal.toFixed(2),'Annualised scenario: '+r.annualTotal.toFixed(2),'Packaging percent of selling price: '+(r.percentOfSellingPrice===null?'N/A':r.percentOfSellingPrice.toFixed(1)+'%'),'Note: user-entered supplier evidence; no market price, import premium or volume discount is assumed.'].join('\n');}
 function copyPackagingSummary(){var status=document.getElementById('pk-copy-status'),value=packagingSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(function(){status.textContent='Packaging quote plan copied.';}).catch(function(){status.textContent=value;});}else{status.textContent=value;}}
@@ -212,5 +215,6 @@ document.getElementById('pk-copy-summary').addEventListener('click',copyPackagin
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator=".en-main" data-status="#pk-copy-status"></script>
 </body>
 </html>

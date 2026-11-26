@@ -34,6 +34,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tarif-freelance/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/viwango-vya-freelancer/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/freelancer-rate/">
+<style>.business-result-stale{display:none!important}</style>
 </head>
 <body class="top-level-page-ui-refresh small-business-tool-focus">
 <afro-navbar theme="dark" active="hr-payroll"></afro-navbar>
@@ -127,7 +128,7 @@
     <label>Billable hours per day<input id="fr-hours" type="number" min="0.5" max="24" step="0.5" placeholder="0"></label>
     <button type="submit">Calculate rate</button>
     <output class="df-result" id="fr-result" aria-live="polite">Enter your planning inputs.</output>
-    <div class="df-actions"><button type="button" id="fr-download">Download TXT</button></div>
+    <div class="df-actions"><button data-business-export type="button" id="fr-download">Download TXT</button></div>
   </form></div>
 </section>
 </main>
@@ -142,11 +143,13 @@
 <afro-footer></afro-footer>
 <script>
 var LAST_FREELANCER_RATE=null;
-function calculateFreelancerRate(){var currency=document.getElementById('fr-currency').value.trim().toUpperCase(),income=parseFloat(document.getElementById('fr-income').value)||0,overhead=parseFloat(document.getElementById('fr-overhead').value)||0,reserve=parseFloat(document.getElementById('fr-reserve').value)||0,days=parseFloat(document.getElementById('fr-days').value)||0,hours=parseFloat(document.getElementById('fr-hours').value)||0,out=document.getElementById('fr-result');if(!currency||income<=0||days<=0||hours<=0||reserve>=100){LAST_FREELANCER_RATE=null;out.textContent='Enter currency, take-home target, billable days and hours greater than zero; reserve must be below 100%.';return;}var required=(income+overhead)/(1-reserve/100),dayRate=required/days,hourly=dayRate/hours;LAST_FREELANCER_RATE={currency:currency,income:income,overhead:overhead,reserve:reserve,days:days,hours:hours,required:required,dayRate:dayRate,hourly:hourly};out.textContent='Required monthly billing: '+currency+' '+required.toFixed(2)+' | Day rate: '+currency+' '+dayRate.toFixed(2)+' | Hourly rate: '+currency+' '+hourly.toFixed(2)+'. Reserve is your planning input, not tax advice.';}
+function calculateFreelancerRate(){var currency=document.getElementById('fr-currency').value.trim().toUpperCase(),income=parseFloat(document.getElementById('fr-income').value)||0,overhead=parseFloat(document.getElementById('fr-overhead').value)||0,reserve=parseFloat(document.getElementById('fr-reserve').value)||0,days=parseFloat(document.getElementById('fr-days').value)||0,hours=parseFloat(document.getElementById('fr-hours').value)||0,out=document.getElementById('fr-result');if(!currency||income<=0||days<=0||hours<=0||reserve>=100){LAST_FREELANCER_RATE=null;out.textContent='Enter currency, take-home target, billable days and hours greater than zero; reserve must be below 100%.';return;}var required=(income+overhead)/(1-reserve/100),dayRate=required/days,hourly=dayRate/hours;LAST_FREELANCER_RATE={currency:currency,income:income,overhead:overhead,reserve:reserve,days:days,hours:hours,required:required,dayRate:dayRate,hourly:hourly};document.dispatchEvent(new Event('business-result-ready'));
+  out.textContent='Required monthly billing: '+currency+' '+required.toFixed(2)+' | Day rate: '+currency+' '+dayRate.toFixed(2)+' | Hourly rate: '+currency+' '+hourly.toFixed(2)+'. Reserve is your planning input, not tax advice.';}
 document.getElementById('freelancer-rate-form').addEventListener('submit',function(event){event.preventDefault();calculateFreelancerRate();});
 document.getElementById('fr-download').addEventListener('click',function(){if(!LAST_FREELANCER_RATE)calculateFreelancerRate();var r=LAST_FREELANCER_RATE;if(!r)return;var text=['AfroTools freelancer rate plan','Currency: '+r.currency,'Monthly take-home target: '+r.income.toFixed(2),'Monthly overhead: '+r.overhead.toFixed(2),'Reserve planning input: '+r.reserve.toFixed(1)+'%','Billable days: '+r.days,'Billable hours/day: '+r.hours,'Required monthly billing: '+r.required.toFixed(2),'Day rate: '+r.dayRate.toFixed(2),'Hourly rate: '+r.hourly.toFixed(2),'Note: capacity-based planning result, not a market benchmark or tax calculation.'].join('\n'),blob=new Blob([text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='freelancer-rate-plan.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
+<script src="/assets/js/pages/business-result-edits.js?v=4776e696" data-calculator="#freelancer-rate-form" data-status="#fr-result"></script>
 </body>
 </html>
