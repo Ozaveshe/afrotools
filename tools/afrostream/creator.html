@@ -629,12 +629,15 @@ async function hydrateCreatorExtras(c) {
 }
 
 /* ===== API FETCHERS ===== */
+var profileLookupUnavailable = false;
 async function fetchCreator(idOrSlug) {
   try {
     /* Try new public API endpoint first — returns creator + streams + similar */
     var res = await fetch('/api/afrostream/creator?slug=' + encodeURIComponent(idOrSlug));
+    if (res.status === 404) return null;
+    profileLookupUnavailable = true;
     var json = await res.json();
-    if (json.success && json.data && json.data.creator) {
+    if (res.ok && json.success && json.data && json.data.creator) {
       var c = normalizeCreator(json.data.creator);
       c._apiStreams = json.data.streams || [];
       c._apiSimilar = json.data.similar || [];
@@ -645,7 +648,7 @@ async function fetchCreator(idOrSlug) {
       await hydrateCreatorExtras(c);
       return c;
     }
-  } catch(e) {}
+  } catch(e) { profileLookupUnavailable = true; }
 
   try {
     /* Fallback: search within the public creator list */
@@ -658,6 +661,7 @@ async function fetchCreator(idOrSlug) {
           rowSlug === idOrSlug ||
           String(row.name || '').toLowerCase() === String(idOrSlug).toLowerCase();
       });
+      if (match && json2.degraded === true) return { directoryRecord: match };
       if (match) return hydrateCreatorExtras(normalizeCreator(match));
     }
   } catch(e2) {}
@@ -906,7 +910,7 @@ function renderMissingProfile() {
     '<div class="as-container">' +
       '<div class="as-empty-card">' +
         '<h1>Creator profile unavailable</h1>' +
-        '<p>This creator may be unavailable or unpublished. Browse the current rankings to find another profile.</p>' +
+        (profileLookupUnavailable ? '<p>The profile service could not load this creator. Try again or browse the directory.</p><a href="/tools/afrostream/directory/">Browse creator directory</a> ' : '<p>This creator may be unavailable or unpublished. Browse the current rankings to find another profile.</p>') +
         '<a href="/tools/afrostream/rankings" class="as-btn as-btn-primary">Open rankings</a>' +
       '</div>' +
     '</div>' +
@@ -930,6 +934,20 @@ function renderMissingProfile() {
   ]);
 
   var creator = results[0];
+  if (creator && creator.directoryRecord) {
+    var entry = creator.directoryRecord;
+    var links = ['youtube', 'tiktok', 'instagram', 'twitch', 'kick'].map(function(platform) {
+      var href = safePlatformUrl(entry['platform_' + platform] || entry[platform + '_url'], platform);
+      return href ? '<li><a href="' + escapeStreamText(href) + '">' + escapeStreamText(platform) + '</a></li>' : '';
+    }).join('');
+    document.title = entry.name + ' — AfroStream creator directory';
+    document.getElementById('creatorPage').innerHTML = '<section class="as-container"><h1>' +
+      escapeStreamText(entry.name) + '</h1><p>' + escapeStreamText(entry.categories || '') +
+      '</p><p>Saved directory profile. Updated rankings and activity are temporarily unavailable.</p>' +
+      (links ? '<h2>Creator channels</h2><ul>' + links + '</ul>' : '') +
+      '<a href="/tools/afrostream/directory/">Browse creator directory</a></section>';
+    return;
+  }
   var CREATORS = results[1];
 
   /* If API returned a creator not in the list, ensure it has score/rank */
