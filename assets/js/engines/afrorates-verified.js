@@ -20,7 +20,9 @@
     'bot.go.tz',
     'bom.mu',
     'bankofbotswana.bw',
-    'bou.or.ug'
+    'bou.or.ug',
+    'bnr.rw',
+    'boz.zm'
   ]);
   var MAX_FUTURE_SKEW_MS = 5 * 60 * 1000;
 
