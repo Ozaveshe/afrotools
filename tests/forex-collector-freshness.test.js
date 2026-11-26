@@ -225,3 +225,19 @@ test('all ExchangeRate endpoints fail with a fixed error and no raw provider res
   });
   assert.equal(owner.logs.join(' ').includes(syntheticKey), false);
 });
+
+test('Zimbabwe Gold is stabilized in its own denomination and old Zimbabwe Dollars leave current data', async () => {
+  const owner = load();
+  owner.previous.rates.ZWL = 6800;
+  owner.previous.rate_observations = { ZWL: {rate: 6800, source: 'exchangerate-api', observed_at: stamp(7200000)} };
+  const primary = { ...rates, ZWG: 26.53 };
+  const secondary = { ...rates, ZWG: 26.65 };
+  configure(owner, snapshot('exchangerate-api', stamp(3600000), primary), snapshot('fawazahmed', stamp(3600000), secondary));
+  assert.equal((await owner.api.handler()).statusCode, 200);
+  const saved = owner.writes[0].value;
+  assert.equal(saved.rates.ZWG, 26.53);
+  assert.equal(saved.rate_observations.ZWG.rate, 26.53);
+  assert.equal(Object.hasOwn(saved.rates, 'ZWL'), false);
+  assert.equal(Object.hasOwn(saved.rate_observations, 'ZWL'), false);
+  assert.equal(saved.retained_rate_codes.includes('ZWL'), false);
+});

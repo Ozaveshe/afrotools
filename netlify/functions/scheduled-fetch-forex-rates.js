@@ -1,5 +1,5 @@
 /**
- * AfroTools Live Monitoring — Scheduled Forex Rate Fetcher
+ * AfroTools Live Monitoring â€” Scheduled Forex Rate Fetcher
  * Runs every 15 minutes via Netlify Scheduled Functions.
  *
  * Sources (with fallback chain):
@@ -17,18 +17,8 @@ const fxEvidence = require('./_shared/reference-fx');
 const { findContract } = require('./_shared/live-data-contracts');
 const MAX_OBSERVATION_AGE_MS = findContract('forex-latest').maxAgeHours * 60 * 60 * 1000;
 
-// All African + global currencies we track
-const AFRICAN_CURRENCIES = [
-  'NGN', 'KES', 'ZAR', 'GHS', 'EGP', 'TZS', 'UGX', 'RWF', 'ETB',
-  'XOF', 'XAF', 'MAD', 'TND', 'DZD', 'LYD', 'SDG', 'SSP', 'MZN',
-  'MGA', 'ZMW', 'ZWL', 'MWK', 'BWP', 'NAD', 'LSL', 'SZL', 'MUR',
-  'SCR', 'DJF', 'KMF', 'ERN', 'SOS', 'BIF', 'GMD', 'GNF', 'LRD',
-  'SLE', 'CVE', 'STN', 'MRU', 'AOA', 'CDF'
-];
-
-const GLOBAL_CURRENCIES = ['EUR', 'GBP', 'CNY', 'AED', 'INR', 'CAD', 'AUD', 'JPY'];
-
-const ALL_CURRENCIES = [...AFRICAN_CURRENCIES, ...GLOBAL_CURRENCIES];
+// Providers quote per USD; the base itself is not a tracked quote.
+const ALL_CURRENCIES = fxEvidence.SUPPORTED_CURRENCIES.filter(code => code !== 'USD');
 const MIN_SOURCE_COVERAGE = 40;
 const SOURCE_DISAGREEMENT_THRESHOLD = 0.2;
 const UNVERIFIED_JUMP_THRESHOLD = 0.5;
@@ -184,6 +174,7 @@ async function fetchFromFawazAhmed() {
  * Main scheduled handler
  */
 exports.handler = async function (event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   console.log('[forex-fetch] Starting scheduled forex rate fetch...');
 
   const sources = [
@@ -256,6 +247,9 @@ exports.handler = async function (event) {
   }
 
   const mergedRates = existing && existing.rates ? { ...existing.rates, ...stabilized.rates } : stabilized.rates;
+
+  // Retire Zimbabwe Dollar from current snapshots. Its old observations are not Zimbabwe Gold.
+  delete mergedRates.ZWL;
 
   // Build the data object
   const now = sourceLastUpdated || new Date().toISOString();

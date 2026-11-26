@@ -215,3 +215,61 @@ for (const backend of ['supabase', 'blob']) {
     assert.ok(!store.logs.join('\n').includes(SENSITIVE_FIXTURE));
   });
 }
+
+
+test('Lambda invocation context opens the site store while a stalled primary is bounded', async () => {
+  const connect = require('../netlify/functions/_shared/connect-data-blobs');
+  const originalContext = process.env.NETLIFY_BLOBS_CONTEXT;
+  const site = 'fixture-site';
+  const blobUrl = 'https://blob-fixture.invalid';
+  const calls = [];
+  let primarySignal;
+  try {
+    delete process.env.NETLIFY_BLOBS_CONTEXT;
+    connect({ headers: {}, body: '{"blobs":"request data"}' });
+    assert.equal(process.env.NETLIFY_BLOBS_CONTEXT, undefined);
+    connect({
+      headers: { 'x-nf-site-id': site, 'x-nf-deploy-id': 'fixture-deploy' },
+      blobs: Buffer.from(JSON.stringify({ url: blobUrl, token: 'fixture' })).toString('base64'),
+    });
+    const store = load('netlify/functions/_shared/data-store.js', {
+      fetch: async (url, options) => {
+        const target = new URL(url);
+        calls.push(target.hostname);
+        if (target.origin === blobUrl) {
+          assert.equal(options.method.toUpperCase(), 'PUT');
+          assert.ok(target.pathname.includes('live-data'));
+          assert.ok(target.pathname.endsWith('/test-key'));
+          return new Response(null, { status: 200, headers: { etag: 'fixture' } });
+        }
+        assert.equal(target.hostname, 'zpclagtgczsygrgztlts.supabase.co');
+        primarySignal = options.signal;
+        return new Promise(() => {});
+      },
+    });
+    const write = store.api.setData('test-key', { test: true });
+    await new Promise(resolve => setImmediate(resolve));
+    assert.deepEqual(calls.sort(), ['blob-fixture.invalid', 'zpclagtgczsygrgztlts.supabase.co']);
+    assert.equal(await write, true);
+    assert.equal(primarySignal.aborted, true);
+    assert.match(store.logs.join('\n'), /operation=supabase-write dataset=unlisted code=TIMEOUT/);
+  } finally {
+    if (originalContext === undefined) delete process.env.NETLIFY_BLOBS_CONTEXT;
+    else process.env.NETLIFY_BLOBS_CONTEXT = originalContext;
+  }
+});
+
+test('a rejected Blob write reports its safe status without logging a response or credential', async () => {
+  const store = load('netlify/functions/_shared/data-store.js', {
+    fetch: async () => ({ ok: false, status: 403 }),
+    modules: { '@netlify/blobs': { getStore: (_name, options) => ({
+      setJSON: async () => {
+        await options.fetch('https://blob-fixture.invalid', { method: 'PUT' });
+        throw new Error(SENSITIVE_FIXTURE);
+      },
+    }) } },
+  });
+  assert.equal(await store.api.setData('unregistered-fixture', {}), false);
+  assert.match(store.logs.join('\n'), /operation=blob-write dataset=unlisted code=HTTP_403/);
+  assert.ok(!store.logs.join('\n').includes(SENSITIVE_FIXTURE));
+});

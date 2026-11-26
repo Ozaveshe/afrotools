@@ -1,12 +1,10 @@
 /**
  * AfroTools Live Monitoring — Shared Data Store
  *
- * Write path:  Supabase live_data_store (primary) → Netlify Blobs (cache, best-effort)
+ * Write path:  Supabase live_data_store and Netlify Blobs independently
  * Read path:   Supabase live_data_store (primary) → Netlify Blobs (cache) → static JSON (fallback)
  *
- * Netlify Blobs writes fail from scheduled functions (missing deploy context),
- * so Supabase is the reliable write target. Blobs still work as a fast read cache
- * for request-triggered functions that have deploy context.
+ * Lambda-compatible entrypoints connect their invocation context before using Blobs.
  */
 
 const { getStore } = require('@netlify/blobs');
@@ -16,18 +14,18 @@ const { storageDiagnostic } = require('./storage-diagnostics');
 const STORE_NAME = 'live-data';
 
 // Bound each read tier so an unavailable primary cannot strand the fallback.
-const READ_TIMEOUT_MS = 3000;
+const STORAGE_TIMEOUT_MS = 3000;
 
-async function readWithDeadline(operation) {
+async function withStorageDeadline(operation) {
   var controller = new AbortController();
   var timer;
   var deadline = new Promise(function (_resolve, reject) {
     timer = setTimeout(function () {
-      var error = new Error('Storage read deadline exceeded');
+      var error = new Error('Storage deadline exceeded');
       error.name = 'TimeoutError';
       reject(error);
       controller.abort(error);
-    }, READ_TIMEOUT_MS);
+    }, STORAGE_TIMEOUT_MS);
   });
   try {
     return await Promise.race([Promise.resolve().then(function () {
@@ -39,7 +37,7 @@ async function readWithDeadline(operation) {
 }
 
 async function fetchReadJson(url, options) {
-  return readWithDeadline(async function (signal) {
+  return withStorageDeadline(async function (signal) {
     var response = await fetch(url, Object.assign({}, options, { signal: signal }));
     // Include body consumption in the same deadline, not only the headers.
     return { ok: response.ok, status: response.status, data: response.ok ? await response.json() : null };
@@ -170,7 +168,7 @@ async function getData(key, siteUrl) {
   // 2. Try Netlify Blobs (fast cache — works in request context)
   try {
     var store = getStore(STORE_NAME);
-    var blob = await readWithDeadline(function () {
+    var blob = await withStorageDeadline(function () {
       return store.get(key, { type: 'json' });
     });
     if (blob) {
@@ -207,12 +205,9 @@ async function getData(key, siteUrl) {
 
 /**
  * Write data by key.
- * Write order: Supabase (primary, must succeed) → Netlify Blobs (best-effort cache).
+ * Write a validated payload to both durable stores. Either confirmed write is usable.
  */
 async function setData(key, data) {
-  var supabaseOk = false;
-  var blobOk = false;
-
   var validation = validateDataForKey(key, data, new Date().toISOString());
   if (!validation.valid) {
     console.error('[data-store] Rejected incompatible data for ' + key + ': ' + validation.errors.join('; ') + '. Existing last-known-good data retained.');
@@ -224,46 +219,55 @@ async function setData(key, data) {
     return false;
   }
 
-  // 1. Write to Supabase (primary — upsert)
-  if (SUPABASE_KEY) {
-    try {
-      var res = await fetch(SUPABASE_URL + '/rest/v1/live_data_store?on_conflict=key', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Prefer': 'resolution=merge-duplicates,return=minimal',
-        },
-        body: JSON.stringify({
-          key: key,
-          data: data,
-          updated_at: new Date().toISOString(),
-        }),
-      });
-      supabaseOk = res.ok;
-      if (supabaseOk) {
-        console.log('[data-store] Supabase written for key: ' + key);
-      } else {
-        console.error('[data-store] ' + storageDiagnostic('supabase-write', key, null, res.status));
-      }
-    } catch (err) {
-      console.error('[data-store] ' + storageDiagnostic('supabase-write', key, err));
-    }
-  }
+  const results = await Promise.all([writeSupabase(key, data), writeBlob(key, data)]);
+  return results.some(Boolean);
+}
 
-  // 2. Best-effort write to Netlify Blobs (may fail from scheduled functions)
+async function writeSupabase(key, data) {
+  if (!SUPABASE_KEY) return false;
   try {
-    var store = getStore(STORE_NAME);
-    await store.setJSON(key, data);
-    console.log('[data-store] Blob written for key: ' + key);
-    blobOk = true;
-  } catch (err) {
-    // Expected to fail from scheduled functions — not critical
-    console.log('[data-store] Blob write skipped for ' + key + ' (scheduled context)');
+    const response = await withStorageDeadline(signal => fetch(SUPABASE_URL + '/rest/v1/live_data_store?on_conflict=key', {
+      method: 'POST',
+      signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'resolution=merge-duplicates,return=minimal',
+      },
+      body: JSON.stringify({ key, data, updated_at: new Date().toISOString() }),
+    }));
+    if (!response.ok) {
+      console.error('[data-store] ' + storageDiagnostic('supabase-write', key, null, response.status));
+      return false;
+    }
+    console.log('[data-store] Supabase written for key: ' + key);
+    return true;
+  } catch (error) {
+    console.error('[data-store] ' + storageDiagnostic('supabase-write', key, error));
+    return false;
   }
+}
 
-  return supabaseOk || blobOk;
+async function writeBlob(key, data) {
+  let httpStatus;
+  try {
+    await withStorageDeadline(signal => {
+      const store = getStore(STORE_NAME, {
+        fetch: async (url, options) => {
+          const response = await fetch(url, { ...options, signal });
+          httpStatus = response.status;
+          return response;
+        },
+      });
+      return store.setJSON(key, data);
+    });
+    console.log('[data-store] Blob written for key: ' + key);
+    return true;
+  } catch (error) {
+    console.warn('[data-store] ' + storageDiagnostic('blob-write', key, error, httpStatus));
+    return false;
+  }
 }
 
 // ── Meta ────────────────────────────────────────────────────────────

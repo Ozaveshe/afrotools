@@ -160,6 +160,10 @@ function unitText(fuel) {
   return fuel === 'lpg' ? 'kg' : 'liter';
 }
 
+function observationLabel(product) {
+  return product.observed_at ? 'Observed ' + formatDate(product.observed_at) : 'Observation date unavailable';
+}
+
 function priceProperties(row, fuel) {
   const item = row[fuel] || {};
   const label = fuel === 'lpg' ? 'LPG' : fuel.charAt(0).toUpperCase() + fuel.slice(1);
@@ -181,6 +185,7 @@ function priceProperties(row, fuel) {
     });
   }
 
+  properties.push({ '@type': 'PropertyValue', name: 'Product observation date', value: item.observed_at || 'Observation date unavailable' });
   return properties;
 }
 
@@ -246,7 +251,7 @@ function faqItems(row, rows, estimate) {
     },
     {
       q: `How much is LPG in ${row.name}?`,
-      a: `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
+      a: `LPG is listed at ${priceLocal(row, 'lpg')} in the snapshot. ${observationLabel(row.lpg)}. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.`,
     },
     {
       q: `How much does a 5 KVA generator cost to run in ${row.name}?`,
@@ -496,7 +501,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
         <h1>Fuel prices in ${escapeHtml(row.name)}</h1>${regionalPetrolCard(regionalReference)}
         <p class="fuel-lede">${regionalReference ? 'Historical national snapshot below. ' : ''}Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
         <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
-        <p class="fuel-date">Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
+        <p class="fuel-date">Third-party snapshot, not an officially verified price. Each price below shows its observation date when available. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
       <aside class="fuel-price-card" aria-label="${escapeHtml(row.name)} fuel price summary">
         <div class="fuel-card-top">
@@ -507,9 +512,11 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
           <div class="fuel-flag" aria-hidden="true">${flag}</div>
         </div>
         <div class="fuel-price-list">
-          <div class="fuel-price-row"><span>Petrol</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'petrol'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'petrol'))} comparison</span></div></div>
-          <div class="fuel-price-row"><span>Diesel</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'diesel'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'diesel'))} comparison</span></div></div>
-          <div class="fuel-price-row"><span>LPG</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'lpg'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'lpg'))} comparison</span></div></div>
+          ${['petrol', 'diesel', 'lpg'].map(fuel => {
+            const dateLabel = observationLabel(row[fuel]);
+            const label = { petrol: 'Petrol', diesel: 'Diesel', lpg: 'LPG' }[fuel];
+            return `<div class="fuel-price-row"><span>${label}</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, fuel))}</strong><span class="fuel-usd">${escapeHtml(dateLabel)}</span><span class="fuel-usd">${escapeHtml(priceUsd(row, fuel))} comparison</span></div></div>`;
+          }).join('')}
         </div>
         <div class="fuel-actions">
           <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>

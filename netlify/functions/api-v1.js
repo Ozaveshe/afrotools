@@ -27,6 +27,7 @@ function jsonResp(statusCode, body, hdrs) {
 }
 
 exports.handler = async function(event) {
+  if (event?.blobs) require('./_shared/connect-data-blobs')(event);
   var CORS = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
