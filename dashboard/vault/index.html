@@ -281,6 +281,7 @@
             <div class="vault-confirm-box">
                 <h3>Delete this document?</h3>
                 <p>This cannot be undone. The file will be permanently removed from your vault.</p>
+                <p id="delete-status" role="status"></p>
                 <div class="vault-confirm-btns">
                     <button type="button" class="btn-cancel" id="btn-cancel-del">Cancel</button>
                     <button type="button" class="btn-confirm-del" id="btn-do-del">Delete</button>
@@ -294,7 +295,7 @@
     <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script>
     <script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script>
     <script src="/assets/js/afro-auth.js?v=63f50905" defer></script>
-    <script src="/assets/js/afro-vault.js?v=1299289f" defer></script>
+    <script src="/assets/js/afro-vault.js?v=76b1fd66" defer></script>
     <script>
     (function () {
       'use strict';
@@ -310,6 +311,7 @@
       var confirmOverlay = document.getElementById('confirm-overlay');
       var btnCancelDel   = document.getElementById('btn-cancel-del');
       var btnDoDel       = document.getElementById('btn-do-del');
+      var deleteStatus = document.getElementById('delete-status');
       var _deleteId = null;
 
       function waitForAuth(cb) {
@@ -425,8 +427,9 @@
         }
 
         var delBtn = e.target.closest('.btn-del');
-        if (delBtn) {
+        if (delBtn && !btnDoDel.disabled) {
           _deleteId = delBtn.dataset.id;
+          deleteStatus.textContent = '';
           confirmOverlay.classList.add('open');
         }
       });
@@ -437,7 +440,7 @@
         confirmOverlay.classList.remove('open');
       });
       confirmOverlay.addEventListener('click', function (e) {
-        if (e.target === confirmOverlay) {
+        if (!btnDoDel.disabled && e.target === confirmOverlay) {
           _deleteId = null;
           confirmOverlay.classList.remove('open');
         }
@@ -445,12 +448,20 @@
       btnDoDel.addEventListener('click', async function () {
         if (!_deleteId) return;
         btnDoDel.disabled = true;
+        btnCancelDel.disabled = true;
+        deleteStatus.textContent = '';
         btnDoDel.textContent = 'Deleting\u2026';
-        var result = await AfroVault.delete(_deleteId);
+        var result;
+        try {
+          result = await AfroVault.delete(_deleteId);
+        } catch {
+          result = { deleted: false };
+        }
         btnDoDel.disabled = false;
+        btnCancelDel.disabled = false;
         btnDoDel.textContent = 'Delete';
-        confirmOverlay.classList.remove('open');
-        if (result.deleted) {
+        if (result && result.deleted) {
+          confirmOverlay.classList.remove('open');
           var item = listEl.querySelector('[data-id="' + _deleteId + '"]');
           if (item) item.remove();
           // Re-check if list is empty
@@ -458,13 +469,14 @@
             listEl.style.display = 'none';
             emptyEl.style.display = '';
           }
+          _deleteId = null;
           // Update usage
           var stats = await AfroVault.getStats();
           updateUsage(stats);
         } else {
-          alert('Could not delete document. Please try again.');
+          deleteStatus.textContent = 'Could not finish deleting this document. Try again or cancel.';
+          btnDoDel.focus();
         }
-        _deleteId = null;
       });
 
       // Boot
