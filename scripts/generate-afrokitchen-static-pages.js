@@ -364,7 +364,7 @@ function renderIngredientsHtml(engine, recipe, servings) {
 
     const hasAmount = Number(ingredient.scaled_amount || 0) > 0;
     const amountHtml = hasAmount
-      ? `<span class="ak-ing-amount">${escapeHtml(engine.formatAmount(ingredient.scaled_amount))} ${escapeHtml(ingredient.unit || "")}</span> `
+      ? `<span class="ak-ing-amount">${escapeHtml(engine.formatAmount(ingredient.scaled_amount))} ${escapeHtml(engine.formatIngredientUnit(ingredient.unit, ingredient.scaled_amount))}</span> `
       : "";
 
     html += `<label class="ak-ing-item">
@@ -417,7 +417,7 @@ function refreshRecipeNutrition(existing, recipe, engine) {
 function formatSchemaIngredient(engine, ingredient) {
   const amount = Number(ingredient.scaled_amount || 0);
   const amountText = amount > 0 ? engine.formatAmount(amount) : "";
-  const unitText = ingredient.unit ? String(ingredient.unit).trim() : "";
+  const unitText = engine.formatIngredientUnit(ingredient.unit, amount).trim();
   const quantityText = [amountText, unitText].filter(Boolean).join(" ");
   const nameText = ingredient.name || "";
   const prepText = ingredient.prep_note ? `, ${ingredient.prep_note}` : "";

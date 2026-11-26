@@ -1567,7 +1567,7 @@
 
   function ingredientLine(item) {
     var amount = Number(item.scaled_amount || item.amount || 0) > 0 ? AK.formatAmount(item.scaled_amount || item.amount) + ' ' : '';
-    var unit = item.unit ? item.unit + ' ' : '';
+    var unit = item.unit ? AK.formatIngredientUnit(item.unit, item.scaled_amount || item.amount) + ' ' : '';
     return amount + unit + item.name + (item.prep_note ? ' (' + item.prep_note + ')' : '') + (item.is_optional ? ' optional' : '');
   }
 
@@ -1674,7 +1674,7 @@
   }
 
   function groupedShoppingLine(item) {
-    var amount = item.hasAmount ? formatShoppingAmount(item.amount, item.unit) + (item.unit ? ' ' + item.unit : '') + ' ' : '';
+    var amount = item.hasAmount ? formatShoppingAmount(item.amount, item.unit) + (item.unit ? ' ' + AK.formatIngredientUnit(item.unit, item.amount) : '') + ' ' : '';
     var name = item.name;
     if (item.hasAmount && Math.ceil(Number(item.amount) - 1e-9) > 1 && /^(?:whole|small|medium|large)$/i.test(item.unit || '') && /\bonion$/i.test(name)) {
       name += 's';

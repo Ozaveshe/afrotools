@@ -553,6 +553,15 @@ var AfroKitchenEngine = function() {
       ml: 4e3
     }
   };
+  function formatIngredientUnit(unit, amount) {
+    if (!unit || !(Number(amount) > 0)) return unit || "";
+    var forms = /^(cup|tablespoon|teaspoon|cube|clove|piece|slice)s?$/.exec(unit);
+    if (forms) return forms[1] + (amount > 1 ? "s" : "");
+    if (/^(large )?bunch(es)?$/.test(unit)) {
+      return unit.replace(/bunch(es)?$/, amount > 1 ? "bunches" : "bunch");
+    }
+    return unit;
+  }
   function s(e, t, r) {
     var o = r / t;
     return e.map(function(e) {
@@ -4528,6 +4537,7 @@ var AfroKitchenEngine = function() {
     },
     scaleIngredients: s,
     formatAmount: u,
+    formatIngredientUnit: formatIngredientUnit,
     convertUnit: function(e, t, r) {
       var o = a[t], n = a[r];
       return o && n ? void 0 !== o.ml && void 0 !== n.ml ? e * o.ml / n.ml : void 0 !== o.g && void 0 !== n.g ? e * o.g / n.g : null : null;
@@ -4716,7 +4726,7 @@ var AfroKitchenEngine = function() {
         recipeCuisine: e.country_name + ", " + e.region,
         nutrition: nutrition,
         recipeIngredient: r.map(function(e) {
-          return u(e.scaled_amount) + " " + e.unit + " " + e.name + (e.prep_note ? ", " + e.prep_note : "");
+          return u(e.scaled_amount) + " " + formatIngredientUnit(e.unit, e.scaled_amount) + " " + e.name + (e.prep_note ? ", " + e.prep_note : "");
         }),
         recipeInstructions: (e.steps || []).map(function(e) {
           return {
@@ -4752,7 +4762,7 @@ var AfroKitchenEngine = function() {
       var r = s(e.ingredients || [], hasRecordedRecipeYield(e) ? e.default_servings : 1, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + (hasRecordedRecipeYield(e) ? " | Serves " + t : " | Yield not recorded; source quantities") + " | " + (timingText) + "</div><h2>Ingredients</h2><ul>", n = "";
       r.forEach(function(e) {
         e.group_name && e.group_name !== n && (o += "</ul><strong>" + e.group_name + "</strong><ul>",
-        n = e.group_name), o += "<li>" + u(e.scaled_amount) + " " + e.unit + " " + e.name,
+        n = e.group_name), o += "<li>" + u(e.scaled_amount) + " " + formatIngredientUnit(e.unit, e.scaled_amount) + " " + e.name,
         e.prep_note && (o += ", " + e.prep_note), e.is_optional && (o += " (optional)"),
         o += "</li>";
       }), o += "</ul><h2>Instructions</h2><ol>", (e.steps || []).forEach(function(e) {
