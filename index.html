@@ -2898,8 +2898,11 @@ document.addEventListener('DOMContentLoaded', function() {
       return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
     }
     // Exact document requests only: "ankara" alone can also describe fabric.
-    function homepageInvoiceMatch(query) {
+    function homepageDocumentMatch(query) {
       var text = normalizeSearchText(query);
+      if (/^(?:merge|join|combine) (?:pdfs?|pdf files|pdf documents)(?: (?:together|into one))?$/.test(text)) {
+        return { id: 'pdf-merge-split', category: 'document-pdf', name: 'Merge PDFs', href: '/tools/pdf-merge-split/', status: 'live', icon: '📄' };
+      }
       var proforma = {
         'proforma invoice': ['Proforma Invoice Generator', '/tools/proforma-invoice/'],
         'facture proforma': ['Générateur de facture proforma', '/fr/tools/facture-proforma/'],
@@ -3203,8 +3206,8 @@ document.addEventListener('DOMContentLoaded', function() {
       focusIdx = -1;
       input.removeAttribute('aria-activedescendant');
       if (suppressDropdown) { closeDropdown(); return; }
-      var invoiceMatch = homepageInvoiceMatch(q);
-      if (!q || (!window.AFRO_TOOLS && !invoiceMatch)) { closeDropdown(); return; }
+      var documentMatch = homepageDocumentMatch(q);
+      if (!q || (!window.AFRO_TOOLS && !documentMatch)) { closeDropdown(); return; }
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
@@ -3218,8 +3221,8 @@ document.addEventListener('DOMContentLoaded', function() {
           return bl - al;
         });
       var results;
-      if (invoiceMatch) {
-        results = [{ t: invoiceMatch }].concat(baseResults.filter(function(entry) { return entry.t.id !== invoiceMatch.id; })).slice(0, 7);
+      if (documentMatch) {
+        results = [{ t: documentMatch }].concat(baseResults.filter(function(entry) { return entry.t.id !== documentMatch.id; })).slice(0, 7);
       } else {
         requestAIHeroRoute(q, baseResults.length);
         results = mergeAIHeroResult(baseResults, q).slice(0, 7);
@@ -3279,7 +3282,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function doSearch(source) {
       var q = input.value.trim();
-      var exactTool = homepageInvoiceMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
+      var exactTool = homepageDocumentMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
         return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
       });
       if (exactTool) { navigate(exactTool.href); return; }
