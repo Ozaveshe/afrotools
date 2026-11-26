@@ -103,6 +103,11 @@ const priorityAliases = aliases
 if (!stripGenerated.includes(PRIORITY_INSERT_BEFORE) || priorityAliases.length === 0) {
   throw new Error("Review French calculator alias ownership and fallback anchor before regeneration");
 }
+// These former Solar paths have published French equivalents. Limit redirects to
+// the hub and known country pages so other French fallback behavior is preserved.
+for (const [source, target] of require("./lib/french-solar-country-routes").createRouteMap()) {
+  if (source.startsWith("/fr/tools/solar-roi/")) priorityAliases.push({ source, target });
+}
 const prioritySources = new Set(priorityAliases.map(({ source }) => source));
 const priority = buildBlock(eol, priorityAliases, existingSources, PRIORITY_START_MARKER, PRIORITY_END_MARKER);
 const { block, count } = buildBlock(eol, aliases.filter(({ source }) => !prioritySources.has(source)), existingSources);
