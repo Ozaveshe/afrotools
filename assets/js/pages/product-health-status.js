@@ -3,7 +3,16 @@
 
   var api = window.AfroTools && window.AfroTools.productHealth;
   var snapshotNode = document.getElementById('productHealthSnapshot');
-  if (!api || !snapshotNode) return;
+  var locale = window.AfroStatusLocale;
+  if (!api) return;
+  if (snapshotNode) {
+    try { start(JSON.parse(snapshotNode.textContent)); } catch (error) { return; }
+  } else if (locale) {
+    fetchJson('/status/product-health.json').then(start).catch(function () {
+      document.getElementById('healthSummary').textContent = locale.unavailable;
+    });
+  }
+
 
   function escapeHtml(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
@@ -13,13 +22,22 @@
 
   function formatDate(value) {
     var iso = api.toIso(value);
-    if (!iso) return 'Not verified';
-    return new Date(iso).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+    if (!iso) return locale ? locale.noDate : 'Not verified';
+    return new Date(iso).toLocaleDateString(locale ? document.documentElement.lang : 'en', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
   }
 
   function renderRows(target, rows) {
     target.innerHTML = rows.map(function (row) {
       var status = api.normalizeStatus(row.status);
+      if (locale) {
+        var name = locale.names[row.id] || row.name;
+        var displayStatus = row.status_label === 'Status endpoint reachable' ? locale.endpoint : locale.labels[status];
+        return '<article class="status-row" data-product-id="' + escapeHtml(row.id) + '"><strong>' +
+          escapeHtml(name) + '</strong><span data-status="' + escapeHtml(status) + '">' +
+          escapeHtml(displayStatus) + '</span><span>' + escapeHtml(locale.verified) + ' <time datetime="' +
+          escapeHtml(api.toIso(row.last_verified) || '') + '">' + escapeHtml(formatDate(row.last_verified)) +
+          '</time></span></article>';
+      }
       var next = row.next_expected_check ? '<span>Next expected check: ' + escapeHtml(formatDate(row.next_expected_check)) + '</span>' : '';
       return '<article class="status-row" data-product-id="' + escapeHtml(row.id) + '">' +
         '<div class="status-name">' + escapeHtml(row.name) + '</div>' +
@@ -51,6 +69,11 @@
     var summary = document.getElementById('healthSummary');
     summary.dataset.state = state;
     var attention = rows.length - (counts.operational || 0);
+    if (locale) {
+      summary.querySelector('strong').textContent = attention ? locale.attention + attention : locale.current;
+      summary.querySelector('span').textContent = liveAvailable ? locale.live : locale.saved;
+      return;
+    }
     summary.querySelector('strong').textContent = attention ? attention + ' areas have limited, outdated or unavailable checks' : 'Available checks are current';
     summary.querySelector('span:last-child').textContent = liveAvailable
       ? 'Live checks were combined with the static source snapshot. Coverage and freshness remain separate.'
@@ -120,48 +143,50 @@
     });
   }
 
-  var snapshot;
-  try {
-    snapshot = JSON.parse(snapshotNode.textContent);
-  } catch (error) {
-    return;
-  }
-  snapshot.platform = (snapshot.platform || []).map(function (row) { return Object.assign({}, row); });
-  snapshot.products = (snapshot.products || []).map(function (row) { return Object.assign({}, row); });
+  function start(snapshot) {
+    snapshot.platform = (snapshot.platform || []).map(function (row) { return Object.assign({}, row); });
+    snapshot.products = (snapshot.products || []).map(function (row) { return Object.assign({}, row); });
 
-  var platformTarget = document.getElementById('platformStatus');
-  var productTarget = document.getElementById('productStatus');
-  renderRows(platformTarget, snapshot.platform);
-  renderRows(productTarget, snapshot.products);
-  updateSummary(snapshot, false);
-
-  Promise.allSettled([
-    fetchJson('/api/data-freshness'),
-    fetchJson('/api/afrostream/health'),
-    fetchJson('/status/release.json')
-  ]).then(function (results) {
-    var liveAvailable = false;
-    if (results[0].status === 'fulfilled') liveAvailable = applyFreshness(snapshot, results[0].value) || liveAvailable;
-    if (results[1].status === 'fulfilled') liveAvailable = applyAfroStream(snapshot, results[1].value.data) || liveAvailable;
-    var release = results[2].status === 'fulfilled' ? api.safeReleaseMetadata(results[2].value) : null;
-    if (release && release.production && release.commit && release.built_at) {
-      replaceRow(snapshot.platform, 'website', {
-        status: api.STATUS.PARTIAL,
-        status_label: 'Status endpoint reachable',
-        last_verified: new Date().toISOString(),
-        next_expected_check: null,
-        coverage: 'This browser received the production release record.',
-        reason: 'This checks the public status endpoint only; individual tools, search and authentication have separate checks.'
-      });
-    }
+    var platformTarget = document.getElementById('platformStatus');
+    var productTarget = document.getElementById('productStatus');
     renderRows(platformTarget, snapshot.platform);
     renderRows(productTarget, snapshot.products);
-    updateSummary(snapshot, liveAvailable);
-    var releaseNode = document.getElementById('releaseStatus');
-    if (release && release.production && release.commit && release.built_at) {
-      releaseNode.textContent = 'Production build ' + release.commit.slice(0, 7) + ' was created ' + formatDate(release.built_at) + '. Commit subjects and internal deploy details are not exposed.';
-    } else {
-      releaseNode.textContent = 'Production deploy identity is unavailable in this build. No local or preview build is presented as production.';
-    }
-  });
+    updateSummary(snapshot, false);
+
+    Promise.allSettled([
+      fetchJson('/api/data-freshness'),
+      fetchJson('/api/afrostream/health'),
+      fetchJson('/status/release.json')
+    ]).then(function (results) {
+      var liveAvailable = false;
+      if (results[0].status === 'fulfilled') liveAvailable = applyFreshness(snapshot, results[0].value) || liveAvailable;
+      if (results[1].status === 'fulfilled') liveAvailable = applyAfroStream(snapshot, results[1].value.data) || liveAvailable;
+      var release = results[2].status === 'fulfilled' ? api.safeReleaseMetadata(results[2].value) : null;
+      if (release && release.production && release.commit && release.built_at) {
+        replaceRow(snapshot.platform, 'website', {
+          status: api.STATUS.PARTIAL,
+          status_label: 'Status endpoint reachable',
+          last_verified: new Date().toISOString(),
+          next_expected_check: null,
+          coverage: 'This browser received the production release record.',
+          reason: 'This checks the public status endpoint only; individual tools, search and authentication have separate checks.'
+        });
+      }
+      renderRows(platformTarget, snapshot.platform);
+      renderRows(productTarget, snapshot.products);
+      updateSummary(snapshot, liveAvailable);
+      var releaseNode = document.getElementById('releaseStatus');
+      if (locale) {
+        releaseNode.textContent = release && release.production && release.commit && release.built_at
+          ? locale.build + ' ' + release.commit.slice(0, 7) + ' · ' + formatDate(release.built_at)
+          : locale.noRelease;
+        return;
+      }
+      if (release && release.production && release.commit && release.built_at) {
+        releaseNode.textContent = 'Production build ' + release.commit.slice(0, 7) + ' was created ' + formatDate(release.built_at) + '. Commit subjects and internal deploy details are not exposed.';
+      } else {
+        releaseNode.textContent = 'Production deploy identity is unavailable in this build. No local or preview build is presented as production.';
+      }
+    });
+  }
 })();
