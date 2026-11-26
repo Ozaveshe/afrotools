@@ -33,6 +33,7 @@ const FIXTURE = {
   ],
   edus: [{ deg: "BSc Statistics", sch: "University of Lagos", loc: "Lagos, Nigeria", y1: "2016", y2: "2020", g: "Second Class Upper" }],
   skills: { h: "SQL, Excel, Power BI", s: "Communication, stakeholder management", t: "Microsoft 365, Google Sheets" },
+  showProjs: true,
   projs: [{ n: "Retail Sales Dashboard", tech: "Power BI", d: "Built a dashboard showing branch sales and weekly trend lines." }],
   certs: [{ n: "Google Data Analytics Certificate", i: "Coursera", y: "2023" }],
   langs: [{ l: "English", lv: "Fluent" }],
@@ -237,7 +238,9 @@ async function main() {
   assert(documentXml.includes("<w:numPr>"), "DOCX bullets are not real Word bullets.");
   assert(!Array.from(docxEntries.keys()).some((name) => name.startsWith("word/media/")), "DOCX should not embed screenshots or images.");
 
-  const pack = await context.CVApplicationPackExport.buildApplicationPack(packPanel());
+  const applicantPack = await context.CVApplicationPackExport.buildApplicationPack(packPanel());
+  assert(!applicantPack.entries.some((name) => name.endsWith(".json")), "Default application ZIP must omit private backups.");
+  const pack = await context.CVApplicationPackExport.buildApplicationPack(packPanel(), true);
   assert(pack.filename === "kelechi-amara-abdulrahman-chukwumereije-data-analyst-application-pack.zip", "Unexpected ZIP filename: " + pack.filename);
   const unsafe = pack.entries.find((name) => /[^a-z0-9._-]/.test(name));
   assert(!unsafe, "Unsafe character in ZIP entry filename: " + unsafe);

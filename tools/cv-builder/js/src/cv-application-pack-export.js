@@ -99,7 +99,7 @@
             applicationPack: e
         }, null, 2);
     }
-    async function x(r) {
+    async function x(r, includePrivateBackup) {
         var l = function(t) {
             t = t || e.querySelector(".cv-application-pack-panel");
             var r = {};
@@ -128,7 +128,7 @@
                 i[t.dataset.packText] = n(t.value) || i[t.dataset.packText] || "";
             }), i;
         }(r, l), d = t.CVAtsPlainMode && t.CVAtsPlainMode.buildText ? t.CVAtsPlainMode.buildText() : t.CVExportUpgrade.buildAtsPlainText(), u = [];
-        return u.push({
+        u.push({
             name: c + "-cv.pdf",
             blob: await f()
         }), u.push({
@@ -149,10 +149,12 @@
         })), u.push({
             name: c + "-application-email.txt",
             content: n(p.emailMessage) || [ "Subject: Application for " + (l.role || o().title || "the role"), "", "Dear Hiring Team,", "", "Please find attached my CV and application materials for " + (l.role || "the role") + (l.company ? " at " + l.company : "") + ".", "", "Kind regards,", [ o().fn, o().ln ].filter(Boolean).join(" ") || "[your name]" ].join("\n")
-        }), u.push({
+        });
+        if (includePrivateBackup === true) u.push({
             name: c + "-backup.json",
             content: b(l, p)
-        }), {
+        });
+        return {
             blob: await s(u),
             filename: c + "-application-pack.zip",
             entries: u.map(function(t) {
@@ -165,14 +167,15 @@
         var state = r(), fields = panel ? Array.from(panel.querySelectorAll("[data-pack-text], [data-pack-role], [data-pack-company], [data-pack-jd], [data-pack-tone]")).map(function(field) { return field.value; }) : [];
         return JSON.stringify([ state.data, state.country, state.template, state.accentHex, fields ]);
     }
-    async function h(a) {
+    async function h(a, backupChoice) {
         if (!t.Blob || !t.TextEncoder || !t.URL) return l("Application Pack ZIP is unavailable in this browser."),
         !1;
         try {
             l("Building application pack...");
             var fingerprint = exportSnapshot(a);
-            var n = await x(a || e.querySelector(".cv-application-pack-panel"));
-            if (fingerprint !== exportSnapshot(a)) {
+            var includeBackup = !!(backupChoice && backupChoice.checked);
+            var n = await x(a || e.querySelector(".cv-application-pack-panel"), includeBackup);
+            if (fingerprint !== exportSnapshot(a) || (backupChoice && backupChoice.checked !== includeBackup)) {
                 l("CV or application pack changed. Review it and export again.");
                 return !1;
             }
@@ -203,12 +206,22 @@
     function m() {
         return !!(t.Blob && t.URL && t.TextEncoder && t.CVDocxExport && t.CVDocxExport.isAvailable && t.CVDocxExport.isAvailable());
     }
+    function addBackupChoice(container) {
+        if (container.querySelector("[data-pack-private-backup]")) return;
+        var label = e.createElement("label");
+        var checkbox = e.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.setAttribute("data-pack-private-backup", "");
+        label.appendChild(checkbox);
+        label.appendChild(e.createTextNode(" Include a private JSON backup with my full CV draft, target job description and application drafts in the ZIP"));
+        container.appendChild(label);
+    }
     function y() {
         !function() {
             if (t.CVExportUpgrade && !t.CVExportUpgrade.__applicationPackExportReady) {
                 var e = t.CVExportUpgrade.handleExport;
                 t.CVExportUpgrade.handleExport = function(t) {
-                    return "pack" === t ? h() : e ? e.apply(this, arguments) : void 0;
+                    return "pack" === t ? h(null, document.querySelector(".cv-export-actions [data-pack-private-backup]")) : e ? e.apply(this, arguments) : void 0;
                 }, t.CVExportUpgrade.__applicationPackExportReady = !0;
             }
         }(), e.querySelectorAll(".cv-application-pack-panel .cv-pack-toolbar").forEach(function(t) {
@@ -217,8 +230,9 @@
                 a.type = "button", a.className = "primary", a.setAttribute("data-pack-download", "true"),
                 a.textContent = "Download Application Pack", t.insertBefore(a, t.firstChild);
             }
+            addBackupChoice(t);
             t.querySelectorAll("[data-pack-download]").forEach(function(t) {
-                t.disabled = !m(), t.title = m() ? "Download a ZIP with CV, ATS, DOCX, letter, email, and backup files" : "DOCX export is unavailable in this browser";
+                t.disabled = !m(), t.title = m() ? "Download a ZIP with CV, ATS, DOCX, letter and email files" : "DOCX export is unavailable in this browser";
             });
         }), e.querySelectorAll(".cv-export-actions").forEach(function(t) {
             if (!t.querySelector('[data-cv-export="pack"]')) {
@@ -226,6 +240,7 @@
                 a.type = "button", a.className = "cv-export-btn primary", a.dataset.cvExport = "pack",
                 a.textContent = "Download Application Pack", t.appendChild(a);
             }
+            addBackupChoice(t);
             t.querySelectorAll('[data-cv-export="pack"]').forEach(function(t) {
                 t.disabled = !m(), t.title = m() ? "Download all application files in one ZIP" : "DOCX export is unavailable in this browser";
             });
@@ -233,7 +248,7 @@
     }
     e.addEventListener("click", function(t) {
         var e = t.target.closest && t.target.closest("[data-pack-download]");
-        e && (t.preventDefault(), h(e.closest(".cv-application-pack-panel")));
+        e && (t.preventDefault(), h(e.closest(".cv-application-pack-panel"), e.parentElement.querySelector("[data-pack-private-backup]")));
     }, !0), t.CVApplicationPackExport = {
         isAvailable: m,
         buildZip: s,
