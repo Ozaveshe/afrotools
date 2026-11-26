@@ -70,7 +70,10 @@
         + '%. Confirm recovery yield, moisture, labour, energy, packaging and buyer price.';
     },
     'farm-loans-hub': function (values) {
-      var share = values.monthlyRevenue > 0 ? values.repayment / values.monthlyRevenue * 100 : 0;
+      if (values.monthlyRevenue === 0) {
+        return 'Monthly farm revenue is zero. A repayment share cannot be calculated for zero revenue.';
+      }
+      var share = values.repayment / values.monthlyRevenue * 100;
       return 'Planning check: proposed repayment uses ' + share.toFixed(1)
         + '% of average monthly farm revenue. Collateral recorded: ' + values.collateral
         + '. This is not an eligibility or approval result; stress-test seasonal low months and confirm APR, fees, security and penalties with the lender.';

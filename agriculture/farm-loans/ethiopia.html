@@ -279,7 +279,11 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     <div class="form-grid">
       <div class="field">
         <label class="f-label-text" for="inpAmount">Loan Amount Needed <span class="f-label-hint" id="currencyHint">(ETB)</span></label>
-        <input class="f-input" id="inpAmount" type="number" min="10000" step="10000" value="500000">
+        <input class="f-input" id="inpAmount" type="number" min="0.01" step="any" value="500000">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="upfrontFee">Quoted upfront fee (optional, in loan currency)</label>
+        <input class="f-input" type="number" id="upfrontFee" min="0" step="any" placeholder="0">
       </div>
       <div class="field">
         <label class="f-label-text" for="selTenor">Repayment Period</label>
@@ -418,7 +422,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/agri-loans-data.js?v=74bee4a9"></script>
-<script src="/engines/farm-loan-engine.js?v=8b9e4b39"></script>
+<script src="/data/agriculture/agri-loans-evidence.js?v=5de42d9b"></script>
+<script src="/engines/farm-loan-engine.js?v=8a352fb8"></script>
 <script>
 var COUNTRY_CODE = 'ET';
 
@@ -448,12 +453,21 @@ function calculate() {
   var data = window.AfroTools.AgriLoansData[COUNTRY_CODE];
   if (!eng || !data) { alert('Data loading error. Please refresh.'); return; }
 
+  var panel = document.getElementById('resultsPanel');
+  var feeField = document.getElementById('upfrontFee');
+  var fields = ['inpAge', 'inpFarmSize', 'inpAmount', 'upfrontFee'];
+  for (var i = 0; i < fields.length; i++) {
+    var field = document.getElementById(fields[i]);
+    field.required = field !== feeField;
+    if (!field.reportValidity()) { panel.classList.remove('on'); return; }
+  }
   var profile = {
     age: parseInt(document.getElementById('inpAge').value) || 30,
     farmSize_ha: parseFloat(document.getElementById('inpFarmSize').value) || 1,
     isCoop: document.querySelector('input[name="isCoop"]:checked').value === 'yes',
     hasBankAccount: document.querySelector('input[name="hasBank"]:checked').value === 'yes',
     hasCollateral: document.querySelector('input[name="hasCollateral"]:checked').value === 'yes',
+    hasRequiredTraining: Boolean(document.getElementById("requiredTraining") && document.getElementById("requiredTraining").checked),
     requestedAmount: parseFloat(document.getElementById('inpAmount').value) || 0,
     tenorMonths: parseInt(document.getElementById('selTenor').value) || 12
   };
@@ -465,17 +479,18 @@ function calculate() {
 
   // Summary stats
   var statsEl = document.getElementById('summaryStats');
-  var lowestRate = eligible.length > 0 ? Math.min.apply(null, eligible.map(function(r){ return eng.rateNum(r.program.interestRate_pct) || 99; })) : null;
+  var rates = eligible.filter(function(r) { return r.rateAssumption; }).map(function(r) { return r.rate; });
+  var lowestRate = rates.length ? Math.min.apply(null, rates) : null;
   var highestLoan = eligible.length > 0 ? Math.max.apply(null, eligible.map(function(r){ return r.program.maxAmount || 0; })) : 0;
 
   statsEl.innerHTML =
-    '<div class="stat-card"><div class="stat-val">' + eligible.length + '</div><div class="stat-label">Programs you qualify for</div></div>' +
-    (lowestRate !== null && lowestRate < 99 ? '<div class="stat-card"><div class="stat-val good" style="color:#16a34a;">' + lowestRate + '%</div><div class="stat-label">Lowest available rate (p.a.)</div></div>' : '') +
-    (highestLoan > 0 ? '<div class="stat-card"><div class="stat-val">' + eng.fmt(highestLoan, sym) + '</div><div class="stat-label">Maximum loan you could access</div></div>' : '') +
+    '<div class="stat-card"><div class="stat-val">' + eligible.length + '</div><div class="stat-label">Programs matching your inputs</div></div>' +
+    (lowestRate !== null ? '<div class="stat-card"><div class="stat-val good" style="color:#16a34a;">' + lowestRate + '%</div><div class="stat-label">Lowest modeled annual rate</div></div>' : '') +
+    (highestLoan > 0 ? '<div class="stat-card"><div class="stat-val">' + eng.fmt(highestLoan, sym) + '</div><div class="stat-label">Highest listed program limit</div></div>' : '') +
     '<div class="stat-card"><div class="stat-val">' + results.length + '</div><div class="stat-label">Total programs in ' + data.country + '</div></div>';
 
   // Eligible programs
-  document.getElementById('eligibleTitle').textContent = eligible.length > 0 ? '✓ Programs You Qualify For (' + eligible.length + ')' : '✗ No Programs Match Your Current Profile';
+  document.getElementById('eligibleTitle').textContent = eligible.length > 0 ? '✓ Programs Matching Your Inputs (' + eligible.length + ')' : '✗ No Programs Match Your Current Profile';
   var eligibleListEl = document.getElementById('eligibleList');
   eligibleListEl.innerHTML = '';
 
@@ -491,7 +506,7 @@ function calculate() {
   var ineligibleSection = document.getElementById('ineligibleSection');
   if (ineligible.length > 0) {
     ineligibleSection.style.display = 'block';
-    document.getElementById('ineligibleTitle').textContent = 'Programs You Don\'t Currently Qualify For (' + ineligible.length + ')';
+    document.getElementById('ineligibleTitle').textContent = 'Other programs and requirements (' + ineligible.length + ')';
     var ineligibleListEl = document.getElementById('ineligibleList');
     ineligibleListEl.innerHTML = '';
     ineligible.forEach(function(r) {
@@ -501,7 +516,6 @@ function calculate() {
     ineligibleSection.style.display = 'none';
   }
 
-  var panel = document.getElementById('resultsPanel');
   panel.classList.add('on');
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -532,15 +546,20 @@ function buildProgramCard(r, sym, eng, isEligible) {
   if (isEligible && r.repayment && r.repayment.monthly > 0) {
     repayHTML = '<div class="repayment-box">' +
       '<div class="rp-item"><div class="rp-label">Monthly Payment</div><div class="rp-val">' + eng.fmtFull(r.repayment.monthly, sym) + '</div></div>' +
-      '<div class="rp-item"><div class="rp-label">Total Payable</div><div class="rp-val">' + eng.fmtFull(r.repayment.totalPayable, sym) + '</div></div>' +
+      '<div class="rp-item"><div class="rp-label">Total Payable before fees</div><div class="rp-val">' + eng.fmtFull(r.repayment.totalPayable, sym) + '</div></div>' +
       '<div class="rp-item"><div class="rp-label">Total Interest</div><div class="rp-val">' + eng.fmtFull(r.repayment.totalInterest, sym) + '</div></div>' +
-      (r.repayment.loanUsed !== undefined && r.repayment.loanUsed < r.program.requestedAmount ? '<div class="rp-item"><div class="rp-label">Loan Used</div><div class="rp-val">' + eng.fmtFull(r.repayment.loanUsed, sym) + '</div></div>' : '') +
+      '<div class="rp-item"><div class="rp-label">Principal used</div><div class="rp-val">' + eng.fmtFull(r.repayment.loanUsed, sym) + '</div></div>' +
+      '<div class="rp-item"><div class="rp-label">Total including entered upfront fee</div><div class="rp-val">' + eng.fmtFull(r.repayment.totalPayable + Number(document.getElementById('upfrontFee').value), sym) + '</div></div>' +
       '</div>';
   }
   if (isEligible && r.repayment && r.repayment.monthly === 0 && prog.interestRate_pct === 0) {
     repayHTML = '<div class="repayment-box"><div class="rp-item"><div class="rp-label">Type</div><div class="rp-val" style="font-size:0.85rem;">In-kind / Subsidy — no interest</div></div></div>';
   }
 
+  if (repayHTML && r.rateAssumption) {
+    repayHTML += '<p>Equal monthly payments over ' + document.getElementById('selTenor').value + ' months at ' + r.rate +
+      '% per year. ' + r.rateAssumption.disclosure + ' The upfront fee is paid separately. Other charges and grace periods are excluded.</p>';
+  }
   var notesHTML = prog.notes ? '<div class="program-notes">' + prog.notes + '</div>' : '';
   var applyHTML = prog.applyAt ? '<div class="program-apply">&#128205; <span>Apply at:</span> ' + prog.applyAt + '</div>' : '';
 
@@ -554,6 +573,12 @@ function buildProgramCard(r, sym, eng, isEligible) {
   }
 
   div.innerHTML = headHTML + statsHTML + repayHTML + warningsHTML + blockersHTML + notesHTML + applyHTML;
+  if (prog.officialUrl) {
+    var link = document.createElement('a');
+    link.href = prog.officialUrl;
+    link.textContent = prog.sourceTitle + ' · record checked ' + prog.checkedDate;
+    div.appendChild(link);
+  }
   return div;
 }
 </script>

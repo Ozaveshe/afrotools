@@ -101,7 +101,7 @@
       var assumption = rateAssumption(program.interestRate_pct);
       var rate = assumption ? assumption.used : 0;
       var repayment = null;
-      if (eligibility.eligible && profile.requestedAmount > 0 && profile.tenorMonths > 0 && rate > 0) {
+      if (eligibility.eligible && profile.requestedAmount > 0 && profile.tenorMonths > 0 && assumption && (rate > 0 || (rate === 0 && program.programMode === 'loan-estimate'))) {
         var principal = profile.requestedAmount;
         if (program.maxAmount && principal > program.maxAmount) principal = program.maxAmount;
         repayment = calcRepayment(principal, rate, profile.tenorMonths);
