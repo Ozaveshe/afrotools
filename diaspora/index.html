@@ -186,6 +186,7 @@ html[data-theme="dark"] .dia-hero-copy,html[data-theme="dark"] .dia-panel p,html
       <p>Pick the closest workflow to get a short checklist and the most relevant tool order. The selection is saved only on this device.</p>
       <div class="path-grid">
         <article class="path-card" data-dia-path="eligibility"><strong>Check points eligibility</strong><span>Estimate CRS, Australia points, or UK Skilled Worker signals before spending on exams, assessments, or advisers.</span><button type="button" data-dia-path-select="eligibility" aria-pressed="false">Plan path</button></article>
+        <article class="path-card" id="return-home" data-dia-path="return-home"><strong>Plan a move back home</strong><span>Compare monthly living costs in the cities you are considering, then compare quotes for transferring your moving funds.</span><a href="/tools/cost-of-living/">Compare city living costs</a><a href="/tools/remittance-compare/">Compare money transfer quotes</a><button type="button" data-dia-path-select="return-home" aria-pressed="false">Plan path</button></article>
         <article class="path-card" data-dia-path="application"><strong>Track visa application</strong><span>Organize destination, visa type, submitted date, document checklist, and follow-up timing.</span><button type="button" data-dia-path-select="application" aria-pressed="false">Plan path</button></article>
       </div>
       <div class="path-panel" aria-live="polite">
@@ -238,6 +239,7 @@ html[data-theme="dark"] .dia-hero-copy,html[data-theme="dark"] .dia-panel p,html
 function initDiasporaCategory() {
   var CORE_IDS = ["immigration-points", "visa-tracker"];
   var PATHS = {
+    "return-home": { title: "Plan a move back home", copy: "Use the city comparison as a starting point. Replace its estimates with your own rent and household quotes, and record one-time moving costs separately.", checks: ["Compared monthly housing and household costs", "Listed moving, travel and setup quotes separately", "Compared transfer quotes by total debit and amount received", "Recorded the amount to set aside before moving"] },
     eligibility: { title: "Check points eligibility", copy: "Estimate the score signal before paying for tests, assessments, applications, or advice.", checks: ["Destination pathway selected", "Language and education facts checked", "Official cutoff or salary rule verified", "Gap list copied without personal identifiers"] },
     application: { title: "Track visa application", copy: "Organize submitted date, destination, visa type, document checklist, and follow-up timing.", checks: ["Application date entered", "Document checklist reviewed", "Official portal checked today", "Follow-up date copied"] }
   };
@@ -264,10 +266,10 @@ function initDiasporaCategory() {
 
   function escapeHtml(value) { return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
   function readState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {}; } catch (error) { return {}; } }
-  function readUrlState() { try { var params = new URLSearchParams(location.search || ""); return { path: params.get("path") || "" }; } catch (error) { return {}; } }
+  function readUrlState() { try { var params = new URLSearchParams(location.search || ""); return { path: params.get("path") || (location.hash === "#return-home" ? "return-home" : "") }; } catch (error) { return {}; } }
   function normalize(raw) { raw = raw || {}; return { path: PATHS[raw.path] ? raw.path : "", checks: raw.checks && typeof raw.checks === "object" ? raw.checks : {} }; }
   function loadState() { return normalize(Object.assign(normalize(readState()), readUrlState())); }
-  function syncUrl() { if (!history || !URLSearchParams) return; var params = new URLSearchParams(location.search || ""); if (state.path) params.set("path", state.path); else params.delete("path"); history.replaceState(null, "", location.pathname + (params.toString() ? "?" + params.toString() : "") + location.hash); }
+  function syncUrl() { if (!history || !URLSearchParams) return; var params = new URLSearchParams(location.search || ""); if (state.path) params.set("path", state.path); else params.delete("path"); history.replaceState(null, "", location.pathname + (params.toString() ? "?" + params.toString() : "") + (location.hash === "#return-home" && state.path !== "return-home" ? "" : location.hash)); }
   function saveState(message) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) {} syncUrl(); if (message && status) status.textContent = message; }
   function renderTools() {
     if (count) count.textContent = String(coreTools.length);
