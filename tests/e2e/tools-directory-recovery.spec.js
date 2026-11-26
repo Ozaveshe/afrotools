@@ -123,3 +123,20 @@ for (const width of [320, 390]) {
     });
   }
 }
+
+for (const width of [320, 390]) {
+  test(`directory ranks task searches at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/tools/', { waitUntil: 'domcontentloaded' });
+    const search = page.getByRole('textbox', { name: 'Search tools', exact: true });
+    const firstResult = page.locator('#tools-container a.tc').first();
+    for (const [query, href] of [
+      ['tractor loan', '/agriculture/tractor-calculator/'],
+      ['count words', '/tools/word-counter/'],
+      ['pdf password', '/tools/pdf-password/'],
+    ]) {
+      await search.fill(query);
+      await expect(firstResult).toHaveAttribute('href', href);
+    }
+  });
+}

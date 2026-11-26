@@ -8254,6 +8254,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function generatedAliases(tool) {
     var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
     var terms = [];
+    if (tool.id === 'tractor-calculator') terms.push('tractor loan equipment financing');
     if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(raw)) terms.push('fuel tracker fuel prices petrol diesel gasoline carburant');
     if (/\btax\b|paye|vat|wht|cit|cgt|duty/.test(raw)) terms.push('tax income tax business tax salary tax impot fiscal');
     if (/stream|creator|content|media|music|video/.test(raw)) terms.push('creator economy creative economy streaming content creator media');
@@ -8561,6 +8562,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     var catKeys = Object.keys(AFRO_CATEGORIES);
+    if (tokens.length && (!sortFilter || sortFilter.value === 'popular')) {
+      // Each group's highest-scoring result is first after the relevance sort.
+      catKeys = catKeys.filter(function(key) { return grouped[key]; }).sort(function(a, b) {
+        return grouped[b][0]._searchScore - grouped[a][0]._searchScore;
+      });
+    }
     var html = '';
     var totalShown = 0;
     var visibleCount = 0;
