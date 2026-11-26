@@ -17,6 +17,7 @@
       blockedDetail: 'Neither the API nor the committed snapshot supplied a policy-rate row with complete recent official-source evidence.',
       rows: 'verified rows', withheld: 'withheld rows', candidate: 'candidate rows',
       searchEmpty: 'No verified rows match this search.',
+      csvHeaders: ['Country', 'Code', 'Central bank', 'Policy rate (%)', 'Benchmark', 'Decision date', 'Verified date', 'Official source', 'World Bank annual CPI (%)', 'CPI year', 'Illustrative gap (pp)'],
       csvDone: 'Reviewed CSV downloaded locally.', pdfDone: 'Reviewed PDF generated locally.',
       pdfMissing: 'The PDF helper is unavailable. Nothing was uploaded; use print to save a PDF.',
       source: 'Official source', checked: 'Checked', annual: 'World Bank annual CPI', unavailable: 'Unavailable'
@@ -31,6 +32,7 @@
       blockedDetail: 'Ni l’API ni le fichier publié ne fournissent une ligne avec des preuves officielles récentes et complètes.',
       rows: 'lignes vérifiées', withheld: 'lignes masquées', candidate: 'lignes candidates',
       searchEmpty: 'Aucune ligne vérifiée ne correspond à cette recherche.',
+      csvHeaders: ["Pays", "Code", "Banque centrale", "Taux directeur (%)", "Taux de référence", "Date de décision", "Date de vérification", "Source officielle", "Inflation annuelle selon l’IPC (Banque mondiale, %)", "Année de l’IPC", "Écart indicatif (points de pourcentage)"],
       csvDone: 'CSV vérifié téléchargé localement.', pdfDone: 'PDF vérifié créé localement.',
       pdfMissing: 'Le module PDF est indisponible. Aucune donnée n’a été envoyée ; utilisez l’impression pour enregistrer en PDF.',
       source: 'Source officielle', checked: 'Vérifié', annual: 'IPC annuel Banque mondiale', unavailable: 'Indisponible'
@@ -45,6 +47,7 @@
       blockedDetail: 'API na faili iliyochapishwa hazikuwa na safu yenye ushahidi rasmi, kamili na wa karibuni.',
       rows: 'safu zilizohakikiwa', withheld: 'safu zilizofichwa', candidate: 'safu za awali',
       searchEmpty: 'Hakuna safu iliyohakikiwa inayolingana na utafutaji.',
+      csvHeaders: ["Nchi", "Msimbo", "Benki kuu", "Kiwango cha sera (%)", "Kiwango cha marejeo", "Tarehe ya uamuzi", "Tarehe ya uhakiki", "Chanzo rasmi", "Mfumuko wa bei wa mwaka kulingana na fahirisi ya bei za walaji (Benki ya Dunia, %)", "Mwaka wa fahirisi", "Tofauti ya mfano (pointi za asilimia)"],
       csvDone: 'CSV iliyohakikiwa imepakuliwa kwenye kifaa.', pdfDone: 'PDF iliyohakikiwa imetengenezwa kwenye kifaa.',
       pdfMissing: 'Kifaa cha PDF hakipatikani. Hakuna data iliyotumwa; tumia print kuhifadhi PDF.',
       source: 'Chanzo rasmi', checked: 'Imehakikiwa', annual: 'Mfumuko wa mwaka wa Benki ya Dunia', unavailable: 'Haipatikani'
@@ -191,7 +194,7 @@
 
   function csvCell(value) { return '"' + String(value == null ? '' : value).replace(/"/g, '""') + '"'; }
   csv.addEventListener('click', function () {
-    var rows = [['Country', 'Code', 'Central bank', 'Policy rate (%)', 'Benchmark', 'Decision date', 'Verified date', 'Official source', 'World Bank annual CPI (%)', 'CPI year', 'Illustrative gap (pp)']];
+    var rows = [text.csvHeaders];
     state.rows.forEach(function (row) {
       rows.push([row.name, row.code, row.central_bank, row.policy_rate.toFixed(2), row.policy_rate_name, row.policy_rate_source_date, String(row.policy_rate_verified_at).slice(0, 10), row.policy_rate_source_url, row.annual_inflation ? row.annual_inflation.value.toFixed(2) : '', row.annual_inflation ? row.annual_inflation.year : '', row.illustrative_gap == null ? '' : row.illustrative_gap.toFixed(2)]);
     });
