@@ -103,6 +103,10 @@
     function invoiceCopy(value) {
         var language = (document.documentElement.lang || "en").split("-")[0], map = {
             fr: {
+                "AfroTools Invoice Generator": "Générateur de factures AfroTools",
+                "Create an invoice with AfroTools.": "Créez une facture avec AfroTools.",
+                "Share tool link": "Partager le lien de l’outil",
+                "Share invoice data": "Partager les données de la facture",
                 Unpaid: "Non payé",
                 ", balance due ": ", solde dû ",
                 Status: "Statut",
@@ -238,6 +242,10 @@
                 "PDF engine did not load. Refresh and try again.": "Le moteur PDF n’a pas chargé. Actualisez puis réessayez."
             },
             sw: {
+                "AfroTools Invoice Generator": "Kizalishaji cha ankara cha AfroTools",
+                "Create an invoice with AfroTools.": "Tengeneza ankara kwa kutumia AfroTools.",
+                "Share tool link": "Shiriki kiungo cha zana",
+                "Share invoice data": "Shiriki taarifa za ankara",
                 Unpaid: "Haijalipwa",
                 ", balance due ": ", salio linalodaiwa ",
                 Status: "Hali",
@@ -607,10 +615,10 @@
             var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(x())))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
             url.searchParams.set(n, encoded);
         }
-        var title = invoiceCopy("Invoice") + (include ? " " + (l("invoiceNumber") || "") : "");
+        var title = include ? invoiceCopy("Invoice") + " " + (l("invoiceNumber") || "") : invoiceCopy("AfroTools Invoice Generator");
         if (navigator.share) navigator.share({
             title: title,
-            text: title,
+            text: include ? title : invoiceCopy("Create an invoice with AfroTools."),
             url: url.toString()
         }).then(function() {
             m(invoiceCopy("Share sheet opened"));
@@ -1146,6 +1154,11 @@
             checkbox.type = "checkbox";
             checkbox.id = "includeInvoiceDataInLink";
             label.style.cssText = "display:flex;gap:8px;align-items:flex-start;font-size:.8rem;line-height:1.5;flex-basis:100%;padding:8px 0";
+            checkbox.addEventListener("change", function() {
+                var caption = invoiceCopy(checkbox.checked ? "Share invoice data" : "Share tool link");
+                share.textContent = caption;
+                share.setAttribute("aria-label", caption);
+            });
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(invoiceCopy("Include invoice data in the shared link. Anyone with the link can read business/client contacts, line items, amounts and payment instructions.")));
             share.parentNode.appendChild(label);

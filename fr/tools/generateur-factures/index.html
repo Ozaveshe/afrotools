@@ -822,7 +822,8 @@
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Actions sur facture">
         <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Télécharger la facture au format PDF" data-no-pdf-gate="true">Télécharger le PDF</button>
-        <button class="btn" id="btnShare" type="button" aria-label="Partager le lien de facture">Partager le lien</button>
+        <button class="btn" id="btnShare" type="button" aria-label="Partager le lien de l’outil">Partager le lien de l’outil</button>
+        <small>Pour envoyer la facture terminée, téléchargez le PDF.</small>
         <button class="btn" id="btnSaveInvoice" type="button" aria-label="Enregistrer le brouillon de facture">Enregistrer la facture</button>
         <details class="action-more">
           <summary class="btn" aria-label="Plus d'actions de facturation">Plus</summary>
@@ -1723,12 +1724,11 @@ if (btnPDFMobile) {
 /* ── SHARE LINK ── */
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
-    const state = gatherState();
-    const docInfo = getDocumentTypeInfo();
     AfroTools.shareState.share({
-      title: docInfo.title + ' ' + $('invoiceNumber').value,
-      text: docInfo.title + ' from ' + ($('companyName').value || 'AfroTools'),
-      state
+      title: "Générateur de factures AfroTools",
+      text: "Créez une facture avec AfroTools.",
+      baseUrl: location.origin + location.pathname,
+      state: {}
     });
     ga4('share_click', {tool:'invoice-generator'});
   } else {

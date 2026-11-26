@@ -825,7 +825,8 @@
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Vitendo vya ankara">
         <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Pakua ankara ya PDF" data-no-pdf-gate="true">Pakua PDF</button>
-        <button class="btn" id="btnShare" type="button" aria-label="Shiriki kiungo cha ankara">Shiriki Kiungo</button>
+        <button class="btn" id="btnShare" type="button" aria-label="Shiriki kiungo cha zana">Shiriki kiungo cha zana</button>
+        <small>Ili kutuma ankara iliyokamilika, pakua PDF.</small>
         <button class="btn" id="btnSaveInvoice" type="button" aria-label="Hifadhi rasimu ya ankara">Hifadhi ankara</button>
         <details class="action-more">
           <summary class="btn" aria-label="Vitendo zaidi vya ankara">Zaidi</summary>
@@ -1715,12 +1716,11 @@ if (btnPDFMobile) {
 /* ── SHARE LINK ── */
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
-    const state = gatherState();
-    const docInfo = getDocumentTypeInfo();
     AfroTools.shareState.share({
-      title: docInfo.title + ' ' + $('invoiceNumber').value,
-      text: docInfo.title + ' from ' + ($('companyName').value || 'AfroTools'),
-      state
+      title: "Kizalishaji cha ankara cha AfroTools",
+      text: "Tengeneza ankara kwa kutumia AfroTools.",
+      baseUrl: location.origin + location.pathname,
+      state: {}
     });
     ga4('share_click', {tool:'invoice-generator'});
   } else {
