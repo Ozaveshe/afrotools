@@ -38,7 +38,11 @@ function countryPageRows(snapshot, marketData, now = new Date().toISOString()) {
     const row = {...original};
     const candidates = marketData.markets.filter(m => m.country_code === row.code && m.granularity === 'national');
     const dual = publishedDualCurrencyRow(original, candidates.find(m => m.lpg_notice), now);
-    if (dual) return dual;
+    if (dual) {
+      const weekly = candidates.find(m => m.market_id === 'zw-national-rbz-weekly');
+      if (weekly) dual.weeklyMarketId = weekly.market_id;
+      return dual;
+    }
     for (const type of ['petrol', 'diesel']) {
       if (!row[type] || !['liter', 'litre'].includes(row[type].unit)) continue;
       const currentDate = productDate(original, type);

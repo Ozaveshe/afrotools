@@ -361,7 +361,7 @@ function visiblePage(row, rows, country) {
           <div class="fuel-price-row"><span>Diesel</span><div>${row.references ? '<small>' + sourceLine(row, 'diesel', 'fr', formatDate, escapeHtml) + '</small>' : ''}<strong class="fuel-local">${escapeHtml(priceLocal(row, "diesel"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "diesel"))} · comparaison</span></div></div>
           <div class="fuel-price-row"><span>GPL${row.references && !row.lpgDateKnown ? ' · relevé du ' + escapeHtml(formatDate(row.lpg.snapshot_date)) + ', date du prix inconnue' : row.lpg.snapshot_date ? " · " + escapeHtml(formatDate(row.lpg.snapshot_date)) : ""}</span><div>${row.references?.lpg ? '<small>' + sourceLine(row, 'lpg', 'fr', formatDate, escapeHtml) + '</small>' : ''}<strong class="fuel-local">${escapeHtml(priceLocal(row, "lpg"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "lpg"))} · comparaison</span></div></div>
         </div>
-        <div class="fuel-actions"><a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Consulter les relevés d’autres pays</a><a class="fuel-btn" href="${escapeHtml(generatorHref)}">Calculer un budget de groupe électrogène</a></div>
+        <div class="fuel-actions"><a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Consulter les relevés d’autres pays</a>${row.weeklyMarketId ? '<a class="fuel-btn" href="/tools/fuel-tracker/?market=' + encodeURIComponent(row.weeklyMarketId) + '#fuel-finder">Consulter le relevé hebdomadaire de la banque centrale en USD (outil en anglais)</a>' : ''}<a class="fuel-btn" href="${escapeHtml(generatorHref)}">Calculer un budget de groupe électrogène</a></div>
       </aside>
     </div>
   </div>

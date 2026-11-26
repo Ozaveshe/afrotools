@@ -548,7 +548,7 @@ ${regionalReference ? '  .fuel-country-grid--with-reference { grid-template-colu
           ${['petrol', 'diesel', 'lpg'].map(fuel => countryProductRow(row, fuel)).join('')}
         </div>
         <div class="fuel-actions">
-          <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>
+          <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>${row.weeklyMarketId ? '<a class="fuel-btn" href="/tools/fuel-tracker/?market=' + encodeURIComponent(row.weeklyMarketId) + '#fuel-finder">See the Reserve Bank weekly observation in USD</a>' : ''}
           <a class="fuel-btn" href="${escapeHtml(generatorHref)}">Open generator calculator</a>
         </div>
       </aside>
