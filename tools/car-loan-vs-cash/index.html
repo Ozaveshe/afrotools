@@ -239,7 +239,7 @@ details[open] summary::after{content:'\2212'}
           <h3>Methodology</h3>
           <ul class="tool-verification-list">
             <li>Monthly payment is calculated from price, down payment, tenor, and annual interest rate.</li>
-            <li>Cash comparison adds the foregone return from using the full purchase price instead of investing it.</li>
+            <li>Both options use the same initial funds and monthly budget. The borrower invests the financed amount upfront. The cash buyer invests the avoided payments at each month-end. The comparison uses the difference in investment earnings over the loan term.</li>
             <li>The winner is a decision signal, not a credit offer, affordability test, or vehicle valuation.</li>
           </ul>
         </div>
@@ -307,7 +307,13 @@ function calcCarLoan() {
   var annualRate = parseFloat(document.getElementById('loanRate').value) || 0;
   var investRate = parseFloat(document.getElementById('investReturn').value) || 0;
 
-  if (price === 0) { alert('Please enter the vehicle price.'); return; }
+  var term = document.getElementById('loanTenor');
+  if (price <= 0 || down < 0 || down > price || !term.value || !term.validity.valid || annualRate < 0 || investRate < 0) {
+    LAST_CAR_LOAN_RESULT = null;
+    document.getElementById('loanResults').classList.remove('on');
+    alert('Enter a positive price, a down payment within that price, a term of 1–84 whole months and nonnegative rates.');
+    return;
+  }
 
   var loanAmount = Math.max(0, price - down);
   var monthlyRate = annualRate / 100 / 12;
@@ -318,16 +324,19 @@ function calcCarLoan() {
   var totalInterest = totalPaid - price;
 
   // Cash opportunity cost
-  var cashInvested = down;
+  // Financing preserves only the amount remaining after the down payment.
   var yearsNeeded = months / 12;
-  var totalOpportunityCost = price * (Math.pow(1 + investRate/100, yearsNeeded) - 1);
+  var investmentGrowth = Math.pow(1 + investRate / 100, yearsNeeded) - 1;
+  var monthlyReturn = Math.expm1(Math.log1p(investRate / 100) / 12);
+  var cashBuyerInterest = monthlyReturn > 0 ? monthly * (investmentGrowth / monthlyReturn - months) : 0;
+  var totalOpportunityCost = loanAmount * investmentGrowth - cashBuyerInterest;
 
   var fmt = function(n){ return n.toLocaleString('en', {maximumFractionDigits:0}); };
 
   document.getElementById('loanTotalCost').textContent = fmt(Math.round(totalPaid));
   document.getElementById('loanMonthly').textContent = 'Monthly: ' + fmt(Math.round(monthly));
   document.getElementById('cashTotalCost').textContent = fmt(Math.round(price));
-  document.getElementById('cashOppCost').textContent = 'Foregone returns: ' + fmt(Math.round(totalOpportunityCost));
+  document.getElementById('cashOppCost').textContent = 'Net earnings difference: ' + fmt(Math.round(totalOpportunityCost));
 
   var loanEffective = totalPaid;
   var cashEffective = price + totalOpportunityCost;
@@ -347,9 +356,9 @@ function calcCarLoan() {
     cashEffective: cashEffective
   };
 
-  var winner = loanEffective < cashEffective
-    ? '&#x1f4b0; Loan is more economical in this scenario — your investment returns exceed the interest saved by paying cash.'
-    : '&#x2705; Paying cash is cheaper — you save ' + fmt(Math.round(loanEffective - price)) + ' in interest. The opportunity cost of your cash is lower than the loan interest.';
+  var difference = Math.round(loanEffective - cashEffective);
+  var winner = difference === 0 ? 'The two options have equal effective costs at the displayed precision.' :
+    (difference > 0 ? 'Paying cash' : 'Financing') + ' has a lower effective cost by ' + fmt(Math.abs(difference)) + ' under these assumptions.';
 
   document.getElementById('loanWinner').innerHTML = winner;
 
@@ -357,7 +366,7 @@ function calcCarLoan() {
     ['Vehicle Price', fmt(price), fmt(price)],
     ['Down Payment', fmt(down), fmt(price)],
     ['Total Interest / Finance Charges', fmt(Math.round(totalInterest)), '—'],
-    ['Foregone Investment Returns', '—', fmt(Math.round(totalOpportunityCost))],
+    ['Net Investment Earnings Difference', '—', fmt(Math.round(totalOpportunityCost))],
     ['Monthly Payment', fmt(Math.round(monthly)), 'N/A'],
     ['<strong>Total Effective Cost</strong>', '<strong>' + fmt(Math.round(loanEffective)) + '</strong>', '<strong>' + fmt(Math.round(cashEffective)) + '</strong>']
   ].map(function(r){
@@ -372,7 +381,8 @@ function buildCarLoanSummary() {
   if (!LAST_CAR_LOAN_RESULT) return '';
   var r = LAST_CAR_LOAN_RESULT;
   var fmt = function(n){ return Math.round(n).toLocaleString('en', {maximumFractionDigits:0}); };
-  var winner = r.loanEffective < r.cashEffective ? 'Loan is cheaper on this estimate' : 'Cash purchase is cheaper on this estimate';
+  var difference = Math.round(r.loanEffective - r.cashEffective);
+  var winner = difference === 0 ? 'Equal effective costs' : difference < 0 ? 'Loan is cheaper on this estimate' : 'Cash purchase is cheaper on this estimate';
   return [
     'AfroTools Car Loan vs Cash Summary',
     'Country: ' + r.country,
@@ -386,7 +396,7 @@ function buildCarLoanSummary() {
     'Total loan cost: ' + fmt(r.totalPaid),
     'Total interest / finance charges: ' + fmt(r.totalInterest),
     'Cash cost: ' + fmt(r.price),
-    'Foregone investment return on cash: ' + fmt(r.totalOpportunityCost),
+    'Net investment earnings difference: ' + fmt(r.totalOpportunityCost),
     'Cash effective cost: ' + fmt(r.cashEffective),
     'Decision signal: ' + winner,
     '',

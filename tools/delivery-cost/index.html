@@ -4,24 +4,24 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Delivery Cost Estimator Africa — Lalamove, Sendy, Max.ng | AfroTools</title>
-<meta name="description" content="Estimate delivery costs from Lalamove, Sendy, Max.ng, Kobo360 and local African couriers. Compare bike, car, van and truck rates by distance, weight, urgency.">
+<title>Delivery Cost Estimator Africa by Vehicle | AfroTools</title>
+<meta name="description" content="Compare illustrative delivery budgets by country, vehicle, distance and urgency. The assumptions are sample base fees and per-kilometre costs. Request a written courier quote before booking.">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Delivery Cost Estimator Africa | AfroTools">
-<meta property="og:description" content="Estimate delivery costs from Lalamove, Sendy, Max.ng, Kobo360 and local couriers across Africa. Compare bike vs van vs truck delivery costs for any distance, weight, and urgency.">
+<meta property="og:description" content="Compare illustrative delivery budgets by country, vehicle, distance and urgency. The assumptions are sample base fees and per-kilometre costs. Request a written courier quote before booking.">
 <meta property="og:url" content="https://afrotools.com/tools/delivery-cost/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Delivery Cost Estimator Africa — Lalamove, Sendy, Max.ng | AfroTools">
-<meta name="twitter:description" content="Estimate delivery costs from Lalamove, Sendy, Max.ng, Kobo360 and local couriers across Africa. Compare bike vs van vs truck delivery costs for any distance, weight, and urgency.">
+<meta name="twitter:title" content="Delivery Cost Estimator Africa by Vehicle | AfroTools">
+<meta name="twitter:description" content="Compare illustrative delivery budgets by country, vehicle, distance and urgency. The assumptions are sample base fees and per-kilometre costs. Request a written courier quote before booking.">
 <meta name="tool-id" content="delivery-cost">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Delivery Cost Estimator Africa",
-  "description": "Estimate delivery costs from major African courier services and compare vehicle types.",
+  "description": "Compare illustrative delivery budgets by country, vehicle, distance and urgency. The assumptions are sample base fees and per-kilometre costs. Request a written courier quote before booking.",
   "url": "https://afrotools.com/tools/delivery-cost/",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
@@ -110,26 +110,26 @@ details[open] summary::after{content:'\2212'}
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is the cheapest delivery option in Nairobi?",
+      "name": "How can I compare delivery budgets in Nairobi?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For small packages under 5kg within Nairobi, Sendy and local boda-boda couriers are typically cheapest at KSh 250-400 base. For larger items, Lalamove offers competitive van and truck rates starting at KSh 800. For e-commerce, Max Delivery offers competitive same-day rates. Prices depend heavily on distance, time of day, and whether it's a dedicated delivery or shared route."
+        "text": "Compare the sample base and distance charges, then request a quote for the actual pickup, destination and package."
       }
     },
     {
       "@type": "Question",
-      "name": "How does Lalamove pricing work in Africa?",
+      "name": "How are the sample figures calculated?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Lalamove charges a base fee plus a per-km rate. For motorcycles in Kenya: KSh 350 base + KSh 50/km. For vans: KSh 800 + KSh 80/km. For trucks: KSh 2,500+ depending on size. Express and same-day services have surge multipliers. Lalamove is currently available in Kenya, Nigeria, South Africa, and Ghana, with expansion ongoing."
+        "text": "Each plan uses a base fee plus distance multiplied by a per-kilometre cost. The urgency multiplier applies to the total. Weight determines the displayed cost per kilogram."
       }
     },
     {
       "@type": "Question",
-      "name": "How is cross-border delivery priced in Africa?",
+      "name": "What should I budget for cross-border delivery?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Cross-border delivery costs $0.50-2.00/km for trucks plus border fees, customs duties, agent fees, and waiting time. Nairobi to Kampala (650km) typically costs $600-1,200 for a 20-tonne truck including all fees. Regional logistics hubs like Nairobi, Lagos, and Johannesburg offer more competitive rates due to higher freight volumes and better return loads."
+        "text": "Request separate amounts for customs clearance, duties, waiting time and border fees. These items are outside the local delivery example."
       }
     }
   ]
@@ -155,11 +155,11 @@ details[open] summary::after{content:'\2212'}
       Delivery Cost Estimator
     </nav>
     <h1>Delivery Cost <em>Estimator</em></h1>
-    <p class="tool-hero-sub">Estimate delivery costs from Lalamove, Sendy, Max.ng, and local couriers. Compare bike, car, van, and truck options for any distance, weight, and urgency across major African markets.</p>
+    <p class="tool-hero-sub">Compare illustrative delivery budgets by country, vehicle, distance and urgency. The assumptions are sample base fees and per-kilometre costs. Request a written courier quote before booking.</p>
     <div class="tool-pills">
       <span class="pill">&#x1f4ec; 6 Markets + more</span>
       <span class="pill">&#x1f4b0; Free</span>
-      <span class="pill">&#x1f6f5; Multi-Provider</span>
+      <span class="pill">&#x1f6f5; Sample rate plans</span>
     </div>
   </div>
 </div>
@@ -170,7 +170,7 @@ details[open] summary::after{content:'\2212'}
     <div class="form-grid">
       <div class="field">
         <label for="delCountry">Country</label>
-        <select id="delCountry" onchange="updateDelProviders()">
+        <select id="delCountry">
           <option value="kenya">Kenya</option>
           <option value="nigeria">Nigeria</option>
           <option value="ghana">Ghana</option>
@@ -211,15 +211,15 @@ details[open] summary::after{content:'\2212'}
     <div class="results" id="delResults">
       <div class="provider-grid" id="delProviderGrid"></div>
       <div class="metrics" id="delMetrics"></div>
-      <p class="hint" style="margin-top:1rem;line-height:1.5">These figures are an estimate — actual rates vary by courier, surge/time of day, waiting time and local charges. Confirm the live quote with the provider before booking. Source: published Lalamove, Sendy, Max.ng, Kobo360 and local courier base + per-km rate cards (indicative).</p>
+      <p class="hint" style="margin-top:1rem;line-height:1.5">Compare illustrative delivery budgets by country, vehicle, distance and urgency. The assumptions are sample base fees and per-kilometre costs. Request a written courier quote before booking.</p>
     </div>
   </div>
 
   <div class="faq-section">
     <h2>Frequently Asked Questions</h2>
-    <details><summary>What is the cheapest delivery option in Nairobi?</summary><div class="faq-body">For small packages under 5kg within Nairobi, Sendy and local boda-boda couriers are typically cheapest at KSh 250-400 base. For larger items, Lalamove offers competitive van and truck rates starting at KSh 800. For e-commerce, Max Delivery offers competitive same-day rates. Prices depend heavily on distance, time of day, and whether it's a dedicated delivery or shared route.</div></details>
-    <details><summary>How does Lalamove pricing work in Africa?</summary><div class="faq-body">Lalamove charges a base fee plus a per-km rate. For motorcycles in Kenya: KSh 350 base + KSh 50/km. For vans: KSh 800 + KSh 80/km. For trucks: KSh 2,500+ depending on size. Express and same-day services have surge multipliers. Lalamove is currently available in Kenya, Nigeria, South Africa, and Ghana, with expansion ongoing.</div></details>
-    <details><summary>How is cross-border delivery priced in Africa?</summary><div class="faq-body">Cross-border delivery costs $0.50-2.00/km for trucks plus border fees, customs duties, agent fees, and waiting time. Nairobi to Kampala (650km) typically costs $600-1,200 for a 20-tonne truck including all fees. Regional logistics hubs like Nairobi, Lagos, and Johannesburg offer more competitive rates due to higher freight volumes and better return loads.</div></details>
+    <details><summary>How can I compare delivery budgets in Nairobi?</summary><div class="faq-body">Compare the sample base and distance charges, then request a quote for the actual pickup, destination and package.</div></details>
+    <details><summary>How are the sample figures calculated?</summary><div class="faq-body">Each plan uses a base fee plus distance multiplied by a per-kilometre cost. The urgency multiplier applies to the total. Weight determines the displayed cost per kilogram.</div></details>
+    <details><summary>What should I budget for cross-border delivery?</summary><div class="faq-body">Request separate amounts for customs clearance, duties, waiting time and border fees. These items are outside the local delivery example.</div></details>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="transport" current="delivery-cost">
@@ -236,64 +236,64 @@ var DEL_DATA = {
   kenya: {
     currency: 'KSh',
     providers: {
-      bike: [{name:'Lalamove Bike', icon:'&#x1f6f5;', base:350, perKm:50}, {name:'Sendy Bike', icon:'&#x1f6f5;', base:250, perKm:40}, {name:'Max Delivery', icon:'&#x1f6f5;', base:280, perKm:35}],
-      car:  [{name:'Lalamove Car', icon:'&#x1f697;', base:600, perKm:70}, {name:'Sendy Car', icon:'&#x1f697;', base:550, perKm:65}],
-      van:  [{name:'Lalamove Van', icon:'&#x1f690;', base:800, perKm:80}, {name:'Sendy Van', icon:'&#x1f690;', base:750, perKm:75}],
-      truck:[{name:'Lalamove Truck', icon:'&#x1f69a;', base:2500, perKm:120}]
+      bike: [{icon:'&#x1f6f5;', base:350, perKm:50}, {icon:'&#x1f6f5;', base:250, perKm:40}, {icon:'&#x1f6f5;', base:280, perKm:35}],
+      car:  [{icon:'&#x1f697;', base:600, perKm:70}, {icon:'&#x1f697;', base:550, perKm:65}],
+      van:  [{icon:'&#x1f690;', base:800, perKm:80}, {icon:'&#x1f690;', base:750, perKm:75}],
+      truck:[{icon:'&#x1f69a;', base:2500, perKm:120}]
     }
   },
   nigeria: {
     currency: '₦',
     providers: {
-      bike: [{name:'Max.ng Bike', icon:'&#x1f6f5;', base:500, perKm:80}, {name:'Gokada Bike', icon:'&#x1f6f5;', base:450, perKm:70}, {name:'InDriver Bike', icon:'&#x1f6f5;', base:400, perKm:65}],
-      car:  [{name:'Kobo360 Car', icon:'&#x1f697;', base:2000, perKm:150}, {name:'Lalamove Car', icon:'&#x1f697;', base:1800, perKm:140}],
-      van:  [{name:'Kobo360 Van', icon:'&#x1f690;', base:4000, perKm:200}],
-      truck:[{name:'Kobo360 Truck', icon:'&#x1f69a;', base:15000, perKm:350}]
+      bike: [{icon:'&#x1f6f5;', base:500, perKm:80}, {icon:'&#x1f6f5;', base:450, perKm:70}, {icon:'&#x1f6f5;', base:400, perKm:65}],
+      car:  [{icon:'&#x1f697;', base:2000, perKm:150}, {icon:'&#x1f697;', base:1800, perKm:140}],
+      van:  [{icon:'&#x1f690;', base:4000, perKm:200}],
+      truck:[{icon:'&#x1f69a;', base:15000, perKm:350}]
     }
   },
   ghana: {
     currency: 'GH₵',
     providers: {
-      bike: [{name:'Glovo Bike', icon:'&#x1f6f5;', base:15, perKm:2.5}, {name:'Bolt Food Bike', icon:'&#x1f6f5;', base:12, perKm:2}],
-      car:  [{name:'Lalamove Car', icon:'&#x1f697;', base:45, perKm:6}],
-      van:  [{name:'Lalamove Van', icon:'&#x1f690;', base:80, perKm:9}],
-      truck:[{name:'Freight Ghana', icon:'&#x1f69a;', base:300, perKm:20}]
+      bike: [{icon:'&#x1f6f5;', base:15, perKm:2.5}, {icon:'&#x1f6f5;', base:12, perKm:2}],
+      car:  [{icon:'&#x1f697;', base:45, perKm:6}],
+      van:  [{icon:'&#x1f690;', base:80, perKm:9}],
+      truck:[{icon:'&#x1f69a;', base:300, perKm:20}]
     }
   },
   southafrica: {
     currency: 'R',
     providers: {
-      bike: [{name:'Courier Guy Bike', icon:'&#x1f6f5;', base:75, perKm:8}, {name:'RAM Courier', icon:'&#x1f6f5;', base:80, perKm:9}],
-      car:  [{name:'Lalamove Car', icon:'&#x1f697;', base:120, perKm:12}, {name:'Picup Car', icon:'&#x1f697;', base:110, perKm:11}],
-      van:  [{name:'Lalamove Van', icon:'&#x1f690;', base:200, perKm:18}, {name:'Picup Van', icon:'&#x1f690;', base:185, perKm:16}],
-      truck:[{name:'Lalamove Truck', icon:'&#x1f69a;', base:600, perKm:35}]
+      bike: [{icon:'&#x1f6f5;', base:75, perKm:8}, {icon:'&#x1f6f5;', base:80, perKm:9}],
+      car:  [{icon:'&#x1f697;', base:120, perKm:12}, {icon:'&#x1f697;', base:110, perKm:11}],
+      van:  [{icon:'&#x1f690;', base:200, perKm:18}, {icon:'&#x1f690;', base:185, perKm:16}],
+      truck:[{icon:'&#x1f69a;', base:600, perKm:35}]
     }
   },
   tanzania: {
     currency: 'TZS',
     providers: {
-      bike: [{name:'Zigi Bike', icon:'&#x1f6f5;', base:3000, perKm:400}],
-      car:  [{name:'Zigi Car', icon:'&#x1f697;', base:6000, perKm:700}],
-      van:  [{name:'Local Van Hire', icon:'&#x1f690;', base:15000, perKm:1200}],
-      truck:[{name:'Freight TZ', icon:'&#x1f69a;', base:80000, perKm:3500}]
+      bike: [{icon:'&#x1f6f5;', base:3000, perKm:400}],
+      car:  [{icon:'&#x1f697;', base:6000, perKm:700}],
+      van:  [{icon:'&#x1f690;', base:15000, perKm:1200}],
+      truck:[{icon:'&#x1f69a;', base:80000, perKm:3500}]
     }
   },
   uganda: {
     currency: 'UGX',
     providers: {
-      bike: [{name:'Boda Delivery', icon:'&#x1f6f5;', base:5000, perKm:600}],
-      car:  [{name:'SafeBoda Car', icon:'&#x1f697;', base:10000, perKm:1000}],
-      van:  [{name:'Local Van', icon:'&#x1f690;', base:30000, perKm:2500}],
-      truck:[{name:'Freight UG', icon:'&#x1f69a;', base:200000, perKm:8000}]
+      bike: [{icon:'&#x1f6f5;', base:5000, perKm:600}],
+      car:  [{icon:'&#x1f697;', base:10000, perKm:1000}],
+      van:  [{icon:'&#x1f690;', base:30000, perKm:2500}],
+      truck:[{icon:'&#x1f69a;', base:200000, perKm:8000}]
     }
   },
   other: {
     currency: 'USD',
     providers: {
-      bike: [{name:'Local Bike Courier', icon:'&#x1f6f5;', base:3, perKm:0.5}],
-      car:  [{name:'Local Car Courier', icon:'&#x1f697;', base:8, perKm:1}],
-      van:  [{name:'Local Van', icon:'&#x1f690;', base:15, perKm:1.5}],
-      truck:[{name:'Local Truck', icon:'&#x1f69a;', base:60, perKm:4}]
+      bike: [{icon:'&#x1f6f5;', base:3, perKm:0.5}],
+      car:  [{icon:'&#x1f697;', base:8, perKm:1}],
+      van:  [{icon:'&#x1f690;', base:15, perKm:1.5}],
+      truck:[{icon:'&#x1f69a;', base:60, perKm:4}]
     }
   }
 };
@@ -305,10 +305,17 @@ function calcDeliveryCost() {
   var weight = parseFloat(document.getElementById('delWeight').value) || 0;
   var urgency = parseFloat(document.getElementById('delUrgency').value) || 1;
 
-  if (dist === 0) { alert('Please enter distance.'); return; }
+  if (dist <= 0 || weight <= 0) { document.getElementById('delResults').classList.remove('on'); alert('Enter a positive distance and package weight.'); return; }
 
   var data = DEL_DATA[country];
-  var providers = data.providers[vehicle] || data.providers.bike;
+  var providers = data.providers[vehicle] || [];
+
+  if (!providers.length) {
+    document.getElementById('delProviderGrid').textContent = 'No sample rates for this vehicle in the selected market. Request a courier quote or choose another vehicle.';
+    document.getElementById('delMetrics').textContent = '';
+    document.getElementById('delResults').classList.add('on');
+    return;
+  }
 
   var costs = providers.map(function(p) { return (p.base + p.perKm * dist) * urgency; });
   var bestIdx = costs.indexOf(Math.min.apply(null, costs));
@@ -318,7 +325,7 @@ function calcDeliveryCost() {
     var low = Math.round(base * 0.9);
     var high = Math.round(base * 1.15);
     var isBest = i === bestIdx;
-    return '<div class="provider-card' + (isBest ? ' best' : '') + '"><div class="provider-icon">' + p.icon + '</div><div class="provider-name">' + p.name + (isBest ? ' <span class="provider-badge">Estimated Cheapest</span>' : '') + '</div><div class="provider-price">' + data.currency + ' ' + Math.round(base).toLocaleString() + '</div><div class="provider-range">Range: ' + data.currency + ' ' + low.toLocaleString() + ' – ' + data.currency + ' ' + high.toLocaleString() + '</div></div>';
+    return '<div class="provider-card' + (isBest ? ' best' : '') + '"><div class="provider-icon">' + p.icon + '</div><div class="provider-name">' + 'Sample plan ' + (i + 1) + (isBest ? ' <span class="provider-badge">Lowest sample</span>' : '') + '</div><div class="provider-price">' + data.currency + ' ' + Math.round(base).toLocaleString() + '</div><div class="provider-range">Base ' + data.currency + ' ' + p.base + ' + ' + data.currency + ' ' + p.perKm + '/km</div><div class="provider-range">Sample range: ' + data.currency + ' ' + low.toLocaleString() + ' – ' + data.currency + ' ' + high.toLocaleString() + '</div></div>';
   }).join('');
 
   document.getElementById('delProviderGrid').innerHTML = cards;
@@ -327,7 +334,7 @@ function calcDeliveryCost() {
   var perKg = weight > 0 ? cheapest / weight : 0;
 
   document.getElementById('delMetrics').innerHTML = [
-    [data.currency + ' ' + Math.round(cheapest).toLocaleString(), 'Est. Best Price'],
+    [data.currency + ' ' + Math.round(cheapest).toLocaleString(), 'Lowest sample budget'],
     [weight > 0 ? data.currency + ' ' + perKg.toFixed(1) : 'N/A', 'Cost per kg'],
     [dist + ' km', 'Distance'],
     [urgency === 1 ? 'Normal' : urgency === 1.3 ? 'Express' : 'Urgent', 'Urgency']
