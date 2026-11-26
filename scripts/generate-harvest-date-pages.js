@@ -437,7 +437,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 <script src="/data/agriculture/country-index.js"><\/script>
 <script src="/data/agriculture/${cc}-agri-data.js"><\/script>
 <script src="/data/agriculture/crop-growth-data.js"><\/script>
-<script src="/engines/harvest-date-engine.js"><\/script>
+<script src="/engines/country-harvest-date-engine.js"><\/script>
 <script>
 (function () {
   'use strict';
@@ -462,7 +462,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   document.addEventListener('DOMContentLoaded', function () {
     CD  = window.AfroTools && window.AfroTools.countryData;
     CGD = window.AfroTools && window.AfroTools.cropGrowthData;
-    ENG = window.AfroTools && window.AfroTools.HarvestDateEngine;
+    ENG = window.AfroTools && window.AfroTools.CountryHarvestDateEngine;
 
     if (!CD || !CGD || !ENG) {
       console.warn('Harvest date: data not loaded yet, retrying...');
@@ -475,7 +475,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   function init() {
     CD  = window.AfroTools && window.AfroTools.countryData;
     CGD = window.AfroTools && window.AfroTools.cropGrowthData;
-    ENG = window.AfroTools && window.AfroTools.HarvestDateEngine;
+    ENG = window.AfroTools && window.AfroTools.CountryHarvestDateEngine;
     if (!CD || !CGD || !ENG) { return; }
 
     // Populate crop dropdown (only crops in this country's data AND in CGD)
@@ -523,7 +523,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   window.estimateHarvest = function () {
     CD  = window.AfroTools && window.AfroTools.countryData;
     CGD = window.AfroTools && window.AfroTools.cropGrowthData;
-    ENG = window.AfroTools && window.AfroTools.HarvestDateEngine;
+    ENG = window.AfroTools && window.AfroTools.CountryHarvestDateEngine;
     if (!CD || !CGD || !ENG) { alert('Data not loaded. Please refresh the page.'); return; }
 
     var plantDateStr = $('inpPlantDate').value;
