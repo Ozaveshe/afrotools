@@ -131,6 +131,68 @@
   }
   function safeCsv(value) { var s=String(value==null?"":value);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'; }
 
+  function buildDemandTest() {
+    var copy = {
+      en: {
+        title:"Plan a customer demand test", scope:"Use your own assumptions to plan interviews. This worksheet stays in this tab until you download it. Customer demand is unverified.",
+        buyer:"Who would buy?", offer:"What would you offer, in what quantity and at what price?", interviews:"Buyers to interview", orders:"Minimum buyers who must place an order",
+        build:"Build interview worksheet", file:"Download worksheet (.txt)", invalid:"Enter a buyer group, an offer and whole positive counts. The order target cannot exceed the number of buyers.",
+        context:"Market", target:"Minimum order rate", question:"Ask each buyer whether they will order the stated quantity at that price. Record one outcome per buyer.", log:"Interview ID | Order placed (yes/no) | Main reason",
+        review:"After the interviews, count buyers who placed orders. Compare that count with your target before deciding whether to run a pilot."
+      },
+      fr: {
+        title:"Préparer un test de demande", scope:"Préparez des entretiens à partir de vos hypothèses. La fiche reste dans cet onglet jusqu’au téléchargement. La demande reste à vérifier.",
+        buyer:"Qui achèterait le produit ?", offer:"Que proposeriez-vous, en quelle quantité et à quel prix ?", interviews:"Acheteurs à interroger", orders:"Nombre minimal d’acheteurs devant commander",
+        build:"Créer la fiche d’entretien", file:"Télécharger la fiche (.txt)", invalid:"Saisissez un groupe d’acheteurs, une offre et des nombres entiers positifs. L’objectif de commandes ne peut pas dépasser le nombre d’acheteurs.",
+        context:"Marché", target:"Taux de commande minimal", question:"Demandez à chaque acheteur s’il commande la quantité proposée à ce prix. Notez une réponse par acheteur.", log:"Nº d’entretien | Commande passée (oui/non) | Motif principal",
+        review:"Après les entretiens, comptez les acheteurs qui ont commandé. Comparez ce nombre à votre objectif avant de décider de lancer un essai."
+      },
+      sw: {
+        title:"Panga jaribio la mahitaji ya wateja", scope:"Tumia makadirio yako kuandaa mahojiano. Fomu hii hubaki kwenye kichupo hiki hadi utakapoipakua. Mahitaji ya wateja bado hayajathibitishwa.",
+        buyer:"Nani atanunua?", offer:"Utauza nini, kwa kiasi gani na kwa bei gani?", interviews:"Idadi ya wanunuzi wa kuhoji", orders:"Idadi ya chini ya wanunuzi wanaopaswa kuagiza",
+        build:"Tengeneza fomu ya mahojiano", file:"Pakua fomu (.txt)", invalid:"Weka kundi la wanunuzi, bidhaa unayouza na idadi kamili iliyo zaidi ya sifuri. Lengo la maagizo haliwezi kuzidi idadi ya wanunuzi.",
+        context:"Soko", target:"Asilimia ya chini ya wanunuzi watakaoagiza", question:"Muulize kila mnunuzi ikiwa ataagiza kiasi ulichopendekeza kwa bei hiyo. Andika jibu moja kwa kila mnunuzi.", log:"Namba ya mahojiano | Ameagiza (ndiyo/hapana) | Sababu kuu",
+        review:"Baada ya mahojiano, hesabu wanunuzi walioagiza. Linganisha idadi hiyo na lengo lako kabla ya kuamua kuanza majaribio ya mauzo."
+      }
+    }[locale];
+    var panel = el("details",{class:"iee-demand","data-demand-test":""});
+    var form = el("form",{class:"iee-shortlist"});
+    var fields = el("div",{class:"iee-filter-grid"});
+    var buyer = el("input",{id:"iee-test-buyer",type:"text",required:""});
+    var offer = el("input",{id:"iee-test-offer",type:"text",required:""});
+    var interviews = el("input",{id:"iee-test-interviews",type:"number",min:"1",step:"1",required:""});
+    var orders = el("input",{id:"iee-test-orders",type:"number",min:"1",step:"1",required:""});
+    var report = el("div",{"aria-live":"polite","data-demand-report":""});
+    var save = el("button",{type:"button",class:"iee-button secondary",hidden:true},copy.file);
+    var lines = [];
+    function clear() { lines = []; report.replaceChildren(); save.hidden = true; }
+    fields.append(field(copy.buyer,buyer),field(copy.offer,offer),field(copy.interviews,interviews),field(copy.orders,orders));
+    form.append(el("p",{},copy.scope),fields,el("button",{class:"iee-button",type:"submit"},copy.build),report,save);
+    panel.append(el("summary",{},copy.title),form);
+    form.addEventListener("input",clear);
+    ["country","sector"].forEach(function(name){root.querySelector("#iee-"+name).addEventListener("change",clear);});
+    form.addEventListener("submit",function(event){
+      event.preventDefault();
+      clear();
+      var n = interviews.valueAsNumber, k = orders.valueAsNumber;
+      if (!buyer.value.trim() || !offer.value.trim() || !Number.isSafeInteger(n) || !Number.isSafeInteger(k) || n < 1 || k < 1 || k > n) {
+        report.textContent = copy.invalid; return;
+      }
+      var market = ["country","sector"].map(function(name){
+        var select = root.querySelector("#iee-"+name);
+        return select.options[select.selectedIndex].textContent;
+      }).join(" · ");
+      var percent = new Intl.NumberFormat(locale,{style:"percent",maximumFractionDigits:2}).format(k/n);
+      lines = [copy.title,copy.scope,copy.context+": "+market,copy.buyer+" "+buyer.value.trim(),copy.offer+" "+offer.value.trim(),
+        copy.interviews+": "+n,copy.orders+": "+k,copy.target+": "+k+" / "+n+" ("+percent+")",copy.question,copy.log,copy.review];
+      lines.slice(2).forEach(function(line){report.append(el("p",{},line));});
+      save.hidden = false;
+    });
+    save.addEventListener("click",function(){if(lines.length)download("afrotools-demand-test-"+locale+".txt","text/plain;charset=utf-8",lines.join("\n")+"\n");});
+    return panel;
+  }
+
+
   function build() {
     root.append(el("h2",{},t.title),el("p",{class:"iee-lede"},t.intro),el("p",{class:"iee-privacy"},t.privacy));
     var form=el("form",{class:"iee-search","data-search-form":"",novalidate:""});
@@ -145,7 +207,7 @@
     var results=el("section",{class:"iee-results","aria-labelledby":"iee-results-title"});
     results.append(el("div",{class:"iee-results-head"},null),el("div",{role:"status","aria-live":"polite","data-status":""}),el("div",{class:"iee-card-grid","data-cards":""}),el("div",{class:"iee-pagination","data-pagination":""}));
     results.querySelector(".iee-results-head").append(el("h2",{id:"iee-results-title"},t.find),button("retry",t.retry,true));
-    root.append(results);
+    root.append(results,buildDemandTest());
     var local=el("section",{class:"iee-shortlist","aria-labelledby":"iee-shortlist-title"});
     local.append(el("h2",{id:"iee-shortlist-title"},t.shortlist),el("p",{},t.shortlistIntro),el("div",{class:"iee-compare","data-shortlist":""}));
     var actions=el("div",{class:"iee-actions"});[["backup",t.backup],["import",t.import],["clear",t.clear],["copy",t.copy],["txt",t.txt],["csv",t.csv],["json",t.json],["pdf",t.pdf],["print",t.print]].forEach(function(a){actions.append(button(a[0],a[1],true))});
@@ -164,6 +226,7 @@
     root.querySelector("[data-cards]").replaceChildren();
     root.querySelector("[data-pagination]").replaceChildren();
     status(message,state);
+    if (["error","timeout","offline"].includes(state)) root.querySelector("[data-demand-test]").open = true;
   }
   function evidenceLabel(row) {
     var origin=row.recordOrigin==="generated_example"?t.generatedExample+" \u00b7 ":"";

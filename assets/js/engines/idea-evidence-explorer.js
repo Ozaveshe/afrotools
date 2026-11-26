@@ -102,7 +102,7 @@
   function encode(value) { return encodeURIComponent(String(value)); }
   function buildUrl(params) {
     params = params || {};
-    var query = ["select=*"];
+    var query = [];
     if (/^[A-Z]{2}$/.test(params.country || "")) query.push("country=" + encode(params.country));
     if (SECTORS.indexOf(params.sector) >= 0) query.push("sector=" + encode(params.sector));
     if (RISK.indexOf(params.risk) >= 0) query.push("risk=" + encode(params.risk));

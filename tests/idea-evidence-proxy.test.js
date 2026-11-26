@@ -90,3 +90,21 @@ test("exposes only a restricted record origin and never raw provenance text", as
  const response=await handler(event());const rows=JSON.parse(response.body).rows;
  assert.match(upstream,/created_at,source/);assert.equal(rows[0].record_origin,'generated_example');assert.equal(rows[1].record_origin,'unknown');assert.equal('source' in rows[0],false);assert.doesNotMatch(response.body,/private internal note|official/);
 });
+
+test("native search parameters reach the public projection through the real proxy contract", async () => {
+  const client = require("../assets/js/engines/idea-evidence-explorer.js");
+  const url = new URL(client.buildUrl({country:"NG",sector:"agriculture",maxBudget:1500000}),"https://afrotools.com");
+  let contacted = false;
+  const handler = proxy.createHandler({env:goodEnv,fetchImpl: async upstream => {
+    contacted = true;
+    const source = new URL(upstream);
+    assert.equal(source.searchParams.get("country_code"),"eq.NG");
+    assert.equal(source.searchParams.get("sector"),"eq.agriculture");
+    assert.ok(source.searchParams.get("select").includes("name"));
+    assert.notEqual(source.searchParams.get("select"),"*");
+    return {ok:true,json:async()=>[],headers:{get:()=>null}};
+  }});
+  const result = await handler(event({queryStringParameters:Object.fromEntries(url.searchParams)}));
+  assert.equal(result.statusCode,200);
+  assert.equal(contacted,true);
+});

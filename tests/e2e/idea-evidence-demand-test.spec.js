@@ -1,0 +1,31 @@
+const { test, expect } = require('@playwright/test');
+
+test('a founder can download an offline demand test without adding evidence records', async ({page}) => {
+  await page.route('**/.netlify/functions/idea-evidence**',route=>route.fulfill({status:502,body:''}));
+  await page.goto('/tools/idea-board/', { waitUntil:'domcontentloaded' });
+  await page.locator('#iee-country').selectOption('NG');
+  await page.locator('#iee-sector').selectOption('agriculture');
+  await page.locator('[data-search-form] button[type=submit]').click();
+  const panel = page.locator('[data-demand-test]');
+  await expect(panel).toHaveJSProperty('open',true);
+  await expect(panel.locator('button[type=button]')).toBeHidden();
+  await page.locator('#iee-test-buyer').fill('Restaurant buyers in Ibadan');
+  await page.locator('#iee-test-offer').fill('One crate of tomatoes for NGN 18,000');
+  await page.locator('#iee-test-interviews').fill('12');
+  await page.locator('#iee-test-orders').fill('4');
+  await panel.locator('button[type=submit]').click();
+  const report = panel.locator('[data-demand-report]');
+  await expect(report).toContainText('Nigeria · Agriculture');
+  await expect(report).toContainText('4 / 12 (33.33%)');
+  const downloadEvent = page.waitForEvent('download');
+  await panel.locator('button[type=button]').click();
+  expect((await downloadEvent).suggestedFilename()).toBe('afrotools-demand-test-en.txt');
+  await expect(page.locator('[data-cards]')).toBeEmpty();
+  await page.locator('#iee-country').selectOption('KE');
+  await expect(report).toBeEmpty();
+  await expect(panel.locator('button[type=button]')).toBeHidden();
+  await page.locator('#iee-test-orders').fill('13');
+  await panel.locator('button[type=submit]').click();
+  await expect(report).toContainText('cannot exceed');
+  await expect(panel.locator('button[type=button]')).toBeHidden();
+});
