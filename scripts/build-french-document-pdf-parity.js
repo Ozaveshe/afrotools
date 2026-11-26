@@ -364,6 +364,7 @@ function absolutizeRelativeAssets(html, englishRoute) {
   return html.replace(
     new RegExp(`(<${assetTags}\\b[^>]*?\\s(?:src|href)=)(["'])(?![a-z]+:|//|/|#)([^"']+)(\\2)`, 'gi'),
     (match, prefix, quote, asset) => {
+      if (asset.includes("${")) return match;
       try {
         const resolved = new URL(asset, `https://afrotools.com${englishRoute}`).pathname;
         return `${prefix}${quote}${resolved}${quote}`;
