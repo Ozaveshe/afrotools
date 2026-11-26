@@ -10,7 +10,6 @@ const redirects = api.parseRedirectsFile();
 const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const decisions = [
   ['/sw/central-africa/', '/sw/central-african-republic/', 'sw'],
-  ['/sw/all-tools/', '/sw/zana-zote/', 'sw'],
   ['/fr/afya-na-bima/', '/fr/insurance/', 'fr'],
   ['/sw/lifestyle/', '/sw/personal-finance/', 'sw']
 ];
