@@ -27,6 +27,19 @@ s = s
   );
 const p = [
   [
+    "Check fresh CoinGecko reference prices for USDT, USDC and DAI in USD, NGN or ZAR, with provider timestamps, USD peg distance and source-labelled exports.",
+    "Linganisha bei za marejeo za USDT, USDC na DAI kwa USD, NGN au ZAR. Angalia muda wa bei kutoka CoinGecko, tofauti na dola moja na pakua data yenye chanzo.",
+  ],
+  [
+    "Fresh CoinGecko reference prices for USDT, USDC and DAI with source and time receipts.",
+    "Angalia bei za marejeo za USDT, USDC na DAI kutoka CoinGecko pamoja na muda wa kila bei.",
+  ],
+  [
+    "Source-labelled USDT, USDC and DAI reference prices in NGN or ZAR.",
+    "Pata bei za marejeo za USDT, USDC na DAI kwa NGN au ZAR, pamoja na chanzo cha data.",
+  ],
+
+  [
     "USDT, USDC and DAI Reference Prices in NGN and ZAR",
     "Bei za Marejeo za USDT, USDC na DAI kwa NGN na ZAR",
   ],

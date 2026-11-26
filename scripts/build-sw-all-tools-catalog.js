@@ -15,6 +15,7 @@ function escapeHtml(value) {
 function renderSwAppCatalog() {
   const groups = new Map(SWAHILI_CATEGORIES.map(category => [category.key, []]));
   const seen = new Set();
+  const descriptions = new Set();
 
   for (const row of rows) {
     if (!row.primarySwahiliFile || !row.primarySwahiliRoute) continue;
@@ -31,10 +32,19 @@ function renderSwAppCatalog() {
     // This page has a native heading but retains an English metadata title.
     const displayTitle = title === 'Creator invoice workspace' ? 'Ankara ya mtayarishi' : title;
     const name = displayTitle.replace(/&(?!#(?:x[\da-f]+|\d+);|[a-z][a-z\d]+;)/gi, '&amp;');
+    const meta = page.match(/<meta\b(?=[^>]*\sname=["']description["'])(?:"[^"]*"|'[^']*'|[^'">])*>/i)?.[0];
+    const description = meta?.match(/\scontent\s*=\s*(["'])([\s\S]*?)\1/i)?.[2].replace(/\s+/g, ' ').trim();
+    if (!description || description === title || descriptions.has(description)) {
+      throw new Error('Missing or repeated Swahili tool description in ' + row.primarySwahiliFile);
+    }
+    descriptions.add(description);
+    // Keep source character references for the browser to decode once in the attribute.
+    const descriptionAttribute = description.replace(/&(?!#(?:x[\da-f]+|\d+);|[a-z][a-z\d]+;)/gi, '&amp;')
+      .replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     // Conflicting English ownership does not invalidate a self-canonical Swahili destination.
     // List it by its own title without replacing an English search result.
     const id = row.ownerConflict ? canonical : row.englishId;
-    groups.get(row.categoryKey).push({ name, id, canonical });
+    groups.get(row.categoryKey).push({ name, id, canonical, descriptionAttribute });
     seen.add(canonical);
   }
 
@@ -45,7 +55,7 @@ function renderSwAppCatalog() {
     if (!tools.length) continue;
     lines.push('<details data-sw-category="' + escapeHtml(category.key) + '"><summary>' + escapeHtml(category.title) + '</summary><ul>');
     for (const tool of tools.sort((a, b) => a.name.localeCompare(b.name, 'sw') || a.id.localeCompare(b.id))) {
-      lines.push('<li><a data-sw-tool="' + escapeHtml(tool.id) + '" href="' + escapeHtml(tool.canonical) + '">' + tool.name + '</a></li>');
+      lines.push('<li><a data-sw-tool="' + escapeHtml(tool.id) + '" data-sw-description="' + tool.descriptionAttribute + '" href="' + escapeHtml(tool.canonical) + '">' + tool.name + '</a></li>');
     }
     lines.push('</ul></details>');
   }
@@ -111,6 +121,17 @@ function updateSwDirectory(html, publishedCount = getSelector(buildCanonicalRegi
     });
     var scoredEntries = Array.from(nativeById.values()).concat(window.AFRO_TOOLS.filter(function(tool) { return !nativeById.has(tool.id); }))`,
     `    var registeredById = new Map(`);
+  replaceOnce(`    var nativeById = new Map();`,
+    `    var nativeById = new Map();
+    var nativeDescriptions = new Map();`,
+    `    var nativeDescriptions = new Map();`);
+  replaceOnce(`      var id = link.dataset.swTool;`,
+    `      var id = link.dataset.swTool;
+      nativeDescriptions.set(normalizeHref(link.getAttribute('href')), link.dataset.swDescription);`,
+    `      nativeDescriptions.set(normalizeHref(`);
+  replaceOnce(`escapeHtml(tool.desc || '') + '</div>'`,
+    `escapeHtml(nativeDescriptions.get(normalizeHref(tool.href)) || tool.desc || '') + '</div>'`,
+    `escapeHtml(nativeDescriptions.get(normalizeHref(tool.href))`);
   replaceOnce(`        tool = localizeTool(tool);`,
     `        if (!isPreferredLocale(tool)) tool = localizeTool(tool);`,
     `        if (!isPreferredLocale(tool)) tool = localizeTool(tool);`);
