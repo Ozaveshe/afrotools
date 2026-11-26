@@ -283,12 +283,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-vi
 <!-- TRANSLATE PANEL -->
 <div class="panel" id="panel-translate" role="tabpanel" aria-labelledby="tab-translate" hidden>
 <div class="card">
-<h2>Optional Cloud Translator</h2>
-<p>The phrasebook stays in this browser. This separate translator uses an external service only after you opt in.</p>
-<div id="pidginTranslationConsent"></div>
+<h2>Look up or translate a phrase</h2>
+<p>Search the 109-entry phrasebook on this device, or opt in below to send text for cloud translation.</p>
+
 <div class="translate-wrap">
 <div>
-<label class="lang-label" id="srcLabel" for="srcText">English text to send</label>
+<label class="lang-label" id="srcLabel" for="srcText">English text</label>
 <textarea id="srcText" placeholder="Type English text here..." maxlength="2000" autocomplete="off" spellcheck="true"></textarea>
 </div>
 <button type="button" class="swap-btn" onclick="swapLangs()" title="Swap languages" aria-label="Swap source and target languages">&#8646;</button>
@@ -297,8 +297,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-vi
 <div class="translate-output" id="tgtOutput" role="region" aria-live="polite" aria-label="Temporary translation result">Translation will appear here...</div>
 </div>
 </div>
+<button type="button" class="p-btn" onclick="lookUpLocalPhrase()">Search local phrasebook</button>
+<div id="pidginTranslationConsent"></div>
 <div class="translate-actions">
-<button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()" disabled>Translate &#8594;</button>
+<button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()" disabled>Translate online &#8594;</button>
 <button type="button" class="p-btn" onclick="copyText(document.getElementById('tgtOutput').textContent)" aria-label="Copy temporary translation" title="Copy translation" style="font-size:1.2rem;opacity:.7">&#128203;</button>
 <button type="button" class="p-btn" onclick="clearCloudTranslation()">Clear</button>
 <span class="translate-status" id="translateStatus" role="status" aria-live="polite"></span>
@@ -640,6 +642,16 @@ function swapLangs() {
   document.getElementById('tgtOutput').textContent = 'Translation will appear here...';
 }
 
+function lookUpLocalPhrase() {
+  var query = document.getElementById('srcText').value.trim();
+  switchTab('phrasebook');
+  resetPhrasebook();
+  var search = document.getElementById('search');
+  search.value = query;
+  filterPhrases();
+  search.focus();
+}
+
 function doTranslate() {
   var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
   if (!consent || !consent.requireConsent('pidgin-translator', 'Cloud translation is off. Review the notice and opt in first.')) {
@@ -669,7 +681,7 @@ function doTranslate() {
     if (!r.ok) {
       if (r.status === 428) consent.reset('pidgin-translator');
       document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
-      status.textContent = d.message || d.error || 'No external translation was returned.';
+      status.textContent = d.message || (r.status === 428 ? 'Review the consent notice before trying again.' : 'Search the local phrasebook above for wording already on this device.');
       return;
     }
     document.getElementById('tgtOutput').textContent = d.translatedText || 'Translation not available';
@@ -679,13 +691,13 @@ function doTranslate() {
     status.textContent = 'Connection error. No result was stored.';
   }).finally(function() {
     btn.disabled = !(consent && consent.hasConsent('pidgin-translator'));
-    btn.textContent = 'Translate \u2192';
+    btn.textContent = 'Translate online \u2192';
   });
 }
 
 function clearCloudTranslation() {
   document.getElementById('srcText').value = '';
-  document.getElementById('tgtOutput').textContent = 'Translation will appear here after you opt in.';
+  document.getElementById('tgtOutput').textContent = 'Translation will appear here...';
   document.getElementById('translateStatus').textContent = 'Text and temporary translation state cleared.';
   document.getElementById('srcText').focus();
 }
