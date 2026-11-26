@@ -294,14 +294,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-vi
 <button type="button" class="swap-btn" onclick="swapLangs()" title="Swap languages" aria-label="Swap source and target languages">&#8646;</button>
 <div>
 <div class="lang-label" id="tgtLabel">Nigerian Pidgin result</div>
-<div class="translate-output" id="tgtOutput" role="region" aria-live="polite" aria-label="Temporary translation result">Translation will appear here...</div>
+<div class="translate-output" style="white-space:pre-line" id="tgtOutput" role="region" aria-live="polite" aria-label="Temporary translation result">Translation will appear here...</div>
 </div>
 </div>
 <button type="button" class="p-btn" onclick="lookUpLocalPhrase()">Search local phrasebook</button>
 <div id="pidginTranslationConsent"></div>
 <div class="translate-actions">
 <button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()" disabled>Translate online &#8594;</button>
-<button type="button" class="p-btn" onclick="copyText(document.getElementById('tgtOutput').textContent)" aria-label="Copy temporary translation" title="Copy translation" style="font-size:1.2rem;opacity:.7">&#128203;</button>
+<button type="button" class="p-btn" id="copyTranslation" disabled onclick="copyText(document.getElementById('tgtOutput').textContent)" aria-label="Copy temporary translation" title="Copy translation" style="font-size:1.2rem;opacity:.7">&#128203;</button>
 <button type="button" class="p-btn" onclick="clearCloudTranslation()">Clear</button>
 <span class="translate-status" id="translateStatus" role="status" aria-live="polite"></span>
 </div>
@@ -634,12 +634,46 @@ function updateProgress() {
 }
 
 /* ── Translate Mode ── */
+var translationRevision = 0;
+function phraseKey(text) {
+  return text.trim().toLowerCase().replace(/[’‘]/g, "'").replace(/[.!?]+$/g, '').replace(/\s+/g, ' ').trim();
+}
+function renderLocalTranslation() {
+  translationRevision++;
+  var output = document.getElementById('tgtOutput');
+  var copy = document.getElementById('copyTranslation');
+  var status = document.getElementById('translateStatus');
+  var lines = document.getElementById('srcText').value.split(/\r?\n/).filter(function(line) { return line.trim(); });
+  copy.disabled = true;
+  status.textContent = '';
+  if (!lines.length) { output.textContent = 'Translation will appear here...'; return; }
+  var complete = true;
+  var translated = lines.map(function(line) {
+    var key = phraseKey(line);
+    var matches = new Set();
+    PHRASES.forEach(function(entry) {
+      var source = swapped ? entry.lang : entry.en;
+      if (key && [source].concat(source.split(/\s+\/\s+/)).some(function(part) { return phraseKey(part) === key; })) {
+        matches.add(swapped ? entry.en : entry.lang);
+      }
+    });
+    if (matches.size === 1) return Array.from(matches)[0];
+    complete = false;
+    return (matches.size ? 'Multiple local entries' : 'No exact local entry') + ' — ' + line.trim();
+  });
+  output.textContent = translated.join('\n');
+  copy.disabled = !complete;
+  status.textContent = complete ? 'Listed phrasebook wording. Checked on this device.' :
+    'Only whole phrases are matched. Put one phrase on each line or search the phrasebook for related wording.';
+}
+document.getElementById('srcText').addEventListener('input', renderLocalTranslation);
+
 function swapLangs() {
   swapped = !swapped;
   document.getElementById('srcLabel').textContent = swapped ? 'Nigerian Pidgin' : 'English';
   document.getElementById('tgtLabel').textContent = swapped ? 'English' : 'Nigerian Pidgin';
   document.getElementById('srcText').placeholder = swapped ? 'Type Pidgin text here...' : 'Type English text here...';
-  document.getElementById('tgtOutput').textContent = 'Translation will appear here...';
+  renderLocalTranslation();
 }
 
 function lookUpLocalPhrase() {
@@ -662,6 +696,7 @@ function doTranslate() {
   if (!text) return;
   var btn = document.getElementById('translateBtn');
   var status = document.getElementById('translateStatus');
+  var revision = ++translationRevision;
   btn.disabled = true;
   btn.textContent = 'Translating...';
   status.textContent = '';
@@ -676,18 +711,22 @@ function doTranslate() {
     body: JSON.stringify({text: text, source: src, target: tgt, allowFallback: false})
   }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(data){ return {response:r,data:data}; }); })
   .then(function(result) {
+    if (revision !== translationRevision) return;
     var r = result.response;
     var d = result.data;
     if (!r.ok) {
       if (r.status === 428) consent.reset('pidgin-translator');
-      document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
+      renderLocalTranslation();
       status.textContent = d.message || (r.status === 428 ? 'Review the consent notice before trying again.' : 'Search the local phrasebook above for wording already on this device.');
       return;
     }
-    document.getElementById('tgtOutput').textContent = d.translatedText || 'Translation not available';
+    if (!d.translatedText) { renderLocalTranslation(); return; }
+    document.getElementById('tgtOutput').textContent = d.translatedText;
+    document.getElementById('copyTranslation').disabled = false;
     status.textContent = d.provider ? 'via ' + d.provider + (d.unchanged ? ' | unchanged; verify this result' : '') : '';
   }).catch(function() {
-    document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
+    if (revision !== translationRevision) return;
+    renderLocalTranslation();
     status.textContent = 'Connection error. No result was stored.';
   }).finally(function() {
     btn.disabled = !(consent && consent.hasConsent('pidgin-translator'));
@@ -697,7 +736,7 @@ function doTranslate() {
 
 function clearCloudTranslation() {
   document.getElementById('srcText').value = '';
-  document.getElementById('tgtOutput').textContent = 'Translation will appear here...';
+  renderLocalTranslation();
   document.getElementById('translateStatus').textContent = 'Text and temporary translation state cleared.';
   document.getElementById('srcText').focus();
 }
@@ -728,6 +767,7 @@ function initExternalTranslationConsent() {
   consent.render(host, {toolId: 'pidgin-translator', primaryProvider: 'MyMemory'});
   host.addEventListener('afrotools:external-translation-consent-change', function() {
     button.disabled = !consent.hasConsent('pidgin-translator');
+    if (button.disabled) renderLocalTranslation();
   });
 }
 
@@ -841,7 +881,7 @@ document.addEventListener('keydown', function(e) {
   }
   if (e.key === 'Enter' && activeTab === 'translate' && document.activeElement.id === 'srcText' && !e.shiftKey) {
     e.preventDefault();
-    doTranslate();
+    renderLocalTranslation();
   }
 });
 
@@ -855,6 +895,7 @@ if (document.readyState === 'loading') {
   initExternalTranslationConsent();
 }
 window.addEventListener('pagehide', function() {
+  translationRevision++;
   document.getElementById('srcText').value = '';
   document.getElementById('tgtOutput').textContent = '';
 });
