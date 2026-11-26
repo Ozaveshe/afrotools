@@ -163,7 +163,7 @@
       coupon: 'Coupon',
       price: 'Prix',
       ofFace: 'de la valeur nominale',
-      periods: 'périodes'
+      period: 'période', periods: 'périodes'
     },
     'credit-score': {
       invalid: 'Choisissez une valeur valide de 0 à 100 pour chacun des cinq facteurs.',
@@ -560,7 +560,7 @@
     },
     'bond-yield': {
       invalid: 'Weka thamani chanya ya uso na bei, kuponi kati ya 0% na 1,000%, na muda unaotoa idadi kamili ya vipindi vya kuponi.',
-      coupon: 'Kuponi', price: 'Bei', ofFace: 'ya thamani ya uso', periods: 'vipindi'
+      coupon: 'Kuponi', price: 'Bei', ofFace: 'ya thamani ya uso', period: 'kipindi', periods: 'vipindi'
     },
     'money-market': {
       invalid: 'Weka kiasi zaidi ya sifuri na viwango vya mwaka zaidi ya -100% na visivyozidi 1,000%.',

@@ -35,7 +35,7 @@ function calcBond(){
   var annualYtm=(Math.pow(1+periodicYield,freq)-1)*100;
   function fmt(v){return currency+' '+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
   document.getElementById('by-ytm').textContent=annualYtm.toFixed(2)+'%';
-  document.getElementById('by-sub').textContent=byText('coupon','Coupon')+': '+couponPercent.toFixed(2)+'% | '+byText('price','Price')+': '+enteredPricePercent.toFixed(2)+'% '+byText('ofFace','of face')+' | '+n+' '+byText('periods','periods');
+  document.getElementById('by-sub').textContent=byText('coupon','Coupon')+': '+couponPercent.toFixed(2)+'% | '+byText('price','Price')+': '+enteredPricePercent.toFixed(2)+'% '+byText('ofFace','of face')+' | '+n+' '+(n===1 ? byText('period','period') : byText('periods','periods'));
   document.getElementById('by-current-yield').textContent=(currentYield*100).toFixed(2)+'%';
   document.getElementById('by-annual-coupon').textContent=fmt(face*couponRate);
   document.getElementById('by-total-return').textContent=fmt(totalReturn);
