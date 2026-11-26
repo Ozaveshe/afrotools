@@ -1,3 +1,4 @@
+const {prepareCassavaLeafRecipe} = require('../../engines/src/afrokitchen-leaf-preparation');
 const attributedRecipes = require('../../engines/src/afrokitchen-engine');
 // netlify/functions/afrokitchen-recipes.js
 // Supabase CRUD for AfroKitchen recipes
@@ -104,7 +105,7 @@ exports.handler = async function (event) {
 
       const projected = attributedRecipes.projectAttributedRecipe(recipe);
       if (!projected) throw new Error("Attributed recipe identity mismatch");
-      return { statusCode: 200, headers, body: JSON.stringify(projected) };
+      return { statusCode: 200, headers, body: JSON.stringify(prepareCassavaLeafRecipe(projected)) };
     }
 
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid action' }) };

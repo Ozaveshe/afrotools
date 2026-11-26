@@ -207,7 +207,11 @@ function loadRecipeResearchAudit() {
   }
 }
 
+const {prepareCassavaLeafRecipe} = require('../engines/src/afrokitchen-leaf-preparation');
 function applyRecipeResearchPatch(recipe, researchAudit) {
+  return prepareCassavaLeafRecipe(applyEditorialRecipePatch(recipe, researchAudit));
+}
+function applyEditorialRecipePatch(recipe, researchAudit) {
   if (attributedRecipes.isPendingRecipeMethod(recipe)) return attributedRecipes.projectPendingRecipeMethod(recipe);
   if (attributedRecipes.isAttributedTarget(recipe)) {
     const projected = attributedRecipes.projectAttributedRecipe(recipe);
@@ -3216,7 +3220,7 @@ function refreshRecipeDescriptions() {
 function projectReviewedManifest(input, researchAudit) {
   const manifest = JSON.parse(JSON.stringify(input));
   manifest.recipes = manifest.recipes.map((recipe) => ({
-    ...((recipe.slug === 'kapenta-stew-zm' || recipe.slug === 'oleleh-sl' || attributedRecipes.isAttributedTarget(recipe) || attributedRecipes.isPendingRecipeMethod(recipe)) ? applyRecipeResearchPatch(recipe, researchAudit) : recipe),
+    ...((recipe.slug === 'kapenta-stew-zm' || recipe.slug === 'oleleh-sl' || attributedRecipes.isAttributedTarget(recipe) || attributedRecipes.isPendingRecipeMethod(recipe)) ? applyRecipeResearchPatch(recipe, researchAudit) : prepareCassavaLeafRecipe(recipe)),
     country_route_path: `/tools/afrokitchen/countries/${recipe.country_slug}/`,
     country_route_url: countryUrl(recipe.country_slug)
   }));
