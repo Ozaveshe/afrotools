@@ -2216,15 +2216,13 @@ function buildCountryFaqSchema(country) {
   };
 }
 
-function renderCountryFeaturedDishes(country, recipeImages) {
-  const recipes = countryFeaturedRecipes(country, 4);
+function renderCountrySuggestedDishes(country, recipes, recipeImages) {
   if (!recipes.length) return "";
 
   return `<section class="ak-section ak-static-related ak-country-featured-section">
     <div class="ak-section-head rv visible">
-      <div class="ak-section-eyebrow">Featured dishes</div>
+      <div class="ak-section-eyebrow">Suggested dishes</div>
       <h2 class="ak-section-title">Start with these ${escapeHtml(country.country_name)} recipes</h2>
-      <p class="ak-section-sub">These cards are selected from the stored country hub, prioritizing featured and ready-to-cook recipes.</p>
     </div>
     <div class="ak-static-related-grid">${recipes.map((recipe) => renderStaticRecipeCard(recipe, recipeImages)).join("\n")}</div>
   </section>`;
@@ -2577,7 +2575,8 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
   const description = buildCountryMetaDescription(country);
   const introParagraph = buildCountryIntroParagraph(country);
   const introLead = introParagraph.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || introParagraph;
-  const featuredDishes = renderCountryFeaturedDishes(country, recipeImages);
+  const suggestions = countryFeaturedRecipes(country, 4);
+  const suggestedDishes = renderCountrySuggestedDishes(country, suggestions, recipeImages);
   const popularCategoryLinks = renderCountryPopularCategoryLinks(country);
   const categoryLanes = renderCountryCategoryLanes(country);
   const countryRegionalAtlas = renderCountryRegionalAtlas(country, cuisineIntelligence);
@@ -2681,7 +2680,7 @@ ${renderCookbookNav()}
         <details class="ak-hero-more"><summary>About this cuisine</summary><p>${escapeHtml(introParagraph)}</p></details>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(country.total_recipes))}</div></div>
-          <div class="ak-stat"><div class="ak-stat-lbl">Featured dishes</div><div class="ak-stat-val">${escapeHtml(String(country.featured_recipes))}</div></div>
+          <div class="ak-stat"><div class="ak-stat-lbl">Suggested dishes</div><div class="ak-stat-val">${escapeHtml(String(suggestions.length))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Ready to cook</div><div class="ak-stat-val">${escapeHtml(String(country.generated_recipe_count))}</div></div>
         </div>
         <div class="ak-hero-actions">
@@ -2705,7 +2704,7 @@ ${renderCookbookNav()}
 
   <section class="ak-section">
     <div class="ak-container">
-      ${featuredDishes}
+      ${suggestedDishes}
       ${popularCategoryLinks}
       ${categoryLanes}
 
