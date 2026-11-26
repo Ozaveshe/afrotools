@@ -245,7 +245,7 @@ async function handleHealth(CORS) {
 async function handleAgriculture(params, CORS) {
   const {data} = await getOrFetch('agri-inputs-latest', 600000);
   const agri = require('./_shared/agri-reference');
-  const snapshot = agri.normalizeSnapshot(data);
+  const snapshot = data == null ? agri.offlineCatalogue() : agri.normalizeSnapshot(data);
   if (!snapshot) return jsonResp(503, {error:'Agricultural reference data unavailable'}, CORS);
   let items = snapshot.countries;
   if (params.country) {
@@ -256,6 +256,8 @@ async function handleAgriculture(params, CORS) {
   return jsonResp(200, {timestamp:snapshot.timestamp, data:items, count:items.length,
     source:snapshot.source, source_type:'reference', price_status:snapshot.price_status,
     price_reviewed_at:null, current_prices:false, collected_at:snapshot.collected_at,
+    ...(snapshot.catalogue_date ? {reference_mode:'packaged_catalogue', catalogue_date:snapshot.catalogue_date,
+      catalogue_source:snapshot.catalogue_source, guidance:'Planning figures only. Confirm the product, pack size and current price with a local supplier.'} : {}),
     external_sources:snapshot.external_sources || null,
     status:agri.referenceStatus(data, {}, Date.now(), 10080)}, CORS);
 }

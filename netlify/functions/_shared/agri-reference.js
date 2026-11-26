@@ -7,6 +7,39 @@ const FOOD_SOURCE = 'https://api.worldbank.org/v2';
 const contracts = require('../../../data/calculation-quality/external-data-contracts.json');
 const FX_MAX_AGE_MS = contracts.datasets.find(item => item.storageKey === 'forex-latest').maxAgeHours * 60 * 60 * 1000;
 
+// Catalogue version is a source revision date, not a price review or collection.
+const CATALOGUE_REVISION = '446e6ff58ff7bfb429412c416d87141fdf2ee24e';
+const CATALOGUE_DATE = '2026-07-17';
+const INPUTS = {
+  NG: { name: 'Nigeria', currency: 'NGN', inputs: { urea_50kg: 28000, npk_50kg: 32000, maize_seed_kg: 2500, rice_seed_kg: 3500, herbicide_l: 5000, insecticide_l: 6000 } },
+  KE: { name: 'Kenya', currency: 'KES', inputs: { urea_50kg: 4500, npk_50kg: 5200, maize_seed_kg: 450, tea_seedling: 15, herbicide_l: 800, insecticide_l: 1200 } },
+  GH: { name: 'Ghana', currency: 'GHS', inputs: { urea_50kg: 250, npk_50kg: 300, maize_seed_kg: 35, cocoa_seedling: 5, herbicide_l: 60, insecticide_l: 80 } },
+  TZ: { name: 'Tanzania', currency: 'TZS', inputs: { urea_50kg: 85000, npk_50kg: 95000, maize_seed_kg: 6000, rice_seed_kg: 8000, herbicide_l: 15000 } },
+  ET: { name: 'Ethiopia', currency: 'ETB', inputs: { urea_50kg: 3500, npk_50kg: 4200, wheat_seed_kg: 80, teff_seed_kg: 120, herbicide_l: 500 } },
+  ZA: { name: 'South Africa', currency: 'ZAR', inputs: { urea_50kg: 650, npk_50kg: 750, maize_seed_kg: 180, herbicide_l: 200, insecticide_l: 300 } },
+  CI: { name: "Côte d'Ivoire", currency: 'XOF', inputs: { urea_50kg: 18000, npk_50kg: 22000, cocoa_seedling: 250, herbicide_l: 3500 } },
+  UG: { name: 'Uganda', currency: 'UGX', inputs: { urea_50kg: 150000, npk_50kg: 180000, maize_seed_kg: 8000, coffee_seedling: 3000, herbicide_l: 25000 } },
+  RW: { name: 'Rwanda', currency: 'RWF', inputs: { urea_50kg: 35000, npk_50kg: 42000, maize_seed_kg: 2500, irish_potato_seed_kg: 500, herbicide_l: 5000 } },
+  ZM: { name: 'Zambia', currency: 'ZMW', inputs: { urea_50kg: 900, npk_50kg: 1100, maize_seed_kg: 120, herbicide_l: 150 } },
+  MW: { name: 'Malawi', currency: 'MWK', inputs: { urea_50kg: 65000, npk_50kg: 75000, maize_seed_kg: 5000, tobacco_seed_g: 15000, herbicide_l: 12000 } },
+  SN: { name: 'Senegal', currency: 'XOF', inputs: { urea_50kg: 16000, npk_50kg: 20000, rice_seed_kg: 1200, groundnut_seed_kg: 800, herbicide_l: 3000 } },
+};
+
+function offlineCatalogue() {
+  const countries = Object.entries(INPUTS).map(([code, config]) => ({
+    code, name: config.name, currency: config.currency, source: 'packaged_catalogue',
+    collected_at: null, last_updated: null, price_reviewed_at: null, price_status: 'unverified_reference',
+    inputs: Object.entries(config.inputs).map(([item, price_local]) => ({
+      item, price_local, currency: config.currency, price_usd: null,
+      price_status: 'unverified_reference', price_reviewed_at: null
+    }))
+  }));
+  return {countries, source: 'AfroTools packaged input catalogue', timestamp: null, collected_at: null,
+    price_status: 'unverified_reference', catalogue_date: CATALOGUE_DATE,
+    catalogue_source: 'https://github.com/Ozaveshe/afrotools/blob/' + CATALOGUE_REVISION +
+      '/netlify/functions/scheduled-fetch-agri-inputs.js'};
+}
+
 function iso(value) {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2}))?$/.test(value)) return null;
   const calendar = new Date(value.slice(0, 10) + 'T00:00:00Z');
@@ -134,5 +167,5 @@ function referenceStatus(payload, meta, now, staleAfterMinutes) {
     records_count:normalized?.countries.length ?? null, confidence:null, blob_present:!!payload};
 }
 
-module.exports = {SOURCE, FOOD_INDICATOR, iso, number, latestFoodObservations, fertilizerBenchmarks,
+module.exports = {INPUTS, offlineCatalogue, SOURCE, FOOD_INDICATOR, iso, number, latestFoodObservations, fertilizerBenchmarks,
   conversion, buildSnapshot, normalizeSnapshot, referenceStatus};

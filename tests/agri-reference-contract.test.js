@@ -73,6 +73,22 @@ test('impossible collection dates and malformed retained rows cannot become avai
  assert.equal(agri.normalizeSnapshot({...legacy(),timestamp:'2026-10-05T00:00:00Z'},now),null);
 });
 
+test('missing store serves a versioned planning catalogue while collection remains offline',async()=>{
+ const api=load('api-v1.js',{'./_shared/data-store':storage(null),
+  './_lib/cache':{getOrFetch:async()=>({data:null})},'./_shared/api-auth':{validateApiKey:async()=>({tier:'free'})}});
+ const request=async filters=>api.handler({httpMethod:'GET',path:'/api/v1/agriculture',queryStringParameters:filters});
+ const response=await request({}); assert.equal(response.statusCode,200);
+ const body=JSON.parse(response.body);
+ assert.equal(body.count,12); assert.equal(body.data.flatMap(row=>row.inputs).length,61);
+ assert.equal(body.reference_mode,'packaged_catalogue');assert.equal(body.catalogue_date,'2026-07-17');
+ assert.equal(body.current_prices,false);assert.equal(body.collected_at,null);assert.equal(body.timestamp,null);
+ assert.equal(body.status.collection_status,'offline');assert.equal(body.status.records_count,null);
+ assert.ok(body.data.every(row=>row.inputs.every(input=>input.price_reviewed_at===null && input.price_usd===null)));
+ const kenya=JSON.parse((await request({country:'ke'})).body);assert.equal(kenya.count,1);
+ assert.equal(kenya.data[0].inputs.find(input=>input.item==='urea_50kg').price_local,4500);
+ assert.equal((await request({country:'xx'})).statusCode,404);
+});
+
 test('public agriculture API fails closed on impossible or future collection dates',async()=>{
  for(const timestamp of ['2026-02-30T04:00:00Z','9999-01-01T00:00:00Z']) {
   const payload={...legacy(),timestamp};
