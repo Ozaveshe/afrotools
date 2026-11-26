@@ -101,6 +101,33 @@
         // Edited or unknown fragments must never authorize a calculation.
         return [ "ZA", "EG", "MA", "CI", "SN", "CM", "ET", "RW", "AO", "DZ", "TN", "MZ", "BW", "NA" ].includes(code) ? code : "";
     }
+    function offerDirectoryGuide(code, select, notice) {
+        if (location.pathname !== "/tools/car-import-cost/" ||
+            new URLSearchParams(location.hash.slice(1)).get("requested-country") !== code) return;
+        var query = new URLSearchParams(location.search);
+        var normalize = function(value) { return String(value || "").trim().toLowerCase(); };
+        fetch("/data/cars/price-intelligence.json").then(function(response) {
+            if (!response.ok) throw new Error("Vehicle directory unavailable");
+            return response.json();
+        }).then(function(catalog) {
+            var country = catalog.countries[code];
+            if (!country || country.directory_enabled === false || select.value) return;
+            var vehicle = catalog.vehicles.find(function(item) {
+                return String(item.year) === query.get("year") &&
+                    normalize(item.make) === normalize(query.get("make")) &&
+                    normalize(item.model.split("/")[0]) === normalize(query.get("model"));
+            });
+            var link = document.createElement("a");
+            var route = [country.slug];
+            if (vehicle) route.push(vehicle.makeSlug, vehicle.modelSlug, String(vehicle.year));
+            link.href = "/cars/" + route.map(encodeURIComponent).join("/") + "/";
+            link.textContent = vehicle
+                ? "View the " + vehicle.year + " " + vehicle.make + " " + vehicle.model + " price guide for " + country.name
+                : "Browse vehicle prices in " + country.name;
+            notice.after(link);
+            select.addEventListener("change", function() { link.hidden = Boolean(select.value); });
+        }).catch(function() { /* The available calculator destinations remain usable offline. */ });
+    }
     function prepareCountryEntry(requestedCountry) {
         if (requestedCountry == null) return;
         var select = r("#carImportCountry");
@@ -129,6 +156,7 @@
         notice.setAttribute("role", "status");
         var explanation = name + copy.unavailable;
         notice.textContent = explanation + copy.choose;
+        offerDirectoryGuide(code, select, notice);
         select.closest("form").insertBefore(notice, select.closest("form").querySelector(".car-import-form-grid"));
         select.insertBefore(l("", copy.placeholder, true), select.firstChild);
         select.value = "";
