@@ -2909,7 +2909,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return { id: 'proforma-invoice', category: 'trade', name: proforma[text][0], href: proforma[text][1], status: 'live', icon: '📄' };
       }
       var name, href;
-      if (/^(invoice|invoice generator)$/.test(text)) {
+      var clientBill = /^(?:(?:make|create|generate|prepare|write) (?:a |an )?(?:bill|invoice) for (?:a |an |my |the )?(?:client|customer)|bill (?:a |my |the )(?:client|customer))$/.test(text);
+      if (clientBill || /^(invoice|invoice generator)$/.test(text)) {
         name = 'Invoice Generator';
         href = '/tools/invoice-generator/';
       } else if (/^(factures?|generateur de factures?|(?:creer|faire|generer) une facture)$/.test(text)) {
