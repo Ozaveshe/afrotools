@@ -4,8 +4,10 @@
   const salary = document.getElementById('compliance-salary');
   if (!E || !salary) return;
   const sw = document.documentElement.lang === 'sw';
+  const locale = document.documentElement.lang === 'ha' && window.AfroTools.MinimumWageLocale;
+  const displayLocale = locale ? 'ha' : sw ? 'sw' : 'en';
   const $ = id => document.getElementById(id);
-  const copy = sw ? {
+  const copy = locale ? locale.copy : sw ? {
     invalid:'Weka mshahara wa mwezi ulio halali, sifuri au zaidi.',
     missing:'Hakuna kiwango kinachoweza kulinganishwa katika rekodi hii. Hakiki sheria na sekta husika; kutokuwepo kwa rekodi hakuthibitishi kwamba hakuna kima cha chini.',
     above:'Mshahara unafikia kiwango cha rejea kilichochaguliwa', below:'Mshahara uko chini ya kiwango cha rejea kilichochaguliwa',
@@ -26,7 +28,7 @@
   // These are explicit comparison assumptions, not a statutory monthly conversion.
   const currencyAmount = value => Math.round((Number(value) + Number.EPSILON) * 100) / 100;
   const monthlyAmount = (amount, basis) => currencyAmount(basis === 'hourly' ? amount * 8 * 22 : basis === 'daily' ? amount * 22 : amount);
-  const labels = sw ? {
+  const labels = locale ? locale.labels : sw ? {
     recorded:'Thamani ya mwezi iliyorekodiwa', derived:'Makadirio ya mwezi kwa ulinganisho',
     basis:'Msingi wa kiwango', monthly:'mwezi', daily:'siku', hourly:'saa',
     limits:'Rekodi ya katalogi; tarehe ya kuanza si tarehe ya uhakiki. Uhalali wa sasa na masharti ya matumizi hayajathibitishwa hapa. Hakiki chanzo rasmi.',
@@ -45,8 +47,8 @@
     headers:['Country','Country code','Currency','Recorded monthly value','Derived monthly comparison estimate','Rate basis','Rate in that basis','Conversion assumptions','Recorded USD (approximate)','Recorded effective date','Recorded law','Source limits','USD limits'],
     unset:'No record', exact:'Recorded monthly rate; no conversion', derivedRule:'22 days per month; 8 hours per day for hourly rates'
   };
-  const nativeName = c => { try { return new Intl.DisplayNames([sw ? 'sw' : 'en'], {type:'region'}).of(c.code) || c.name; } catch (_) { return c.name; } };
-  const number = n => new Intl.NumberFormat(sw ? 'sw' : 'en', {minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+  const nativeName = c => { if (locale && locale.countryNames[c.code]) return locale.countryNames[c.code]; try { return new Intl.DisplayNames([displayLocale], {type:'region'}).of(c.code) || c.name; } catch (_) { return c.name; } };
+  const number = n => new Intl.NumberFormat(displayLocale, {minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
   function selectedReference(c, sector) {
     const basis = sector ? sector.basis || c.basis : c.basis;
     const amount = sector ? sector.rate : basis === 'hourly' ? c.hourly : basis === 'daily' ? c.daily : c.monthly;
@@ -83,7 +85,7 @@
     return rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(',')).join('\r\n');
   }
   // This download exports the country catalogue, not a user's salary or selected sector.
-  window.doExportCSV=function(){const blob=new Blob([csv()],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='afrotools-minimum-wage-reference-'+(sw?'sw':'en')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+  window.doExportCSV=function(){const blob=new Blob([csv()],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='afrotools-minimum-wage-reference-'+displayLocale+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 
   const result = $('compliance-result'); result.setAttribute('role','status');
   salary.setAttribute('aria-describedby','cr-detail');
@@ -106,10 +108,16 @@
     const amount = sector ? sector.rate : c && (basis === 'hourly' ? c.hourly : basis === 'daily' ? c.daily : c.monthly);
     const minimum = monthlyAmount(amount, basis);
     if (!(minimum > 0) || !Number.isFinite(minimum)) { clear(copy.missing); return; }
-    const fmt = n => new Intl.NumberFormat(sw ? 'sw' : 'en', {maximumFractionDigits:2}).format(n) + ' ' + c.currency;
+    const fmt = n => new Intl.NumberFormat(displayLocale, {maximumFractionDigits:2}).format(n) + ' ' + c.currency;
     result.style.display = 'block'; result.className = 'mw-compliance-result ' + (currencyAmount(value) >= minimum ? 'pass' : 'fail');
     $('cr-title').textContent = currencyAmount(value) >= minimum ? copy.above : copy.below;
-    $('cr-detail').textContent = (sector ? sector.name : copy.national) + '. ' + copy.salary + ': ' + fmt(value) + '; ' + copy.reference + ': ' + fmt(minimum) + '; ' + copy.difference + ': ' + fmt(currencyAmount(value) - minimum) + '. ' + (basis === 'monthly' ? copy.monthly : copy.assumptions);
+    $('cr-detail').textContent = (sector ? (locale && locale.categoryNames[sector.code] || sector.name) : copy.national) + '. ' + copy.salary + ': ' + fmt(value) + '; ' + copy.reference + ': ' + fmt(minimum) + '; ' + copy.difference + ': ' + fmt(currencyAmount(value) - minimum) + '. ' + (basis === 'monthly' ? copy.monthly : copy.assumptions);
     $('cr-action').textContent = copy.effective + ': ' + (sector && sector.effectiveDate || c.effectiveDate) + '. ' + c.law;
+    if (c.code === 'NG' && $('ng-wage-sources')) {
+      const sourceLink = document.createElement('a');
+      sourceLink.href = '#ng-wage-sources';
+      sourceLink.textContent = locale ? locale.copy.ngSources : 'Check Nigerian coverage and sources';
+      $('cr-action').append(locale ? locale.copy.ngCoverage : ' Applies to covered employment only. ', sourceLink);
+    }
   };
 })();

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ha">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mafi ƙarancin albashi: rikodi da kwatanci | AfroTools Hausa</title>
+  <meta name="description" content="Duba rikodin ƙasa, ranar fara aiki da nau’in adadin albashi. Kwatanta albashin wata da rikodin da aka zaɓa, tare da iyakokin tushe da CSV.">
+  <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/mafi-karancin-albashi/">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#14213a;font:16px/1.6 system-ui,sans-serif}header,main,footer{max-width:1080px;margin:auto;padding:20px}header{display:flex;gap:18px;flex-wrap:wrap}a{color:#1251aa}h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.2}h2,h3{line-height:1.3}.panel{background:white;border:1px solid #d5dfed;border-radius:14px;padding:22px;margin:18px 0;min-width:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}label{display:block;font-weight:700;margin:8px 0}input,select,button{width:100%;font:inherit;min-height:46px;border-radius:8px;padding:10px;border:1px solid #9cacbf}button{background:#1251aa;color:white;font-weight:700;cursor:pointer;margin:10px 0}button:disabled{opacity:.6;cursor:not-allowed}fieldset{border:0;padding:0;margin:0;min-width:0}.note{background:#edf4ff;border-left:4px solid #2868b5;padding:14px}.rate{font-size:1.5rem;font-weight:800}.mw-compliance-result{display:none;border:2px solid #b8c5d5;border-radius:10px;padding:16px;margin-top:16px}.mw-compliance-result.pass{border-color:#17835d}.mw-compliance-result.fail{border-color:#b64236}.table-wrap{overflow:auto;max-width:100%;border:1px solid #d5dfed}table{border-collapse:collapse;width:100%;min-width:740px}td,th{text-align:left;padding:12px;border-bottom:1px solid #d5dfed}th{background:#edf4ff}.source-list{overflow-wrap:anywhere}.muted{font-size:.92rem;color:#4b5e75}summary{cursor:pointer;font-weight:750;padding:12px 0}:focus-visible{outline:3px solid #f4ad20;outline-offset:3px}[hidden]{display:none!important}@media(max-width:650px){.grid{grid-template-columns:1fr}header,main,footer{padding:14px}.panel{padding:18px}.rate{font-size:1.25rem}}
+  </style>
+</head>
+<body>
+<header><a href="/ha/">AfroTools Hausa</a><a href="/ha/kayan-aiki/">Dukkan kayan aiki</a></header>
+<main id="ha-wage-reference">
+  <h1>Mafi ƙarancin albashi: duba rikodi kafin yanke shawara</h1>
+  <p>Zaɓi ƙasa da nau’in aiki, duba ranar fara aiki da lokacin adadi, sannan kwatanta albashin wata da rikodin da aka zaɓa. Wannan kwatanci ba tabbatar da bin dokar aiki ba ne.</p>
+  <p class="note">Kundin yana da bayanan lokuta daban-daban. Ranar fara aiki ba ranar sabuwar tantancewa ba ce. Rashin adadi ba ya tabbatar da cewa babu mafi ƙarancin albashi a doka. Tabbatar da halin yanzu, fanni, wuri da sharuddan aikin daga tushen hukuma.</p>
+  <p id="dependency-status" class="note" role="alert" hidden></p>
+  <section class="panel" aria-labelledby="lookup-title">
+    <h2 id="lookup-title">Duba ƙasa da fannin aiki</h2>
+    <div class="grid">
+      <div><label for="country">Ƙasa</label><select id="country"></select></div>
+      <div><label for="state-select">Jiha ko nau’in aiki da ke cikin kundin</label><select id="state-select"></select></div>
+    </div>
+    <h3 id="r-heading"></h3><p class="rate" id="r-rate"></p>
+    <p><strong>Adadin wata don kwatanci:</strong> <span id="r-monthly"></span></p>
+    <p id="r-monthly-sub"></p><div id="r-details"></div>
+    <p id="r-usd" class="muted"></p>
+    <p id="source-context" class="note"></p>
+    <h3>Tushen hukuma, idan an haɗa shi</h3><p class="muted">An kiyaye sunayen takardu da dokoki a harshen tushensu.</p><ul id="official-sources" class="source-list"></ul>
+    <div id="ng-wage-sources" class="note" hidden>
+      <h3>Waɗanda dokar Najeriya ta shafa</h3>
+      <p>Adadin ƙasa na NGN 70,000 a wata ya shafi aikin da dokar ta ɗauka. Sashe na 4 yana ware wuraren aiki masu ma’aikata ƙasa da 25 da wasu nau’o’in aikin ɗan lokaci, aikin lada bisa kaso ko yawan kaya, aikin lokaci na shekara da wasu ayyukan jirgin ruwa ko sama. Duba ainihin rubutun doka da sharuddan aikin.</p>
+      <p>Babu adadin ƙasa na NGN 50,000 ga ƙananan masu aiki ko ma’aikatan gida a wannan rikodin. A tantance takardar albashin ma’aikatan jihar ko yarjejeniyar aiki daban. Kwanaki 22 da awa 8 hasashen juyawar kwatanci ne.</p>
+    </div>
+    <label for="compare-country">Ƙasa ta biyu don duba rikodi</label><select id="compare-country"><option value="">Ba a zaɓa ba</option></select><p id="country-comparison"></p>
+  </section>
+  <section class="panel" id="compliance-section" aria-labelledby="comparison-title">
+    <h2 id="comparison-title">Kwatanta albashin wata</h2>
+    <p>Shigar da albashi a nau’in kuɗin ƙasar da aka zaɓa. Adadin rana ko awa yana komawa makadirar wata bisa awa 8 a rana da kwanaki 22 a wata. Kwatanci ya bi wannan hasashe; ainihin jadawalin aiki na iya bambanta.</p>
+    <label for="compliance-salary">Albashin wata a nau’in kuɗin ƙasar</label><input id="compliance-salary" type="number" min="0" step="0.01" inputmode="decimal">
+    <button id="check-wage" type="button" onclick="checkCompliance()">Kwatanta albashi</button>
+    <div id="compliance-result" class="mw-compliance-result" role="status" aria-live="polite"><h3 id="cr-title"></h3><p id="cr-detail"></p><p id="cr-action"></p></div>
+    <div id="what-to-do" hidden></div>
+  </section>
+  <section class="panel" aria-labelledby="table-title">
+    <h2 id="table-title">Rikodin ƙasashen da ke cikin kundin</h2>
+    <p>Adadin wata da kundin ya rubuta na iya bambanta da makadirar wata daga adadin awa ko rana. CSV yana raba waɗannan, ya kiyaye ranar rikodi da iyakokin canjin USD marar kwanan wata.</p>
+    <label for="country-search">Nemo ƙasa, lambarta ko nau’in kuɗi</label><input id="country-search" type="search">
+    <p id="country-count" role="status"></p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Jadawalin rikodin ƙasashe, ana iya gungurawa"><table><thead><tr><th scope="col">Ƙasa</th><th scope="col">Lamba</th><th scope="col">Kuɗi</th><th scope="col">Adadin wata da aka rubuta</th><th scope="col">Lokacin adadi</th><th scope="col">Ranar fara aiki</th></tr></thead><tbody id="country-rows"></tbody></table></div>
+    <button id="export-csv" type="button" onclick="doExportCSV()">Sauke duk rikodin ƙasashe (CSV)</button><p class="muted">CSV yana ƙunshe da duk kundin ƙasashe; ba albashin da ka shigar ko sakamakon mutum ba.</p>
+  </section>
+  <section class="panel" aria-labelledby="limits-title"><h2 id="limits-title">Abubuwan da ba a tabbatar ba</h2><p>Ba a gabatar da hasashen tsadar rayuwa, jerin ƙarfin saye ko raguwar darajar albashi a matsayin tabbacin halin yanzu a nan ba. Tushen da ranar sabunta waɗannan bayanai ba su wadatar don yin wannan iƙirari ba. Wannan shafin yana nuna rikodi da kwatancin lissafi kawai.</p></section>
+  <section class="panel"><details><summary>Sanarwa da rahoton albashin da aka gani</summary>
+    <h2 class="mw-alert-title">Nemi sanarwa</h2><p class="mw-alert-sub"></p>
+    <label for="alert-email">Adireshin imel</label><input id="alert-email" type="email" autocomplete="email"><button type="button" onclick="subscribeAlert()">Rubuta buƙata</button><p id="alert-result" role="status" aria-live="polite"></p>
+    <h3>Rahoton albashin da aka gani</h3><p class="mw-vf-note"></p>
+    <div class="grid"><div><label for="vf-country">Ƙasar rahoto</label><select id="vf-country"><option value="">Zaɓi ƙasa</option></select></div><div><label for="vf-sector">Fannin aiki</label><input id="vf-sector" maxlength="100"></div><div><label for="vf-salary">Albashin wata a kuɗin ƙasar</label><input id="vf-salary" type="number" min="0" step="any"></div><div><label for="vf-city">Birni (zaɓi)</label><input id="vf-city" maxlength="100"></div></div>
+    <button type="button" onclick="submitViolation()">Aika rahoton albashi</button><p id="vf-result" role="status" aria-live="polite"></p>
+  </details></section>
+  <p>Ba shawarar doka ko tabbatar da albashin da ya shafi aikinka ba ne. Ga bayanan aikin, tuntuɓi hukumar aiki ko ƙwararren da ya dace.</p>
+</main>
+<footer><a href="/ha/kayan-aiki/">Komawa kayan aikin Hausa</a> · <a href="/ha/sirri/">Sirri</a> · <a href="/ha/sharuddan-amfani/">Sharuddan amfani</a></footer>
+<script src="/engines/minimum-wage-engine.js?v=e8040e28"></script>
+<script src="/data/hr/minimum-wages.js?v=445c017d"></script>
+<script src="/assets/js/pages/minimum-wage-ha.js?v=52a3c481" defer></script>
+<script src="/assets/js/pages/minimum-wage-reference-comparison.js?v=d4c8863c" defer></script>
+<script src="/assets/js/pages/minimum-wage-submissions.js?v=f7ff548a" defer></script>
+<script src="/assets/js/lazy-analytics.js" defer></script>
+</body>
+</html>
