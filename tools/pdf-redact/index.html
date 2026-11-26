@@ -894,7 +894,7 @@
               <label for="searchTerms">Terms</label>
               <span class="field-hint">One per line or comma</span>
             </div>
-            <textarea id="searchTerms" placeholder="passport number&#10;account ID"></textarea>
+            <textarea id="searchTerms" aria-describedby="searchCoverage" placeholder="passport number&#10;account ID"></textarea>
           </div>
           <div class="control-group two-col">
             <div>
@@ -906,12 +906,13 @@
             </div>
             <div>
               <div class="label-row"><label for="matchMode">Match</label></div>
-              <select id="matchMode">
-                <option value="contains">Contains</option>
-                <option value="exact">Exact run</option>
+              <select id="matchMode" aria-describedby="searchCoverage">
+                <option value="contains">Text run contains term</option>
+                <option value="exact">Entire text run matches term</option>
               </select>
             </div>
           </div>
+          <p id="searchCoverage">Search and quick patterns cover the whole matching text run, which can include an entire line. To keep nearby words or amounts visible, undo the box and draw one tightly around the sensitive text in the preview.</p>
           <div class="control-group">
             <div class="label-row">
               <label>Quick patterns</label>
