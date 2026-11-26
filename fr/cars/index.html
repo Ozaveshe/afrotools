@@ -147,21 +147,23 @@
         <h2>Choisir un relevé local</h2>
         <p>Ces chiffres sont des prix demandés observés au Nigeria et au Ghana, pas des ventes conclues. Ouvrez une voiture pour la source, la date et les limites de l'échantillon.</p>
         <form class="fr-cars-picker" id="frCarsEstimator">
+          <label for="fr-car-market">Pays du relevé</label>
+          <select id="fr-car-market"><option value="">Tous les pays avec relevés</option><option value="NG">Nigeria</option><option value="GH">Ghana</option></select>
           <label for="fr-car-model">Voiture avec relevé daté</label>
-          <select id="fr-car-model" name="vehicle"><option value="/fr/cars/nigeria/toyota/camry/2005/">2005 Toyota Camry</option>
-<option value="/fr/cars/nigeria/toyota/corolla/2018/">Toyota Corolla 2018, occasion importée, versions variées ; cylindrée non vérifiée</option>
-<option value="/fr/cars/ghana/toyota/corolla/2018/">Toyota Corolla 2018 essence quatre cylindres, occasion importée, versions variées ; cylindrée non précisée</option>
-<option value="/fr/cars/nigeria/toyota/camry/2012/">2012 Toyota Camry</option>
-<option value="/fr/cars/nigeria/toyota/camry/2018/">Toyota Camry 2018 2,5 L, versions LE/SE/XLE/XSE variées</option>
-<option value="/fr/cars/nigeria/toyota/rav4/2018/">Toyota RAV4 2018 essence 2,5 L, versions LE/XLE/Limited/Adventure variées</option>
-<option value="/fr/cars/nigeria/toyota/hilux/2020/">2020 Toyota Hilux</option>
-<option value="/fr/cars/nigeria/hyundai/elantra/2018/">2018 Hyundai Elantra</option>
-<option value="/fr/cars/nigeria/honda/cr-v/2016/">2016 Honda CR-V</option>
-<option value="/fr/cars/nigeria/honda/cr-v/2020/">2020 Honda CR-V, version non vérifiée</option>
-<option value="/fr/cars/nigeria/honda/accord/2014/">2014 Honda Accord</option>
-<option value="/fr/cars/nigeria/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E300</option>
-<option value="/fr/cars/nigeria/lexus/rx/2017/">2017 Lexus RX350</option>
-<option value="/fr/cars/nigeria/lexus/es/2016/">2016 Lexus ES350</option></select>
+          <select id="fr-car-model" name="vehicle"><option data-market="NG" value="/fr/cars/nigeria/toyota/camry/2005/">Nigeria — 2005 Toyota Camry</option>
+<option data-market="NG" value="/fr/cars/nigeria/toyota/corolla/2018/">Nigeria — Toyota Corolla 2018, occasion importée, versions variées ; cylindrée non vérifiée</option>
+<option data-market="GH" value="/fr/cars/ghana/toyota/corolla/2018/">Ghana — Toyota Corolla 2018 essence quatre cylindres, occasion importée, versions variées ; cylindrée non précisée</option>
+<option data-market="NG" value="/fr/cars/nigeria/toyota/camry/2012/">Nigeria — 2012 Toyota Camry</option>
+<option data-market="NG" value="/fr/cars/nigeria/toyota/camry/2018/">Nigeria — Toyota Camry 2018 2,5 L, versions LE/SE/XLE/XSE variées</option>
+<option data-market="NG" value="/fr/cars/nigeria/toyota/rav4/2018/">Nigeria — Toyota RAV4 2018 essence 2,5 L, versions LE/XLE/Limited/Adventure variées</option>
+<option data-market="NG" value="/fr/cars/nigeria/toyota/hilux/2020/">Nigeria — 2020 Toyota Hilux</option>
+<option data-market="NG" value="/fr/cars/nigeria/hyundai/elantra/2018/">Nigeria — 2018 Hyundai Elantra</option>
+<option data-market="NG" value="/fr/cars/nigeria/honda/cr-v/2016/">Nigeria — 2016 Honda CR-V</option>
+<option data-market="NG" value="/fr/cars/nigeria/honda/cr-v/2020/">Nigeria — 2020 Honda CR-V, version non vérifiée</option>
+<option data-market="NG" value="/fr/cars/nigeria/honda/accord/2014/">Nigeria — 2014 Honda Accord</option>
+<option data-market="NG" value="/fr/cars/nigeria/mercedes-benz/e-class/2017/">Nigeria — 2017 Mercedes-Benz E300</option>
+<option data-market="NG" value="/fr/cars/nigeria/lexus/rx/2017/">Nigeria — 2017 Lexus RX350</option>
+<option data-market="NG" value="/fr/cars/nigeria/lexus/es/2016/">Nigeria — 2016 Lexus ES350</option></select>
           <button class="fr-cars-button" type="submit">Voir le relevé</button>
         </form>
         <p>Pour un autre modèle, cherchez dans l'<a href="/cars/">annuaire complet</a>. Pour calculer un coût d'import, saisissez le prix réel du vendeur dans le <a href="/fr/tools/cout-importation-voiture/">devis d'import modifiable</a>.</p>
@@ -357,6 +359,19 @@
     (function () {
       var form = document.getElementById('frCarsEstimator');
       if (!form) return;
+      var market = document.getElementById('fr-car-market');
+      var models = document.getElementById('fr-car-model');
+      var options = Array.from(models.options);
+      function filterModels() {
+        var previous = models.value;
+        var matches = options.filter(function (option) {
+          return !market.value || option.dataset.market === market.value;
+        });
+        models.replaceChildren(...matches);
+        if (matches.some(function (option) { return option.value === previous; })) models.value = previous;
+      }
+      market.addEventListener('change', filterModels);
+      filterModels();
       form.addEventListener('submit', function (event) {
         event.preventDefault();
         var route = document.getElementById('fr-car-model').value;

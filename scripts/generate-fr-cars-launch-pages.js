@@ -456,7 +456,7 @@ function frenchVehicleProfile(vehicle) {
   return `${trim} - ${body} - ${fuel} - ${vehicle.mileage}.`;
 }
 
-function layout({ title, description, canonical, enUrl, swUrl, schema, body, indexable = false }) {
+function layout({ title, description, canonical, enUrl, swUrl, schema, body, indexable = false, marketFilter = "" }) {
   const pageBody = normalizeFrenchText(body);
   const alternateLinks = indexable ? [
     `<link rel="alternate" hreflang="en" href="${enUrl}">`,
@@ -536,7 +536,7 @@ ${alternateLinks}  <meta name="robots" content="${indexable ? "index, follow" : 
     (function () {
       var form = document.getElementById('frCarsEstimator');
       if (!form) return;
-      form.addEventListener('submit', function (event) {
+${marketFilter}      form.addEventListener('submit', function (event) {
         event.preventDefault();
         var route = document.getElementById('fr-car-model').value;
         if (route && route.indexOf('/fr/cars/') === 0) window.location.assign(route);
@@ -588,6 +588,20 @@ function faqSchema() {
 }
 
 function renderHub() {
+  const marketFilter = `      var market = document.getElementById('fr-car-market');
+      var models = document.getElementById('fr-car-model');
+      var options = Array.from(models.options);
+      function filterModels() {
+        var previous = models.value;
+        var matches = options.filter(function (option) {
+          return !market.value || option.dataset.market === market.value;
+        });
+        models.replaceChildren(...matches);
+        if (matches.some(function (option) { return option.value === previous; })) models.value = previous;
+      }
+      market.addEventListener('change', filterModels);
+      filterModels();
+`;
   const route = "fr/cars";
   const title = "Prix des voitures en Afrique | AfroTools";
   const description = "Choisissez une voiture, consultez les relevés datés de prix demandés au Nigeria et au Ghana et ouvrez un devis d'import modifiable. Les autres marchés exigent un devis vendeur.";
@@ -607,10 +621,13 @@ function renderHub() {
     return {
       route: `/fr/cars/${country.frSlug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`,
       label: observationLabel(row, vehicle),
+      country,
       observation: row
     };
   }).filter(Boolean);
-  const observedOptions = observedChoices.map((item) => `<option value="${escapeHtml(item.route)}">${escapeHtml(item.label)}</option>`).join("\n");
+  const markets = [...new Map(observedChoices.map(({ country }) => [country.code, country])).values()];
+  const marketOptions = markets.map(country => `<option value="${escapeHtml(country.code)}">${escapeHtml(country.frName)}</option>`).join("");
+  const observedOptions = observedChoices.map((item) => `<option data-market="${escapeHtml(item.country.code)}" value="${escapeHtml(item.route)}">${escapeHtml(item.country.frName)} — ${escapeHtml(item.label)}</option>`).join("\n");
   const modelLinks = observedChoices.map((item) => {
     return `<li><a href="${escapeHtml(item.route)}">${escapeHtml(item.label)}</a> — ${money(item.observation.median, item.observation.currency)}, ${escapeHtml(item.observation.reviewedAt)} (${item.observation.sampleSize} annonces)</li>`;
   }).join("\n");
@@ -652,6 +669,8 @@ function renderHub() {
         <h2>Choisir un relevé local</h2>
         <p>Ces chiffres sont des prix demandés observés au Nigeria et au Ghana, pas des ventes conclues. Ouvrez une voiture pour la source, la date et les limites de l'échantillon.</p>
         <form class="fr-cars-picker" id="frCarsEstimator">
+          <label for="fr-car-market">Pays du relevé</label>
+          <select id="fr-car-market"><option value="">Tous les pays avec relevés</option>${marketOptions}</select>
           <label for="fr-car-model">Voiture avec relevé daté</label>
           <select id="fr-car-model" name="vehicle">${observedOptions}</select>
           <button class="fr-cars-button" type="submit">Voir le relevé</button>
@@ -694,7 +713,7 @@ function renderHub() {
     </section>
   </main>`;
 
-  return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl("cars"), swUrl: absUrl("sw/zana/bei-na-akili-ya-gari"), schema, body, indexable: true }));
+  return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl("cars"), swUrl: absUrl("sw/zana/bei-na-akili-ya-gari"), schema, body, marketFilter, indexable: true }));
 }
 
 function renderCountryPage(country) {
