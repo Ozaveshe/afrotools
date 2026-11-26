@@ -107,6 +107,7 @@
                 "Create an invoice with AfroTools.": "Créez une facture avec AfroTools.",
                 "Share tool link": "Partager le lien de l’outil",
                 "Share invoice data": "Partager les données de la facture",
+                "View the shared invoice details.": "Consultez les détails de la facture partagée.",
                 Unpaid: "Non payé",
                 ", balance due ": ", solde dû ",
                 Status: "Statut",
@@ -246,6 +247,7 @@
                 "Create an invoice with AfroTools.": "Tengeneza ankara kwa kutumia AfroTools.",
                 "Share tool link": "Shiriki kiungo cha zana",
                 "Share invoice data": "Shiriki taarifa za ankara",
+                "View the shared invoice details.": "Tazama taarifa za ankara iliyoshirikiwa.",
                 Unpaid: "Haijalipwa",
                 ", balance due ": ", salio linalodaiwa ",
                 Status: "Hali",
@@ -618,7 +620,7 @@
         var title = include ? invoiceCopy("Invoice") + " " + (l("invoiceNumber") || "") : invoiceCopy("AfroTools Invoice Generator");
         if (navigator.share) navigator.share({
             title: title,
-            text: include ? title : invoiceCopy("Create an invoice with AfroTools."),
+            text: include ? invoiceCopy("View the shared invoice details.") : invoiceCopy("Create an invoice with AfroTools."),
             url: url.toString()
         }).then(function() {
             m(invoiceCopy("Share sheet opened"));
