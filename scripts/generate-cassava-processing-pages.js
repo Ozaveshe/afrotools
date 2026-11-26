@@ -12,6 +12,11 @@ const OUT_DIR = path.join(BASE, 'agriculture/cassava-processing');
 
 if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
 
+// Country names are also embedded inside single-quoted inline JavaScript.
+function inlineName(name) {
+  return JSON.stringify(name).slice(1, -1).replace(/'/g, "\\'").replace(/</g, '\\u003c');
+}
+
 const COUNTRIES = [
   { code:'NG', name:'Nigeria',       slug:'nigeria',       flag:'🇳🇬', region:'West Africa',    currency:'NGN', symbol:'₦',    cassavaPrice:80000,  garriPkg:800,   fuPkg:700,  hqcfPkg:600,  chipsPkg:300,  starchPkg:1200,  laborDay:3000,   topProducts:['Garri','Fufu Flour','HQCF'] },
   { code:'GH', name:'Ghana',         slug:'ghana',         flag:'🇬🇭', region:'West Africa',    currency:'GHS', symbol:'GH₵',  cassavaPrice:800,    garriPkg:8,     fuPkg:7,    hqcfPkg:9,    chipsPkg:4,    starchPkg:18,    laborDay:40,     topProducts:['Garri','HQCF','Cassava Chips'] },
@@ -519,7 +524,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
         sp.value = PW_PRICE_DEFAULTS['fufu_flour'];
       }
       document.getElementById('priceHint').textContent =
-        'Pre-filled with typical ${c.name} market price for ' + (PW_NAMES[pw] || pw) + '. Adjust for your location.';
+        'Pre-filled with typical ${inlineName(c.name)} market price for ' + (PW_NAMES[pw] || pw) + '. Adjust for your location.';
     }
   }
   window.onPathwayChange = onPathwayChange;
@@ -794,7 +799,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     var cdNote = data && data.countries[COUNTRY_CODE] && data.countries[COUNTRY_CODE].note;
     if (cdNote) {
       document.getElementById('countryNote').innerHTML =
-        '<strong>About cassava processing in ${c.name}:</strong> ' + cdNote;
+        '<strong>About cassava processing in ${inlineName(c.name)}:</strong> ' + cdNote;
     }
   });
 
