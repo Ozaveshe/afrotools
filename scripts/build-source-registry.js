@@ -594,7 +594,7 @@ function buildRegistry(asOf) {
       }
       if (country === 'KM') {
         entry.sourceName = 'Union of the Comoros Code general des impots 2023';
-        entry.sourceUrl = 'https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf';
+        entry.sourceUrl = 'https://justice.gouv.km/wp-content/uploads/2025/03/comores-cgi-2023.pdf';
         entry.routes = ['/comoros/km-paye', '/fr/comores/calculateur-salaire-net/', '/sw/comoros/kikokotoo-kodi-mshahara/', '/widgets/iframe/financial-comoros-paye.html'];
         entry.notes = 'Comoros employment-income estimates use CGI 2023 Articles 47, 55-60, 97 and 104-106: the official annual IRPP schedule, the standard 30% professional-expense deduction, and an optional user-supplied approved employee contribution capped at 6%. Employer contributions are not modeled. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
         entry.displayDisclaimer = 'CGI 2023 statutory-reference planning estimate only. Confirm later amendments, benefits in kind, actual-expense claims, the approved contribution rate on the payslip, withholding and remittance with DGI or a qualified professional.';
