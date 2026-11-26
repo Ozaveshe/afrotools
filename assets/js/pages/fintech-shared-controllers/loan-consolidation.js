@@ -9,6 +9,7 @@ function lcText(key,fallback){
 }
 var loanCount=3;
 function addLoan(){
+  invalidateConsolidation();
   loanCount++;
   var div=document.createElement('div');
   div.className='loan-entry';
@@ -71,3 +72,15 @@ function calcConsolidation(){
   document.getElementById('lc-total-balance').textContent=fmt(totalBalance);
   output.classList.add('on');output.focus({preventScroll:true});
 }
+
+function invalidateConsolidation() {
+  document.getElementById('lc-results').classList.remove('on');
+}
+function invalidateConsolidationOnEdit(event) {
+  if (event.target.matches('input[id^="lc-"], select[id^="lc-"]') || event.target.closest('#loans-list')) invalidateConsolidation();
+}
+document.addEventListener('input', invalidateConsolidationOnEdit);
+document.addEventListener('change', invalidateConsolidationOnEdit);
+document.addEventListener('click', function(event) {
+  if (event.target.closest('#loans-list .btn-del')) invalidateConsolidation();
+}, true);

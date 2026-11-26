@@ -66,3 +66,9 @@ function calcFD(){
   document.getElementById('fd-results').classList.add('on');
   document.getElementById('fd-results').focus();
 }
+
+function invalidateDepositQuoteOnEdit(event) {
+  if (event.target.matches('input[id^="fd-"], select[id^="fd-"]')) fillFDRate();
+}
+document.addEventListener('input', invalidateDepositQuoteOnEdit);
+document.addEventListener('change', invalidateDepositQuoteOnEdit);

@@ -37,7 +37,14 @@
   }
   function summary() { return [cfg.pdfTitle, cfg.labels.monthly+': '+money(latest.allInMonthly), cfg.labels.pi+': '+money(latest.monthlyPrincipalInterest), cfg.labels.loan+': '+money(latest.principal), cfg.labels.interest+': '+money(latest.totalInterest), cfg.labels.total+': '+money(latest.totalAllInPayments), cfg.labels.upfront+': '+money(latest.upfrontCash), 'LTV: '+pct(latest.ltv), 'TIP: '+pct(latest.tip), cfg.labels.stress+': '+money(latest.stressMonthly)+' @ '+pct(latest.stressRate), cfg.sourceNote].join('\n'); }
   form.addEventListener('submit', function (event) { event.preventDefault(); try { render(engine.calculate(read())); el('resultsCard').focus(); } catch (error) { latest=null; el('resultsCard').classList.remove('on'); status((cfg.errors && cfg.errors[error.message]) || error.message, true); } });
-  form.addEventListener('input', function () { if (latest) status(cfg.changed, false); });
+  function invalidateResult() {
+    if (!latest) return;
+    latest = null;
+    el('resultsCard').classList.remove('on');
+    status(cfg.changed, false);
+  }
+  form.addEventListener('input', invalidateResult);
+  form.addEventListener('change', invalidateResult);
   el('clearBtn').addEventListener('click', function () { form.reset(); latest=null; el('resultsCard').classList.remove('on'); status(cfg.cleared, false); });
   el('copyBtn').addEventListener('click', function () { if (!latest) return; navigator.clipboard.writeText(summary()).then(function(){status(cfg.copied,false);}).catch(function(){status(cfg.copyError,true);}); });
   el('shareBtn').addEventListener('click', function () {

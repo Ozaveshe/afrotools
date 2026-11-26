@@ -59,3 +59,9 @@ function calcMFLoan(){
   document.getElementById('mf-results').classList.add('on');
   document.getElementById('mf-results').focus();
 }
+
+function invalidateMicrofinanceQuoteOnEdit(event) {
+  if (event.target.matches('input[id^="mf-"], select[id^="mf-"]')) fillMFRate();
+}
+document.addEventListener('input', invalidateMicrofinanceQuoteOnEdit);
+document.addEventListener('change', invalidateMicrofinanceQuoteOnEdit);
