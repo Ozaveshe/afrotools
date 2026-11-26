@@ -10,6 +10,10 @@ if (process.argv.includes('--write-yoruba-client')) {
   const target = path.join(api.ROOT, 'assets', 'js', 'data', 'yoruba-route-manifest.js');
   const source = `(function(root){root.AfroToolsYorubaRouteManifest=${JSON.stringify(manifest)};})(typeof window!=="undefined"?window:globalThis);\n`;
   writeFileSyncWithRetry(target, source, 'utf8');
+  const { buildYorubaDirectoryData } = require('./lib/yoruba-directory-data');
+  const registry = require('../data/registry/canonical-registry.json');
+  writeFileSyncWithRetry(path.join(path.dirname(target), 'yoruba-directory-data.js'),
+    buildYorubaDirectoryData(registry.tools, manifest), 'utf8');
   console.log(`Generated ${path.relative(api.ROOT, target).replace(/\\/g, '/')} from data/registry/yoruba-route-manifest.json.`);
   process.exit(0);
 }
