@@ -162,7 +162,7 @@ test('all physical routes pass mobile, 200 percent text, themes, a11y, metadata,
     expect(await page.locator('.hero-art').evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual(app.art);
     await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute('content', String(app.art[0]));
     await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', String(app.art[1]));
-    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('Agosti 2026');
     await expect(page.locator('.confidence-box')).toContainText('uhakika wa juu');
     await expect(page.locator('.privacy-box')).toContainText('Udhamini');
@@ -193,9 +193,9 @@ test('all physical routes pass mobile, 200 percent text, themes, a11y, metadata,
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
 
     const ai = await page.context().newPage();
-    await ai.goto(`/sw/ai/?tool=${app.id}`);
-    await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
-    await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+    await ai.goto(`/sw/ai/?assist=${app.id}`);
+    await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?assist=${app.id}$`));
+    await expect(ai.locator('[data-ai-tool-status="assistant"]')).toBeVisible();
     await ai.close();
   }
   expect(external).toEqual([]); expect(writes).toEqual([]); expect(badResources).toEqual([]); expect(failed).toEqual([]); expect(errors).toEqual([]);

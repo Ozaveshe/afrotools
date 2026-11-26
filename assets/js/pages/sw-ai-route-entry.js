@@ -17,6 +17,12 @@
     if (input && !input.value && !root.AfroToolsAISwEntryQueue) input.value = params.get("q") || "";
     var form = input && input.form;
     var lastQuery = null;
+    function routeName(route) {
+      var tool = (root.AFRO_TOOLS || []).find(function (item) {
+        return String(item.href || "").replace(/\/$/, "") === route.replace(/\/$/, "");
+      });
+      return tool && tool.name;
+    }
     function submit(event) {
       event.preventDefault();
       var query = input.value.trim();
@@ -65,10 +71,7 @@
       var link = root.document.createElement("a");
       link.className = "ai-local-button";
       link.href = route || "/sw/zana-zote/";
-      var tool = route && (root.AFRO_TOOLS || []).find(function (item) {
-        return String(item.href || "").replace(/\/$/, "") === route.replace(/\/$/, "");
-      });
-      link.textContent = route ? "Fungua: " + (tool ? tool.name : "zana ya Kiswahili") : "Vinjari zana za Kiswahili";
+      link.textContent = route ? "Fungua: " + (routeName(route) || "zana ya Kiswahili") : "Vinjari zana za Kiswahili";
       result.appendChild(link);
     }
     if (form) {
@@ -77,10 +80,22 @@
       var queue = root.AfroToolsAISwEntryQueue;
       if (queue && queue.take()) submit({ preventDefault: function () {} });
     }
-    var toolId = params.get("tool");
+    var assistantId = params.get("assist");
+    var toolId = assistantId || params.get("tool");
     if (!toolId) return;
     var routeMap = root.AfroToolsAISwahiliRouteMap;
     var route = resolveToolRoute(toolId, routeMap);
+    // Older assistant referrals include the verified source route.
+    if (route && (assistantId || params.get("route") === route)) {
+      if (input && input.form) {
+        var context = root.document.createElement("p");
+        context.dataset.aiToolStatus = "assistant";
+        var name = routeName(route) || route.split("/").filter(Boolean).pop().replace(/[-_]+/g, " ");
+        context.textContent = "Umetoka kwenye zana ya " + name + ". Andika unachotaka kufanya, kisha chagua Tafuta zana yangu.";
+        input.form.insertBefore(context, input.form.firstChild);
+      }
+      return;
+    }
     if (route) {
       root.location.replace(route + "?source=sw-ai-tool");
       return;

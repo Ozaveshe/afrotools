@@ -30,7 +30,7 @@ for (const [id, file, sw, en, fr] of apps) {
   assert.ok(html.includes(`href="https://afrotools.com${sw}"`), id);
   assert.ok(html.includes(resolveReviewedToolArtwork(sw, `/assets/img/tools/${id}.webp`)), id);
   assert.ok(html.includes(`fintech-shared-controllers/${id}.js`), id);
-  assert.ok(html.includes(`href="/sw/ai/?tool=${id}"`), id);
+  assert.ok(html.includes(`href="/sw/ai/?assist=${id}"`), id);
   assert.ok(html.includes('Udhamini au ushirika wa kibiashara'), id);
   assert.ok(html.includes('ridhaa ya wazi'), id);
   assert.ok(html.includes('Agosti 2026'), id);

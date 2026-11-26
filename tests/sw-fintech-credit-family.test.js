@@ -27,7 +27,7 @@ for(const [id,file,sw,en,fr,controller] of apps){
   assert.ok(html.includes(`href="https://afrotools.com${sw}"`),`${id}: canonical`);
   assert.ok(html.includes(`/assets/img/tools/${id}.webp`),`${id}: artwork`);
   assert.ok(html.includes(`fintech-shared-controllers/${controller}`),`${id}: controller`);
-  assert.ok(html.includes(`href="/sw/ai/?tool=${id}"`),`${id}: candidate AI`);
+  assert.ok(html.includes(`href="/sw/ai/?assist=${id}"`),`${id}: candidate AI`);
   assert.ok(html.includes('Udhamini au ushirika wa kibiashara haubadilishi fomula'),`${id}: sponsor independence`);
   assert.ok(html.includes('Hakuna jina, kiasi, mtoa huduma au taarifa ya mkopo inayotumwa'),`${id}: local privacy`);
   assert.ok(!/<script[^>]*>[\s\S]*function\s+(?:calc|calculate)/i.test(html),`${id}: generic inline calculator`);

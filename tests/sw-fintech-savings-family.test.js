@@ -32,7 +32,7 @@ for (const app of apps) {
   assert.ok(html.includes(`content="https://afrotools.com${artwork}"`), `${app.id}: artwork metadata`);
   assert.ok(fs.existsSync(path.join(ROOT, artwork)), `${app.id}: reviewed artwork file`);
   assert.ok(html.includes(app.controller), app.id);
-  assert.ok(html.includes(`href="/sw/ai/?tool=${app.id}"`), app.id);
+  assert.ok(html.includes(`href="/sw/ai/?assist=${app.id}"`), app.id);
   assert.ok(!/<script[^>]*>[\s\S]*function\s+(?:calc|calculate)/i.test(html), `${app.id}: generic inline calculator`);
   assert.ok(!/data-export=|download\s*=|pdf-download-gate/i.test(html), `${app.id}: unproved export advertising`);
 

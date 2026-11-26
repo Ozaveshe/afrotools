@@ -85,7 +85,7 @@ test('three routes pass mobile, 200% text, themes, contrast, keyboard, metadata,
     await expect(page.locator('link[hreflang="sw"]')).toHaveCount(1);
     await expect(page.locator('.hero-art')).toHaveJSProperty('complete', true);
     expect(await page.locator('.hero-art').evaluate((img) => ({ width: img.naturalWidth, height: img.naturalHeight }))).toEqual({ width: 600, height: 400 });
-    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('uhakika ni wa kati');
     await expect(page.locator('.source-box')).toContainText('Udhamini');
     await expect(page.locator('.privacy-box')).toContainText('Hakuna jina');
@@ -140,9 +140,9 @@ test('three routes pass mobile, 200% text, themes, contrast, keyboard, metadata,
     expect(badResources).toEqual([]);
 
     const aiPage = await page.context().newPage();
-    await aiPage.goto(`/sw/ai/?tool=${app.id}`);
-    await expect(aiPage).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
-    await expect(aiPage.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+    await aiPage.goto(`/sw/ai/?assist=${app.id}`);
+    await expect(aiPage).toHaveURL(new RegExp(`/sw/ai/\\?assist=${app.id}$`));
+    await expect(aiPage.locator('[data-ai-tool-status="assistant"]')).toBeVisible();
     await aiPage.close();
   }
 

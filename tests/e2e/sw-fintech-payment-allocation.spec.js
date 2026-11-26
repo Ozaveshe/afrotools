@@ -111,7 +111,7 @@ test('payment allocation routes pass mobile, zoom, themes, a11y, metadata, priva
     for (const lang of ['en', 'fr', 'sw', 'x-default']) await expect(page.locator(`link[hreflang="${lang}"]`)).toHaveCount(1);
     await expect(page.locator('.hero-art')).toHaveJSProperty('complete', true);
     expect(await page.locator('.hero-art').evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual([800, 450]);
-    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('Agosti 2026');
     await expect(page.locator('.source-box')).toContainText('Udhamini');
     await expect(page.locator('.privacy-box')).toContainText('ridhaa ya wazi');
@@ -153,9 +153,9 @@ test('payment allocation routes pass mobile, zoom, themes, a11y, metadata, priva
     expect(badResources).toEqual([]);
 
     const ai = await page.context().newPage();
-    await ai.goto(`/sw/ai/?tool=${app.id}`);
-    await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
-    await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+    await ai.goto(`/sw/ai/?assist=${app.id}`);
+    await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?assist=${app.id}$`));
+    await expect(ai.locator('[data-ai-tool-status="assistant"]')).toBeVisible();
     await ai.close();
   }
   expect(failed).toEqual([]);

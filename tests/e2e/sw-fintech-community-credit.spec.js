@@ -99,7 +99,7 @@ test('community credit routes pass mobile, zoom, themes, a11y, metadata, privacy
     for (const lang of ['en', 'fr', 'sw', 'x-default']) await expect(page.locator(`link[hreflang="${lang}"]`)).toHaveCount(1);
     await expect(page.locator('.hero-art')).toHaveJSProperty('complete', true);
     expect(await page.locator('.hero-art').evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual(app.art);
-    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('Agosti 2026');
     await expect(page.locator('.source-box')).toContainText('Udhamini');
     await expect(page.locator('.privacy-box')).toContainText('ridhaa ya wazi');
@@ -136,7 +136,7 @@ test('community credit routes pass mobile, zoom, themes, a11y, metadata, privacy
       await expect(ai.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://afrotools.com' + app.swahili);
       await expect(ai.locator(app.result)).toHaveCount(1);
     } else {
-      await expect(ai).toHaveURL(origin + '/sw/ai/?tool=' + app.id);
+      await expect(ai).toHaveURL(origin + '/sw/ai/?assist=' + app.id);
       await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
     }
     await ai.close();

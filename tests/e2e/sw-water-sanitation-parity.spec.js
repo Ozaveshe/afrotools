@@ -319,7 +319,7 @@ for (const app of manifest.apps) {
 
     const ai=page.locator('#ai-link');
     await expect(ai).toHaveAttribute('aria-disabled','true');
-    await expect(ai).toHaveAttribute('href',`/sw/ai/?tool=${app.id}`);
+    await expect(ai).toHaveAttribute('href',`/sw/ai/?assist=${app.id}`);
     await page.locator('#ai-consent').check();
     await expect(ai).toHaveAttribute('aria-disabled','false');
     await expect(ai).toHaveAttribute('tabindex','0');

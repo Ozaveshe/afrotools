@@ -27,7 +27,7 @@ assert.ok(html.includes('content="scripts/build-sw-thrift-calc.js"'));
 assert.ok(html.includes(`href="https://afrotools.com${sw}"`));
 assert.ok(html.includes('/assets/img/tools/thrift-calc.webp'));
 assert.ok(html.includes('fintech-shared-controllers/thrift-calc.js'));
-assert.ok(html.includes('href="/sw/ai/?tool=thrift-calc"'));
+assert.ok(html.includes('href="/sw/ai/?assist=thrift-calc"'));
 for (const term of ['Ajo', 'Esusu', 'Susu', 'Tontine', 'Chama', 'Stokvel']) assert.ok(html.includes(term), term);
 for (const text of ['Udhamini au ushirika wa kibiashara', 'ridhaa ya wazi', 'Agosti 2026', 'uhakika wa hesabu', 'mchango', 'nafasi']) assert.ok(html.includes(text), text);
 assert.ok(html.includes('href="/sw/zana/mfuko-wa-dharura/"'));

@@ -26,7 +26,7 @@ for (const [id, file, controller] of apps) {
   assert(html.includes('scripts/build-sw-fintech-wealth-family.js'));
   assert(html.includes(`/fintech-shared-controllers/${controller}`));
   assert(html.includes(`data-ai-candidate-tool-id="${id}"`));
-  assert(html.includes(`href="/sw/ai/?tool=${id}"`));
+  assert(html.includes(`href="/sw/ai/?assist=${id}"`));
   assert(html.includes('Udhamini au ushirika'));
   assert(html.includes('Taarifa hizi za hesabu hazitumwi kwa seva'));
   assert(!/<iframe\b/i.test(html));

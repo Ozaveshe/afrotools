@@ -36,7 +36,7 @@ function hero({ title, description, image, imageWidth, imageHeight, alt }) {
 }
 
 function evidence({ source, confidence, privacy, toolId }) {
-  return `<div class="source-box"><strong>Chanzo na upya:</strong> ${source} Mbinu ilikaguliwa Agosti 2026.</div><div class="confidence-box"><strong>Uhakika:</strong> ${confidence}</div><div class="privacy-box"><strong>Faragha na uhuru wa matokeo:</strong> ${privacy} Udhamini au ushirika wa kibiashara hauathiri fomula, matokeo au mpangilio. Usaidizi wa AI ni wa hiari na unahitaji ridhaa ya wazi kabla ya kutuma taarifa yoyote.</div><a class="ai-handoff" data-shared-ai-handoff data-ai-candidate-tool-id="${toolId}" href="/sw/ai/?tool=${toolId}">Fungua usaidizi wa AI wa hiari</a>`;
+  return `<div class="source-box"><strong>Chanzo na upya:</strong> ${source} Mbinu ilikaguliwa Agosti 2026.</div><div class="confidence-box"><strong>Uhakika:</strong> ${confidence}</div><div class="privacy-box"><strong>Faragha na uhuru wa matokeo:</strong> ${privacy} Udhamini au ushirika wa kibiashara hauathiri fomula, matokeo au mpangilio. Usaidizi wa AI ni wa hiari na unahitaji ridhaa ya wazi kabla ya kutuma taarifa yoyote.</div><a class="ai-handoff" data-shared-ai-handoff data-ai-candidate-tool-id="${toolId}" href="/sw/ai/?assist=${toolId}">Fungua usaidizi wa AI wa hiari</a>`;
 }
 
 function footer(controller) {

@@ -28,7 +28,7 @@ for (const fragment of [
   'content="scripts/build-sw-mobile-vs-bank.js"',
   'fintech-shared-controllers/mobile-vs-bank.js',
   '/assets/img/tools/mobile-vs-bank.webp',
-  'href="/sw/ai/?tool=mobile-vs-bank"',
+  'href="/sw/ai/?assist=mobile-vs-bank"',
   'id="mb-mm-provider"',
   'id="mb-bank-provider"',
   'id="mb-quote-date"',

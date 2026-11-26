@@ -116,7 +116,7 @@ test('three debt-resilience routes pass mobile, zoom, theme, a11y, metadata, pri
     for (const lang of ['en','fr','sw']) await expect(page.locator(`link[hreflang="${lang}"]`)).toHaveCount(1);
     await expect(page.locator('.hero-art')).toHaveJSProperty('complete', true);
     expect(await page.locator('.hero-art').evaluate((img) => [img.naturalWidth,img.naturalHeight])).toEqual(app.art);
-    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('uhakika ni wa kati');
     await expect(page.locator('.source-box')).toContainText('Udhamini');
     await expect(page.locator('.privacy-box')).toContainText('Taarifa hizi za hesabu hazitumwi kwa seva.');

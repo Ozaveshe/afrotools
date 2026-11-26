@@ -87,7 +87,7 @@ test('four credit routes pass physical mobile, zoom, themes, a11y, SEO, artwork,
     for (const lang of ['en', 'fr', 'sw']) await expect(page.locator(`link[hreflang="${lang}"]`)).toHaveCount(1);
     await expect(page.locator('.hero-art')).toHaveJSProperty('complete', true);
     expect(await page.locator('.hero-art').evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual(app.art);
-    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await expect(page.locator('.source-box')).toContainText('uhakika ni wa kati');
     await expect(page.locator('.source-box')).toContainText('Udhamini');
     await expect(page.locator('.privacy-box')).toContainText('Hakuna jina');
@@ -119,9 +119,9 @@ test('four credit routes pass physical mobile, zoom, themes, a11y, SEO, artwork,
     page.off('request', onRequest); page.off('response', onResponse);
     expect(external).toEqual([]); expect(writes).toEqual([]); expect(badResources).toEqual([]);
     const aiPage = await page.context().newPage();
-    await aiPage.goto(`/sw/ai/?tool=${app.id}`);
-    await expect(aiPage).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
-    await expect(aiPage.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+    await aiPage.goto(`/sw/ai/?assist=${app.id}`);
+    await expect(aiPage).toHaveURL(new RegExp(`/sw/ai/\\?assist=${app.id}$`));
+    await expect(aiPage.locator('[data-ai-tool-status="assistant"]')).toBeVisible();
     await aiPage.close();
   }
   expect(failed).toEqual([]); expect(errors).toEqual([]); expect((await request.get('/sw/ai/')).ok()).toBe(true);

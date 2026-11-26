@@ -285,7 +285,7 @@ for (const app of manifest.apps) {
       const node = page.locator(`[data-output="${key}"]`); if (await node.count()) close(Number(await node.getAttribute('data-raw')), app.oracle.expected[key], `${app.id} reopened ${key}`);
     }
 
-    await expect(page.locator('#ai-link')).toHaveAttribute('aria-disabled', 'true'); await expect(page.locator('#ai-link')).toHaveAttribute('href', `/sw/ai/?tool=${app.id}`);
+    await expect(page.locator('#ai-link')).toHaveAttribute('aria-disabled', 'true'); await expect(page.locator('#ai-link')).toHaveAttribute('href', `/sw/ai/?assist=${app.id}`);
     await page.locator('#ai-consent').check(); await expect(page.locator('#ai-link')).toHaveAttribute('aria-disabled', 'false'); await expect(page.locator('#ai-link')).toHaveAttribute('tabindex', '0');
     await assertControlContrast(page, app.swRoute);
     await assertPageTextContrast(page, app.swRoute);

@@ -29,7 +29,7 @@ for (const app of apps) {
   for (const fragment of [
     'lang="sw"', `content="scripts/build-sw-fintech-wealth-planning.js"`,
     `fintech-shared-controllers/${app.controller}`, `/assets/img/tools/${app.id}.webp`,
-    `href="/sw/ai/?tool=${app.id}"`, 'Udhamini au ushirika wa kibiashara',
+    `href="/sw/ai/?assist=${app.id}"`, 'Udhamini au ushirika wa kibiashara',
     'ridhaa ya wazi', 'Mbinu ilikaguliwa Agosti 2026', 'uhakika wa juu', ...app.markers
   ]) assert.ok(html.includes(fragment), `${app.id}: ${fragment}`);
   assert.ok(!/<script[^>]*>[\s\S]*function\s+(?:calcFIRE|calcPvS|calcPortfolio)/i.test(html), `${app.id}: inline calculator`);

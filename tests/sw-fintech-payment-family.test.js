@@ -29,7 +29,7 @@ for (const [id, file, sw, en, fr] of apps) {
   assert.ok(html.includes(`href="https://afrotools.com${sw}"`), id);
   assert.ok(html.includes(`/assets/img/tools/${id}.webp`), id);
   assert.ok(html.includes(`fintech-shared-controllers/${id}.js`), id);
-  assert.ok(html.includes(`href="/sw/ai/?tool=${id}"`), id);
+  assert.ok(html.includes(`href="/sw/ai/?assist=${id}"`), id);
   assert.ok(html.includes('Udhamini au ushirika wa kibiashara haubadilishi fomula'), id);
   assert.ok(html.includes('Hakuna jina la biashara, kiasi, mtoa huduma'), id);
   assert.ok(!/<script[^>]*>[\s\S]*function\s+(?:calc|calculate)/i.test(html), `${id}: inline calculator`);

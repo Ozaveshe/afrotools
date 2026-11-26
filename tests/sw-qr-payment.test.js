@@ -28,7 +28,7 @@ for (const fragment of [
   'content="scripts/build-sw-qr-payment.js"',
   'fintech-shared-controllers/qr-payment.js',
   '/assets/img/tools/qr-payment.webp',
-  'href="/sw/ai/?tool=qr-payment"',
+  'href="/sw/ai/?assist=qr-payment"',
   'id="qr-country"',
   'id="qr-currency"',
   'id="qr-quote-date"',

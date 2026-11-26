@@ -140,7 +140,7 @@ test('route passes mobile, 200 percent text, themes, a11y, metadata, privacy, ne
   for (const lang of ['en', 'fr', 'ha', 'sw', 'x-default']) await expect(page.locator(`link[hreflang="${lang}"]`)).toHaveCount(1);
   await expect(page.locator('.hero-art')).toHaveJSProperty('complete', true);
   expect(await page.locator('.hero-art').evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual([800, 450]);
-  await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', '/sw/ai/?tool=mobile-vs-bank');
+  await expect(page.locator('[data-shared-ai-handoff]')).toHaveAttribute('href', '/sw/ai/?assist=mobile-vs-bank');
   await expect(page.locator('.source-box')).toContainText('Agosti 2026');
   await expect(page.locator('.confidence-box')).toContainText('uhakika wa juu');
   await expect(page.locator('.privacy-box')).toContainText('Udhamini');
@@ -177,8 +177,8 @@ test('route passes mobile, 200 percent text, themes, a11y, metadata, privacy, ne
   expect(errors).toEqual([]);
 
   const ai = await page.context().newPage();
-  await ai.goto('/sw/ai/?tool=mobile-vs-bank');
-  await expect(ai).toHaveURL(/\/sw\/ai\/\?tool=mobile-vs-bank$/);
-  await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+  await ai.goto('/sw/ai/?assist=mobile-vs-bank');
+  await expect(ai).toHaveURL(/\/sw\/ai\/\?assist=mobile-vs-bank$/);
+  await expect(ai.locator('[data-ai-tool-status="assistant"]')).toBeVisible();
   await ai.close();
 });
