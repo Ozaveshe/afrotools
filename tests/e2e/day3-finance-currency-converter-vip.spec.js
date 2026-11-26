@@ -99,3 +99,25 @@ test('launched iframe widget uses the same dated local feed and fails closed', a
   await expect(page.locator('#aw-res')).toContainText('Fees and provider spreads are not included.');
   expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)).toBe(false);
 });
+
+test('embedded conversion recovers an offline pair without losing the entered amount', async ({ page, context }) => {
+  for (const endpoint of ['**/api/forex?base=USD', '**/data/forex/latest.json']) {
+    await context.route(endpoint, route => route.fulfill({ status: 503, body: '' }));
+  }
+  await page.goto('/widgets/iframe/financial-currency-converter.html');
+  await page.locator('#aw-amt').fill('10');
+  await page.locator('#aw-to').selectOption('USD');
+  await page.locator('#aw-calc').click();
+  await expect(page.locator('#aw-res')).toContainText('USD 10');
+  await page.locator('#aw-to').selectOption('MWK');
+  await expect(page.locator('#aw-calc')).toBeDisabled();
+  const opened = context.waitForEvent('page');
+  await page.locator('#aw-full').click();
+  const converter = await opened;
+  await expect(converter.locator('#fxAmount')).toHaveValue('10');
+  await expect(converter.locator('#fxTo')).toHaveValue('MWK');
+  await expect(converter.locator('input[value="manual"]')).toBeChecked();
+  await converter.locator('#fxManualRate').fill('1750');
+  await converter.locator('#fxConvert').click();
+  await expect(converter.locator('body')).toContainText('17,500');
+});

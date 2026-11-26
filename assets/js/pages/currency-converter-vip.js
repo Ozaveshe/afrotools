@@ -59,7 +59,27 @@
     if (!codes.includes('ZWG')) codes.push('ZWG');
     if (from === 'ZWL' || to === 'ZWL') codes.push('ZWL');
   }
-  function fillSelects(rates,replacingOptions){var previousFrom=byId('fxFrom').value,previousTo=byId('fxTo').value;var keepPair=replacingOptions&&(state.pairEdited||(mode()==='manual'&&byId('fxManualRate').value.trim()!==''));var codes=['USD'].concat(Object.keys(rates||{})).filter(function(code,index,list){return /^[A-Z]{3}$/.test(code)&&finitePositive(code==='USD'?1:rates[code])&&list.indexOf(code)===index}).sort(function(a,b){var order=['USD','EUR','GBP','NGN','KES','GHS','ZAR'];var ai=order.indexOf(a),bi=order.indexOf(b);if(ai>=0||bi>=0)return(ai<0?99:ai)-(bi<0?99:bi);return a.localeCompare(b)});var params=new URLSearchParams(location.search);var from=keepPair?previousFrom:(params.get('from')||'USD').toUpperCase();var to=keepPair?previousTo:(params.get('to')||'NGN').toUpperCase();addZimbabweOptions(codes,from,to);var markup=codes.map(function(code){return '<option value="'+code+'">'+code+' — '+(NAMES[code]||'Currency')+'</option>'}).join('');byId('fxFrom').innerHTML=markup;byId('fxTo').innerHTML=markup;byId('fxFrom').value=codes.indexOf(from)>=0?from:'USD';byId('fxTo').value=codes.indexOf(to)>=0?to:(codes.indexOf('NGN')>=0?'NGN':codes[1]||'USD');if(replacingOptions&&(previousFrom!==byId('fxFrom').value||previousTo!==byId('fxTo').value)){invalidateResult();byId('fxManualRate').value='';}}
+  function widgetInputs() {
+    var values = new URLSearchParams((location.hash || '').slice(1));
+    return values.get('widget') === 'currency' ? values : null;
+  }
+  function restoreWidgetInputs() {
+    var values = widgetInputs();
+    if (!values) return;
+    var amount = values.get('amount');
+    if (finitePositive(amount)) byId('fxAmount').value = amount;
+    if (values.get('mode') === 'manual') {
+      document.querySelector('input[name="rateMode"][value="manual"]').checked = true;
+      if (byId('fxFrom').value === byId('fxTo').value) byId('fxManualRate').value = '1';
+    }
+  }
+  function fillSelects(rates,replacingOptions){var previousFrom=byId('fxFrom').value,previousTo=byId('fxTo').value;var keepPair=replacingOptions&&(state.pairEdited||(mode()==='manual'&&byId('fxManualRate').value.trim()!==''));var codes=['USD'].concat(Object.keys(rates||{})).filter(function(code,index,list){return /^[A-Z]{3}$/.test(code)&&finitePositive(code==='USD'?1:rates[code])&&list.indexOf(code)===index}).sort(function(a,b){var order=['USD','EUR','GBP','NGN','KES','GHS','ZAR'];var ai=order.indexOf(a),bi=order.indexOf(b);if(ai>=0||bi>=0)return(ai<0?99:ai)-(bi<0?99:bi);return a.localeCompare(b)});var params=new URLSearchParams(location.search);var from=keepPair?previousFrom:(params.get('from')||'USD').toUpperCase();var to=keepPair?previousTo:(params.get('to')||'NGN').toUpperCase();addZimbabweOptions(codes,from,to);
+    if (widgetInputs()) {
+      [from,to].forEach(function(code) {
+        if (Object.hasOwn(NAMES,code) && code !== 'ZWL' && !codes.includes(code)) codes.push(code);
+      });
+    }
+    var markup=codes.map(function(code){return '<option value="'+code+'">'+code+' — '+(NAMES[code]||'Currency')+'</option>'}).join('');byId('fxFrom').innerHTML=markup;byId('fxTo').innerHTML=markup;byId('fxFrom').value=codes.indexOf(from)>=0?from:'USD';byId('fxTo').value=codes.indexOf(to)>=0?to:(codes.indexOf('NGN')>=0?'NGN':codes[1]||'USD');if(replacingOptions&&(previousFrom!==byId('fxFrom').value||previousTo!==byId('fxTo').value)){invalidateResult();byId('fxManualRate').value='';}}
   function renderProvenance(){
     var first=byId('fxSourceMethodology'),second=byId('fxSourceMethodologySecondary');
     [first,second].forEach(function(link){if(link){link.hidden=true;link.href='';link.textContent=''}});
@@ -88,6 +108,6 @@
   function summary(){var r=state.result;return r.amount+' '+r.from+' = '+r.converted.toFixed(6)+' '+r.to+'\nRate: 1 '+r.from+' = '+r.rate.toFixed(8)+' '+r.to+'\nRate basis: '+r.mode+'\nRate date: '+r.date+'\nSource: '+r.source+'\nProvider fees and spreads are not included.'}
   async function copy(){if(!state.result)return;try{await navigator.clipboard.writeText(summary());byId('fxActionStatus').textContent='Summary copied.'}catch(_){byId('fxActionStatus').textContent='Copy was blocked. Select the result text instead.'}}
   function csv(){if(!state.result)return;var r=state.result;var rows=[['amount','from','to','rate','converted','rate_basis','rate_date','source','fee_note'],[r.amount,r.from,r.to,r.rate,r.converted,r.mode,r.date,r.source,'Provider fees and spreads are not included']];var body=rows.map(function(row){return row.map(function(value){return '"'+String(value).replace(/"/g,'""')+'"'}).join(',')}).join('\r\n');var url=URL.createObjectURL(new Blob([body],{type:'text/csv;charset=utf-8'}));var link=document.createElement('a');link.href=url;link.download='afrotools-currency-conversion.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);byId('fxActionStatus').textContent='CSV downloaded locally.'}
-  function init(){byId('fxForm').addEventListener('submit',calculate);document.querySelectorAll('input[name="rateMode"]').forEach(function(input){input.addEventListener('change',function(){invalidateResult();updateControls()})});['fxFrom','fxTo'].forEach(function(id){byId(id).addEventListener('change',function(){state.pairEdited=true;byId('fxManualRate').value='';invalidateResult();updateManualLabel()})});['fxAmount','fxManualRate'].forEach(function(id){byId(id).addEventListener('input',invalidateResult)});byId('fxSwap').addEventListener('click',function(){var from=byId('fxFrom').value;byId('fxFrom').value=byId('fxTo').value;byId('fxTo').value=from;state.pairEdited=true;if(byId('fxFrom').value!==byId('fxTo').value)byId('fxManualRate').value='';invalidateResult();updateManualLabel()});byId('fxCopy').addEventListener('click',copy);byId('fxCsv').addEventListener('click',csv);fillSelects({NGN:1,KES:1,GHS:1,ZAR:1,EUR:1,GBP:1});updateControls();load()}
+  function init(){byId('fxForm').addEventListener('submit',calculate);document.querySelectorAll('input[name="rateMode"]').forEach(function(input){input.addEventListener('change',function(){invalidateResult();updateControls()})});['fxFrom','fxTo'].forEach(function(id){byId(id).addEventListener('change',function(){state.pairEdited=true;byId('fxManualRate').value='';invalidateResult();updateManualLabel()})});['fxAmount','fxManualRate'].forEach(function(id){byId(id).addEventListener('input',invalidateResult)});byId('fxSwap').addEventListener('click',function(){var from=byId('fxFrom').value;byId('fxFrom').value=byId('fxTo').value;byId('fxTo').value=from;state.pairEdited=true;if(byId('fxFrom').value!==byId('fxTo').value)byId('fxManualRate').value='';invalidateResult();updateManualLabel()});byId('fxCopy').addEventListener('click',copy);byId('fxCsv').addEventListener('click',csv);fillSelects({NGN:1,KES:1,GHS:1,ZAR:1,EUR:1,GBP:1});restoreWidgetInputs();updateControls();load()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
