@@ -1081,16 +1081,16 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
               <table class="apw-table" aria-label="Payroll run table" data-ap-aria-key="run.tableLabel">
                 <thead>
                   <tr>
-                    <th style="width:210px">Employee record</th>
-                    <th style="width:150px" data-ap-lang-key="columns.employee">Employee</th>
-                    <th style="width:140px" data-ap-lang-key="columns.role">Role / dept</th>
-                    <th style="width:210px" data-ap-lang-key="columns.country">Country</th>
-                    <th style="width:110px" data-ap-lang-key="columns.grossSalary">Gross salary</th>
-                    <th style="width:105px" data-ap-lang-key="columns.allowances">Allowances</th>
-                    <th style="width:110px" data-ap-lang-key="columns.overtime">Overtime / extra</th>
-                    <th style="width:90px" data-ap-lang-key="columns.unpaidDays">Unpaid days</th>
-                    <th style="width:110px" data-ap-lang-key="columns.unpaidAmount">Unpaid amount</th>
-                    <th style="width:120px" data-ap-lang-key="columns.customDeductions">Custom deductions</th>
+                    <th id="payroll-col-employeeRecordId" style="width:210px">Employee record</th>
+                    <th id="payroll-col-name" style="width:150px" data-ap-lang-key="columns.employee">Employee</th>
+                    <th id="payroll-col-role" style="width:140px" data-ap-lang-key="columns.role">Role / dept</th>
+                    <th id="payroll-col-country" style="width:210px" data-ap-lang-key="columns.country">Country</th>
+                    <th id="payroll-col-gross" style="width:110px" data-ap-lang-key="columns.grossSalary">Gross salary</th>
+                    <th id="payroll-col-allowances" style="width:105px" data-ap-lang-key="columns.allowances">Allowances</th>
+                    <th id="payroll-col-overtime" style="width:110px" data-ap-lang-key="columns.overtime">Overtime / extra</th>
+                    <th id="payroll-col-unpaidDays" style="width:90px" data-ap-lang-key="columns.unpaidDays">Unpaid days</th>
+                    <th id="payroll-col-unpaidAmount" style="width:110px" data-ap-lang-key="columns.unpaidAmount">Unpaid amount</th>
+                    <th id="payroll-col-customDeductions" style="width:120px" data-ap-lang-key="columns.customDeductions">Custom deductions</th>
                     <th style="width:125px" data-ap-lang-key="columns.previewGross">Taxable / preview gross</th>
                     <th style="width:125px" data-ap-lang-key="columns.employeeDeductions">Employee deductions</th>
                     <th style="width:120px" data-ap-lang-key="columns.employerCost">Employer cost</th>
@@ -1103,6 +1103,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
                 <tbody id="runRows"></tbody>
               </table>
               <div class="apw-empty" id="emptyState" hidden data-ap-lang-key="run.emptyState">Add a row to start a payroll draft.</div>
+              <button class="apw-btn primary" type="button" id="calculateRowsBtn" data-ap-lang-key="actions.calculate">Calculate preview</button>
             </div>
           </div>
         </section>
@@ -1113,7 +1114,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
           <div class="apw-section-head">
             <div>
               <div class="apw-kicker" data-ap-lang-key="totals.kicker">Totals</div>
-              <h2 class="apw-h2" data-ap-lang-key="totals.title">Run preview totals</h2>
+              <h2 class="apw-h2" data-ap-lang-key="totals.title" id="runPreviewHeading" tabindex="-1">Run preview totals</h2>
               <p class="apw-note" data-ap-lang-key="totals.note">Totals are grouped by currency so multi-country drafts do not mix amounts.</p>
             </div>
           </div>
@@ -2712,12 +2713,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       clearVarianceAcknowledgement();
       saveState();
       renderAll();
+      elements.runRows.rows[elements.runRows.rows.length - 1].querySelector('[data-field="name"]').focus();
     });
+    document.getElementById("calculateRowsBtn").addEventListener("click", function () { elements.calculateBtn.click(); });
     elements.calculateBtn.addEventListener("click", function () {
       applyStatusSuggestion();
       state.lastCalculatedAt = new Date().toISOString();
       saveState();
       renderAll();
+      document.getElementById("runPreviewHeading").focus();
     });
     elements.saveRunBtn.addEventListener("click", saveCurrentRunSnapshot);
     if (elements.createFirstRunBtn) elements.createFirstRunBtn.addEventListener("click", createFirstPayrollMonth);
@@ -2866,7 +2870,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     elements.runRows.addEventListener("input", handleRowInput);
     elements.runRows.addEventListener("change", function (event) {
       handleRowInput(event);
-      renderAll();
+      renderAll(event.target.closest("tr"));
     });
     elements.runRows.addEventListener("click", function (event) {
       var button = event.target.closest("[data-remove-row]");
@@ -4151,7 +4155,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     }));
   }
 
-  function renderAll() {
+  function renderAll(editedRow) {
     applyLanguage();
     hydrateCountrySelects();
     syncSetupForm();
@@ -4165,7 +4169,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     renderWorkQueue();
     renderComplianceChecklist();
     renderEmployeeMaster();
-    renderRows();
+    renderRows(editedRow);
     renderTotals();
     renderReviews();
     renderSourceFreshness();
@@ -4184,17 +4188,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     renderAudit();
   }
 
-  function renderRows() {
+  function renderRows(editedRow) {
     var locked = isPayrollLocked();
     elements.emptyState.hidden = state.rows.length > 0;
-    elements.runRows.innerHTML = state.rows.map(function (row) {
+    function rowHtml(row) {
       var calc = calculateRow(row);
       var pack = getPack(row.country);
       return "<tr>"
-        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"employeeRecordId\"" + lockAttr() + " aria-label=\"Select option\">" + renderEmployeeOptions(row.employeeRecordId) + "</select></td>"
-        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"name\" value=\"" + escapeHtml(row.name) + "\" placeholder=\"" + escapeHtml(t("placeholders.employeeName")) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>"
-        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"role\" value=\"" + escapeHtml(row.role) + "\" placeholder=\"" + escapeHtml(t("placeholders.role")) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>"
-        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"country\"" + lockAttr() + " aria-label=\"Select option\">" + renderCountryOptions(row.country) + "</select></td>"
+        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"employeeRecordId\"" + lockAttr() + " aria-labelledby=\"payroll-col-employeeRecordId\">" + renderEmployeeOptions(row.employeeRecordId) + "</select></td>"
+        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"name\" value=\"" + escapeHtml(row.name) + "\" placeholder=\"" + escapeHtml(t("placeholders.employeeName")) + "\"" + lockAttr() + " aria-labelledby=\"payroll-col-name\"></td>"
+        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"role\" value=\"" + escapeHtml(row.role) + "\" placeholder=\"" + escapeHtml(t("placeholders.role")) + "\"" + lockAttr() + " aria-labelledby=\"payroll-col-role\"></td>"
+        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"country\"" + lockAttr() + " aria-labelledby=\"payroll-col-country\">" + renderCountryOptions(row.country) + "</select></td>"
         + moneyInput(row, "gross")
         + moneyInput(row, "allowances")
         + moneyInput(row, "overtime")
@@ -4209,7 +4213,24 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         + "<td><div class=\"apw-warning-text\">" + escapeHtml(calc.warning) + "</div></td>"
         + "<td><button class=\"apw-btn muted\" type=\"button\" data-remove-row=\"" + escapeHtml(row.id) + "\"" + (locked ? " disabled" : "") + ">" + escapeHtml(t("actions.remove")) + "</button></td>"
         + "</tr>";
-    }).join("");
+    }
+    if (editedRow && editedRow.parentNode === elements.runRows) {
+      var row = state.rows[editedRow.sectionRowIndex];
+      var updated = document.createElement("tbody");
+      updated.innerHTML = rowHtml(row);
+      Array.from(editedRow.cells).forEach(function (cell, index) {
+        var nextCell = updated.rows[0].cells[index];
+        var control = cell.querySelector("[data-field]");
+        if (control) {
+          var next = nextCell.querySelector("[data-field]");
+          if (control.value !== next.value) control.value = next.value;
+        } else if (cell.innerHTML !== nextCell.innerHTML) {
+          cell.innerHTML = nextCell.innerHTML;
+        }
+      });
+    } else {
+      elements.runRows.innerHTML = state.rows.map(rowHtml).join("");
+    }
   }
 
   function renderEmployeeOptions(selected) {
@@ -4231,12 +4252,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
   function moneyInput(row, field) {
     return "<td><input class=\"apw-row-input money\" type=\"number\" min=\"0\" step=\"0.01\" data-row-id=\""
-      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>";
+      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-labelledby=\"payroll-col-" + escapeHtml(field) + "\"></td>";
   }
 
   function numberInput(row, field) {
     return "<td><input class=\"apw-row-input money\" type=\"number\" min=\"0\" step=\"0.5\" data-row-id=\""
-      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>";
+      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-labelledby=\"payroll-col-" + escapeHtml(field) + "\"></td>";
   }
 
   function outputCell(value, currency, label) {
