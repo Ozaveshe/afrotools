@@ -75,3 +75,26 @@ for (const width of [320, 375]) {
     expect(await page.evaluate(() => Boolean(window.Tesseract && window.pdfjsLib && window.MedicalReportEngine))).toBe(true);
   });
 }
+
+test('removing the selected report prevents delayed local OCR from restoring it', async ({ page }) => {
+  await page.goto(route);
+  await page.click('#tab-image');
+  await page.setInputFiles('#imageFileInput', {
+    name: 'synthetic.png', mimeType: 'image/png',
+    buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jB1kAAAAASUVORK5CYII=', 'base64'),
+  });
+  await page.evaluate(() => {
+    window.Tesseract = { recognize: () => new Promise(resolve => {
+      window.finishTestRecognition = () => resolve({ data: { text: 'WBC: 7.2 x10^9/L' } });
+    }) };
+  });
+  await page.click('#analyzeBtn');
+  await page.waitForFunction(() => typeof window.finishTestRecognition === 'function');
+  await page.getByRole('button', { name: 'Remove image', exact: true }).click();
+  await page.evaluate(() => window.finishTestRecognition());
+  await expect(page.locator('#imagePreview')).not.toHaveAttribute('src', /.+/);
+  await expect(page.locator('#imageFilename')).toHaveText('');
+  await expect(page.locator('#labInput')).toHaveValue('');
+  await expect(page.locator('#resultsContainer')).not.toHaveClass(/on/);
+  await expect(page.locator('#analyzeBtn')).toBeEnabled();
+});

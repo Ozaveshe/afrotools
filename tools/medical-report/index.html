@@ -370,25 +370,27 @@
 
     <!-- Image upload panel -->
     <div class="mr-tab-panel" id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden>
-      <div class="mr-upload" id="imageDropZone" role="button" tabindex="0" aria-describedby="image-upload-boundary" onclick="document.getElementById('imageFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('imageFileInput').click()}" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleImageDrop(event)">
+      <div class="mr-upload" id="imageDropZone" role="button" tabindex="0" aria-describedby="image-upload-boundary" onclick="document.getElementById('imageFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('imageFileInput').click()}" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event, 'imageFileInput')">
         <span class="mr-upload-icon">&#x1F4F7;</span>
         <div class="mr-upload-text">Drop your lab report image here or click to browse</div>
         <div class="mr-upload-hint">Supports JPG, PNG (max 10MB)</div>
-        <input aria-label="Choose a lab report image" type="file" id="imageFileInput" accept="image/jpeg,image/png,image/webp" onchange="handleImageSelect(this)">
+        <input aria-label="Choose a lab report image" type="file" id="imageFileInput" accept="image/jpeg,image/png,image/webp" onchange="handleFileSelect(this)">
         <img class="mr-upload-preview" id="imagePreview" alt="Selected lab report preview">
         <div class="mr-upload-filename" id="imageFilename"></div>
       </div>
+      <button type="button" class="mr-panel-btn" data-remove-upload="imageFileInput" hidden>Remove image</button>
     </div>
 
     <!-- PDF upload panel -->
     <div class="mr-tab-panel" id="panel-pdf" role="tabpanel" aria-labelledby="tab-pdf" hidden>
-      <div class="mr-upload" id="pdfDropZone" role="button" tabindex="0" aria-describedby="pdf-upload-boundary" onclick="document.getElementById('pdfFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('pdfFileInput').click()}" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handlePdfDrop(event)">
+      <div class="mr-upload" id="pdfDropZone" role="button" tabindex="0" aria-describedby="pdf-upload-boundary" onclick="document.getElementById('pdfFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('pdfFileInput').click()}" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event, 'pdfFileInput')">
         <span class="mr-upload-icon">&#x1F4C4;</span>
         <div class="mr-upload-text">Drop your PDF lab report here or click to browse</div>
         <div class="mr-upload-hint">Supports PDF files (max 20MB)</div>
-        <input aria-label="Choose a PDF lab report" type="file" id="pdfFileInput" accept="application/pdf" onchange="handlePdfSelect(this)">
+        <input aria-label="Choose a PDF lab report" type="file" id="pdfFileInput" accept="application/pdf" onchange="handleFileSelect(this)">
         <div class="mr-upload-filename" id="pdfFilename"></div>
       </div>
+      <button type="button" class="mr-panel-btn" data-remove-upload="pdfFileInput" hidden>Remove PDF</button>
     </div>
 
     <!-- Camera panel -->
@@ -397,9 +399,10 @@
         <span class="mr-upload-icon">&#x1F4F1;</span>
         <div class="mr-upload-text">Tap to take a photo of your lab report</div>
         <div class="mr-upload-hint">Opens your phone camera</div>
-        <input aria-label="Take a photo of a lab report" type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleImageSelect(this)">
+        <input aria-label="Take a photo of a lab report" type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFileSelect(this)">
         <img class="mr-upload-preview" id="cameraPreview" alt="Captured lab report preview">
       </div>
+      <button type="button" class="mr-panel-btn" data-remove-upload="cameraInput" hidden>Remove photo</button>
     </div>
 
     <div class="mr-boundary" aria-label="Upload and privacy boundaries">
@@ -842,6 +845,10 @@ let chatHistory = [];
 let chatLoading = false;
 let currentImageFile = null;
 let currentPdfFile = null;
+let activeUploadInput = '';
+let previewUrl = '';
+let extractedUploadText = '';
+let reportRevision = 0;
 
 function hasAIConsent() {
   var input = document.getElementById('aiConsent');
@@ -1034,36 +1041,81 @@ function fillSample(type) {
 // ============================================================
 // FILE HANDLING
 // ============================================================
-function handleImageDrop(e) {
+function resetUpload(keepInput) {
+  reportRevision++;
+  activeUploadInput = '';
+  currentImageFile = currentPdfFile = null;
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = '';
+  for (var id of ['imageFileInput', 'cameraInput', 'pdfFileInput']) {
+    if (id !== keepInput) document.getElementById(id).value = '';
+  }
+  for (var id of ['imagePreview', 'cameraPreview', 'imageFilename', 'pdfFilename']) {
+    var element = document.getElementById(id);
+    if (element.tagName === 'IMG') element.removeAttribute('src');
+    else element.textContent = '';
+    element.style.display = 'none';
+  }
+  document.querySelectorAll('[data-remove-upload]').forEach(function(button) { button.hidden = true; });
+  var paste = document.getElementById('labInput');
+  if (paste.value === extractedUploadText) paste.value = '';
+  extractedUploadText = '';
+  parsedResults = [];
+  chatHistory = [];
+  chatLoading = false;
+  document.getElementById('chatInput').value = '';
+  document.getElementById('chatBtn').disabled = false;
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('resultsContainer').classList.remove('on');
+  document.getElementById('emergencyBanner').classList.remove('on');
+  for (var id of ['summaryStats', 'summaryMsg', 'markersGrid', 'questionsList', 'aiInterpretation', 'chatMessages']) {
+    document.getElementById(id).textContent = '';
+  }
+  updateAiPayloadPreview([]);
+  if (window.AfroHealthWorkflow) window.AfroHealthWorkflow.clearSnapshot();
+  hideProgress();
+}
+
+document.querySelectorAll('[data-remove-upload]').forEach(function(button) {
+  button.addEventListener('click', function() {
+    resetUpload();
+    document.getElementById(button.dataset.removeUpload).closest('.mr-upload').focus();
+  });
+});
+
+function chooseUpload(file, inputId, dropped) {
+  if (!file && inputId !== activeUploadInput) return;
+  resetUpload(dropped ? '' : inputId);
+  var isPdf = inputId === 'pdfFileInput';
+  if (!file || !validateLocalFile(file, isPdf ? 'pdf' : 'image')) {
+    document.getElementById(inputId).value = '';
+    return;
+  }
+  activeUploadInput = inputId;
+  if (isPdf) currentPdfFile = file;
+  else {
+    currentImageFile = file;
+    var image = document.getElementById(inputId === 'cameraInput' ? 'cameraPreview' : 'imagePreview');
+    previewUrl = URL.createObjectURL(file);
+    image.src = previewUrl;
+    image.style.display = 'block';
+  }
+  if (inputId !== 'cameraInput') {
+    var label = document.getElementById(isPdf ? 'pdfFilename' : 'imageFilename');
+    label.textContent = file.name;
+    label.style.display = 'block';
+  }
+  document.querySelector('[data-remove-upload="' + inputId + '"]').hidden = false;
+}
+
+function handleFileDrop(e, inputId) {
   e.preventDefault();
   e.currentTarget.classList.remove('drag');
-  var files = e.dataTransfer.files;
-  if (files.length > 0 && validateLocalFile(files[0], 'image')) {
-    processImageFile(files[0], 'imagePreview', 'imageFilename');
-  }
+  if (e.dataTransfer.files.length) chooseUpload(e.dataTransfer.files[0], inputId, true);
 }
 
-function handlePdfDrop(e) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag');
-  var files = e.dataTransfer.files;
-  if (files.length > 0 && validateLocalFile(files[0], 'pdf')) {
-    processPdfFile(files[0]);
-  }
-}
-
-function handleImageSelect(input) {
-  if (input.files.length > 0 && validateLocalFile(input.files[0], 'image')) {
-    var previewId = input.id === 'cameraInput' ? 'cameraPreview' : 'imagePreview';
-    var filenameId = input.id === 'cameraInput' ? null : 'imageFilename';
-    processImageFile(input.files[0], previewId, filenameId);
-  }
-}
-
-function handlePdfSelect(input) {
-  if (input.files.length > 0 && validateLocalFile(input.files[0], 'pdf')) {
-    processPdfFile(input.files[0]);
-  }
+function handleFileSelect(input) {
+  chooseUpload(input.files[0], input.id, false);
 }
 
 function validateLocalFile(file, kind) {
@@ -1082,51 +1134,24 @@ function validateLocalFile(file, kind) {
   return true;
 }
 
-function processImageFile(file, previewId, filenameId) {
-  currentImageFile = file;
-  currentPdfFile = null;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var preview = document.getElementById(previewId);
-    if (preview) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    }
-    if (filenameId) {
-      var fn = document.getElementById(filenameId);
-      fn.textContent = file.name;
-      fn.style.display = 'block';
-    }
-  };
-  reader.readAsDataURL(file);
-}
-
-function processPdfFile(file) {
-  currentPdfFile = file;
-  currentImageFile = null;
-  var fn = document.getElementById('pdfFilename');
-  fn.textContent = file.name;
-  fn.style.display = 'block';
-}
-
 // ============================================================
 // OCR WITH TESSERACT
 // ============================================================
-async function ocrImage(file) {
-  updateProgress(10, 'Loading OCR engine...');
+async function ocrImage(file, progress) {
+  progress(10, 'Loading OCR engine...');
   try {
     if (!window.Tesseract || typeof window.Tesseract.recognize !== 'function') {
       throw new Error('Bundled OCR runtime is unavailable.');
     }
-    updateProgress(30, 'Recognizing text locally from image...');
+    progress(30, 'Recognizing text locally from image...');
     const { data } = await window.Tesseract.recognize(file, 'eng', {
       logger: function(message) {
         if (message && typeof message.progress === 'number') {
-          updateProgress(30 + Math.round(message.progress * 25), 'Recognizing text locally...');
+          progress(30 + Math.round(message.progress * 25), 'Recognizing text locally...');
         }
       }
     });
-    updateProgress(60, 'Text extracted, parsing results...');
+    progress(60, 'Text extracted, parsing results...');
     return data.text;
   } catch(e) {
     console.error('OCR error:', e);
@@ -1137,8 +1162,8 @@ async function ocrImage(file) {
 // ============================================================
 // PDF TEXT EXTRACTION
 // ============================================================
-async function extractPdfText(file) {
-  updateProgress(10, 'Loading PDF...');
+async function extractPdfText(file, progress) {
+  progress(10, 'Loading PDF...');
   try {
     const arrayBuffer = await file.arrayBuffer();
     if (!window.pdfjsLib) throw new Error('Bundled PDF reader is unavailable.');
@@ -1147,12 +1172,12 @@ async function extractPdfText(file) {
     let text = '';
     const numPages = Math.min(pdf.numPages, 20);
     for (let i = 1; i <= numPages; i++) {
-      updateProgress(10 + (i/numPages)*40, 'Reading page ' + i + ' of ' + numPages + '...');
+      progress(10 + (i/numPages)*40, 'Reading page ' + i + ' of ' + numPages + '...');
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
       text += content.items.map(item => item.str).join(' ') + '\n';
     }
-    updateProgress(60, 'Text extracted, parsing results...');
+    progress(60, 'Text extracted, parsing results...');
     return text;
   } catch(e) {
     console.error('PDF error:', e);
@@ -1180,6 +1205,10 @@ function hideProgress() {
 async function analyzeResults() {
   var btn = document.getElementById('analyzeBtn');
   btn.disabled = true;
+  var revision = ++reportRevision;
+  function progress(percent, message) {
+    if (revision === reportRevision) updateProgress(percent, message);
+  }
 
   // Determine input source
   var text = '';
@@ -1196,12 +1225,13 @@ async function analyzeResults() {
       }
       updateProgress(50, 'Parsing your lab results...');
     } else if (panelId === 'panel-image' || panelId === 'panel-camera') {
-      if (!currentImageFile) {
+      if (!currentImageFile || activeUploadInput !== (panelId === 'panel-camera' ? 'cameraInput' : 'imageFileInput')) {
         toast('Please upload or take a photo of your lab report first.');
         btn.disabled = false;
         return;
       }
-      text = await ocrImage(currentImageFile);
+      text = await ocrImage(currentImageFile, progress);
+      if (revision !== reportRevision) return;
       if (!text.trim()) {
         toast('Could not extract text from this image. Try pasting results directly.');
         btn.disabled = false;
@@ -1209,6 +1239,7 @@ async function analyzeResults() {
         return;
       }
       // Show extracted text in textarea for review
+      extractedUploadText = text;
       document.getElementById('labInput').value = text;
     } else if (panelId === 'panel-pdf') {
       if (!currentPdfFile) {
@@ -1216,13 +1247,15 @@ async function analyzeResults() {
         btn.disabled = false;
         return;
       }
-      text = await extractPdfText(currentPdfFile);
+      text = await extractPdfText(currentPdfFile, progress);
+      if (revision !== reportRevision) return;
       if (!text.trim()) {
         toast('Could not extract text from this PDF. Try pasting results directly.');
         btn.disabled = false;
         hideProgress();
         return;
       }
+      extractedUploadText = text;
       document.getElementById('labInput').value = text;
     }
 
@@ -1240,6 +1273,7 @@ async function analyzeResults() {
 
     updateProgress(90, 'Building your report...');
     await new Promise(r => setTimeout(r, 300));
+    if (revision !== reportRevision) return;
 
     // Render results
     renderSummary(parsedResults);
@@ -1256,6 +1290,7 @@ async function analyzeResults() {
     document.getElementById('resultsContainer').classList.add('on');
     updateProgress(100, 'Done!');
     await new Promise(r => setTimeout(r, 400));
+    if (revision !== reportRevision) return;
     hideProgress();
 
     // Scroll to results
@@ -1266,9 +1301,12 @@ async function analyzeResults() {
 
     // Reset chat
     chatHistory = [];
+    chatLoading = false;
+    document.getElementById('chatBtn').disabled = false;
     document.getElementById('chatMessages').innerHTML = '';
 
   } catch(e) {
+    if (revision !== reportRevision) return;
     toast(e.message || 'Something went wrong. Please try again.');
     hideProgress();
   }
@@ -1417,6 +1455,7 @@ function generateDoctorQuestions(results) {
 // AI INTERPRETATION
 // ============================================================
 async function fetchAIInterpretation(results) {
+  var revision = reportRevision;
   var aiDiv = document.getElementById('aiInterpretation');
   if (!hasAIConsent()) {
     renderLocalInterpretation(results);
@@ -1438,10 +1477,12 @@ async function fetchAIInterpretation(results) {
 
     if (!res.ok) throw new Error('AI unavailable');
     var data = await res.json();
+    if (revision !== reportRevision) return;
     var reply = data.reply || data.content || '';
     aiDiv.className = 'mr-ai-content';
     aiDiv.textContent = reply;
   } catch(e) {
+    if (revision !== reportRevision) return;
     // Provide fallback interpretation
     aiDiv.className = 'mr-ai-content';
     aiDiv.textContent = buildLocalInterpretation(results);
@@ -1452,6 +1493,8 @@ async function fetchAIInterpretation(results) {
 // CHAT
 // ============================================================
 async function askChat(preset) {
+  var revision = reportRevision;
+  if (!parsedResults.length) return;
   var q = (preset || document.getElementById('chatInput').value || '').trim();
   if (!q || chatLoading) return;
   if (!hasAIConsent()) {
@@ -1503,12 +1546,14 @@ async function askChat(preset) {
     typing.remove();
     if (!res.ok) throw new Error();
     var data = await res.json();
+    if (revision !== reportRevision) return;
     var reply = data.reply || data.content || 'Sorry, something went wrong.';
     chatHistory.push({ role: 'user', content: q });
     chatHistory.push({ role: 'assistant', content: reply });
     if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
     appendChatMsg('bot', reply);
   } catch(e) {
+    if (revision !== reportRevision) return;
     typing.remove();
     var fallback = 'The optional AI advisor is unavailable. Your local parsed results and clinician questions are still available above. Do not change medicines, supplements, diet therapy, or treatment from this tool. Contact the ordering clinician for interpretation, and seek urgent care for severe symptoms or a result your laboratory marks critical.';
     appendChatMsg('bot', fallback);
