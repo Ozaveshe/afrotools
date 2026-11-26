@@ -89,7 +89,7 @@ for (const source of sourceLedger.sources) {
 
 const repairedPresets = {
   BI: { rate: 18, reviewedOn: '2026-07-23', url: 'https://www.obr.bi/images/PDF/VULGARISATION_DES_LOIS_FISCALES_final.pdf' },
-  BJ: { rate: 18, reviewedOn: '2026-08-02', url: 'https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf' },
+  BJ: { rate: 18, reviewedOn: '2026-08-02', url: 'https://apisiteweb.impots.bj/media/6adcbd46ab83b_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf' },
   DZ: { rate: 19, reviewedOn: '2026-07-22', url: 'https://www.mfdgi.gov.dz/fr/professionnels/services-pro/regime-reel/la-taxe-sur-la-valeur-ajoutee' },
   SD: { rate: 17, reviewedOn: '2026-07-23', url: 'https://tax.gov.sd/en/newsen/' },
   SZ: { rate: 15, reviewedOn: '2026-07-22', url: 'https://www.ers.org.sz/VAT/Eswatini' },

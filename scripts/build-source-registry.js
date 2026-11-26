@@ -558,7 +558,7 @@ function buildRegistry(asOf) {
       }
       if (country === 'BJ') {
         entry.sourceName = 'Benin CGI 2026 and CNSS Benin';
-        entry.sourceUrl = 'https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf';
+        entry.sourceUrl = 'https://apisiteweb.impots.bj/media/6adcbd46ab83b_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf';
         entry.routes = ['/benin/bj-paye', '/fr/benin/calculateur-salaire-net/', '/sw/benin/kikokotoo-kodi-mshahara/', '/widgets/iframe/financial-benin-paye.html'];
         entry.notes = 'Benin salary estimates use the CGI 2026 monthly ITS bands and ORTB levies. Employee CNSS is 3.6%; employer CNSS is 16.4%-19.4% depending on occupational risk. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
         entry.displayDisclaimer = 'Benin ITS and CNSS results are planning estimates. Confirm benefits in kind, exceptional remuneration, exemptions, variable pay and filing treatment with DGI, CNSS or a qualified payroll professional.';
