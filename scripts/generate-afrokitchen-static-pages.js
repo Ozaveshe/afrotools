@@ -2149,6 +2149,9 @@ function commonCountryIngredients(country, limit) {
 }
 
 function buildCountryIntroParagraph(country) {
+  if (country.country_slug === "somalia") {
+    return "For a Somali dinner in about 40 minutes, start with suqaar, small pieces of meat cooked with peppers and xawaash. Choose bariis iskukaris for spiced rice cooked in broth, or Somali sambusa for crisp pastries filled with spiced beef. For breakfast, start the canjeero batter the night before so it has time to ferment.";
+  }
   const categoryNames = humanList(countryCategoryGroups(country).map((group) => group.label.toLowerCase()), 4);
   const dishNames = humanList(countryFeaturedRecipes(country, 3).map((recipe) => recipe.name), 3);
   const ingredientNames = humanList(commonCountryIngredients(country, 4), 4);
