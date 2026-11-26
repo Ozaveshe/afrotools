@@ -1435,13 +1435,15 @@ function buildPendingMethodPageHtml(recipe, recipeImages) {
   const media = resolveRecipeMedia(recipe, recipeImages);
   const gallery = collectRecipeGalleryImages(recipe, media, recipeImages);
   const illustration = gallery[0];
+  const servingGuide = recipe.slug === 'ikivuguto-rw';
+  const introduction = servingGuide ? 'Rwandan ikivuguto is a fermented milk drink. Find out what to ask for at a milk bar and how much ready-to-drink ikivuguto to buy for your table.' : recipe.description;
   const payload = { ...recipe, method_review_status: 'pending-source-method', ingredients: [], steps: [] };
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(recipe.name)} | Source method review | AfroKitchen</title>
-<meta name="description" content="${escapeHtml(recipe.description)}"><meta name="robots" content="noindex, follow">
+<title>${escapeHtml(recipe.name)} | ${servingGuide ? "Serving guide" : "Source method review"} | AfroKitchen</title>
+<meta name="description" content="${escapeHtml(introduction)}"><meta name="robots" content="noindex, follow">
 <meta name="afrokitchen-schema-blockers" content="source_method_pending"><link rel="canonical" href="${escapeHtml(recipe.route_url)}">
-<meta property="og:title" content="${escapeHtml(recipe.name)} | AfroKitchen"><meta property="og:description" content="${escapeHtml(recipe.description)}">
+<meta property="og:title" content="${escapeHtml(recipe.name)} | AfroKitchen"><meta property="og:description" content="${escapeHtml(introduction)}">
 <meta property="og:type" content="website"><meta property="og:image" content="${escapeHtml(media.socialImage || TOOL_OG_IMAGE)}">
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/tools/afrokitchen/style.css">
 <style>
@@ -1467,11 +1469,19 @@ function buildPendingMethodPageHtml(recipe, recipeImages) {
 <div class="container--narrow ak-pending-shell">
 <nav class="ak-pending-breadcrumb" aria-label="Breadcrumb"><a href="/tools/afrokitchen/">AfroKitchen</a><span aria-hidden="true">/</span><span aria-current="page">${escapeHtml(recipe.name)}</span></nav>
 <article class="card" aria-labelledby="ak-pending-title">
-<div class="ak-pending-content"><span class="badge badge-grey" role="status">Recipe method review pending</span>
+<div class="ak-pending-content"><span class="badge badge-grey" role="status">${servingGuide ? "Serving guide" : "Recipe method review pending"}</span>
 <h1 id="ak-pending-title">${escapeHtml(recipe.name)}</h1><p>${escapeHtml(recipe.country_name)}</p>
-<p data-ak-pending-reason>${escapeHtml(recipe.description)}</p>
+<p data-ak-pending-reason>${escapeHtml(introduction)}</p>
+${servingGuide ? `<h2>Ordering at a Kigali milk bar</h2>
+<p>Ask for <em>ikivuguto</em> for fermented milk. Some Kigali milk bars also sell bread or mandazi, a fried dough snack, alongside the drink.</p>
+<h2>Serving packaged ikivuguto</h2>
+<p>Choose ready-to-drink ikivuguto made with pasteurized milk. Check the use-by date and follow the pack’s instructions for storage and use after opening. Pour into clean cups just before serving. <strong>Contains milk.</strong></p>
+<p>Multiply your chosen pour by the number of guests. Four 200 mL cups use 800 mL and six use 1.2 litres. Adjust the pour to suit your cups.</p>
+<ul><li><a href="https://www.rsb.gov.rw/certifications/system-certification/system-certification-schemes-1">Rwanda Standards Board</a> identifies ikivuguto as fermented milk.</li>
+<li>The <a href="https://rwandafda.gov.rw/wp-content/uploads/2025/07/Food-Products-Register_22.07.2025.pdf">July 2025 Rwanda FDA register (PDF)</a> lists Mukamira Ikivuguto as a packaged dairy product.</li>
+<li><a href="https://www.inkatours.co.rw/blog/kigali-milk-bars.html">Inka Tours’ local guide to Kigali milk bars</a> describes the drinks and snacks served there.</li></ul>` : ''}
 <h2>Preparation method under source review</h2>
-<p>Ingredients, quantities, preparation and fermentation times, yield and nutrition are not established. Cooking, portion planning and recipe exports stay unavailable until a preparation method is reviewed.</p>
+<p>${servingGuide ? 'This guide uses finished, packaged ikivuguto. A source-reviewed method for fermenting it at home is still pending.' : 'Ingredients, quantities, preparation and fermentation times, yield and nutrition are not established. Cooking, portion planning and recipe exports stay unavailable until a preparation method is reviewed.'}</p>
 ${recipe.slug === 'ikivuguto-rw' ? '<p><strong>Contains dairy:</strong> this is a dairy-milk drink; it is not dairy-free.</p>' : ''}
 <div class="ak-pending-actions"><button type="button" class="btn btn-primary" data-ak-save-recipe aria-pressed="false">Save dish</button><a class="btn btn-secondary" href="/tools/afrokitchen/#browse-panel">Browse other dishes</a></div>
 <p data-ak-cookbook-status role="status" aria-live="polite">Save this dish on this device to find it again later.</p></div>
