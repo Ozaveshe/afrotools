@@ -122,15 +122,21 @@
         specific.commodityDocs[product].forEach(function (d) { docs.push({ doc: d, source: 'commodity' }); });
       }
 
-      // 6. Airway Bill override note for air freight
-      if (shipment === 'air') {
+      var transportDocs = {
+        container: ['Ocean bill of lading or sea waybill (FCL)', 'Ocean carrier or its agent', 'Confirm which document the booking and payment terms call for, and check the container and seal details.'],
+        lcl: ['Ocean transport document for a consolidated load (LCL)', 'Freight forwarder or ocean carrier', 'Ask the forwarder whether it will issue a house bill of lading or a sea waybill. Check the package count and consolidation reference.'],
+        air: ['Air waybill (AWB)', 'Airline or freight forwarder', 'Confirm the air waybill reference, shipper, consignee and cargo details with the booking agent.'],
+        road: ['Road consignment note or carrier waybill', 'Road carrier or freight forwarder', 'Ask which consignment note the carrier and border authorities accept on this route. Check the collection and delivery details.']
+      };
+      var transport = transportDocs[shipment];
+      if (transport) {
         docs.forEach(function (item) {
           if (item.doc.id === 'bill_of_lading') {
-            item.doc = Object.assign({}, item.doc, {
-              name: 'Airway Bill (AWB)',
-              description: 'Air transport document issued by the airline or air freight forwarder. Replaces the ocean Bill of Lading for air shipments.',
-              tips: 'The AWB is non-negotiable (unlike a BoL). The airline retains a copy; you get the shipper\'s copy (copy 3).'
-            });
+            item.doc = {
+              id: item.doc.id, category: item.doc.category,
+              name: transport[0], issuedBy: transport[1],
+              description: transport[2]
+            };
           }
         });
       }
