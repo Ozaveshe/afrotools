@@ -687,17 +687,41 @@ function downloadGradeSnapshot(type){
   a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 
+// A new installation can take control after the first navigation and engine request.
+if ('serviceWorker' in navigator && 'caches' in window) {
+  let warming = false;
+  async function warmGradeTracker() {
+    if (warming || !navigator.onLine || !navigator.serviceWorker.controller) return;
+    warming = true;
+    try {
+      const route = '/tools/grade-tracker/';
+      const dependencies = Array.from(document.querySelectorAll(
+        'link[rel="stylesheet"][href^="/assets/css/"], script[src^="/engines/business-roi-engine.js"]'
+      ), node => node.href || node.src);
+      await Promise.all([route, ...dependencies].map(async url => {
+        if (await caches.match(url)) return;
+        await fetch(url, {credentials:'omit', referrerPolicy:'no-referrer', headers:url === route ? {Accept:'text/html'} : {}});
+      }));
+    } catch (_) { /* A reconnect or a worker change can retry the static files. */ }
+    finally { warming = false; }
+  }
+  navigator.serviceWorker.addEventListener('controllerchange', warmGradeTracker);
+  window.addEventListener('online', warmGradeTracker);
+  warmGradeTracker();
+}
+
 // Load saved data or init with empty rows
 (function(){
   try{
     const params=new URLSearchParams(window.location.search);
     const queryKey=presetKeyFromQuery(params.get('exam')||params.get('preset')||'');
     renderExamPresets();
-    if(queryKey){
+    let saved=null;
+    try { saved=JSON.parse(localStorage.getItem('afro_grades')); } catch (_) { /* Start from the requested preset or blank rows. */ }
+    if(queryKey&&!(saved&&saved.activeExamKey===queryKey&&saved.courses&&saved.courses.length)){
       loadExamPreset(queryKey);
       return;
     }
-    var saved=JSON.parse(localStorage.getItem('afro_grades'));
     if(saved&&saved.courses&&saved.courses.length){
       activeExamKey=saved.activeExamKey||'';
       if(saved.system)document.getElementById('system').value=saved.system;

@@ -33,7 +33,8 @@ const PRECACHE = [
 async function cachedNavigationResponse(request) {
   const { pathname } = new URL(request.url);
   const isFrench = pathname === '/fr' || pathname.startsWith('/fr/');
-  const response = await caches.match(request) ||
+  const response = (pathname === '/tools/grade-tracker/' && await caches.match('/tools/grade-tracker/')) ||
+    await caches.match(request) ||
     (isFrench && await caches.match(FRENCH_OFFLINE_URL)) ||
     await caches.match(OFFLINE_URL);
   // Pretty-URL redirects can be retained in a cached page's response. A
@@ -105,7 +106,8 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(request)
         .then(response => {
-          if (response.ok && !/\bno-store\b/i.test(response.headers.get('cache-control') || '')) {
+          const isGradeQuery = url.pathname === '/tools/grade-tracker/' && url.search;
+          if (!isGradeQuery && response.ok && !/\bno-store\b/i.test(response.headers.get('cache-control') || '')) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
           }
