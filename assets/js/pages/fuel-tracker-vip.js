@@ -26,7 +26,45 @@
   function sourceLink(node,r){node.replaceChildren();if(r&&/^https:\/\//.test(r.source_url||'')){var a=document.createElement('a');a.href=r.source_url;a.textContent=r.source_name;a.target='_blank';a.rel='noopener noreferrer';node.appendChild(a);}else node.textContent='—';}
   function dateLabel(r){return r&&r.date_basis==='survey-period'?'surveyPeriod':r&&r.date_basis==='snapshot'?'snapshotDate':r&&r.date_basis==='observation'?'observed':'effective';}
   function referenceDate(r){return r&&r.date_basis==='survey-period'?r.period_start+' – '+r.period_end:r&&r.effective_date||'—';}
+  function addWholesalePlanner(note, period, grades) {
+   var panel = document.createElement('fieldset');
+   panel.id = 'fuel-wholesale-plan';
+   var legend = document.createElement('legend');
+   legend.textContent = t('zaPlanTitle', { period: period });
+   panel.appendChild(legend);
+   var grade = document.createElement('select');
+   grade.add(new Option(t('zaPlanChoose'), ''));
+   grades.forEach(function(item) {
+    grade.add(new Option(item.zone + ' · ' + num(item.ppm) + ' ppm · ' + num(item.price) + ' ZAR/L', item.price));
+   });
+   var litres = document.createElement('input');
+   litres.type = 'number';
+   litres.inputMode = 'decimal';
+   litres.min = '0';
+   litres.max = '100000';
+   litres.step = 'any';
+   litres.value = '20';
+   [[grade, 'zaPlanGrade'], [litres, 'zaPlanLitres']].forEach(function(field) {
+    var label = document.createElement('label');
+    label.className = 'fuel-field';
+    label.append(t(field[1]), field[0]);
+    panel.appendChild(label);
+   });
+   var output = document.createElement('output');
+   output.setAttribute('aria-live', 'polite');
+   panel.appendChild(output);
+   function update() {
+    var estimate = engine.calculateFillCost({pricePerLitre:grade.value, quantity:litres.value});
+    output.textContent = !grade.value ? '' : estimate.ok
+     ? t('zaPlanTotal', {total:money(estimate.totalCost, 'ZAR')}) : t('zaPlanQuantityHelp');
+   }
+   grade.addEventListener('change', update);
+   litres.addEventListener('input', update);
+   note.insertAdjacentElement('afterend', panel);
+  }
   function render(){
+   var previousPlanner = byId('fuel-wholesale-plan');
+   if (previousPlanner) previousPlanner.remove();
    invalidate();selected=markets.find(function(m){return m.market_id===byId('fuel-market').value;})||null;record=engine.marketRecord(selected,byId('fuel-type').value);var s=status(record);reference=s.available;historicalChosen=false;
    byId('fuel-result-place').textContent=selected?place(selected):t('unavailable');
    byId('fuel-result-granularity').textContent=selected?t(selected.granularity):'';
@@ -52,20 +90,24 @@
      schedule.target = '_blank';
      schedule.rel = 'noopener noreferrer';
      schedule.textContent = t('zaDieselSchedule');
-     // DMPR November 2026 schedule, Diesel worksheet. These rounded wholesale
-     // references are display-only; the calculator uses the visitor's pump price.
+     // DMPR Diesel worksheet RTL wholesale prices, converted from cents per litre.
+     var grades = [
+      {zone:'Gauteng (9C)', ppm:500, price:30.8567}, {zone:'Gauteng (9C)', ppm:50, price:31.6007},
+      {zone:t('zaPlanCoast') + ' (1A)', ppm:500, price:29.9847}, {zone:t('zaPlanCoast') + ' (1A)', ppm:50, price:30.7287}
+     ];
      var rand = new Intl.NumberFormat(locale, { style: 'currency', currency: 'ZAR', currencyDisplay: 'code' });
      var date = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
      var period = date.format(new Date('2026-11-04T00:00:00Z')) + ' – ' + date.format(new Date('2026-12-01T00:00:00Z'));
      var benchmark = t('zaDieselWholesale', {
-      period: period, inland50: rand.format(31.60), inland500: rand.format(30.86),
-      coast50: rand.format(30.73), coast500: rand.format(29.98)
+      period: period, inland50: rand.format(grades[1].price), inland500: rand.format(grades[0].price),
+      coast50: rand.format(grades[3].price), coast500: rand.format(grades[2].price)
      });
      var source = document.createElement('a');
      source.href = 'https://www.dmpr.gov.za/API/Evotiva-UserFiles/FileActionsServices/DownloadFile?ItemId=3557&ModuleId=2305&TabId=154';
      source.textContent = t('zaDieselSource');
      note.prepend(benchmark + ' ');
      note.append(' · ', source, ' · ', schedule);
+     addWholesalePlanner(note, period, grades);
     }
    }
    byId('fuel-result-validTo').textContent=record&&record.valid_to||'—';

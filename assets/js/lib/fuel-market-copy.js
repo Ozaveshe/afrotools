@@ -3,7 +3,14 @@
   // Display labels only. Market identifiers, source names and user values never pass through this dictionary.
   var rows={
     zaNoDieselPump:['No diesel pump quote in this market','Aucun prix du gazole à la pompe pour ce marché','Hakuna bei ya dizeli ya kituoni katika soko hili'],
-    zaDieselWholesale:['Wholesale diesel per litre, {period}. Gauteng (9C): 50 ppm {inland50}, 500 ppm {inland500}. Coast (1A): 50 ppm {coast50}, 500 ppm {coast500}. Stations set the retail price.','Prix de gros du gazole par litre, {period}. Gauteng (9C) : 50 ppm {inland50}, 500 ppm {inland500}. Côte (1A) : 50 ppm {coast50}, 500 ppm {coast500}. Chaque station fixe son prix à la pompe.','Bei za jumla za dizeli kwa lita, {period}. Gauteng (9C): 50 ppm {inland50}, 500 ppm {inland500}. Pwani (1A): 50 ppm {coast50}, 500 ppm {coast500}. Kila kituo huamua bei yake ya rejareja.'],
+    zaPlanTitle:['Estimate a wholesale diesel purchase ({period})','Estimer un achat de gazole en gros ({period})','Kadiria gharama ya dizeli kwa bei ya jumla ({period})'],
+ zaPlanGrade:['Zone and sulphur grade','Zone et teneur en soufre','Eneo na kiwango cha salfa'],
+ zaPlanChoose:['Choose a zone and grade','Choisissez une zone et une teneur','Chagua eneo na kiwango cha salfa'],
+ zaPlanCoast:['Coast','Côte','Pwani'],
+ zaPlanLitres:['Litres to budget for','Nombre de litres à prévoir','Lita za kukadiria'],
+ zaPlanTotal:['Estimated wholesale cost: {total}','Coût de gros estimé : {total}','Makadirio ya gharama ya jumla: {total}'],
+ zaPlanQuantityHelp:['Enter more than 0 and up to 100,000 litres.','Saisissez une quantité supérieure à 0 et inférieure ou égale à 100 000 litres.','Weka zaidi ya lita 0 hadi lita 100,000.'],
+ zaDieselWholesale:['Wholesale diesel per litre, {period}. Gauteng (9C): 50 ppm {inland50}, 500 ppm {inland500}. Coast (1A): 50 ppm {coast50}, 500 ppm {coast500}. Stations set the retail price.','Prix de gros du gazole par litre, {period}. Gauteng (9C) : 50 ppm {inland50}, 500 ppm {inland500}. Côte (1A) : 50 ppm {coast50}, 500 ppm {coast500}. Chaque station fixe son prix à la pompe.','Bei za jumla za dizeli kwa lita, {period}. Gauteng (9C): 50 ppm {inland50}, 500 ppm {inland500}. Pwani (1A): 50 ppm {coast50}, 500 ppm {coast500}. Kila kituo huamua bei yake ya rejareja.'],
     zaDieselSource:['Download the price schedule (ZIP)','Télécharger le barème (ZIP)','Pakua jedwali la bei (ZIP)'],
     zaDieselSchedule:['Official monthly diesel schedules (DMPR)','Barèmes mensuels officiels du gazole (DMPR)','Viwango rasmi vya dizeli vya kila mwezi (DMPR)'],
     'brand-reference':['Dated brand price — confirm the current pump price','Prix daté de l’enseigne — confirmez le prix actuel à la pompe','Bei ya kampuni yenye tarehe — hakiki bei ya sasa ya kituo'],
