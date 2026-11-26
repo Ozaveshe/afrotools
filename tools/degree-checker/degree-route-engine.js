@@ -8,6 +8,11 @@
 })(typeof window !== "undefined" ? window : globalThis, function () {
   "use strict";
 
+  const canadianWorkRecognition = {
+    url: "https://www.cicic.ca/927/identify_the_organization_responsible_for_recognition.canada",
+    label: "CICIC guidance on employers and occupational regulators"
+  };
+
   const destinations = {
     us: {
       name: "United States",
@@ -19,12 +24,21 @@
       name: "Canada",
       url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/education-assessment.html",
       label: "IRCC educational credential assessment guidance",
+      purposeLinks: {
+        study: { url: "https://www.cicic.ca/875/get_information_on_academic_credential_assessment_and_recognition_for_admission_purposes.canada", label: "CICIC guidance on recognition for admission" },
+        work: canadianWorkRecognition,
+        licensed: canadianWorkRecognition
+      },
       owners: { study: "The receiving education institution", work: "The prospective employer, or provincial/territorial regulator where applicable", immigration: "IRCC using an assessment from a designated organisation or profession-specific body", licensed: "The provincial or territorial regulator and any designated professional body" }
     },
     uk: {
       name: "United Kingdom",
-      url: "https://www.gov.uk/government/publications/initial-teacher-training-itt-bursary-funding-manual/initial-teacher-training-itt-bursary-funding-manual-2026-to-2027-academic-year#assessing-overseas-qualifications",
-      label: "GOV.UK overseas qualification guidance",
+      url: "https://www.gov.uk/what-different-qualification-levels-mean/compare-different-qualification-levels",
+      label: "GOV.UK guidance on comparing overseas qualifications",
+      purposeLinks: {
+        immigration: { url: "https://www.gov.uk/check-uk-visa", label: "GOV.UK visa route checker" },
+        licensed: { url: "https://www.gov.uk/guidance/check-which-professions-are-regulated-in-the-uk", label: "GOV.UK regulated professions and regulators" }
+      },
       owners: { study: "The receiving education institution", work: "The employer, with UK ENIC comparability if requested", immigration: "The relevant UK immigration route owner", licensed: "The relevant UK professional regulator" }
     },
     australia: {
@@ -78,7 +92,7 @@
       purpose: purposeLabels[input.purpose],
       qualification: input.qualification,
       owner: route.owners[input.purpose],
-      link: { url: route.url, label: route.label },
+      link: route.purposeLinks?.[input.purpose] || { url: route.url, label: route.label },
       gaps,
       separation: input.purpose === "licensed"
         ? "A general credential comparison does not itself grant professional registration. Follow the competent regulator's profession-specific process."

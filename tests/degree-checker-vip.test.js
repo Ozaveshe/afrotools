@@ -32,3 +32,17 @@ test('reports document and institution verification gaps',()=>{
     'Certified translation if the recipient requires one'
   ]);
 });
+
+test('source guidance matches the Canadian and UK recognition purpose', () => {
+  function link(destination, purpose) {
+    return engine.build({ destination, purpose, qualification: 'hnd', documents: [] }).link.url;
+  }
+  assert.match(link('canada', 'study'), /cicic.ca\/875\//);
+  assert.match(link('canada', 'work'), /cicic.ca\/927\//);
+  assert.match(link('canada', 'licensed'), /cicic.ca\/927\//);
+  assert.match(link('canada', 'immigration'), /canada.ca.*express-entry/);
+  assert.match(link('uk', 'study'), /what-different-qualification-levels-mean/);
+  assert.match(link('uk', 'work'), /what-different-qualification-levels-mean/);
+  assert.match(link('uk', 'licensed'), /regulated-in-the-uk/);
+  assert.match(link('uk', 'immigration'), /check-uk-visa/);
+});
