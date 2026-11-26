@@ -6,9 +6,9 @@ Generated: 2026-11-12T06:22:25.217Z
 
 - Tools mapped: 16
 - Official sources checked: 69
-- OK sources: 27
+- OK sources: 26
 - Changed sources: 15
-- Manual-review or blocked sources: 27
+- Manual-review or blocked sources: 28
 - Broken sources: 0
 
 ## Sources
@@ -71,7 +71,7 @@ Generated: 2026-11-12T06:22:25.217Z
 | Manual review | KE | Commission on Administrative Justice | Access to Information Act |  | https://ombudsman.go.ke/node/267 |
 | OK | GH | Right to Information Commission | Right to Information | 200 | https://rtic.gov.gh/ |
 | OK | GH | Right to Information Commission | RTI Request &#8211; Right to Information | 200 | https://rtic.gov.gh/rti-request/ |
-| OK | NG | Federal Scholarship Board | Top 10, 20 & 50 Best Betting Sites in Nigeria 2026 \| Best Online Sportsbooks for Nigerian Bettors | 200 | https://www.fsbn.com.ng/ |
+| Manual | NG | Federal Scholarship Board | Scholarship Award – Federal Ministry of Education |  | https://education.gov.ng/scholarship-award-department/ |
 | Manual review | KE | Higher Education Loans Board | HELB |  | https://www.helb.co.ke/ |
 | Manual review | ZA | National Student Financial Aid Scheme | NSFAS |  | https://www.nsfas.org.za/ |
 | Manual review | GH | Ghana Education Trust Fund | GETFund |  | https://getfund.gov.gh/ |
