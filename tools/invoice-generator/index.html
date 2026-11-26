@@ -825,7 +825,8 @@
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Invoice actions">
         <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Download invoice as PDF" data-no-pdf-gate="true">Download PDF</button>
-        <button class="btn" id="btnShare" type="button" aria-label="Share invoice link">Share Link</button>
+        <button class="btn" id="btnShare" type="button" aria-label="Share the Invoice Generator tool">Share tool link</button>
+        <small>To send your completed invoice, download the PDF.</small>
         <button class="btn" id="btnSaveInvoice" type="button" aria-label="Save invoice draft">Save Invoice</button>
         <details class="action-more">
           <summary class="btn" aria-label="More invoice actions">More</summary>
@@ -1715,12 +1716,11 @@ if (btnPDFMobile) {
 /* ── SHARE LINK ── */
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
-    const state = gatherState();
-    const docInfo = getDocumentTypeInfo();
     AfroTools.shareState.share({
-      title: docInfo.title + ' ' + $('invoiceNumber').value,
-      text: docInfo.title + ' from ' + ($('companyName').value || 'AfroTools'),
-      state
+      title: 'AfroTools Invoice Generator',
+      text: 'Create an invoice with AfroTools.',
+      baseUrl: location.origin + location.pathname,
+      state: {}
     });
     ga4('share_click', {tool:'invoice-generator'});
   } else {
