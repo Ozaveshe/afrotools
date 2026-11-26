@@ -38,7 +38,7 @@
     .auth-panel{background:#fff;border:1px solid var(--auth-line);border-radius:8px;box-shadow:0 18px 45px rgba(15,23,42,.08);overflow:hidden}
     .auth-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--auth-line);background:#fbfdff}
     .auth-tab{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 10px;color:#445266;text-decoration:none;font-weight:800;font-size:14px;border-bottom:3px solid transparent}
-    .auth-tab[aria-selected="true"]{color:var(--auth-accent);border-bottom-color:var(--auth-accent);background:#fff}
+    .auth-tab[aria-current="page"]{color:var(--auth-accent);border-bottom-color:var(--auth-accent);background:#fff}
     .auth-body{padding:28px}
     .auth-form{display:grid;gap:14px}
     .auth-form[hidden]{display:none!important}
@@ -92,9 +92,9 @@
 
       <section class="auth-panel" id="auth-panel" aria-label="Formulaire de compte AfroTools">
         <nav class="auth-tabs" aria-label="Modes de connexion">
-          <a class="auth-tab" href="/fr/auth/?mode=login" data-mode-link="login" aria-selected="true">Connexion</a>
-          <a class="auth-tab" href="/fr/auth/?mode=signup" data-mode-link="signup" aria-selected="false">Créer un compte</a>
-          <a class="auth-tab" href="/fr/auth/?mode=reset" data-mode-link="reset" aria-selected="false">Mot de passe</a>
+          <a class="auth-tab" href="/fr/auth/?mode=login" data-mode-link="login" aria-current="page">Connexion</a>
+          <a class="auth-tab" href="/fr/auth/?mode=signup" data-mode-link="signup">Créer un compte</a>
+          <a class="auth-tab" href="/fr/auth/?mode=reset" data-mode-link="reset">Réinitialiser le mot de passe</a>
         </nav>
 
         <div class="auth-body">
@@ -204,11 +204,12 @@
       tab.addEventListener('click', function(evt){
         evt.preventDefault();
         var mode = tab.getAttribute('data-mode-link') || 'login';
-        showMode(mode);
+        if (tab.getAttribute('aria-current') === 'page') return;
+        showMode(mode, true);
         var url = new URL(window.location.href);
         url.searchParams.set('mode', mode);
         url.searchParams.set('next', next);
-        window.history.replaceState({}, '', url.toString());
+        window.history.pushState({}, '', url.toString());
       });
     });
 
@@ -281,10 +282,21 @@
       });
     });
 
-    function showMode(mode) {
+    window.addEventListener('popstate', function(){
+      showMode(new URLSearchParams(window.location.search).get('mode'), true);
+    });
+
+    function showMode(mode, moveFocus) {
       mode = ['login', 'signup', 'reset'].indexOf(mode) === -1 ? 'login' : mode;
       panels.forEach(function(panel){ panel.hidden = panel.getAttribute('data-mode-panel') !== mode; });
-      tabs.forEach(function(tab){ tab.setAttribute('aria-selected', tab.getAttribute('data-mode-link') === mode ? 'true' : 'false'); });
+      tabs.forEach(function(tab){
+        if (tab.getAttribute('data-mode-link') === mode) tab.setAttribute('aria-current', 'page');
+        else tab.removeAttribute('aria-current');
+      });
+      if (moveFocus) {
+        var field = document.querySelector('[data-mode-panel="' + mode + '"] input:not([type="hidden"])');
+        if (field) field.focus();
+      }
       setStatus('');
     }
 
