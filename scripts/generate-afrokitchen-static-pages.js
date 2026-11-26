@@ -1478,7 +1478,7 @@ ${servingGuide ? `<h2>Ordering at a Kigali milk bar</h2>
 <p>Choose ready-to-drink ikivuguto made with pasteurized milk. Check the use-by date and follow the pack’s instructions for storage and use after opening. Pour into clean cups just before serving. <strong>Contains milk.</strong></p>
 <p>Multiply your chosen pour by the number of guests. Four 200 mL cups use 800 mL and six use 1.2 litres. Adjust the pour to suit your cups.</p>
 <ul><li><a href="https://www.rsb.gov.rw/certifications/system-certification/system-certification-schemes-1">Rwanda Standards Board</a> identifies ikivuguto as fermented milk.</li>
-<li>The <a href="https://rwandafda.gov.rw/wp-content/uploads/2025/07/Food-Products-Register_22.07.2025.pdf">July 2025 Rwanda FDA register (PDF)</a> lists Mukamira Ikivuguto as a packaged dairy product.</li>
+<li>The <a href="https://uat-coremis.reb.rw/course/view.php?id=386&amp;section=8">Rwanda Basic Education Board lesson on traditional foods</a> includes ikivuguto among drinks made from milk.</li>
 <li><a href="https://www.inkatours.co.rw/blog/kigali-milk-bars.html">Inka Tours’ local guide to Kigali milk bars</a> describes the drinks and snacks served there.</li></ul>` : ''}
 <h2>Preparation method under source review</h2>
 <p>${servingGuide ? 'This guide uses finished, packaged ikivuguto. A source-reviewed method for fermenting it at home is still pending.' : 'Ingredients, quantities, preparation and fermentation times, yield and nutrition are not established. Cooking, portion planning and recipe exports stay unavailable until a preparation method is reviewed.'}</p>
