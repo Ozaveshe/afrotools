@@ -1551,6 +1551,15 @@ function processHTML(html, lang, pagePath) {
     }
   );
 
+
+  if (lang === 'fr' && cleanPagePath === 'kenya/ke-paye') {
+    processed = processed
+      .replace(/<a href="\/fr\/blog\/tax-updates-2026\/"([^>]*)>[^<]*<\/a>/g,
+        '<a href="/blog/tax-updates-2026/"$1 hreflang="en">Voir les changements (en anglais)</a>')
+      .replace(/<a href="\/fr\/blog\/kenya-etims-expense-validation-2026\/">[\s\S]*?<\/a>/g,
+        '<a href="/blog/kenya-etims-expense-validation-2026/" hreflang="en"><span class="seo-cluster__item-title">Validation des dépenses avec eTIMS au Kenya (en anglais)</span><span class="seo-cluster__item-reason">Comprendre le rapprochement des dépenses et des factures de TVA avec eTIMS.</span></a>');
+  }
+
   // 12. Inject i18n-detect.js and language meta tag before </head>
   const langMetaTag = `<meta name="content-language" content="${lang}">`;
   const i18nScript = `<script src="/assets/js/i18n-detect.js" defer></script>`;
