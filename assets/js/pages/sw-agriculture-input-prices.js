@@ -114,6 +114,15 @@
       viuatilifu: result.agrochemicals.groups.map(function (group) { return { aina: chemicalType(group.type), bidhaa: group.rows.map(function (row) { return { chapa: brand(row.brand), ukubwa: row.size, bei: row.price, kiasi: row.quantity, jumla: row.total, nafuuZaidi: row.isCheapestInType }; }) }; })
     };
   }
+  function basketDescription(result) {
+    var b = result.budget, f = result.fertilizers.cheapest, seed = result.seeds.cheapest, c = result.agrochemicals.cheapest;
+    var lines = ['Bei za katalogi: ' + data.lastUpdated + '.'];
+    if (f) lines.push(Math.ceil(f.bagsPerHa * result.input.farmSize) + ' × ' + f.bagKg + ' kg ' + brand(f.brand));
+    if (seed) lines.push(seed.quantity === null ? 'Gharama ya mbegu haijajumuishwa: zao au uzito wa kifurushi haujathibitishwa.' : seed.quantity + ' × ' + seed.bagKg + ' kg ' + brand(seed.brand));
+    if (c) lines.push(c.quantity + ' × ' + c.size + ' ' + brand(c.brand) + ' (makadirio: kifurushi kimoja kwa hekta, idadi ikizungushwa juu).');
+    if (b.marketTotal !== null) lines.push('Bidhaa na kiasi kilekile kwa bei za soko: ' + money(b.marketTotal) + '. Tofauti kwa bei ya ruzuku: ' + money(b.savings) + ' (' + number(Number(b.savingsPercent.toFixed(1))) + '%).');
+    return lines.join(' · ');
+  }
   function reportObject() {
     if (!latest) return null; var result = latest.result, rows = localisedRows(result);
     return { schemaVersion: 1, zana: 'kilinganisha-bei-za-pembejeo', lugha: 'sw', nchi: { code: config.countryCode, jina: config.countryName },
@@ -129,7 +138,7 @@
       'Kundi: ' + result.input.inputType, 'Zao: ' + crop(result.input.crop), 'Ukubwa: ' + number(result.input.farmSize) + ' ha',
       'Aina ya bei: ' + (result.input.priceMode === 'subsidized' ? 'bei yenye ruzuku ikipatikana' : 'bei ya soko'),
       'Mbolea: ' + money(budget.fertilizerSubtotal), 'Mbegu: ' + money(budget.seedSubtotal), 'Viuatilifu: ' + money(budget.agrochemicalSubtotal),
-      'Jumla: ' + money(budget.total), 'Rejea ya chapa za gharama kubwa: ' + money(budget.premium), 'Akiba ya makadirio: ' + money(budget.savings), '',
+      'Jumla: ' + money(budget.total), basketDescription(result), '',
       'Vyanzo vilivyotajwa: ' + config.sourceLabel, 'Upya: ' + config.dataReviewed + '; si data ya moja kwa moja.',
       'Kiwango cha uhakika: ' + config.confidence, 'Faragha: hesabu ya ndani ya kivinjari; hakuna ingizo linalotumwa kwa seva.'].join('\n');
   }
@@ -151,7 +160,7 @@
     }
     var budget = result.budget, items = [['Mbolea', budget.fertilizerSubtotal], ['Mbegu', budget.seedSubtotal], ['Viuatilifu', budget.agrochemicalSubtotal], ['Jumla kwa chaguo la gharama ndogo', budget.total]];
     byId('budgetGrid').replaceChildren(); items.forEach(function (item) { if (!item[1]) return; var container = document.createElement('div'), value = document.createElement('strong'), label = document.createElement('span'); container.className = 'metric'; value.textContent = money(item[1]); label.textContent = item[0]; container.append(value, label); byId('budgetGrid').appendChild(container); });
-    byId('premiumSummary').textContent = budget.total ? 'Rejea ya chapa za gharama kubwa: ' + money(budget.premium) + '; akiba ya makadirio: ' + money(budget.savings) + ' (35%).' : '';
+    byId('premiumSummary').textContent = basketDescription(result);
     var program = result.subsidyProgram, copy = config.subsidyCopy || []; byId('subsidyBox').textContent = program && config.subsidyName ? config.subsidyName + ' — ' + (program.subsidyPercent ? program.subsidyPercent + '% ya punguzo lililotajwa. ' : '') + (copy[0] || '') + ' ' + (copy[1] || '') : '';
     byId('emptyState').hidden = true; byId('resultPanel').hidden = false; setActionsEnabled(true); setStatus('Ulinganisho umekokotolewa kwenye kivinjari hiki.'); byId('resultPanel').focus();
   }
@@ -164,7 +173,7 @@
   function download(content, type, filename) { var url = URL.createObjectURL(new Blob([content], { type: type })), link = document.createElement('a'); link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 0); }
   function createCsv() {
     var result = latest.result, budget = result.budget;
-    return '\ufeff' + [['nchi', 'code_nchi', 'ukubwa_ha', 'hali_bei', 'jumla_mbolea', 'jumla_mbegu', 'jumla_viuatilifu', 'jumla', 'rejea_gharama_kubwa', 'akiba', 'sarafu', 'mapitio', 'data_moja_kwa_moja'], [config.countryName, config.countryCode, result.input.farmSize, result.input.priceMode === 'subsidized' ? 'ruzuku' : 'soko', budget.fertilizerSubtotal, budget.seedSubtotal, budget.agrochemicalSubtotal, budget.total, budget.premium, budget.savings, country.currency, config.dataReviewed, 'hapana']].map(function (row) { return row.map(csvCell).join(','); }).join('\r\n');
+    return '\ufeff' + [['nchi', 'code_nchi', 'ukubwa_ha', 'hali_bei', 'jumla_mbolea', 'jumla_mbegu', 'jumla_viuatilifu', 'jumla', 'jumla_ya_soko_bidhaa_zilezile', 'akiba', 'sarafu', 'mapitio', 'data_moja_kwa_moja'], [config.countryName, config.countryCode, result.input.farmSize, result.input.priceMode === 'subsidized' ? 'ruzuku' : 'soko', budget.fertilizerSubtotal, budget.seedSubtotal, budget.agrochemicalSubtotal, budget.total, budget.marketTotal, budget.savings, country.currency, config.dataReviewed, 'hapana']].map(function (row) { return row.map(csvCell).join(','); }).join('\r\n');
   }
   async function runAction(action) {
     if (!latest) return setStatus('Linganisha bei upya kabla ya kutumia kitendo hiki.', true);

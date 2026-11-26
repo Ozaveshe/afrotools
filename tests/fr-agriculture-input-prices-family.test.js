@@ -86,13 +86,13 @@ for (const row of countries) {
       seedSubtotal: market.budget.seedSubtotal,
       agrochemicalSubtotal: market.budget.agrochemicalSubtotal,
       total: market.budget.total,
-      premium: market.budget.premium,
+      marketTotal: market.budget.marketTotal,
       savings: market.budget.savings,
     },
     subsidized: {
       input: subsidizedInput,
       total: subsidized.budget.total,
-      premium: subsidized.budget.premium,
+      marketTotal: subsidized.budget.marketTotal,
       savings: subsidized.budget.savings,
     },
     unsupportedCropFallback: {

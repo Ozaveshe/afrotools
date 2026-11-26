@@ -65,7 +65,8 @@
         return selectedFertilizerPrice(a, priceMode) - selectedFertilizerPrice(b, priceMode);
       }).map(function mapFertilizer(fertilizer, index) {
         var price = selectedFertilizerPrice(fertilizer, priceMode);
-        var rateKey = fertilizer.brand.split(' ')[0];
+        var rateKey = fertilizer.brand.split(/\s*\(/)[0].trim();
+        if (!Object.hasOwn(appRates.fertilizer || {}, rateKey)) rateKey = fertilizer.brand.split(' ')[0];
         var bagsPerHa = (appRates.fertilizer && appRates.fertilizer[rateKey]) || 3;
         var perHa = price * bagsPerHa;
         var row = {
@@ -85,7 +86,7 @@
         };
         if (index === 0) {
           cheapestFertilizer = row;
-          fertilizerSubtotal = perHa * farmSize;
+          fertilizerSubtotal = price * Math.ceil(bagsPerHa * farmSize);
         }
         return row;
       });
@@ -106,7 +107,7 @@
         return seedSortUnitPrice(a, seedSortStrategy) - seedSortUnitPrice(b, seedSortStrategy);
       }).map(function mapSeed(seed, index) {
         var rateKgPerHa = (appRates.seeds && appRates.seeds[seed.crop]) || 30;
-        var quantity = Math.ceil(rateKgPerHa * farmSize / (seed.bag_kg || 25));
+        var quantity = seed.bag_kg > 0 && !usedSeedFallback ? Math.ceil(rateKgPerHa * farmSize / seed.bag_kg) : null;
         var row = {
           crop: seed.crop,
           brand: seed.brand,
@@ -119,12 +120,12 @@
           sortUnitPrice: seedSortUnitPrice(seed, seedSortStrategy),
           rateKgPerHa: rateKgPerHa,
           quantity: quantity,
-          total: seed.price * quantity,
+          total: quantity === null ? null : seed.price * quantity,
           isCheapest: index === 0,
         };
         if (index === 0) {
           cheapestSeed = row;
-          seedSubtotal = row.total;
+          seedSubtotal = row.total || 0;
         }
         return row;
       });
@@ -150,8 +151,8 @@
             brand: chemical.brand,
             size: chemical.size,
             price: chemical.price,
-            quantity: farmSize,
-            total: chemical.price * farmSize,
+            quantity: Math.ceil(farmSize),
+            total: chemical.price * Math.ceil(farmSize),
             isCheapestInType: index === 0,
             isBudgetSelection: first && index === 0,
           };
@@ -167,7 +168,14 @@
     }
 
     var total = fertilizerSubtotal + seedSubtotal + agrochemicalSubtotal;
-    var premium = total * 1.35;
+    var marketTotal = null;
+    var savings = null;
+    if (cheapestFertilizer && cheapestFertilizer.selectedPriceMode === 'subsidized' &&
+        cheapestFertilizer.marketPrice > cheapestFertilizer.selectedPrice) {
+      var bags = Math.ceil(cheapestFertilizer.bagsPerHa * farmSize);
+      savings = (cheapestFertilizer.marketPrice - cheapestFertilizer.selectedPrice) * bags;
+      marketTotal = total + savings;
+    }
 
     return {
       ok: true,
@@ -214,9 +222,9 @@
         seedSubtotal: seedSubtotal,
         agrochemicalSubtotal: agrochemicalSubtotal,
         total: total,
-        premium: premium,
-        savings: premium - total,
-        premiumRate: 0.35,
+        marketTotal: marketTotal,
+        savings: savings,
+        savingsPercent: marketTotal ? 100 * savings / marketTotal : null,
       },
       subsidyProgram: countryData.subsidyProgram || null,
     };

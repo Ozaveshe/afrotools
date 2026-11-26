@@ -44,10 +44,10 @@ function legacyOracle(countryCode, input) {
     return aPrice - bPrice;
   }).map((fertilizer, index) => {
     const price = useSubsidized && fertilizer.subsidizedPrice ? fertilizer.subsidizedPrice : fertilizer.marketPrice;
-    const rateKey = fertilizer.brand.split(' ')[0];
+    const rateKey = Object.keys(DATA.appRates.fertilizer).find(key => fertilizer.brand === key || fertilizer.brand.startsWith(key + ' (') || fertilizer.brand.startsWith(key + ' ')) || 'default';
     const bagsPerHa = DATA.appRates.fertilizer[rateKey] || 3;
     const perHa = price * bagsPerHa;
-    if (index === 0) fertilizerSubtotal = perHa * farmSize;
+    if (index === 0) fertilizerSubtotal = price * Math.ceil(bagsPerHa * farmSize);
     return {
       brand: fertilizer.brand,
       selectedPrice: price,
@@ -65,7 +65,7 @@ function legacyOracle(countryCode, input) {
     : seed.price / (seed.bag_kg || 25);
   let seedSubtotal = 0;
   const seedRows = includeSeeds ? seeds.slice().sort((a, b) => seedUnit(a) - seedUnit(b)).map((seed, index) => {
-    const quantity = Math.ceil((DATA.appRates.seeds[seed.crop] || 30) * farmSize / (seed.bag_kg || 25));
+    const quantity = !usedFallback && seed.bag_kg > 0 ? Math.ceil((DATA.appRates.seeds[seed.crop] || 30) * farmSize / seed.bag_kg) : null;
     if (index === 0) seedSubtotal = seed.price * quantity;
     return { crop: seed.crop, brand: seed.brand, quantity, isCheapest: index === 0 };
   }) : [];
@@ -84,7 +84,7 @@ function legacyOracle(countryCode, input) {
     rows: groups[type].map((chemical, index) => {
       const isBudgetSelection = first && index === 0;
       if (isBudgetSelection) {
-        agrochemicalSubtotal = chemical.price * farmSize;
+        agrochemicalSubtotal = chemical.price * Math.ceil(farmSize);
         first = false;
       }
       return {
@@ -97,7 +97,10 @@ function legacyOracle(countryCode, input) {
   }));
 
   const total = fertilizerSubtotal + seedSubtotal + agrochemicalSubtotal;
-  const premium = total * 1.35;
+  const chosen = fertilizerRows.length && data.fertilizers.find(f => f.brand === fertilizerRows[0].brand);
+  const discount = chosen && chosen.marketPrice - fertilizerRows[0].selectedPrice;
+  const savings = discount > 0 ? discount * fertilizerSubtotal / fertilizerRows[0].selectedPrice : null;
+  const marketTotal = savings === null ? null : total + savings;
   return {
     fertilizerRows,
     seedRows,
@@ -108,8 +111,7 @@ function legacyOracle(countryCode, input) {
       seedSubtotal,
       agrochemicalSubtotal,
       total,
-      premium,
-      savings: premium - total,
+      marketTotal, savings, savingsPercent: marketTotal ? 100 * savings / marketTotal : null,
     },
   };
 }
@@ -168,7 +170,6 @@ test('shared engine preserves every country legacy calculation variant', () => {
       assert.equal(actual.seeds.usedFallback, expected.usedFallback, `${countryCode} crop fallback parity`);
       assert.deepEqual(actual.budget, {
         ...expected.budget,
-        premiumRate: 0.35,
       }, `${countryCode} budget parity`);
     }
   }

@@ -21,8 +21,8 @@ function reference(input, country, appRates, behavior) {
   let fertilizer = null, fertilizerSubtotal = 0;
   if (includeFertilizers) {
     fertilizer = country.fertilizers.slice().sort((a, b) => selectedFertilizerPrice(a, input.priceMode) - selectedFertilizerPrice(b, input.priceMode))[0];
-    const price = selectedFertilizerPrice(fertilizer, input.priceMode), bagsPerHa = appRates.fertilizer[fertilizer.brand.split(' ')[0]] || 3;
-    fertilizerSubtotal = price * bagsPerHa * farmSize;
+    const price = selectedFertilizerPrice(fertilizer, input.priceMode), bagsPerHa = appRates.fertilizer[Object.keys(appRates.fertilizer).find(k => fertilizer.brand === k || fertilizer.brand.startsWith(k+' '))] || 3;
+    fertilizerSubtotal = price * Math.ceil(bagsPerHa * farmSize);
     fertilizer = { brand: fertilizer.brand, selectedPrice: price, perKg: Number((price / fertilizer.bag_kg).toFixed(perKgDecimals)), bagsPerHa };
   }
   let seeds = country.seeds.filter(row => !input.crop || row.crop === input.crop), usedFallback = includeSeeds && seeds.length === 0;
@@ -30,24 +30,27 @@ function reference(input, country, appRates, behavior) {
   let seed = null, seedSubtotal = 0;
   if (includeSeeds) {
     seed = seeds.slice().sort((a, b) => seedUnitPrice(a, behavior.seedSortStrategy) - seedUnitPrice(b, behavior.seedSortStrategy))[0];
-    const rate = appRates.seeds[seed.crop] || 30, quantity = Math.ceil(rate * farmSize / (seed.bag_kg || 25));
-    seedSubtotal = seed.price * quantity; seed = { brand: seed.brand, quantity, total: seedSubtotal };
+    const rate = appRates.seeds[seed.crop] || 30, quantity = !usedFallback && seed.bag_kg > 0 ? Math.ceil(rate * farmSize / seed.bag_kg) : null;
+    seedSubtotal = seed.price * quantity; seed = { brand: seed.brand, quantity, total: quantity === null ? null : seedSubtotal };
   }
   let chemical = null, agrochemicalSubtotal = 0;
   if (includeChemicals) {
-    chemical = country.agrochemicals.slice().sort((a, b) => a.price - b.price)[0]; agrochemicalSubtotal = chemical.price * farmSize;
+    chemical = country.agrochemicals.slice().sort((a, b) => a.price - b.price)[0]; agrochemicalSubtotal = chemical.price * Math.ceil(farmSize);
     chemical = { brand: chemical.brand, total: agrochemicalSubtotal };
   }
   const total = fertilizerSubtotal + seedSubtotal + agrochemicalSubtotal;
-  const premium = total * 1.35;
+  const row = fertilizer && country.fertilizers.find(item => item.brand === fertilizer.brand);
+  const discount = row && row.marketPrice - fertilizer.selectedPrice;
+  const savings = discount > 0 ? discount * Math.ceil(fertilizer.bagsPerHa * farmSize) : null;
+  const marketTotal = savings === null ? null : total + savings;
   return { visibility: { fertilizers: includeFertilizers, seeds: includeSeeds, agrochemicals: includeChemicals }, fertilizer, seed, chemical, usedFallback,
-    budget: { fertilizerSubtotal, seedSubtotal, agrochemicalSubtotal, total, premium, savings: premium - total } };
+    budget: { fertilizerSubtotal, seedSubtotal, agrochemicalSubtotal, total, marketTotal, savings } };
 }
 function runtimeSummary(result) {
   return { visibility: result.visibility, fertilizer: result.fertilizers.cheapest && { brand: result.fertilizers.cheapest.brand, selectedPrice: result.fertilizers.cheapest.selectedPrice, perKg: result.fertilizers.cheapest.perKg, bagsPerHa: result.fertilizers.cheapest.bagsPerHa },
     seed: result.seeds.cheapest && { brand: result.seeds.cheapest.brand, quantity: result.seeds.cheapest.quantity, total: result.seeds.cheapest.total },
     chemical: result.agrochemicals.cheapest && { brand: result.agrochemicals.cheapest.brand, total: result.agrochemicals.cheapest.total }, usedFallback: result.seeds.usedFallback,
-    budget: { fertilizerSubtotal: result.budget.fertilizerSubtotal, seedSubtotal: result.budget.seedSubtotal, agrochemicalSubtotal: result.budget.agrochemicalSubtotal, total: result.budget.total, premium: result.budget.premium, savings: result.budget.savings } };
+    budget: { fertilizerSubtotal: result.budget.fertilizerSubtotal, seedSubtotal: result.budget.seedSubtotal, agrochemicalSubtotal: result.budget.agrochemicalSubtotal, total: result.budget.total, marketTotal: result.budget.marketTotal, savings: result.budget.savings } };
 }
 
 const data = loadData();

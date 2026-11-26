@@ -27,7 +27,7 @@
         '/kg</td><td>' + format(Math.round(row.perHa)) + '</td></tr>';
     }).join('');
     return '<thead><tr><th>Product / Supplier</th><th>Bag size</th><th>Price/bag</th><th>Per kg</th><th>Per ha*</th></tr></thead><tbody>' +
-      rows + '</tbody><tfoot><tr><td colspan="5" style="font-size:.7rem;color:#94a3b8;padding-top:.5rem">* At recommended application rate (3–4 bags/ha). ★ = cheapest option.</td></tr></tfoot>';
+      rows + '</tbody><tfoot><tr><td colspan="5" style="font-size:.7rem;color:#94a3b8;padding-top:.5rem">* Illustrative bags per hectare from the catalogue. Highlight marks the lowest listed bag price.</td></tr></tfoot>';
   }
 
   function seedTable(result) {
@@ -64,15 +64,18 @@
       items += '<div class="budget-item"><div class="bv">' + format(Math.round(budget.agrochemicalSubtotal)) + '</div><div class="bl">Chemicals</div></div>';
     }
     if (budget.total) {
-      items += '<div class="budget-item total"><div class="bv">' + format(Math.round(budget.total)) + '</div><div class="bl">Total (cheapest)</div></div>';
+      items += '<div class="budget-item total"><div class="bv">' + format(Math.round(budget.total)) + '</div><div class="bl">Estimated basket</div></div>';
     }
-    var savings = budget.savings > 0
-      ? '<span class="saving-pill">💡 vs premium brands: ' + format(Math.round(budget.premium)) +
-        ' — you save ' + format(Math.round(budget.savings)) + ' (35%)</span>'
-      : '';
-    return '<p style="font-size:.85rem;color:#64748B;margin:0 0 .75rem">For your <strong>' +
-      result.input.farmSize + ' hectare</strong> farm (cheapest available options):</p><div class="budget-grid">' +
-      items + '</div>' + savings;
+    var lines = [];
+    var fertilizer = result.fertilizers.cheapest, seed = result.seeds.cheapest, chemical = result.agrochemicals.cheapest;
+    if (fertilizer) lines.push(Math.ceil(fertilizer.bagsPerHa * result.input.farmSize) + ' × ' + fertilizer.bagKg + ' kg ' + fertilizer.brand);
+    if (seed) lines.push(seed.quantity === null ? 'Seed cost excluded: no matched crop and pack weight' : seed.quantity + ' × ' + seed.bagKg + ' kg ' + seed.brand);
+    if (chemical) lines.push(chemical.quantity + ' × ' + chemical.size + ' ' + chemical.brand + ' (planning assumption: one pack per hectare, rounded up)');
+    var comparison = budget.marketTotal === null ? '' : '<p class="saving-pill">Same products and quantities at listed market prices: ' +
+      format(Math.round(budget.marketTotal)) + '. Difference with listed subsidy: ' + format(Math.round(budget.savings)) +
+      ' (' + Number(budget.savingsPercent.toFixed(1)) + '%).</p>';
+    return '<p>Planning basket for ' + result.input.farmSize + ' ha · catalogue dated ' + root.INPUT_PRICES.lastUpdated +
+      '</p><p>' + lines.join(' · ') + '</p><div class="budget-grid">' + items + '</div>' + comparison;
   }
 
   function subsidyAlert(program) {
