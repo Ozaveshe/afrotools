@@ -95,8 +95,11 @@ function createEngine(config) {
             }
           }
         }
+        const months = isMonthly ? 1 : 12;
         const periodBase = isMonthly ? annualBase / 12 : annualBase;
-        return rule.baseCap ? Math.min(periodBase, rule.baseCap * (isMonthly ? 1 : 12)) : periodBase;
+        if (periodBase === 0) return 0;
+        const coveredBase = rule.baseFloor ? Math.max(periodBase, rule.baseFloor * months) : periodBase;
+        return rule.baseCap ? Math.min(coveredBase, rule.baseCap * months) : coveredBase;
       }
 
       // Calculate social security deductions
