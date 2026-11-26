@@ -252,7 +252,7 @@ html[data-theme="dark"] .result-display .formatted{color:var(--color-primary-dar
 <div class="card-body">
 <label for="amount">Amount in Ghana Cedis (GHS)</label>
 <input type="text" id="amount" inputmode="decimal" aria-describedby="amountHelp amountError" placeholder="e.g. 12,500.75" style="font-size:1.2rem;padding:14px" oninput="convert()" disabled data-amount-control>
-<p id="amountHelp">Use a non-negative amount from GHS 0.00 to 999,999,999,999.99 after rounding. Extra decimal places are rounded to the nearest pesewa, with 5 rounded up.</p>
+<p id="amountHelp">Enter a non-negative amount or paste GHS 1,250.75 or GH₵1,250.75. The maximum is GHS 999,999,999,999.99 after rounding. Extra decimal places are rounded to the nearest pesewa, with 5 rounded up.</p>
 <p id="amountError" role="status" aria-live="polite">Loading converter…</p>
 <details class="quick-amounts">
 <summary>Try a common amount</summary>
@@ -589,7 +589,8 @@ function convert() {
   amountRevision += 1;
   if (typeof finishAmountPrint === 'function') finishAmountPrint();
   const input = document.getElementById('amount');
-  const amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999');
+  const digits = input.value.trim().replace(/^(?:GHS|GH₵|₵)\s*(?=\d|\.\d)/i, '');
+  const amount = window.AfroTools.engines.amountWordsInput.parse(digits, '999999999999');
   lastWords = '';
   lastDocumentLine = '';
   document.getElementById('copyStatus').textContent = '';
