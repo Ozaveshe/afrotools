@@ -5,12 +5,12 @@ const{spawn}=require('node:child_process');
 const{chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'..'),OUT=path.join(ROOT,'tests/fixtures/soil-ph-english-invariants.json');
 const crops=['maize','rice','sorghum','wheat','barley','teff','cassava','yam','groundnut','soybean','common-bean','coffee','tea','cocoa','cotton','tomato'];
-const phs=[3.5,4.2,4.7,5.2,5.7,6.2,6.8,7.2,7.8,8.7],textures=['sandy','sandy-loam','loam','clay-loam','clay'],depths=['15','20','30'],qualities=['100','90','95','30'];
+const phs=[3.5,4.2,4.7,5.2,5.7,6.2,6.8,7.2,7.8,8.7],textures=['sandy','sandy-loam','loam','clay-loam','clay'],depths=['15','20','30'],qualities=['85','90','100','30'];
 async function capture(){
  const port='42950',base=process.env.SOIL_PH_BASE_URL||('http://127.0.0.1:'+port),server=process.env.SOIL_PH_BASE_URL?null:spawn(process.execPath,['tests/support/static-server.js'],{cwd:ROOT,env:{...process.env,PORT:port},stdio:'ignore'});
  for(let attempt=0;attempt<40;attempt+=1){try{const response=await fetch(base+'/agriculture/soil-ph/');if(response.ok)break}catch{}await new Promise(resolve=>setTimeout(resolve,100))}
- const sentinel=await(await fetch(base+'/tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt')).text();
- assert.match(sentinel,/worktree=7e83/);assert.match(sentinel,/root=C:\\Users\\Oza\\\.codex\\worktrees\\7e83\\afrotools/);
+ const served=await(await fetch(base+'/agriculture/soil-ph/')).text();
+ assert.equal(served.replace(/\r\n/g,'\n'),fs.readFileSync(path.join(ROOT,'agriculture/soil-ph/index.html'),'utf8').replace(/\r\n/g,'\n'),'Fixture server must serve this checkout’s soil pH page');
  const browser=await chromium.launch({headless:true}),page=await browser.newPage({locale:'en-US'});
  await page.goto(base+'/agriculture/soil-ph/');
  const scenarios=[];

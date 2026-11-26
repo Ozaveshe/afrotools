@@ -70,7 +70,7 @@
       "name": "How do I calculate pesticide mixing rate per tank?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Divide the total product needed for your farm by the number of tank loads. For example, if you need 4 litres of herbicide for 2 hectares and require 25 knapsack tanks, you add 160 mL per 16-litre tank. This calculator does that math automatically."
+        "text": "The calculator divides both the total water and the total product equally across the required loads. Each load fits within the selected tank capacity. Use the displayed water volume and the product label for preparation."
       }
     },
     {
@@ -744,7 +744,7 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
         <div class="faq">
           <details>
             <summary>How do I calculate mixing rate per tank load?</summary>
-            <p>Divide the total product needed for your farm by the number of tank loads. For example, if you need 4 litres for 2 ha and require 25 knapsack tank loads, you add 160 mL per 16-litre tank (4,000 mL ÷ 25 loads = 160 mL/tank). This calculator does that math for you automatically.</p>
+            <p>The calculator divides both the total water and the total product equally across the required loads. Each load fits within the selected tank capacity. Use the displayed water volume and the product label for preparation.</p>
           </details>
           <details>
             <summary>How many litres of water per hectare for a knapsack sprayer?</summary>
@@ -1116,24 +1116,13 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
     window.PESTICIDE_LAST_RESULT = calculation;
 
     // Format values
-    var totalStr, perTankStr;
-    if (displayUnit === 'L' || displayUnit === 'mL') {
-      if (totalProduct >= 1) {
-        totalStr = totalProduct.toFixed(2) + ' L';
-        perTankStr = (productPerTank * 1000).toFixed(0) + ' mL per ' + sp.tankSize + 'L tank';
-      } else {
-        totalStr = (totalProduct * 1000).toFixed(0) + ' mL';
-        perTankStr = (productPerTank * 1000).toFixed(0) + ' mL per ' + sp.tankSize + 'L tank';
-      }
-    } else {
-      if (totalProduct >= 1) {
-        totalStr = totalProduct.toFixed(2) + ' kg';
-        perTankStr = (productPerTank * 1000).toFixed(0) + ' g per ' + sp.tankSize + 'L tank';
-      } else {
-        totalStr = (totalProduct * 1000).toFixed(0) + ' g';
-        perTankStr = (productPerTank * 1000).toFixed(0) + ' g per ' + sp.tankSize + 'L tank';
-      }
-    }
+    var liquid = displayUnit === 'L' || displayUnit === 'mL';
+    var smallUnit = liquid ? 'mL' : 'g';
+    var quantityFormat = new Intl.NumberFormat('en', { maximumSignificantDigits: 6 });
+    var totalStr = totalProduct >= 1 ? quantityFormat.format(totalProduct) + (liquid ? ' L' : ' kg')
+      : quantityFormat.format(totalProduct * 1000) + ' ' + smallUnit;
+    var perLoad = quantityFormat.format(productPerTank * 1000) + ' ' + smallUnit;
+    var waterPerLoad = quantityFormat.format(totalWater / numTanks) + ' L';
 
     // Build results HTML
     var grid = document.getElementById('results-grid');
@@ -1156,14 +1145,14 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
       '<div class="result-stat">' +
         '<div class="rs-value">' + rateNum.toFixed(2) + ' ' + displayUnit + '/ha</div>' +
         '<div class="rs-label">Application Rate</div>' +
-        '<div class="rs-sub">' + (rateNum * 1000).toFixed(0) + ' mL/ha equivalent</div>' +
+        '<div class="rs-sub">' + quantityFormat.format(rateNum * 1000) + ' ' + smallUnit + '/ha equivalent</div>' +
       '</div>';
 
     // Mixing formula
     document.getElementById('mixing-box').innerHTML =
-      '<div class="mb-title">Mixing Rate — Per Tank Load</div>' +
-      '<div class="mixing-formula">Add <span>' + perTankStr.split(' per')[0] + '</span> of product to a <span>' + sp.tankSize + 'L</span> tank</div>' +
-      '<div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:.4rem">💡 Half-fill tank → add product → top up to ' + sp.tankSize + 'L → mix well</div>';
+      '<div class="mb-title">Equal-volume loads: ' + numTanks + '</div>' +
+      '<div class="mixing-formula">Per load: <span>' + perLoad + '</span> of product for <span>' + waterPerLoad + '</span> at the entered water rate.</div>' +
+      '<div>Tank capacity: ' + sp.tankSize + ' L. Measure the calculated volume for each load. Follow the product label for preparation.</div>';
 
     // App tips
     var tips = document.getElementById('app-tips');
