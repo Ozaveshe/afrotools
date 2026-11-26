@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 const route = '/tools/ielts-calculator/';
 test.use({ serviceWorkers: 'block' });
 
-test('requires a user target and applies official overall rounding', async ({ page }) => {
+test('calculates from four entered bands with an optional target', async ({ page }) => {
   const errors = [];
   const writes = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -17,14 +17,21 @@ test('requires a user target and applies official overall rounding', async ({ pa
   await page.goto(route);
   await page.waitForLoadState('networkidle');
   await page.locator('#calculateBtn').click();
-  await expect(page.locator('#ieltsFormStatus')).toContainText('Choose the overall target');
+  await expect(page.locator('#ieltsFormStatus')).toContainText('listening must be');
   await expect(page.locator('#resultsPanel')).toBeHidden();
 
-  await page.locator('#planningTarget').selectOption('6.5');
   await page.locator('#listening').selectOption('6.5');
   await page.locator('#reading').selectOption('6.5');
   await page.locator('#writing').selectOption('5.0');
+  await page.locator('#calculateBtn').click();
+  await expect(page.locator('#ieltsFormStatus')).toContainText('speaking must be');
+  await expect(page.locator('#resultsPanel')).toBeHidden();
   await page.locator('#speaking').selectOption('7.0');
+  await page.locator('#calculateBtn').click();
+  await expect(page.locator('#overallScore')).toHaveText('6.5');
+  await expect(page.locator('#verdictTitle')).toHaveText('No target selected');
+  await expect(page.locator('#ieltsExportSummary')).toContainText('None selected');
+  await page.locator('#planningTarget').selectOption('6.5');
   await page.locator('#calculateBtn').click();
 
   await expect(page.locator('#overallScore')).toHaveText('6.5');
@@ -72,6 +79,7 @@ test('raw apply fills bands but never creates an eligibility result', async ({ p
 test('changing a calculated band or target clears the old result and export', async ({ page }) => {
   await page.goto(route);
   await page.waitForLoadState('networkidle');
+  for (const id of ['listening', 'reading', 'writing', 'speaking']) await page.locator('#' + id).selectOption('6.5');
   await page.locator('#planningTarget').selectOption('6.5');
   await page.locator('#calculateBtn').click();
   await expect(page.locator('#resultsPanel')).toBeVisible();
@@ -89,6 +97,7 @@ test('changing a calculated band or target clears the old result and export', as
 test('action pack print invokes the browser print boundary', async ({ page }) => {
   await page.goto(route);
   await page.waitForLoadState('networkidle');
+  for (const id of ['listening', 'reading', 'writing', 'speaking']) await page.locator('#' + id).selectOption('6.5');
   await page.locator('#planningTarget').selectOption('7.0');
   await page.locator('#calculateBtn').click();
   await page.evaluate(() => {
@@ -141,4 +150,21 @@ test('controls are named and canonical type is active', async ({ page }) => {
   );
   expect(unnamed).toBe(0);
   expect(await page.locator('body').evaluate(node => getComputedStyle(node).fontFamily)).toContain('DM Sans');
+});
+
+test('restores a score-only draft and resets all four bands without converting empty or zero into defaults', async ({ page }) => {
+  await page.goto(route);
+  for (const id of ['listening', 'reading', 'writing', 'speaking']) {
+    await page.locator('#' + id).selectOption('0.0');
+  }
+  await page.reload();
+  await page.locator('#calculateBtn').click();
+  await expect(page.locator('#overallScore')).toHaveText('0.0');
+  await expect(page.locator('#verdictTitle')).toHaveText('No target selected');
+  await page.locator('#resetBtn').click();
+  await page.reload();
+  await expect(page.locator('#listening')).toHaveValue('');
+  await page.locator('#calculateBtn').click();
+  await expect(page.locator('#resultsPanel')).toBeHidden();
+  await expect(page.locator('#ieltsFormStatus')).toContainText('listening must be');
 });

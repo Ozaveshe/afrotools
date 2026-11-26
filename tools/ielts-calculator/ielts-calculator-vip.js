@@ -61,7 +61,7 @@
     byId('pathSummaryTitle').textContent = target ? 'Your overall target: ' + Number(target).toFixed(1) : 'Choose your own overall target';
     byId('pathSummaryText').textContent = target
       ? 'The result will be compared with ' + Number(target).toFixed(1) + ' overall. Component minimums and accepted test type are not inferred.'
-      : 'Enter the score published by your receiving organisation. This tool does not infer component minimums or eligibility.';
+      : 'Calculate your overall band from four section scores. Add a target if you want a comparison.';
   }
 
   function updateRawPreview() {
@@ -79,7 +79,7 @@
     if (summary) {
       summary.innerHTML = [
         ['Overall', result.overall.toFixed(1)],
-        ['Target', comparison.target.toFixed(1)],
+        ['Target', comparison ? comparison.target.toFixed(1) : 'None selected'],
         ['Mode', mode() === 'general' ? 'General Training' : 'Academic']
       ].map(function (item) {
         return '<div class="ielts-export-cell"><strong>' + item[1] + '</strong><span>' + item[0] + '</span></div>';
@@ -98,18 +98,11 @@
 
   function renderResult() {
     var target = byId('planningTarget').value;
-    if (!target) {
-      invalidateResult();
-      status('Choose the overall target published by your receiving organisation before calculating.', 'error');
-      byId('planningTarget').focus();
-      return;
-    }
-
     var result;
     var comparison;
     try {
       result = engine.calculateOverall(values());
-      comparison = engine.compare(result.overall, target);
+      comparison = target ? engine.compare(result.overall, target) : null;
     } catch (error) {
       invalidateResult();
       status(error.message, 'error');
@@ -122,23 +115,31 @@
       return '<div class="ielts-comp"><div class="ielts-comp-val">' + result.scores[name].toFixed(1) + '</div><div class="ielts-comp-name">' + name + '</div></div>';
     }).join('');
 
-    var labels = {
-      'at-or-above': ['At or above target', 'status-meets'],
-      'within-half-band': ['Within 0.5 band', 'status-close'],
-      below: ['Below target', 'status-below']
-    };
-    var label = labels[comparison.status];
-    byId('verdictStatus').textContent = label[0];
-    byId('verdictStatus').className = 'ielts-status-badge ' + label[1];
-    byId('verdictMeta').textContent = 'User-entered overall target';
-    byId('verdictTitle').textContent = result.overall.toFixed(1) + ' compared with ' + comparison.target.toFixed(1);
-    byId('verdictSummary').textContent = comparison.gap
-      ? 'Your calculated overall band is ' + comparison.gap.toFixed(1) + ' below your chosen target. This does not evaluate component minimums or eligibility.'
-      : 'Your calculated overall band is at or above your chosen target. This does not prove that you satisfy component minimums or eligibility rules.';
+    if (comparison) {
+      var labels = {
+        'at-or-above': ['At or above target', 'status-meets'],
+        'within-half-band': ['Within 0.5 band', 'status-close'],
+        below: ['Below target', 'status-below']
+      };
+      var label = labels[comparison.status];
+      byId('verdictStatus').textContent = label[0];
+      byId('verdictStatus').className = 'ielts-status-badge ' + label[1];
+      byId('verdictMeta').textContent = 'User-entered overall target';
+      byId('verdictTitle').textContent = result.overall.toFixed(1) + ' compared with ' + comparison.target.toFixed(1);
+      byId('verdictSummary').textContent = comparison.gap
+        ? 'Your calculated overall band is ' + comparison.gap.toFixed(1) + ' below your chosen target. This does not evaluate component minimums or eligibility.'
+        : 'Your calculated overall band is at or above your chosen target. This does not prove that you satisfy component minimums or eligibility rules.';
+    } else {
+      byId('verdictStatus').textContent = 'Overall band only';
+      byId('verdictStatus').className = 'ielts-status-badge';
+      byId('verdictMeta').textContent = 'Four section bands';
+      byId('verdictTitle').textContent = 'No target selected';
+      byId('verdictSummary').textContent = 'Add an overall target to compare this score with your goal.';
+    }
     byId('gapList').innerHTML =
-      '<div class="ielts-gap-item"><strong>Overall comparison:</strong> ' +
-      (comparison.gap ? comparison.gap.toFixed(1) + ' band below target.' : 'At or above target.') +
-      '</div><div class="ielts-gap-item"><strong>Lowest section:</strong> ' +
+      (comparison ? '<div class="ielts-gap-item"><strong>Overall comparison:</strong> ' +
+        (comparison.gap ? comparison.gap.toFixed(1) + ' band below target.' : 'At or above target.') + '</div>' : '') +
+      '<div class="ielts-gap-item"><strong>Lowest section:</strong> ' +
       result.weakest.join(', ') +
       ' at ' + result.scores[result.weakest[0]].toFixed(1) +
       '.</div><div class="ielts-gap-item"><strong>Not checked:</strong> Component floors, test validity, one-skill retake acceptance, visa, admission, scholarship and professional-registration rules.</div>';
@@ -152,7 +153,7 @@
     byId('qualificationCard').classList.add('hidden');
     byId('actionPlanCard').classList.remove('hidden');
     renderExportSummary(result, comparison);
-    status('Overall band calculated. The target comparison is a planning check, not an eligibility decision.', 'ok');
+    status(comparison ? 'Overall band calculated. The target comparison is a planning check, not an eligibility decision.' : 'Overall band calculated from your four section scores.', 'ok');
   }
 
   function applyRaw(event) {
@@ -172,13 +173,13 @@
     byId('listening').value = listening.band.toFixed(1);
     byId('reading').value = reading.band.toFixed(1);
     invalidateResult();
-    status('Estimated bands applied. Choose your own overall target, add Writing and Speaking bands, then calculate.', 'ok');
+    status('Estimated bands applied. Add Writing and Speaking bands, then calculate.', 'ok');
   }
 
   function reset(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    componentNames.forEach(function (name) { byId(name).value = '6.5'; });
+    componentNames.forEach(function (name) { byId(name).value = ''; });
     byId('rawListening').value = '';
     byId('rawReading').value = '';
     byId('planningTarget').value = '';
@@ -187,7 +188,8 @@
     byId('actionPlanCard').classList.add('hidden');
     updateBoundary();
     updateRawPreview();
-    status('Inputs reset. Choose a target before calculating.', '');
+    try { window.localStorage.removeItem('afro-ielts-pathway-state'); } catch (error) { /* Storage may be unavailable. */ }
+    status('Inputs reset. Enter all four section bands to calculate.', '');
   }
 
   function bind() {
