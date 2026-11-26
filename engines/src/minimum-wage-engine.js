@@ -63,21 +63,9 @@
       symbol: "₦",
       monthly: 7e4,
       basis: "monthly",
-      effectiveDate: "April 2024",
+      effectiveDate: "2024-07-29",
       law: "National Minimum Wage (Amendment) Act 2024",
-      sectors: [ {
-        name: "Federal / Large Employers (25+ employees)",
-        rate: "₦70,000",
-        period: "month"
-      }, {
-        name: "Private Sector (<25 employees)",
-        rate: "₦50,000",
-        period: "month"
-      }, {
-        name: "Domestic Workers",
-        rate: "₦50,000",
-        period: "month"
-      } ],
+      sectors: [],
       history: [ {
         year: "2024",
         nominal: 7e4,
@@ -95,11 +83,8 @@
         nominal: 5500,
         amount: "₦5,500"
       } ],
-      livingWage: 15e4,
-      livingWageFamily: 28e4,
-      livingWageSource: "WageIndicator 2025",
-      notes: "The ₦70,000 minimum was signed in April 2024 after tripartite negotiations. States must implement within 6 months. Rivers State set ₦85,000. Small businesses (<25 employees) floor is ₦50,000. NSIWC oversees enforcement.",
-      observation: "Nigeria raised its minimum wage from ₦30,000 to ₦70,000 in 2024 — a 133% increase. However, with annual CPI inflation exceeding 30%, purchasing power has eroded sharply. In 2019 terms, ₦70,000 is worth about ₦20,000 — below the ₦30,000 then in force. The living wage for a Lagos family of 4 is estimated at ₦280,000 — 4× the legal minimum."
+      notes: "The ₦70,000 national monthly minimum applies to covered employment. Section 4 excludes establishments employing fewer than 25 people and specifies exceptions for part-time or commission/piece-rate arrangements, seasonal work and certain workers aboard vessels or aircraft. There is no ₦50,000 national rate for small employers or domestic workers. Check a state public-service circular or employment agreement separately.",
+      observation: "The statutory monthly figure rose from ₦30,000 in 2019 to ₦70,000 under the 2024 amendment. The daily and hourly figures are estimates based on 22 working days and 8 hours per day."
     },
     KE: {
       name: "Kenya",
@@ -1750,188 +1735,7 @@
       notes: "Eritrea has not revised its minimum wage since 2003. The mandatory national service programme pays well below this rate. Private sector employment is very limited.",
       observation: "Eritrea has the most outdated minimum wage on the continent — unchanged since 2003. The mandatory national service programme (often indefinite) pays well below even this rate. Private sector employment is very limited."
     }
-  }, i = [ {
-    code: "FCT",
-    name: "FCT (Abuja)",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "RV",
-    name: "Rivers State",
-    rate: 85e3,
-    effectiveDate: "October 2024",
-    note: "Governor mandated higher floor"
-  }, {
-    code: "AB",
-    name: "Abia State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "AD",
-    name: "Adamawa State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "AK",
-    name: "Akwa Ibom State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "AN",
-    name: "Anambra State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "BA",
-    name: "Bauchi State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "BY",
-    name: "Bayelsa State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "BE",
-    name: "Benue State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "BO",
-    name: "Borno State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "CR",
-    name: "Cross River State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "DE",
-    name: "Delta State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "EB",
-    name: "Ebonyi State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "ED",
-    name: "Edo State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "EK",
-    name: "Ekiti State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "EN",
-    name: "Enugu State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "GO",
-    name: "Gombe State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "IM",
-    name: "Imo State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "JI",
-    name: "Jigawa State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "KD",
-    name: "Kaduna State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "KN",
-    name: "Kano State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "KB",
-    name: "Kebbi State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "KO",
-    name: "Kogi State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "KW",
-    name: "Kwara State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "LA",
-    name: "Lagos State",
-    rate: 7e4,
-    effectiveDate: "July 2024"
-  }, {
-    code: "NAS",
-    name: "Nasarawa State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "NI",
-    name: "Niger State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "OG",
-    name: "Ogun State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "ON",
-    name: "Ondo State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "OS",
-    name: "Osun State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "OY",
-    name: "Oyo State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "PL",
-    name: "Plateau State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "SO",
-    name: "Sokoto State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "TA",
-    name: "Taraba State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "YO",
-    name: "Yobe State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  }, {
-    code: "ZA",
-    name: "Zamfara State",
-    rate: 7e4,
-    effectiveDate: "April 2024"
-  } ], n = [ {
+  }, n = [ {
     code: "general",
     name: "National Minimum (General)",
     rate: 27.58,
@@ -1957,39 +1761,6 @@
     effectiveDate: "March 2025",
     note: "Government relief workers — lower rate"
   } ], t = {
-    NG: {
-      baseYear: 2019,
-      currency: "₦",
-      points: [ {
-        year: 2019,
-        nominal: 3e4,
-        cpi: 100
-      }, {
-        year: 2020,
-        nominal: 3e4,
-        cpi: 115
-      }, {
-        year: 2021,
-        nominal: 3e4,
-        cpi: 133
-      }, {
-        year: 2022,
-        nominal: 3e4,
-        cpi: 171
-      }, {
-        year: 2023,
-        nominal: 3e4,
-        cpi: 243
-      }, {
-        year: 2024,
-        nominal: 7e4,
-        cpi: 355
-      }, {
-        year: 2025,
-        nominal: 7e4,
-        cpi: 432
-      } ]
-    },
     KE: {
       baseYear: 2019,
       currency: "KES ",
@@ -2246,7 +2017,7 @@
       };
     },
     getStateRates: function(e) {
-      return "NG" === e ? i : "ZA" === e ? n : null;
+      return "ZA" === e ? n : null;
     },
     getInflationData: function(e) {
       return t[e] || null;

@@ -1,9 +1,11 @@
 // Readable owner restored from the maintained runtime; generated output is owned by scripts/minify.js.
 !function() {
     "use strict";
+    var bpLocale = document.documentElement.lang === "ha" ? window.AfroBusinessPlanHausa : null;
+    function bpText(text) { return bpLocale ? bpLocale.text(text) : text; }
 
     function savedFailure(error) {
-        var message = window.SaveState.message(error), list = document.getElementById("savedPlans");
+        var message = bpLocale ? bpLocale.text(window.SaveState.message(error, "en")) : window.SaveState.message(error), list = document.getElementById("savedPlans");
         var panel = document.getElementById("savedPanel");
         if (panel) panel.hidden = false;
         var status = document.getElementById("savedStorageStatus");
@@ -65,7 +67,7 @@
         return data;
     }
 
-    var e, t = "afrotools-business-plan-current-v2", n = window.SaveState ? new window.SaveState("business-plan", {
+    var e, t = "afrotools-business-plan-current-v2" + (bpLocale ? ":ha" : ""), n = window.SaveState ? new window.SaveState(bpLocale ? "business-plan-ha" : "business-plan", {
         maxFree: 30
     }) : null, a = 0, i = null, r = null, s = {
         NGN: "₦",
@@ -97,35 +99,35 @@
         "Pan-African": "USD"
     }, c = {
         blank: {
-            label: "Blank",
+            label: bpText("Blank"),
             sector: "",
             data: {}
         },
         restaurant: {
-            label: "Restaurant",
-            sector: "Food and hospitality",
+            label: bpText("Restaurant"),
+            sector: bpText("Food and hospitality"),
             data: {
                 meta: {
-                    industry: "Restaurant",
+                    industry: bpText("Restaurant"),
                     format: "lender"
                 },
                 sections: {
                     company: {
-                        name: "New Restaurant Venture",
-                        concept: "A neighborhood restaurant serving high-quality local meals with reliable takeaway and catering options."
+                        name: bpText("New Restaurant Venture"),
+                        concept: bpText("A neighborhood restaurant serving high-quality local meals with reliable takeaway and catering options.")
                     },
                     market: {
-                        targetCustomers: "Office workers, families, students, event hosts, and nearby residents who want dependable meals at accessible prices.",
-                        competitors: "Quick-service restaurants, informal food vendors, hotel restaurants, and delivery-only kitchens.",
-                        advantage: "Consistent quality, clean service, delivery partnerships, menu discipline, and strong local sourcing."
+                        targetCustomers: bpText("Office workers, families, students, event hosts, and nearby residents who want dependable meals at accessible prices."),
+                        competitors: bpText("Quick-service restaurants, informal food vendors, hotel restaurants, and delivery-only kitchens."),
+                        advantage: bpText("Consistent quality, clean service, delivery partnerships, menu discipline, and strong local sourcing.")
                     },
                     products: {
-                        offer: "Dine-in meals, takeaway packs, catering trays, drinks, and weekend specials.",
-                        pricing: "Mid-market pricing with bundle meals, event packages, and controlled food-cost margins."
+                        offer: bpText("Dine-in meals, takeaway packs, catering trays, drinks, and weekend specials."),
+                        pricing: bpText("Mid-market pricing with bundle meals, event packages, and controlled food-cost margins.")
                     },
                     operations: {
-                        suppliers: "Local farms, meat and poultry suppliers, beverage distributors, packaging suppliers, and delivery partners.",
-                        staffing: "Chef, kitchen assistants, cashier, service attendants, cleaner, and part-time event support."
+                        suppliers: bpText("Local farms, meat and poultry suppliers, beverage distributors, packaging suppliers, and delivery partners."),
+                        staffing: bpText("Chef, kitchen assistants, cashier, service attendants, cleaner, and part-time event support.")
                     }
                 },
                 financials: {
@@ -138,29 +140,29 @@
             }
         },
         tech: {
-            label: "Tech startup",
-            sector: "Technology",
+            label: bpText("Tech startup"),
+            sector: bpText("Technology"),
             data: {
                 meta: {
-                    industry: "Technology startup",
+                    industry: bpText("Technology startup"),
                     format: "investor"
                 },
                 sections: {
                     company: {
-                        name: "New Technology Startup",
-                        concept: "A software platform that helps African SMEs digitize operations, payments, and customer workflows."
+                        name: bpText("New Technology Startup"),
+                        concept: bpText("A software platform that helps African SMEs digitize operations, payments, and customer workflows.")
                     },
                     market: {
-                        targetCustomers: "Small businesses, service providers, and growing teams that need affordable business software built around local payment and compliance realities.",
-                        competitors: "Global SaaS tools, spreadsheets, WhatsApp-based operations, and local point solutions.",
-                        advantage: "Africa-first workflows, mobile-first onboarding, local payment support, and lower total cost."
+                        targetCustomers: bpText("Small businesses, service providers, and growing teams that need affordable business software built around local payment and compliance realities."),
+                        competitors: bpText("Global SaaS tools, spreadsheets, WhatsApp-based operations, and local point solutions."),
+                        advantage: bpText("Africa-first workflows, mobile-first onboarding, local payment support, and lower total cost.")
                     },
                     products: {
-                        offer: "Subscription software, setup support, integrations, analytics, and premium advisory services.",
-                        pricing: "Monthly subscription tiers with setup fees for larger clients and optional managed support."
+                        offer: bpText("Subscription software, setup support, integrations, analytics, and premium advisory services."),
+                        pricing: bpText("Monthly subscription tiers with setup fees for larger clients and optional managed support.")
                     },
                     marketing: {
-                        channels: "Founder-led sales, partner accountants, LinkedIn, SME associations, webinars, SEO, referrals, and pilot programs."
+                        channels: bpText("Founder-led sales, partner accountants, LinkedIn, SME associations, webinars, SEO, referrals, and pilot programs.")
                     }
                 },
                 financials: {
@@ -173,26 +175,26 @@
             }
         },
         retail: {
-            label: "Retail",
-            sector: "Retail and commerce",
+            label: bpText("Retail"),
+            sector: bpText("Retail and commerce"),
             data: {
                 meta: {
-                    industry: "Retail and e-commerce",
+                    industry: bpText("Retail and e-commerce"),
                     format: "lender"
                 },
                 sections: {
                     company: {
-                        name: "New Retail Business",
-                        concept: "A retail business combining a physical outlet, social commerce, and reliable delivery for fast-moving consumer products."
+                        name: bpText("New Retail Business"),
+                        concept: bpText("A retail business combining a physical outlet, social commerce, and reliable delivery for fast-moving consumer products.")
                     },
                     market: {
-                        targetCustomers: "Urban households, young professionals, students, and small offices seeking convenience and fair pricing.",
-                        competitors: "Open-market traders, supermarkets, social sellers, and delivery platforms.",
-                        advantage: "Curated stock, transparent pricing, quick fulfillment, and customer retention through WhatsApp and loyalty offers."
+                        targetCustomers: bpText("Urban households, young professionals, students, and small offices seeking convenience and fair pricing."),
+                        competitors: bpText("Open-market traders, supermarkets, social sellers, and delivery platforms."),
+                        advantage: bpText("Curated stock, transparent pricing, quick fulfillment, and customer retention through WhatsApp and loyalty offers.")
                     },
                     products: {
-                        offer: "Consumer goods, curated bundles, seasonal offers, and delivery service.",
-                        pricing: "Markup-based pricing with stock rotation controls and supplier-negotiated discounts."
+                        offer: bpText("Consumer goods, curated bundles, seasonal offers, and delivery service."),
+                        pricing: bpText("Markup-based pricing with stock rotation controls and supplier-negotiated discounts.")
                     }
                 },
                 financials: {
@@ -205,29 +207,29 @@
             }
         },
         agriculture: {
-            label: "Agriculture",
-            sector: "Agriculture",
+            label: bpText("Agriculture"),
+            sector: bpText("Agriculture"),
             data: {
                 meta: {
-                    industry: "Agriculture and processing",
+                    industry: bpText("Agriculture and processing"),
                     format: "grant"
                 },
                 sections: {
                     company: {
-                        name: "New Agribusiness Venture",
-                        concept: "An agribusiness that improves production, aggregation, processing, or distribution for local and regional markets."
+                        name: bpText("New Agribusiness Venture"),
+                        concept: bpText("An agribusiness that improves production, aggregation, processing, or distribution for local and regional markets.")
                     },
                     market: {
-                        targetCustomers: "Food processors, wholesalers, retailers, restaurants, households, and institutional buyers.",
-                        competitors: "Smallholder producers, middlemen, imported substitutes, and informal processors.",
-                        advantage: "Reliable supply, better quality control, storage discipline, and stronger market access."
+                        targetCustomers: bpText("Food processors, wholesalers, retailers, restaurants, households, and institutional buyers."),
+                        competitors: bpText("Smallholder producers, middlemen, imported substitutes, and informal processors."),
+                        advantage: bpText("Reliable supply, better quality control, storage discipline, and stronger market access.")
                     },
                     operations: {
-                        suppliers: "Smallholder farmers, input suppliers, storage providers, transporters, extension agents, and packaging vendors.",
-                        licenses: "Business registration, food safety approvals where relevant, local permits, tax registration, and export documentation if applicable."
+                        suppliers: bpText("Smallholder farmers, input suppliers, storage providers, transporters, extension agents, and packaging vendors."),
+                        licenses: bpText("Business registration, food safety approvals where relevant, local permits, tax registration, and export documentation if applicable.")
                     },
                     milestones: {
-                        nextSteps: "Secure land or aggregation contracts, validate buyer demand, finalize input supply, complete pilot cycle, and lock distribution partners."
+                        nextSteps: bpText("Secure land or aggregation contracts, validate buyer demand, finalize input supply, complete pilot cycle, and lock distribution partners.")
                     }
                 },
                 financials: {
@@ -240,29 +242,29 @@
             }
         },
         manufacturing: {
-            label: "Manufacturing",
-            sector: "Manufacturing",
+            label: bpText("Manufacturing"),
+            sector: bpText("Manufacturing"),
             data: {
                 meta: {
-                    industry: "Light manufacturing",
+                    industry: bpText("Light manufacturing"),
                     format: "lender"
                 },
                 sections: {
                     company: {
-                        name: "New Manufacturing Venture",
-                        concept: "A local manufacturing business producing quality goods for domestic and regional buyers."
+                        name: bpText("New Manufacturing Venture"),
+                        concept: bpText("A local manufacturing business producing quality goods for domestic and regional buyers.")
                     },
                     products: {
-                        offer: "Locally manufactured products, bulk supply, private-label production, and after-sales support.",
-                        pricing: "Cost-plus pricing with volume discounts and long-term supply contracts."
+                        offer: bpText("Locally manufactured products, bulk supply, private-label production, and after-sales support."),
+                        pricing: bpText("Cost-plus pricing with volume discounts and long-term supply contracts.")
                     },
                     operations: {
-                        suppliers: "Raw material suppliers, packaging providers, equipment maintenance partners, logistics providers, and utilities.",
-                        staffing: "Production lead, machine operators, quality inspector, warehouse assistant, sales lead, and finance/admin support."
+                        suppliers: bpText("Raw material suppliers, packaging providers, equipment maintenance partners, logistics providers, and utilities."),
+                        staffing: bpText("Production lead, machine operators, quality inspector, warehouse assistant, sales lead, and finance/admin support.")
                     },
                     risks: {
-                        risks: "Power instability, raw material price volatility, equipment downtime, quality drift, and working-capital pressure.",
-                        mitigations: "Backup power planning, supplier diversification, preventive maintenance, QC checklists, and phased inventory purchases."
+                        risks: bpText("Power instability, raw material price volatility, equipment downtime, quality drift, and working-capital pressure."),
+                        mitigations: bpText("Backup power planning, supplier diversification, preventive maintenance, QC checklists, and phased inventory purchases.")
                     }
                 },
                 financials: {
@@ -276,25 +278,25 @@
             }
         },
         logistics: {
-            label: "Logistics",
-            sector: "Logistics",
+            label: bpText("Logistics"),
+            sector: bpText("Logistics"),
             data: {
                 meta: {
-                    industry: "Logistics and delivery",
+                    industry: bpText("Logistics and delivery"),
                     format: "lender"
                 },
                 sections: {
                     company: {
-                        name: "New Logistics Business",
-                        concept: "A logistics company providing dependable delivery, warehousing, and route support for SMEs and e-commerce sellers."
+                        name: bpText("New Logistics Business"),
+                        concept: bpText("A logistics company providing dependable delivery, warehousing, and route support for SMEs and e-commerce sellers.")
                     },
                     market: {
-                        targetCustomers: "Online sellers, wholesalers, manufacturers, pharmacies, food businesses, and SMEs needing reliable deliveries.",
-                        competitors: "Courier companies, informal dispatch riders, marketplace logistics, and in-house fleets.",
-                        advantage: "Route discipline, proof-of-delivery controls, transparent pricing, and service-level reporting."
+                        targetCustomers: bpText("Online sellers, wholesalers, manufacturers, pharmacies, food businesses, and SMEs needing reliable deliveries."),
+                        competitors: bpText("Courier companies, informal dispatch riders, marketplace logistics, and in-house fleets."),
+                        advantage: bpText("Route discipline, proof-of-delivery controls, transparent pricing, and service-level reporting.")
                     },
                     operations: {
-                        suppliers: "Rider partners, fleet maintenance providers, fuel partners, warehouse operators, insurance providers, and technology vendors."
+                        suppliers: bpText("Rider partners, fleet maintenance providers, fuel partners, warehouse operators, insurance providers, and technology vendors.")
                     }
                 },
                 financials: {
@@ -308,25 +310,25 @@
             }
         },
         healthcare: {
-            label: "Healthcare",
-            sector: "Healthcare",
+            label: bpText("Healthcare"),
+            sector: bpText("Healthcare"),
             data: {
                 meta: {
-                    industry: "Healthcare services",
+                    industry: bpText("Healthcare services"),
                     format: "grant"
                 },
                 sections: {
                     company: {
-                        name: "New Healthcare Venture",
-                        concept: "A healthcare service improving access, affordability, and continuity of care for underserved communities."
+                        name: bpText("New Healthcare Venture"),
+                        concept: bpText("A healthcare service improving access, affordability, and continuity of care for underserved communities.")
                     },
                     market: {
-                        targetCustomers: "Patients, clinics, pharmacies, employers, insurers, and community health partners.",
-                        competitors: "Clinics, pharmacies, informal providers, digital health apps, and hospital networks.",
-                        advantage: "Trust, clinical partnerships, compliance discipline, patient follow-up, and transparent pricing."
+                        targetCustomers: bpText("Patients, clinics, pharmacies, employers, insurers, and community health partners."),
+                        competitors: bpText("Clinics, pharmacies, informal providers, digital health apps, and hospital networks."),
+                        advantage: bpText("Trust, clinical partnerships, compliance discipline, patient follow-up, and transparent pricing.")
                     },
                     operations: {
-                        licenses: "Business registration, clinical approvals where applicable, data privacy compliance, pharmacy or lab permits if required, and insurance coverage."
+                        licenses: bpText("Business registration, clinical approvals where applicable, data privacy compliance, pharmacy or lab permits if required, and insurance coverage.")
                     }
                 },
                 financials: {
@@ -339,25 +341,25 @@
             }
         },
         education: {
-            label: "Education",
-            sector: "Education",
+            label: bpText("Education"),
+            sector: bpText("Education"),
             data: {
                 meta: {
-                    industry: "Education and training",
+                    industry: bpText("Education and training"),
                     format: "grant"
                 },
                 sections: {
                     company: {
-                        name: "New Education Venture",
-                        concept: "An education business delivering practical learning, tutoring, or skills development for learners and working adults."
+                        name: bpText("New Education Venture"),
+                        concept: bpText("An education business delivering practical learning, tutoring, or skills development for learners and working adults.")
                     },
                     market: {
-                        targetCustomers: "Students, parents, schools, professionals, SMEs, and corporate training teams.",
-                        competitors: "Schools, tutoring centers, online course platforms, informal tutors, and training providers.",
-                        advantage: "Outcome-focused curriculum, local relevance, hybrid delivery, and measurable learner progress."
+                        targetCustomers: bpText("Students, parents, schools, professionals, SMEs, and corporate training teams."),
+                        competitors: bpText("Schools, tutoring centers, online course platforms, informal tutors, and training providers."),
+                        advantage: bpText("Outcome-focused curriculum, local relevance, hybrid delivery, and measurable learner progress.")
                     },
                     products: {
-                        offer: "Courses, tutoring packages, certification programs, learning materials, and employer training."
+                        offer: bpText("Courses, tutoring packages, certification programs, learning materials, and employer training.")
                     }
                 },
                 financials: {
@@ -370,29 +372,29 @@
             }
         },
         fintech: {
-            label: "Fintech",
-            sector: "Financial technology",
+            label: bpText("Fintech"),
+            sector: bpText("Financial technology"),
             data: {
                 meta: {
-                    industry: "Fintech",
+                    industry: bpText("Fintech"),
                     format: "investor"
                 },
                 sections: {
                     company: {
-                        name: "New Fintech Venture",
-                        concept: "A fintech product expanding access to payments, credit, savings, or financial operations for African users and businesses."
+                        name: bpText("New Fintech Venture"),
+                        concept: bpText("A fintech product expanding access to payments, credit, savings, or financial operations for African users and businesses.")
                     },
                     market: {
-                        targetCustomers: "SMEs, agents, gig workers, underbanked consumers, diaspora families, and digital merchants.",
-                        competitors: "Banks, mobile money operators, payment processors, lending apps, and informal finance groups.",
-                        advantage: "Lower friction, trust, local compliance, agent distribution, and better user education."
+                        targetCustomers: bpText("SMEs, agents, gig workers, underbanked consumers, diaspora families, and digital merchants."),
+                        competitors: bpText("Banks, mobile money operators, payment processors, lending apps, and informal finance groups."),
+                        advantage: bpText("Lower friction, trust, local compliance, agent distribution, and better user education.")
                     },
                     operations: {
-                        licenses: "Company registration, data protection, payment or lending approvals where applicable, AML/KYC controls, and partner bank agreements."
+                        licenses: bpText("Company registration, data protection, payment or lending approvals where applicable, AML/KYC controls, and partner bank agreements.")
                     },
                     risks: {
-                        risks: "Regulatory changes, fraud, liquidity pressure, trust barriers, API downtime, and customer support complexity.",
-                        mitigations: "Compliance counsel, transaction monitoring, staged rollout, capital buffers, redundancy, and clear escalation playbooks."
+                        risks: bpText("Regulatory changes, fraud, liquidity pressure, trust barriers, API downtime, and customer support complexity."),
+                        mitigations: bpText("Compliance counsel, transaction monitoring, staged rollout, capital buffers, redundancy, and clear escalation playbooks.")
                     }
                 },
                 financials: {
@@ -406,25 +408,25 @@
             }
         },
         realestate: {
-            label: "Real estate",
-            sector: "Real estate",
+            label: bpText("Real estate"),
+            sector: bpText("Real estate"),
             data: {
                 meta: {
-                    industry: "Real estate and property",
+                    industry: bpText("Real estate and property"),
                     format: "lender"
                 },
                 sections: {
                     company: {
-                        name: "New Real Estate Venture",
-                        concept: "A real estate business developing, managing, or brokering property assets for growing urban markets."
+                        name: bpText("New Real Estate Venture"),
+                        concept: bpText("A real estate business developing, managing, or brokering property assets for growing urban markets.")
                     },
                     market: {
-                        targetCustomers: "Young professionals, growing families, SMEs, diaspora buyers, and institutional tenants.",
-                        competitors: "Property developers, brokers, informal agents, short-let operators, and housing cooperatives.",
-                        advantage: "Transparent documentation, location discipline, reliable delivery, property management quality, and buyer trust."
+                        targetCustomers: bpText("Young professionals, growing families, SMEs, diaspora buyers, and institutional tenants."),
+                        competitors: bpText("Property developers, brokers, informal agents, short-let operators, and housing cooperatives."),
+                        advantage: bpText("Transparent documentation, location discipline, reliable delivery, property management quality, and buyer trust.")
                     },
                     funding: {
-                        useOfFunds: "Land acquisition, approvals, professional fees, construction, marketing, working capital, and contingency."
+                        useOfFunds: bpText("Land acquisition, approvals, professional fees, construction, marketing, working capital, and contingency.")
                     }
                 },
                 financials: {
@@ -439,49 +441,49 @@
         }
     }, l = [ {
         id: "company",
-        label: "Company",
-        help: "Define the business clearly before writing the rest of the plan.",
-        fields: [ [ "name", "Business name", "input", "e.g. Kijiji Solar Services Ltd" ], [ "concept", "Business concept", "textarea", "What does the business do, for whom, and why now?" ], [ "mission", "Mission", "textarea", "What change does the business exist to make?" ], [ "legalStructure", "Legal structure", "input", "Sole proprietorship, partnership, limited company, cooperative" ], [ "location", "Location and coverage", "input", "City, country, and operating region" ], [ "team", "Founder and team strengths", "textarea", "Relevant skills, experience, advisors, and execution capacity" ] ]
+        label: bpText("Company"),
+        help: bpText("Define the business clearly before writing the rest of the plan."),
+        fields: [ [ "name", bpText("Business name"), "input", bpText("e.g. Kijiji Solar Services Ltd") ], [ "concept", bpText("Business concept"), "textarea", bpText("What does the business do, for whom, and why now?") ], [ "mission", bpText("Mission"), "textarea", bpText("What change does the business exist to make?") ], [ "legalStructure", bpText("Legal structure"), "input", bpText("Sole proprietorship, partnership, limited company, cooperative") ], [ "location", bpText("Location and coverage"), "input", bpText("City, country, and operating region") ], [ "team", bpText("Founder and team strengths"), "textarea", bpText("Relevant skills, experience, advisors, and execution capacity") ] ]
     }, {
         id: "market",
-        label: "Market",
-        help: "Show that the opportunity is real and that you understand the buyer.",
-        fields: [ [ "problem", "Problem", "textarea", "What customer pain or market gap are you solving?" ], [ "targetCustomers", "Target customers", "textarea", "Who buys, who uses, and who influences the purchase?" ], [ "marketSize", "Market size and trend", "textarea", "Estimate market size, growth drivers, and local demand signals." ], [ "competitors", "Competitors", "textarea", "List direct and indirect competitors." ], [ "advantage", "Competitive advantage", "textarea", "Why will customers choose you instead?" ] ]
+        label: bpText("Market"),
+        help: bpText("Show that the opportunity is real and that you understand the buyer."),
+        fields: [ [ "problem", bpText("Problem"), "textarea", bpText("What customer pain or market gap are you solving?") ], [ "targetCustomers", bpText("Target customers"), "textarea", bpText("Who buys, who uses, and who influences the purchase?") ], [ "marketSize", bpText("Market size and trend"), "textarea", bpText("Estimate market size, growth drivers, and local demand signals.") ], [ "competitors", bpText("Competitors"), "textarea", bpText("List direct and indirect competitors.") ], [ "advantage", bpText("Competitive advantage"), "textarea", bpText("Why will customers choose you instead?") ] ]
     }, {
         id: "products",
-        label: "Offer",
-        help: "Explain exactly what you sell and how money comes in.",
-        fields: [ [ "offer", "Products or services", "textarea", "Describe the offer in plain language." ], [ "pricing", "Pricing and margins", "textarea", "How do you price? What margin logic do you use?" ], [ "salesModel", "Sales model", "textarea", "Retail, subscription, contracts, agents, B2B, wholesale, marketplace, or other." ], [ "customerProof", "Customer proof", "textarea", "Pilots, waiting list, sales conversations, LOIs, repeat purchases, testimonials, or research." ] ]
+        label: bpText("Offer"),
+        help: bpText("Explain exactly what you sell and how money comes in."),
+        fields: [ [ "offer", bpText("Products or services"), "textarea", bpText("Describe the offer in plain language.") ], [ "pricing", bpText("Pricing and margins"), "textarea", bpText("How do you price? What margin logic do you use?") ], [ "salesModel", bpText("Sales model"), "textarea", bpText("Retail, subscription, contracts, agents, B2B, wholesale, marketplace, or other.") ], [ "customerProof", bpText("Customer proof"), "textarea", bpText("Pilots, waiting list, sales conversations, LOIs, repeat purchases, testimonials, or research.") ] ]
     }, {
         id: "marketing",
-        label: "Marketing",
-        help: "A good plan explains how customers will hear, trust, buy, and return.",
-        fields: [ [ "positioning", "Positioning", "textarea", "How should the market describe your business?" ], [ "channels", "Acquisition channels", "textarea", "Referrals, social media, SEO, agents, partnerships, events, sales reps, or distributors." ], [ "budget", "Marketing budget", "input", "Monthly or annual spend" ], [ "retention", "Retention plan", "textarea", "How will you keep customers coming back?" ] ]
+        label: bpText("Marketing"),
+        help: bpText("A good plan explains how customers will hear, trust, buy, and return."),
+        fields: [ [ "positioning", bpText("Positioning"), "textarea", bpText("How should the market describe your business?") ], [ "channels", bpText("Acquisition channels"), "textarea", bpText("Referrals, social media, SEO, agents, partnerships, events, sales reps, or distributors.") ], [ "budget", bpText("Marketing budget"), "input", bpText("Monthly or annual spend") ], [ "retention", bpText("Retention plan"), "textarea", bpText("How will you keep customers coming back?") ] ]
     }, {
         id: "operations",
-        label: "Operations",
-        help: "Lenders and partners look for operational discipline, not only ambition.",
-        fields: [ [ "process", "Operating process", "textarea", "How is the product or service delivered from order to completion?" ], [ "suppliers", "Suppliers and partners", "textarea", "Key suppliers, service providers, platforms, distributors, and dependencies." ], [ "staffing", "Staffing plan", "textarea", "Roles required now and roles needed as the business grows." ], [ "licenses", "Licenses, compliance, and records", "textarea", "Registrations, permits, tax records, insurance, data privacy, sector approvals." ] ]
+        label: bpText("Operations"),
+        help: bpText("Lenders and partners look for operational discipline, not only ambition."),
+        fields: [ [ "process", bpText("Operating process"), "textarea", bpText("How is the product or service delivered from order to completion?") ], [ "suppliers", bpText("Suppliers and partners"), "textarea", bpText("Key suppliers, service providers, platforms, distributors, and dependencies.") ], [ "staffing", bpText("Staffing plan"), "textarea", bpText("Roles required now and roles needed as the business grows.") ], [ "licenses", bpText("Licenses, compliance, and records"), "textarea", bpText("Registrations, permits, tax records, insurance, data privacy, sector approvals.") ] ]
     }, {
         id: "milestones",
-        label: "Milestones",
-        help: "Convert the plan into a 12-month execution map.",
-        fields: [ [ "nextSteps", "Next 90 days", "textarea", "Immediate actions required to launch or improve traction." ], [ "yearOne", "Year 1 milestones", "textarea", "Revenue, customer, hiring, product, operating, and compliance milestones." ], [ "kpis", "KPIs to track", "textarea", "Revenue, gross margin, cash runway, repeat purchase, CAC, stock turn, utilization, churn, or other metrics." ] ]
+        label: bpText("Milestones"),
+        help: bpText("Convert the plan into a 12-month execution map."),
+        fields: [ [ "nextSteps", bpText("Next 90 days"), "textarea", bpText("Immediate actions required to launch or improve traction.") ], [ "yearOne", bpText("Year 1 milestones"), "textarea", bpText("Revenue, customer, hiring, product, operating, and compliance milestones.") ], [ "kpis", bpText("KPIs to track"), "textarea", bpText("Revenue, gross margin, cash runway, repeat purchase, CAC, stock turn, utilization, churn, or other metrics.") ] ]
     }, {
         id: "financials",
-        label: "Financials",
-        help: "Build a simple 3 to 5 year model. Keep assumptions visible and believable.",
+        label: bpText("Financials"),
+        help: bpText("Build a simple 3 to 5 year model. Keep assumptions visible and believable."),
         financial: !0
     }, {
         id: "funding",
-        label: "Funding",
-        help: "Explain how much capital is needed, where it goes, and how it will be repaid or returned.",
-        fields: [ [ "amountNeeded", "Funding required", "input", "Total capital needed" ], [ "useOfFunds", "Use of funds", "textarea", "Break down setup costs, equipment, inventory, hiring, marketing, working capital, and contingency." ], [ "sources", "Funding sources", "textarea", "Owner equity, bank loan, angel investment, grant, supplier credit, revenue, or partners." ], [ "repayment", "Repayment or investor return plan", "textarea", "How will lenders be repaid or investors get a return?" ] ]
+        label: bpText("Funding"),
+        help: bpText("Explain how much capital is needed, where it goes, and how it will be repaid or returned."),
+        fields: [ [ "amountNeeded", bpText("Funding required"), "input", bpText("Total capital needed") ], [ "useOfFunds", bpText("Use of funds"), "textarea", bpText("Break down setup costs, equipment, inventory, hiring, marketing, working capital, and contingency.") ], [ "sources", bpText("Funding sources"), "textarea", bpText("Owner equity, bank loan, angel investment, grant, supplier credit, revenue, or partners.") ], [ "repayment", bpText("Repayment or investor return plan"), "textarea", bpText("How will lenders be repaid or investors get a return?") ] ]
     }, {
         id: "risks",
-        label: "Risks",
-        help: "Strong plans admit risks and show practical mitigation.",
-        fields: [ [ "risks", "Top risks", "textarea", "Market, operations, finance, compliance, supplier, technology, hiring, or security risks." ], [ "mitigations", "Mitigation plan", "textarea", "Controls, backups, insurance, phased rollout, cash buffers, compliance checks, and monitoring." ], [ "assumptions", "Key assumptions to validate", "textarea", "What must prove true for the plan to work?" ] ]
+        label: bpText("Risks"),
+        help: bpText("Strong plans admit risks and show practical mitigation."),
+        fields: [ [ "risks", bpText("Top risks"), "textarea", bpText("Market, operations, finance, compliance, supplier, technology, hiring, or security risks.") ], [ "mitigations", bpText("Mitigation plan"), "textarea", bpText("Controls, backups, insurance, phased rollout, cash buffers, compliance checks, and monitoring.") ], [ "assumptions", bpText("Key assumptions to validate"), "textarea", bpText("What must prove true for the plan to work?") ] ]
     } ];
     function u(e) {
         return document.getElementById(e);
@@ -520,7 +522,7 @@
                 capex: [ 0, 0, 0, 0, 0 ],
                 startupCosts: 0,
                 ownerEquity: 0,
-                assumptions: "List the logic behind your prices, volumes, costs, hiring, and growth."
+                assumptions: bpText("List the logic behind your prices, volumes, costs, hiring, and growth.")
             }
         }, function(e) {
             if (e.meta || e.sections || e.financials) return e;
@@ -552,7 +554,7 @@
                     capex: [ 0, 0, 0, 0, 0 ],
                     startupCosts: 0,
                     ownerEquity: 0,
-                    assumptions: "List the logic behind your prices, volumes, costs, hiring, and growth."
+                    assumptions: bpText("List the logic behind your prices, volumes, costs, hiring, and growth.")
                 }
             };
             return t.sections.company.name = e.legalName || e.businessName || "", t.sections.company.legalStructure = e.legalStructure || "",
@@ -589,12 +591,12 @@
     }
     function h(t) {
         var n = s[e.meta.currency] || e.meta.currency, a = m(t);
-        return (a < 0 ? "-" : "") + n + " " + Math.abs(a).toLocaleString("en-US", {
+        return (a < 0 ? "-" : "") + n + " " + Math.abs(a).toLocaleString(bpLocale ? "ha-NG" : "en-US", {
             maximumFractionDigits: 0
         });
     }
     function v(t) {
-        return e.meta.currency + " " + m(t).toLocaleString("en-US", {
+        return e.meta.currency + " " + m(t).toLocaleString(bpLocale ? "ha-NG" : "en-US", {
             maximumFractionDigits: 0
         });
     }
@@ -664,12 +666,12 @@
         u("planTitle").textContent = E(), u("planPreview").innerHTML = L(!1);
     }
     function E() {
-        return e.sections.company.name || e.meta.industry || "Untitled business plan";
+        return e.sections.company.name || e.meta.industry || bpText("Untitled business plan");
     }
     function L(t) {
         if (t) return A();
         var n = "<h1>" + g(E()) + "</h1>";
-        return n += "<p><strong>Plan type:</strong> " + g(F(e.meta.format)) + " | <strong>Country:</strong> " + g(e.meta.country) + " | <strong>Currency:</strong> " + g(e.meta.currency) + "</p>",
+        return n += bpText("<p><strong>Plan type:</strong> ") + g(F(e.meta.format)) + bpText(" | <strong>Country:</strong> ") + g(bpLocale ? bpLocale.country(e.meta.country) : e.meta.country) + bpText(" | <strong>Currency:</strong> ") + g(e.meta.currency) + "</p>",
         l.forEach(function(t) {
             n += "<h2>" + g(t.label) + "</h2>", t.financial ? n += N() : (t.fields || []).forEach(function(a) {
                 var i = e.sections[t.id][a[0]];
@@ -679,77 +681,77 @@
     }
     function A() {
         var t = e.sections.company, n = e.sections.market, a = e.sections.products, i = e.sections.funding, r = e.sections.risks;
-        return "<h1>" + g(E()) + "</h1><h2>Business snapshot</h2><p>" + g(t.concept || t.mission || "Describe the business concept.") + "</p><h2>Customer and market</h2><p>" + g(n.targetCustomers || "Define the target customer.") + "</p><h2>Offer</h2><p>" + g(a.offer || "Describe products or services.") + "</p><h2>Advantage</h2><p>" + g(n.advantage || a.customerProof || "Explain why this business can win.") + "</p><h2>Financial snapshot</h2>" + N(!0) + "<h2>Funding and risk</h2><p><strong>Funding:</strong> " + g(i.amountNeeded || "Not specified") + "</p><p><strong>Risk controls:</strong> " + g(r.mitigations || "Add risk mitigations.") + "</p>";
+        return "<h1>" + g(E()) + bpText("</h1><h2>Business snapshot</h2><p>") + g(t.concept || t.mission || bpText("Describe the business concept.")) + bpText("</p><h2>Customer and market</h2><p>") + g(n.targetCustomers || bpText("Define the target customer.")) + bpText("</p><h2>Offer</h2><p>") + g(a.offer || bpText("Describe products or services.")) + bpText("</p><h2>Advantage</h2><p>") + g(n.advantage || a.customerProof || bpText("Explain why this business can win.")) + bpText("</p><h2>Financial snapshot</h2>") + N(!0) + bpText("<h2>Funding and risk</h2><p><strong>Funding:</strong> ") + g(i.amountNeeded || bpText("Not specified")) + bpText("</p><p><strong>Risk controls:</strong> ") + g(r.mitigations || bpText("Add risk mitigations.")) + "</p>";
     }
     function N(t) {
-        var n = y(), a = t ? [ [ "revenue", "Revenue" ], [ "grossProfit", "Gross profit" ], [ "ebitda", "Operating profit" ], [ "netCash", "Net cash" ] ] : [ [ "revenue", "Revenue" ], [ "cogs", "Direct costs" ], [ "grossProfit", "Gross profit" ], [ "opex", "Operating expenses" ], [ "salaries", "Salaries" ], [ "marketing", "Marketing" ], [ "capex", "Capex" ], [ "ebitda", "Operating profit" ], [ "netCash", "Net cash" ] ], i = "<table><thead><tr><th>Line item</th>";
+        var n = y(), a = t ? [ [ "revenue", bpText("Revenue") ], [ "grossProfit", bpText("Gross profit") ], [ "ebitda", bpText("Operating profit") ], [ "netCash", bpText("Net cash") ] ] : [ [ "revenue", bpText("Revenue") ], [ "cogs", bpText("Direct costs") ], [ "grossProfit", bpText("Gross profit") ], [ "opex", bpText("Operating expenses") ], [ "salaries", bpText("Salaries") ], [ "marketing", bpText("Marketing") ], [ "capex", bpText("Capex") ], [ "ebitda", bpText("Operating profit") ], [ "netCash", bpText("Net cash") ] ], i = bpText("<table><thead><tr><th>Line item</th>");
         return n.forEach(function(e) {
-            i += "<th>Year " + e.year + "</th>";
+            i += bpText("<th>Year ") + e.year + "</th>";
         }), i += "</tr></thead><tbody>", a.forEach(function(t) {
             i += "<tr><td>" + g(t[1]) + "</td>", n.forEach(function(n) {
                 var a = t[0] in n ? n[t[0]] : m(e.financials[t[0]][n.year - 1]);
                 i += "<td>" + g(v(a)) + "</td>";
             }), i += "</tr>";
-        }), i += "</tbody></table>", !t && e.financials.assumptions && (i += "<p><strong>Assumptions:</strong><br>" + g(e.financials.assumptions) + "</p>"),
+        }), i += "</tbody></table>", !t && e.financials.assumptions && (i += bpText("<p><strong>Assumptions:</strong><br>") + g(e.financials.assumptions) + "</p>"),
         i;
     }
     function F(e) {
         return {
-            lender: "Lender-ready plan",
-            investor: "Investor plan",
-            lean: "Lean one-page plan",
-            grant: "Grant or NGO plan",
-            internal: "Internal growth plan"
-        }[e] || "Business plan";
+            lender: bpText("Lender-ready plan"),
+            investor: bpText("Investor plan"),
+            lean: bpText("Lean one-page plan"),
+            grant: bpText("Grant or NGO plan"),
+            internal: bpText("Internal growth plan")
+        }[e] || bpText("Business plan");
     }
     function M() {
         var t = y(), n = [ {
-            label: "Business concept is clear",
+            label: bpText("Business concept is clear"),
             ok: x(e.sections.company.concept).length >= 40,
             points: 10
         }, {
-            label: "Target customer is specific",
+            label: bpText("Target customer is specific"),
             ok: x(e.sections.market.targetCustomers).length >= 35,
             points: 10
         }, {
-            label: "Competitors and advantage included",
+            label: bpText("Competitors and advantage included"),
             ok: x(e.sections.market.competitors).length >= 20 && x(e.sections.market.advantage).length >= 25,
             points: 12
         }, {
-            label: "Offer and pricing are explained",
+            label: bpText("Offer and pricing are explained"),
             ok: x(e.sections.products.offer).length >= 25 && x(e.sections.products.pricing).length >= 20,
             points: 10
         }, {
-            label: "Marketing channels and retention covered",
+            label: bpText("Marketing channels and retention covered"),
             ok: x(e.sections.marketing.channels).length >= 25 && x(e.sections.marketing.retention).length >= 20,
             points: 9
         }, {
-            label: "Operations, staffing, and compliance addressed",
+            label: bpText("Operations, staffing, and compliance addressed"),
             ok: x(e.sections.operations.process).length >= 25 && x(e.sections.operations.staffing).length >= 20 && x(e.sections.operations.licenses).length >= 20,
             points: 12
         }, {
-            label: "Milestones and KPIs included",
+            label: bpText("Milestones and KPIs included"),
             ok: x(e.sections.milestones.nextSteps).length >= 20 && x(e.sections.milestones.kpis).length >= 20,
             points: 8
         }, {
-            label: "Financial forecast has revenue and costs",
+            label: bpText("Financial forecast has revenue and costs"),
             ok: t[0].revenue > 0 && t[0].cogs >= 0 && t[0].opex >= 0 && t[0].revenue >= t[0].cogs,
             points: 12
         }, {
-            label: "Funding use and repayment logic included",
+            label: bpText("Funding use and repayment logic included"),
             ok: x(e.sections.funding.amountNeeded).length > 0 && x(e.sections.funding.useOfFunds).length >= 25 && x(e.sections.funding.repayment).length >= 20,
             points: 10
         }, {
-            label: "Risks and mitigations are realistic",
+            label: bpText("Risks and mitigations are realistic"),
             ok: x(e.sections.risks.risks).length >= 25 && x(e.sections.risks.mitigations).length >= 25,
             points: 7
         } ], a = n.reduce(function(e, t) {
             return e + (t.ok ? t.points : 0);
         }, 0);
         u("scoreValue").textContent = String(a), u("scoreMeter").style.width = a + "%",
-        u("scoreLabel").textContent = a >= 90 ? "Ready" : a >= 70 ? "Review" : "Draft",
+        u("scoreLabel").textContent = a >= 90 ? bpText("Ready") : a >= 70 ? bpText("Review") : bpText("Draft"),
         u("checkList").innerHTML = n.map(function(e) {
-            return '<div class="bp-check ' + (e.ok ? "ok" : "") + '"><span class="bp-check-dot">' + (e.ok ? "OK" : "!") + "</span><span><strong>" + g(e.label) + "</strong></span></div>";
+            return '<div class="bp-check ' + (e.ok ? "ok" : "") + '"><span class="bp-check-dot">' + (e.ok ? bpText("OK") : "!") + "</span><span><strong>" + g(e.label) + "</strong></span></div>";
         }).join("");
     }
     function O() {
@@ -762,18 +764,18 @@
             var e;
             try { e = n.getAll(); clearSavedFailure(); } catch (error) { savedFailure(error); return; }
             u("savedPanel").hidden = !e.length, u("savedPlans").innerHTML = e.map(function(e) {
-                return '<article class="bp-saved-card"><div class="bp-saved-title">' + g(e.title || "Business plan") + '</div><div class="bp-saved-date">' + g(function(e) {
+                return '<article class="bp-saved-card"><div class="bp-saved-title">' + g(e.title || bpText("Business plan")) + '</div><div class="bp-saved-date">' + g(function(e) {
                     try {
-                        return new Date(e).toLocaleString("en-GB", {
+                        return new Date(e).toLocaleString(bpLocale ? "ha-NG" : "en-GB", {
                             day: "2-digit",
-                            month: "short",
+                            month: bpLocale ? "2-digit" : "short",
                             hour: "2-digit",
                             minute: "2-digit"
                         });
                     } catch (e) {
-                        return "Saved";
+                        return bpText("Saved");
                     }
-                }(e.updatedAt)) + '</div><div class="bp-saved-actions"><button type="button" data-open-saved="' + f(e.id) + '">Open</button><button type="button" data-delete-saved="' + f(e.id) + '">Delete</button></div></article>';
+                }(e.updatedAt)) + '</div><div class="bp-saved-actions"><button type="button" data-open-saved="' + f(e.id) + bpText('">Open</button><button type="button" data-delete-saved="') + f(e.id) + bpText('">Delete</button></div></article>');
             }).join("");
         }
     }
@@ -787,12 +789,12 @@
             t.value = null == n ? "" : n;
         }), function() {
             var t, n, i, r = l[a];
-            u("sectionKicker").textContent = "Section " + (a + 1) + " of " + l.length, u("sectionTitle").textContent = r.label,
-            u("sectionHelp").textContent = r.help, u("prevSectionBtn").disabled = 0 === a, u("nextSectionBtn").textContent = a === l.length - 1 ? "Export PDF" : "Next",
-            r.financial ? u("sectionBody").innerHTML = (t = [ [ "revenue", "Revenue" ], [ "cogs", "Cost of goods or direct costs" ], [ "grossProfit", "Gross profit", !0 ], [ "opex", "Operating expenses" ], [ "salaries", "Salaries and wages" ], [ "marketing", "Marketing and sales" ], [ "capex", "Capital expenditure" ], [ "ebitda", "Operating profit", !0 ], [ "netCash", "Net cash after capex", !0 ] ],
-            n = y(), i = '<div class="bp-grid three"><label>Startup costs<input data-fin-single="startupCosts" type="number" min="0" step="1" value="' + f(e.financials.startupCosts) + '"></label><label>Owner equity<input data-fin-single="ownerEquity" type="number" min="0" step="1" value="' + f(e.financials.ownerEquity) + '"></label><label>Financial assumptions<input data-fin-single="assumptions" type="text" value="' + f(e.financials.assumptions) + '"></label></div><div class="bp-fin-wrap"><table class="bp-fin-table"><thead><tr><th>Line item</th>',
+            u("sectionKicker").textContent = bpText("Section ") + (a + 1) + bpText(" of ") + l.length, u("sectionTitle").textContent = r.label,
+            u("sectionHelp").textContent = r.help, u("prevSectionBtn").disabled = 0 === a, u("nextSectionBtn").textContent = a === l.length - 1 ? bpText("Export PDF") : bpText("Next"),
+            r.financial ? u("sectionBody").innerHTML = (t = [ [ "revenue", bpText("Revenue") ], [ "cogs", bpText("Cost of goods or direct costs") ], [ "grossProfit", bpText("Gross profit"), !0 ], [ "opex", bpText("Operating expenses") ], [ "salaries", bpText("Salaries and wages") ], [ "marketing", bpText("Marketing and sales") ], [ "capex", bpText("Capital expenditure") ], [ "ebitda", bpText("Operating profit"), !0 ], [ "netCash", bpText("Net cash after capex"), !0 ] ],
+            n = y(), i = '<div class="bp-grid three"><label>Startup costs<input data-fin-single="startupCosts" type="number" min="0" step="1" value="' + f(e.financials.startupCosts) + '"></label><label>Owner equity<input data-fin-single="ownerEquity" type="number" min="0" step="1" value="' + f(e.financials.ownerEquity) + '"></label><label>Financial assumptions<input data-fin-single="assumptions" type="text" value="' + f(e.financials.assumptions) + bpText('"></label></div><div class="bp-fin-wrap"><table class="bp-fin-table"><thead><tr><th>Line item</th>'),
             b().forEach(function(e) {
-                i += "<th>Year " + e + "</th>";
+                i += bpText("<th>Year ") + e + "</th>";
             }), i += "</tr></thead><tbody>", t.forEach(function(t) {
                 i += "<tr><td>" + g(t[1]) + "</td>", b().forEach(function(a, r) {
                     if (t[2]) {
@@ -809,9 +811,9 @@
     function P() {
         r && clearTimeout(r), r = setTimeout(function() {
             try {
-                localStorage.setItem(t, JSON.stringify(e)), u("draftStatus").textContent = "Saved locally";
+                localStorage.setItem(t, JSON.stringify(e)), u("draftStatus").textContent = bpText("Saved locally");
             } catch (e) {
-                u("draftStatus").textContent = "Draft only";
+                u("draftStatus").textContent = bpText("Draft only");
             }
         }, 250);
     }
@@ -823,43 +825,45 @@
                 title: E(),
                 data: JSON.parse(JSON.stringify(e))
             });
-            i = t.id, R(), V("Plan saved in this browser.");
+            i = t.id, R(), V(bpText("Plan saved in this browser."));
             } catch (error) { savedFailure(error); }
-        } else V("Saved plans are unavailable in this browser.");
+        } else V(bpText("Saved plans are unavailable in this browser."));
     }
-    function q() {
+    async function q() {
         if (window.jspdf && window.jspdf.jsPDF) {
             var t = new window.jspdf.jsPDF({
                 orientation: "portrait",
                 unit: "mm",
                 format: "a4"
-            }), n = t.internal.pageSize.getWidth(), a = t.internal.pageSize.getHeight(), i = 18, r = 22, s = n - 36;
+            });
+            if (bpLocale) { try { var bpExportStamp = JSON.stringify(e); await bpLocale.preparePdf(t); if (JSON.stringify(e) !== bpExportStamp || !document.getElementById("bpExportReview").checked) { V("Tsarin ya canza. Sake dubawa kafin fitar da PDF."); return; } } catch (_) { V("An kasa loda rubutun PDF. Gwada fitar da TXT ko DOC."); return; } }
+            var n = t.internal.pageSize.getWidth(), a = t.internal.pageSize.getHeight(), i = 18, r = 22, s = n - 36;
             t.setProperties({
                 title: E(),
-                subject: "Business plan generated with AfroTools",
+                subject: bpText("Business plan generated with AfroTools"),
                 author: E(),
-                creator: "AfroTools Business Plan Builder"
-            }), t.setFont("helvetica", "bold"), t.setFontSize(18), r = D(t, E(), i, r, s, 8, a - 16) + 4,
-            t.setFont("helvetica", "normal"), t.setFontSize(10), r = D(t, F(e.meta.format) + " | " + e.meta.country + " | " + e.meta.currency, i, r, s, 5.5, a - 16) + 3,
+                creator: bpText("AfroTools Business Plan Builder")
+            }), t.setFont(bpLocale ? "BusinessPlanNoto" : "helvetica", "bold"), t.setFontSize(18), r = D(t, E(), i, r, s, 8, a - 16) + 4,
+            t.setFont(bpLocale ? "BusinessPlanNoto" : "helvetica", "normal"), t.setFontSize(10), r = D(t, F(e.meta.format) + " | " + (bpLocale ? bpLocale.country(e.meta.country) : e.meta.country) + " | " + e.meta.currency, i, r, s, 5.5, a - 16) + 3,
             l.forEach(function(n) {
-                r > a - 34 && (t.addPage(), r = 22), t.setFont("helvetica", "bold"), t.setFontSize(13),
+                r > a - 34 && (t.addPage(), r = 22), t.setFont(bpLocale ? "BusinessPlanNoto" : "helvetica", "bold"), t.setFontSize(13),
                 t.setTextColor(15, 74, 162), r = D(t, n.label, i, r, s, 7, a - 16) + 1, t.setTextColor(0, 0, 0),
-                t.setFont("times", "normal"), t.setFontSize(10.5), n.financial ? (j().forEach(function(e) {
+                t.setFont(bpLocale ? "BusinessPlanNoto" : "times", "normal"), t.setFontSize(10.5), n.financial ? (j().forEach(function(e) {
                     r = D(t, e, i, r, s, 5.2, a - 16);
                 }), r += 3) : (n.fields || []).forEach(function(o) {
                     var c = e.sections[n.id][o[0]];
-                    x(c) && (t.setFont("helvetica", "bold"), r = D(t, o[1] + ":", i, r, s, 5.5, a - 16),
-                    t.setFont("times", "normal"), r = D(t, c, i, r, s, 5.5, a - 16) + 2);
+                    x(c) && (bpLocale && r > a - 42 && (t.addPage(), r = 22), t.setFont(bpLocale ? "BusinessPlanNoto" : "helvetica", "bold"), r = D(t, o[1] + ":", i, r, s, 5.5, a - 16),
+                    t.setFont(bpLocale ? "BusinessPlanNoto" : "times", "normal"), r = D(t, c, i, r, s, 5.5, a - 16) + 2);
                 });
             });
-            for (var o = 1; o <= t.getNumberOfPages(); o += 1) t.setPage(o), t.setFont("helvetica", "normal"),
-            t.setFontSize(8), t.setTextColor(140), t.text("Generated with AfroTools.com", n / 2, a - 8, {
+            for (var o = 1; o <= t.getNumberOfPages(); o += 1) t.setPage(o), t.setFont(bpLocale ? "BusinessPlanNoto" : "helvetica", "normal"),
+            t.setFontSize(8), t.setTextColor(140), t.text(bpText("Generated with AfroTools.com"), n / 2, a - 8, {
                 align: "center"
             }), t.text(String(o), n - i, a - 8, {
                 align: "right"
             }), t.setTextColor(0);
-            t.save(J() + ".pdf"), V("PDF downloaded.");
-        } else V("PDF tools are still loading.");
+            t.save(J() + ".pdf"), V(bpText("PDF downloaded."));
+        } else V(bpText("PDF tools are still loading."));
     }
     function D(e, t, n, a, i, r, s) {
         return e.splitTextToSize(String(t || ""), i).forEach(function(t) {
@@ -869,15 +873,15 @@
     function j() {
         var t = y(), n = [];
         return t.forEach(function(e) {
-            n.push("Year " + e.year + ": revenue " + v(e.revenue) + ", gross profit " + v(e.grossProfit) + ", operating profit " + v(e.ebitda) + ", net cash " + v(e.netCash) + ", gross margin " + e.grossMargin.toFixed(1) + "%.");
-        }), e.financials.assumptions && n.push("Assumptions: " + e.financials.assumptions),
+            n.push(bpText("Year ") + e.year + bpText(": revenue ") + v(e.revenue) + bpText(", gross profit ") + v(e.grossProfit) + bpText(", operating profit ") + v(e.ebitda) + bpText(", net cash ") + v(e.netCash) + bpText(", gross margin ") + e.grossMargin.toFixed(1) + "%.");
+        }), e.financials.assumptions && n.push(bpText("Assumptions: ") + e.financials.assumptions),
         n;
     }
     function G() {
         W('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + g(E()) + "</title></head><body>" + L(!1) + "</body></html>", J() + ".doc", "application/msword;charset=utf-8");
     }
     function H() {
-        var t = [ E(), F(e.meta.format) + " | " + e.meta.country + " | " + e.meta.currency, "" ];
+        var t = [ E(), F(e.meta.format) + " | " + (bpLocale ? bpLocale.country(e.meta.country) : e.meta.country) + " | " + e.meta.currency, "" ];
         l.forEach(function(n) {
             t.push(n.label.toUpperCase()), n.financial ? t = t.concat(j()) : (n.fields || []).forEach(function(a) {
                 var i = e.sections[n.id][a[0]];
@@ -886,14 +890,14 @@
         }), W(t.join("\n").trim() + "\n", J() + ".txt", "text/plain;charset=utf-8");
     }
     function U() {
-        var t = [ [ "Line item" ].concat(b().map(function(e) {
-            return "Year " + e;
+        var t = [ [ bpText("Line item") ].concat(b().map(function(e) {
+            return bpText("Year ") + e;
         })) ], n = y();
-        [ [ "revenue", "Revenue" ], [ "cogs", "Direct costs" ], [ "grossProfit", "Gross profit" ], [ "opex", "Operating expenses" ], [ "salaries", "Salaries" ], [ "marketing", "Marketing" ], [ "capex", "Capex" ], [ "ebitda", "Operating profit" ], [ "netCash", "Net cash" ] ].forEach(function(a) {
+        [ [ "revenue", bpText("Revenue") ], [ "cogs", bpText("Direct costs") ], [ "grossProfit", bpText("Gross profit") ], [ "opex", bpText("Operating expenses") ], [ "salaries", bpText("Salaries") ], [ "marketing", bpText("Marketing") ], [ "capex", bpText("Capex") ], [ "ebitda", bpText("Operating profit") ], [ "netCash", bpText("Net cash") ] ].forEach(function(a) {
             t.push([ a[1] ].concat(n.map(function(t) {
                 return a[0] in t ? t[a[0]] : e.financials[a[0]][t.year - 1];
             })));
-        }), t.push([], [ "Startup costs", e.financials.startupCosts ], [ "Owner equity", e.financials.ownerEquity ], [ "Funding required", e.sections.funding.amountNeeded || "" ]),
+        }), t.push([], [ bpText("Startup costs"), e.financials.startupCosts ], [ bpText("Owner equity"), e.financials.ownerEquity ], [ bpText("Funding required"), e.sections.funding.amountNeeded || "" ]),
         W(t.map(K).join("\n"), J() + "-forecast.csv", "text/csv;charset=utf-8");
     }
     function z() {
@@ -910,9 +914,9 @@
             r.onload = function() {
                 try {
                     var n = JSON.parse(String(r.result || "{}"));
-                    e = p(validateDocumentBackup(n)), i = null, a = 0, T(), V("Plan imported.");
+                    e = p(validateDocumentBackup(n)), i = null, a = 0, T(), V(bpText("Plan imported."));
                 } catch (e) {
-                    V("Could not import that JSON file.");
+                    V(bpText("Could not import that JSON file."));
                 } finally {
                     t.target.value = "";
                 }
@@ -922,10 +926,10 @@
     function I() {
         var e, t, n = (e = A(), (t = document.createElement("div")).innerHTML = e, t.innerText.replace(/\n{3,}/g, "\n\n").trim());
         navigator.clipboard ? navigator.clipboard.writeText(n).then(function() {
-            V("One-page brief copied.");
+            V(bpText("One-page brief copied."));
         }).catch(function() {
-            V("Copy failed. Use TXT export instead.");
-        }) : V("Copy is unavailable. Use TXT export instead.");
+            V(bpText("Copy failed. Use TXT export instead."));
+        }) : V(bpText("Copy is unavailable. Use TXT export instead."));
     }
     function K(e) {
         return e.map(function(e) {
@@ -961,7 +965,7 @@
                 var r = JSON.parse(decodeURIComponent(escape(atob(a))));
                 return p(r.data || r);
             } catch (e) {
-                V("The plan URL could not be opened.");
+                V(bpText("The plan URL could not be opened."));
             }
             if (e.get("id") && n) {
                 var s = readSavedItem(e.get("id"));
@@ -999,7 +1003,7 @@
                     capex: [ 0, 0, 0, 0, 0 ],
                     startupCosts: 0,
                     ownerEquity: 0,
-                    assumptions: "List the logic behind your prices, volumes, costs, hiring, and growth."
+                    assumptions: bpText("List the logic behind your prices, volumes, costs, hiring, and growth.")
                 }
             });
         }(), document.body.addEventListener("input", function(t) {
@@ -1030,7 +1034,7 @@
         }), u("templateRow").addEventListener("click", function(t) {
             var n, a, i = t.target.closest("[data-template]");
             i && (n = i.getAttribute("data-template"), (e = p(d(e, (a = c[n] || c.blank).data || {}))).meta.template = n,
-            e.meta.industry = a.sector || e.meta.industry, T(), V(a.label + " template applied."));
+            e.meta.industry = a.sector || e.meta.industry, T(), V(a.label + bpText(" template applied.")));
         }), u("sectionNav").addEventListener("click", function(e) {
             var t = e.target.closest("[data-section-index]");
             t && (a = Number(t.getAttribute("data-section-index")), T());
@@ -1043,16 +1047,16 @@
         u("txtBtn").addEventListener("click", H), u("csvBtn").addEventListener("click", U),
         u("jsonBtn").addEventListener("click", z), u("copyBriefBtn").addEventListener("click", I),
         u("onePageBtn").addEventListener("click", function() {
-            u("planPreview").innerHTML = A(), V("One-page brief previewed.");
+            u("planPreview").innerHTML = A(), V(bpText("One-page brief previewed."));
         }), u("importJson").addEventListener("change", Y), u("savedPlans").addEventListener("click", function(t) {
             var r = t.target.closest("[data-open-saved]"), s = t.target.closest("[data-delete-saved]");
             r && function(t) {
                 var r = n && readSavedItem(t);
-                r && r.data && (i = r.id, e = p(r.data), a = 0, T(), V("Plan loaded."));
+                r && r.data && (i = r.id, e = p(r.data), a = 0, T(), V(bpText("Plan loaded.")));
             }(r.getAttribute("data-open-saved")), s && function(e) {
                 var t = n && readSavedItem(e);
                 if (t === false) return;
-                window.confirm('Delete "' + (t ? t.title : "this plan") + '" from this browser?') && deleteSavedItem(e) && (R(), focusSavedAction());
+                window.confirm(bpText('Delete "') + (t ? t.title : bpText("this plan")) + bpText('" from this browser?')) && deleteSavedItem(e) && (R(), focusSavedAction());
             }(s.getAttribute("data-delete-saved"));
         }), T(), R();
     }

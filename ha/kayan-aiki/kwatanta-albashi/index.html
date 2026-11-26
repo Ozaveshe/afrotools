@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ha"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kwatanta albashi da tayin aiki biyu | AfroTools</title><meta name="description" content="Kwatanta albashi, alawus da sa’o’in aiki na tayin aiki biyu. Duba kuɗin shekara da na sa’a kafin haraji."><link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/kwatanta-albashi/">
+<style>*{box-sizing:border-box}body{font:1rem/1.55 system-ui,sans-serif;margin:auto;max-width:62rem;padding:1rem;color:#17362c}a{color:#086244}h1{line-height:1.15}fieldset,section{border:1px solid #8aa99c;border-radius:.65rem;padding:1rem;margin:1rem 0}legend{font-weight:700}label{display:block;margin:.65rem 0}input,select,button{font:inherit;padding:.55rem;border:1px solid #69887c;border-radius:.3rem}input,select{display:block;width:100%}button{background:#075b40;color:white;cursor:pointer}table{border-collapse:collapse;width:100%}td,th{padding:.5rem .25rem;border-bottom:1px solid #bbcfc6;text-align:start}td{overflow-wrap:anywhere}.offers{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(20rem,100%),1fr))}</style></head><body><main><nav><a href="/ha/">AfroTools Hausa</a> / <a href="/ha/kayan-aiki/">Kayan aiki</a></nav><h1>Kwatanta tayin aiki biyu</h1><p>Yi amfani da kuɗin ƙasa ɗaya a tayin biyu. Za ka ga abin da za ka samu kafin haraji a shekara, a wata da kuma a sa’a. Ana yin lissafin a na’urarka.</p>
+<form id="offers"><label>Lambar kuɗin ƙasa (misali NGN)<input name="currency" value="NGN" pattern="[A-Za-z]{3}" maxlength="3" required></label><div class="offers"><fieldset><legend>Tayi na farko</legend>
+<label>Lokacin albashi da alawus<select name="aperiod"><option value="monthly">Wata-wata</option><option value="annual">Shekara-shekara</option></select></label>
+<label>Albashin asali<input name="abase" type="number" min="0" step="any" required></label>
+<label>Alawus na kowane lokacin biyan albashi<input name="acash" type="number" min="0" step="any"></label>
+<label>Tabbataccen kari a shekara<input name="abonus" type="number" min="0" step="any"></label>
+<label>Darajar fa’idodin da ba kuɗi ba a shekara<input name="anonCash" type="number" min="0" step="any"></label>
+<label>Gudummawar mai aiki a shekara<input name="aemployer" type="number" min="0" step="any"></label>
+<label>Sa’o’in aiki a mako<input name="ahours" type="number" min="1" max="168" step="any" value="40" required></label>
+<label>Makonnin da ake biyan albashi a shekara<input name="aweeks" type="number" min="1" max="53" step="any" value="52" required></label>
+<label>Tushen bayanai (misali wasiƙar tayin aiki)<input name="asource" required></label>
+<label>Kwanan watan bayanan<input name="asourceDate" type="date" required></label>
+</fieldset><fieldset><legend>Tayi na biyu</legend>
+<label>Lokacin albashi da alawus<select name="bperiod"><option value="monthly">Wata-wata</option><option value="annual">Shekara-shekara</option></select></label>
+<label>Albashin asali<input name="bbase" type="number" min="0" step="any" required></label>
+<label>Alawus na kowane lokacin biyan albashi<input name="bcash" type="number" min="0" step="any"></label>
+<label>Tabbataccen kari a shekara<input name="bbonus" type="number" min="0" step="any"></label>
+<label>Darajar fa’idodin da ba kuɗi ba a shekara<input name="bnonCash" type="number" min="0" step="any"></label>
+<label>Gudummawar mai aiki a shekara<input name="bemployer" type="number" min="0" step="any"></label>
+<label>Sa’o’in aiki a mako<input name="bhours" type="number" min="1" max="168" step="any" value="40" required></label>
+<label>Makonnin da ake biyan albashi a shekara<input name="bweeks" type="number" min="1" max="53" step="any" value="52" required></label>
+<label>Tushen bayanai (misali wasiƙar tayin aiki)<input name="bsource" required></label>
+<label>Kwanan watan bayanan<input name="bsourceDate" type="date" required></label>
+</fieldset></div><button>Kwatanta tayin</button></form><p id="notice" role="status" aria-live="polite"></p><section id="result" hidden><h2>Sakamakon kwatanci</h2><p id="diff"></p><table><thead><tr><th>Abin da aka kwatanta</th><th>Tayi na farko</th><th>Tayi na biyu</th></tr></thead><tbody></tbody></table><p>Jimillar fa’idodin tayin ta haɗa da kuɗin da za a biya ka, fa’idodin da ba kuɗi ba da gudummawar mai aiki.</p></section></main>
+<script src="/assets/js/engines/salary-offer-compare.js?v=873dc330"></script>
+<script>
+const form = document.querySelector('form');
+const result = document.querySelector('#result');
+const notice = document.querySelector('#notice');
+const rows = [
+ ['annualBase','Albashin shekara'], ['annualCashAllowance','Alawus na shekara'],
+ ['annualBonus','Kari na shekara'], ['annualGrossEarnings','Jimillar kuɗin shekara kafin haraji'],
+ ['annualPackage','Jimillar fa’idodin tayin a shekara'], ['monthlyGrossEarnings','Kuɗin wata kafin haraji'],
+ ['hourlyGrossEarnings','Kuɗin sa’a kafin haraji']
+];
+form.addEventListener('input', () => {
+ if (!result.hidden) notice.textContent = 'Ka sake kwatantawa domin ganin sabon sakamako.';
+ result.hidden = true;
+});
+form.addEventListener('submit', event => {
+ event.preventDefault();
+ const data = new FormData(form);
+ function offer(prefix) {
+   return Object.fromEntries(['base','period','cash','bonus','nonCash','employer','hours','weeks','source','sourceDate'].map(key => [key,data.get(prefix + key)]));
+ }
+ const compared = AfroTools.SalaryOfferCompare.compare(offer('a'),offer('b'));
+ if (!compared.ok) {
+   result.hidden = true;
+   notice.textContent = compared.error === 'invalid_source' ? 'Rubuta tushen bayanai da kwanan wata na yau ko na baya.' : 'Bincika adadin kuɗi, sa’o’i da makonnin aiki.';
+   return;
+ }
+ const currency = data.get('currency').toUpperCase();
+ const money = value => currency + ' ' + value.toLocaleString('ha-NG',{maximumFractionDigits:2});
+ const delta = compared.grossDelta.absolute;
+ document.querySelector('#diff').textContent = delta === 0 ? 'Jimillar kuɗin shekara iri ɗaya ce a tayin biyu.' : 'Tayi na ' + (delta > 0 ? 'biyu' : 'farko') + ' ya fi ɗayan da ' + money(Math.abs(delta)) + ' a shekara kafin haraji.';
+ const body = result.querySelector('tbody');
+ body.replaceChildren();
+ for (const [key,label] of rows) {
+   const row = body.insertRow();
+   const header = document.createElement('th'); header.scope = 'row'; header.textContent = label; row.append(header);
+   for (const offer of [compared.left,compared.right]) row.insertCell().textContent = money(offer[key]);
+ }
+ result.hidden = false;
+ notice.textContent = 'An gama kwatanta tayin aiki biyu.';
+});
+</script></body></html>
