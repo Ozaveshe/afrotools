@@ -642,6 +642,10 @@ function imageSizeAttributes(width, height) {
 function recipeImageAttributes(src, width, height, card = false) {
   const artwork = artworkByPath.get(src) || reusedArtworkByPath.get(src);
   if (!artwork?.variants) {
+    if (width == null && height == null) {
+      const size = imageSizeFromUrl(src, ROOT);
+      return size ? imageSizeAttributes(size.w, size.h) : '';
+    }
     return imageSizeAttributes(artwork?.width || width, artwork?.height || height);
   }
   const full = artwork.variants.find(variant => variant.path === (artwork.target || artwork.path));
@@ -1166,7 +1170,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
         </div>
         <div class="ak-photo-gallery-grid${supporting.length ? "" : " is-single"}">
           <figure class="ak-photo-main">
-            <img src="${escapeHtml(featured.src)}" alt="${escapeHtml(featured.alt)}" loading="lazy" decoding="async"${recipeImageAttributes(featured.src, 1200, 750)}>
+            <img src="${escapeHtml(featured.src)}" alt="${escapeHtml(featured.alt)}" loading="lazy" decoding="async"${recipeImageAttributes(featured.src)}>
             ${featured.caption ? `<figcaption>${escapeHtml(featured.caption)}</figcaption>` : ""}
           </figure>
           ${
@@ -1174,7 +1178,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
               ? `<div class="ak-photo-thumbs">${supporting
                   .map(
                     (image) => `<figure>
-            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async"${recipeImageAttributes(image.src, 640, 640)}>
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async"${recipeImageAttributes(image.src)}>
             ${image.caption ? `<figcaption>${escapeHtml(image.caption)}</figcaption>` : ""}
           </figure>`
                   )
