@@ -473,7 +473,7 @@
             <p>Rubuta abin da kake bukata, ko fara daga manyan kayan aikin Najeriya da ke kasa.</p>
           </div>
         </div>
-        <form class="ha-search-box" id="haDiscoveryForm" action="/all-tools/" method="get" role="search">
+        <form class="ha-search-box" id="haDiscoveryForm" action="/ha/kayan-aiki/" method="get" role="search">
           <label class="sr-only" for="haSearch">Nemo kayan aiki</label>
           <input id="haSearch" name="q" type="search" autocomplete="off" placeholder="Rubuta PAYE, JAMB, PDF, USSD, Naira...">
           <button type="submit">Nema</button>
@@ -483,7 +483,7 @@
           <a class="ha-chip" href="/ha/kayan-aiki/kalkuletan-waec-neco/">WAEC/NECO</a>
           <a class="ha-chip" href="/ha/kayan-aiki/alawus-na-nysc/">NYSC</a>
           <a class="ha-chip" href="/ha/kayan-aiki/naira-zuwa-kalmomi/">Naira zuwa kalmomi</a>
-          <a class="ha-chip" href="/ha/takardu-da-pdf/">PDF</a>
+          <a class="ha-chip" href="/ha/takardu-da-pdf/" data-search-term="pdf">PDF</a>
         </div>
       </div>
     </section>
@@ -501,7 +501,7 @@
           </div>
         </div>
         <div class="ha-grid" id="haToolGrid">
-          <a class="ha-card" href="/ha/najeriya/harajin-albashi/" data-search="paye albashi haraji nigeria Najeriya salary tax">
+          <a class="ha-card" href="/ha/najeriya/harajin-albashi/" data-search-term="paye" data-search="paye albashi haraji nigeria Najeriya salary tax">
             <small>ALBASHI DA HARAJI</small>
             <h3>PAYE na Najeriya</h3>
             <p>Lissafa albashi bayan haraji da cire-ciren da suka shafi ma'aikaci.</p>
@@ -513,7 +513,7 @@
             <p>Lissafa VAT, cire VAT daga jimilla, sannan tabbatar da matsayi daga FIRS ko kwararre.</p>
             <span class="ha-card-link">Bude kayan aiki</span>
           </a>
-          <a class="ha-card" href="/ha/kayan-aiki/kalkuletan-jamb/" data-search="jamb aggregate admission ilimi makaranta">
+          <a class="ha-card" href="/ha/kayan-aiki/kalkuletan-jamb/" data-search-term="jamb" data-search="jamb aggregate admission ilimi makaranta">
             <small>ILIMI</small>
             <h3>Kalkuletan jimillar JAMB</h3>
             <p>Taimaka wajen tantance maki da shirin neman gurbin karatu.</p>
@@ -531,13 +531,13 @@
             <p>Duba alawus, kasafin wata da abin da ya kamata a tanada.</p>
             <span class="ha-card-link">Bude kayan aiki</span>
           </a>
-          <a class="ha-card" href="/ha/kayan-aiki/lambobin-ussd/" data-search="ussd telecom bank network airtime data">
+          <a class="ha-card" href="/ha/kayan-aiki/lambobin-ussd/" data-search-term="ussd" data-search="ussd telecom bank network airtime data">
             <small>SADARWA</small>
             <h3>Jerin USSD</h3>
             <p>Nemo lambobin banki, kudin waya, bayanan intanet da sauran ayyuka masu amfani.</p>
             <span class="ha-card-link">Bude kayan aiki</span>
           </a>
-          <a class="ha-card" href="/ha/kayan-aiki/naira-zuwa-kalmomi/" data-search="naira words kudi takarda invoice cheque">
+          <a class="ha-card" href="/ha/kayan-aiki/naira-zuwa-kalmomi/" data-search-term="naira" data-search="naira words kudi takarda invoice cheque">
             <small>NAIRA DA TAKARDU</small>
             <h3>Naira zuwa kalmomi</h3>
             <p>Mayar da adadin kudi zuwa rubutaccen zance don rasit ko takarda.</p>
@@ -574,7 +574,7 @@
             <span class="ha-card-link">Bude kayan aiki</span>
           </a>
         </div>
-        <p class="ha-empty" id="haNoResults" role="status">Ba mu samu sakamako a wannan jerin ba. Gwada sunan kayan aiki ko duba duk kayan aiki.</p>
+        <p class="ha-empty" id="haNoResults" role="status">Ba a sami sakamako a wannan jerin ba. <a href="/ha/kayan-aiki/">Duba kayan aiki na Hausa</a> ko <a id="haGlobalSearch" href="/tools/">nema a kundin duk harsuna</a>.</p>
       </div>
     </section>
 
@@ -669,6 +669,8 @@
       const normalize = (value) => value.toLowerCase().trim();
       const filterCards = () => {
         const query = normalize(input.value);
+        const globalSearch = document.getElementById('haGlobalSearch');
+        globalSearch.search = new URLSearchParams({ q: input.value.trim() }).toString();
         let visible = 0;
         cards.forEach((card) => {
           const haystack = normalize([
@@ -684,9 +686,23 @@
 
       input.addEventListener('input', filterCards);
       document.getElementById('haDiscoveryForm')?.addEventListener('submit', (event) => {
-        if (input.value.trim()) return;
         event.preventDefault();
-        input.focus();
+        const query = normalize(input.value);
+        if (!query) {
+          input.focus();
+          return;
+        }
+        filterCards();
+        const shortcut = Array.from(document.querySelectorAll('[data-search-term]'))
+          .find((link) => link.dataset.searchTerm === query);
+        const matches = cards.filter((card) => !card.hidden);
+        if (shortcut || matches.length === 1) {
+          window.location.assign((shortcut || matches[0]).href);
+        } else if (matches.length) {
+          matches[0].focus();
+        } else {
+          empty.querySelector('a').focus();
+        }
       });
     }());
   </script>
