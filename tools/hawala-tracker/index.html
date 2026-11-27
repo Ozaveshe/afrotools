@@ -375,7 +375,7 @@ function compare(){
   const corridor=from+'-'+to;
   const adj=CORRIDOR_ADJ[corridor]||1.0;
 
-  const curSymbols={us:'$',uk:'-',eu:'-',ae:'AED ',ca:'CA$',ng:'?',ke:'KSh ',za:'R '};
+  const curSymbols={us:'$',uk:'GBP ',eu:'EUR ',ae:'AED ',ca:'CA$',ng:'NGN ',ke:'KSh ',za:'R '};
   const cur=curSymbols[from]||'$';
 
   let results=[];
@@ -394,10 +394,10 @@ function compare(){
   results.forEach((r,i)=>{
     const isBest=r.totalCost===minCost;
     html+=`<div class="channel-card${isBest?' best':''}">
-      <h3>${r.icon} ${r.name}</h3>
-      <div class="fee-line"><span class="label">Transfer Fee</span><span class="val">${r.feeAdj.toFixed(1)}% = ${cur}${(amount*r.feeAdj/100).toFixed(2)}</span></div>
-      <div class="fee-line"><span class="label">FX Margin</span><span class="val">~${r.fxAdj.toFixed(1)}% = ${cur}${(amount*r.fxAdj/100).toFixed(2)}</span></div>
-      <div class="total"><span>Total Cost</span><span class="val">${cur}${r.totalCost.toFixed(2)} (${r.totalPct.toFixed(1)}%)</span></div>
+      <h3>${r.name}</h3>
+      <div class="fee-line"><span class="label">Transfer Fee</span><span class="val">${r.feeAdj.toLocaleString('en-US',{maximumFractionDigits:3})}% = ${cur}${(amount*r.feeAdj/100).toFixed(2)}</span></div>
+      <div class="fee-line"><span class="label">FX Margin</span><span class="val">~${r.fxAdj.toLocaleString('en-US',{maximumFractionDigits:3})}% = ${cur}${(amount*r.fxAdj/100).toFixed(2)}</span></div>
+      <div class="total"><span>Total Cost</span><span class="val">${cur}${r.totalCost.toFixed(2)} (${r.totalPct.toLocaleString('en-US',{maximumFractionDigits:3})}%)</span></div>
       <span class="speed">${r.speed}</span>
     </div>`;
   });
@@ -459,7 +459,7 @@ function renderRemittanceDecision(results,ctx){
   lastRemittanceBrief=[
     'Remittance decision brief',
     'Corridor: '+ctx.from.toUpperCase()+' to '+ctx.to.toUpperCase()+' | Amount: '+ctx.cur+ctx.amount+' | Urgency: '+urgencyLabels[ctx.urgency],
-    'Cheapest estimate: '+cheapest.name+' at '+ctx.cur+cheapest.totalCost.toFixed(2)+' ('+cheapest.totalPct.toFixed(1)+'%).',
+    'Cheapest estimate: '+cheapest.name+' at '+ctx.cur+cheapest.totalCost.toFixed(2)+' ('+cheapest.totalPct.toLocaleString('en-US',{maximumFractionDigits:3})+'%).',
     'Risk note: '+risk+'.',
     actions.join(' ')
   ].join('\n');
