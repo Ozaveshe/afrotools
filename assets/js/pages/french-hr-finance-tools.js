@@ -71,6 +71,10 @@
     return true;
   }
   function rowsFor(result) {
+    if (result.nigeria) return result.lines.map(function (line) {
+      var split = line.indexOf(' : ');
+      return split < 0 ? ['Repère', line] : [line.slice(0, split), line.slice(split + 3)];
+    });
     if (mode === 'overtime') return [
       ['Pays', result.country],
       ['Taux horaire de base', result.fHourlyRate],
@@ -115,6 +119,7 @@
     ];
   }
   function sourceText(result) {
+    if (result && result.nigeria) return result.sources.join(' ; ');
     var data = dataSet()[country.value] || {};
     if (mode === 'overtime') return (data.standardHours && data.standardHours.law) || 'Droit du travail et convention applicables à confirmer';
     if (mode === 'leave') return (data.annualLeave && data.annualLeave.law) || 'Code du travail et politique employeur à confirmer';
@@ -125,10 +130,15 @@
     if (event) event.preventDefault();
     error.textContent = '';
     try {
+      sourceDate = mode === 'social' && country.value === 'NG' ? '2026-11-27' : checkedDates[mode];
       if (!freshnessReady()) return;
       if(mode==='leave'&&!form.checkValidity())throw new Error('Vérifiez le pays et le nombre de jours saisis.');
       if (mode === 'overtime') lastResult = engine.calculateOvertime({ country: country.value, monthlySalary: number('salary'), overtimeHours: number('hours'), dayType: field('dayType').value });
       else if (mode === 'leave') lastResult = engine.getLeaveEntitlements(country.value);
+      else if (mode === 'social' && country.value === 'NG') {
+        if (typeof nigeriaContributions === 'undefined') throw new Error('Paramètres du Nigeria indisponibles. Rechargez la page.');
+        lastResult = nigeriaContributions.calculate(number('salary'));
+      }
       else if (mode === 'social') lastResult = engine.calculateSocialSecurity(country.value, number('salary'));
       else lastResult = engine.projectPension({ country: country.value, currentAge: number('currentAge'), retirementAge: number('retirementAge'), currentSalary: number('salary'), salaryGrowth: number('salaryGrowth'), contributionRate: number('contributionRate'), growthRate: number('growthRate'), currentBalance: number('balance') });
       if (!lastResult) throw new Error('Aucun résultat n’est disponible pour ces valeurs.');
@@ -196,7 +206,7 @@
   });
   app.querySelector('[data-save]').addEventListener('click', function () {
     var values = {};
-    form.querySelectorAll('input,select').forEach(function (control) { if (control.name) values[control.name] = control.value; });
+    form.querySelectorAll('input,select').forEach(function (control) { if (control.name) values[control.name] = control.type === 'checkbox' ? control.checked : control.value; });
     localStorage.setItem('afrotools.frhr.' + mode, JSON.stringify(values));
     status.textContent = 'Hypothèses enregistrées uniquement sur cet appareil.';
   });
@@ -209,11 +219,19 @@
     var backupLabel=document.createElement('label');backupLabel.textContent='Restaurer une sauvegarde JSON';backupLabel.htmlFor='leave-backup';var backup=document.createElement('input');backup.id='leave-backup';backup.type='file';backup.accept='.json,application/json';form.append(backupLabel,backup);
     backup.addEventListener('change',async function(){var file=backup.files[0];if(!file)return;var before=country.value+':'+field('daysTaken').value;try{if(file.size>1048576)throw Error('size');var values=window.AfroTools.leaveReports.validateBackup(JSON.parse(await file.text()),dataSet());if(before!==country.value+':'+field('daysTaken').value)throw Error('changed');country.value=values.country;field('daysTaken').value=values.daysTaken;invalidateLeave();status.textContent='Sauvegarde restaurée. Calculez puis enregistrez si nécessaire.';}catch(_){status.textContent='Sauvegarde non reconnue. Les entrées et données enregistrées sont conservées.';}backup.value='';});
   }
+  if (mode === 'social') {
+    function invalidateSocial() { lastResult = null; resultBox.hidden = true; }
+    form.addEventListener('input', invalidateSocial);
+    form.addEventListener('change', invalidateSocial);
+    form.addEventListener('reset', function () {
+      setTimeout(function () { if (typeof nigeriaContributions !== 'undefined') nigeriaContributions.sync(); }, 0);
+    });
+  }
   form.addEventListener('submit', calculate);
   form.addEventListener('reset', function () { window.setTimeout(function () { lastResult = null; resultBox.hidden = true; error.textContent = ''; status.textContent = 'Formulaire réinitialisé.'; }, 0); });
   if (!freshnessReady() || !populateCountries()) { if (!country.options.length) block('Aucun pays n’est disponible dans les données locales.'); return; }
   try {
     var saved = JSON.parse(localStorage.getItem('afrotools.frhr.' + mode) || 'null');
-    if (saved) Object.keys(saved).forEach(function (name) { var control = field(name); if (control) control.value = saved[name]; });
+    if (saved) Object.keys(saved).forEach(function (name) { var control = field(name); if (control) { if (control.type === 'checkbox') control.checked = saved[name] === true; else control.value = saved[name]; } });
   } catch (_) {}
 })();

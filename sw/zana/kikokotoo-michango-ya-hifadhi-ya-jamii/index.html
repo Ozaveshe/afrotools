@@ -315,7 +315,9 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/securite-sociale/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-security/">
-</head>
+<style>#ng-fields[hidden],#ng-fields [hidden],#ng-out[hidden]{display:none}#ng-fields .tl-field{margin:.8rem 0}#ng-fields label{display:block;margin:.5rem 0}#ng-fields input[type=checkbox]{width:auto}#ng-fields p,#ng-fields details{margin:.75rem 0}#ng-summary{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.55}</style>
+<script defer src="/assets/js/pages/nigeria-contributions-locales.js?v=82f684b2"></script>
+<script defer src="/assets/js/pages/nigeria-contributions.js?v=50280877"></script></head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
@@ -401,6 +403,138 @@
         </div>
       </div>
 
+      <section id="ng-fields" hidden>
+      <h2>Taarifa za michango nchini Nigeria</h2>
+      <div class="tl-field">
+      <label for="ng-sector">Hali ya ajira</label>
+      <select id="ng-sector">
+      <option value="">Chagua jibu</option>
+      <option value="private">Mfanyakazi wa sekta binafsi</option>
+      <option value="public">Mfanyakazi wa sekta ya umma</option>
+      <option value="self">Aliyejiajiri</option>
+      </select>
+      </div>
+      <div data-ng-when="employee">
+      <div class="tl-field">
+      <label for="ng-pension">Mpango wa pensheni uliothibitishwa</label>
+      <select id="ng-pension">
+      <option value="">Chagua jibu</option>
+      <option value="split">Amejiunga: angalau 8% mfanyakazi na 10% mwajiri</option>
+      <option value="employer">Amejiunga: mwajiri analipa kiwango chote cha chini cha kisheria cha 20%</option>
+      <option value="excluded">Nje ya mpango huu wa malipo</option>
+      </select>
+      </div>
+      </div>
+      <div data-ng-when="pension">
+      <div class="tl-field">
+      <label for="ng-emoluments">Malipo ya mwezi yanayohesabiwa kwa pensheni kulingana na mkataba (NGN)</label>
+      <input id="ng-emoluments" type="number" min="0" step="0.01" >
+      </div>
+      <p>Tumia malipo yaliyowekwa katika mkataba, yasiyopungua jumla ya mshahara wa msingi na posho za makazi na usafiri. Thibitisha uanachama na kitengo cha mishahara au msimamizi wa pensheni.</p>
+      </div>
+      <div data-ng-when="private">
+      <label>
+      <input type="checkbox" id="ng-nhf"> Mfanyakazi amechagua kuchangia Mfuko wa Taifa wa Makazi</label>
+      </div>
+      <p>Kwa mapato ya mwezi ya NGN 70,000 au zaidi, mchango wa NHF ni 2.5% ya mapato kwa wafanyakazi wa sekta ya umma na waliojiajiri. Wafanyakazi wa sekta binafsi wanaweza kuchagua kujiunga.</p>
+      <div class="tl-field">
+      <label for="ng-health">Mpango wa michango ya afya uliothibitishwa</label>
+      <select id="ng-health">
+      <option value="">Chagua jibu</option>
+      <option value="basic">Mpango umethibitisha 5% mfanyakazi na 10% mwajiri kwa mshahara wa msingi</option>
+      <option value="confirmed">Weka kiasi cha mwezi kilichothibitishwa na mpango</option>
+      <option value="excluded">Usijumuishe afya katika makadirio haya</option>
+      </select>
+      </div>
+      <div data-ng-when="basic">
+      <div class="tl-field">
+      <label for="ng-basic">Mshahara wa msingi wa mwezi (NGN)</label>
+      <input id="ng-basic" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      <div data-ng-when="manual">
+      <div class="tl-field">
+      <label for="ng-health-worker">Mchango wa afya wa mfanyakazi kwa mwezi (NGN)</label>
+      <input id="ng-health-worker" type="number" min="0" step="0.01" >
+      </div>
+      <div data-ng-when="employee">
+      <div class="tl-field">
+      <label for="ng-health-employer">Mchango wa afya wa mwajiri kwa mwezi (NGN)</label>
+      <input id="ng-health-employer" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      </div>
+      <p>Kwa mpango wa mshahara uliounganishwa, ada moja au bima inayolipwa na mwajiri, tumia kiasi cha mwezi kilichothibitishwa katika hati ya uanachama. Weka 0 kwa upande usiolipa.</p>
+      <div data-ng-when="employee">
+      <label>
+      <input type="checkbox" id="ng-include-payroll"> Kadiria tozo za ECS na ITF za taasisi nzima</label>
+      </div>
+      <div data-ng-when="payroll">
+      <div class="tl-field">
+      <label for="ng-count">Idadi ya wafanyakazi</label>
+      <input id="ng-count" type="number" min="1" step="1" >
+      </div>
+      <div class="tl-field">
+      <label for="ng-zone">Je, mwajiri anafanya shughuli ndani ya eneo la biashara huria?</label>
+      <select id="ng-zone">
+      <option value="">Chagua jibu</option>
+      <option value="outside">Hapana</option>
+      <option value="inside">Ndiyo</option>
+      </select>
+      </div>
+      <div class="tl-field">
+      <label for="ng-ecs">Mpango wa fidia kwa wafanyakazi wa NSITF</label>
+      <select id="ng-ecs">
+      <option value="">Chagua jibu</option>
+      <option value="included">Mwajiri anayehusika: kadiria kwa 1%</option>
+      <option value="excluded">Usijumuishe tozo hii</option>
+      </select>
+      </div>
+      <div data-ng-when="ecs">
+      <div class="tl-field">
+      <label for="ng-monthly-payroll">Jumla ya mishahara inayohusika kwa mwezi (NGN)</label>
+      <input id="ng-monthly-payroll" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      <div data-ng-when="annual">
+      <div class="tl-field">
+      <label for="ng-annual-payroll">Jumla ya mishahara ya mwaka wa kalenda (NGN)</label>
+      <input id="ng-annual-payroll" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      <p>Kifungu cha 41 cha Business Facilitation Act kinaweka kanuni ya jumla ya ITF kwa wafanyakazi 25 au zaidi nje ya eneo la biashara huria. Mwongozo wa usajili wa ITF bado una viwango vya zamani. Thibitisha masharti ya zabuni au makadirio maalumu kando.</p>
+      </div>
+      <details id="ng-sources">
+      <summary>Vyanzo na mipaka ya hesabu</summary>
+      <p>Makadirio ya mtu binafsi yanahusu mipango ya pensheni, makazi na afya iliyochaguliwa. Akiba ya Personal Pension Plan, PAYE, makato mengine na viwango maalumu vya mwajiri havijajumuishwa. Vyanzo vilihakikiwa tarehe 27 Novemba 2026.</p>
+      <ul>
+      <li>
+      <a href="https://www.pencom.gov.ng/wp-content/uploads/2018/01/PRA_2014.pdf">Sheria ya Marekebisho ya Pensheni ya 2014, vifungu 2, 4 na 120</a>
+      </li>
+      <li>
+      <a href="https://admin.theiguides.org/Media/Documents/Business%20Facilitation%20Misc%20Provisions%20Act%202022.pdf">Business Facilitation Act, vifungu 41 na 45</a>
+      </li>
+      <li>
+      <a href="https://www.pencom.gov.ng/wp-content/uploads/2024/12/Circular-on-Implementation-of-Minimum-Wage.pdf">Waraka wa PenCom kuhusu mshahara wa chini wa kitaifa</a>
+      </li>
+      <li>
+      <a href="https://www.nhia.gov.ng/faq/">Mwongozo wa NHIA kwa sekta rasmi</a>
+      </li>
+      <li>
+      <a href="https://www.nhia.gov.ng/service/marriage-insurance/">Njia za malipo za NHIA kwa sekta ya umma</a>
+      </li>
+      <li>
+      <a href="https://www.nhia.gov.ng/requirement-for-organized-private-sector/">Masharti ya usajili wa NHIA kwa sekta binafsi</a>
+      </li>
+      <li>
+      <a href="https://www.nsitf.gov.ng/services">Michango ya mwajiri kwa NSITF</a>
+      </li>
+      <li>
+      <a href="https://www.itf.gov.ng/employer_reg/">Mwongozo wa usajili wa ITF (viwango vya awali)</a>
+      </li>
+      </ul>
+      </details>
+      </section>
       <!-- Self-employed toggle -->
       <div class="ss-se-row">
         <input type="checkbox" class="ss-se-toggle" id="se-toggle" onchange="onSeToggle()">
@@ -418,6 +552,8 @@
     </div>
     <div class="ss-toast" id="ss-toast" aria-live="polite"></div>
 
+    <p id="ng-notice" role="status" aria-live="polite"></p>
+    <section class="tl-card" id="ng-out" hidden><h2>Makadirio ya michango nchini Nigeria</h2><pre id="ng-summary"></pre><button type="button" class="tl-btn" id="ng-copy">Nakili makadirio ya michango</button> <button type="button" class="tl-btn" id="ng-download">Pakua TXT</button></section>
     <!-- ── RESULTS ── -->
     <div class="tl-card" id="results" style="display:none">
       <div class="tl-card-header">
@@ -781,6 +917,7 @@ function getSocialSecurityObservationText(cc, result) {
 
 /* ── Country Change Handler ── */
 function onCountryChange() {
+  if (typeof nigeriaContributions !== "undefined") nigeriaContributions.sync();
   var cc = document.getElementById('country').value;
   if (!cc) return;
   clearFieldError('err-country');
@@ -846,6 +983,11 @@ function calculate() {
   var monthlySalary = parseFloat(salaryInput);
   if (!monthlySalary || monthlySalary <= 0) { showFieldError('err-salary'); valid = false; }
   if (!valid) return;
+  if (cc === 'NG') {
+    if (typeof nigeriaContributions === 'undefined') showToast('Taarifa za mifuko ya Nigeria hazipatikani. Pakia ukurasa tena.');
+    else nigeriaContributions.run(monthlySalary);
+    return;
+  }
 
   setCalcLoading(true);
   /* Defer 1 frame so spinner renders before heavy work */
@@ -855,6 +997,7 @@ function calculate() {
   var cur = getCurrency(cc);
   var result;
 
+  if (document.getElementById('country').value !== cc) { setCalcLoading(false); return; }
   /* Try engine first, fallback to data-only calculation */
   if (typeof AfroTools !== 'undefined' && AfroTools.HREngine && typeof AfroTools.HREngine.calculateSocialSecurity === 'function') {
     result = AfroTools.HREngine.calculateSocialSecurity(cc, monthlySalary);
@@ -1302,6 +1445,7 @@ function renderComparison() {
   var minEr = Infinity, minCc = '';
   COMPARE_SELECTED.forEach(function(cc) {
     var d = getSocialSecurityData(cc); if (!d) return;
+    if (cc === 'NG') return;
     var er = 0;
     (d.schemes || []).forEach(function(s) { er += (s.employerRate || 0); });
     if (er < minEr) { minEr = er; minCc = cc; }
@@ -1309,6 +1453,7 @@ function renderComparison() {
   var html = '<div style="overflow-x:auto"><table class="ss-compare-table"><thead><tr><th>Nchi</th><th>% ya Mfanyakazi</th><th>% ya Mwajiri</th><th>% ya Jumla</th></tr></thead><tbody>';
   COMPARE_SELECTED.forEach(function(cc) {
     var d = getSocialSecurityData(cc); if (!d) return;
+    if (cc === 'NG') { html += '<tr><td>Nigeria</td><td colspan="3">Tumia kikokotoo cha Nigeria kwa masharti na misingi ya kila mchango.</td></tr>'; return; }
     var ee = 0, er = 0;
     (d.schemes || []).forEach(function(s) { ee += (s.employeeRate || 0); er += (s.employerRate || 0); });
     var cheapest = (cc === minCc) ? '<span class="ss-compare-cheapest">Gharama ndogo ya mwajiri</span>' : '';

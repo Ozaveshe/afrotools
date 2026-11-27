@@ -10,17 +10,153 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071"><link rel="stylesheet" href="/assets/css/global.min.css?v=e19d92b5"><link rel="stylesheet" href="/assets/css/french-hr-finance-tools.css?v=ed95831f">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de cotisations de sécurité sociale Afrique","url":"https://afrotools.com/fr/tools/securite-sociale/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","isBasedOn":"https://afrotools.com/tools/social-security/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/social-security.webp"}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools en français","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Finances, salaire et fiscalité","item":"https://afrotools.com/fr/salary-tax/"},{"@type":"ListItem","position":3,"name":"Sécurité sociale","item":"https://afrotools.com/fr/tools/securite-sociale/"}]}</script>
-  <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script><script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script><script src="/data/hr/social-security-rates.js?v=89d3d8fc" defer></script><script src="/engines/hr-engine.js?v=0ff05314" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script><script src="/assets/js/pages/french-hr-finance-tools.js?v=b353ae44" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=9c6cf71a" defer></script><script src="/assets/js/components/footer.min.js?v=ef7e6da2" defer></script><script src="/data/hr/social-security-rates.js?v=89d3d8fc" defer></script><script src="/engines/hr-engine.js?v=0ff05314" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script><script src="/assets/js/pages/french-hr-finance-tools.js?v=061bce62" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/securite-sociale/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-security/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/securite-sociale/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-security/">
-</head>
+<style>#ng-fields[hidden],#ng-fields [hidden],#ng-out[hidden]{display:none}#ng-fields .tl-field{margin:.8rem 0}#ng-fields label{display:block;margin:.5rem 0}#ng-fields input[type=checkbox]{width:auto}#ng-fields p,#ng-fields details{margin:.75rem 0}#ng-summary{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.55}</style>
+<script defer src="/assets/js/pages/nigeria-contributions-locales.js?v=82f684b2"></script>
+<script defer src="/assets/js/pages/nigeria-contributions.js?v=50280877"></script>
+<style>#ng-fields{grid-column:1/-1}</style></head>
 <body class="frhr-page"><header><nav-bar></nav-bar></header><main data-frhr-app="social">
   <section class="frhr-hero"><div class="frhr-shell"><div class="frhr-kicker">Paie et protection sociale · données revues en 2026</div><h1>Estimez les cotisations salarié et employeur.</h1><p>Le calcul applique les régimes et plafonds présents dans le même registre que la route anglaise. Il ne prouve ni assujettissement, ni affiliation, ni versement effectif à un organisme.</p><div class="frhr-badges"><span>Calcul local</span><span>Plafonds du registre appliqués</span><span>Aucune donnée envoyée</span><span>Exports locaux</span></div></div></section>
   <section class="frhr-shell frhr-grid">
-    <article class="frhr-card"><h2>Entrées</h2><form class="frhr-form" novalidate><div class="frhr-field wide"><label for="country">Pays ou régime</label><select id="country" name="country" required><option value="">Choisir</option></select></div><div class="frhr-field wide"><label for="salary">Salaire mensuel brut</label><input id="salary" name="salary" type="number" min="0" step="0.01" value="500000" required></div><div class="frhr-actions"><button class="frhr-button primary" type="submit">Calculer</button><button class="frhr-button" type="reset">Réinitialiser</button><button class="frhr-button" type="button" data-save>Enregistrer sur cet appareil</button><button class="frhr-button" type="button" data-clear>Effacer les données locales</button></div><p class="frhr-error wide" data-error role="alert"></p></form></article>
+    <article class="frhr-card"><h2>Entrées</h2><form class="frhr-form" novalidate><div class="frhr-field wide"><label for="country">Pays ou régime</label><select id="country" name="country" required><option value="">Choisir</option></select></div><div class="frhr-field wide"><label for="salary">Salaire mensuel brut</label><input id="salary" name="salary" type="number" min="0" step="0.01" value="500000" required></div><section id="ng-fields" hidden>
+      <h2>Paramètres des cotisations au Nigeria</h2>
+      <div class="frhr-field wide">
+      <label for="ng-sector">Statut professionnel</label>
+      <select id="ng-sector" name="ng-sector">
+      <option value="">Choisir une option</option>
+      <option value="private">Salarié du secteur privé</option>
+      <option value="public">Salarié du secteur public</option>
+      <option value="self">Travailleur indépendant</option>
+      </select>
+      </div>
+      <div data-ng-when="employee">
+      <div class="frhr-field wide">
+      <label for="ng-pension">Régime de retraite confirmé</label>
+      <select id="ng-pension" name="ng-pension">
+      <option value="">Choisir une option</option>
+      <option value="split">Couvert : au minimum 8 % salarié et 10 % employeur</option>
+      <option value="employer">Couvert : l’employeur prend en charge la totalité du minimum légal de 20 %</option>
+      <option value="excluded">Hors de ce régime de paie</option>
+      </select>
+      </div>
+      </div>
+      <div data-ng-when="pension">
+      <div class="frhr-field wide">
+      <label for="ng-emoluments">Rémunération mensuelle contractuelle ouvrant droit à pension (NGN)</label>
+      <input id="ng-emoluments" name="ng-emoluments" type="number" min="0" step="0.01" >
+      </div>
+      <p>Utilisez la rémunération prévue au contrat, au minimum la somme du salaire de base et des indemnités de logement et de transport. Confirmez votre couverture avec le service paie ou votre gestionnaire de retraite.</p>
+      </div>
+      <div data-ng-when="private">
+      <label>
+      <input type="checkbox" id="ng-nhf" name="ng-nhf"> Le salarié a choisi de cotiser au Fonds national du logement</label>
+      </div>
+      <p>À partir de 70 000 NGN de revenu mensuel, la cotisation NHF est de 2,5 % du revenu pour les salariés du public et les indépendants. Les salariés du privé peuvent choisir d’y cotiser.</p>
+      <div class="frhr-field wide">
+      <label for="ng-health">Modalités confirmées de cotisation santé</label>
+      <select id="ng-health" name="ng-health">
+      <option value="">Choisir une option</option>
+      <option value="basic">Le régime confirme 5 % salarié et 10 % employeur sur le salaire de base</option>
+      <option value="confirmed">Saisir les montants mensuels confirmés du régime</option>
+      <option value="excluded">Exclure la santé de cette estimation</option>
+      </select>
+      </div>
+      <div data-ng-when="basic">
+      <div class="frhr-field wide">
+      <label for="ng-basic">Salaire mensuel de base (NGN)</label>
+      <input id="ng-basic" name="ng-basic" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      <div data-ng-when="manual">
+      <div class="frhr-field wide">
+      <label for="ng-health-worker">Cotisation santé mensuelle du travailleur (NGN)</label>
+      <input id="ng-health-worker" name="ng-health-worker" type="number" min="0" step="0.01" >
+      </div>
+      <div data-ng-when="employee">
+      <div class="frhr-field wide">
+      <label for="ng-health-employer">Cotisation santé mensuelle de l’employeur (NGN)</label>
+      <input id="ng-health-employer" name="ng-health-employer" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      </div>
+      <p>Pour un régime sur salaire consolidé, forfaitaire ou pris en charge par l’employeur, saisissez les montants mensuels de votre document d’affiliation. Saisissez 0 pour la partie qui ne verse rien.</p>
+      <div data-ng-when="employee">
+      <label>
+      <input type="checkbox" id="ng-include-payroll" name="ng-include-payroll"> Estimer les prélèvements ECS et ITF pour l’ensemble de l’organisation</label>
+      </div>
+      <div data-ng-when="payroll">
+      <div class="frhr-field wide">
+      <label for="ng-count">Nombre de salariés</label>
+      <input id="ng-count" name="ng-count" type="number" min="1" step="1" >
+      </div>
+      <div class="frhr-field wide">
+      <label for="ng-zone">L’employeur exerce-t-il dans une zone franche ?</label>
+      <select id="ng-zone" name="ng-zone">
+      <option value="">Choisir une option</option>
+      <option value="outside">Non</option>
+      <option value="inside">Oui</option>
+      </select>
+      </div>
+      <div class="frhr-field wide">
+      <label for="ng-ecs">Régime d’indemnisation des salariés du NSITF</label>
+      <select id="ng-ecs" name="ng-ecs">
+      <option value="">Choisir une option</option>
+      <option value="included">Employeur assujetti : estimer à 1 %</option>
+      <option value="excluded">Exclure ce prélèvement</option>
+      </select>
+      </div>
+      <div data-ng-when="ecs">
+      <div class="frhr-field wide">
+      <label for="ng-monthly-payroll">Masse salariale mensuelle totale couverte (NGN)</label>
+      <input id="ng-monthly-payroll" name="ng-monthly-payroll" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      <div data-ng-when="annual">
+      <div class="frhr-field wide">
+      <label for="ng-annual-payroll">Masse salariale totale de l’année civile (NGN)</label>
+      <input id="ng-annual-payroll" name="ng-annual-payroll" type="number" min="0" step="0.01" >
+      </div>
+      </div>
+      <p>Selon l’article 41 de la Business Facilitation Act, la règle générale de l’ITF s’applique à partir de 25 salariés hors zone franche. Le guide d’inscription de l’ITF affiche encore d’anciens seuils. Vérifiez séparément les marchés et les cotisations particulières.</p>
+      </div>
+      <details id="ng-sources">
+      <summary>Sources et périmètre du calcul</summary>
+      <p>L’estimation individuelle couvre les régimes de retraite, de logement et de santé sélectionnés. Les versements au Personal Pension Plan, le PAYE, les autres retenues et les taux propres à l’employeur sont exclus. Sources vérifiées le 27 novembre 2026.</p>
+      <ul>
+      <li>
+      <a href="https://www.pencom.gov.ng/wp-content/uploads/2018/01/PRA_2014.pdf">Loi de 2014 sur les retraites, articles 2, 4 et 120</a>
+      </li>
+      <li>
+      <a href="https://admin.theiguides.org/Media/Documents/Business%20Facilitation%20Misc%20Provisions%20Act%202022.pdf">Business Facilitation Act, articles 41 et 45</a>
+      </li>
+      <li>
+      <a href="https://www.pencom.gov.ng/wp-content/uploads/2024/12/Circular-on-Implementation-of-Minimum-Wage.pdf">Circulaire PenCom sur le salaire minimum national</a>
+      </li>
+      <li>
+      <a href="https://www.nhia.gov.ng/faq/">Guide NHIA pour le secteur formel</a>
+      </li>
+      <li>
+      <a href="https://www.nhia.gov.ng/service/marriage-insurance/">Modalités NHIA pour le secteur public</a>
+      </li>
+      <li>
+      <a href="https://www.nhia.gov.ng/requirement-for-organized-private-sector/">Conditions d’affiliation NHIA du secteur privé</a>
+      </li>
+      <li>
+      <a href="https://www.nsitf.gov.ng/services">Cotisations patronales au NSITF</a>
+      </li>
+      <li>
+      <a href="https://www.itf.gov.ng/employer_reg/">Guide d’inscription ITF (anciens seuils)</a>
+      </li>
+      </ul>
+      </details>
+      </section>
+<p id="ng-notice" role="status"></p>
+<div class="frhr-actions"><button class="frhr-button primary" type="submit">Calculer</button><button class="frhr-button" type="reset">Réinitialiser</button><button class="frhr-button" type="button" data-save>Enregistrer sur cet appareil</button><button class="frhr-button" type="button" data-clear>Effacer les données locales</button></div><p class="frhr-error wide" data-error role="alert"></p></form></article>
     <article class="frhr-card frhr-result" data-result tabindex="-1" hidden><h2>Estimation des cotisations</h2><dl data-result-rows></dl><p class="frhr-note">Le net affiché retire uniquement les cotisations sociales modélisées, pas PAYE, assurance, avantages ou autres retenues.</p><div class="frhr-actions"><button class="frhr-button" type="button" data-copy>Copier</button><button class="frhr-button" type="button" data-share>Partager</button><button class="frhr-button" type="button" data-csv>CSV</button><button class="frhr-button" type="button" data-json>JSON</button><button class="frhr-button" type="button" data-txt>TXT</button><button class="frhr-button" type="button" data-pdf>PDF</button></div><p class="frhr-status" data-status role="status"></p></article>
     <article class="frhr-card frhr-source"><h2>Source, fraîcheur et limites</h2><p><strong>Régime ou texte à vérifier :</strong> <span data-source>Choisissez un pays et calculez.</span></p><p>Le registre de la route anglaise a été vérifié le <strong data-checked-date></strong>. Le calcul est bloqué automatiquement au-delà de 366 jours.</p><p>Confirmez taux, plafond, base, catégorie d’emploi et date d’effet auprès de l’organisme social ou de l’administration compétente avant la paie ou le dépôt.</p></article>
     <article class="frhr-card"><h2>Confidentialité</h2><p>Le salaire reste dans cet onglet. L’enregistrement local est volontaire et effaçable. Aucun salaire n’est envoyé à une API, une IA ou l’analytique.</p></article>
