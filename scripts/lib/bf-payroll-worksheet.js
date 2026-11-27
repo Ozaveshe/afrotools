@@ -24,7 +24,7 @@ function render(c) {
     select('family',[['',c.pick],...[0,1,2,3,4].map(n=>[n,n])]) +
     select('ramu',[['',c.pick],['active',c.active],['none',c.none]]) + '</fieldset>' +
     '<fieldset data-mode="recorded"><legend>' + c.recorded + '</legend>' + ['gross','tax','cnss','health','credits','paid'].map(number).join('') + '</fieldset>' +
-    number('other') + '<button type="submit">' + c.go + '</button></form><p id="bf-status" role="status"></p><section id="bf-output" hidden aria-live="polite"><h3></h3><dl></dl><p></p><button type="button" id="bf-txt">' + c.save + '</button></section>' +
+    number('other') + '<button type="submit">' + c.go + '</button></form><p id="bf-status" role="status"></p><section id="bf-output" hidden aria-live="polite"><h3></h3><dl></dl><p></p><button type="button" id="bf-txt">' + c.save + '</button> <button type="button" id="bf-pdf">' + c.pdf + '</button></section>' +
     '<script type="application/json" id="bf-sheet-labels">' + JSON.stringify(Object.fromEntries(Object.entries(c).filter(([k])=>!['sources','old'].includes(k)))).replace(/</g,'\\u003c') + '</script></section>';
 }
 module.exports = {render, sources};

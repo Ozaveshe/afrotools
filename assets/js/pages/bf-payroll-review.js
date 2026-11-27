@@ -80,6 +80,47 @@
     const sources=Array.from(document.querySelectorAll('#sources-verification li a'),a=>a.textContent+' '+a.href);
     documentText=[labels.title,heading,...rows.map(([key,amount])=>labels[key]+': '+amount),note,...(estimate?[labels.scope,labels.recovery,labels.source,...sources]:[])].join('\n');
   });
+  let pdfLibrary;
+  function loadPdfLibrary() {
+    if (window.jspdf?.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+    if (!pdfLibrary) {
+      pdfLibrary = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = '/assets/vendor/jspdf/jspdf.umd.min.js';
+        script.onload = () => window.jspdf?.jsPDF ? resolve(window.jspdf.jsPDF) : reject();
+        script.onerror = reject;
+        document.head.appendChild(script);
+      }).catch(error => { pdfLibrary = null; throw error; });
+    }
+    return pdfLibrary;
+  }
+  const pdfButton = document.getElementById('bf-pdf');
+  pdfButton.addEventListener('click', async function () {
+    if (!documentText) return;
+    const snapshot = documentText;
+    const mode = method.value;
+    pdfButton.disabled = true;
+    try {
+      const Pdf = await loadPdfLibrary();
+      if (snapshot !== documentText || mode !== method.value) return;
+      const doc = new Pdf({unit: 'mm', format: 'a4'});
+      doc.setFontSize(11);
+      let y = 18;
+      for (const paragraph of snapshot.replace(/[\u202f\u00a0]/g, ' ').split('\n')) {
+        for (const line of doc.splitTextToSize(paragraph, 176)) {
+          if (y > 277) { doc.addPage(); y = 18; }
+          doc.text(line, 17, y);
+          y += 5.5;
+        }
+        y += 2;
+      }
+      doc.save('burkina-faso-' + mode + '.pdf');
+    } catch {
+      if (snapshot === documentText) status.textContent = labels.pdfError;
+    } finally {
+      pdfButton.disabled = false;
+    }
+  });
   document.getElementById('bf-txt').addEventListener('click',function(){
     if (!documentText) return;
     const url=URL.createObjectURL(new Blob([documentText],{type:'text/plain;charset=utf-8'}));
