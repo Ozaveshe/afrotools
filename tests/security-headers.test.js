@@ -109,9 +109,11 @@ const documentRoutes = ['/tools/pdf-workflow', '/tools/pdf-ocr', '/fr/tools/flux
 const wasmPaths = documentRoutes.flatMap(route => [route, route + '/*']).concat('/assets/vendor/tesseract/worker.min.js', '/assets/vendor/qpdf/qpdf-worker.js');
 assert(!globalCsp.includes("'wasm-unsafe-eval'"), 'Global CSP must not permit WASM compilation');
 // A parent's frame-src controls its child documents, separately from ancestors.
-const expectedPolicyPaths = ['/*', ...WIDGET_PATHS, ...wasmPaths];
+const creatorMediaPaths = ['creator-clip', 'creator-voice', 'creator-record'].flatMap(tool =>
+  ['app', 'app/', 'app.html'].map(suffix => '/tools/' + tool + '/' + suffix));
+const expectedPolicyPaths = ['/*', ...WIDGET_PATHS, ...wasmPaths, ...creatorMediaPaths];
 const explicitPolicyPaths = Object.entries(blocks).filter(([, block]) => block['content-security-policy']).map(([pattern]) => pattern);
-assert(explicitPolicyPaths.length === expectedPolicyPaths.length && expectedPolicyPaths.every(pattern => explicitPolicyPaths.includes(pattern)), 'Explicit CSP routes must remain the approved global, widget and local-WASM set');
+assert(explicitPolicyPaths.length === expectedPolicyPaths.length && expectedPolicyPaths.every(pattern => explicitPolicyPaths.includes(pattern)), 'Explicit CSP routes must remain the approved global, widget, local-WASM and creator media set');
 for (const pattern of explicitPolicyPaths) {
   const directives = blocks[pattern]['content-security-policy'].split(';').map(value => value.trim().split(/\s+/));
   const frameDirectives = directives.filter(tokens => tokens[0] === 'frame-src');
