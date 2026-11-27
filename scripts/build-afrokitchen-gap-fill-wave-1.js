@@ -13,6 +13,8 @@ const OUT_PATH = path.join(
   "2026-05-03-gap-fill-wave-1.json"
 );
 
+const reviewedKitchenMethods = require('../engines/src/afrokitchen-engine');
+const dishSpecificSlugs = new Set(["bolo-polanna-mz", "nthochi-bread-mw", "gateaux-piments-mu", "mandasi-malawi-mw", "asida-south-sudan-ss", "banana-fritters-gq", "sonhos-banana-st", "badjia-mz"]);
 const reviewedAt = "2026-05-03";
 const officialSourceStatus =
   "No direct ministry recipe page was found for every dish in this batch pass. The recipes are synthesized from multiple African culinary, cultural, dish-index, and beverage references, with local method patterns normalized for AfroKitchen.";
@@ -1399,6 +1401,16 @@ function recipe(row) {
     ]
   }
 };
+  if (dishSpecificSlugs.has(row.slug)) {
+    const fields = reviewedKitchenMethods.getAttributedAuthoringMethod(row.slug);
+    if (!fields) throw new Error("Missing reviewed method for " + row.slug);
+    return Object.assign(result, fields, {
+      sources: [{title:fields.author, url:fields.source, source_type:"attributed dish recipe", supports:["ingredients","method"]}],
+      official_source_status:"Named dish-specific recipe credited in source.",
+      review_summary:"Ingredient amounts and preparation follow the credited version.",
+      recommended_changes:[], confidence:"source-attributed"
+    });
+  }
   if (Object.prototype.hasOwnProperty.call(attributed, row.slug)) return Object.assign(result, attributed[row.slug]);
   // These source rows lack UUIDs; browser/API projection independently enforces UUID + slug.
   const pending = {
@@ -1566,6 +1578,10 @@ for (const item of recipes) {
   if (['mchemsho-tz','octopus-curry-sc'].includes(item.slug)) {
     const expected = {"mchemsho-tz": {"revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1", "source": "https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf"}, "octopus-curry-sc": {"revision": "octopus-ben-pierce-jones-water-20261018-v1", "source": "https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles"}}[item.slug];
     if (item.method_revision !== expected.revision || item.source !== expected.source || item.sources.length !== 1 || item.sources[0].url !== expected.source || item.total_time_minutes !== null || item.diet_tags.length || item.calories !== null || item.ingredients.length < 8 || item.steps.length < 5 || Object.prototype.hasOwnProperty.call(item,'id') || Object.prototype.hasOwnProperty.call(item,'is_published') || Object.prototype.hasOwnProperty.call(item,'is_verified')) throw new Error(item.slug + ' source adaptation drift');
+    continue;
+  }
+  if (dishSpecificSlugs.has(item.slug)) {
+    if (!item.source || !item.method_revision || !item.ingredients.length || !item.steps.length) throw new Error("Incomplete dish-specific method: " + item.slug);
     continue;
   }
   if (!Array.isArray(item.sources) || item.sources.length < 2) {
