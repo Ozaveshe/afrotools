@@ -36,6 +36,7 @@
     }
   }[lang];
 
+  var requestId = 0;
   var state = { currency: 'ngn', rows: [], receipt: null, loading: false, timer: null };
   var els = {
     currency: root.querySelector('[data-currency]'),
@@ -87,6 +88,8 @@
     state.loading = value;
     root.setAttribute('aria-busy', String(value));
     els.refresh.disabled = value;
+    els.csv.disabled = value || !state.receipt;
+    els.json.disabled = value || !state.receipt;
     if (value) setMessage(copy.loading);
   }
 
@@ -153,15 +156,20 @@
   }
 
   async function load() {
-    if (state.loading) return;
+    var currentRequest = ++requestId;
+    var requestedCurrency = state.currency;
+    if (!state.receipt || state.receipt.currency !== requestedCurrency) {
+      setUnavailable(copy.loading);
+    }
     window.clearTimeout(state.timer);
     setLoading(true);
     try {
-      var response = await fetch('/.netlify/functions/crypto-stablecoins?currency=' + encodeURIComponent(state.currency), {
+      var response = await fetch('/.netlify/functions/crypto-stablecoins?currency=' + encodeURIComponent(requestedCurrency), {
         headers: { Accept: 'application/json' }
       });
       var payload = await response.json().catch(function () { return null; });
-      if (!response.ok || !payload || payload.status !== 'fresh' || payload.scope !== 'provider_reference_not_exchange_quote' || !Array.isArray(payload.data)) {
+      if (currentRequest !== requestId) return;
+      if (!response.ok || !payload || payload.currency !== requestedCurrency || payload.status !== 'fresh' || payload.scope !== 'provider_reference_not_exchange_quote' || !Array.isArray(payload.data)) {
         setUnavailable(response.status === 429 ? copy.rateLimited : copy.unavailable);
         return;
       }
@@ -171,11 +179,13 @@
       setMessage(copy.ready(payload.count, payload.currency.toUpperCase()));
       render();
     } catch (error) {
-      setUnavailable(copy.unavailable);
+      if (currentRequest === requestId) setUnavailable(copy.unavailable);
     } finally {
-      setLoading(false);
-      window.__stablecoinSnapshotReady = true;
-      scheduleRefresh();
+      if (currentRequest === requestId) {
+        setLoading(false);
+        window.__stablecoinSnapshotReady = true;
+        scheduleRefresh();
+      }
     }
   }
 
@@ -189,7 +199,7 @@
     var url = URL.createObjectURL(blob);
     var anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'stablecoin-reference-' + state.currency + '-' + state.receipt.fetchedAt.slice(0, 19).replace(/[:T]/g, '-') + '.' + extension;
+    anchor.download = 'stablecoin-reference-' + state.receipt.currency + '-' + state.receipt.fetchedAt.slice(0, 19).replace(/[:T]/g, '-') + '.' + extension;
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
@@ -198,7 +208,7 @@
   }
 
   function exportPayload() {
-    if (!state.receipt) {
+    if (state.loading || !state.receipt || state.receipt.currency !== state.currency) {
       setMessage(copy.noExport, 'error');
       return null;
     }
