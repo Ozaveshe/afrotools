@@ -17,24 +17,43 @@ const BASE_URL = 'https://afrotools.com';
 const CHECK = process.argv.includes('--check');
 
 const householdLpg = require('../data/fuel/household-lpg-references.json');
+const zaLpgDistricts = require('../data/fuel/za-lpg-district-zones.json');
 
 function householdLpgPrice(code) {
   const reference = householdLpg[code];
   if (code === 'KE') return 'KSh ' + formatNumber(reference.priceKes) + ' per ' + reference.refillKg + ' kg refill';
   const caps = Object.values(reference.zoneCentsPerKg);
-  return 'R' + (Math.min(...caps) / 100).toFixed(2) + ' to R' + (Math.max(...caps) / 100).toFixed(2) + ' per kg by zone';
+  return 'R' + (Math.min(...caps) / 100).toFixed(2) + ' to R' + (Math.max(...caps) / 100).toFixed(2) + ' per kg by zone in R.8128; the Saldanha-import schedule differs';
 }
 
 function householdLpgScope(code) {
   const reference = householdLpg[code];
   if (code === 'KE') return reference.period + ' national average retail price. The equivalent is KSh ' + (reference.priceKes / reference.refillKg).toFixed(2) + ' per kg. Your supplier and cylinder size can change the refill price.';
-  return 'Residential maximum retail prices for ' + reference.period + '. Multiply your zone cap by the kilograms of LPG in the refill.';
+  return 'Dated residential LPG maximum-price references for ' + reference.period + ', not a supplier quote. R.8128 is the general schedule; R.8127 separately covers LPG imported through Saldanha Bay. Confirm your pricing zone and applicable supply schedule with the retailer.';
+}
+
+function zaHouseholdLpgPanel(reference) {
+  const config = JSON.stringify({reference, lookup: zaLpgDistricts}).replace(/</g, '\\u003c');
+  return `<section data-za-lpg-calculator aria-labelledby="zaLpgHeading"><h3 id="zaLpgHeading">Find a zone reference and calculate a refill</h3>
+    <p>November 2026 edition: effective 4 November through 1 December 2026. After that date the totals are historical, not current prices.</p>
+    <p>Search the <strong>archived fuel-pricing district label</strong>, not just your current municipality. This Treasury file was last modified on 8 November 2021; it is not a complete current town or address lookup. District boundaries and supplier routes are not detected.</p>
+    <label for="zaLpgDistrict">Town or historical district name to look for</label><input id="zaLpgDistrict" type="search" maxlength="80" placeholder="For example Johannesburg or Cape Town"><button type="button" id="zaLpgFind">Search archival districts</button><ul data-za-lpg-matches></ul>
+    <p>If your town is missing or a row is split by coordinates, use the <a href="https://www.justice.gov.za/maps/maps.html">Justice place-name and district maps</a>, compare the <a href="${zaLpgDistricts.url}">archived Treasury fuel-zone list</a>, then ask the retailer to confirm. Modern court or municipal boundaries alone do not assign a fuel zone.</p>
+    <form novalidate><label for="zaLpgZone">LPG pricing zone — confirm with the retailer</label><select id="zaLpgZone"><option value="">Choose a published zone</option>${Object.keys(reference.zoneCentsPerKg).map(zone => `<option value="${escapeHtml(zone)}">${escapeHtml(zone)}</option>`).join('')}</select>
+    <label for="zaLpgSupply">Which supply schedule has the retailer confirmed?</label><select id="zaLpgSupply"><option value="unknown">I do not know — show conditional references</option><option value="general">General schedule R.8128</option><option value="saldanha">Imported through Saldanha Bay — R.8127</option></select>
+    <label for="zaLpgKg">LPG contents in kilograms — not cylinder tare or gross weight</label><input id="zaLpgKg" type="number" min="0.001" max="48" step="0.001" value="9" inputmode="decimal"><p>For example 9, 19 or 48 kg. This household calculator models up to 48 kg; ask the supplier about bulk or commercial supply.</p>
+    <button type="submit" disabled>Calculate dated refill reference</button><button type="reset">Reset LPG calculator</button><p data-za-lpg-status role="status" aria-live="polite">Choose your zone, confirm or leave the supply route unknown, then calculate. Inputs stay on this device.</p></form>
+    <noscript>JavaScript is required for the calculator. The dated tables and source links remain readable.</noscript><div data-za-lpg-result hidden tabindex="-1"></div>
+    <script type="application/json" data-za-lpg-config>${config}</script><script src="/assets/js/pages/za-household-lpg.js" defer></script>
+    <style>[data-za-lpg-calculator]{margin-top:1.2rem;max-width:100%}[data-za-lpg-calculator] label{display:block;font-weight:700;margin-top:1rem}[data-za-lpg-calculator] input,[data-za-lpg-calculator] select{box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:.65rem;font:inherit}[data-za-lpg-calculator] button{min-height:44px;padding:.65rem;font:inherit;white-space:normal;max-width:100%}[data-za-lpg-calculator] li{margin:.65rem 0;overflow-wrap:anywhere}[data-za-lpg-calculator] ul{padding-left:1.2rem}[data-za-lpg-result]{border:2px solid #1d4ed8;border-radius:8px;padding:1rem;margin-top:1rem;scroll-margin-top:90px}[data-za-lpg-calculator] :focus-visible{outline:3px solid #d97706;outline-offset:2px}</style></section>`;
 }
 
 function householdLpgRow(code) {
   const r = householdLpg[code];
-  const table = r.zoneCentsPerKg ? '<details><summary>Find your LPG zone cap</summary><table><caption>Residential LPG caps, ' + escapeHtml(r.period) + '</caption><thead><tr><th scope="col">Zone</th><th scope="col">Rand per kg</th></tr></thead><tbody>' + Object.entries(r.zoneCentsPerKg).map(([zone, cents]) => '<tr><th scope="row">' + escapeHtml(zone) + '</th><td>' + (cents / 100).toFixed(2) + '</td></tr>').join('') + '</tbody></table></details>' : '';
-  return '<div class="fuel-price-row" id="household-lpg"><span>LPG</span><div><strong class="fuel-local">' + escapeHtml(householdLpgPrice(code)) + '</strong><p>' + escapeHtml(householdLpgScope(code)) + '</p>' + table + '<a href="' + escapeHtml(r.url) + '">' + escapeHtml(r.source) + '</a></div></div>';
+  const table = r.zoneCentsPerKg ? '<details><summary>Read all 54 general-schedule zone caps (R.8128)</summary><table><caption>General residential LPG caps, ' + escapeHtml(r.period) + '</caption><thead><tr><th scope="col">Zone</th><th scope="col">Rand per kg</th></tr></thead><tbody>' + Object.entries(r.zoneCentsPerKg).map(([zone, cents]) => '<tr><th scope="row">' + escapeHtml(zone) + '</th><td>' + (cents / 100).toFixed(2) + '</td></tr>').join('') + '</tbody></table></details>' : '';
+  const saldanha = code === 'ZA' ? r.additionalSchedules.saldanha : null;
+  const extra = saldanha ? '<details><summary>Read the separate Saldanha-import caps (R.8127)</summary><p>' + escapeHtml(saldanha.condition) + '</p><table><caption>Saldanha-import residential LPG caps, ' + escapeHtml(r.period) + '</caption><thead><tr><th scope="col">Zone</th><th scope="col">Rand per kg</th></tr></thead><tbody>' + Object.entries(saldanha.zoneCentsPerKg).map(([zone,cents])=>'<tr><th scope="row">'+escapeHtml(zone)+'</th><td>'+(cents/100).toFixed(2)+'</td></tr>').join('') + '</tbody></table><a href="'+escapeHtml(saldanha.url)+'">'+escapeHtml(saldanha.source)+'</a></details>' : '';
+  return '<div class="fuel-price-row" id="household-lpg"><span>LPG</span><div><strong class="fuel-local">' + escapeHtml(householdLpgPrice(code)) + '</strong><p>' + escapeHtml(householdLpgScope(code)) + '</p>' + (code === 'ZA' ? zaHouseholdLpgPanel(r) : '') + table + extra + '<a href="' + escapeHtml(r.url) + '">' + escapeHtml(r.source) + '</a></div></div>';
 }
 
 const REGION_LABELS = {
@@ -670,4 +689,5 @@ function main() {
   console.log(`${CHECK ? 'Checked' : 'Generated'} ${planned.length} fuel country pages.`);
 }
 
-main();
+if (require.main === module) main();
+module.exports = { htmlPage, householdLpgRow, zaHouseholdLpgPanel };
