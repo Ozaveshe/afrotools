@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mining environmental impact worksheet | AfroTools</title>
+<meta name="description" content="Measure your mine's outstanding disturbed footprint and prepare a site-specific environmental review checklist.">
+<link rel="canonical" href="https://afrotools.com/tools/mining-env-impact/">
+<style>body{max-width:44rem;margin:auto;padding:1.25rem;font:1rem/1.55 system-ui;color:#18332d}fieldset{margin:1.3rem 0;padding:1rem;border:1px solid #9caea4}label{display:block;margin:.5rem 0}input[type=number],button{padding:.65rem;font:inherit}input[type=number]{width:9rem;max-width:90%}a{color:#07583f}button{cursor:pointer}h1{line-height:1.15}@media print{nav,form,button{display:none}}</style></head>
+<body><nav aria-label="Breadcrumb"><a href="/">AfroTools</a> / <a href="/mining/">Mining</a></nav><main>
+<h1>Mining environmental impact worksheet</h1>
+<p>Record the land footprint and flag site conditions to investigate. Use the worksheet to plan evidence gathering with the site team, affected communities and local environmental authority. A formal impact assessment requires site studies.</p>
+<form id="review"><fieldset><legend>Land footprint in hectares (optional)</legend>
+<p>Use totals measured on the same date and within the same boundary. Rehabilitated land must be part of the disturbed total.</p>
+<label>Total land disturbed <input type="number" id="disturbed" min="0" step="any"></label>
+<label>Disturbed land rehabilitated <input type="number" id="rehab" min="0" step="any"></label></fieldset>
+<fieldset><legend>Which conditions need review?</legend>
+<label><input type="checkbox" value="water"> Surface water, wells or water abstraction</label>
+<label><input type="checkbox" value="waste"> Tailings or waste rock</label>
+<label><input type="checkbox" value="habitat"> Vegetation clearance or sensitive habitat</label>
+<label><input type="checkbox" value="neighbours"> Dust or noise near homes and access roads</label></fieldset>
+<button type="submit">Build review worksheet</button></form>
+<section id="result" hidden aria-labelledby="worksheet"><h2 id="worksheet" tabindex="-1">Site review worksheet</h2>
+<p id="footprint"></p><h3>Evidence to collect</h3><ul id="actions"></ul><button id="print" type="button">Print worksheet</button></section>
+<p>Planning reference · <a href="https://www.ifc.org/content/dam/ifc/doc/2000/2007-mining-ehs-guidelines-en.pdf">IFC Environmental, Health, and Safety Guidelines for Mining (2007)</a>, sections 1.1 and 1.4.</p></main>
+<script>
+const form = document.getElementById('review');
+const disturbed = document.getElementById('disturbed');
+const rehab = document.getElementById('rehab');
+const result = document.getElementById('result');
+const actions = {
+  water: 'Map upstream and downstream water users. Record abstraction volumes and available water-quality measurements with dates and locations.',
+  waste: 'Inventory waste-rock and tailings facilities. Identify drainage paths, monitoring records and the person responsible for follow-up.',
+  habitat: 'Map cleared areas against habitat surveys. Record which areas can be avoided or rehabilitated and how recovery will be monitored.',
+  neighbours: 'Mark nearby homes and haul routes. Record when dust or noise occurs and agree where measurements and community feedback will be collected.'
+};
+form.addEventListener('input', () => {
+  disturbed.setCustomValidity('');
+  rehab.setCustomValidity('');
+  result.hidden = true;
+});
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  if (Boolean(disturbed.value) !== Boolean(rehab.value)) {
+    const missing = disturbed.value ? rehab : disturbed;
+    missing.setCustomValidity('Enter both areas or leave both blank.');
+    missing.reportValidity();
+    return;
+  }
+  if (rehab.valueAsNumber > disturbed.valueAsNumber) {
+    rehab.setCustomValidity('Rehabilitated land cannot exceed the total disturbed area.');
+    rehab.reportValidity();
+    return;
+  }
+  const format = new Intl.NumberFormat('en', {maximumSignificantDigits:12});
+  const area = disturbed.valueAsNumber - rehab.valueAsNumber;
+  document.getElementById('footprint').textContent = disturbed.value
+    ? 'Disturbed ' + format.format(disturbed.valueAsNumber) + ' ha · rehabilitated ' + format.format(rehab.valueAsNumber) + ' ha · remaining disturbed footprint ' + format.format(area) + ' ha.'
+    : 'Land footprint unmeasured. Map the disturbed boundary and record the area under rehabilitation separately.';
+  const selected = Array.from(form.querySelectorAll(':checked'), box => actions[box.value]);
+  const items = [...selected, 'Document the intended land use after closure, responsible people and follow-up monitoring. Verify restoration outcomes in the field.'];
+  if (!selected.length) items.unshift('Confirm water, waste, habitat and community exposure on site. No conditions have been marked for review.');
+  const list = document.getElementById('actions');
+  list.replaceChildren();
+  for (const text of items) {
+    const item = document.createElement('li');
+    item.textContent = text;
+    list.append(item);
+  }
+  result.hidden = false;
+  document.getElementById('worksheet').focus();
+});
+document.getElementById('print').addEventListener('click', () => window.print());
+</script></body></html>
