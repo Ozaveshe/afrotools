@@ -50,6 +50,12 @@
           status.textContent = saved ? 'Recipe removed from your cookbook.' : 'Recipe saved on this device. Find it in My cookbook.';
         } catch (error) {
           status.textContent = 'This browser could not save your cookbook. You can still print or download the recipe.';
+          return;
+        }
+        if (!saved && window.AfroTools && window.AfroTools.analytics) {
+          window.AfroTools.analytics.track('afrokitchen_recipe_saved', {
+            country_code: recipe.country_code || '', category: recipe.category || ''
+          });
         }
       });
       window.addEventListener('storage', function (event) { if (event.key === key || event.key === null) showSaved(); });

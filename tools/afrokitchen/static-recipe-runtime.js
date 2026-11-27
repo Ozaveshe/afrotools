@@ -204,14 +204,15 @@ function h(){S("Print dialog opened."),e.print()}function M(){return["main","ste
   }
 
   function init() {
-    var actions = document.querySelector('.ak-static-serving-bar .ak-static-actions');
-    if (!actions || actions.querySelector('[data-ak-mark-cooked]')) return;
+    var actions = document.querySelector('.ak-static-actions');
+    if (!actions || document.querySelector('[data-ak-mark-cooked]')) return;
     var status = document.getElementById('ak-static-action-status');
     var button = document.createElement('button');
     button.type = 'button';
     button.className = 'ak-btn ak-btn-outline';
     button.setAttribute('data-ak-mark-cooked', '');
-    actions.insertBefore(button, status);
+    var toolbar = document.querySelector('.ak-cookbook-tools') || actions;
+    toolbar.insertBefore(button, status && status.parentNode === toolbar ? status : null);
 
     function update() {
       var cooked = readCooked().some(function (item) { return item.slug === recipe.slug; });
@@ -241,6 +242,18 @@ function h(){S("Print dialog opened."),e.print()}function M(){return["main","ste
     update();
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
-  else init();
+  function mountWhenReady() {
+    if (document.querySelector('.ak-static-actions')) return init();
+    var servingBar = document.querySelector('.ak-static-serving-bar');
+    if (!servingBar || !window.MutationObserver) return;
+    var observer = new window.MutationObserver(function () {
+      if (!document.querySelector('.ak-static-actions')) return;
+      observer.disconnect();
+      init();
+    });
+    observer.observe(servingBar, { childList: true });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountWhenReady, { once: true });
+  else mountWhenReady();
 })(window, document);
