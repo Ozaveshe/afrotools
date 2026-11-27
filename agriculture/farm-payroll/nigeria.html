@@ -305,7 +305,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
 </div>
 
-<p class="sources-footer">Legacy labour assumptions: ILO NATLEX database &bull; national labour ministry gazettes &bull; AfroTools research (2024). Nigeria contribution and minimum-wage references are linked above and carry their own dates. Remaining labour assumptions are not verified as current. Confirm scheme eligibility and wage coverage before using this planning estimate. For formal tax computation, use the PAYE calculator linked above.</p>
+<p class="sources-footer">Legacy labour assumptions: ILO NATLEX database &bull; national labour ministry gazettes &bull; AfroTools research (2024). Nigeria contribution and minimum-wage references are linked above and carry their own dates. Remaining labour assumptions are not verified as current. Confirm scheme eligibility and wage coverage before using this planning estimate. For formal tax computation, open the <a href="/nigeria/ng-salary-tax">Nigeria salary tax reference</a>.</p>
 </main>
 
 <section class="seo-content agri-country-facts" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
@@ -449,9 +449,9 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
         var pct = r.grossForDeductions > 0 ? (d.amount / r.grossForDeductions * 100).toFixed(1) + '%' : '';
         ptRows += '<tr><td class="indent">' + d.name + ' (' + d.rate + '%)</td><td class="amount negative-val">-' + r.sym + fmt(d.amount) + '</td><td class="pct">' + pct + '</td></tr>';
       });
-      ptRows += '<tr><td class="indent" style="color:#94a3b8;font-size:0.75rem;" colspan="3">PAYE Tax: <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">' + COUNTRY_NAME + ' PAYE Calculator &rarr;</a></td></tr>';
+      ptRows += '<tr><td class="indent" style="color:#94a3b8;font-size:0.75rem;" colspan="3">PAYE Tax: <a href="' + "/nigeria/ng-salary-tax" + '" style="color:var(--calc-accent);">' + COUNTRY_NAME + ' salary tax reference &rarr;</a></td></tr>';
     } else {
-      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No contributions are included under the arrangements you selected. This is not an exemption decision. <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
+      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No contributions are included under the arrangements you selected. This is not an exemption decision. <a href="' + "/nigeria/ng-salary-tax" + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
     }
     if (r.inKindValue > 0) ptRows += '<tr><td>Less non-cash benefits</td><td class="amount">-' + r.sym + fmt(r.inKindValue) + '</td><td></td></tr>';
     ptRows += '<tr class="total-row"><td><strong>Cash Take-Home Before PAYE</strong></td><td class="amount positive-val">' + r.fNet + '</td><td class="pct"></td></tr>';
@@ -484,7 +484,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     if(labour.leave.included)summary+=" Leave cash basis: NGN "+fmt(labour.leave.monthlyPayBasisKobo/100)+"; annual days: "+labour.leave.annualDays+"; paid days per month: "+labour.leave.paidDaysPerMonth+".";
     document.getElementById("laborLawBox").textContent=summary;
 
-    document.getElementById('crossTools').innerHTML = '<a class="cross-tool-card" href="' + (r.payeLink || '#') + '"><span class="cross-tool-icon">&#128181;</span><div class="cross-tool-text"><div class="cross-tool-name">' + COUNTRY_NAME + ' PAYE Calculator</div><div class="cross-tool-desc">Compute exact income tax</div></div></a>'
+    document.getElementById('crossTools').innerHTML = '<a class="cross-tool-card" href="' + "/nigeria/ng-salary-tax" + '"><span class="cross-tool-icon">&#128181;</span><div class="cross-tool-text"><div class="cross-tool-name">' + COUNTRY_NAME + ' salary tax reference</div><div class="cross-tool-desc">Review the country rules and assumptions</div></div></a>'
       + '<a class="cross-tool-card" href="/agriculture/farm-profit/' + FARM_PROFIT_SLUG + '"><span class="cross-tool-icon">&#128202;</span><div class="cross-tool-text"><div class="cross-tool-name">Farm Profit/Loss Calculator</div><div class="cross-tool-desc">Full farm profitability analysis</div></div></a>'
       + '<a class="cross-tool-card" href="/agriculture/farm-payroll/"><span class="cross-tool-icon">&#127758;</span><div class="cross-tool-text"><div class="cross-tool-name">All 54 Countries</div><div class="cross-tool-desc">Switch to another country</div></div></a>';
   }

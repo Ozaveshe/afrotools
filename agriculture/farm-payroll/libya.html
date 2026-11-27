@@ -306,7 +306,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
 </div>
 
-<p class="sources-footer">Data sources: ILO NATLEX database &bull; national labour ministry gazettes &bull; AfroTools research (2024). For formal tax computation, use the PAYE calculator linked above. Minimum wages are approximate and subject to annual revision.</p>
+<p class="sources-footer">Data sources: ILO NATLEX database &bull; national labour ministry gazettes &bull; AfroTools research (2024). For formal tax computation, open the <a href="/libya/ly-paye">Libya salary tax reference</a>. Minimum wages are approximate and subject to annual revision.</p>
 </main>
 
 <section class="seo-content agri-country-facts" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
@@ -438,9 +438,9 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
         var pct = r.grossForDeductions > 0 ? (d.amount / r.grossForDeductions * 100).toFixed(1) + '%' : '';
         ptRows += '<tr><td class="indent">' + d.name + ' (' + d.rate + '%)</td><td class="amount negative-val">-' + r.sym + fmt(d.amount) + '</td><td class="pct">' + pct + '</td></tr>';
       });
-      ptRows += '<tr><td class="indent" style="color:#94a3b8;font-size:0.75rem;" colspan="3">PAYE Tax: <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">' + COUNTRY_NAME + ' PAYE Calculator &rarr;</a></td></tr>';
+      ptRows += '<tr><td class="indent" style="color:#94a3b8;font-size:0.75rem;" colspan="3">PAYE Tax: <a href="' + "/libya/ly-paye" + '" style="color:var(--calc-accent);">' + COUNTRY_NAME + ' salary tax reference &rarr;</a></td></tr>';
     } else {
-      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No statutory deductions apply (informal farm workers typically exempt). <a href="' + (r.payeLink || '#') + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
+      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No statutory deductions apply (informal farm workers typically exempt). <a href="' + "/libya/ly-paye" + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
     }
     ptRows += '<tr class="total-row"><td><strong>Net Take-Home</strong></td><td class="amount positive-val">' + r.fNet + '</td><td class="pct"></td></tr>';
     pt.innerHTML = ptRows;
@@ -485,7 +485,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       + (ll.publicHolidays ? ll.publicHolidays + ' public holidays' : '')
       + (ll.notes ? '<br><span style="color:#64748b;">' + ll.notes + '</span>' : '');
 
-    document.getElementById('crossTools').innerHTML = '<a class="cross-tool-card" href="' + (r.payeLink || '#') + '"><span class="cross-tool-icon">&#128181;</span><div class="cross-tool-text"><div class="cross-tool-name">' + COUNTRY_NAME + ' PAYE Calculator</div><div class="cross-tool-desc">Compute exact income tax</div></div></a>'
+    document.getElementById('crossTools').innerHTML = '<a class="cross-tool-card" href="' + "/libya/ly-paye" + '"><span class="cross-tool-icon">&#128181;</span><div class="cross-tool-text"><div class="cross-tool-name">' + COUNTRY_NAME + ' salary tax reference</div><div class="cross-tool-desc">Review the country rules and assumptions</div></div></a>'
       + '<a class="cross-tool-card" href="/agriculture/farm-profit/' + FARM_PROFIT_SLUG + '"><span class="cross-tool-icon">&#128202;</span><div class="cross-tool-text"><div class="cross-tool-name">Farm Profit/Loss Calculator</div><div class="cross-tool-desc">Full farm profitability analysis</div></div></a>'
       + '<a class="cross-tool-card" href="/agriculture/farm-payroll/"><span class="cross-tool-icon">&#127758;</span><div class="cross-tool-text"><div class="cross-tool-name">All 54 Countries</div><div class="cross-tool-desc">Switch to another country</div></div></a>';
   }

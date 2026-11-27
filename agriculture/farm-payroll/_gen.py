@@ -79,6 +79,13 @@ def generate(code, name, flag, slug, paye_link, fp_slug):
     content = content.replace('__FARM_PROFIT_SLUG__', fp_slug)
     if code == 'NG':
         content = apply_nigeria_contributions(content)
+    # Insert the country reference after country-specific disclosures have been applied.
+    href = paye_link.removesuffix('.html')
+    label = 'payroll contributions reference' if code == 'ST' else 'salary tax reference'
+    content = content.replace('use the PAYE calculator linked above', f'open the <a href="{href}">{name} {label}</a>')
+    content = content.replace("(r.payeLink || '#')", json.dumps(href))
+    content = content.replace("COUNTRY_NAME + ' PAYE Calculator", "COUNTRY_NAME + ' " + label)
+    content = content.replace('Compute exact income tax', 'Review the country rules and assumptions')
     path = os.path.join(DIR, slug + '.html')
     with open(path, 'w', encoding='utf-8') as f:
         f.write(content)
