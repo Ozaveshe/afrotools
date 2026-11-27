@@ -10,6 +10,40 @@
     return String(value == null ? '' : value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  // One planning item for the selected leg, without inheriting another mode's
+  // issuer, release instructions or timing from the shared reference row.
+  var oceanReference = 'https://www.maersk.com/logistics-explained/shipping-documentation/2023/10/03/difference-bill-of-lading-sea-waybill';
+  var transportByMode = {
+    road: {
+      name: 'Road consignment note / road waybill',
+      description: 'Ask the road carrier which consignment note or waybill it accepts for the route. Agree the pickup and delivery points, parties, goods and package count.',
+      tips: 'Confirm who prepares and signs the document, which copy travels with the load, and what the receiving party needs at delivery.',
+      reference: 'UNECE guidance on road consignment notes',
+      referenceUrl: 'https://unece.org/trade/documents/2023/10/executive-guide-e-cmr'
+    },
+    air: {
+      name: 'Air waybill (AWB)',
+      description: 'Confirm the air waybill details with the airline or air freight forwarder. Check shipper and consignee names, airports, package count and weight against the booking.',
+      tips: 'Ask whether the shipment uses an electronic AWB and what accompanying paperwork must be available at cargo acceptance.',
+      reference: 'IATA guidance on the air waybill',
+      referenceUrl: 'https://www.iata.org/en/programs/cargo/e/efreight/'
+    },
+    container: {
+      name: 'Ocean bill of lading or sea waybill (FCL)',
+      description: 'Ask the ocean carrier or booking forwarder whether it will issue a bill of lading or sea waybill for the full container. Check the ports, container number, seal and consignee.',
+      tips: 'Confirm the shipping-instruction deadline and the agreed cargo-release process, including whether originals are needed.',
+      reference: 'Maersk guide to bills of lading and sea waybills',
+      referenceUrl: oceanReference
+    },
+    lcl: {
+      name: 'Consolidated ocean shipment document (LCL)',
+      description: 'Ask the freight forwarder or consolidator which document covers your consignment within the shared container, such as a house bill of lading or sea waybill.',
+      tips: 'Confirm the individual package marks, cargo-receipt deadline, destination collection agent and release instructions for your consignment.',
+      reference: 'Maersk guide to bills of lading and sea waybills',
+      referenceUrl: oceanReference
+    }
+  };
+
   // ── Wait for DOM ─────────────────────────────────────────
   function ready(fn) {
     if (document.readyState !== 'loading') { fn(); }
@@ -72,7 +106,14 @@
       var docs = [];
 
       // 1. Common reference items; applicability must be confirmed for the shipment.
-      data.commonDocs.forEach(function (d) { docs.push({ doc: d, source: 'common' }); });
+      data.commonDocs.forEach(function (d) {
+        if (d.id === 'bill_of_lading') {
+          var transport = transportByMode[shipment];
+          if (transport) docs.push({ doc: Object.assign({ id: d.id, category: 'transport' }, transport), source: 'transport-mode' });
+        } else {
+          docs.push({ doc: d, source: 'common' });
+        }
+      });
 
       // 2. Conditional origin checks, not automatic preferential-duty eligibility.
       if (dest === 'africa') {
@@ -122,19 +163,6 @@
         specific.commodityDocs[product].forEach(function (d) { docs.push({ doc: d, source: 'commodity' }); });
       }
 
-      // 6. Airway Bill override note for air freight
-      if (shipment === 'air') {
-        docs.forEach(function (item) {
-          if (item.doc.id === 'bill_of_lading') {
-            item.doc = Object.assign({}, item.doc, {
-              name: 'Airway Bill (AWB)',
-              description: 'Air transport document issued by the airline or air freight forwarder. Replaces the ocean Bill of Lading for air shipments.',
-              tips: 'The AWB is non-negotiable (unlike a BoL). The airline retains a copy; you get the shipper\'s copy (copy 3).'
-            });
-          }
-        });
-      }
-
       return docs;
     }
 
@@ -148,10 +176,12 @@
       var product  = selProduct  ? selProduct.options[selProduct.selectedIndex].text : 'Agricultural Product';
       var destText = selDest     ? selDest.options[selDest.selectedIndex].text : 'Africa';
 
+      var shipmentText = selShipment ? selShipment.options[selShipment.selectedIndex].text : 'Full Container (FCL) — Ocean';
       var summaryDiv = document.createElement('div');
       summaryDiv.className = 'ed-summary-bar';
       summaryDiv.innerHTML = '<span class="ed-summary-item"><span class="ed-s-icon">&#128230;</span><span>' + escapeHtml(product) + '</span></span>' +
         '<span class="ed-summary-item"><span class="ed-s-icon">&#128205;</span><span>' + escapeHtml(destText) + '</span></span>' +
+        '<span class="ed-summary-item">' + escapeHtml(shipmentText) + '</span>' +
         '<span class="ed-summary-item"><span class="ed-s-icon">&#128202;</span><span>' + docs.length + ' items to verify</span></span>';
       resultsEl.appendChild(summaryDiv);
 
@@ -239,6 +269,9 @@
           }
           if (d.tips || d.notes) {
             detailHtml += '<div class="ed-tip"><span class="ed-tip-icon">&#128161;</span><span>' + escapeHtml(d.tips || d.notes) + '</span></div>';
+          }
+          if (item.source === 'transport-mode') {
+            detailHtml += '<p><a href="' + escapeHtml(d.referenceUrl) + '">' + escapeHtml(d.reference) + '</a></p>';
           }
           detailEl.innerHTML = detailHtml;
 
