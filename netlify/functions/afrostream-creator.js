@@ -69,7 +69,7 @@ exports.handler = async function(event) {
 
   try {
     var creators = await sb('as_creators?slug=eq.' + encodeURIComponent(slug) + '&is_published=eq.true&limit=1');
-    if (!creators || !creators.length) {
+    if (!creators || !creators.length || creators[0].flagged === true) {
       return { statusCode: 404, headers: h, body: JSON.stringify({ error: 'Creator not found' }) };
     }
     var creator = creators[0];

@@ -630,14 +630,44 @@ async function hydrateCreatorExtras(c) {
 
 /* ===== API FETCHERS ===== */
 var profileLookupUnavailable = false;
+
+function profileIsUnavailableToPublic() {
+  profileLookupUnavailable = false;
+  return null;
+}
+
+function withheldProfile(row) {
+  return row && (row.is_published === false || row.flagged === true);
+}
+
+async function savedDirectoryProfile(slug, richer) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return null;
+  try {
+    var response = await fetch('/data/afrostream/creator-directory-snapshot.json', { cache: 'no-cache' });
+    if (!response.ok) return null;
+    var snapshot = await response.json();
+    if (snapshot.schemaVersion !== 1 || snapshot.projectRef !== 'zpclagtgczsygrgztlts' ||
+        snapshot.source !== 'public.as_creators' || snapshot.criteria !== 'is_published = true AND flagged IS NOT TRUE' ||
+        !/^\d{4}-\d{2}-\d{2}/.test(snapshot.retrievedAt || '') || !Array.isArray(snapshot.creators)) return null;
+    var matches = snapshot.creators.filter(function(row) { return row && row.slug === slug; });
+    if (matches.length !== 1) return null;
+    var row = matches[0];
+    if (withheldProfile(row) || typeof row.name !== 'string' || !row.name.trim() ||
+        !/^[A-Z]{2}$/.test(row.country || '') || typeof row.categories !== 'string') return null;
+    return { directoryRecord: row, channelRecord: richer, snapshotDate: snapshot.retrievedAt.slice(0, 10) };
+  } catch (error) {
+    return null;
+  }
+}
 async function fetchCreator(idOrSlug) {
   try {
     /* Try new public API endpoint first — returns creator + streams + similar */
     var res = await fetch('/api/afrostream/creator?slug=' + encodeURIComponent(idOrSlug));
-    if (res.status === 404) return null;
+    if (res.status >= 400 && res.status < 500 && res.status !== 429) return null;
     profileLookupUnavailable = true;
     var json = await res.json();
     if (res.ok && json.success && json.data && json.data.creator) {
+      if (withheldProfile(json.data.creator)) return profileIsUnavailableToPublic();
       var c = normalizeCreator(json.data.creator);
       c._apiStreams = json.data.streams || [];
       c._apiSimilar = json.data.similar || [];
@@ -653,22 +683,23 @@ async function fetchCreator(idOrSlug) {
   try {
     /* Fallback: search within the public creator list */
     var res2 = await fetch('/api/afrostream/creators?limit=100');
+    if (res2.status === 401 || res2.status === 403 || res2.status === 410) return profileIsUnavailableToPublic();
     var json2 = await res2.json();
-    if (json2.success && json2.data && json2.data.length) {
+    if (res2.ok && json2.success && Array.isArray(json2.data)) {
       var match = json2.data.find(function(row) {
         var rowSlug = row.slug || '';
         return String(row.id) === String(idOrSlug) ||
           rowSlug === idOrSlug ||
           String(row.name || '').toLowerCase() === String(idOrSlug).toLowerCase();
       });
-      if (match && json2.degraded === true) return { directoryRecord: match };
+      if (withheldProfile(match)) return profileIsUnavailableToPublic();
+      if (match && json2.degraded === true) return savedDirectoryProfile(match.slug, match);
+      if (!match && json2.degraded !== true && Number.isInteger(json2.count) && json2.count === json2.data.length) return profileIsUnavailableToPublic();
       if (match) return hydrateCreatorExtras(normalizeCreator(match));
     }
   } catch(e2) {}
 
-  /* Fallback to demo */
-  var demo = DEMO_CREATORS.find(function(c) { return c.slug === idOrSlug || String(c.id) === idOrSlug || c.name.toLowerCase() === idOrSlug.toLowerCase(); });
-  return demo || null;
+  return savedDirectoryProfile(idOrSlug, null);
 }
 
 async function fetchAllCreators() {
@@ -936,14 +967,16 @@ function renderMissingProfile() {
   var creator = results[0];
   if (creator && creator.directoryRecord) {
     var entry = creator.directoryRecord;
+    var country = typeof Intl.DisplayNames === 'function' ? new Intl.DisplayNames(['en'], { type: 'region' }).of(entry.country) : entry.country;
+    var channelRecord = creator.channelRecord || {};
     var links = ['youtube', 'tiktok', 'instagram', 'twitch', 'kick'].map(function(platform) {
-      var href = safePlatformUrl(entry['platform_' + platform] || entry[platform + '_url'], platform);
+      var href = safePlatformUrl(channelRecord['platform_' + platform] || channelRecord[platform + '_url'], platform);
       return href ? '<li><a href="' + escapeStreamText(href) + '">' + escapeStreamText(platform) + '</a></li>' : '';
     }).join('');
     document.title = entry.name + ' — AfroStream creator directory';
     document.getElementById('creatorPage').innerHTML = '<section class="as-container"><h1>' +
-      escapeStreamText(entry.name) + '</h1><p>' + escapeStreamText(entry.categories || '') +
-      '</p><p>Saved directory profile. Updated rankings and activity are temporarily unavailable.</p>' +
+      escapeStreamText(entry.name) + '</h1><p>' + escapeStreamText([country, entry.categories].filter(Boolean).join(' · ')) +
+      '</p><p>Saved directory profile from ' + escapeStreamText(creator.snapshotDate) + '. Updated rankings and activity are temporarily unavailable.</p>' +
       (links ? '<h2>Creator channels</h2><ul>' + links + '</ul>' : '') +
       '<a href="/tools/afrostream/directory/">Browse creator directory</a></section>';
     return;
