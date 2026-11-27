@@ -14,7 +14,10 @@ for (const app of apps) {
     await expect(page.locator("html")).toHaveAttribute("lang", "sw");
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeVisible();
-    const result = JSON.parse(await page.locator("[data-output]").textContent());
+    const result = app.id === "crop-yield"
+      ? await page.evaluate(() => window.__SW_AGRI_TEST__.getLatest())
+      : JSON.parse(await page.locator("[data-output]").textContent());
+    if (app.id === "crop-yield") { expect(result.totalYield).toBe(4); expect(result.grossRevenue).toBe(160000); expect(result.netProfit).toBe(70000); }
     expect(result).toBeTruthy();
 
     for (const format of ["json", "txt", "csv", "pdf"]) {
@@ -30,14 +33,15 @@ for (const app of apps) {
         expect(payload.locale).toBe("sw");
         await page.locator("[data-import]").setInputFiles(file);
         await expect(page.locator("[data-status]")).toContainText("imefunguliwa");
-      } else if (format === "csv") expect(bytes.toString("utf8")).toContain("sehemu,thamani");
+      } else if (format === "csv") expect(bytes.toString("utf8")).toContain(app.id === "crop-yield" ? '"sehemu","thamani"' : "sehemu,thamani");
       else if (format === "txt") expect(bytes.toString("utf8")).toContain(app.name);
       else expect(bytes.subarray(0, 4).toString("ascii")).toBe("%PDF");
     }
 
     await page.locator("[data-agri-form] button[type=reset]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
-    await page.locator("#scenario").fill("{");
+    if (app.id === "crop-yield") await page.locator("#farmSize").fill("-1");
+    else await page.locator("#scenario").fill("{");
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
     expect(errors).toEqual([]);
