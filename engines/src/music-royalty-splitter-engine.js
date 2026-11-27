@@ -1,7 +1,7 @@
 (function (global) {
   "use strict";
   var FX = Object.freeze({ NG:1660, KE:130, ZA:18.5, GH:15.5, EG:48, TZ:2600, UG:3750, RW:1300, CM:615, SN:615, CI:615, MA:10, ET:57, TN:3.1, AO:835 });
-  var SYMBOLS = Object.freeze({ NG:"â‚¦", KE:"KES ", ZA:"R", GH:"GHS ", EG:"EGP ", TZ:"TZS ", UG:"UGX ", RW:"RWF ", CM:"XAF ", SN:"XOF ", CI:"XOF ", MA:"MAD ", ET:"ETB ", TN:"TND ", AO:"AOA " });
+  var SYMBOLS = Object.freeze({ NG:"\u20a6", KE:"KES ", ZA:"R", GH:"GHS ", EG:"EGP ", TZ:"TZS ", UG:"UGX ", RW:"RWF ", CM:"XAF ", SN:"XOF ", CI:"XOF ", MA:"MAD ", ET:"ETB ", TN:"TND ", AO:"AOA " });
   function roundedPercent(collaborators) {
     return Math.round(collaborators.reduce(function (sum, item) {
       return sum + (parseFloat(item.pct) || 0);
