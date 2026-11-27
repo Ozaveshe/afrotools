@@ -81,7 +81,7 @@
       'N-P2O5-K2O par ha : ' + latest.perHectare.n + '-' + latest.perHectare.p + '-' + latest.perHectare.k,
       'Besoins totaux : N ' + latest.totals.n + ' kg; P2O5 ' + latest.totals.p + ' kg; K2O ' + latest.totals.k + ' kg',
       'Sacs urée : ' + latest.bags.urea + '; sacs NPK 15-15-15 : ' + latest.bags.npk15,
-      'Coût estimé : ' + money(latest.cost.total, latest),
+      'Estimation NPK + urée (prix indicatifs par sac entier) : ' + money(latest.cost.total, latest),
       'Rendement de référence : ' + number(latest.yieldEstimate, 1) + ' ' + latest.crop.unit,
       '',
       'Référentiel statique; aucune donnée en direct.',
@@ -121,7 +121,7 @@
       'Par hectare : N ' + result.perHectare.n + ' kg; P2O5 ' + result.perHectare.p + ' kg; K2O ' + result.perHectare.k + ' kg.',
       'Total : N ' + result.totals.n + ' kg; P2O5 ' + result.totals.p + ' kg; K2O ' + result.totals.k + ' kg.',
       'Urée 46-0-0 : ' + result.bags.urea + ' sacs de 50 kg (' + money(result.cost.urea, result) + ').',
-      'DAP théorique : ' + result.bags.dap + ' sacs; MOP théorique : ' + result.bags.mop + ' sacs.',
+      'Pour la surface : '+number(result.basket.npkKg,1)+' kg de NPK et '+number(result.basket.ureaKg,1)+' kg d’urée. Gardez le surplus des sacs. Hors devis : '+result.basket.remainingP2O5+' kg de P₂O₅ et '+result.basket.remainingK2O+' kg de K₂O encore nécessaires.',
       'NPK 15-15-15 : ' + result.bags.npk15 + ' sacs de 50 kg (' + money(result.cost.npk15, result) + ').',
       'Équivalent fumier bovin : environ ' + result.organicEquivalent.cattleTonnes + '–' + (result.organicEquivalent.cattleTonnes + 2) + ' tonnes.',
       'Équivalent fumier de volaille : environ ' + result.organicEquivalent.poultryTonnes + '–' + (result.organicEquivalent.poultryTonnes + 1) + ' tonnes.'

@@ -25,7 +25,9 @@
     var costs = data.costs[currency];
     if (!costs) return { ok: false, status: 'unsupported-currency', currency: currency };
     var parsedArea = parseFloat(input.area);
-    var area = parsedArea || 1;
+    if (input.area == null || input.area === '') parsedArea = 1;
+    if (!Number.isFinite(parsedArea) || parsedArea <= 0) return { ok: false, status: 'invalid-area' };
+    var area = parsedArea;
     var perHectare = {
       n: Math.round(nutrient[0] * soilMultiplier),
       p: Math.round(nutrient[1] * soilMultiplier),
@@ -36,11 +38,16 @@
       p: Math.round(perHectare.p * area),
       k: Math.round(perHectare.k * area)
     };
+    // Plan the amount to use before rounding purchases to whole 50 kg bags.
+    var sharedNutrient = Math.min(totals.n, totals.p, totals.k);
+    var npkKg = sharedNutrient / 0.15;
+    var ureaKg = (totals.n - sharedNutrient) / 0.46;
+    var basket = { npkKg: npkKg, ureaKg: ureaKg, remainingP2O5: totals.p - sharedNutrient, remainingK2O: totals.k - sharedNutrient };
     var bags = {
-      urea: Math.ceil((totals.n / 0.46) / 50),
+      urea: Math.ceil(ureaKg / 50),
       dap: Math.ceil((totals.p / 0.46) / 50),
       mop: Math.ceil((totals.k / 0.60) / 50),
-      npk15: Math.ceil(Math.max(totals.n, totals.p, totals.k) / 7.5)
+      npk15: Math.ceil(sharedNutrient / 7.5)
     };
     var cost = {
       symbol: costs.symbol,
@@ -57,6 +64,7 @@
       perHectare: perHectare,
       totals: totals,
       bags: bags,
+      basket: basket,
       cost: cost,
       subsidy: costs.subsidy,
       yieldEstimate: crop.yield[target] * area,
