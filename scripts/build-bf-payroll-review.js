@@ -18,6 +18,12 @@ const SEARCH = {
   fr: { title: 'Salaire Burkina Faso — calcul indisponible | AfroTools', description: 'Le calcul de paie au Burkina Faso et les exports sont indisponibles pendant la vérification fiscale. Les données enregistrées restent conservées.' },
   sw: { title: 'Mshahara Bukinafaso — uhakiki unahitajika | AfroTools', description: 'Hesabu za mshahara Bukinafaso na upakuaji wa matokeo havipatikani wakati kanuni za kodi zinahakikiwa. Taarifa zilizohifadhiwa bado zipo.' }
 };
+const WORKSHEET = require('./lib/bf-payroll-worksheet');
+const LABELS = require('./lib/bf-payroll-labels.json');
+for (const lang of Object.keys(COPY)) {
+  Object.assign(COPY[lang], LABELS[lang]);
+  SEARCH[lang] = { title: COPY[lang].title + ' | AfroTools', description: COPY[lang].reason };
+}
 function metadataFor(lang) {
   return { ...SEARCH[lang], schemaName: COPY[lang].title };
 }
@@ -40,13 +46,14 @@ function transform(html, lang, source) {
   if (!source || source.id !== 'paye-bf-source') throw new Error('Missing historical BF source record');
   const c = COPY[lang], metadata = metadataFor(lang);
   // The hero owns the reason and the form note owns the scope; do not duplicate them here.
-  const status = '<section id="bf-payroll-review" class="card" tabindex="-1" data-bf-source-id="paye-bf-source" data-formula-status="review-required" style="padding:20px;line-height:1.6"><h2>' + c.heading + '</h2><p>' + c.inputs + '</p><p>' + c.recovery + '</p><p id="bf-review-action" role="status" aria-live="polite"></p></section>';
-  const sources = '<section id="sources-verification" data-tool-verification-panel data-bf-source-id="paye-bf-source" data-source-freshness="' + escape(source.freshnessStatus) + '" style="padding:20px;line-height:1.6"><h2>' + c.sources + '</h2><p>' + c.stale + '</p><p>' + c.date + ': <time datetime="' + escape(source.lastReviewedAt) + '">' + escape(source.lastReviewedAt) + '</time></p><p>' + c.old + '</p><ul><li><a href="https://dgi.bf/verification/CGI">DGI — Code général des impôts</a></li><li><a href="https://cnssbf.org/cotisations-sociales/">CNSS — ' + c.sources + '</a></li><li><a href="/data/source-registry.json">' + c.source + ' (paye-bf-source)</a></li></ul><a href="' + (lang === 'fr' ? '/fr/contact/' : '/contact/') + '?topic=calculation-error&amp;tool=bf-paye">' + c.report + '</a></section>';
+  const status = WORKSHEET.render(c);
+  const sources = WORKSHEET.sources(c, lang, source);
+  html = replaceElement(html, /<div class="card">/, '');
   html = html.replace(/<title>[\s\S]*?<\/title>/, '<title>' + metadata.title + '</title>');
   html = html.replace(/<meta\b[^>]*(?:name="description"|property="og:(?:title|description)"|name="twitter:(?:title|description)")[^>]*>/gi, tag => tag.replace(/content="[^"]*"/, 'content="' + escape(/(?:property="og:title"|name="twitter:title")/.test(tag) ? metadata.title : metadata.description) + '"'));
   if (lang === 'sw') html = html.replace('<span class="slider-label">Mshahara Ghafi wa Mwaka</span>', '<span class="slider-label">Mshahara Ghafi wa Mwezi</span>');
   html = html.replace(/<h1\b[^>]*>[\s\S]*?<\/h1>/, '<h1>' + c.title + '</h1>');
-  for (const cls of ['hero-sub', 'tool-hero-sub', 'hero-meta']) html = html.replace(new RegExp('<p\\b[^>]*class="' + cls + '"[^>]*>[\\s\\S]*?<\\/p>'), '<p class="' + cls + '">' + (cls !== 'hero-meta' ? c.reason : c.stale) + '</p>');
+  for (const cls of ['hero-sub', 'tool-hero-sub', 'hero-meta']) html = html.replace(new RegExp('<p\\b[^>]*class="' + cls + '"[^>]*>[\\s\\S]*?<\\/p>'), '<p class="' + cls + '">' + (cls !== 'hero-meta' ? c.reason : c.source) + '</p>');
   html = replaceElement(html, /<div class="hero-badges">/, '');
   html = replaceElement(html, /<div class="amendment-bar">/, '');
   html = replaceElement(html, /<div class="card results-card" id="resultsCard">/, status);
@@ -79,6 +86,7 @@ function transform(html, lang, source) {
     return whole;
   });
   if (!html.includes('/assets/js/pages/bf-payroll-review.js')) html = html.replace('</head>', '<script src="/assets/js/pages/bf-payroll-review.js" defer></script>\n</head>');
+  html = html.replace(/(<script src="\/assets\/js\/pages\/bf-payroll-review\.js)(?:\?v=[a-f0-9]+)?"/, '$1?v=' + require('crypto').createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'assets/js/pages/bf-payroll-review.js'))).digest('hex').slice(0, 8) + '"');
   return html.split(/(<script\b[^>]*>[\s\S]*?<\/script>)/gi).map(part => /^<script\b/i.test(part) ? part : part.replace(/^[ \t]+$/gm, '')).join('');
 }
 function run(write) {
