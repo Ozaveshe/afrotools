@@ -44,7 +44,29 @@
    byId('fuel-currency').value=record&&record.currency||entry&&entry.currency||'USD';byId('fuel-price-help').textContent=t(s.available?'reference':'manual');
    event(s.available?'fuel_localized_result_shown':'fuel_unavailable_shown',{market_id:selected&&selected.market_id||'none',country_code:selected&&selected.country_code||'none',fuel_type:byId('fuel-type').value,data_granularity:selected&&selected.granularity||'none',location_used:false,result_shown:s.available,reason:s.available?'':s.stale?'stale':'missing'});
   }
-  function marketOptions(preferred,preservePlan){var select=byId('fuel-market');select.replaceChildren();markets.filter(function(m){return m.country_code===byId('fuel-country').value&&engine.marketRecord(m,byId('fuel-type').value);}).sort(function(a,b){return Number(status(engine.marketRecord(b,byId('fuel-type').value)).available)-Number(status(engine.marketRecord(a,byId('fuel-type').value)).available);}).forEach(function(m){select.add(new Option(place(m)+' — '+t(m.granularity),m.market_id));});if(preferred&&Array.from(select.options).some(function(o){return o.value===preferred;}))select.value=preferred;select.disabled=!select.options.length;
+  function syncNigeriaLanguages() {
+   if (locale !== 'en') return;
+   var select = byId('fuel-country'), current = byId('fuel-nigeria-languages');
+   if (select.value !== 'NG') {
+    if (current) current.remove();
+    return;
+   }
+   if (current) return;
+   var links = document.createElement('p');
+   links.id = 'fuel-nigeria-languages';
+   links.append('Calculate Nigerian fuel costs in ');
+   var hausa = document.createElement('a');
+   hausa.href = '/ha/kayan-aiki/farashin-mai/';
+   hausa.lang = hausa.hreflang = 'ha';
+   hausa.textContent = 'Hausa';
+   var yoruba = document.createElement('a');
+   yoruba.href = '/yo/awon-ise/owo-epo/';
+   yoruba.lang = yoruba.hreflang = 'yo';
+   yoruba.textContent = 'Yorùbá';
+   links.append(hausa, ' or ', yoruba, '.');
+   select.after(links);
+  }
+  function marketOptions(preferred,preservePlan){syncNigeriaLanguages();var select=byId('fuel-market');select.replaceChildren();markets.filter(function(m){return m.country_code===byId('fuel-country').value&&engine.marketRecord(m,byId('fuel-type').value);}).sort(function(a,b){return Number(status(engine.marketRecord(b,byId('fuel-type').value)).available)-Number(status(engine.marketRecord(a,byId('fuel-type').value)).available);}).forEach(function(m){select.add(new Option(place(m)+' — '+t(m.granularity),m.market_id));});if(preferred&&Array.from(select.options).some(function(o){return o.value===preferred;}))select.value=preferred;select.disabled=!select.options.length;
    if(preservePlan){
     // Keep the existing plan and source basis; selecting a newly enrolled market applies its price explicitly.
     var placeholder=new Option('— '+t('market')+' —','');placeholder.disabled=true;select.add(placeholder,0);select.value='';
