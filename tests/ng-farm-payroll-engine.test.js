@@ -16,7 +16,24 @@ test('unknown contribution choices cannot fall through to legacy deductions',()=
 test('missing module gives recoverable error instead of old deductions',()=>{const env=load(true);delete env.NigeriaFarmContributions;const r=env.FarmPayrollEngine.calculate({...input,contributionSelection:selected},data);assert.equal(r.error,true);});
 test('nonparticipation removes deductions but retains in-kind costs separately',()=>{const r=after.FarmPayrollEngine.calculate({...input,contributionSelection:{sector:'private',pension:'not-applicable',health:'not-applicable',housing:'not-participating'}},data);assert.equal(r.netPay,100000);assert.equal(r.grossForDeductions,130000);assert.equal(r.totalEmployerContributions,0);});
 test('deductions larger than cash earnings require correction',()=>{const r=after.FarmPayrollEngine.calculate({...input,grossPay:1000,contributionSelection:selected},data);assert.equal(r.error,true);assert.equal(r.field,'contributions');});
-for(const country of Object.keys(before.FarmPayrollData).filter(x=>x!=='NG'))for(const workerType of ['permanent','casual','seasonal','piece_rate'])test(`${country} ${workerType} output remains unchanged`,()=>{const i={...input,workerType,daysWorked:20,ratePerUnit:100,unitsCompleted:50};assert.equal(JSON.stringify(after.FarmPayrollEngine.calculate(i,after.FarmPayrollData[country])),JSON.stringify(before.FarmPayrollEngine.calculate(i,before.FarmPayrollData[country])));});
+for (const country of Object.keys(before.FarmPayrollData).filter(code => code !== 'NG')) {
+  for (const workerType of ['permanent', 'casual', 'seasonal', 'piece_rate']) {
+    test(country + ' ' + workerType + ' excludes benefits from cash and preserves all other outputs', () => {
+      const values = { ...input, workerType, daysWorked: 20, ratePerUnit: 100, unitsCompleted: 50 };
+      const legacy = before.FarmPayrollEngine.calculate(values, before.FarmPayrollData[country]);
+      const actual = after.FarmPayrollEngine.calculate(values, after.FarmPayrollData[country]);
+      const cash = legacy.baseGross + legacy.overtimePay - legacy.totalDeductions;
+      if (cash < 0) {
+        assert.equal(actual.code, 'contributions-exceed-cash');
+        assert.equal(actual.netPay, undefined);
+        return;
+      }
+      const expected = { ...legacy, netPay: cash, farmMonthlyNet: cash * values.numWorkers,
+        fNet: legacy.sym + cash.toLocaleString('en-US', { maximumFractionDigits: 0 }) };
+      assert.deepEqual(JSON.parse(JSON.stringify(actual)), JSON.parse(JSON.stringify(expected)));
+    });
+  }
+}
 test('public Nigeria data requires confirmed inputs and cannot reintroduce legacy labour defaults',()=>{
  const context={window:{AfroTools:{}}};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../data/agriculture/farm-payroll-data.js'),'utf8'),context);
  const ng=context.window.AfroTools.FarmPayrollData.NG;
@@ -24,4 +41,15 @@ test('public Nigeria data requires confirmed inputs and cannot reintroduce legac
  const result=after.FarmPayrollEngine.calculate({...input,overtimeHours:10,contributionSelection:selected,labourSelection:{...input.labourSelection,overtimeHourlyPay:'1500'}},ng);
  assert.equal(result.overtimePay,15000);assert.equal(result.leaveProvision,1500);assert.equal(result.netCashPay,105700);assert.equal(result.totalEmployerCost,156500);
  for(const field of ['maxHoursPerDay','maxHoursPerWeek','overtimeRate','annualLeave_days','publicHolidays']){assert.equal(ng.laborLaw[field],null);assert.equal(result.laborLaw[field],undefined);}
+});
+
+test('noncash benefits cannot conceal deductions exceeding the cash wage', () => {
+  const values = { ...input, grossPay: 1000, inKindHousing: 20000, inKindFood: 0 };
+  const kenya = { ...after.FarmPayrollData.KE, deductions: { pension: { name: 'Test pension', rate_pct: 10 } } };
+  const rejected = after.FarmPayrollEngine.calculate(values, kenya);
+  assert.equal(rejected.code, 'contributions-exceed-cash');
+  assert.equal(rejected.netPay, undefined);
+  const zero = after.FarmPayrollEngine.calculate({ ...values, inKindHousing: 9000 }, kenya);
+  assert.equal(zero.netPay, 0);
+  assert.equal(zero.grossForDeductions, 10000);
 });

@@ -1,16 +1,16 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-10-07
+Generated: 2026-11-27
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
 ## Headline Metrics
 
-- Hausa routes scanned: 106
+- Hausa routes scanned: 107
 - Clean routes: 49
 - Routes with blockers: 0
 - BLOCKER_VISIBLE_ENGLISH findings: 0
-- POSSIBLE_FALSE_POSITIVE findings: 151
+- POSSIBLE_FALSE_POSITIVE findings: 148
 - ACCEPTED_TECH_TERM findings: 600
 
 ## Top 20 Blocker Routes
@@ -35,7 +35,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/allon-aiki/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/farashi/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/farashi/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/game-da-mu/` | 7 | English route label marked as fallback | Tsallake zuwa babban abun ciki Gida › Game da AfroTools Manufarmu Game da AfroTools Muna gina kayan aikin da ke taimaka wa mutane su yanke shawara cikin yanayin Afirka, tare da tushe, sirri da iyakokin da ake iya gani... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/game-da-mu/` | 9 | English route label marked as fallback | Tsallake zuwa babban abun ciki Gida › Game da AfroTools Manufarmu Game da AfroTools Muna gina kayan aikin da ke taimaka wa mutane su yanke shawara cikin yanayin Afirka, tare da tushe, sirri da iyakokin da ake iya gani... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/inshora/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/inshora/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/jamb/adabi/` | 100 | English route label marked as fallback | Jagorar Hausa don JAMB Adabi: wakoki, labari, wasan kwaikwayo, salo, jigo da fahimtar rubutu. Tambayoyin shekarun da suka gabata suna nan a shafin Turanci; wannan shafin yana taimaka maka fahimtar abin da za ka karant... | Batch 2 - Education and JAMB visible-copy cleanup |
@@ -51,7 +51,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/jamb/gwamnati/` | 125 | English route label marked as fallback | Darasi Kundin tsarin mulki Ka fara da maanar kalmomi, ka rubuta gajeren bayani, sannan ka yi atisaye daga tambayoyin da ke shafin Turanci. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/gwamnati/` | 134 | English route label marked as fallback | Karanta mahimman kalmomi a Hausa, sannan ka bude shafin Turanci domin tambayoyin asali. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/gwamnati/` | 136 | English route label marked as fallback | Kar ka dauka an kirkiri shafukan shekarun Hausa. Ajiyar shekaru tana kan asalin shafin Turanci. | Batch 2 - Education and JAMB visible-copy cleanup |
-| `/ha/jamb/` | 469 | English route label marked as fallback | Karanta jagorar Hausa kan yadda za a tambayi mai taimakon AI, sannan bude shafin Turanci idan kana bukatar amsa. | Batch 2 - Education and JAMB visible-copy cleanup |
+| `/ha/jamb/` | 471 | English route label marked as fallback | Karanta jagorar Hausa kan yadda za a tambayi mai taimakon AI, sannan bude shafin Turanci idan kana bukatar amsa. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/kasuwanci/` | 100 | English route label marked as fallback | Jagorar Hausa don JAMB Kasuwanci: ciniki, banki, inshora, sufuri, tallace-tallace da nauin kamfani. Tambayoyin shekarun da suka gabata suna nan a shafin Turanci; wannan shafin yana taimaka maka fahimtar abin da za ka ... | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/kasuwanci/` | 125 | English route label marked as fallback | Darasi Ciniki da kasuwa Ka fara da maanar kalmomi, ka rubuta gajeren bayani, sannan ka yi atisaye daga tambayoyin da ke shafin Turanci. | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/jamb/kasuwanci/` | 134 | English route label marked as fallback | Karanta mahimman kalmomi a Hausa, sannan ka bude shafin Turanci domin tambayoyin asali. | Batch 2 - Education and JAMB visible-copy cleanup |
@@ -72,21 +72,23 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kasashe/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kasuwanci-da-haraji/` | 149 | English route label marked as fallback | Karin hanyoyin kasuwanci Wadannan hanyoyin suna taimaka wa mai kasuwanci ya shirya takardu, rajista da bincike. Inda shafin Hausa bai fito ba tukuna, mun nuna shafin Turanci a fili. | Batch 2 - Salary/tax and VAT visible-copy cleanup |
 | `/ha/kayan-aiki/abincin-dabbobi/` | 25 | English route label marked as fallback | Bayanan kiwo Yawan dabbobi Nauyin kowace dabba, kg Abinci bisa nauyi, kashi Farashin kg daya Lissafa abinci Abin da wannan kiyasi yake nufi Adadin abinci ya dogara da nauyi, shekarun dabba, yanayin kiwo, ciyawa da ake... | Batch 2 - Health and family visible-copy cleanup |
-| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 24 | brand or platform name | Tsallake zuwa babban abun ciki Hausa / Sadarwa / Intanet Kiyasin amfani da intanet Kiyasta GB da kake bukata a wata daga lilo, bidiyo, sautin kira, karatu, aiki da WhatsApp. Sakamako kiyasi ne; tsare-tsaren kamfanin s... | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 25 | English route label marked as fallback | Amfani na yau da kullum Lilo a rana, sa'o'i Bidiyo a rana, sa'o'i Kiran bidiyo a mako, sa'o'i Karatu ko aiki a rana, sa'o'i Lissafa GB Kwafi sakamako Sauke TXT Yadda aka yi kiyasi Kayan aikin yana amfani da matsakaici... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 25 | brand or platform name | Tsallake zuwa babban abun ciki Hausa / Sadarwa / Intanet Kiyasin amfani da intanet Kiyasta GB da kake bukata a wata daga lilo, bidiyo, sautin kira, karatu, aiki da WhatsApp. Sakamako kiyasi ne; tsare-tsaren kamfanin s... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 26 | English route label marked as fallback | Amfani na yau da kullum Saka sa’o’in amfani. Idan babu amfani, saka 0. Lilo a rana, sa’o’i Daga 0 zuwa 24; karin rabin awa (0.5). Bidiyo a rana, sa’o’i Daga 0 zuwa 24; karin rabin awa (0.5). Kiran bidiyo a mako, sa’o’... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/farashin-kayayyakin-gona/` | 25 | English route label marked as fallback | Kiyasin kudin shiga Adadi Farashi a kan daya Kudin sufuri da ajiya Ragin lalacewa, kashi Kiyasta kudin shiga Abin lura ga manomi da dan kasuwa Ka duba farashi fiye da kasuwa daya idan zai yiwu. Kudin sufuri, ajiya, na... | Batch 2 - Agriculture visible-copy cleanup |
+| `/ha/kayan-aiki/farashin-mai/` | 80 | English route label marked as fallback | Duba sauran ƙasashe a shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/gwajin-ussd/` | 31 | brand or platform name | Samfurin sabis Waɗannan misalan menu ne kawai, ba tabbacin lambar yanzu ba. Tabbatar da mai bayarwa kafin kaddamarwa. M-Pesa (Kenya) GTBank (Nigeria) MTN MoMo (Ghana) FNB (South Africa) Lambar gwaji | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 86 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 104 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 120 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
-| `/ha/kayan-aiki/` | 544 | brand or platform name | Akwai da Hausa Matsa PDF Rage girman PDF don loda fayil, imel, tashar yanar gizo ko WhatsApp. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
-| `/ha/kayan-aiki/` | 547 | English route label marked as fallback | Akwai da Hausa Wurin aikin PDF Fara daga wuri daya: hada PDF, raba PDF, matsa PDF ko bude babban shafin Turanci idan ana bukata. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
-| `/ha/kayan-aiki/` | 580 | brand or platform name | Akwai da Hausa Link din WhatsApp Gina link din wa.me, sako, QR da tarin hanyoyi don kasuwanci. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
-| `/ha/kayan-aiki/` | 589 | brand or platform name | Akwai da Hausa Kiyasin amfani da intanet Kiyasta yawan bayanan intanet da lilo, bidiyo, WhatsApp da aiki ke bukata. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
-| `/ha/kayan-aiki/` | 610 | brand or platform name | Akwai da Hausa Kalkuletan Paystack Kiyasta caji da abin da zai shigo bayan cire kudin Paystack, sannan tabbatar da jadawalin kamfani. Bude jagora | Batch 2 - Hausa hub visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-gpa-cgpa/` | 25 | English route label marked as fallback | Bayanan maki Jimillar maki na zango Jimillar raka'o'i na zango Jimillar maki na baya Raka'o'in baya Lissafa Abin lura Wasu jami'o'i suna amfani da 5.0, wasu 4.0. Wannan kayan aiki yana raba jimillar maki da jimillar r... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/` | 547 | brand or platform name | Akwai da Hausa Matsa PDF Rage girman PDF don loda fayil, imel, tashar yanar gizo ko WhatsApp. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
+| `/ha/kayan-aiki/` | 550 | English route label marked as fallback | Akwai da Hausa Wurin aikin PDF Fara daga wuri daya: hada PDF, raba PDF, matsa PDF ko bude babban shafin Turanci idan ana bukata. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
+| `/ha/kayan-aiki/` | 583 | brand or platform name | Akwai da Hausa Link din WhatsApp Gina link din wa.me, sako, QR da tarin hanyoyi don kasuwanci. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
+| `/ha/kayan-aiki/` | 592 | brand or platform name | Akwai da Hausa Kiyasin amfani da intanet Kiyasta yawan bayanan intanet da lilo, bidiyo, WhatsApp da aiki ke bukata. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
+| `/ha/kayan-aiki/` | 613 | brand or platform name | Akwai da Hausa Kalkuletan Paystack Kiyasta caji da abin da zai shigo bayan cire kudin Paystack, sannan tabbatar da jadawalin kamfani. Bude jagora | Batch 2 - Hausa hub visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-gpa-cgpa/` | 36 | English route label marked as fallback | Abin lura Wasu jami'o'i suna amfani da 5.0, wasu 4.0. Wannan kayan aiki yana raba jimillar maki da jimillar raka'o'i; tsarin maki ya fito daga yadda ka shigar da bayanai. Idan kana bukatar shigo da fayil ko tsarin mak... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 64 | brand or platform name | Gida / Kayan aiki / Kuɗin Paystack Hanyar shafi | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 66 | brand or platform name | Shirya kuɗin Paystack ba tare da ɓoye zato ba. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 67 | brand or platform name | Kwatanta hanyoyin ciniki da ake tallafawa, net ɗan kasuwa da cajin da zai bada net da ake so. Kowane lissafi yana cikin burauza bisa kuɗin da aka duba. Bayan ranar sake dubawa, ana iya amfani da shi a matsayin kiyasin... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 76 | brand or platform name | Ranar fara aiki Paystack ba ta wallafa ba | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 81 | brand or platform name | Zaɓi ƙasar ɗan kasuwa da hanyar da Paystack ta lissafo. An kulle kuɗi da ƙasar. Shirin wata da net da ake so ƙayyadadden lissafi ne, ba hasashe ko quote ba. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 109 | brand or platform name | Kenya Katin gida / M-PESA / na waje 2.9% / 1.5% / 3.8% Ba a yi hasashe ba | Batch 2 - General Hausa visible-copy cleanup |
@@ -95,7 +97,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 117 | brand or platform name | Tambayoyi kan kuɗin Paystack | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 118 | brand or platform name | Biyan da bai kai NGN 2,500 ba kyauta ne? A'a. A cinikin gida na Najeriya da bai kai NGN 2,500 ba, Paystack tana cire tsayayyen NGN 100 ne kawai. Har yanzu kuɗin kaso 1.5% yana aiki. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-paystack/` | 119 | brand or platform name | Mai tsara kuɗin yana ƙara haraji kan kuɗin Paystack? Yana ƙara VAT 15% ga kuɗin Afirka ta Kudu kawai domin Paystack ta wallafa farashin a matsayin wanda bai haɗa VAT ba. Ba ya hasashen haraji ga Najeriya, Ghana ko Kenya. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 121 | brand or platform name | Yaushe aka duba waɗannan farashin Paystack? An sabunta tushen farashin Paystack a 20 Mayu 2026, AfroTools kuma ta duba shi a 23 Yuli 2026. Paystack ba ta wallafa ranar fara aiki guda ba. Za a toshe lissafin bayan 21 O... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 121 | brand or platform name | Yaushe aka duba waɗannan farashin Paystack? An sabunta tushen farashin Paystack a 2026-09-15, AfroTools kuma ta duba shi a 2026-10-22. Paystack ba ta wallafa ranar fara aiki guda ba. Bayan 2026-10-29, lissafi zai kasa... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-waec-neco/` | 168 | brand or platform name |  WhatsApp | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/kayan-aiki/kasafin-dalibi/` | 41 | English route label marked as fallback | Bayanan kudi Kudin da zai shigo Kudin makaranta Haya ko masauki Abinci Sufuri Littattafai da yan bukatu Lissafa kasafi Kwafa brief din kasafi Yadda za a karanta sakamako Idan ragowar kudi ya yi kasa, fara rage abin da... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kirkiro-invoice/` | 629 | brand or platform name | Kudin wayar hannu / WhatsApp | Batch 2 - Document, PDF, invoice, and Naira cleanup |
@@ -132,23 +134,21 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/waya-ko-banki/` | 89 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/waya-ko-banki/` | 119 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/waya-ko-banki/` | 135 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 125 | brand or platform name | AfroTools Hausa / Sadarwa / WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 126 | brand or platform name | Mai Gina WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 127 | brand or platform name | Gina hanyar wa.me da sakon farko domin a fara magana a WhatsApp. Yana da amfani ga masu sayarwa, isarwa, ajiyar lokaci da taimakon kwastoma. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 136 | brand or platform name | Gina WhatsApp link | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 181 | brand or platform name | Shirin link Hanyar WhatsApp wa.me tana bukatar cikakkiyar lambar kasa ba tare da alamar +, baka ko tazara ba. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 206 | brand or platform name | WhatsApp link dinka | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 213 | brand or platform name | Bude a WhatsApp | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 217 | brand or platform name | Lambar QR ta mahadar WhatsApp | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 222 | brand or platform name | Mai Gina WhatsApp Link yana gina hanyar da za ta bude tattaunawa kai tsaye ba tare da kwastoma ya fara ajiye lambar ba. Ka saka lambar waya da lambar kasa, ka kara sako idan kana so, sannan ka raba link din a bayanin ... | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 228 | brand or platform name | Ta yaya zan kirkiro WhatsApp link ga kasuwanci? | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 229 | brand or platform name | Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 237 | brand or platform name | Eh. Link din yana bude tattaunawa kai tsaye a WhatsApp, shi yasa yake da amfani ga taimakon kwastoma, sayarwa ta intanet, ajiyar lokaci da isarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 241 | brand or platform name | Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 252 | brand or platform name | Duba lambar WhatsApp kafin rabawa | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 126 | brand or platform name | AfroTools Hausa / Sadarwa / WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 127 | brand or platform name | Mai Gina WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 128 | brand or platform name | Gina hanyar wa.me da sakon farko domin a fara magana a WhatsApp. Yana da amfani ga masu sayarwa, isarwa, ajiyar lokaci da taimakon kwastoma. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 133 | brand or platform name | Lamba da sako suna cikin link, QR da fayil din da ka raba. Ana shirya su a naurarka. Bude a WhatsApp ne kawai zai kai ka zuwa WhatsApp. Kada ka saka PIN, BVN, NIN ko bayanan kati. Link daya Link masu yawa Gina link La... | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 137 | brand or platform name | Mai Gina WhatsApp Link yana gina hanyar da za ta bude tattaunawa kai tsaye ba tare da kwastoma ya fara ajiye lambar ba. Ka saka lambar waya da lambar kasa, ka kara sako idan kana so, sannan ka raba link din a bayanin ... | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 142 | brand or platform name | Ta yaya zan kirkiro WhatsApp link ga kasuwanci? Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 144 | brand or platform name | Shin wa.me link yana aiki ba tare da ajiye lamba ba? Eh. Link din yana bude tattaunawa kai tsaye a WhatsApp, shi yasa yake da amfani ga taimakon kwastoma, sayarwa ta intanet, ajiyar lokaci da isarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 145 | brand or platform name | Ina amfani da QR code yaya? Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 154 | brand or platform name | Duba lambar WhatsApp kafin rabawa | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/wurin-aikin-pdf/` | 161 | brand or platform name | Akwai da Hausa Matsa PDF Rage girman fayil kafin aikawa ta email ko WhatsApp. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/wurin-aikin-pdf/` | 178 | English route label marked as fallback | Me yasa wasu hanyoyi suke kaiwa shafin Turanci? | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/wurin-aikin-pdf/` | 185 | English route label marked as fallback | Tushe da sabuntawa: Shawarwarin hanya suna bin taswirar aikin PDF ta AfroTools. Wasu manyan kayan PDF na iya bude shafin Turanci har sai cikakkiyar fuskar Hausa ta shirya. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
+| `/ha/kayan-kasuwanci/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-kasuwanci/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/labarai/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 
 ## ACCEPTED_TECH_TERM
 
