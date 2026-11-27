@@ -80,13 +80,13 @@ window.addEventListener('load', function() {
 <div class="ins-card-body"><div class="ins-form-grid"><div class="ins-field"><label class="ins-f-label" for="funeralType">Funeral Type</label><select class="ins-f-select" id="funeralType"><option value="Simple / Basic">Simple / Basic</option><option value="Standard / Traditional">Standard / Traditional</option><option value="Premium / Elaborate">Premium / Elaborate</option></select></div><div class="ins-field"><label class="ins-f-label" for="coverAmount">Desired Cover montant</label><input class="ins-f-input" type="number" id="coverAmount" placeholder="e.g. 500000" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="age">Your Age</label><input class="ins-f-input" type="number" id="age" placeholder="e.g. 40" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="familyMembers">Family Members to Cover</label><input class="ins-f-input" type="number" id="familyMembers" placeholder="e.g. 4" inputmode="numeric"></div></div>
 <button class="ins-calc-btn" id="calcBtn" type="button">Calculer l'estimation</button></div></div>
 <div class="ins-results" id="results">
-<div class="ins-res-hero accent"><div class="ins-res-hero-label">Mensuel Premium Range</div><div class="ins-res-hero-amount" id="resAmount">—</div><div class="ins-res-hero-sub" id="resSub">Funeral cover</div></div>
+<div class="ins-res-hero accent"><div class="ins-res-hero-label">Prime mensuelle estimée Range</div><div class="ins-res-hero-amount" id="resAmount">—</div><div class="ins-res-hero-sub" id="resSub">Funeral cover</div></div>
 <div class="ins-card"><div class="ins-card-body">
 <table class="ins-summary-table"><thead><tr><th>Detail</th><th>Estimate</th></tr></thead><tbody>
 <tr><td>Average Funeral Cost</td><td id="resFunCost">—</td></tr>
 <tr><td>Cover montant</td><td id="resCover">—</td></tr>
-<tr><td>Mensuel Premium</td><td id="resMensuel">—</td></tr>
-<tr><td>Annuel Premium</td><td id="resAnnuel">—</td></tr>
+<tr><td>Prime mensuelle estimée</td><td id="resMensuel">—</td></tr>
+<tr><td>Prime annuelle estimée</td><td id="resAnnuel">—</td></tr>
 <tr><td>Waiting Period</td><td id="resWait">—</td></tr>
 </tbody></table></div></div></div>
 <section class="ins-seo">
@@ -104,7 +104,7 @@ window.addEventListener('load', function() {
 "use strict";
 var CC='SN';
 var D=window.AfroTools.insuranceData;
-var E=window.AfroTools.FuneralAssuranceEngine;
+var E=window.AfroTools.FuneralInsuranceEngine;
 
 document.getElementById("calcBtn").addEventListener("click",function(){
 var inputs={};
@@ -114,15 +114,15 @@ inputs.age=document.getElementById("age")?document.getElementById("age").value:"
 inputs.familyMembers=document.getElementById("familyMembers")?document.getElementById("familyMembers").value:"";
 var cc=CC||"NG";
 var r=E.calculate(inputs,cc);
-if(r.error){alert(r.error);return;}
+if(r.error){alert("Vérifiez les montants saisis et les données du pays.");return;}
 
 document.getElementById("resAmount").textContent=r.monthlyPremiumMin+" — "+r.monthlyPremiumMax;
-document.getElementById("resSub").textContent="per month for "+r.familyMembers+" family member(s)";
+document.getElementById("resSub").textContent="Estimation mensuelle pour "+r.familyMembers+(r.familyMembers===1?" personne":" personnes");
 document.getElementById("resFunCost").textContent=r.estimatedFuneralCost;
 document.getElementById("resCover").textContent=r.coverAmount;
 document.getElementById("resMensuel").textContent=r.monthlyPremiumMin+" — "+r.monthlyPremiumMax;
 document.getElementById("resAnnuel").textContent=r.annualPremiumMin+" — "+r.annualPremiumMax;
-document.getElementById("resWait").textContent=r.waitingPeriod;
+document.getElementById("resWait").textContent="À vérifier auprès de l’assureur selon le contrat et la cause du décès.";
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 });

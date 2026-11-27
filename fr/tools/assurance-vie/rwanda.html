@@ -98,9 +98,9 @@ window.addEventListener('load', function() {
 <tr><td>Existing Cover</td><td id="resExisting">—</td></tr>
 <tr><td><strong>Gap (Assurance Needed)</strong></td><td id="resGap" class="highlight">—</td></tr>
 </tbody></table></div></div>
-<div class="ins-metrics"><div class="ins-metric"><div class="ins-metric-val" id="resPremMin">—</div><div class="ins-metric-label">Annuel Premium (Low)</div></div>
-<div class="ins-metric"><div class="ins-metric-val" id="resPremMax">—</div><div class="ins-metric-label">Annuel Premium (High)</div></div>
-<div class="ins-metric"><div class="ins-metric-val" id="resTerm">—</div><div class="ins-metric-label">Recommended Term</div></div></div></div>
+<div class="ins-metrics"><div class="ins-metric"><div class="ins-metric-val" id="resPremMin">—</div><div class="ins-metric-label">Prime annuelle estimée (Low)</div></div>
+<div class="ins-metric"><div class="ins-metric-val" id="resPremMax">—</div><div class="ins-metric-label">Prime annuelle estimée (High)</div></div>
+<div class="ins-metric"><div class="ins-metric-val" id="resTerm">—</div><div class="ins-metric-label">Horizon de calcul</div></div></div></div>
 <section class="ins-seo">
 <h2>Rwanda Calculateur besoins assurance vie — What You Need to Know</h2>
 <p lang="en" data-explicit-language-fallback="true">Calculer your life insurance needs in Rwanda. Factor in dependents, debts, éducation costs, and income replacement to find the right sum assured. Use this free calculateur to get a quick estimate before contacting insurance providers.</p>
@@ -116,7 +116,7 @@ window.addEventListener('load', function() {
 "use strict";
 var CC='RW';
 var D=window.AfroTools.insuranceData;
-var E=window.AfroTools.LifeAssuranceEngine;
+var E=window.AfroTools.LifeInsuranceEngine;
 
 document.getElementById("calcBtn").addEventListener("click",function(){
 var inputs={};
@@ -129,7 +129,7 @@ inputs.existingCover=document.getElementById("existingCover")?document.getElemen
 inputs.age=document.getElementById("age")?document.getElementById("age").value:"";
 var cc=CC||"NG";
 var r=E.calculate(inputs,cc);
-if(r.error){alert(r.error);return;}
+if(r.error){alert("Vérifiez les montants saisis et les données du pays.");return;}
 
 document.getElementById("resAmount").textContent=r.gap;
 document.getElementById("resIncome").textContent=r.incomeReplacement;
@@ -140,7 +140,7 @@ document.getElementById("resExisting").textContent=r.existingCover;
 document.getElementById("resGap").textContent=r.gap;
 document.getElementById("resPremMin").textContent=r.estimatedPremiumMin;
 document.getElementById("resPremMax").textContent=r.estimatedPremiumMax;
-document.getElementById("resTerm").textContent=r.termRecommendation;
+document.getElementById("resTerm").textContent=(Number(inputs.incomeYears)||10)+" ans de revenus à remplacer";
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 });
