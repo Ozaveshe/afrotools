@@ -51,7 +51,7 @@ function calcFIRE(){
   }
   function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
   document.getElementById('fire-number').textContent=fmt(fireNumber);
-  document.getElementById('fire-sub').textContent=fireText('targetSpending','Target-date spending')+' '+fmt(retireExpensesAtTarget)+'/'+fireText('perMonth','month')+' ÷ '+withdrawalPercent.toFixed(2)+'% | '+fireText('realReturn','Real return scenario')+' '+(realReturn*100).toFixed(2)+'%';
+  document.getElementById('fire-sub').textContent=fireText('targetSpending','Target-date spending')+' '+fmt(retireExpensesAtTarget)+'/'+fireText('perMonth','month')+' × 12 ÷ '+withdrawalPercent.toFixed(2)+'% | '+fireText('realReturn','Real return scenario')+' '+(realReturn*100).toFixed(2)+'%';
   document.getElementById('fire-years').textContent=yearsToRetire+' '+(yearsToRetire===1?fireText('year','year'):fireText('years','years'));
   document.getElementById('fire-retire-year').textContent=(new Date().getFullYear()+yearsToRetire);
   document.getElementById('fire-portfolio-at-retire').textContent=fmt(portfolioAtRetire);
