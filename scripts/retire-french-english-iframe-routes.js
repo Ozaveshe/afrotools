@@ -26,6 +26,8 @@ const AGRICULTURE_FAMILIES = Object.freeze([
   { slug: "poultry-roi", preserveCountry: true },
   { slug: "vaccination-schedule", preserveCountry: true }
 ]);
+const MR_HARVEST_SOURCE = "/fr/agriculture/harvest-date/mauritania";
+const MR_HARVEST_ROUTE = "/fr/agriculture/calendrier-recolte-mauritanie/";
 const COUNTRY_ALIAS_FILE = path.join(ROOT, "data/registry/french-agriculture-country-aliases.json");
 const COUNTRY_FAMILY_COUNTS = Object.freeze({ "crop-insurance": 15, "export-docs": 54, "poultry-roi": 15, "vaccination-schedule": 54 });
 
@@ -73,7 +75,7 @@ function countryReport(report) {
   const aliases = loadCountryAliases();
   return {
     ...report,
-    agricultureRedirectRules: AGRICULTURE_FAMILIES.length * 3 + aliases.length * 3,
+    agricultureRedirectRules: (AGRICULTURE_FAMILIES.length + aliases.length + 1) * 3,
     countryPrefillAliases: aliases.map(alias => ({
       ...alias,
       variants: countryAliasVariants(alias).map(variant => ({ ...variant, destination: `${alias.canonicalHub}?country=${alias.countrySlug}` }))
@@ -144,6 +146,7 @@ function pathVariants(route) {
 
 function canonicalFor(filePath, source) {
   const route = fileRoute(filePath);
+  if (route === MR_HARVEST_SOURCE) return MR_HARVEST_ROUTE;
   if (POLICY_CANONICALS.has(route)) return POLICY_CANONICALS.get(route);
   const agriculture = route.match(/^\/fr\/agriculture\/([^/]+)\//);
   if (agriculture && AGRICULTURE_FAMILIES.some((family) => family.slug === agriculture[1])) {
@@ -239,6 +242,9 @@ function redirectBlock() {
     for (const variant of countryAliasVariants(alias)) {
       lines.push(`${variant.sourcePath}  ${alias.canonicalHub}?country=${alias.countrySlug}  301!`);
     }
+  }
+  for (const suffix of [".html", "", "/"]) {
+    lines.push(`${MR_HARVEST_SOURCE}${suffix}  ${MR_HARVEST_ROUTE}  301!`);
   }
   for (const family of AGRICULTURE_FAMILIES) {
     const destination = `/fr/agriculture/${family.slug}/${family.preserveCountry ? "?country=:country" : ""}`;

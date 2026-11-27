@@ -134,7 +134,11 @@ for (const alias of retirement.loadCountryAliases()) {
 }
 assert.strictEqual(result.report.countryPrefillAliases.length, 138);
 assert.strictEqual(result.report.countryPrefillAliases.flatMap(alias => alias.variants).length, 414);
-assert.strictEqual(result.report.agricultureRedirectRules, 429);
+assert.strictEqual(result.report.agricultureRedirectRules, 432);
+for (const suffix of [".html", "", "/"]) {
+  const literal = `/fr/agriculture/harvest-date/mauritania${suffix}  /fr/agriculture/calendrier-recolte-mauritanie/  301!`;
+  assert.ok(redirects.includes(literal) && redirects.indexOf(literal) < redirects.indexOf("/fr/agriculture/harvest-date/:country"));
+}
 assert.match(redirects, /\/fr\/agriculture\/harvest-date\/:country\s+\/fr\/agriculture\/harvest-date\/\s+301!/);
 
 console.log(`French English-iframe retirement tests passed (${result.report.wrapperPages} governed wrappers).`);

@@ -6,7 +6,7 @@ const RISKS = Object.freeze({ low:'Faible',medium:'Moyen',high:'Élevé' });
 
 function render(row) {
   const pageConfig = { id: row.english.id, locale: 'fr', crops: CROPS, risks: RISKS };
-  const body = `<section class="card"><h2>Hypothèses de récolte</h2><form id="harvestForm" novalidate><div class="grid">
+  const body = `<section class="card"><h2>Hypothèses de récolte</h2><p><a href="/fr/agriculture/calendrier-recolte-mauritanie/">En Mauritanie ? Estimer la récolte selon la culture et la zone.</a></p><form id="harvestForm" novalidate><div class="grid">
 <div class="field"><label for="plantingDate">Date de plantation</label><input id="plantingDate" type="date" value="2026-04-01" required></div>
 <div class="field"><label for="crop">Culture</label><select id="crop"><option value="maize">Maïs</option><option value="rice">Riz</option><option value="cassava">Manioc</option><option value="tomato">Tomate</option></select></div>
 <div class="field"><label for="maturityDays">Durée jusqu’à maturité (jours)</label><input id="maturityDays" type="number" min="0" step="any" value="110" required><small>Utilisez la durée indiquée pour la variété réellement semée.</small></div>

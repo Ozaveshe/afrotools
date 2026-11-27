@@ -92,6 +92,9 @@ function run(options) {
   const current = fs.readFileSync(file, 'utf8');
   if (options.check && current !== content) throw new Error(`${row.french.file} is stale.`);
   if (!options.check && current !== content) fs.writeFileSync(file, content, 'utf8');
+  if (options.id === 'harvest-date-estimator') {
+    require('./lib/fr-agriculture-singleton-contracts/mauritania-harvest').sync(ROOT, options.check);
+  }
   assertNativeFrenchOutput(manifest, [row.french.route]);
   console.log(JSON.stringify({ id: options.id, route: row.french.route, mode: options.check ? 'check' : 'write' }, null, 2));
 }
