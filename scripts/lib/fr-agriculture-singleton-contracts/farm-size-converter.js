@@ -26,7 +26,7 @@ const NOTES = Object.freeze({
   plot_ng_930:'Superficie fixe de 930 m². Vérifiez les dimensions de la parcelle.',
   feddan:'1 feddan = 24 kirat = 0,42 ha. Unité traditionnelle en Égypte et au Soudan.',
   kirat:'1/24 de feddan, unité traditionnelle secondaire.',
-  sahm:'2 kirat = 1 sahm.',qasaba:'1 qasaba linéaire vaut environ 2,7 m; sa surface carrée vaut 7,29 m².',
+  sahm:'24 sahm = 1 kirat (175 m²).',qasaba:'1 qasaba linéaire vaut environ 2,7 m; sa surface carrée vaut 7,29 m².',
   morgen:'Morgen du Cap, encore rencontré en Afrique du Sud, Namibie et Zimbabwe; environ 2,1 acres.',
   timad:'Environ 0,25 ha. Unité d’Amhara et du Tigré liée à la surface labourée par une paire de bœufs en une journée.',
   tseri:'Environ 0,25 ha. Unité du Tigré et de l’Érythrée, proche du timad.',
