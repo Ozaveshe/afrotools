@@ -94,11 +94,16 @@
     if (contract.id === "afrokitchen") {
       var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
       var recipe = recipes.find(function (item) { return item.slug === payload.input.recipe; });
-      lines.push("", "Mapishi: " + (recipe ? recipe.name : payload.input.recipe), "Viungo vilivyorekebishwa");
+      lines.push("", "Mapishi: " + (payload.method ? payload.method.title : payload.input.recipe), "Viungo vilivyorekebishwa");
       payload.result.rows.forEach(function (row) {
         var amount = Number.isFinite(row.scaledAmount) ? row.scaledAmount.toLocaleString("sw-TZ", { maximumFractionDigits: 2 }) : "Kulingana na ladha";
         lines.push(row.name + ": " + amount + (row.unit ? " " + row.unit : ""));
       });
+      if (payload.method) {
+        lines.push("", "Jinsi ya kupika — " + payload.method.title, methodContext(payload.method));
+        payload.method.steps.forEach(function (step, index) { lines.push((index + 1) + ". " + step); });
+        lines.push("Jina katika orodha ya Kiingereza: " + recipe.name, "https://afrotools.com" + payload.method.source);
+      }
     }
     lines.push("", "Chanzo: " + contract.source, "Upya wa taarifa: " + contract.freshness, "Mipaka: " + contract.limitations);
     return lines.join("\n");
@@ -342,12 +347,137 @@
     return { input:input };
   }
 
+  var kitchenMethods = {
+    "nigerian-jollof-rice": {
+      "title": "Wali wa jollof wa Nigeria",
+      "country": "Nigeria",
+      "region": "Afrika Magharibi",
+      "steps": [
+        "Saga nyanya, pilipili hoho, pilipili kali na kitunguu kilichokatwa vipande vikubwa hadi upate mchanganyiko laini.",
+        "Kaanga kitunguu kilichokatwa vipande vyembamba katika mafuta kwa dakika 3. Ongeza nyanya ya kopo iliyokolea na ukoroge kwa dakika 2–3.",
+        "Mimina mchanganyiko uliosaga. Ongeza majani ya bay, taim, unga wa kari na viungo vya mchuzi. Chemsha, kisha pika kwa moto wa wastani kwa dakika 20–30 hadi mchuzi upungue na mafuta yaonekane juu.",
+        "Ongeza mchele uliooshwa, mchuzi wa kuku au maji, na chumvi. Ukichemka, funika sufuria vizuri na upike kwa moto mdogo kwa dakika 30 bila kufunua.",
+        "Onja punje moja. Ikiwa bado ni ngumu, nyunyiza maji kidogo, funika na upike dakika 5 zaidi. Ondoa majani ya bay, ongeza siagi ukipenda, kisha chokoa wali kwa uma."
+      ]
+    },
+    "ugali-sukuma-wiki": {
+      "title": "Ugali na sukuma wiki",
+      "country": "Kenya",
+      "region": "Afrika Mashariki",
+      "steps": [
+        "Chemsha maji ya ugali na chumvi yake katika sufuria nzito. Mimina robo ya unga wa mahindi huku ukikoroga kwa mwiko. Pika kwa dakika 2, kisha ongeza unga uliobaki taratibu.",
+        "Songa ugali kwa kuukandamiza ukutani mwa sufuria. Funika kwa dakika 5 kwa moto mdogo, songa tena, kisha funika kwa dakika 3–5 hadi uachane na sufuria.",
+        "Katika sufuria nyingine, kaanga kitunguu katika mafuta kwa dakika 3. Ongeza nyanya zilizokatwa na uzipike kwa dakika 2–3 hadi zilainike.",
+        "Ongeza sukuma wiki zilizokatwa, chumvi ya mboga na Royco ukipenda. Geuzageuza kwa dakika 3–5 hadi majani yalainike kidogo. Pakua kando ya ugali."
+      ]
+    },
+    "ethiopian-doro-wat": {
+      "title": "Doro wat ya kuku na mayai",
+      "country": "Ethiopia",
+      "region": "Afrika Mashariki",
+      "steps": [
+        "Pika vitunguu vyekundu vilivyokatwa kwenye sufuria nzito bila mafuta. Koroga kwa takribani dakika 20 hadi viwe vya kahawia na vipungue.",
+        "Ongeza siagi ya niter kibbeh, kitunguu saumu na tangawizi. Baada ya dakika 2 ongeza berbere na nyanya iliyokolea. Koroga kwa dakika 5.",
+        "Geuza vipande vya kuku kwenye viungo. Ongeza maji au mchuzi, funika na upike kwa moto mdogo kwa dakika 35–40 hadi kuku aive kabisa na mchuzi unene.",
+        "Chanja mayai yaliyochemshwa na kumenywa, kisha yaweke kwenye mchuzi. Ongeza limau na chumvi, rekebisha pilipili manga, upike bila kifuniko kwa dakika 10. Pakua pamoja na injera."
+      ]
+    },
+    "south-african-bobotie": {
+      "title": "Bobotie ya nyama ya kusaga",
+      "country": "Afrika Kusini",
+      "region": "Kusini mwa Afrika",
+      "steps": [
+        "Washa oveni hadi 180 °C. Loweka mkate kisha ukamue. Kaanga vitunguu kwa siagi kwa dakika 5, ongeza kari na manjano na ukoroge kwa dakika 1.",
+        "Ongeza nyama ya kusaga na ukaange hadi iwe ya kahawia. Changanya mkate, jamu ya aprikoti, siki, zabibu kavu na chumvi.",
+        "Sambaza mchanganyiko kwenye chombo cha kuokea kilichopakwa mafuta. Ingiza majani ya bay. Piga mayai, maziwa na chumvi kidogo kisha umimine juu.",
+        "Oka kwa dakika 35–40 hadi tabaka la mayai ligande na kupata rangi ya dhahabu. Iache kwa dakika 5 kabla ya kukata na kupakua."
+      ]
+    },
+    "senegalese-thieboudienne": {
+      "title": "Thiéboudienne — wali wa samaki",
+      "country": "Senegali",
+      "region": "Afrika Magharibi",
+      "steps": [
+        "Changanya majani ya paseli, kitunguu saumu na pilipili kali. Chanja samaki na utie mchanganyiko ndani ya mikato. Kaanga kwa takribani dakika 4 kila upande kisha utoe.",
+        "Kaanga vitunguu katika mafuta yale yale. Ongeza nyanya iliyokolea na upike dakika 5. Ongeza samaki mkavu, ukwaju na maji ya kutosha kufunika mboga.",
+        "Mchuzi ukichemka, anza na muhogo na karoti, kisha ongeza bilinganya na kabichi. Toa mboga zinapoiva.",
+        "Weka mchele uliovunjika kwenye mchuzi. Mchuzi ufunike mchele kwa karibu sentimita 1. Rudisha samaki juu, funika na upike kwa moto mdogo hadi mchele ufyonze mchuzi na samaki aive kabisa.",
+        "Pakua wali, panga samaki na mboga juu yake na umimine mchuzi uliobaki."
+      ]
+    },
+    "egyptian-koshari": {
+      "title": "Koshari ya wali, dengu na tambi",
+      "country": "Misri",
+      "region": "Afrika Kaskazini",
+      "steps": [
+        "Chemsha dengu za kahawia kwa dakika 15 hadi zikaribie kuiva. Ongeza mchele na maji safi ya kutosha kupikia wali. Pika hadi dengu na wali viive.",
+        "Chemsha tambi katika sufuria nyingine hadi ziive lakini zisilainike sana. Chuja maji na uchanganye tambi na mafuta kidogo.",
+        "Kaanga kitunguu saumu kwa mafuta kidogo. Ongeza nyanya zilizopondwa, siki, bizari jira na pilipili. Pika kwa moto mdogo kwa dakika 15 hadi mchuzi unene.",
+        "Kaanga vitunguu vilivyokatwa vipande vyembamba hadi viwe vya dhahabu na vikauke. Pakua wali na dengu kwanza, kisha tambi na dengu aina ya kabuli (chana) zilizoiva. Mimina mchuzi na uweke vitunguu juu."
+      ]
+    },
+    "moroccan-chicken-tagine": {
+      "title": "Tajini ya kuku na malimau ya chumvi",
+      "country": "Moroko",
+      "region": "Afrika Kaskazini",
+      "steps": [
+        "Paka kuku kitunguu kilichokunwa, tangawizi, manjano, zafarani, pilipili manga, mafuta ya zeituni na nusu ya majani ya giligilani. Weka kuku kwenye jokofu kwa angalau dakika 30.",
+        "Weka kuku na viungo vyake kwenye tajini au sufuria nzito. Ongeza maji, funika na upike kwa moto mdogo kwa dakika 45. Geuza kuku katikati ya muda huo.",
+        "Ongeza maganda ya malimau yaliyohifadhiwa kwa chumvi na zeituni za kijani. Pika bila kifuniko kwa dakika 10 hadi mchuzi upungue na kuku aive kabisa.",
+        "Nyunyiza giligilani iliyobaki. Pakua pamoja na mkate au kuskusi."
+      ]
+    },
+    "ghanaian-waakye": {
+      "title": "Waakye ya wali na kunde",
+      "country": "Ghana",
+      "region": "Afrika Magharibi",
+      "steps": [
+        "Loweka kunde au maharagwe mekundu usiku kucha. Mwaga maji ya kulowekea, ongeza maji safi, mashina ya majani ya mtama na soda ya kuokea.",
+        "Chemsha hadi maharagwe yaanze kulainika, takribani dakika 25. Ongeza mchele uliooshwa na chumvi. Maji yazidi mchele kwa takribani sentimita 2.5.",
+        "Funika na upike kwa moto wa wastani. Maji yanapokaribia kukauka, punguza moto, funika vizuri na uache wali uive kwa mvuke kwa dakika 10. Hakikisha kunde au maharagwe yameiva kabisa.",
+        "Ondoa mashina ya mtama na upakue. Unaweza kuandamana na shito, mayai yaliyochemshwa au samaki wa kukaanga."
+      ]
+    }
+  };
+
+  function kitchenMethod(recipe) {
+    var entry = recipe && kitchenMethods[recipe.slug];
+    if (!entry) return null;
+    return {
+      title: entry.title, localName: recipe.name_local, country: entry.country, region: entry.region,
+      baseServings: recipe.default_servings, prepMinutes: recipe.prep_time_minutes,
+      cookMinutes: recipe.cook_time_minutes, steps: entry.steps, source: recipe.method_url
+    };
+  }
+
+  function methodContext(method) {
+    return 'Sehemu za mapishi ya awali: ' + method.baseServings + ' · Maandalizi: ' + method.prepMinutes + ' dakika · Kupika: ' + method.cookMinutes + ' dakika';
+  }
+
+  function displayKitchenMethod(recipe) {
+    var method = kitchenMethod(recipe);
+    var panel = document.getElementById('kitchen-method');
+    if (!method) { if (panel) panel.remove(); return; }
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.id = 'kitchen-method';
+      panel.className = 'ua-card';
+      panel.setAttribute('aria-labelledby', 'kitchen-method-title');
+      form.after(panel);
+    }
+    panel.innerHTML = '<h2 id="kitchen-method-title">Jinsi ya kupika — ' + escapeHtml(method.title) + '</h2><p>' +
+      escapeHtml(methodContext(method)) + '</p><ol>' + method.steps.map(function (step) {
+        return '<li>' + escapeHtml(step) + '</li>';
+      }).join('') + '</ol><p>Mpangaji huu una mapishi manane kwa Kiswahili. Muda ni wa kukadiria; ukibadilisha sehemu, kagua chakula kinapoiva.</p><p><a href="/tools/afrokitchen/" hreflang="en">Tazama orodha kamili ya mapishi (Kiingereza)</a></p>';
+  }
+
   function syncKitchenRecipe() {
     if (contract.id !== "afrokitchen") return;
     var original = form.querySelector('[data-ua-field="originalServings"]');
     var selected = form.querySelector('[data-ua-field="recipe"]');
     var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
     var recipe = recipes.find(function (item) { return selected && item.slug === selected.value; });
+    displayKitchenMethod(recipe);
     var photo = form.querySelector("[data-ua-recipe-photo]");
     if (recipe && recipe.image_url) {
       if (!photo) {
@@ -442,7 +572,7 @@
   function initializeDelegates() {
     if (contract.id === "afroatlas" && root.AfroAtlas) { var countries = root.AfroAtlas.getAllCountries(); populateSelect("countryA", countries, countryCode, "name"); populateSelect("countryB", countries, countryCode, "name"); document.querySelector('[data-ua-field="countryA"]').value = "nigeria"; document.querySelector('[data-ua-field="countryB"]').value = "ghana"; }
     else if (contract.id === "afropoints" && root.AfroPointsEngine) { populateSelect("category", root.AfroPointsEngine.CATEGORIES, "id", "label"); var category = document.querySelector('[data-ua-field="category"]'); if (category) category.value = "staple_price"; }
-    else if (contract.id === "afrokitchen" && root.AfroKitchenEngine) { populateSelect("recipe", root.AfroKitchenEngine.SEED_RECIPES, "slug", function (recipe) { return recipe.name + " — " + recipe.country_name; }); var recipe = document.querySelector('[data-ua-field="recipe"]'); if (recipe) recipe.value = "nigerian-jollof-rice"; }
+    else if (contract.id === "afrokitchen" && root.AfroKitchenEngine) { populateSelect("recipe", root.AfroKitchenEngine.SEED_RECIPES, "slug", function (recipe) { var method = kitchenMethod(recipe); return method ? method.title + " — " + method.country : recipe.name_local; }); var recipe = document.querySelector('[data-ua-field="recipe"]'); if (recipe) recipe.value = "nigerian-jollof-rice"; }
   }
 
   form.addEventListener("submit", async function (event) {
@@ -469,6 +599,7 @@
     }
     status.textContent = "Hesabu imekamilika kwenye kivinjari hiki."; status.className = "ua-ready";
     renderMetrics(result, input); renderRows(result); lastPayload = { schemaVersion:1, toolId:contract.id, locale:"sw", input:input, result:result, source:contract.source, freshness:contract.freshness, limitations:contract.limitations };
+    if (contract.id === "afrokitchen") lastPayload.method = kitchenMethod(delegateState.recipe);
     renderExports(lastPayload); section.hidden = false; section.focus();
   });
 
