@@ -19,7 +19,7 @@ const PAYE = [
   ['sd-paye','Sudan','sudan','SDG','/sudan/sd-paye','https://tax.gov.sd/en/tax-laws/','2026-01-01','monthly'],
   ['mz-paye','Msumbiji','mozambique','MZN','/mozambique/mz-paye','https://www.at.gov.mz/por/Comercio-Internacional/Procedimento-Fiscais/Taxas-IRPS','2026-04-06','monthly'],
   ['na-paye','Namibia','namibia','NAD','/namibia/na-paye','https://www.itas.namra.org.na/','2026-01-01','annual'],
-  ['mg-paye','Madagaska','madagascar','MGA','/madagascar/mg-paye','https://www.impots.mg/explorer?path=/legislation/Codes%20et%20Manuels/CDI-LFI%202026.pdf','2026-03-28','monthly'],
+  ['mg-paye','Madagaska','madagascar','MGA','/madagascar/mg-paye','https://www.impots.mg/explorer?path=/legislation/Codes%20et%20Manuels/CDI-LFI%202026.pdf','2026-11-27','monthly'],
   ['cd-paye','DR Congo','dr-congo','CDF','/dr-congo/cd-paye','https://dgi.gouv.cd/teledeclaration/','2026-04-06','annual'],
   ['cg-paye','Jamhuri ya Congo','congo','XAF','/congo/cg-paye','https://impots.gouv.cg/portail-client-web/public/accueil.xhtml','2026-03-28','monthly'],
   ['sl-paye','Sierra Leone','sierra-leone','SLE','/sierra-leone/sl-paye','https://nra.gov.sl/','2026-04-01','monthly']
@@ -118,11 +118,32 @@ function preservedReference(block){
   if(!fragments.length)return '';
   return `<section class="sw-final-reference" aria-labelledby="sw-final-reference-title"><h2 id="sw-final-reference-title">Maelezo ya viwango na mbinu</h2>${fragments.join('\n')}${links.length?`<h3>Zana na hatua zinazohusiana</h3><ul>${links.join('')}</ul>`:''}</section>`;
 }
+function updateMadagascarReference(page) {
+  const bands = 'Kodi ya IRSA ina viwango sita vya 0%, 5%, 10%, 15%, 20% na 25%. Kiwango cha 25% kinahusu sehemu ya mshahara unaotozwa kodi inayozidi MGA 4,000,000 kwa mwezi.';
+  const minimum = 'Kwa mshahara wa kawaida chanya, kodi ya chini ni MGA 3,000 kwa mwezi. Msingi wa kodi huzungushwa chini hadi mia iliyo karibu.';
+  const cnaps = 'Katika mfumo wa kawaida wa CNaPS, mfanyakazi huchangia 1% na mwajiri 13% ya mshahara unaohusika hadi MGA 2,101,440 kwa mwezi.';
+  const family = 'Msingi wa kodi unapozidi MGA 350,000 kwa mwezi, kila mtegemezi anayestahili hupunguza kodi kwa hadi MGA 2,000. Kodi hubaki angalau MGA 3,000.';
+  const description = 'Kadiria mshahara halisi wa kila mwezi kwa Ariary ukitumia IRSA na CNaPS za Madagaska za 2026.';
+  page = page.replace(/(name="(?:twitter:)?description"|property="og:description") content="[^"]*"/g, '$1 content="'+description+'"')
+    .replace(/(<p class="tool-hero-sub">).*?<\/p>/, '$1'+description+'</p>')
+    .replace(/<p><strong>Muhtasari:<\/strong>.*?<\/p>/, '<p>'+bands+' '+minimum+'</p>')
+    .replace(/(<p[^>]*>)(?:Madagaska ina mfumo wa PAYE|Ingawa kiwango cha juu ni 20%)[^<]*<\/p>/g, '$1'+bands+'</p>')
+    .replace(/(<p[^>]*>)Madagaska ni mojawapo[^<]*<\/p>/g, '$1'+family+'</p>')
+    .replace(/(<p>)CNAPS \(Caisse[^<]*<\/p>/g,'$1'+cnaps+'</p>')
+    .replace(/(<summary>1\.[^<]*<\/summary>\s*)<p>.*?<\/p>/, '$1<p>'+minimum+'</p>')
+    .replace(/Madagaska 2025\/26/g,'Madagaska 2026');
+  return page.replace(/(<script type="application\/ld\+json">\s*)(\{[^<]*?"@type":"FAQPage"[^<]*\})(\s*<\/script>)/g, (whole,open,json,close) => {
+    const schema = JSON.parse(json);
+    for (const [i,answer] of [[0,minimum],[1,cnaps],[4,bands]]) if (schema.mainEntity[i]) schema.mainEntity[i].acceptedAnswer.text=answer;
+    return open+JSON.stringify(schema)+close;
+  });
+}
 function surgicalPaye(existing,generated,id){
   const startMatch=existing.match(/<(?:main|div) class="(?:tool-main|calc-page-wrap)"[^>]*>/i);if(!startMatch)throw new Error(`${id}: calculator start not found`);const start=startMatch.index;
   const tail=existing.slice(start+startMatch[0].length);const markers=[/\n<section class="ng-save-sec"/i,/\n<section data-tool-verification-panel/i,/\n<section class="faq-sec"/i,/\n<div class="modal-bg"/i,/\n<section class="faq-section"/i];const ends=markers.map(re=>tail.search(re)).filter(n=>n>=0);if(!ends.length)throw new Error(`${id}: calculator end not found`);const end=start+startMatch[0].length+Math.min(...ends)+1;
   const oldBlock=existing.slice(start,end);const generatedMain=generated.match(/<main\s+data-sw-paye-app="paye"[\s\S]*?<\/main>/i);if(!generatedMain)throw new Error(`${id}: generated PAYE owner missing`);let newMain=generatedMain[0].replace(/<section class="hero">[\s\S]*?<\/section>/i,'').replace('<main ','<main class="sw-final-paye-owner tool-main" id="main-content" ').replace(/<\/main>$/i,preservedReference(oldBlock)+'</main>');
   let out=existing.slice(0,start)+newMain+'\n'+existing.slice(end);out=removeLeadModal(out);out=removeUnsafeRuntime(out).replace("Replaces CRA as the primary non-pension deduction. Calculated as the <strong>lower of 20% of rent actually paid</strong> or &#8358;500,000/mwaka. If you own your home and don't pay rent, you cannot claim this relief.",'Unachukua nafasi ya CRA kama punguzo kuu lisilo la pensheni. Hukokotolewa kama kiasi cha chini kati ya <strong>20% ya kodi ya nyumba iliyolipwa</strong> au &#8358;500,000 kwa mwaka. Ukiwa mmiliki wa nyumba na hulipi kodi, huwezi kudai unafuu huu.').replace('<strong>Disclaimer:</strong> This is not official filing, not tax advice, not legal advice and not a guarantee. Ni makadirio ya kupanga tu; verify with the relevant authority before acting.','<strong>Kikomo:</strong> Hii si taarifa rasmi ya kodi, si ushauri wa kodi au sheria, wala si dhamana. Ni makadirio ya kupanga tu; thibitisha na mamlaka husika kabla ya kuchukua hatua.').replace('Default: 5% of basic salary. Some employers use different rates (1.75% to 10%).','Chaguo-msingi: 5% ya mshahara wa msingi. Baadhi ya waajiri hutumia viwango tofauti (1.75% hadi 10%).').replace('Owner-occupied residential property only. Max &#8358;500,000 deductible under NTA.','Nyumba ya kuishi inayomilikiwa na mkopaji pekee. Kiwango cha juu kinachopunguzwa chini ya NTA ni &#8358;500,000.').replace('NTA 2026: pension (8%) applies only to Basic + Housing + Transport, not jumla gross.','NTA 2026: pensheni (8%) hutumika kwa Msingi + Nyumba + Usafiri pekee, si jumla ya mshahara ghafi.').replace('Relief = lower of 20% of rent or &#8358;500,000. Leave blank if you own your home.','Unafuu ni kiasi cha chini kati ya 20% ya kodi ya nyumba au &#8358;500,000. Acha tupu ikiwa unamiliki nyumba yako.').replace('Under NTA 2026, companies pay a <strong>4% Development Levy</strong> on assessable profit. This is an employer/company-level charge, not deducted from employee salary. Shown here for HR professionals calculating jumla employment cost.','Chini ya NTA 2026, kampuni hulipa <strong>tozo ya maendeleo ya 4%</strong> kwenye faida inayokadiriwa. Hii ni gharama ya mwajiri au kampuni, haikatwi kwenye mshahara wa mfanyakazi. Imeonyeshwa kwa wataalamu wa rasilimali watu wanaokokotoa jumla ya gharama ya ajira.').replace(/\s+lang="en"\s+data-explicit-language-fallback="true"/g,'').replace(/\s*<meta\b[^>]*\bname="afrotools-language-fallback(?:-owner)?"[^>]*>\s*/gi,'\n').replace(/\s*<aside\b[^>]*data-language-fallback-notice="sw-country-paye-reference-copy"[\s\S]*?<\/aside>\s*/gi,'\n');if(id==='tn-paye')out=correctTunisiaCopy(out);
+  if(id==='mg-paye')out=updateMadagascarReference(out);
   if(id==='ng-paye')out=out.replace(/(<p\b[^>]*style="font-size:0\.78rem;color:#475569;line-height:1\.6;")\s+lang="en"(>Chini ya NTA 2026, kampuni hulipa)/i,'$1$2');
   const style=`<style data-sw-final-paye>${pageStyle}</style>`;if(!out.includes('data-sw-final-paye'))out=out.replace(/<\/head>/i,style+'\n</head>');
   const runtime=`<script src="${ENGINE}"></script><script src="${CONTROLLER}"></script>`;out=out.replace(/<\/body>/i,runtime+'\n</body>');return out;

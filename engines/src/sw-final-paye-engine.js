@@ -39,7 +39,7 @@
     'sd-paye': { country: 'Sudan', currency: 'SDG', period: 'monthly', bands: [[10000,0],[40000,.05],[70000,.10],[null,.15]], employeeRate: .08, employeeCap: null, rebate: 0, source: 'https://tax.gov.sd/en/tax-laws/', reviewed: '2026-01-01' },
     'mz-paye': { country: 'Msumbiji', currency: 'MZN', period: 'monthly', bands: [[3500,.10],[14000,.15],[42000,.20],[126000,.25],[null,.32]], employeeRate: .03, employeeCap: null, rebate: 0, source: 'https://www.at.gov.mz/por/Comercio-Internacional/Procedimento-Fiscais/Taxas-IRPS', reviewed: '2026-04-06' },
     'na-paye': { country: 'Namibia', currency: 'NAD', period: 'annual', bands: [[100000,0],[150000,.18],[350000,.25],[550000,.28],[850000,.30],[1550000,.32],[null,.37]], employeeRate: .009, employeeCap: 1188, taxableDeductContribution: false, rebate: 0, source: 'https://www.itas.namra.org.na/', reviewed: '2026-01-01' },
-    'mg-paye': { country: 'Madagaska', currency: 'MGA', period: 'monthly', bands: [[350000,0],[400000,.05],[500000,.10],[600000,.15],[null,.20]], employeeRate: .01, employeeCap: 21014.4, rebate: 0, minimumTax: 3000, minimumTaxThreshold: 350000, dependentRelief: 2000, maxDependents: 10, source: 'https://www.impots.mg/explorer?path=/legislation/Codes%20et%20Manuels/CDI-LFI%202026.pdf', reviewed: '2026-03-28', options: ['cnaps','dependents'] },
+    'mg-paye': { country: 'Madagaska', currency: 'MGA', period: 'monthly', bands: [[350000,0],[400000,.05],[500000,.10],[600000,.15],[4000000,.20],[null,.25]], employeeRate: .01, employeeCap: 21014.4, rebate: 0, minimumTax: 3000, minimumTaxThreshold: 350000, positiveSalaryMinimum: true, taxableStep: 100, dependentRelief: 2000, maxDependents: 10, source: 'https://www.impots.mg/explorer?path=/legislation/Codes%20et%20Manuels/CDI-LFI%202026.pdf', reviewed: '2026-11-27', options: ['cnaps','dependents'] },
     'cd-paye': { country: 'DR Congo', currency: 'CDF', period: 'annual', bands: [[524160,0],[1428000,.03],[2700000,.05],[4620000,.10],[7260000,.15],[10260000,.20],[13908000,.25],[16824000,.30],[21168000,.35],[null,.40]], employeeRate: .05, employeeCap: null, rebate: 0, source: 'https://dgi.gouv.cd/teledeclaration/', reviewed: '2026-04-06' },
     'cg-paye': { country: 'Jamhuri ya Congo', currency: 'XAF', period: 'monthly', bands: [[464000,0],[1000000,.01],[3000000,.10],[8000000,.25],[13500000,.40],[null,.45]], employeeRate: .04, employeeCap: 48000, rebate: 0, taxAnnualized: true, source: 'https://impots.gouv.cg/portail-client-web/public/accueil.xhtml', reviewed: '2026-03-28' },
     'sl-paye': { country: 'Sierra Leone', currency: 'SLE', period: 'monthly', bands: [[600,0],[1200,.15],[1800,.20],[2400,.25],[null,.30]], employeeRate: .05, employeeCap: null, rebate: 0, source: 'https://nra.gov.sl/', reviewed: '2026-04-01', options: ['nassit','secondary'] }
@@ -118,12 +118,15 @@
       components.employee = contribution;
       var salaryDeduction = Math.min(gross * finite(profile.salaryDeductionRate), finite(profile.salaryDeductionCap));
       taxable = Math.max(0, gross - (profile.taxableDeductContribution === false ? 0 : contribution) - salaryDeduction);
+      if (profile.taxableStep) taxable = Math.floor(taxable / profile.taxableStep) * profile.taxableStep;
       if (salaryDeduction) components.salaryDeduction = salaryDeduction;
       taxResult = progressiveTax(profile.taxAnnualized ? taxable * 12 : taxable, profile.bands);
       tax = Math.max(0, taxResult.tax / (profile.taxAnnualized ? 12 : 1) - finite(profile.rebate));
+      if (profile.positiveSalaryMinimum && gross > 0) tax = Math.max(profile.minimumTax, tax);
       if (profile.minimumTax && taxable > profile.minimumTaxThreshold && tax > 0) {
         var dependents = Math.min(profile.maxDependents || 0, Math.max(0, Math.floor(finite(input.dependents))));
         relief = dependents * finite(profile.dependentRelief);
+        if (profile.positiveSalaryMinimum) relief = Math.min(relief, tax - profile.minimumTax);
         tax = Math.max(profile.minimumTax, Math.max(profile.minimumTax, tax) - relief);
         components.dependentRelief = relief;
         components.dependents = dependents;

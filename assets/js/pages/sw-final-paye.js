@@ -47,6 +47,15 @@
     if(!result){announce('Kokotoa au tengeneza matokeo kwanza.',true);return;}
     var shown=displayedResult();
     var lines=Object.keys(shown).filter(function(k){return typeof shown[k] !== 'object';}).map(function(k){return k+': '+shown[k];});['cnss','amo'].forEach(function(key){if(typeof shown.components[key]==='number')lines.push(key.toUpperCase()+': '+shown.components[key]);});
+    if (id === 'mg-paye') {
+      const period = shown.period === 'annual' ? 'kwa mwaka' : 'kwa mwezi';
+      lines = ['Kipindi: ' + period, 'Mshahara ghafi: ' + money(shown.gross, 'MGA'),
+        'Mchango wa CNaPS: ' + money(shown.contribution, 'MGA'),
+        'Mshahara unaotozwa kodi: ' + money(shown.taxable, 'MGA'),
+        'Punguzo la wategemezi: ' + money(shown.relief, 'MGA'),
+        'Kodi ya IRSA: ' + money(shown.tax, 'MGA'), 'Mshahara halisi: ' + money(shown.net, 'MGA'),
+        'Chanzo: ' + shown.source, 'Tarehe ya ukaguzi: ' + shown.reviewed];
+    }
     if(format==='json') download(id+'.json','application/json',JSON.stringify({toolId:id,locale:'sw',exportedAt:new Date().toISOString(),result:shown},null,2));
     if(format==='csv') download(id+'.csv','text/csv;charset=utf-8','field,value\n'+lines.map(function(x){var p=x.indexOf(':');return '"'+x.slice(0,p)+'","'+x.slice(p+2).replace(/"/g,'""')+'"';}).join('\n'));
     if(format==='txt') download(id+'.txt','text/plain;charset=utf-8',lines.join('\n'));
