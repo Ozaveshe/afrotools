@@ -1483,6 +1483,17 @@ ${illustration ? `<figure><img src="${escapeHtml(illustration.src)}" alt="${esca
 </body></html>\n`;
 }
 
+function renderRecipePreparationChoice(recipe, manifest) {
+  const current = COUNTRY_COURSE_RECIPE_LABELS[recipe.slug];
+  if (!current) return "";
+  const other = (manifest.recipes || []).find(entry =>
+    entry.slug !== recipe.slug && COUNTRY_COURSE_RECIPE_LABELS[entry.slug] &&
+    entry.name === recipe.name && entry.country_name === recipe.country_name
+  );
+  if (!other) return "";
+  return `<nav aria-label="Recipe preparations"><strong>${escapeHtml(current)}</strong> · Other preparation: <a href="${escapeHtml(resolveRecipeHref(other))}">${escapeHtml(COUNTRY_COURSE_RECIPE_LABELS[other.slug])}</a></nav>`;
+}
+
 function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, cuisineIntelligence) {
   recipe = cleanPatchedRecipeCopy(applyRecipeResearchPatch(recipe, researchAudit));
   if (attributedRecipes.isPendingRecipeMethod(recipe)) return buildPendingMethodPageHtml(recipe, recipeImages);
@@ -1748,7 +1759,7 @@ ${renderCookbookNav()}
           <a href="/">AfroTools</a><span>/</span><a href="/tools/">Tools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)}</a><span>/</span><span>${escapeHtml(recipe.name)}</span>
         </nav>
         <div class="ak-eyebrow">${escapeHtml(recipe.country_name)} | ${escapeHtml(categoryLabel(recipe))}</div>
-        <h1>${escapeHtml(recipe.name)}</h1>
+        <h1>${escapeHtml(recipe.name)}</h1>${renderRecipePreparationChoice(recipe, manifest)}
         <p class="ak-hero-sub">${escapeHtml(recipe.description)}</p>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Country</div><div class="ak-stat-val">${escapeHtml(recipe.country_name)}</div></div>
@@ -2230,6 +2241,21 @@ function renderCountryFeaturedDishes(country, recipeImages) {
   </section>`;
 }
 
+const COUNTRY_COURSE_RECIPE_LABELS = {
+  "chikanda": "Chikanda — chilled peanut loaf",
+  "chikanda-zm": "Chikanda — fried peanut cakes",
+  "groundnut-stew-sierra-leone-sl": "Groundnut Stew — chicken or beef",
+  "groundnut-stew-sl": "Groundnut Stew — bone-in chicken with ginger",
+  "isombe": "Isombe — cassava leaves with spinach or amaranth",
+  "isombe-rw": "Isombe — tomato and cassava leaves",
+  "kondowole": "Kondowole — with mustard greens",
+  "kondowole-mw": "Kondowole — cassava flour side",
+  "ladob": "Ladob — plantain and sweet potato",
+  "ladob-sc": "Ladob — plantain or breadfruit",
+  "matapa": "Matapa — coconut milk with shrimp or crab",
+  "matapa-mz": "Matapa — tomato and cassava leaves"
+};
+
 function renderCountryCategoryLanes(country) {
   const groups = countryCategoryGroups(country);
   if (!groups.length) return "";
@@ -2249,7 +2275,7 @@ function renderCountryCategoryLanes(country) {
         <div class="ak-region-recipe-list">
           ${group.recipes
             .slice(0, 6)
-            .map((recipe) => `<a href="${escapeHtml(resolveRecipeHref(recipe))}">${escapeHtml(recipe.name)}</a>`)
+            .map((recipe) => `<a href="${escapeHtml(resolveRecipeHref(recipe))}">${escapeHtml(COUNTRY_COURSE_RECIPE_LABELS[recipe.slug] || recipe.name)}</a>`)
             .join("")}
         </div>
       </article>`
