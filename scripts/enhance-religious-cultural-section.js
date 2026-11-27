@@ -967,7 +967,17 @@ function runtimeTemplate() {
 
   function renderTool(host, tool) {
     var isFull = host.classList.contains('rs-full-app');
-    var fieldMarkup = Object.keys(tool.inputs).map(function (key) { return fieldHtml(key, tool.inputs[key]); }).join('');
+    var initialInputs = tool.inputs;
+    if (tool.id === 'prayer-times') {
+      var city = window.AfroTools && window.AfroTools.prayerTimes && window.AfroTools.prayerTimes.CITIES[tool.inputs.city];
+      if (city) {
+        var parts = new Intl.DateTimeFormat('en', { timeZone: city.timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+        var dateParts = {};
+        parts.forEach(function (part) { dateParts[part.type] = part.value; });
+        initialInputs = Object.assign({}, tool.inputs, { date: dateParts.year + '-' + dateParts.month + '-' + dateParts.day });
+      }
+    }
+    var fieldMarkup = Object.keys(initialInputs).map(function (key) { return fieldHtml(key, initialInputs[key]); }).join('');
     host.innerHTML = '<div class="rs-wrap rs-faith">' +
       '<div class="rs-header"><div><span class="rs-kicker">' + (isFull ? 'Interactive app' : 'Deep improvement') + '</span><h2>' + tool.title + '</h2><p>' + tool.summary + '</p></div><a class="rs-parent-link" href="' + tool.parent + '">Category</a></div>' +
       '<div class="rs-tags">' + tool.tags.map(function (tag) { return '<span>' + tag + '</span>'; }).join('') + '</div>' +
