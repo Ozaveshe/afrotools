@@ -199,6 +199,11 @@
         maximumFractionDigits: 0,
       }).format(value);
     }
+    function pdfMoney(value) {
+      var locale = lang === "sw" ? "sw-TZ" : lang === "fr" ? "fr-FR" : "en-GB";
+      var amount = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
+      return "XOF " + amount.replace(/[\u00a0\u202f]/g, " ");
+    }
     function calculate() {
       var kind = id("gwvRate").value;
       var evidenceType =
@@ -263,9 +268,9 @@
       if (!state.result || !window.jspdf) return;
       var documentPdf = new window.jspdf.jsPDF();
       documentPdf.text(copy.title, 20, 20);
-      documentPdf.text(copy.net + ": " + money(state.result.net), 20, 40);
-      documentPdf.text(copy.vat + ": " + money(state.result.vat), 20, 50);
-      documentPdf.text(copy.gross + ": " + money(state.result.gross), 20, 60);
+      documentPdf.text(copy.net + ": " + pdfMoney(state.result.net), 20, 40);
+      documentPdf.text(copy.vat + ": " + pdfMoney(state.result.vat), 20, 50);
+      documentPdf.text(copy.gross + ": " + pdfMoney(state.result.gross), 20, 60);
       documentPdf.text(documentPdf.splitTextToSize(copy.disclaimer, 170), 20, 80);
       documentPdf.save(
         lang === "fr"

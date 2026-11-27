@@ -17,6 +17,9 @@
       }).format(value) + " CDF"
     );
   }
+  function pdfMoney(value) {
+    return money(value).replace(/[\u00a0\u202f]/g, " ");
+  }
   function evidenceFor(kind) {
     if (kind === "current-reduced-item-confirmed")
       return "current-dgi-eight-percent-item";
@@ -146,13 +149,13 @@
     doc.text(t("pdfTitle", "DR Congo TVA estimate"), 48, 60);
     doc.setFontSize(11);
     doc.text(
-      t("net", "Amount before tax") + ": " + money(state.result.net),
+      t("net", "Amount before tax") + ": " + pdfMoney(state.result.net),
       48,
       105,
     );
-    doc.text("TVA: " + money(state.result.vat), 48, 130);
+    doc.text("TVA: " + pdfMoney(state.result.vat), 48, 130);
     doc.text(
-      t("gross", "Total including tax") + ": " + money(state.result.gross),
+      t("gross", "Total including tax") + ": " + pdfMoney(state.result.gross),
       48,
       155,
     );
