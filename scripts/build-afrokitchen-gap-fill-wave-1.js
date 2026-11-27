@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 
+const { getReviewedGapFillMethod } = require("../engines/src/afrokitchen-engine");
 const ROOT = path.resolve(__dirname, "..");
 const OUT_PATH = path.join(
   ROOT,
@@ -1399,6 +1400,8 @@ function recipe(row) {
     ]
   }
 };
+  const reviewed = getReviewedGapFillMethod(row.slug);
+  if (reviewed) return Object.assign(result, reviewed, { confidence: "Source-attributed adaptation, not kitchen-tested" });
   if (Object.prototype.hasOwnProperty.call(attributed, row.slug)) return Object.assign(result, attributed[row.slug]);
   // These source rows lack UUIDs; browser/API projection independently enforces UUID + slug.
   const pending = {
@@ -1469,7 +1472,7 @@ const rows = [
   d("lasary-voatabia-mg", "Lasary Voatabia", "MG", "Madagascar", "East Africa", "salad", "salad", "tomatoes", "green onion and lime", "rice and grilled meat", ["tomato", "salad"]),
   d("vary-aminanana-mg", "Vary Amin'anana", "MG", "Madagascar", "East Africa", "rice", "rice", "rice and leafy greens", "ginger and tomato", "fried fish or eggs", ["rice", "greens"]),
   d("ranonapango-mg", "Ranonapango", "MG", "Madagascar", "East Africa", "beverage", "beverage", "toasted rice crust", "hot water", "rice meals", ["rice-water", "drink"]),
-  d("kondowole-mw", "Kondowole", "MW", "Malawi", "East Africa", "starch", "porridge", "cassava flour", "hot water and salt", "fish stew or beans", ["cassava", "staple"]),
+  d("kondowole-mw", "Kondowole", "MW", "Malawi", "East Africa", "starch", "porridge", "processed cassava flour", "water", "fish stew or beans", ["cassava", "staple"]),
   d("nthochi-bread-mw", "Nthochi Bread", "MW", "Malawi", "East Africa", "bread", "dessert", "ripe banana and flour", "nutmeg and sugar", "tea", ["banana", "bread"]),
   d("futali-mw", "Futali", "MW", "Malawi", "East Africa", "main", "stew", "pumpkin and sweet potato", "peanut flour", "greens or beans", ["pumpkin", "peanut"]),
   d("mandasi-malawi-mw", "Malawian Mandasi", "MW", "Malawi", "East Africa", "snack", "snack", "wheat flour", "coconut milk and cardamom", "tea or thobwa", ["mandasi", "fritter"]),
@@ -1489,7 +1492,7 @@ const rows = [
   d("agatogo-rw", "Agatogo", "RW", "Rwanda", "East Africa", "main", "stew", "green banana and beef", "tomato and peanut", "greens", ["green-banana", "beef"]),
   d("urwagwa-rw", "Urwagwa", "RW", "Rwanda", "East Africa", "beverage", "fermented", "ripe bananas", "sorghum flour starter", "celebration food", ["banana", "fermented"]),
   d("ikivuguto-rw", "Rwandan Ikivuguto", "RW", "Rwanda", "East Africa", "beverage", "fermented", "milk", "live culture starter", "porridge or bread", ["fermented-milk", "drink"]),
-  d("ladob-sc", "Ladob", "SC", "Seychelles", "East Africa", "dessert", "dessert", "plantain or breadfruit", "coconut milk and nutmeg", "tea or grilled fish", ["plantain", "coconut"]),
+  d("ladob-sc", "Ladob", "SC", "Seychelles", "East Africa", "dessert", "dessert", "ripe plantain", "coconut milk and nutmeg", "coconut sauce", ["plantain", "coconut"]),
   d("octopus-curry-sc", "Octopus Curry", "SC", "Seychelles", "East Africa", "seafood", "curry", "octopus", "masala and coconut milk", "rice", ["octopus", "curry"]),
   d("kat-kat-banane-sc", "Kat-Kat Banane", "SC", "Seychelles", "East Africa", "main", "stew", "green bananas and fish", "coconut milk", "rice or chutney", ["green-banana", "fish"]),
   d("satini-reken-sc", "Satini Reken", "SC", "Seychelles", "East Africa", "salad", "salad", "shark or smoked fish", "lime, chili, and onion", "rice or breadfruit", ["shark", "salad"]),
@@ -1504,7 +1507,7 @@ const rows = [
   d("ndizi-nyama-tz", "Ndizi na Nyama", "TZ", "Tanzania", "East Africa", "main", "stew", "green bananas and beef", "coconut milk and tomato", "greens", ["banana", "beef"]),
   d("mandazi-tanzania-tz", "Tanzanian Mandazi", "TZ", "Tanzania", "East Africa", "snack", "snack", "wheat flour", "coconut milk and cardamom", "tea or coffee", ["mandazi", "fritter"]),
   d("tangawizi-tz", "Tangawizi", "TZ", "Tanzania", "East Africa", "beverage", "beverage", "fresh ginger", "lime and sugar", "cold or sparkling", ["ginger", "drink"]),
-  d("chikanda-zm", "Chikanda", "ZM", "Zambia", "East Africa", "snack", "snack", "orchid tuber flour or safe substitute", "peanut and chili", "tea or relish", ["chikanda", "peanut"]),
+  d("chikanda-zm", "Chikanda", "ZM", "Zambia", "East Africa", "snack", "snack", "food-grade chikanda powder", "groundnuts", "tea or relish", ["chikanda", "peanut"]),
   d("kapenta-stew-zm", "Kapenta Stew", "ZM", "Zambia", "East Africa", "seafood", "stew", "dried kapenta fish", "tomato and onion", "nshima", ["kapenta", "fish"]),
   d("vinkubala-zm", "Vinkubala", "ZM", "Zambia", "East Africa", "main", "stew", "mopane worms", "tomato and onion", "nshima", ["mopane", "protein"]),
   d("deleele-zm", "Delele", "ZM", "Zambia", "East Africa", "side", "stew", "okra", "tomato and groundnut", "nshima", ["okra", "side"]),
@@ -1566,6 +1569,12 @@ for (const item of recipes) {
   if (['mchemsho-tz','octopus-curry-sc'].includes(item.slug)) {
     const expected = {"mchemsho-tz": {"revision": "mchemsho-tatedo-indexed-beef-batch-20261018-v1", "source": "https://mecs.org.uk/wp-content/uploads/2020/12/Tanzania-Ecook-Book-text-web.pdf"}, "octopus-curry-sc": {"revision": "octopus-ben-pierce-jones-water-20261018-v1", "source": "https://www.tastesfromtheroad.com/recipes/octopus-curry-from-the-seychelles"}}[item.slug];
     if (item.method_revision !== expected.revision || item.source !== expected.source || item.sources.length !== 1 || item.sources[0].url !== expected.source || item.total_time_minutes !== null || item.diet_tags.length || item.calories !== null || item.ingredients.length < 8 || item.steps.length < 5 || Object.prototype.hasOwnProperty.call(item,'id') || Object.prototype.hasOwnProperty.call(item,'is_published') || Object.prototype.hasOwnProperty.call(item,'is_verified')) throw new Error(item.slug + ' source adaptation drift');
+    continue;
+  }
+  if (item.method_revision === "dish-method-2026-11-27") {
+    if (item.sources.length !== 2 || !item.steps.length || !item.ingredients.every(row => row.amount > 0)) {
+      throw new Error(item.slug + " is missing its reviewed ingredients, method or sources");
+    }
     continue;
   }
   if (!Array.isArray(item.sources) || item.sources.length < 2) {
