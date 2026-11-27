@@ -153,6 +153,11 @@ function downloadJsonResult() {
 
 function clearAll() {`);
   }
+  html = html.replace("Shafin yana da Hausa, sakamakon adadi kuma yana bin rubutun Turanci da ake saba amfani da shi a takardun kudi.", "Ana rubuta adadin da kalmomin Hausa.");
+  html = html.replace("Hausa yana taimaka maka ka fahimci zabuka da matakai, yayin da sakamakon adadin ya tsaya a rubutun Turanci da bankuna da ofisoshi suka fi karba a Najeriya.", "Za ka iya zaɓar kuɗi, nau’in takarda da salon haruffa. Ana rubuta adadin da kalmomin Hausa.");
+  html = html.replace("Sakamakon yana fita a rubutun Turanci da ake saba amfani da shi a cheque da invoice.", "Misali, ana rubuta 50 kobo a matsayin «Kobo hamsin».");
+  html = html.replace("Kayan aikin zai fitar da rubutun kalmomi da za ka iya kwafa zuwa cheque, invoice, resit ko voucher.", "Kayan aikin zai rubuta adadin da kalmomin Hausa. Za ka iya kwafa rubutun zuwa cek, takardar kuɗi, rasit ko baucan biyan kuɗi.");
+  html = html.replace("Saka adadin, sannan kayan aikin zai rubuta shi cikin kalmomi da tsarin da ake amfani da shi a cek.", "Saka adadin, sannan kayan aikin zai rubuta shi da kalmomin Hausa don cikawa a cek.");
   return repairExports(html);
 }
 
