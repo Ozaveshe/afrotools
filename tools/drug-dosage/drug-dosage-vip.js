@@ -70,7 +70,53 @@
     };
   }
 
+  function swahiliResult(result) {
+    var terms = {
+      'Instruction source': 'Chanzo cha maelekezo',
+      'Medication label name': 'Jina la dawa kwenye lebo',
+      'Instructed amount': 'Kiasi kilichoagizwa',
+      'Weight entered': 'Uzito ulioingizwa',
+      'Label concentration': 'Mkusanyiko ulioandikwa kwenye lebo',
+      'Strength per whole unit': 'Kiasi cha dawa katika kidonge au kapsuli moja nzima'
+    };
+    var warnings = {
+      'Confirm the written instruction, route, timing, frequency, medicine, and patient with a clinician or pharmacist before use.': 'Kabla ya kutumia dawa, thibitisha maelekezo yaliyoandikwa, njia ya kutumia, muda, marudio, dawa na mgonjwa na daktari au mfamasia.',
+      'Copy the concentration from the exact product label and measure only with its calibrated oral syringe, cup, or other supplied device.': 'Nakili mkusanyiko kutoka kwenye lebo ya dawa hiyo. Pima kwa sindano ya kunyweshea, kikombe chenye vipimo au kifaa cha kupimia kilichotolewa pamoja na dawa.',
+      'This arithmetic does not confirm that the entered dose, formulation, route, or timing is safe.': 'Hesabu hii haithibitishi usalama wa kipimo, aina ya dawa, njia au muda wa kuitumia.',
+      'This is not a whole-unit result. The product cannot exactly deliver the entered amount as whole units. Do not split, crush, open, or substitute it unless a pharmacist or clinician confirms that for the exact product.': 'Jibu hili lina sehemu ya kidonge au kapsuli. Vidonge au kapsuli nzima haziwezi kutoa kiasi kilichoingizwa kwa usahihi. Usigawanye, usiponde, usifungue wala usibadilishe dawa hii bila mfamasia au daktari kuthibitisha kuwa inafaa kufanya hivyo kwa dawa hiyo.'
+    };
+    return Object.assign({}, result, {
+      display: result.display.replace(' whole tablet/capsule unit(s)', ' (idadi ya vidonge au kapsuli)'),
+      formula: result.formula.replace('mg per whole unit','mg kwa kidonge au kapsuli moja nzima').replace('unit(s)','(idadi ya vidonge au kapsuli)'),
+      warnings: result.warnings.map(function (warning) { return warnings[warning] || warning; }),
+      inputSummary: result.inputSummary.map(function (entry) {
+        var value = entry.value;
+        if (entry.label === 'Instruction source') value = 'Maelekezo ya daktari au mfamasia yamethibitishwa';
+        else if (entry.label === 'Medication label name') value = result.medicationName || 'Halikuingizwa';
+        else value = value.replace(' per kg','/kg');
+        return {label: terms[entry.label] || entry.label, value: value};
+      })
+    });
+  }
+
+  function swahiliWorksheetText() {
+    return ['KARATASI YA HESABU YA DAWA — SI AGIZO LA DAWA',
+      'Imetengenezwa kwenye kifaa hiki: ' + new Date().toISOString(),
+      'Aina ya maelekezo: ' + (currentResult.basis === 'weight' ? 'Kiasi kwa kila kilogramu' : 'Kiasi kisichotegemea uzito'),
+      currentResult.inputSummary.map(function (entry) { return entry.label + ': ' + entry.value; }).join('\n'),
+      'Hesabu: ' + currentResult.formula, 'Matokeo: ' + currentResult.display,
+      'Thibitisha kabla ya kutumia', currentResult.warnings.join('\n'),
+      'Hesabu hii haichagui dawa, kipimo, muda au marudio. Haifanyi marekebisho kwa watoto, ujauzito, kunyonyesha, magonjwa ya figo au ini, mzio au mwingiliano wa dawa.',
+      'Ikiwa unashuku kuzidi kwa kipimo, sumu, dawa isiyofaa au athari kali, wasiliana na huduma za dharura, kituo cha sumu, mfamasia au huduma ya matibabu ya haraka sasa.',
+      'Marejeo ya usalama (2026-07-26):',
+      'https://www.who.int/initiatives/medication-without-harm',
+      'https://www.who.int/news-room/fact-sheets/detail/patient-safety',
+      'https://www.fda.gov/media/88498/download'].join('\n');
+  }
+
+
   function renderResult(result) {
+    if (document.documentElement.lang === 'sw') result = swahiliResult(result);
     currentResult = result;
     document.getElementById('result-value').textContent = result.display;
     document.getElementById('result-formula').textContent = result.formula;
@@ -87,7 +133,7 @@
     var caution = document.getElementById('result-caution');
     caution.textContent = '';
     var heading = document.createElement('h3');
-    heading.textContent = 'Confirm before use';
+    heading.textContent = document.documentElement.lang === 'sw' ? 'Thibitisha kabla ya kutumia' : 'Confirm before use';
     caution.appendChild(heading);
     var list = document.createElement('ul');
     result.warnings.forEach(function (warning) {
@@ -110,6 +156,7 @@
 
   function worksheetText() {
     if (!currentResult) return '';
+    if (document.documentElement.lang === 'sw') return swahiliWorksheetText();
     if (document.documentElement.lang.toLowerCase().split('-')[0] === 'fr') return frenchWorksheetText();
     var name = currentResult.medicationName || 'Not entered';
     return [
