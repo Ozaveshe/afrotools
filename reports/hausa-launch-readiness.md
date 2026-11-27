@@ -3,8 +3,8 @@
 - Launch-ready: yes
 - Eligible to change launch status: yes
 - Manifest launchStatus: launched
-- Routes: 106; native 23; localized shell 58; English fallback 25
-- Indexable/sitemap: 81/81
+- Routes: 107; native 25; localized shell 58; English fallback 24
+- Indexable/sitemap: 82/82
 - Visible English blockers across Hausa: 0
 
 ## Gates

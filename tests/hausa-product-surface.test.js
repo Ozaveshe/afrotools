@@ -95,7 +95,12 @@ const changedLedger = audit.preserveGeneratedAt(
 );
 assert.strictEqual(changedLedger.generatedAt, '2026-07-26T00:00:00.000Z', 'changed Hausa ledgers must receive a fresh timestamp');
 const coverage = coverageApi.buildReport();
-assert.strictEqual(coverage.summary.total, 106, 'Hausa route inventory must include the election edition');
+assert.strictEqual(coverage.summary.total, 107, 'Hausa route inventory must include the election edition and native Nigeria fuel finder');
+const fuelFinder = coverage.records.find((entry) => entry.route === '/ha/kayan-aiki/farashin-mai/');
+assert.ok(fuelFinder, 'native Nigeria fuel finder must appear in Hausa route coverage');
+assert.strictEqual(fuelFinder.state, 'native');
+assert.strictEqual(fuelFinder.indexable, true);
+assert.strictEqual(fuelFinder.sitemapIncluded, true);
 const electionEdition = coverage.records.find((entry) => entry.route === '/ha/zabe/');
 assert.ok(electionEdition, 'Hausa election edition must appear in route coverage');
 assert.strictEqual(electionEdition.state, 'native');
