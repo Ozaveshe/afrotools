@@ -81,5 +81,65 @@
       savings: costSubsidy === null ? 0 : costMarket - costSubsidy };
   }
   if (typeof module === 'object' && module.exports) module.exports = budget;
-  else window.AfroTools.fertilizerShoppingBudget = budget;
+  else {
+    const quotes = new Map();
+    function showQuote(products) {
+      const coverage = document.getElementById('fertShoppingCoverage');
+      if (!coverage) return;
+      let panel = document.getElementById('fert-supplier-quote');
+      if (!panel) {
+        panel = document.createElement('section');
+        panel.id = 'fert-supplier-quote';
+        panel.setAttribute('aria-label', 'My supplier quote');
+        coverage.after(panel);
+      }
+      panel.replaceChildren();
+      if (!products.length) return;
+      const heading = document.createElement('h3');
+      heading.textContent = 'Price these bags with a local supplier';
+      const help = document.createElement('p');
+      help.textContent = 'Enter the quoted price for each bag size in the same local currency. The quote covers the listed bags only. Confirm transport and any nutrient shortfall separately.';
+      const fields = document.createElement('div');
+      fields.className = 'field-grid';
+      const output = document.createElement('p');
+      output.setAttribute('role', 'status');
+      panel.append(heading, help, fields, output);
+      const currency = window.AfroTools.countryData.currencySymbol;
+      const inputs = products.map(product => {
+        const label = document.createElement('label');
+        label.className = 'field';
+        const key = product.name + '|' + product.bagSize_kg;
+        label.textContent = product.bags + ' × ' + product.name + ' (' + product.bagSize_kg + ' kg) — ' + currency + ' per bag';
+        const input = document.createElement('input');
+        input.className = 'f-input';
+        input.type = 'number';
+        input.min = '0';
+        input.step = 'any';
+        input.inputMode = 'decimal';
+        input.value = quotes.get(key) || '';
+        label.append(input);
+        fields.append(label);
+        input.addEventListener('input', () => {
+          quotes.set(key, input.validity.valid ? input.value : '');
+          update();
+        });
+        return input;
+      });
+      function update() {
+        const missing = inputs.filter(input => !input.value.trim() || !input.validity.valid || !Number.isFinite(input.valueAsNumber)).length;
+        if (missing) {
+          output.textContent = 'Enter a valid price for ' + missing + (missing === 1 ? ' remaining product.' : ' remaining products.');
+          return;
+        }
+        const total = products.reduce((sum, product, i) => sum + product.bags * inputs[i].valueAsNumber, 0);
+        output.textContent = Number.isFinite(total) ? 'Your quoted bag total: ' + currency + ' ' + total.toLocaleString(undefined, { maximumFractionDigits: 2 }) : 'Check the quoted prices and quantities.';
+      }
+      update();
+    }
+    window.AfroTools.fertilizerShoppingBudget = function (result, catalogue) {
+      const shopping = budget(result, catalogue);
+      showQuote(shopping.products);
+      return shopping;
+    };
+  }
 })();
