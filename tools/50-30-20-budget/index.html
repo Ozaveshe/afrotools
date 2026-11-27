@@ -367,7 +367,7 @@ document.getElementById('calcBtn').addEventListener('click',function(){
   var savingsPct=pctNum(currSavings,income);
   var totalPct=pctNum(currTotal,income);
 
-  var overUnder=currTotal<=income?'Under budget — '+fmt(income-currTotal,cur.sym)+' unallocated':'Over income by '+fmt(currTotal-income,cur.sym);
+  var overUnder=currTotal===income?'Fully allocated — income and entered amounts balance':currTotal<income?'Under budget — '+fmt(income-currTotal,cur.sym)+' unallocated':'Over income by '+fmt(currTotal-income,cur.sym);
 
   // Set hero
   document.getElementById('rIncome').textContent=fmt(income,cur.sym);

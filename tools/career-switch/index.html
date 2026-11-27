@@ -299,17 +299,18 @@ function calcSwitch(){
   var searchGap=curTotal*searchMos; // no income during job search
   var totalCost=retrainCost+forfeited+searchGap;
   var monthlyGain=newSal-curTotal;
-  var breakEven=monthlyGain>0?Math.ceil(totalCost/monthlyGain):999;
+  var breakEven=monthlyGain>0?Math.ceil(totalCost/monthlyGain):(monthlyGain===0 && totalCost===0?0:null);
+  var recoveryNote=monthlyGain===0?'Monthly pay is unchanged; there is no additional income to recover switching costs.':'The new monthly pay is lower than the current package.';
 
   document.getElementById('totalCost').textContent=fmt(totalCost,sym);
-  document.getElementById('breakEvenLabel').textContent=monthlyGain>0?'Break-even in '+breakEven+' months after starting new role':'New salary is lower — only worth it for job satisfaction';
+  document.getElementById('breakEvenLabel').textContent=breakEven===null?recoveryNote:'Break-even in '+breakEven+' months after starting the new role';
   document.getElementById('monthlyGain').textContent=(monthlyGain>=0?'+':'-')+fmt(Math.abs(monthlyGain),sym);
 
   var metrics=[
     {label:'Retraining Cost',value:fmt(retrainCost,sym),unit:'direct cost'},
     {label:'Foregone Income',value:fmt(forfeited,sym),unit:retrainMos+' months training'},
     {label:'Job Search Gap',value:fmt(searchGap,sym),unit:searchMos+' months searching'},
-    {label:'Break-Even Time',value:breakEven<900?breakEven+' months':'N/A',unit:breakEven<900?'after starting':'lower salary'}
+    {label:'Break-Even Time',value:breakEven===null?'No recovery':breakEven+' months',unit:breakEven===null?'at the entered monthly pay':'after starting'}
   ];
   document.getElementById('metricsArea').innerHTML=metrics.map(function(m){
     return '<div class="en-metric"><div class="en-metric-label">'+m.label+'</div><div class="en-metric-value">'+m.value+'</div><div class="en-metric-unit">'+m.unit+'</div></div>';
@@ -338,8 +339,8 @@ function calcSwitch(){
       '<td>Year '+yr+'</td>'+
       '<td>'+fmt(cumCurrent,sym)+'</td>'+
       '<td>'+signedFmt(cumNew,sym)+'</td>'+
-      '<td style="color:'+(diff>0?'#16a34a':'#dc2626');
-    rows+='">'+( diff>0?'+'+fmt(diff,sym):'-'+fmt(Math.abs(diff),sym))+'</td></tr>';
+      '<td style="color:'+(diff===0?'inherit':diff>0?'#16a34a':'#dc2626');
+    rows+='">'+( diff>0?'+'+fmt(diff,sym):signedFmt(diff,sym))+'</td></tr>';
   }
   document.getElementById('projectionBody').innerHTML=rows;
 
@@ -369,6 +370,7 @@ function calcSwitch(){
     totalCost:totalCost,
     monthlyGain:monthlyGain,
     breakEven:breakEven,
+    recoveryNote:recoveryNote,
     projectionRows:projectionRows
   };
   document.getElementById('results').className='en-results on';
@@ -396,12 +398,12 @@ function buildSwitchReport(){
     '',
     'Estimated switch cost: '+fmt(p.totalCost,p.symbol),
     'Monthly gain after switch: '+(p.monthlyGain>=0?'+':'-')+fmt(Math.abs(p.monthlyGain),p.symbol),
-    'Break-even: '+(p.breakEven<900?p.breakEven+' months after starting the new role':'not available because the expected new salary is lower'),
+    'Break-even: '+(p.breakEven===null?p.recoveryNote:p.breakEven+' months after starting the new role'),
     '',
     'Five-year projection'
   ];
   p.projectionRows.forEach(function(row){
-    lines.push('Year '+row.year+': current '+fmt(row.current,p.symbol)+' | new '+signedFmt(row.newCareer,p.symbol)+' | difference '+(row.difference>=0?'+':'-')+fmt(Math.abs(row.difference),p.symbol));
+    lines.push('Year '+row.year+': current '+fmt(row.current,p.symbol)+' | new '+signedFmt(row.newCareer,p.symbol)+' | difference '+(row.difference>0?'+':'')+signedFmt(row.difference,p.symbol));
   });
   lines.push('');
   lines.push('Checks before acting: verify course fees, placement rates, licensing rules, visa constraints if relevant, job-market demand, and live salary bands.');

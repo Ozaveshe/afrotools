@@ -157,7 +157,7 @@
       "Parental leave pay planning summary",
       "Country: " + countryName,
       "Leave type: " + typeName,
-      "Verified minimum: " +
+      "Entered minimum: " +
         officialDays +
         " days at " +
         officialRate +
@@ -174,15 +174,15 @@
         "% = " +
         money(companyValue, currency),
       "Leave dates: " + start + " to " + endDate(start, requestedDays),
-      "Official rule source: " + sourceLabel + " (" + sourceDate + ")",
+      "Rule source entered: " + sourceLabel + " (" + sourceDate + ")",
       freshness,
       "Country route to compare later: " + compareName,
       "Planning estimate only. Verify eligibility, payer, caps, tax, social-insurance steps, contract, collective agreement, and employer policy.",
     ].join("\n");
     result.innerHTML =
-      '<div class="hr-res-hero"><div class="hr-res-hero-label">Verified minimum planning value</div><div class="hr-res-hero-amount">' +
+      '<div class="hr-res-hero"><div class="hr-res-hero-label">Entered minimum planning value</div><div class="hr-res-hero-amount">' +
       escape(money(officialValue, currency)) +
-      '</div><div class="hr-res-hero-sub">Based only on the official-rule values entered above.</div></div><table class="hr-summary-table"><thead><tr><th>Scenario</th><th>Days</th><th>Rate</th><th>Planning value</th></tr></thead><tbody><tr><td>Verified minimum</td><td>' +
+      '</div><div class="hr-res-hero-sub">Calculated from the figures you entered. Confirm the source and eligibility before relying on this amount.</div></div><table class="hr-summary-table"><thead><tr><th>Scenario</th><th>Days</th><th>Rate</th><th>Planning value</th></tr></thead><tbody><tr><td>Entered minimum</td><td>' +
       officialDays +
       "</td><td>" +
       officialRate +
