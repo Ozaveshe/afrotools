@@ -35,9 +35,12 @@ function calculate() {
   }
   const result = EngineeringMaterialsEngine.waterTank({people:people,propertyType:type,backupDays:backupDays,garden:document.getElementById('garden').checked,carwash:document.getElementById('carwash').checked,laundry:document.getElementById('laundry').checked,cooking:document.getElementById('cooking').checked,rainwater:document.getElementById('rainwater').value==='yes',roofArea:parseFloat(document.getElementById('roofArea').value)||0});
   if (result.error) return;
-  const baseUsage=result.baseUsage,dailyTotal=result.dailyTotal,totalNeeded=result.totalNeeded,recTank=result.recommendedTank;
+  const baseUsage=result.baseUsage,dailyTotal=result.dailyTotal,totalNeeded=result.totalNeeded,unitSize = result.multipleTanks ? 5000 : result.recommendedTank;
+  const units = result.multipleTanks || 1;
+  const recTank = units * unitSize;
+  const configuration = units > 1 ? units + ' × ' + unitSize.toLocaleString() + ' L' : unitSize.toLocaleString() + ' L';
 
-  document.getElementById('recSize').textContent = recTank.toLocaleString() + ' Litres';
+  document.getElementById('recSize').textContent = configuration + (units > 1 ? ' (' + recTank.toLocaleString() + ' L total)' : '');
   document.getElementById('recDesc').textContent = `Based on ${people} people x ${baseUsage}L/day x ${backupDays} days = ${totalNeeded.toLocaleString()}L needed`;
 
   let html = '';
@@ -48,9 +51,9 @@ function calculate() {
   document.getElementById('resultGrid').innerHTML = html;
 
   // Tank visualization
-  const fillPct = result.fillPct;
+  const fillPct = 100 * totalNeeded / recTank;
   document.getElementById('tankViz').style.setProperty('--fill', fillPct + '%');
-  document.getElementById('tankLabel').textContent = `${recTank.toLocaleString()}L Tank (${Math.round(fillPct)}% used for ${backupDays}-day backup)`;
+  document.getElementById('tankLabel').textContent = `${configuration} · ${Math.round(fillPct)}% of capacity needed for ${backupDays} days`;
 
   // Standard tank options
   let opts = '';
@@ -58,8 +61,9 @@ function calculate() {
   nearTanks.forEach(s => {
     const days = (s / dailyTotal).toFixed(1);
     const active = s === recTank ? ' active' : '';
-    opts += `<div class="tank-opt${active}"><div class="size">${s >= 1000 ? (s/1000) + ',000' : s}L</div><div class="desc">${days} days backup</div></div>`;
+    opts += `<div class="tank-opt${active}"><div class="size">${s.toLocaleString()}L</div><div class="desc">${days} days backup</div></div>`;
   });
+  if (units > 1) opts += '<div class="tank-opt active"><div class="size">' + configuration + '</div><div class="desc">' + (recTank / dailyTotal).toFixed(1) + ' days backup</div></div>';
   document.getElementById('tankOptions').innerHTML = opts;
 
   // ── Pump & Pipe ──
@@ -85,8 +89,9 @@ function calculate() {
   // ── Tank Pricing ──
   var country = document.getElementById('country').value;
   var prices = TANK_PRICES[country];
-  if (prices && prices[recTank]) {
-    document.getElementById('priceText').innerHTML = '<strong>' + recTank.toLocaleString() + 'L tank:</strong> ' + prices.sym + prices[recTank].toLocaleString() + ' (approximate)<br>' +
+  document.getElementById('priceSection').style.display = 'none';
+  if (prices && prices[unitSize]) {
+    document.getElementById('priceText').innerHTML = '<strong>' + configuration + ':</strong> ' + prices.sym + (prices[unitSize] * units).toLocaleString() + ' (approximate)<br>' +
       '<span style="font-size:.72rem;color:#94a3b8">Brands: ' + (country==='NG'?'Geepee, Sintex, Polytank, Roto':country==='KE'?'Roto, Kentank, Jumbo, Toptank':country==='ZA'?'JoJo, Nel, Ecotank':'Polytank, Duraplast') + '. Prices vary by brand and location.</span>';
     document.getElementById('priceSection').style.display = '';
   }
