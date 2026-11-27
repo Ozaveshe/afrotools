@@ -17,7 +17,7 @@ const PAGES = [
   {
     id: 'afcon-predictor',
     title: 'AFCON Tournament Predictor',
-    seoTitle: 'AFCON Tournament Predictor - 2025 Review and 2027 Planning | AfroTools',
+    seoTitle: 'AFCON Predictor: 2025 Review and 2027 Planning | AfroTools',
     description: 'Compare all 24 teams in an AFCON what-if scenario, see your selected team’s rank, and measure how form, defense and host boosts change its model share.',
     eyebrow: 'Tournament model',
     h1: 'AFCON Tournament Predictor',
@@ -193,6 +193,11 @@ function breadcrumbLd(page) {
 }
 
 function renderPage(page) {
+  if (page.id === 'afcon-predictor') {
+    const template = fs.readFileSync(path.join(__dirname, 'templates', 'afcon-predictor.html'), 'utf8');
+    return template.replaceAll('{{seoTitle}}', escapeHtml(page.seoTitle));
+  }
+
   return `<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
 <head>
