@@ -41,7 +41,7 @@
     "Import CSV data and export CSV, SQL or SQLite database files",
     "Copy a query review brief for learning or QA"
   ],
-  "browserRequirements": "Requires JavaScript and WebAssembly. Data runs in browser memory unless exported.",
+  "browserRequirements": "Requires JavaScript. Data runs in browser memory unless exported.",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -238,7 +238,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
       <div class="hero-stat"><strong id="hero-datasets">4</strong><span>sample datasets</span></div>
       <div class="hero-stat"><strong id="hero-challenges">9</strong><span>guided challenges</span></div>
       <div class="hero-stat"><strong id="hero-runs">0</strong><span>queries this session</span></div>
-      <div class="hero-stat"><strong>SQLite</strong><span>via sql.js WebAssembly</span></div>
+      <div class="hero-stat"><strong>SQLite</strong><span>via sql.js in your browser</span></div>
     </div>
   </div>
 </header>
@@ -377,7 +377,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-asm.js"></script>
 <script>
 (function(){
   'use strict';
@@ -540,7 +540,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
     $('hero-datasets').textContent = Object.keys(DATASETS).length;
     $('dataset').innerHTML = Object.keys(DATASETS).map(function(key){ return '<option value="'+key+'">'+esc(DATASETS[key].name)+'</option>'; }).join('');
     try {
-      SQL = await initSqlJs({ locateFile: function(file){ return 'https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/' + file; } });
+      SQL = await initSqlJs();
       loadDataset(currentDataset);
       $('loading').classList.add('hidden');
     } catch(e) {
