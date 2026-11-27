@@ -34,7 +34,7 @@ for (const fileName of files) {
     : `<p><strong>Source gap:</strong> the Government official-source ledger has no destination immigration URL bound for ${esc(country.name)}. Identify the responsible government authority or embassy independently before relying on any entry information.</p>`;
   const title = `${country.name} Visa Route Verification Planner`;
   const description = `Prepare a passport-to-${country.name} entry-rule verification brief without inventing visa status, eligibility, fees, stay limits or approval.`;
-  const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: title, description, url: canonical, applicationCategory: 'TravelApplication', isAccessibleForFree: true, provider: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' } }).replace(/</g, '\\u003c');
+  const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: title, description, url: canonical, applicationCategory: 'TravelApplication', isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', url: canonical }, provider: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' } }).replace(/</g, '\\u003c');
   const html = `<!doctype html>
 <html lang="en">
 <head>
