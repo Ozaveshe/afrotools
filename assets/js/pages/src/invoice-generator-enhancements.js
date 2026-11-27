@@ -2,6 +2,40 @@
 // node scripts/minify.js --only=invoice-generator-enhancements
 !function() {
     "use strict";
+
+    function prepareOfflineInvoice() {
+        if (!navigator.serviceWorker || !window.caches || location.pathname !== "/tools/invoice-generator/") return;
+        var path = location.pathname;
+        var assets = Array.from(document.querySelectorAll(
+            'link[rel="stylesheet"][href^="/assets/css/"], script[src^="/assets/vendor/"], ' +
+            'script[src^="/assets/js/lib/save-state-classic.js"], script[src^="/assets/js/pages/invoice-generator-enhancements.js"]'
+        ), function(node) { return node.href || node.src; }).concat([
+            "/assets/fonts/noto-sans/NotoSans-Regular.ttf",
+            "/assets/fonts/noto-sans/NotoSans-Bold.ttf"
+        ]);
+        var warming = false;
+        async function warm() {
+            if (warming || !navigator.serviceWorker.controller || !navigator.onLine) return;
+            warming = true;
+            try {
+                // Fetch only the public blank page and static dependencies. No form state,
+                // shared-link query, authenticated response or saved record enters the cache.
+                await Promise.all([path].concat(assets).map(async function(url) {
+                    if (await caches.match(url)) return;
+                    var options = { credentials: "omit" };
+                    if (url === path) options.headers = { Accept: "text/html" };
+                    await fetch(url, options);
+                }));
+            } catch (_) { /* A later online/controller event can finish the public cache. */ }
+            finally { warming = false; }
+        }
+        // Keep this listener for a worker upgrade: activation can remove an older cache.
+        navigator.serviceWorker.addEventListener("controllerchange", warm);
+        window.addEventListener("online", warm);
+        warm();
+    }
+
+
     var e = "afro_invoice_saved_items_v2", t = "invoice-generator", n = "invoice", a = {
         NGN: {
             s: "₦",
@@ -103,6 +137,11 @@
     function invoiceCopy(value) {
         var language = (document.documentElement.lang || "en").split("-")[0], map = {
             fr: {
+                "AfroTools Invoice Generator": "Générateur de factures AfroTools",
+                "Create an invoice with AfroTools.": "Créez une facture avec AfroTools.",
+                "Share tool link": "Partager le lien de l’outil",
+                "Share invoice data": "Partager les données de la facture",
+                "View the shared invoice details.": "Consultez les détails de la facture partagée.",
                 Unpaid: "Non payé",
                 ", balance due ": ", solde dû ",
                 Status: "Statut",
@@ -238,6 +277,11 @@
                 "PDF engine did not load. Refresh and try again.": "Le moteur PDF n’a pas chargé. Actualisez puis réessayez."
             },
             sw: {
+                "AfroTools Invoice Generator": "Kizalishaji cha ankara cha AfroTools",
+                "Create an invoice with AfroTools.": "Tengeneza ankara kwa kutumia AfroTools.",
+                "Share tool link": "Shiriki kiungo cha zana",
+                "Share invoice data": "Shiriki taarifa za ankara",
+                "View the shared invoice details.": "Tazama taarifa za ankara iliyoshirikiwa.",
                 Unpaid: "Haijalipwa",
                 ", balance due ": ", salio linalodaiwa ",
                 Status: "Hali",
@@ -543,6 +587,17 @@
         var image = o("previewLogoImg"), container = o("previewLogo");
         return image && container && container.style.display !== "none" && /^data:image\//.test(image.src) ? image.src : null;
     }
+    async function invoicePdfLogo() {
+        if (!invoiceLogoState()) return null;
+        var image = o("previewLogoImg");
+        await image.decode();
+        var scale = Math.min(1, 504 / image.naturalWidth, 192 / image.naturalHeight);
+        var canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+        return { png: canvas.toDataURL("image/png"), ratio: image.naturalWidth / image.naturalHeight };
+    }
     function invoiceRestoreLogo(value) {
         var image = o("previewLogoImg"), container = o("previewLogo"), thumbnail = o("logoPreview");
         if (image) { if (value) image.src = value; else image.removeAttribute("src"); }
@@ -607,10 +662,10 @@
             var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(x())))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
             url.searchParams.set(n, encoded);
         }
-        var title = invoiceCopy("Invoice") + (include ? " " + (l("invoiceNumber") || "") : "");
+        var title = include ? invoiceCopy("Invoice") + " " + (l("invoiceNumber") || "") : invoiceCopy("AfroTools Invoice Generator");
         if (navigator.share) navigator.share({
             title: title,
-            text: title,
+            text: include ? invoiceCopy("View the shared invoice details.") : invoiceCopy("Create an invoice with AfroTools."),
             url: url.toString()
         }).then(function() {
             m(invoiceCopy("Share sheet opened"));
@@ -730,6 +785,7 @@
         if (pendingButton) pendingButton.disabled = true;
         try {
             var fonts = await invoicePdfLoadFonts();
+            var logo = await invoicePdfLogo();
             if (JSON.stringify(x()) !== fingerprint || o("invoiceReviewConfirm") && !o("invoiceReviewConfirm").checked) {
                 m(invoicePdfChanged(), "error");
                 return;
@@ -797,11 +853,10 @@
             write(invoiceCopy("Generated by AfroTools"), 194, position + 7 + Math.max(0, headingName.length - 1) * 4, {
                 align: "right"
             });
-            var logo = o("previewLogoImg");
-            if (logo && invoiceLogoState()) {
-                try {
-                    pdf.addImage(logo.src, "PNG", 145, 25, 42, 16, undefined, "FAST");
-                } catch (_) {}
+            if (logo) {
+                var logoTop = position + 10 + Math.max(0, headingName.length - 1) * 4;
+                var logoWidth = Math.min(42, (44 - logoTop) * logo.ratio);
+                pdf.addImage(logo.png, "PNG", 194 - logoWidth, logoTop, logoWidth, logoWidth / logo.ratio, undefined, "FAST");
             }
             position = 58;
             font("bold", 10, ink);
@@ -1146,6 +1201,11 @@
             checkbox.type = "checkbox";
             checkbox.id = "includeInvoiceDataInLink";
             label.style.cssText = "display:flex;gap:8px;align-items:flex-start;font-size:.8rem;line-height:1.5;flex-basis:100%;padding:8px 0";
+            checkbox.addEventListener("change", function() {
+                var caption = invoiceCopy(checkbox.checked ? "Share invoice data" : "Share tool link");
+                share.textContent = caption;
+                share.setAttribute("aria-label", caption);
+            });
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(invoiceCopy("Include invoice data in the shared link. Anyone with the link can read business/client contacts, line items, amounts and payment instructions.")));
             share.parentNode.appendChild(label);
@@ -1213,6 +1273,7 @@
             }
         }(), window.AfroInvoiceState && window.AfroInvoiceState.updatePreview && window.AfroInvoiceState.updatePreview(),
         setTimeout(C, 0);
+        prepareOfflineInvoice();
     }
     "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", q) : q();
 }();

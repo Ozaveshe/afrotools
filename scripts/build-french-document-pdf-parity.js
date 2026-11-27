@@ -135,6 +135,7 @@ function localizeRouteOwnedRuntimeLiterals(html, app) {
   }
   if (app.id === 'invoice-generator') {
     html = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(html);
+    html = require('./lib/localized-invoice-tool-share').localizeInvoiceToolShare(html, 'fr');
     html = html.replace(/<afro-business-cta\b[^>]*>/g, (tag) => tag
       .replace(/tool-name="[^"]*"/, 'tool-id="invoice-generator" lang="fr" tool-name="Générateur de factures"')
       .replace(/save-note="[^"]*"/, 'save-note="Utilisez les actions de cette page pour télécharger un PDF, imprimer, enregistrer une facture, choisir un modèle, partager ou exporter au format JSON."'));
@@ -363,6 +364,7 @@ function absolutizeRelativeAssets(html, englishRoute) {
   return html.replace(
     new RegExp(`(<${assetTags}\\b[^>]*?\\s(?:src|href)=)(["'])(?![a-z]+:|//|/|#)([^"']+)(\\2)`, 'gi'),
     (match, prefix, quote, asset) => {
+      if (asset.includes("${")) return match;
       try {
         const resolved = new URL(asset, `https://afrotools.com${englishRoute}`).pathname;
         return `${prefix}${quote}${resolved}${quote}`;
@@ -463,7 +465,16 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
 
 function normalizeExisting(source, app, config, lexicon, artwork) {
   if (app.id === 'pdf-workspace') source = require('./lib/pdf-workspace-history-runtime').installPdfWorkspaceHistory(source);
-  if (app.id === 'invoice-generator') source = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(source);
+  if (app.id === 'invoice-generator') {
+    source = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(source);
+    source = require('./lib/localized-invoice-tool-share').localizeInvoiceToolShare(source, 'fr');
+    // The preserved French page shares its invoice-number initialization with the English owner.
+    const english = fs.readFileSync(path.join(ROOT, app.englishFile), 'utf8');
+    const initialization = /function init\(\) \{\r?\n  \/\/ Auto invoice number[\s\S]*?(?=  initDates\(\);)/;
+    const owned = english.match(initialization);
+    if (!owned || !initialization.test(source)) throw new Error('Invoice number initialization block missing');
+    source = source.replace(initialization, () => owned[0]);
+  }
   if (app.id === 'receipt-generator') {
     // Keep the reviewed PDF capture geometry aligned with the English active export owner.
     const capture = /  var pdfButton=document\.getElementById\('downloadPdfBtn'\);[\s\S]*?  \},true\);(?=\r?\n\}\)\(\);)/;

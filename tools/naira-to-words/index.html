@@ -311,6 +311,16 @@
       <button type="button" class="btn btn-outline" onclick="copyDocumentLine()" disabled data-amount-control>Copy Document Line</button>
       <button type="button" class="btn btn-outline" onclick="clearAll()" disabled data-amount-control>Clear</button>
     </div>
+    <button type="button" class="btn btn-outline" id="openInvoiceTransfer">Use this total in an invoice</button>
+    <dialog id="invoiceTransferDialog" aria-labelledby="invoiceTransferTitle" style="width:min(28rem,90vw);box-sizing:border-box">
+      <h2 id="invoiceTransferTitle">Start a separate invoice draft?</h2>
+      <p id="invoiceTransferAmount"></p>
+      <p>Your total becomes one editable item with no additional tax. Review the item and tax breakdown before issuing the invoice.</p>
+      <label><input id="invoiceTransferWords" type="checkbox" checked> Include the amount in words in invoice notes</label>
+      <p id="invoiceTransferError" role="status"></p>
+      <div class="actions-row"><button type="button" class="btn btn-primary" id="confirmInvoiceTransfer">Open unsaved invoice</button>
+        <button type="button" class="btn btn-outline" id="cancelInvoiceTransfer">Cancel</button></div>
+    </dialog>
     <div class="doc-preview" id="docPreview"></div>
     <div class="doc-note">Check that the written amount matches the figures before signing, printing, or sharing. The "Only" suffix is kept to reduce room for extra words after the amount.</div>
   </div>
@@ -538,6 +548,7 @@ var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','T
 var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
 var scales = ['','Thousand','Million','Billion','Trillion'];
 var lastWords = '';
+var convertedInvoiceTotal = '';
 var lastDocumentLine = '';
 var amountRevision = 0;
 var amountCopyAttempt = 0;
@@ -629,6 +640,7 @@ function convert() {
   var card = document.getElementById('resultCard');
   var formatted = document.getElementById('formatted');
   lastWords = '';
+  convertedInvoiceTotal = '';
   lastDocumentLine = '';
   input.setAttribute('aria-invalid', String(!amount.valid && !amount.empty));
   document.getElementById('amountError').textContent = amount.error || (amount.rounded ? 'Rounded to ' + amount.figure + '. Words and figures use this amount.' : '');
@@ -647,6 +659,7 @@ function convert() {
   formatted.textContent = code + ' ' + figure;
   var words = applyCaseMode(amountToWords(amount, opt));
   lastWords = words;
+  convertedInvoiceTotal = amount.canonical;
   lastDocumentLine = buildDocumentLine(code, figure, words);
   document.getElementById('result').innerHTML = '<span class="currency-label">' + code + ' Amount in Words</span>' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
@@ -711,6 +724,42 @@ function showToast(msg) {
   clearTimeout(amountToastTimer);
   amountToastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2000);
 }
+</script>
+<script>
+const invoiceDialog = document.getElementById('invoiceTransferDialog');
+function openInvoiceTransfer() {
+  if (!convert()) return;
+  document.getElementById('invoiceTransferAmount').textContent = 'Invoice total: ' + document.getElementById('formatted').textContent;
+  document.getElementById('invoiceTransferError').textContent = '';
+  invoiceDialog.showModal();
+}
+document.getElementById('openInvoiceTransfer').addEventListener('click', openInvoiceTransfer);
+document.getElementById('cancelInvoiceTransfer').addEventListener('click', () => invoiceDialog.close());
+const invoiceCard = document.querySelector('.seo-cluster-shell a[href="/tools/invoice-generator/"]');
+if (invoiceCard) invoiceCard.addEventListener('click', event => {
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !lastWords) return;
+  event.preventDefault();
+  openInvoiceTransfer();
+});
+document.getElementById('confirmInvoiceTransfer').addEventListener('click', () => {
+  if (!convert()) return;
+  const currency = document.getElementById('currency').value;
+  const amount = convertedInvoiceTotal;
+  const error = document.getElementById('invoiceTransferError');
+  if (Number(amount).toFixed(2) !== amount) {
+    error.textContent = 'This total exceeds the precision of the invoice editor. Copy the document line instead.';
+    return;
+  }
+  const words = document.getElementById('invoiceTransferWords').checked ? lastWords : '';
+  try {
+    sessionStorage.setItem('afrotools.invoice.converted-total', JSON.stringify({currency, amount, words}));
+  } catch {
+    error.textContent = 'Tab storage is unavailable. Copy the document line to enter it in your invoice.';
+    return;
+  }
+  invoiceDialog.close();
+  location.assign('/tools/invoice-generator/#converted-total');
+});
 </script>
 
 <script>
