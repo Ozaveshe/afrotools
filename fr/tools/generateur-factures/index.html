@@ -6,8 +6,7 @@
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important }
 }
-</style>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
+</style> <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -411,6 +410,7 @@
 <afro-navbar active="ecommerce"></afro-navbar>
 
 <div class="inv-page page-shell">
+  <p id="convertedInvoiceNotice" hidden role="status">Cette facture est un brouillon distinct non enregistré. Son total ne comprend aucune taxe supplémentaire. Vérifiez la description et le traitement fiscal, puis enregistrez ou exportez la facture avant de quitter la page.</p>
 
 <!-- ══════ SAVED INVOICES ══════ -->
 <div id="inv-saved-section" style="display:none;max-width:1140px;margin:0 auto;padding:20px 20px 0;">
@@ -638,6 +638,8 @@
           <option value="SCR">SCR - Seychelles</option>
           <option value="BWP">BWP - Botswana</option>
           <option value="MZN">MZN - Mozambique</option>
+          <option value="MWK">MWK - Malawi</option>
+          <option value="ZMW">ZMW - Zambia</option>
           <option value="USD">USD - Dollar américain</option>
           <option value="GBP">GBP - Livre sterling</option>
           <option value="EUR">EUR - Euros</option>
@@ -822,7 +824,8 @@
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Actions sur facture">
         <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Télécharger la facture au format PDF" data-no-pdf-gate="true">Télécharger le PDF</button>
-        <button class="btn" id="btnShare" type="button" aria-label="Partager le lien de facture">Partager le lien</button>
+        <button class="btn" id="btnShare" type="button" aria-label="Partager le lien de l’outil">Partager le lien de l’outil</button>
+        <small>Pour envoyer la facture terminée, téléchargez le PDF.</small>
         <button class="btn" id="btnSaveInvoice" type="button" aria-label="Enregistrer le brouillon de facture">Enregistrer la facture</button>
         <details class="action-more">
           <summary class="btn" aria-label="Plus d'actions de facturation">Plus</summary>
@@ -1224,7 +1227,7 @@ $('logoInput').addEventListener('change', e => {
   const reader = new FileReader();
   reader.onload = ev => {
     logoDataURL = ev.target.result;
-    $('logoPreview').innerHTML = `<img src="/tools/invoice-generator/$%7BlogoDataURL%7D" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;">`;
+    $('logoPreview').innerHTML = `<img src="${logoDataURL}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;">`;
     $('previewLogoImg').src = logoDataURL;
     $('previewLogo').style.display = 'block';
     updatePreview();
@@ -1723,12 +1726,11 @@ if (btnPDFMobile) {
 /* ── SHARE LINK ── */
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
-    const state = gatherState();
-    const docInfo = getDocumentTypeInfo();
     AfroTools.shareState.share({
-      title: docInfo.title + ' ' + $('invoiceNumber').value,
-      text: docInfo.title + ' from ' + ($('companyName').value || 'AfroTools'),
-      state
+      title: "Générateur de factures AfroTools",
+      text: "Créez une facture avec AfroTools.",
+      baseUrl: location.origin + location.pathname,
+      state: {}
     });
     ga4('share_click', {tool:'invoice-generator'});
   } else {
@@ -1921,10 +1923,17 @@ $('btnNewInvoice').addEventListener('click', () => {
 /* ── INIT ── */
 function init() {
   // Auto invoice number
-  const num = nextInvoiceNumber();
-  $('invoiceNumber').value = num;
-  $('invAutoNum').textContent = 'Auto: ' + num;
+  const invoiceNumber = $('invoiceNumber');
+  if (!invoiceNumber.value.trim()) {
+    invoiceNumber.value = nextInvoiceNumber();
+    $('invAutoNum').textContent = 'Auto: ' + invoiceNumber.value;
+  }
   initDates();
+
+  // The guide sets the initial currency. Restored invoices supply their own values.
+  if (new URLSearchParams(window.location.search).get('country') === 'ZA') {
+    $('currency').value = 'ZAR';
+  }
 
   // Set default tax rate
   $('taxRate').value = TAX_RATES[$('currency').value] || 0;
@@ -1935,6 +1944,30 @@ function init() {
   // Render saved data
   renderClients();
   renderTemplates();
+
+  // Consume only a confirmed, same-tab converter transfer.
+  if (location.hash === '#converted-total' && !location.search) {
+    try {
+      const key = 'afrotools.invoice.converted-total';
+      const raw = sessionStorage.getItem(key);
+      sessionStorage.removeItem(key);
+      history.replaceState(history.state, '', location.pathname);
+      const transfer = JSON.parse(raw);
+      if (transfer && Array.from($('currency').options).some(opt => opt.value === transfer.currency)
+          && typeof transfer.amount === 'string' && /^\d{1,15}\.\d{2}$/.test(transfer.amount)
+          && Number(transfer.amount).toFixed(2) === transfer.amount
+          && typeof transfer.words === 'string' && transfer.words.length <= 1000) {
+        if (restoreState({cu: transfer.currency, tt: 'none', tr: '0', nt: transfer.words,
+            items: [{d: 'Invoice total', q: '1', p: transfer.amount, t: '0'}]})) {
+          document.body.dataset.invoiceTemporaryDraft = '1';
+          $('convertedInvoiceNotice').hidden = false;
+          $('taxType').dispatchEvent(new Event('change'));
+          updatePreview();
+          return;
+        }
+      }
+    } catch { /* Continue with ordinary invoice recovery when tab storage is unavailable. */ }
+  }
 
   // Check for shared state in URL
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.decode) {
@@ -2162,7 +2195,7 @@ init();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
   else bind();
 })();
-</script> <script src="/assets/js/pages/invoice-generator-enhancements.js?v=863a0614"></script> <script>
+</script> <script src="/assets/js/pages/invoice-generator-enhancements.js?v=03345648"></script> <script>
 (function(){
   window.exportInvoiceJsonFallback = function(event) {
     if (event) {
@@ -2231,7 +2264,7 @@ init();
     },0);
   },true);
 })();
-</script> <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=bc1a2d3c" defer></script>
+</script> <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=e1870f5c" defer></script>
 <!-- Saved invoices are managed by invoice-generator-enhancements.js. -->
 
 <script src="/assets/js/ai/prefill-adapters.js?v=3671b9a1" defer></script> <script src="/assets/js/ai/prefill-consumer.js?v=7eb9a454" defer></script> <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script> <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>

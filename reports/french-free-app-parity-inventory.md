@@ -1362,13 +1362,13 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Thrift / Cooperative Returns Calculator — Africa | Fintech & Banking | `/tools/thrift-calc` | Native candidate | `/fr/tools/rendement-tontine-cooperative` | Yes | needs-revalidation |
 | Trade Credit Terms Calculator — Africa | Fintech & Banking | `/tools/trade-credit` | Native candidate | `/fr/tools/credit-commercial` | Yes | needs-revalidation |
 | Kenya Data Protection Act 2019 Compliance Checker | Government & Civic | `/tools/kenya-dpa` | Native candidate | `/fr/tools/conformite-dpa-kenya` | Yes | needs-revalidation |
-| Work Permit Cost Guide — All 54 African Countries | Government & Civic | `/tools/work-permit-cost` | Native candidate | `/fr/tools/cout-permis-travail` | Yes | needs-revalidation |
-| Contractor vs Employee Cost — All 54 African Countries | HR & Payroll | `/tools/contractor-vs-employee` | Native candidate | `/fr/tools/contractant-vs-salarie` | Yes | needs-revalidation |
-| Domestic Worker Salary Guide — All 15 African Countries | HR & Payroll | `/tools/domestic-worker` | Native candidate | `/fr/tools/salaire-employe-maison` | Yes | needs-revalidation |
-| Employee Cost Calculator — All 54 African Countries | HR & Payroll | `/tools/employee-cost` | Native candidate | `/fr/tools/cout-total-employe` | Yes | needs-revalidation |
-| Gratuity & Severance Calculator — All 54 African Countries | HR & Payroll | `/tools/gratuity-calculator` | Native candidate | `/fr/tools/calculateur-indemnite-depart` | Yes | needs-revalidation |
-| Maternity & Paternity Leave Calculator — All 54 African Countries | HR & Payroll | `/tools/maternity-leave` | Native candidate | `/fr/tools/conge-maternite-paternite` | Yes | needs-revalidation |
-| Retrenchment Package Calculator — All 54 African Countries | HR & Payroll | `/tools/retrenchment-calculator` | Native candidate | `/fr/tools/calculateur-d-indemnite-de-licenciement` | Yes | needs-revalidation |
+| Work Permit Cost Assumption Worksheet | Government & Civic | `/tools/work-permit-cost` | Native candidate | `/fr/tools/cout-permis-travail` | Yes | needs-revalidation |
+| Contractor vs Employee Cost in Africa | HR & Payroll | `/tools/contractor-vs-employee` | Native candidate | `/fr/tools/contractant-vs-salarie` | Yes | needs-revalidation |
+| Domestic Worker Pay and Cost Calculator | HR & Payroll | `/tools/domestic-worker` | Native candidate | `/fr/tools/salaire-employe-maison` | Yes | needs-revalidation |
+| Employee Cost Planning Calculator for Africa | HR & Payroll | `/tools/employee-cost` | Native candidate | `/fr/tools/cout-total-employe` | Yes | needs-revalidation |
+| Gratuity and Final-Pay Planning Calculator | HR & Payroll | `/tools/gratuity-calculator` | Native candidate | `/fr/tools/calculateur-indemnite-depart` | Yes | needs-revalidation |
+| Maternity Leave Pay Planner | HR & Payroll | `/tools/maternity-leave` | Native candidate | `/fr/tools/conge-maternite-paternite` | Yes | needs-revalidation |
+| Retrenchment Package Planning Calculator | HR & Payroll | `/tools/retrenchment-calculator` | Native candidate | `/fr/tools/calculateur-d-indemnite-de-licenciement` | Yes | needs-revalidation |
 | Insurance Claim Checklist for Africa — Step-by-Step Guide | Insurance | `/tools/claim-tracker` | Native candidate | `/fr/tools/suivi-sinistre-assurance` | Yes | needs-revalidation |
 | Crop Insurance Calculator — 15 African Countries | Insurance | `/tools/crop-insurance-calc` | Native candidate | `/fr/tools/assurance-recolte` | Yes | needs-revalidation |
 | Fire Insurance Calculator for Africa — Building Cover Estimator | Insurance | `/tools/fire-insurance` | Native candidate | `/fr/tools/assurance-incendie` | Yes | needs-revalidation |
@@ -1433,7 +1433,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Factory Setup Cost Estimator Africa | Small Business & SME | `/tools/factory-setup-cost` | Native candidate | `/fr/tools/cout-installation-usine` | Yes | needs-revalidation |
 | Fashion Brand Startup Cost Calculator — Africa | Small Business & SME | `/tools/fashion-brand-startup` | Native candidate | `/fr/tools/cout-lancement-marque-mode` | Yes | needs-revalidation |
 | Freelance Contract Generator for Africa | Small Business & SME | `/tools/freelance-contract` | Native candidate | `/fr/tools/contrat-freelance` | Yes | needs-revalidation |
-| Freelancer Rate Card — All 15 African Countries | Small Business & SME | `/tools/freelancer-rate` | Native candidate | `/fr/tools/tarif-freelance` | Yes | needs-revalidation |
+| Freelancer Rate Calculator | Small Business & SME | `/tools/freelancer-rate` | Native candidate | `/fr/tools/tarif-freelance` | Yes | needs-revalidation |
 | Graphic Design Pricing Calculator — Africa | Small Business & SME | `/tools/graphic-design-pricing` | Native candidate | `/fr/tools/prix-design-graphique` | Yes | needs-revalidation |
 | Guard Service Cost Comparator — Africa | Small Business & SME | `/tools/guard-service-cost` | Native candidate | `/fr/tools/cout-gardiennage` | Yes | needs-revalidation |
 | Influencer Rate Card Generator — Africa | Small Business & SME | `/tools/influencer-rate` | Native candidate | `/fr/tools/tarif-influenceur` | Yes | needs-revalidation |

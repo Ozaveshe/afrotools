@@ -744,6 +744,7 @@ function buildFullParityPage(app) {
   html = ensureSwahiliApplicationSchema(html, app, metadata, canonical);
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(app.name)} | AfroTools</title>`);
   html = applyDownloadGateContract(html, app);
+  if (app.id === 'invoice-generator') html = require('./lib/localized-invoice-tool-share').localizeInvoiceToolShare(html, 'sw');
   return injectParityRuntime(html, app);
 }
 
@@ -805,6 +806,7 @@ function normalizeExistingPage(app) {
   const target = path.join(ROOT, app.swahiliFile);
   let html = fs.readFileSync(target, 'utf8');
   if (app.id === 'invoice-generator') html = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(html);
+  if (app.id === 'invoice-generator') html = require('./lib/localized-invoice-tool-share').localizeInvoiceToolShare(html, 'sw');
   html = installFormFillerRuntime(html, app);
   if (app.id === 'pdf-sign') {
     const english = fs.readFileSync(path.join(ROOT, app.englishFile), 'utf8');
@@ -955,6 +957,15 @@ function validateOutputs() {
 }
 
 function main() {
+  if (process.argv.includes('--invoice-sharing-only')) {
+    if (WRITE === CHECK) throw new Error('Invoice sharing requires either --write or --check');
+    const target = path.join(ROOT, apps.find(app => app.id === 'invoice-generator').swahiliFile);
+    const before = fs.readFileSync(target, 'utf8');
+    const expected = require('./lib/localized-invoice-tool-share').localizeInvoiceToolShare(before, 'sw');
+    if (CHECK && before !== expected) throw new Error('Swahili invoice sharing is stale');
+    if (WRITE && before !== expected) fs.writeFileSync(target, expected, 'utf8');
+    return;
+  }
   if (process.argv.includes('--hub-only')) {
     if (APP_FILTER || CONTENT_IDS_ONLY || process.argv.includes('--related-tools-only') || WRITE === CHECK) {
       throw new Error('Hub-only scope requires exactly --write or --check and no app/content filter');
