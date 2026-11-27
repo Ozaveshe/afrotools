@@ -700,7 +700,7 @@ function acCalc() {
   var state = buildAccrualState(document.getElementById('ac-start').value, document.getElementById('ac-today').value, parseFloat(document.getElementById('ac-entitlement').value), document.getElementById('ac-requested').value);
   var el = document.getElementById('ac-result');
   if (!state) { el.replaceChildren(); el.style.display = 'none'; return; }
-  var html = '<div class="lc-result-box"><div class="lc-result-headline">' + state.accrued + ' siku zimepatikana</div><div class="lc-result-sub">' + state.remaining + ' siku zimebaki ndani ya mwaka wako wa sasa wa likizo</div>';
+  var html = '<div class="lc-result-box"><div class="lc-result-headline">' + state.accrued + ' siku zimepatikana</div><div class="lc-result-sub">' + state.remaining + ' siku za likizo ambazo bado hujazipata kwa mwaka huu wa likizo</div>';
   if (state.requested > 0) {
     html += state.canTake ? '<div class="lc-avail-yes">&#10003; Unaweza kuomba siku ' + state.requested + ' kwa sasa &mdash; tayari una siku ' + state.accrued + '</div>' : '<div class="lc-avail-no">&#10007; Bado haitoshi &mdash; una siku ' + state.accrued + ' lakini umeomba ' + state.requested + '</div>';
   }

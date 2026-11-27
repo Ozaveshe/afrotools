@@ -802,7 +802,7 @@ function acCalc() {
   var accrued = Math.floor(frac * entitlement * 10) / 10;
   var remaining = Math.max(0, Math.round((entitlement - accrued) * 10) / 10);
   var canTake = requested > 0 && requested <= accrued;
-  var html = '<div class="lc-result-box"><div class="lc-result-headline">' + accrued + ' days accrued</div><div class="lc-result-sub">' + remaining + ' days remaining in your current leave year</div>';
+  var html = '<div class="lc-result-box"><div class="lc-result-headline">' + accrued + ' days accrued</div><div class="lc-result-sub">' + remaining + ' days still to accrue before the end of this leave year</div>';
   if (requested > 0) html += canTake ? '<div class="lc-avail-yes">\u2713 You can take ' + requested + ' days \u2014 you have ' + accrued + ' days accrued</div>' : '<div class="lc-avail-no">\u2717 Not enough \u2014 you have ' + accrued + ' days but requested ' + requested + '</div>';
   html += '<div class="lc-formula">Leave year started: ' + lys.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}) + '<br>Months worked: ' + months + ' of 12 (' + (frac*100).toFixed(1) + '% of year)<br>Formula: ' + (frac*100).toFixed(1) + '% \u00d7 ' + entitlement + ' days = <strong>' + accrued + ' days accrued</strong></div></div>';
   el.innerHTML = html; el.style.display = '';
