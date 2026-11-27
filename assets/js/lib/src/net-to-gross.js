@@ -25,7 +25,7 @@
         if (period) period.textContent = window.CALC_MODE === 'net' ? 'Kabla ya PAYE na michango uliyochagua' : 'Baada ya PAYE na michango uliyochagua';
     }
     function hasAnnualSalaryInput() {
-        return document.documentElement.lang === 'en' && Boolean(document.querySelector('#grossSalary[data-net-to-gross-period="annual"]'));
+        return Boolean(document.querySelector('#grossSalary[data-net-to-gross-period="annual"]'));
     }
     function renderAnnualSalary() {
         if (!hasAnnualSalaryInput() || !window.RESULT) return false;
@@ -35,13 +35,23 @@
         const gross = result.gross / divisor;
         const net = (result.netAnnual ?? result.net) / divisor;
         const reverse = window.CALC_MODE === 'net';
-        const unit = monthly ? 'month' : 'year';
-        const period = monthly ? 'Monthly' : 'Annual';
+        let unit = monthly ? 'month' : 'year';
+        let heading = reverse ? (monthly ? 'Required Monthly Gross' : 'Required Annual Gross') : (monthly ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay');
+        let grossLabel = 'Gross: ', netLabel = 'Take-home: ';
+        if (e()) {
+            unit = monthly ? 'mois' : 'an';
+            heading = reverse ? (monthly ? 'Brut mensuel requis' : 'Brut annuel requis') : (monthly ? 'Salaire net mensuel' : 'Salaire net annuel');
+            grossLabel = 'Brut : '; netLabel = 'Net : ';
+        } else if (isSwahili()) {
+            unit = monthly ? 'mwezi' : 'mwaka';
+            heading = reverse ? (monthly ? 'Mshahara Ghafi wa Mwezi Unaohitajika' : 'Mshahara Ghafi wa Mwaka Unaohitajika') : (monthly ? 'Mshahara Halisi wa Mwezi' : 'Mshahara Halisi wa Mwaka');
+            grossLabel = 'Ghafi: '; netLabel = 'Halisi: ';
+        }
         const label = document.getElementById('resLabel') || document.querySelector('.res-hero-label');
-        label.textContent = reverse ? 'Required ' + period + ' Gross' : period + ' Take-Home Pay';
-        document.getElementById('resAmount').textContent = fmt(reverse ? gross : net);
-        document.getElementById('resGross').textContent = 'Gross: ' + fmt(gross) + '/' + unit
-            + (reverse ? ' · Take-home: ' + fmt(net) + '/' + unit : '');
+        label.textContent = heading;
+        (document.getElementById('resAmount') || document.querySelector('.res-hero-amount')).textContent = fmt(reverse ? gross : net);
+        (document.getElementById('resGross') || document.querySelector('.res-hero-gross')).textContent = grossLabel + fmt(gross) + '/' + unit
+            + (reverse ? ' · ' + netLabel + fmt(net) + '/' + unit : '');
         return true;
     }
     function wholeGrossForTarget(estimate, target) {
@@ -178,11 +188,11 @@
         if (isSwahili()) {
             const input = document.getElementById('grossSalary');
             if (input) {
-                input.setAttribute('aria-label', o ? 'Mshahara Halisi wa Mwezi Unaolengwa' : 'Mshahara Ghafi');
-                if (window.RESULT) input.value = o ? (window.RESULT.netMonthly || window.RESULT.net || 0) : window.RESULT.gross;
+                input.setAttribute('aria-label', o ? (hasAnnualSalaryInput() ? 'Mshahara Halisi wa Mwaka Unaolengwa' : 'Mshahara Halisi wa Mwezi Unaolengwa') : 'Mshahara Ghafi');
+                if (window.RESULT) input.value = o ? (hasAnnualSalaryInput() ? (window.RESULT.netAnnual ?? window.RESULT.net) : (window.RESULT.netMonthly || window.RESULT.net || 0)) : window.RESULT.gross;
             }
         }
-        a && (a.textContent = o ? r ? "Salaire net souhaité" : hasAnnualSalaryInput() ? "Desired Annual Take-Home" : "Desired Monthly Take-Home" : a.getAttribute("data-orig") || a.textContent),
+        a && (a.textContent = o ? r ? (hasAnnualSalaryInput() ? "Salaire net annuel souhaité" : "Salaire net souhaité") : hasAnnualSalaryInput() ? (isSwahili() ? "Mshahara Halisi wa Mwaka Unaolengwa" : "Desired Annual Take-Home") : "Desired Monthly Take-Home" : a.getAttribute("data-orig") || a.textContent),
         u && (u.getAttribute("data-orig") || u.setAttribute("data-orig", u.textContent), 
         u.textContent = o ? r ? "Montant net souhaité" : "Desired take-home amount" : u.getAttribute("data-orig")), 
         window.RESULT && "function" == typeof window.calculate && window.calculate();

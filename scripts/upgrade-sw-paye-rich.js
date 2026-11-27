@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { createHash } = require('node:crypto');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
@@ -820,6 +821,19 @@ function resolveEnPageFromSw(swHtml, swPath) {
   return enPath;
 }
 
+// Annual input units belong to the canonical English calculator. A focused refresh
+// preserves published Swahili sections managed by subsequent localization passes.
+function refreshAnnualSalaryInput(html, enPath) {
+  const annualInput = /<input\b[^>]*\bid="grossSalary"[^>]*\bdata-net-to-gross-period="annual"[^>]*>/;
+  if (!annualInput.test(read(enPath))) return html;
+  const bundle = fs.readFileSync(path.join(ROOT, 'assets/js/lib/net-to-gross.js'));
+  const version = createHash('sha256').update(bundle).digest('hex').slice(0, 8);
+  return html.replace(/<input\b[^>]*\bid="grossSalary"[^>]*>/, input =>
+    input.includes('data-net-to-gross-period="annual"') ? input :
+      input.replace('id="grossSalary"', 'id="grossSalary" data-net-to-gross-period="annual"'))
+    .replace(/(\/assets\/js\/lib\/net-to-gross\.js\?v=)[a-f0-9]+/, (_, prefix) => prefix + version);
+}
+
 function run() {
   const only = process.argv[2] || '';
   const targets = TARGETS.filter((country) => !only || country === only);
@@ -833,12 +847,20 @@ function run() {
     }
 
     let swHtml = read(swPath);
+    if (process.argv.includes('--refresh-salary-period')) {
+      const refreshed = refreshAnnualSalaryInput(swHtml, resolveEnPageFromSw(swHtml, swPath));
+      if (refreshed !== swHtml) {
+        write(swPath, refreshed);
+        changed += 1;
+      }
+      continue;
+    }
     if (/bundles\/tool-page|salary-benchmark|save-result-button|auto-email-gate\.js/.test(swHtml)) {
       const headVersion = readGitHead(swPath);
       if (headVersion) swHtml = headVersion;
     }
     const enPath = resolveEnPageFromSw(swHtml, swPath);
-    const upgraded = buildSwFromRich(swHtml, swPath, enPath);
+    const upgraded = refreshAnnualSalaryInput(buildSwFromRich(swHtml, swPath, enPath), enPath);
 
     if (upgraded !== swHtml) {
       write(swPath, upgraded);
