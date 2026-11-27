@@ -255,14 +255,58 @@
     if(currentPage>1)pager.append(button("page:"+(currentPage-1),"←",true));
     if(result.total>currentPage*24)pager.append(button("page:"+(currentPage+1),"→",true));
   }
+  function showAgricultureReferences(filters) {
+    if (filters.country !== "NG" || (filters.sector && filters.sector !== "agriculture")) return;
+    var labels = {
+      en: ["Nigeria agriculture research notes", "These references give examples to investigate. Local demand, startup costs, returns and risk ratings are unverified.", "Eligibility under your budget or risk filter is unknown.", "No matching entry in these two local references."],
+      fr: ["Pistes agricoles au Nigeria", "Ces références donnent des exemples à étudier. La demande locale, les coûts de démarrage, les rendements et le risque restent à vérifier.", "La compatibilité avec votre budget ou votre filtre de risque reste inconnue.", "Aucune correspondance parmi ces deux références locales."],
+      sw: ["Mawazo ya kilimo nchini Nigeria", "Mifano hii ni ya kufanyia utafiti. Chunguza mahitaji ya eneo lako, gharama za kuanza, mapato na hatari.", "Haijathibitishwa kama mifano hii inalingana na bajeti au kiwango cha hatari ulichochagua.", "Hakuna mfano unaolingana katika marejeo haya mawili."]
+    }[locale];
+    var records = [
+      {
+        en: ["Cassava farming in Abia", "A World Bank field story describes a cassava grower in Osa Okwu. Ask local buyers about varieties, quantity and collection before pricing a trial plot."],
+        fr: ["Culture du manioc dans l’État d’Abia", "La Banque mondiale décrit une exploitation de manioc à Osa Okwu. Demandez aux acheteurs locaux quelles variétés et quantités ils recherchent et qui assure la collecte."],
+        sw: ["Kilimo cha muhogo katika jimbo la Abia", "Benki ya Dunia inaeleza mfano wa mkulima wa muhogo huko Osa Okwu. Uliza wanunuzi kuhusu aina, kiasi na usafirishaji kabla ya kupanga shamba la majaribio."],
+        source: "World Bank · 2022-12-06",
+        url: "https://www.worldbank.org/en/news/feature/2022/12/06/their-money-their-rules-how-rural-women-in-nigeria-are-improving-their-livelihoods-through-affinity-groups"
+      },
+      {
+        en: ["Rice milling services", "Nigeria’s AGROW project framework lists milling among its planned processing activities. Ask growers what they pay per bag and mills how often their equipment sits idle."],
+        fr: ["Services de décorticage du riz", "Le projet nigérian AGROW prévoit des activités de transformation du riz. Demandez aux producteurs le coût par sac et aux exploitants combien de temps leurs machines restent inutilisées."],
+        sw: ["Huduma za kukoboa mpunga", "Mpango wa AGROW nchini Nigeria unajumuisha shughuli za kukoboa mpunga. Waulize wakulima gharama kwa gunia na wenye mashine muda ambao mashine hukaa bila kazi."],
+        source: "Nigeria AGROW · 2026-02 · p. 32",
+        url: "https://documents1.worldbank.org/curated/en/099030926073542462/pdf/P510848-40a893a2-8e5b-49d7-b8e9-b3598c49b24e.pdf"
+      }
+    ];
+    var section = el("section", {"data-local-references":""});
+    section.append(el("h3", {}, labels[0]), el("p", {}, labels[1]));
+    if (filters.maxBudget || filters.risk) section.append(el("p", {}, labels[2]));
+    var terms = filters.search.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    var matches = records.filter(function(record) {
+      var words = [labels[0], record[locale].join(" "), record.en[0]].join(" ").toLowerCase();
+      return terms.every(function(term) { return words.includes(term); });
+    });
+    matches.forEach(function(record) {
+      var entry = el("article", {});
+      entry.append(el("h4", {}, record[locale][0]), el("p", {}, record[locale][1]), el("a", {href:record.url}, record.source));
+      section.append(entry);
+    });
+    if (!matches.length) section.append(el("p", {}, labels[3]));
+    root.querySelector("[data-cards]").append(section);
+  }
+
   async function search() {
     if(requestController)requestController.abort();
     requestController=new AbortController();var token=++requestNumber;setState(t.loading,"loading");
-    var result=await engine.search(readFilters(),{signal:requestController.signal,timeoutMs:8000});
+    var filters=readFilters();
+    var result=await engine.search(filters,{signal:requestController.signal,timeoutMs:8000});
     if(token!==requestNumber||result.state==="aborted")return;
     if(result.ok&&result.state==="ready")renderRows(result);
     else if(result.ok)setState(t.empty,"empty");
-    else setState(t[result.state]||t.error,result.state||"error");
+    else {
+      setState(t[result.state]||t.error,result.state||"error");
+      if (["error","offline","timeout"].includes(result.state)) showAgricultureReferences(filters);
+    }
   }
   function findRow(id) { return currentRows.concat(shortlist).find(function(row){return row.id===id}) || null; }
   var registrationPromise = null;
