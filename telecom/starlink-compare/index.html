@@ -288,7 +288,7 @@
     }
     html += '</div>';
 
-    html += buildCostPerGB(isps, slMonthly, sym, country.name);
+    html += buildCostPerGB(isps, slMonthly, sym);
     html += buildTCO(isps, slMonthly, slHardware, sym, cur);
     html += buildSummary(isps, slMonthly, slHardware, slSpeed);
 
@@ -301,7 +301,7 @@
       '<h3>Starlink</h3>' +
       '<div class="metric"><span class="metric-label">Monthly</span><span class="metric-value">' + fmt(monthly, sym) + '</span></div>' +
       '<div class="metric"><span class="metric-label">Hardware</span><span class="metric-value">' + fmt(hardware, sym) + '</span></div>' +
-      '<div class="metric"><span class="metric-label">Speed</span><span class="metric-value">' + speed + ' Mbps</span></div>' +
+      '<div class="metric"><span class="metric-label">Speed</span><span class="metric-value">' + (/mbps/i.test(String(speed)) ? speed : speed + ' Mbps') + '</span></div>' +
       '<div class="metric"><span class="metric-label">Latency</span><span class="metric-value">' + latency + '</span></div>' +
       '<div class="metric"><span class="metric-label">Data Cap</span><span class="metric-value">' + dataCap + '</span></div>' +
       '</div>';
@@ -335,28 +335,28 @@
     return html;
   }
 
-  function buildCostPerGB(isps, slMonthly, sym, countryName) {
-    var slCostGB = slMonthly > 0 ? (slMonthly / 1024) : 0;
+  function buildCostPerGB(isps, slMonthly, sym) {
+    var usageGB = 100;
+    var slCostGB = slMonthly / usageGB;
     var maxCost = slCostGB;
     var items = [{name: 'Starlink', cost: slCostGB, cls: 'cyan'}];
 
     for (var i = 0; i < isps.length && i < 5; i++) {
       var isp = isps[i];
       var ispMonthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
-      var capNum = parseInt(isp.dataCap) || 0;
-      var costGB = capNum > 0 ? (ispMonthly / capNum) : (ispMonthly / 500);
+      var costGB = ispMonthly / usageGB;
       items.push({name: isp.name || 'ISP', cost: costGB, cls: 'blue'});
       if (costGB > maxCost) maxCost = costGB;
     }
 
     if (maxCost === 0) maxCost = 1;
-    var html = '<div class="cost-gb"><h3>Cost per GB Comparison</h3>';
+    var html = '<div class="cost-gb"><h3>Monthly price per GB at 100 GB of use</h3><p>Each monthly subscription price is divided by the same 100 GB example. Confirm the plan allowance and any overage fees. Hardware and setup are shown separately.</p>';
     for (var j = 0; j < items.length; j++) {
       var pct = Math.max(5, Math.round((items[j].cost / maxCost) * 100));
       html += '<div class="bar-row">' +
         '<span class="bar-label">' + items[j].name + '</span>' +
         '<span class="bar-track"><span class="bar-fill ' + items[j].cls + '" style="width:' + pct + '%"></span></span>' +
-        '<span class="bar-val">' + fmt(Math.round(items[j].cost * 100) / 100, sym) + '/GB</span></div>';
+        '<span class="bar-val">' + sym + items[j].cost.toLocaleString('en', {maximumFractionDigits: 2}) + '/GB</span></div>';
     }
     html += '</div>';
     return html;

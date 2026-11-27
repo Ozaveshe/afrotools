@@ -342,15 +342,16 @@
       for (var j = 0; j < e.tiers.length; j++) {
         var t = e.tiers[j];
         var tierBest = Math.abs(t.cpm - globalBestCpm) < 0.01;
+        var speedBasis = e.isStarlink && String(t.speed).indexOf('-') >= 0 ? ' at the top of the advertised range' : '';
         var rowClass = tierBest && !e.isStarlink ? 'tier-row best' : 'tier-row';
         html += '<div class="' + rowClass + '">';
         html += '<span class="tier-speed">' + t.speed + '</span>';
         html += '<span class="tier-price">' + sym + formatNum(t.price) + '/mo</span>';
-        html += '<span class="tier-cpm">' + sym + t.cpm.toFixed(1) + '/Mbps</span>';
+        html += '<span class="tier-cpm">' + sym + t.cpm.toFixed(1) + '/Mbps' + speedBasis + '</span>';
         html += '</div>';
         if (tierBest && !bestProvider) {
           bestProvider = e.name;
-          bestTierInfo = t.speed + ' at ' + sym + formatNum(t.price) + '/mo (' + sym + t.cpm.toFixed(1) + '/Mbps)';
+          bestTierInfo = t.speed + ' at ' + sym + formatNum(t.price) + '/mo (' + sym + t.cpm.toFixed(1) + '/Mbps' + speedBasis + ')';
         }
       }
 
@@ -363,8 +364,8 @@
     resultsEl.innerHTML = html;
 
     if (bestProvider) {
-      sumTitle.textContent = 'Best Value: ' + bestProvider;
-      sumText.textContent = 'The best cost-per-Mbps in ' + country.name + ' is ' + bestTierInfo + '. ' + (country.starlinkAvailable ? 'Starlink is also available as a premium satellite option.' : '');
+      sumTitle.textContent = 'Lowest price per advertised Mbps: ' + bestProvider;
+      sumText.textContent = 'The lowest modeled cost per advertised Mbps in ' + country.name + ' is ' + bestTierInfo + '. Actual speeds and one-time hardware charges can change the comparison.';
       summaryEl.style.display = 'block';
     } else {
       summaryEl.style.display = 'none';

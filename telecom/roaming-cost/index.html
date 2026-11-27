@@ -409,7 +409,7 @@ details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#4
       savingsBanner.className = 'savings-banner show';
     } else {
       document.getElementById('localPrice').textContent = sym + Math.round(localTotalHome).toLocaleString();
-      document.getElementById('localSub').textContent = 'Local SIM in ' + dest.name + ' (converted at today’s rate)';
+      document.getElementById('localSub').textContent = 'Local SIM in ' + dest.name + (FX.asOf ? ' (FX source dated ' + String(FX.asOf).slice(0, 10) + ')' : ' (FX source date unavailable)');
 
       // savings
       var diff = roamTotal - localTotalHome;
