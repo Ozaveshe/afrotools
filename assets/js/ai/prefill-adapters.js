@@ -742,8 +742,9 @@
       var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
       var gross = positiveNumber(firstValue(inputs, ["grossPay", "salary", "income", "budget", "grossSalary"]));
       var period = payPeriod(firstValue(inputs, ["payPeriod", "period"]));
-      var monthly = period === "annual" && gross !== null ? gross / 12 : gross;
-      var annual = period === "annual" ? gross : (gross !== null ? gross * 12 : null);
+      var annualFactors = { monthly: 12, annual: 1, weekly: 52, daily: 260 };
+      var annual = gross !== null && annualFactors[period] ? gross * annualFactors[period] : null;
+      var monthly = annual === null ? null : annual / 12;
       return {
         country: meta.country || text(firstValue(inputs, ["country"])),
         countryCode: meta.code || text(firstValue(inputs, ["countryCode"])),

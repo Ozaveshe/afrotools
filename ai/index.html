@@ -2572,6 +2572,14 @@
         seen[name] = true;
         picked.push(findFieldDescriptor(toolId, name));
       }
+      if (toolId === "paye-calculator") {
+        add("country");
+        add("payPeriod");
+        add("grossPay");
+        var request = input.value || "";
+        var personal = /\b(my|mine|i earn|i make)\b/i.test(request) && !/\b(employees?|staff|workers?|team|company|employer)\b/i.test(request);
+        if (personal) return picked.slice(0, limit || 3);
+      }
       (state && state.missingInputs || []).forEach(add);
       descriptors.forEach(function (descriptor) { add(descriptor.name); });
       return picked.slice(0, limit || 3);

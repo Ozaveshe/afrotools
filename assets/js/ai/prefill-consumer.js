@@ -446,12 +446,11 @@
     var applied = [];
     var path = normalizePath(root.location.pathname || "");
     var gross = Number(inputs.grossPay);
-    if (!Number.isFinite(gross)) return applied;
-    var period = String(inputs.payPeriod || "monthly").toLowerCase();
-    var monthly = Number(inputs.grossPayMonthly);
-    var annual = Number(inputs.grossPayAnnual);
-    if (!Number.isFinite(monthly)) monthly = period === "annual" ? gross / 12 : gross;
-    if (!Number.isFinite(annual)) annual = period === "annual" ? gross : gross * 12;
+    var period = String(inputs.payPeriod || "").toLowerCase();
+    var annualFactors = { monthly: 12, annual: 1, weekly: 52, daily: 260 };
+    if (!Number.isFinite(gross) || gross <= 0 || !annualFactors[period]) return applied;
+    var annual = gross * annualFactors[period];
+    var monthly = annual / 12;
     var valueForPage = path.indexOf("/kenya/ke-paye") === 0 ? monthly : annual;
     var inputId = path.indexOf("/nigeria/ng-salary-tax") === 0 ? "grossSalary" : "salaryInput";
     if (setField(inputId, formatNumber(valueForPage), { quiet: true })) applied.push("grossPay");
