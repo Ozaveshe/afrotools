@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require("fs");
+const { decodeHTML } = require("entities");
 const path = require("path");
 const routeApi = require("./lib/route-contract");
 let routeGraph;
@@ -20,7 +21,7 @@ const analyticsLoader = canonicalLoaderTag(analyticsVersion());
 const analyticsBootstrap = earlyBootstrapTag(bootstrapVersion(), analyticsVersion());
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const esc = (value) => String(value).replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char]));
-const clean = (value) => String(value || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+const clean = (value) => decodeHTML(String(value || "").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 
 function first(html, patterns, fallback = "") {
   for (const pattern of patterns) {
