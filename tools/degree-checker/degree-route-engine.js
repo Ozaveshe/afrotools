@@ -82,10 +82,17 @@
     const docs = new Set(input.documents || []);
     const gaps = [];
     if (input.institutionStatus !== "confirmed") gaps.push("Confirm the awarding institution with the home-country regulator");
-    if (!docs.has("certificate")) gaps.push("Final certificate or official award letter");
-    if (!docs.has("transcript")) gaps.push("Official transcript or statement of results");
-    if (!docs.has("verification")) gaps.push("Direct issuer or registrar verification route");
-    if (!docs.has("translation")) gaps.push("Certified translation if the recipient requires one");
+    const documentLabels = {
+      certificate: "Final certificate or official award letter",
+      transcript: "Official transcript or statement of results",
+      verification: "Direct issuer or registrar verification route",
+      translation: "Certified translation if the recipient requires one"
+    };
+    const documentsMarkedAvailable = [];
+    for (const [key, label] of Object.entries(documentLabels)) {
+      if (docs.has(key)) documentsMarkedAvailable.push(label);
+      else gaps.push(label);
+    }
     return {
       valid: true,
       destination: route.name,
@@ -94,6 +101,7 @@
       owner: route.owners[input.purpose],
       link: route.purposeLinks?.[input.purpose] || { url: route.url, label: route.label },
       gaps,
+      documentsMarkedAvailable,
       separation: input.purpose === "licensed"
         ? "A general credential comparison does not itself grant professional registration. Follow the competent regulator's profession-specific process."
         : input.purpose === "immigration"

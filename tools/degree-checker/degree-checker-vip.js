@@ -34,6 +34,7 @@
       `Qualification: ${qualificationLabels[current.qualification]||current.qualification}`,
       `Decision owner: ${current.owner}`,
       `Official starting point: ${current.link.label} — ${current.link.url}`,"",
+      "Documents marked available",...(current.documentsMarkedAvailable.length ? current.documentsMarkedAvailable : ["None marked available"]).map(label => `- ${label}`),"",
       "Evidence gaps",...(current.gaps.length?current.gaps:["No gaps selected in this worksheet"]).map(g=>`- ${g}`),"",
       `Process separation: ${current.separation}`,"",
       "No equivalency determination was made. This route does not predict admission, employment, licensing, salary, visa or immigration approval.",
