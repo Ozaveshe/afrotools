@@ -71,7 +71,7 @@ function calculate() {
 
   // Display
   document.getElementById('rCement').textContent = cementBags + ' sacs';
-  document.getElementById('rCementKg').textContent = Math.round(cementBags*bagSize) + ' kg (' + cementVol.toFixed(2) + ' m\u00B3)';
+  document.getElementById('rCementKg').textContent = Math.round(cementKg) + ' kg pour le mélange (' + cementVol.toFixed(2) + ' m³) ; ' + (cementBags * bagSize) + ' kg à acheter';
   document.getElementById('rSand').textContent = sandVol.toFixed(2) + ' m\u00B3';
   document.getElementById('rSandTrips').textContent = sandTonnes.toFixed(1) + ' tonnes | ' + sandWB + ' wheelbarrows';
   if(agg>0){
@@ -90,11 +90,12 @@ function calculate() {
   var country = document.getElementById('country').value;
   if(country!=='none' && PRICES[country]){
     var p = PRICES[country];
-    var cCost = cementBags * p.cement;
+    var bagPrice = p.cement * bagSize / 50;
+    var cCost = cementBags * bagPrice;
     var sCost = sandVol * p.sand;
     var gCost = aggVol * p.gravel;
     var total = cCost + sCost + gCost;
-    var html = '<tr><td>Ciment ('+bagSize+'kg sacs)</td><td>'+cementBags+'</td><td class="num">'+p.sym+p.cement.toLocaleString()+'</td><td class="num">'+p.sym+Math.round(cCost).toLocaleString()+'</td></tr>';
+    var html = '<tr><td>Ciment ('+bagSize+'kg sacs)</td><td>'+cementBags+'</td><td class="num">'+p.sym+bagPrice.toLocaleString()+(bagSize === 50 ? '' : ' (estimé au prorata du sac de 50 kg)')+'</td><td class="num">'+p.sym+Math.round(cCost).toLocaleString()+'</td></tr>';
     html += '<tr><td>Sable</td><td>'+sandVol.toFixed(2)+' m\u00B3</td><td class="num">'+p.sym+p.sand.toLocaleString()+' /m\u00B3</td><td class="num">'+p.sym+Math.round(sCost).toLocaleString()+'</td></tr>';
     if(agg>0) html += '<tr><td>Granulat / Gravier</td><td>'+aggVol.toFixed(2)+' m\u00B3</td><td class="num">'+p.sym+p.gravel.toLocaleString()+' /m\u00B3</td><td class="num">'+p.sym+Math.round(gCost).toLocaleString()+'</td></tr>';
     document.getElementById('costBody').innerHTML = html;
