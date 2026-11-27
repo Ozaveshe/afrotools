@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Choose what you want to practise before or after a move. Make a settling-in checklist for transport, conversations, appointments and meeting people.">
+  <link rel="canonical" href="https://afrotools.com/tools/cultural-adjustment/">
+  <title>Settling-in planner | AfroTools</title>
+  <style>
+    * { box-sizing: border-box }
+    body { margin: 0; color: #243222; background: #f5f6ef; font: 1rem/1.6 Inter,system-ui,sans-serif }
+    main, nav { max-width: 49rem; margin: auto; padding: 1rem clamp(1rem, 4vw, 2rem) }
+    nav { border-bottom: 1px solid #ced7c5 } a { color: #315636 }
+    h1 { font: 500 clamp(2.6rem, 8vw, 4.4rem)/1.05 Georgia,serif; margin: 1.4rem 0 .8rem }
+    h2, h3 { line-height: 1.2 }
+    fieldset { border: 1px solid #b5c2ad; margin: 1.25rem 0; padding: 1rem; background: white; border-radius: .5rem }
+    legend, .stage { font-weight: 700 }
+    select, button { font: inherit; min-height: 2.8rem; border-radius: .35rem; padding: .4rem .7rem }
+    select { display: block; max-width: 100%; border: 1px solid #688265; background: white; color: inherit }
+    button { background: #315636; color: white; border: 0; cursor: pointer }
+    label.choice { display: flex; align-items: center; gap: .6rem; min-height: 2.75rem; cursor: pointer }
+    input[type=checkbox] { width: 1.15rem; height: 1.15rem; flex: none; accent-color: #315636 }
+    #plan { padding: 1rem; background: white; border-left: .3rem solid #648457; margin: 1.5rem 0 }
+    :focus-visible { outline: 3px solid #23509a; outline-offset: 3px }
+  </style>
+</head>
+<body>
+<nav aria-label="Breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/japa-calculator/">Relocation budget planner</a></nav>
+<main>
+  <h1>Settling-in planner</h1>
+  <p>Pick the everyday tasks you want to practise around a move. Build a checklist you can use wherever you're settling.</p>
+  <form id="options">
+    <label class="stage" for="stage">When will you use the plan?</label>
+    <select id="stage"><option value="before">Before I move</option><option value="after">After I arrive</option></select>
+    <fieldset><legend>Choose your priorities</legend>
+      <label class="choice"><input type="checkbox" name="topic" value="transport">Getting around</label>
+      <label class="choice"><input type="checkbox" name="topic" value="conversation">Everyday conversations</label>
+      <label class="choice"><input type="checkbox" name="topic" value="appointments">Using local services</label>
+      <label class="choice"><input type="checkbox" name="topic" value="community">Meeting people</label>
+    </fieldset>
+    <p id="error" role="alert"></p>
+    <button>Build my checklist</button>
+  </form>
+  <section id="plan" hidden aria-labelledby="plan-title">
+    <h2 id="plan-title" tabindex="-1"></h2>
+    <p id="progress" role="status"></p>
+    <div id="tasks"></div>
+    <button type="button" id="download">Download checklist (.txt)</button>
+    <p>Download to keep a copy. Reloading this page clears your selections.</p>
+  </section>
+</main>
+<script>
+(() => {
+  const el = id => document.getElementById(id);
+  const activities = {
+    transport: {
+      before: ['Find the local transport operator and save a map of one route you expect to use.', 'Check the fare, payment method and a backup route for that journey.'],
+      after: ['Try one everyday route in daylight at a convenient time.', 'Find the return stop and check when the last service leaves.']
+    },
+    conversation: {
+      before: ['Find out which languages are available at a service you expect to use.', 'Practise asking for directions and requesting clarification in your preferred way.'],
+      after: ['Try a short everyday conversation or a written question in a setting you choose.', 'Note one phrase or communication aid you want to use again.']
+    },
+    appointments: {
+      before: ['Find the official opening hours and booking options for one local service.', 'Check what that service asks visitors to bring and whether language or access support is offered.'],
+      after: ['Confirm how to make or change an appointment with one service you need.', 'Check the entrance, opening hours and route before you go.']
+    },
+    community: {
+      before: ['Find a library, community centre or interest group you would like to visit.', 'Check whether a first visit requires booking, a fee or particular equipment.'],
+      after: ['Choose one local activity that fits your interests, schedule and budget.', 'Ask the organiser how a newcomer can join or attend a trial session.']
+    }
+  };
+  const completed = new Set();
+  const form = el('options');
+  function progress() {
+    const tasks = el('tasks').querySelectorAll('input');
+    el('progress').textContent = Array.from(tasks).filter(task => task.checked).length + ' of ' + tasks.length + ' tasks complete';
+  }
+  form.addEventListener('change', () => { el('plan').hidden = true; el('error').textContent = ''; });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const topics = Array.from(form.querySelectorAll('[name=topic]:checked'));
+    if (!topics.length) {
+      el('error').textContent = 'Choose at least one priority to build your checklist.';
+      form.querySelector('[name=topic]').focus();
+      return;
+    }
+    const stage = el('stage').value;
+    el('plan-title').textContent = stage === 'before' ? 'Before you move' : 'After you arrive';
+    el('tasks').replaceChildren();
+    for (const topic of topics) {
+      const group = document.createElement('fieldset');
+      const legend = document.createElement('legend');
+      legend.textContent = topic.parentElement.textContent.trim();
+      group.append(legend);
+      activities[topic.value][stage].forEach((task, index) => {
+        const key = [stage, topic.value, index].join('-');
+        const label = document.createElement('label');
+        label.className = 'choice';
+        const box = document.createElement('input');
+        box.type = 'checkbox';
+        box.checked = completed.has(key);
+        box.addEventListener('change', () => {
+          if (box.checked) completed.add(key);
+          else completed.delete(key);
+          progress();
+        });
+        label.append(box, document.createTextNode(task));
+        group.append(label);
+      });
+      el('tasks').append(group);
+    }
+    progress();
+    el('plan').hidden = false;
+    el('plan-title').focus();
+  });
+  el('download').addEventListener('click', () => {
+    const lines = ['Settling-in planner', el('plan-title').textContent, el('progress').textContent];
+    for (const group of el('tasks').children) {
+      lines.push('', group.querySelector('legend').textContent);
+      for (const label of group.querySelectorAll('label')) lines.push((label.querySelector('input').checked ? '[x] ' : '[ ] ') + label.textContent);
+    }
+    const url = URL.createObjectURL(new Blob([lines.join('\n') + '\n'], {type:'text/plain;charset=utf-8'}));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'settling-in-checklist.txt';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+})();
+</script>
+</body>
+</html>
