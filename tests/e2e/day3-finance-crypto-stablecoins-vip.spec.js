@@ -109,3 +109,47 @@ test('stablecoin EN and FR are native, receipted and fail closed', async ({ page
   expect(providerRequests).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+test('French native CSV retains the selected receipt after a late response and a retry', async ({ page }) => {
+  let releaseInitial;
+  let markInitial;
+  const initialStarted = new Promise(resolve => { markInitial = resolve; });
+  const holdInitial = new Promise(resolve => { releaseInitial = resolve; });
+  let rejectZar = false;
+  await page.route('**/.netlify/functions/crypto-stablecoins*', async route => {
+    const currency = new URL(route.request().url()).searchParams.get('currency');
+    if (currency === 'ngn') {
+      markInitial();
+      await holdInitial;
+    }
+    await route.fulfill({ json: rejectZar && currency === 'zar'
+      ? { status: 'unavailable' } : snapshot(currency) });
+  });
+  await page.goto('/fr/crypto/stablecoins/', { waitUntil: 'domcontentloaded' });
+  await initialStarted;
+  await page.locator('[data-currency]').selectOption('zar');
+  await expect(page.locator('[data-count]')).toHaveText('3');
+  const staleResponse = page.waitForResponse(response => response.url().endsWith('currency=ngn'));
+  releaseInitial();
+  await staleResponse;
+  const csv = page.locator('[data-export-csv]');
+  async function verifyReceipt() {
+    const pending = page.waitForEvent('download');
+    await csv.click();
+    const file = await pending;
+    expect(file.suggestedFilename()).toMatch(/^stablecoin-reference-zar-/);
+    const text = fs.readFileSync(await file.path(), 'utf8');
+    expect(text).toContain('CoinGecko,ZAR,');
+    expect(text).toContain('USDT,0.9995,16.36,');
+    expect(text).not.toContain('CoinGecko,NGN,');
+  }
+  await verifyReceipt();
+  rejectZar = true;
+  await page.locator('[data-refresh]').click();
+  await expect(csv).toBeDisabled();
+  await expect(page.locator('[data-count]')).toHaveText('0');
+  rejectZar = false;
+  await page.locator('[data-refresh]').click();
+  await expect(csv).toBeEnabled();
+  await verifyReceipt();
+});
