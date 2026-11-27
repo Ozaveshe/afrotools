@@ -36,11 +36,16 @@ test('scheduled primary and fallback, plus static enrichment, project the actual
   const file = require.resolve('../netlify/functions/scheduled-fetch-fuel-prices');
   const nativeRequire = createRequire(file);
   const seed = require('../data/fuel/latest.json');
-  const previous = {countries:seed.countries.map(c=>c.code==='ZW'?legacy:c)};
+  const previous = {countries:seed.countries.map(c => {
+    if (c.code === 'ZW') return legacy;
+    if (!['SL','GM'].includes(c.code)) return c;
+    const fuel = {price:c.code === 'SL' ? 30 : 80, usd:1.13, unit:'liter'};
+    return {...c, last_updated:'2026-03-08', petrol:{...fuel}, diesel:{...fuel}};
+  })};
   const api = {};
   const calls = [];
   const context = vm.createContext({exports:api, require(id) {
-    if (id === './_shared/data-store') return {getData:async key=>key==='fuel-latest'?previous:{rates:{ZWG:10}}};
+    if (id === './_shared/data-store') return {getData:async key=>key==='fuel-latest'?previous:{rates:{ZWG:10, GMD:80, SLE:24}}};
     if (id === './_shared/scraper-base') return {runScraper:async conf=>conf, fetchWithRetry:async url=>{
       calls.push(url);
       if (!url.endsWith('/Ghana/gasoline_prices/')) throw Error('Test source unavailable');
@@ -54,6 +59,16 @@ test('scheduled primary and fallback, plus static enrichment, project the actual
   const stat = enrichFuelSourceMetadata(structuredClone(previous));
   for (const rows of [primary,fallback,stat.countries]) {
     const row = rows.find(c=>c.code==='ZW');assert.equal(row.petrol.price,54.7);assert.equal(row.diesel.usd,2.04);assert.equal(row.lpg.price,49.61);
+  }
+  for (const rows of [primary,fallback,stat.countries]) {
+    for (const [code,petrol,diesel] of [['SL',40,45],['GM',109.8,120]]) {
+      const row = rows.find(c => c.code === code);
+      assert.deepEqual([row.petrol.price,row.diesel.price],[petrol,diesel]);
+      assert.equal(row.petrol.usd,null);
+      assert.equal(row.diesel.usd,null);
+      assert.equal(row.diesel.date_basis,'effective');
+      assert.deepEqual(row.lpg,previous.countries.find(c=>c.code===code).lpg);
+    }
   }
   assert.equal(calls.some(url=>url.includes('/Zimbabwe/')),false);
   assert.equal(legacy.currency,'ZWL'); assert.ok(stat.official_verified_count>0); assert.equal(stat.source,'mixed');

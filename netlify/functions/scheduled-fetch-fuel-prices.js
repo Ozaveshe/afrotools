@@ -15,7 +15,7 @@
 
 const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
 const { getData } = require('./_shared/data-store');
-const { zimbabweAggregateRow } = require('../../scripts/lib/fuel-country-reference');
+const { projectNationalPumpPrices, zimbabweAggregateRow } = require('../../scripts/lib/fuel-country-reference');
 const marketData = require('../../data/fuel/markets.json');
 
 // All 54 African countries with GlobalPetrolPrices slugs
@@ -285,7 +285,7 @@ async function fetchFromGlobalPetrolPrices() {
     throw new Error('GPP detail pages: only ' + countries.length + ' countries parsed');
   }
 
-  return countries;
+  return countries.map(country => projectNationalPumpPrices(country, marketData));
 }
 
 /**
@@ -305,7 +305,7 @@ async function fetchFromSeedWithForexUpdate() {
 
   var refreshedAt = new Date().toISOString();
   var countries = seed.countries.map(function(c) {
-    const reviewed = zimbabweAggregateRow(c, marketData);
+    const reviewed = projectNationalPumpPrices(zimbabweAggregateRow(c, marketData), marketData, refreshedAt);
     if (reviewed !== c || (c.code === 'ZW' && c.official_verified === true)) return reviewed;
     var updated = Object.assign({}, c);
     updated.last_updated = c.last_updated || '';

@@ -57,6 +57,40 @@ function zimbabweAggregateRow(original, marketData, now = new Date().toISOString
   return row;
 }
 
+const pumpSchedules = {GM:'gm-national-reference', SL:'sl-national-npra'};
+
+function projectNationalPumpPrices(original, marketData, now = new Date().toISOString()) {
+  const marketId = pumpSchedules[original?.code];
+  if (!marketId) return original;
+  const market = marketData.markets.find(m => m.market_id === marketId &&
+    m.country_code === original.code && m.granularity === 'national');
+  if (!market) return original;
+  let row = original;
+  for (const type of ['petrol', 'diesel']) {
+    const ref = market.fuels.find(f => f.fuel_type === type && f.date_basis === 'effective' &&
+      f.price_kind === 'regulated-retail' && f.currency === original.currency);
+    if (!ref || ref.effective_date < productDate(original, type)) continue;
+    const {valid, historical} = status(ref, now);
+    if (!valid) continue;
+    // Keep elapsed schedules as dated historical evidence until a newer observation arrives.
+    if (row === original) row = {...original};
+    row[type] = {price:ref.price, unit:'liter', usd:null, observed_at:ref.effective_date,
+      effective_date:ref.effective_date, date_basis:'effective', official_market_id:marketId,
+      source_name:ref.source_name, source_url:ref.source_url, last_verified_at:ref.last_verified_at,
+      historical};
+    if (ref.valid_to) row[type].valid_to = ref.valid_to;
+  }
+  if (row !== original) {
+    // LPG and any older sibling retain their own provenance, including the legacy row date.
+    row.source = 'mixed';
+    row.source_state = 'product_specific_sources';
+    row.source_note = 'Petrol and diesel carry their own source and date. LPG retains its separate dataset provenance.';
+    row.official_verified = false;
+    delete row.forex_refreshed_at;
+  }
+  return row;
+}
+
 function countryPageRows(snapshot, marketData, now = new Date().toISOString()) {
   return snapshot.countries.map(original => {
     const row = {...original};
@@ -77,7 +111,12 @@ function countryPageRows(snapshot, marketData, now = new Date().toISOString()) {
       const best = compatible[0];
       if (!best) {
         const item = row[type];
-        if (item.observed_at && item.source_url && row.source === 'globalpetrolprices') {
+        const official = candidates.find(m => m.market_id === item.official_market_id)?.fuels
+          .find(f => f.fuel_type === type && f.effective_date === item.effective_date && f.price === item.price);
+        if (official) {
+          row.references = {...row.references, [type]:{...official, historical:status(official, now).historical}};
+        } else if (item.observed_at && item.source_url && (row.source === 'globalpetrolprices' ||
+            (row.source_state === 'product_specific_sources' && /^https:\/\/www\.globalpetrolprices\.com\//.test(item.source_url)))) {
           const ref = {fuel_type:type, price:item.price, currency:row.currency, unit:'litre', date_basis:'observation',
             effective_date:item.observed_at, last_verified_at:item.observed_at, source_name:'GlobalPetrolPrices',
             source_url:item.source_url, price_kind:'weekly-national-benchmark'};
@@ -144,4 +183,4 @@ function datedProperties(row, fuel, french) {
   return properties;
 }
 
-module.exports = {zimbabweAggregateRow, countryPageRows, productDate, sourceLine, regionalComparison, datedProperties};
+module.exports = {projectNationalPumpPrices, zimbabweAggregateRow, countryPageRows, productDate, sourceLine, regionalComparison, datedProperties};

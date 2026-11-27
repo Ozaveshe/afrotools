@@ -16,7 +16,10 @@
   (latest&&Array.isArray(latest.countries)?latest.countries:[]).forEach(function(row){
    if(!/^[A-Z]{2}$/.test(row.code||'')||!row.name)return;
    var fuels=['petrol','diesel'].map(function(type){
-    var item=row[type],url=item&&item.source_url||(row.official_verified===true?row.official_source_url:row.source_url),observed=item&&item.observed_at;
+    var item=row[type];
+      // The maintained regulator market already supplies this effective price and expiry.
+      if(item && item.official_market_id && rows.some(function(m){return m.market_id===item.official_market_id && m.country_code===row.code;}))return null;
+      var url=item&&item.source_url||(row.official_verified===true?row.official_source_url:row.source_url),observed=item&&item.observed_at;
     // The maintained collector fetches each /{slug}/{gasoline|diesel}_prices/ separately,
     // but legacy rows stored only the gasoline URL and maximum row-level date.
     if(!(item&&item.source_url)&&type==='diesel'&&/^https:\/\/www\.globalpetrolprices\.com\/[A-Za-z-]+\/gasoline_prices\/$/.test(url||''))url=url.replace(/gasoline_prices\/$/,'diesel_prices/');
