@@ -77,6 +77,7 @@ function build() {
   }
   for (const id of shared.tool_ids) reviewed.set('/assets/img/tools/' + id + '.webp', { text_status:'text-free-reviewed', locale_reuse:true, review_note:shared.note });
   for (const item of [
+    ...JSON.parse(read(OUT + '/blog-generated-2026-11-27-nafdac.json')).images,
     ...JSON.parse(read(OUT + '/blog-generated-2026-10-09.json')).images,
     ...JSON.parse(read(OUT + '/blog-generated-2026-10-13.json')).images,
     ...JSON.parse(read(OUT + '/car-generated-2026-10-13.json')).images
