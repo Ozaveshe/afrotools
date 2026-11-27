@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diaspora investment funding planner | AfroTools</title>
+<meta name="description" content="Plan contributions towards a cross-border investment goal using your own transfer quote, fees and savings target.">
+<link rel="canonical" href="https://afrotools.com/tools/diaspora-investment/">
+<style>
+    * { box-sizing: border-box }
+    body { margin: 0; background: #f2f6f5; color: #172d30; font: 1rem/1.55 Inter, system-ui, sans-serif }
+    main, nav { max-width: 51rem; margin: auto; padding: 1rem clamp(1rem, 4vw, 2rem) }
+    nav { border-bottom: 1px solid #bfd2d1 }
+    h1 { font: 500 clamp(2.5rem, 6vw, 4rem)/1.1 Georgia, serif; margin: 1.2rem 0 }
+    h2, h3 { line-height: 1.2 } a { color: #075d62 }
+    form, section { background: white; border: 1px solid #b8cfcc; border-radius: .7rem; padding: clamp(1rem, 3vw, 1.75rem); margin: 1rem 0 }
+    .fields { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,16rem),1fr)); gap: 1rem }
+    label { display: block; font-weight: 650 }
+    input, select, button { font: inherit; min-height: 2.8rem; border-radius: .3rem; padding: .45rem .65rem }
+    input, select { width: 100%; border: 1px solid #567272; background: white; color: inherit }
+    button { border: 1px solid #075d62; background: #075d62; color: white; cursor: pointer; margin: .6rem .4rem 0 0 }
+    .secondary { background: white; color: #075d62 }
+    :focus-visible { outline: 3px solid #266bcc; outline-offset: 3px }
+      dt { color:#405850 } dd { margin:0 0 .8rem; font-weight:700 }
+  </style>
+</head><body>
+<nav aria-label="Breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/diaspora-guide/">Diaspora tax guide</a></nav>
+<main>
+<h1>Diaspora investment funding planner</h1>
+<p>How much capital could your monthly transfer put towards a goal abroad? Use your own quote and fees. This worksheet assumes a constant rate and excludes investment returns, taxes and changes in value.</p>
+<form id="funding">
+<h2>Your monthly transfer</h2>
+<div class="fields">
+<div><label for="send">Sending currency code</label><input id="send" placeholder="e.g. GBP" required pattern="[A-Za-z]{3}" maxlength="3"></div>
+<div><label for="receive">Goal currency code</label><input id="receive" placeholder="e.g. NGN" required pattern="[A-Za-z]{3}" maxlength="3"></div>
+<div><label for="budget">Monthly budget in sending currency</label><input id="budget" type="number" step=".01" min="0" max="999999999999" required></div>
+<div><label for="send-fee">Fee taken from that budget</label><input id="send-fee" type="number" step=".01" min="0" max="999999999999" value="0" required></div>
+<div><label for="rate">Goal currency per 1 sending currency unit</label><input id="rate" inputmode="decimal" pattern="[0-9]{1,9}([.][0-9]{1,9})?" title="Enter a positive decimal rate, with up to nine places after the decimal point." required aria-describedby="quote-help"><small id="quote-help">Enter the conversion rate from your quote.</small></div>
+<div><label for="receive-fee">Fee deducted in goal currency per transfer</label><input id="receive-fee" type="number" step=".01" min="0" max="999999999999" value="0" required></div>
+</div>
+<h2>Your funding goal</h2>
+<div class="fields">
+<div><label for="start">Capital already set aside in goal currency</label><input id="start" type="number" step=".01" min="0" max="999999999999" value="0" required></div>
+<div><label for="target">Target in goal currency</label><input id="target" type="number" step=".01" min=".01" max="999999999999" required></div>
+<div><label for="months">Number of monthly transfers</label><input id="months" type="number" step="1" min="1" max="600" required></div>
+</div>
+<p id="error" role="alert"></p><button>Calculate funding plan</button>
+</form>
+<section id="result" aria-labelledby="result-title" hidden><h2 id="result-title" tabindex="-1">Your funding plan</h2><dl id="figures"></dl><p>Each transfer uses the same budget and fees. The converted amount is rounded to two decimal places per transfer.</p></section>
+</main>
+<script>
+(() => {
+  const el = id => document.getElementById(id);
+  const cents = id => Math.round(el(id).valueAsNumber * 100);
+  const form = el('funding');
+  form.addEventListener('input', () => { el('result').hidden = true; el('error').textContent = ''; });
+  function invalid(id, message) { el('error').textContent = message; el(id).focus(); }
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const sending = el('send').value.toUpperCase();
+    const receiving = el('receive').value.toUpperCase();
+    const [whole, fraction = ''] = el('rate').value.split('.');
+    const scale = 10n ** BigInt(fraction.length);
+    const rate = BigInt(whole + fraction);
+    if (rate === 0n) return invalid('rate','Enter a conversion rate greater than zero.');
+    if (sending === receiving && rate !== scale) return invalid('rate','Use a rate of 1 when both currencies are the same.');
+    const convertible = cents('budget') - cents('send-fee');
+    if (convertible < 0) return invalid('send-fee','The sending fee exceeds your monthly budget. Check the fee or budget.');
+    // Apply the quoted decimal rate exactly and round half up to the nearest cent.
+    const numerator = BigInt(convertible) * rate;
+    const converted = (2n * numerator + scale) / (2n * scale);
+    const monthly = Number(converted - BigInt(cents('receive-fee')));
+    if (monthly < 0) return invalid('receive-fee','The receiving fee exceeds the converted amount. Check the fee or quote.');
+    const months = el('months').valueAsNumber;
+    const total = cents('start') + monthly * months;
+    if (!Number.isSafeInteger(total)) return invalid('rate','This quote produces an amount outside the supported range. Check the rate and amounts.');
+    const gap = cents('target') - total;
+    const needed = Math.max(0, cents('target') - cents('start'));
+    const money = (value, code) => code + ' ' + (value / 100).toLocaleString('en',{maximumFractionDigits:2});
+    const rows = [
+      ['Amount converted each month', money(convertible, sending)],
+      ['Net monthly contribution', money(monthly, receiving)],
+      ['Capital after ' + months + (months === 1 ? ' transfer' : ' transfers'), money(total, receiving)],
+      [gap < 0 ? 'Above target' : 'Remaining gap', money(Math.abs(gap), receiving)],
+      ['Transfers needed to reach target', needed === 0 ? 'Already funded' : monthly === 0 ? 'Unreachable at this contribution' : Math.ceil(needed / monthly).toLocaleString('en')]
+    ];
+    const figures = el('figures');
+    figures.replaceChildren();
+    for (const [label, value] of rows) {
+      const dt = document.createElement('dt'); const dd = document.createElement('dd');
+      dt.textContent = label; dd.textContent = value; figures.append(dt,dd);
+    }
+    el('result').hidden = false;
+    el('result-title').focus();
+  });
+})();
+</script>
+</body></html>
