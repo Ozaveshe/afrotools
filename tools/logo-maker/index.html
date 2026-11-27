@@ -566,14 +566,14 @@
             <label class="f-label-text">Icon</label>
             <select class="f-input" id="iconSelect" aria-label="Icon Select">
               <option value="none">No icon</option>
-              <option value="?">Energy / Fintech</option>
-              <option value="?">Creative</option>
-              <option value="??">Agri / Nature</option>
-              <option value="??">Food</option>
-              <option value="??">Education</option>
-              <option value="?">Modern mark</option>
-              <option value="?">Core mark</option>
-              <option value="?">Movement</option>
+              <option value="energy">Energy / Fintech</option>
+              <option value="creative">Creative</option>
+              <option value="leaf">Agri / Nature</option>
+              <option value="food">Food</option>
+              <option value="education">Education</option>
+              <option value="modern">Modern mark</option>
+              <option value="core">Core mark</option>
+              <option value="movement">Movement</option>
             </select>
           </div>
         </div>
@@ -728,12 +728,12 @@
   const downloadSvgBtn = document.getElementById('downloadSvgBtn');
   const downloadPngBtn = document.getElementById('downloadPngBtn');
   const PRESETS = {
-    fintech: { text: 'KopaPay', font: 'Montserrat', textColor: '#0F766E', bgColor: '#F8FAFC', layout: 'icon-left', icon: '?' },
-    fashion: { text: 'Ankara House', font: 'Playfair Display', textColor: '#7C2D12', bgColor: '#FFF7ED', layout: 'icon-top', icon: '?' },
-    food: { text: 'Jollof Bowl', font: 'Poppins', textColor: '#C2410C', bgColor: '#FFF7ED', layout: 'icon-left', icon: '??' },
-    agri: { text: 'Savanna Fresh', font: 'DM Sans', textColor: '#166534', bgColor: '#F0FDF4', layout: 'icon-left', icon: '??' },
-    education: { text: 'LearnNaija', font: 'Montserrat', textColor: '#1D4ED8', bgColor: '#EFF6FF', layout: 'icon-top', icon: '??' },
-    logistics: { text: 'SwiftCargo', font: 'Poppins', textColor: '#0F172A', bgColor: '#F8FAFC', layout: 'icon-left', icon: '?' }
+    fintech: { text: 'KopaPay', font: 'Montserrat', textColor: '#0F766E', bgColor: '#F8FAFC', layout: 'icon-left', icon: 'energy' },
+    fashion: { text: 'Ankara House', font: 'Playfair Display', textColor: '#7C2D12', bgColor: '#FFF7ED', layout: 'icon-top', icon: 'creative' },
+    food: { text: 'Jollof Bowl', font: 'Poppins', textColor: '#C2410C', bgColor: '#FFF7ED', layout: 'icon-left', icon: 'food' },
+    agri: { text: 'Savanna Fresh', font: 'DM Sans', textColor: '#166534', bgColor: '#F0FDF4', layout: 'icon-left', icon: 'leaf' },
+    education: { text: 'LearnNaija', font: 'Montserrat', textColor: '#1D4ED8', bgColor: '#EFF6FF', layout: 'icon-top', icon: 'education' },
+    logistics: { text: 'SwiftCargo', font: 'Poppins', textColor: '#0F172A', bgColor: '#F8FAFC', layout: 'icon-left', icon: 'movement' }
   };
 
   function makeTextNode(x, y, value, fontFamily, size, fill, weight) {
@@ -747,6 +747,30 @@
     node.setAttribute('fill', fill);
     node.textContent = value;
     return node;
+  }
+
+  // Draw each mark inside the SVG so exports are independent of installed icon fonts.
+  const ICON_PATHS = {
+    energy: 'M14 2 4 14h7l-1 8 10-13h-8z',
+    creative: 'm13 15 7-12c1-2 3 0 2 2l-8 11z M12 15c-6-2-7 3-7 5-1 1-2 2-3 2 7 1 13-2 10-7z',
+    leaf: 'M3 20C1 10 7 4 21 3c0 13-6 20-16 16 M3 22 15 10',
+    food: 'M4 2v6c0 4 6 4 6 0V2 M7 2v20 M20 2c-4 4-6 8-6 11h6 M20 2v20',
+    education: 'm2 9 10-5 10 5-10 5z M6 12v5q6 5 12 0v-5 M22 10v7',
+    modern: 'm12 2 10 19H2z M12 10l4 8H8z',
+    core: 'M22 12a10 10 0 1 1-20 0 10 10 0 1 1 20 0z M16 12a4 4 0 1 1-8 0 4 4 0 1 1 8 0z',
+    movement: 'm4 4 8 8-8 8 M12 4l8 8-8 8'
+  };
+
+  function makeIcon(mark, x, y, size) {
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', ICON_PATHS[mark]);
+    path.setAttribute('transform', 'translate(' + x + ' ' + y + ') scale(' + size / 24 + ')');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', textColor.value);
+    path.setAttribute('stroke-width', '1.8');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    return path;
   }
 
   function updatePreview() {
@@ -767,10 +791,10 @@
       const textValue = logoText.value || 'Logo';
 
       if (layout.value === 'icon-top' && iconValue !== 'none') {
-        svg.appendChild(makeTextNode(100, 48, iconValue, 'DM Sans', 34, textColor.value, '700'));
+        svg.appendChild(makeIcon(iconValue, 83, 18, 34));
         svg.appendChild(makeTextNode(100, 94, textValue, fontSelect.value, 30, textColor.value, '800'));
       } else if (layout.value === 'icon-left' && iconValue !== 'none') {
-        svg.appendChild(makeTextNode(52, 84, iconValue, 'DM Sans', 30, textColor.value, '700'));
+        svg.appendChild(makeIcon(iconValue, 23, 58, 30));
         svg.appendChild(makeTextNode(122, 84, textValue, fontSelect.value, 28, textColor.value, '800'));
       } else {
         svg.appendChild(makeTextNode(100, 84, textValue, fontSelect.value, 36, textColor.value, '800'));
@@ -778,6 +802,13 @@
 
       logoPreview.replaceWith(svg);
       logoPreview = svg;
+      const wordmark = svg.querySelector('text');
+      const availableWidth = layout.value === 'icon-left' && iconValue !== 'none' ? 140 : 184;
+      const measuredWidth = wordmark.getComputedTextLength();
+      if (measuredWidth > availableWidth) {
+        wordmark.setAttribute('textLength', String(availableWidth));
+        wordmark.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
     } catch (e) {
       console.error('Error updating logo preview:', e);
     }
