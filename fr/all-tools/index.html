@@ -2486,6 +2486,7 @@ function renderTools(){
 
   // Render
   if(tools.length === 0){
+    document.getElementById('resultsCount').textContent = 'Aucun résultat';
     const loadMore = document.getElementById('loadMoreTools');
     if (loadMore) loadMore.hidden = true;
     grid.innerHTML = `<div class="empty-state">
@@ -2508,7 +2509,9 @@ function renderTools(){
   const renderedTools = tools.slice(0, visibleLimit);
   const loadMore = document.getElementById('loadMoreTools');
   if (loadMore) loadMore.hidden = renderedTools.length >= matchedCount;
-  document.getElementById('resultsCount').textContent = renderedTools.length.toLocaleString('fr-FR') + ' sur ' + matchedCount.toLocaleString('fr-FR') + ' ' + PAGE_COPY.toolsPlural;
+  document.getElementById('resultsCount').textContent = renderedTools.length === matchedCount
+    ? matchedCount.toLocaleString('fr-FR') + ' ' + (matchedCount === 1 ? PAGE_COPY.toolsSingular : PAGE_COPY.toolsPlural)
+    : renderedTools.length.toLocaleString('fr-FR') + ' outils affichés sur ' + matchedCount.toLocaleString('fr-FR');
 
   grid.innerHTML = renderedTools.map(t => {
     const live = t.status === 'live' || t.status === 'new';
