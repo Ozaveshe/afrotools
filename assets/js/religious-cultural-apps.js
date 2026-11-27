@@ -202,8 +202,7 @@
       }
       case 'traditionalCalendar': {
         var d = new Date(v.date || Date.now());
-        var marketDays = ['Eke', 'Orie', 'Afo', 'Nkwo'];
-        var market = marketDays[Math.abs(Math.floor(d.getTime() / 86400000)) % 4];
+        var market = window.AfroTools.engines.igboMarketDays.getMarketDay(v.date).name;
         var ethYear = d.getFullYear() - (d.getMonth() < 8 || (d.getMonth() === 8 && d.getDate() < 11) ? 8 : 7);
         return {
           metrics: [['System', v.system], ['Estimated market day', market], ['Ethiopian year estimate', ethYear], ['Purpose', v.purpose]],

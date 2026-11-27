@@ -516,7 +516,7 @@ ${tags}
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="${tool.id}"></section>
 </main>
 <afro-footer></afro-footer>
-${['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>' : ''}
+${['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>' : tool.id === 'traditional-calendar' ? '<script src="/assets/js/engines/igbo-market-days.js"></script>' : ''}
 <script src="/assets/js/religious-cultural-apps.js" defer></script>
 </body>
 </html>
@@ -747,8 +747,7 @@ function runtimeTemplate() {
       }
       case 'traditionalCalendar': {
         var d = new Date(v.date || Date.now());
-        var marketDays = ['Eke', 'Orie', 'Afo', 'Nkwo'];
-        var market = marketDays[Math.abs(Math.floor(d.getTime() / 86400000)) % 4];
+        var market = window.AfroTools.engines.igboMarketDays.getMarketDay(v.date).name;
         var ethYear = d.getFullYear() - (d.getMonth() < 8 || (d.getMonth() === 8 && d.getDate() < 11) ? 8 : 7);
         return {
           metrics: [['System', v.system], ['Estimated market day', market], ['Ethiopian year estimate', ethYear], ['Purpose', v.purpose]],
@@ -1077,7 +1076,7 @@ function attachExistingPages() {
     if (!fs.existsSync(filePath)) continue;
     let html = fs.readFileSync(filePath, 'utf8');
     if (!html.includes(`data-rs-tool-id="${tool.id}"`)) {
-      const prayerScript = ['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>\n' : '';
+      const prayerScript = ['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>\n' : tool.id === 'traditional-calendar' ? '<script src="/assets/js/engines/igbo-market-days.js"></script>' : '';
       const section = `\n<section class="rs-upgrade-shell" data-rs-tool-id="${tool.id}"></section>\n${prayerScript}<script src="/assets/js/religious-cultural-apps.js" defer></script>\n`;
       if (html.includes('<afro-footer')) {
         html = html.replace(/<afro-footer/i, section + '<afro-footer');
