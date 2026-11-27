@@ -53,6 +53,20 @@ function getScholarshipMode(item) {
   return 'curated';
 }
 
+// Correct retired provider addresses in older mirror and cached records as well as new seeds.
+function repairProviderLinks(item) {
+  const updated = Object.assign({}, item);
+  for (const field of ['official_url', 'application_url', 'info_url', 'source_url', 'deadline_source_url']) {
+    const url = updated[field];
+    if (/^https?:\/\/(?:www\.)?fsbn\.com\.ng(?:[/?#]|$)/i.test(url || '')) {
+      updated[field] = 'https://education.gov.ng/scholarship-award-department/';
+    } else if (url === 'https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus') {
+      updated[field] = 'https://erasmus-plus.ec.europa.eu/opportunities/individuals/students/erasmus-mundus-joint-masters';
+    }
+  }
+  return updated;
+}
+
 function getScholarshipStatus(item, now = new Date()) {
   if (item && item.deadline_confidence === 'no_single_public_deadline') {
     return 'variable';
@@ -229,7 +243,7 @@ exports.handler = async function (event) {
 
   try {
     const feed = await loadScholarshipFeed();
-    const matching = filterScholarships(feed.scholarships, params);
+    const matching = filterScholarships(feed.scholarships.map(repairProviderLinks), params);
     const now = new Date();
     const filtered = params.deadline_status === 'open'
       ? matching.filter((item) => getScholarshipStatus(item, now) === 'open')

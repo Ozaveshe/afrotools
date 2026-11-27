@@ -1,3 +1,4 @@
+const fallbackDirectory = require('../../../data/scholarships/fallback-programmes.json');
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 const { getData, setData } = require('./data-store');
@@ -1762,7 +1763,6 @@ async function loadScholarshipFeed(options) {
 
   if (client) {
     try {
-      await ensureScholarshipSources(client);
       let rows = await fetchMirrorRows(client);
 
       if (settings.forceSync || !rows.length || isMirrorStale(rows)) {
@@ -1820,13 +1820,23 @@ async function loadScholarshipFeed(options) {
     };
   }
 
-  const fallback = getFallbackScholarships();
+  const directory = fallbackDirectory.programmes.map(function (programme) {
+    return Object.assign({}, programme, {
+      status: 'unclear',
+      confidence_mode: 'fallback',
+      description: 'Review the programme requirements and current application cycle on the official ' + programme.provider + ' page.',
+      deadline_text: 'Confirm the deadline for your intake with the provider.',
+      provider_link_checked_on: fallbackDirectory.provider_links_checked_on
+    });
+  });
+  const fallback = getFallbackScholarships().concat(directory);
   return {
     scholarships: fallback,
     rows: [],
     meta: buildFeedMeta([], {
       mode: 'fallback',
       count: fallback.length,
+      lastCheckedAt: fallbackDirectory.provider_links_checked_on,
       error: settings.error || 'Scholarship pipeline unavailable'
     })
   };

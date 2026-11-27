@@ -158,7 +158,7 @@ const seedEntries = [
   ['friedrich-ebert-foundation-scholarships', 'Friedrich Ebert Stiftung Scholarships', 'Friedrich Ebert Stiftung', 'https://www.fes.de/en/studienfoerderung', 'eu', 'undergrad|masters|phd', 'partial'],
   ['konrad-adenauer-foundation-scholarships', 'Konrad Adenauer Foundation Scholarships for Foreign Students', 'Konrad Adenauer Stiftung', 'https://www.kas.de/en/web/begabtenfoerderung-und-kultur/foreign-students', 'eu', 'masters|phd', 'partial'],
   ['rosa-luxemburg-foundation-scholarships', 'Rosa Luxemburg Foundation Scholarships', 'Rosa Luxemburg Foundation', 'https://www.rosalux.de/en/foundation/studienwerk', 'eu', 'masters|phd', 'partial'],
-  ['nigeria-federal-scholarship-board', 'Nigeria Federal Scholarship Board Awards', 'Federal Scholarship Board Nigeria', 'https://fsbn.com.ng/', 'africa', 'undergrad|masters|phd', 'partial'],
+  ['nigeria-federal-scholarship-board', 'Nigeria Federal Scholarship Board Awards', 'Federal Scholarship Board Nigeria', 'https://education.gov.ng/scholarship-award-department/', 'africa', 'undergrad|masters|phd', 'partial'],
   ['ptdf-overseas-scholarship-scheme', 'PTDF Overseas Scholarship Scheme', 'Petroleum Technology Development Fund', 'https://ptdf.gov.ng/scholarship/', 'global', 'masters|phd', 'full'],
   ['nlng-scholarships', 'NLNG Scholarships', 'Nigeria LNG', 'https://www.nigerialng.com/Corporate-Social-Responsibility/Education/Pages/NLNG-Scholarships.aspx', 'africa', 'undergrad', 'partial'],
   ['mtn-foundation-scholarship', 'MTN Foundation Scholarship', 'MTN Nigeria Foundation', 'https://www.mtn.ng/scholarships/', 'africa', 'undergrad', 'partial'],
