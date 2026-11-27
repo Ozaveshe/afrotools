@@ -77,6 +77,10 @@ def generate(code, name, flag, slug, paye_link, fp_slug):
     content = content.replace('__FLAG__', flag)
     content = content.replace('__SLUG__', slug)
     content = content.replace('__FARM_PROFIT_SLUG__', fp_slug)
+    if code == 'KE':
+        content = content.replace("'inpHousingValue','inpFoodValue'];", "'inpHousingValue','inpFoodValue','nssfMonthlyWages'];")
+        content = content.replace('<p id="payrollValidationStatus"', '<div class="field"><label for="nssfMonthlyWages">Monthly NSSF wages per worker (KSh, optional)</label><input class="f-input" id="nssfMonthlyWages" type="number" min="0" step="0.01" inputmode="decimal" aria-describedby="nssfHelp"><p id="nssfHelp">Year 4, from February 2026. For covered employees in an ordinary monthly payroll, each side pays 6% on the first KSh 9,000 and the next KSh 99,000. The maximum is KSh 6,480 each. Leave blank to use the base wage shown for this month, excluding separately entered overtime, housing and food. If your confirmed regular contractual earnings differ, enter the full monthly amount before the cap. Confirm the treatment of allowances or benefits with payroll. <a href="https://www.nssf.or.ke/notice-to-employers-year-4-2026-nssf-contribution-rates">Employer notice</a> · <a href="https://www.nssf.or.ke/nssf-act">NSSF Act, sections 2 and 20</a>.</p></div><p id="payrollValidationStatus"')
+        content = content.replace('    var r;', 'var basis=document.getElementById(\'nssfMonthlyWages\');if(basis){if(basis.validity && !basis.validity.valid){status.textContent="Enter a non-negative monthly NSSF wage with up to two decimal places.";basis.focus();return;}if(basis.value!==\'\')checked.input.nssfMonthlyWages=Number(basis.value);}\n    var r;')
     if code == 'NG':
         content = apply_nigeria_contributions(content)
     # Insert the country reference after country-specific disclosures have been applied.

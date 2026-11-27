@@ -34,7 +34,21 @@
         });
         y = ngContributions.employeeKobo / 100;
       }
-      if (h.pension && h.pension.rate_pct) {
+      var kenyaNssf = h.pension && h.pension.yearFour;
+      if (kenyaNssf) {
+        // Default planning assumption: the entered base wage is regular monthly pay.
+        var wages = e.nssfMonthlyWages == null ? s : e.nssfMonthlyWages;
+        if (typeof wages !== "number" || !Number.isFinite(wages) || wages < 0) {
+          return { error: true, field: "nssfMonthlyWages", message: "Check monthly NSSF wages." };
+        }
+        var lower = kenyaNssf.lowerLimit, upper = kenyaNssf.upperLimit;
+        var tiers = [Math.min(wages, lower), Math.max(0, Math.min(wages, upper) - lower)];
+        tiers.forEach(function (basis, index) {
+          var amount = Math.round(basis * h.pension.rate_pct) / 100;
+          m.push({ name: index === 0 ? "NSSF I" : "NSSF II", rate: h.pension.rate_pct, amount: amount, basis: basis, notes: h.pension.notes });
+          y += amount;
+        });
+      } else if (h.pension && h.pension.rate_pct) {
         var u = p * h.pension.rate_pct / 100;
         m.push({
           name: h.pension.name,
@@ -74,7 +88,12 @@
         });
         _ = ngContributions.employerKobo / 100;
       }
-      if (h.pension && h.pension.employerRate_pct) {
+      if (kenyaNssf) {
+        m.slice(0, 2).forEach(function (row) {
+          w.push({ name: "Employer " + row.name, amount: row.amount, basis: row.basis });
+          _ += row.amount;
+        });
+      } else if (h.pension && h.pension.employerRate_pct) {
         var v = p * h.pension.employerRate_pct / 100;
         w.push({
           name: "Employer " + h.pension.name,
