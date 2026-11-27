@@ -2959,8 +2959,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fuelFinderSearchHref(tool, tokens) {
-      var countryTokens = fuelFinderCountryTokens(tool, tokens);
-      if (!countryTokens.length) return tool.href;
+      if (!isGlobalFuelFinder(tool)) return tool.href;
+      if (!tokens.some(function(t){ return /^(fuel|petrol|diesel|gasoline)$/.test(t); })) return tool.href;
+      if (tokens.some(function(t){ return /^(generator|generators|mileage|efficiency|lpg|kerosene)$/.test(t); })) return tool.href;
       var query = ' ' + tokens.join(' ') + ' ';
       var matches = Object.keys(FUEL_FINDER_COUNTRY_NAMES).filter(function(code) {
         var name = normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[code]);
@@ -2972,7 +2973,15 @@ document.addEventListener('DOMContentLoaded', function() {
           return other !== code && (' ' + normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[other]) + ' ').indexOf(name) !== -1;
         });
       });
-      return mostSpecific.length === 1 ? '/tools/fuel-tracker/?country=' + mostSpecific[0] + '#fuel-finder' : tool.href;
+      var abuja = tokens.includes('abuja');
+      if (mostSpecific.length > 1 || (abuja && mostSpecific.length && mostSpecific[0] !== 'NG')) return tool.href;
+      var diesel = tokens.includes('diesel'), petrol = tokens.includes('petrol') || tokens.includes('gasoline');
+      var params = new URLSearchParams();
+      if (mostSpecific.length || abuja) params.set('country', mostSpecific[0] || 'NG');
+      if (diesel !== petrol) params.set('fuel', diesel ? 'diesel' : 'petrol');
+      // The Abuja outlet observation covers petrol alone. Diesel retains the national reference.
+      if (abuja && !diesel) params.set('market', 'ng-abuja-nnpc-observed');
+      return params.size ? '/tools/fuel-tracker/?' + params + '#fuel-finder' : tool.href;
     }
 
     function generatedAliases(tool) {
