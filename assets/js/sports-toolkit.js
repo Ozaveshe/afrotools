@@ -50,8 +50,13 @@
     ["What-if field change", "Kenya replaces " + scenario.replaced + "; co-hosts Uganda and Tanzania retained"]
   ]);
   if (mode === "2025-review") rows.push(["Review assumptions", "Fixed model adjustments: Morocco +35 and Senegal +25 points. This is a what-if comparison, not a replay of tournament results."]);
-  rows.push(["Scenario field", scenario.setup === "all-hosts" ? "All three hosts plus 21 illustrative seeds; stable when you switch teams" : "Legacy 24-team seeded comparison; Kenya not included"]);
-  var context = scenario.setup === "all-hosts"
+  if (scenario.setup === "confirmed-nine") {
+    rows.push(["Qualification snapshot", "CAF, 18 November 2026: nine confirmed finalists; 15 remaining places are modeled. https://www.cafonline.com/afcon/news/six-nations-book-totalenergies-caf-afcon-pamoja-2027-places-as-matchday-4-concludes/"]);
+    rows.push(["Model strengths", "Benin: " + scenario.beninStrength + "; Kenya: " + scenario.strength + " model points. User-adjustable assumptions, not official ratings."]);
+    rows.push(["Scenario replacements", "Kenya and Benin occupy the Sierra Leone and Equatorial Guinea model slots. These swaps do not determine qualification."]);
+  }
+  rows.push(["Scenario field", scenario.setup === "confirmed-nine" ? "Nine confirmed finalists plus 15 illustrative teams in a fixed field" : scenario.setup === "all-hosts" ? "All three hosts plus 21 illustrative seeds; stable when you switch teams" : "Legacy 24-team seeded comparison; Kenya not included"]);
+  var context = scenario.setup === "confirmed-nine" ? "Nine confirmed finalists as of 18 November 2026 plus 15 illustrative teams. No official draw or fixture list is simulated." : scenario.setup === "all-hosts"
     ? "All three hosts in a fixed 24-team what-if: Kenya at " + String(scenario.strength) + " model points replaces " + scenario.replaced + ". Other teams and strengths are scenario assumptions."
     : mode === "2025-review"
       ? "Compare a 24-team seeded what-if field with the fixed 2025 review adjustments."
@@ -73,7 +78,7 @@
       "Model shares are relative weights within this scenario, not calibrated chances or a simulated bracket."
     ],
     sources: sources,
-    scenarioField: { names: teams.map(function (team) { return team.name; }), shares: teams.map(function (team) { return team.prob; }), strength: scenario.strength, replaced: scenario.replaced, setup: scenario.setup, members: scenario.teams.map(function (team) { return team[0]; }), basis: scenario.setup === "all-hosts" ? "Illustrative model assumption; default Kenya strength equals Uganda seed, not Kenya/FIFA rating. Hosts verified; other seeds are not confirmed qualifiers." : "Illustrative seeded scenario, not official ratings or confirmed qualifiers" },
+    scenarioField: { names: teams.map(function (team) { return team.name; }), shares: teams.map(function (team) { return team.prob; }), strength: scenario.strength, replaced: scenario.replaced, setup: scenario.setup, members: scenario.teams.map(function (team) { return team[0]; }), basis: scenario.setup === "confirmed-nine" ? "CAF qualifiers dated 18 November 2026; 15 illustrative teams; Benin and Kenya strengths are scenario inputs." : scenario.setup === "all-hosts" ? "Illustrative model assumption; default Kenya strength equals Uganda seed, not Kenya/FIFA rating. Hosts verified; other seeds are not confirmed qualifiers." : "Illustrative seeded scenario, not official ratings or confirmed qualifiers" },
     comparison: { baselineShare: original.prob, selectedShare: selected.prob, deltaPoints: delta, baselineRank: baselineRank, selectedRank: selectedRank, boostPoints: boostPoints, rival: rival.name, gapPoints: gap }
   };
 }
@@ -86,6 +91,18 @@ function afconKenyaScenario(input, favorite, mode) {
   // Localized and older callers do not expose field controls; preserve their existing seeded field.
   var explicitField = input.fieldSetup != null;
   var setup = explicitField ? input.fieldSetup : favorite === "Kenya" ? "all-hosts" : "seeded";
+  if (setup === "confirmed-nine") {
+    var benin = Number(input.beninStrength), kenya = Number(input.kenyaStrength);
+    if ([input.beninStrength, input.kenyaStrength].some(function (value) {
+      return value == null || String(value).trim() === "" || !Number.isFinite(Number(value)) || Number(value) < 0 || Number(value) > 3000;
+    })) return { error: "Enter Kenya and Benin model strengths from 0 to 3000 for this scenario." };
+    var field = i.map(function (team) {
+      if (team[0] === "Sierra Leone") return ["Kenya", kenya];
+      if (team[0] === "Equatorial Guinea") return ["Benin", benin];
+      return team.slice();
+    });
+    return { teams: field, setup: setup, strength: kenya, beninStrength: benin };
+  }
   if (setup === "seeded") {
     if (favorite === "Kenya") return { error: "Choose the all-three-hosts field above to compare Kenya." };
     return { teams: i.map(function (team) { return team.slice(); }), setup: setup };
@@ -105,38 +122,50 @@ function afconKenyaScenario(input, favorite, mode) {
 function prepareAfconKenyaFields(id, config) {
   if (id !== "afcon-predictor" || !config || config.fields.some(function (field) { return field.id === "fieldSetup"; })) return;
   config.fields = config.fields.map(function (field) {
-    return field.id === "favorite" ? Object.assign({}, field, { options: field.options.concat([{ value: "Kenya", label: "Kenya (2027 co-host)" }]) }) : field;
+    return field.id === "favorite" ? Object.assign({}, field, { options: field.options.concat([{ value: "Kenya", label: "Kenya (2027 co-host)" }, {value:"Benin",label:"Benin (2027 confirmed-field scenario)"}]) }) : field;
   });
   config.kenyaBenchmark = { team: "Uganda", strength: i.find(function (team) { return team[0] === "Uganda"; })[1] };
   config.fields.splice(1, 0,
     { id: "fieldSetup", label: "2027 scenario field", type: "select", value: "all-hosts", afconFieldOnly: true, full: true,
-      options: [{ value: "all-hosts", label: "All three hosts + 21 illustrative seeds" }, { value: "seeded", label: "Legacy seeded comparison (Kenya not included)" }],
-      hint: "Set the field first, then compare teams against it. The 21 other teams are scenario seeds, not confirmed qualifiers." },
+      options: [{ value: "confirmed-nine", label: "Nine confirmed finalists + 15 illustrative teams (18 Nov 2026)" }, { value: "all-hosts", label: "All three hosts + 21 illustrative seeds" }, { value: "seeded", label: "Legacy seeded comparison (Kenya not included)" }],
+      hint: "Choose the nine-finalist scenario to include Benin. Changing the team to compare keeps that scenario field fixed." },
     { id: "kenyaStrength", label: "Kenya model strength", type: "number", value: config.kenyaBenchmark.strength, afconFieldOnly: true,
       hint: "Starting assumption: 1505, equal to the Uganda model seed. Edit to test another strength; this is not a Kenya or FIFA rating." },
+    { id: "beninStrength", label: "Benin model strength", type: "number", value: config.kenyaBenchmark.strength, afconFieldOnly: true,
+      hint: "Starting assumption: 1505, the Uganda model seed. Enter a different number to explore sensitivity. This is not an official team rating." },
     { id: "replaceSeed", label: "Non-host seed replaced by Kenya", type: "select", value: "Sierra Leone", afconFieldOnly: true,
       options: i.filter(function (team) { return team[0] !== "Uganda" && team[0] !== "Tanzania"; }).map(function (team) { return { value: team[0], label: team[0] }; }),
       hint: "Sierra Leone is the starting what-if replacement, not an elimination claim. To compare it, choose another replacement first. All three hosts stay." }
   );
+  // The English visitor form owns this scenario. Other editions keep their translated field contract.
+  if (!e.document || e.document.documentElement.lang !== "en") {
+    config.fields = config.fields.filter(function (field) { return field.id !== "beninStrength"; });
+    config.fields.forEach(function (field) {
+      if (field.id === "favorite" || field.id === "fieldSetup") field.options = field.options.filter(function (option) { return option.value !== "Benin" && option.value !== "confirmed-nine"; });
+    });
+  }
 }
 
 function syncAfconFieldControls(id, config, form) {
   if (id !== "afcon-predictor" || !form || !form.elements.fieldSetup) return;
   var planning = form.elements.mode.value === "2027-planner";
   var allHosts = planning && form.elements.fieldSetup.value === "all-hosts";
-  ["fieldSetup", "kenyaStrength", "replaceSeed"].forEach(function (name) {
+  var confirmed = planning && form.elements.fieldSetup.value === "confirmed-nine";
+  ["fieldSetup", "kenyaStrength", "beninStrength", "replaceSeed"].forEach(function (name) {
     var control = form.elements[name];
     if (!control) return;
-    var visible = planning && (name === "fieldSetup" || allHosts);
+    var visible = planning && (name === "fieldSetup" || (name === "kenyaStrength" && (allHosts || confirmed)) || (name === "beninStrength" && confirmed) || (name === "replaceSeed" && allHosts));
     var holder = control.closest && control.closest(".sports-field, .sw-sports-fields > label");
     if (holder) { holder.hidden = !visible; holder.style.display = visible ? "" : "none"; }
     control.disabled = !visible;
   });
   var strength = form.elements.kenyaStrength;
   if (strength) { strength.min = "0"; strength.max = "3000"; strength.step = "any"; }
+  var beninInput = form.elements.beninStrength;
+  if (beninInput) { beninInput.min = "0"; beninInput.max = "3000"; beninInput.step = "any"; }
   var favorite = form.elements.favorite, replacement = form.elements.replaceSeed;
   if (favorite && favorite.options) Array.prototype.forEach.call(favorite.options, function (option) {
-    option.disabled = option.value === "Kenya" ? !allHosts : allHosts && replacement && option.value === replacement.value;
+    option.disabled = option.value === "Benin" ? !confirmed : option.value === "Kenya" ? !(allHosts || confirmed) : confirmed ? ["Sierra Leone", "Equatorial Guinea"].includes(option.value) : allHosts && replacement && option.value === replacement.value;
   });
   if (replacement && replacement.options) Array.prototype.forEach.call(replacement.options, function (option) {
     option.disabled = !!(allHosts && favorite && option.value === favorite.value);

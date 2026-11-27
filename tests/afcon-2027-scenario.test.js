@@ -232,7 +232,7 @@ function browserHarness(){
 
 test("field controls appear before team selection and do not rewrite values on team or mode changes",()=>{
  const h=browserHarness(),fields=h.config.fields;
- assert.deepEqual(Array.from(fields.slice(0,5),f=>f.id),["mode","fieldSetup","kenyaStrength","replaceSeed","favorite"]);
+ assert.deepEqual(Array.from(fields.slice(0,6),f=>f.id),["mode","fieldSetup","kenyaStrength","beninStrength","replaceSeed","favorite"]);
  const form={elements:{}};
  for(const field of fields){
   const holder={hidden:false,style:{}};
@@ -283,7 +283,7 @@ test("actual AFCON handlers download full TXT and trigger local print without a 
 test("actual generated AFCON page scopes print to the untruncated report and leaves other sports templates alone",()=>{
  const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path"),pages={};
  const source=fs.readFileSync(path.join(testRoot,"scripts/build-sports-tool-pages.js"),"utf8");
- vm.runInNewContext(source,{require:name=>name==="fs"?{mkdirSync(){},writeFileSync(file,html){pages[file.replaceAll("\\","/").split("/tools/")[1]]=html;}}:require(name),__dirname:"/virtual/scripts",console:{log(){}}});
+ vm.runInNewContext(source,{require:name=>name==="fs"?{readFileSync(file,encoding){return fs.readFileSync(path.join(testRoot,"scripts/templates",path.basename(file)),encoding);},mkdirSync(){},writeFileSync(file,html){pages[file.replaceAll("\\","/").split("/tools/")[1]]=html;}}:require(name),__dirname:"/virtual/scripts",console:{log(){}}});
  const afcon=pages["afcon-predictor/index.html"];
  assert.match(afcon,/@media print/);
  assert.match(afcon,/#sports-results > :not\(\.sports-report-gate\)/);
@@ -420,4 +420,18 @@ for(const locale of ['fr','sw'])test(locale+' AFCON country names agree between 
  const report=locale==='fr'?h.report({id:'afcon-predictor',title:'CAN',frSlug:'predicteur-can',resultLabel:'Part',resultSummary:'Modèle',safety:'Hypothèses'},h.config,input,r):h.report(input,r);
  for(const name of names)assert.ok(report.includes(name),name+' report');
  assert.doesNotMatch(rows,locale==='fr'?/\bMauritania\b|\bNamibia\b|\bDR Congo\b|\bEquatorial Guinea\b/:/\bAlgeria\b|\bCameroon\b|\bDR Congo\b|\bEquatorial Guinea\b/);
+});
+
+test("confirmed November finalists share one fixed 24-team field with explicit Benin strength", () => {
+  const input = {...defaults, fieldSetup: 'confirmed-nine', kenyaStrength: 1505, beninStrength: 1540};
+  const finalists = ['Kenya','Tanzania','Uganda','Benin','Burkina Faso','Cameroon','Mali','Morocco','Senegal'];
+  for (const favorite of finalists) {
+    const result = calculate({...input, favorite});
+    assert.equal(result.scenarioField.members.length, 24);
+    assert.equal(new Set(result.scenarioField.members).size, 24);
+    assert.ok(finalists.every(team => result.scenarioField.members.includes(team)));
+    assert.ok(result.rows.some(([label,value]) => label==='Model strengths' && value.includes('Benin: 1540')));
+  }
+  assert.equal(calculate({...input, favorite:'Benin', beninStrength:''}).heroValue, 'Not calculated');
+  assert.equal(calculate({...input, favorite:'Benin', mode:'2025-review'}).heroValue, 'Not calculated');
 });
