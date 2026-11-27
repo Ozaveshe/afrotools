@@ -640,6 +640,8 @@
                     a = null;
                 }
                 var r = "1" === t.get("newQuote") ? { inputMode: "purchase", purchasePriceUsd: "" } : a || {};
+                // Dedicated market pages restore vehicle details in the destination named by the page.
+                if (/^\/tools\/car-import-cost\/[^/]+(?:\/index\.html|\/)?$/.test(location.pathname)) r.countryCode = c();
                 t.has("country") && (r.countryCode = t.get("country")), t.has("source") && (r.sourceMarket = t.get("source")),
                 t.has("make") && (r.make = t.get("make")), t.has("model") && (r.model = t.get("model")),
                 t.has("year") && (r.year = t.get("year")), t.has("price") && (r.purchasePriceUsd = t.get("price")),
