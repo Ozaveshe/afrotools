@@ -24,6 +24,26 @@
         const period = document.querySelector('.res-hero-period');
         if (period) period.textContent = window.CALC_MODE === 'net' ? 'Kabla ya PAYE na michango uliyochagua' : 'Baada ya PAYE na michango uliyochagua';
     }
+    function hasAnnualSalaryInput() {
+        return document.documentElement.lang === 'en' && Boolean(document.querySelector('#grossSalary[data-net-to-gross-period="annual"]'));
+    }
+    function renderAnnualSalary() {
+        if (!hasAnnualSalaryInput() || !window.RESULT) return false;
+        const result = window.RESULT;
+        const monthly = Boolean(document.querySelector('.per-btn.on[onclick*="monthly"]'));
+        const divisor = monthly ? 12 : 1;
+        const gross = result.gross / divisor;
+        const net = (result.netAnnual ?? result.net) / divisor;
+        const reverse = window.CALC_MODE === 'net';
+        const unit = monthly ? 'month' : 'year';
+        const period = monthly ? 'Monthly' : 'Annual';
+        const label = document.getElementById('resLabel') || document.querySelector('.res-hero-label');
+        label.textContent = reverse ? 'Required ' + period + ' Gross' : period + ' Take-Home Pay';
+        document.getElementById('resAmount').textContent = fmt(reverse ? gross : net);
+        document.getElementById('resGross').textContent = 'Gross: ' + fmt(gross) + '/' + unit
+            + (reverse ? ' · Take-home: ' + fmt(net) + '/' + unit : '');
+        return true;
+    }
     function wholeGrossForTarget(estimate, target) {
         const forward = window._grossToNet;
         const candidate = Math.max(0, Math.ceil(estimate));
@@ -95,7 +115,7 @@
                         var s = document.getElementById("sliderVal");
                         s && window.fmt && (s.textContent = window.fmt(Number(o.value))), t(), function(e) {
                             var t = window.RESULT;
-                            if (t) {
+                            if (t && !renderAnnualSalary()) {
                                 var o = window.fmt || function(e) {
                                     return Math.round(e).toLocaleString();
                                 }, r = "monthly" === (window.PERIOD || "monthly"), a = t.annualGross && !t.monthly && t.gross === t.annualGross, u = document.getElementById("resLabel") || document.querySelector(".res-hero-label"), s = document.getElementById("resAmount") || document.querySelector(".res-hero-amount"), l = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
@@ -115,7 +135,7 @@
                     } else {
                         t();
                         var l = document.getElementById("resLabel") || document.querySelector(".res-hero-label");
-                        if (l && window.RESULT) {
+                        if (l && window.RESULT && !renderAnnualSalary()) {
                             var d = window.PERIOD || "monthly";
                             l.textContent = n ? "monthly" === d ? "Salaire net mensuel" : "Salaire net annuel" : ("monthly" === d ? "Monthly" : "Annual") + " Take-Home Pay";
                         }
@@ -128,7 +148,9 @@
                 var t = window.setPeriod;
                 t && !t._hooked && (window.setPeriod = function(n, o) {
                     var r = e();
-                    if (t(n, o), "net" === window.CALC_MODE && window.RESULT) {
+                    t(n, o);
+                    if (renderAnnualSalary()) return;
+                    if ("net" === window.CALC_MODE && window.RESULT) {
                         var a = window.RESULT, u = window.fmt || function(e) {
                             return Math.round(e).toLocaleString();
                         }, s = "monthly" === n, l = a.gross || a.annualGross || 0, d = a.annualGross && !a.monthly, i = document.getElementById("resLabel") || document.querySelector(".res-hero-label"), c = document.getElementById("resAmount") || document.querySelector(".res-hero-amount"), m = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
@@ -160,7 +182,7 @@
                 if (window.RESULT) input.value = o ? (window.RESULT.netMonthly || window.RESULT.net || 0) : window.RESULT.gross;
             }
         }
-        a && (a.textContent = o ? r ? "Salaire net souhaité" : "Desired Monthly Take-Home" : a.getAttribute("data-orig") || a.textContent), 
+        a && (a.textContent = o ? r ? "Salaire net souhaité" : hasAnnualSalaryInput() ? "Desired Annual Take-Home" : "Desired Monthly Take-Home" : a.getAttribute("data-orig") || a.textContent),
         u && (u.getAttribute("data-orig") || u.setAttribute("data-orig", u.textContent), 
         u.textContent = o ? r ? "Montant net souhaité" : "Desired take-home amount" : u.getAttribute("data-orig")), 
         window.RESULT && "function" == typeof window.calculate && window.calculate();
