@@ -271,6 +271,11 @@ function primaryCandidateSort(englishRoute) {
     if (registryA !== registryB) return registryA ? -1 : 1;
     const weightDelta = b.ownerWeight - a.ownerWeight;
     if (weightDelta) return weightDelta;
+    // Country variants can share a registry source ID with the generic app.
+    // A French alternate pointing to this exact English route resolves equal weights.
+    const alternateA = a.ownerEvidence.some((item) => item.kind === 'hreflang-en' && item.detail === englishRoute);
+    const alternateB = b.ownerEvidence.some((item) => item.kind === 'hreflang-en' && item.detail === englishRoute);
+    if (alternateA !== alternateB) return alternateA ? -1 : 1;
     return a.route.localeCompare(b.route);
   };
 }
