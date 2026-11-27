@@ -11,9 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
 <title>Farm Payroll — Burundi | AfroTools</title>
-<meta name="description" content="Estimate farm wages, deductions and take-home pay for Burundi workers; verify current wage, tax and contribution rules before payroll.">
+<meta name="description" content="Estimate farm wages, deductions and cash pay before income tax for Burundi workers; verify current wage, tax and contribution rules before payroll.">
 <meta property="og:title" content="Farm Payroll — Burundi | AfroTools">
-<meta property="og:description" content="Estimate farm wages, deductions and take-home pay for Burundi workers; verify current wage, tax and contribution rules before payroll.">
+<meta property="og:description" content="Estimate farm wages, deductions and cash pay before income tax for Burundi workers; verify current wage, tax and contribution rules before payroll.">
 <meta property="og:url" content="https://afrotools.com/agriculture/farm-payroll/burundi">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/fr-agriculture-farm-payroll.webp">
@@ -23,10 +23,10 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Farm Payroll — Burundi | AfroTools">
-<meta name="twitter:description" content="Estimate farm wages, deductions and take-home pay for Burundi workers; verify current wage, tax and contribution rules before payroll.">
+<meta name="twitter:description" content="Estimate farm wages, deductions and cash pay before income tax for Burundi workers; verify current wage, tax and contribution rules before payroll.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fr-agriculture-farm-payroll.webp">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Farm Payroll — Burundi","url":"https://afrotools.com/agriculture/farm-payroll/burundi","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Estimate farm wages, deductions and take-home pay for Burundi workers; verify current wage, tax and contribution rules before payroll.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/fr-agriculture-farm-payroll.webp","inLanguage":"en"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Farm Payroll — Burundi","url":"https://afrotools.com/agriculture/farm-payroll/burundi","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Estimate farm wages, deductions and cash pay before income tax for Burundi workers; verify current wage, tax and contribution rules before payroll.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/fr-agriculture-farm-payroll.webp","inLanguage":"en"}</script>
 
 <script type="application/ld+json">
 {
@@ -176,7 +176,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       <span aria-current="page">Burundi</span>
     </nav>
     <h1><span aria-hidden="true">&#127463;&#127470;</span> Burundi <em>Farm Worker Payroll Calculator</em></h1>
-    <p class="tool-hero-sub">Calculate farm worker wages, deductions, and take-home pay in Burundi. Covers permanent staff, casual daily workers, seasonal harvesters, and piece-rate workers &#8212; with agricultural minimum wage compliance check.</p>
+    <p class="tool-hero-sub">Calculate farm worker wages, deductions, and cash pay before income tax in Burundi. Covers permanent staff, casual daily workers, seasonal harvesters, and piece-rate workers &#8212; with agricultural minimum wage compliance check.</p>
     <div class="hero-badges">
       <span class="badge badge-blue">&#128119; 4 Worker Types</span>
       <span class="badge badge-grey">&#128204; Min Wage Check</span>
@@ -272,7 +272,8 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
   <div class="card">
     <div class="payslip-hero">
       <div class="payslip-net" id="resNetPay"></div>
-      <div class="payslip-label">Net Take-Home Pay (per worker)</div>
+      <div class="payslip-label">Estimated cash pay before income tax (per worker)</div>
+      <p>Cash wages and overtime minus the employee deductions shown. Housing and food provided in kind are excluded from cash pay.</p>
       <div class="payslip-sub" id="resGrossSub"></div>
     </div>
     <div class="card-body">
@@ -440,9 +441,9 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
       });
       ptRows += '<tr><td class="indent" style="color:#94a3b8;font-size:0.75rem;" colspan="3">PAYE Tax: <a href="' + "/burundi/bi-paye" + '" style="color:var(--calc-accent);">' + COUNTRY_NAME + ' salary tax reference &rarr;</a></td></tr>';
     } else {
-      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">No statutory deductions apply (informal farm workers typically exempt). <a href="' + "/burundi/bi-paye" + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
+      ptRows += '<tr><td colspan="3" style="color:#64748b;font-size:0.82rem;padding:10px;">This estimate includes no employee contributions for this selection. Confirm applicable deductions. <a href="' + "/burundi/bi-paye" + '" style="color:var(--calc-accent);">Check PAYE &rarr;</a></td></tr>';
     }
-    ptRows += '<tr class="total-row"><td><strong>Net Take-Home</strong></td><td class="amount positive-val">' + r.fNet + '</td><td class="pct"></td></tr>';
+    ptRows += '<tr class="total-row"><td><strong>Cash pay before income tax</strong></td><td class="amount positive-val">' + r.fNet + '</td><td class="pct"></td></tr>';
     pt.innerHTML = ptRows;
 
     var mg = document.getElementById('metricsGrid');

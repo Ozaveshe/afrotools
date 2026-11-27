@@ -22,9 +22,9 @@ const DEFINITIONS = Object.freeze({
   "farm-payroll": {
     rootTitle: "Farm Payroll Calculator | AfroTools",
     countryTitle: "Farm Payroll",
-    rootDescription: "Estimate farm wages, deductions and take-home pay across worker types, then verify current wage, tax and contribution rules before payroll.",
+    rootDescription: "Estimate farm wages, deductions and cash pay before income tax across worker types, then verify current wage, tax and contribution rules before payroll.",
     description(country) {
-      return `Estimate farm wages, deductions and take-home pay for ${country} workers; verify current wage, tax and contribution rules before payroll.`;
+      return `Estimate farm wages, deductions and cash pay before income tax for ${country} workers; verify current wage, tax and contribution rules before payroll.`;
     }
   },
   "employee-cost": {
