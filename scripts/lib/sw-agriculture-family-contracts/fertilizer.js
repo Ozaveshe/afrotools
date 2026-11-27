@@ -199,6 +199,7 @@ function renderHub(row, context) {
   <p><strong>Msaidizi wa AI:</strong> kiungo cha Msaidizi ni cha hiari na hufungua mtiririko tofauti unaoeleza ridhaa yake kabla ya msaada wa modeli.</p>
 </section>`;
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Vikokotoo vya mbolea ya NPK kwa nchi | AfroTools',
     description: 'Chagua data ya mojawapo ya nchi 54 za Afrika ili kukadiria mahitaji ya NPK kwa Kiswahili.',

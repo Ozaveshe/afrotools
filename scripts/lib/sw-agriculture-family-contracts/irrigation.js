@@ -231,6 +231,7 @@ function renderHub(row, context = {}) {
   <p><a href="/sw/ai/?q=Panga%20mahitaji%20ya%20umwagiliaji">Fungua msaidizi wa Kiswahili</a> ili atafute ukurasa sahihi. Kiungo hakitumi maingizo ya kikokotoo; msaada wa modeli huomba idhini kabla ya kutuma maelezo.</p>
 </section>`;
   return renderPage({
+    useWebPageSchema: true,
     row,
     title: 'Vikokotoo vya umwagiliaji kwa nchi 54 | AfroTools',
     description: 'Chagua rejea ya nchi ili kukadiria mahitaji ya maji ya umwagiliaji kwa Kiswahili.',

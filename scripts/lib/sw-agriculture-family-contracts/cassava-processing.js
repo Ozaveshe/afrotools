@@ -37,6 +37,7 @@ function renderHub(row, context = {}) {
     throw new Error(`Cassava Processing hub requires 15 manifest countries; found ${countries.length}.`);
   }
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Faida ya usindikaji wa mihogo kwa nchi | AfroTools',
     description: 'Chagua nchi na ukadirie gharama, mazao ya usindikaji na faida ya bidhaa za mihogo kwa data ya nchi iliyohifadhiwa.',

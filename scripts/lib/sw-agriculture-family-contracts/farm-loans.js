@@ -96,6 +96,7 @@ function renderHub(row, context = {}) {
     .sort((first, second) => countryName(first).localeCompare(countryName(second), 'sw'));
   if (countries.length !== 15) throw new Error(`Farm Loans hub requires 15 manifest countries; found ${countries.length}.`);
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Mipango ya mikopo ya shamba kwa nchi | AfroTools',
     description: 'Chagua nchi ili kulinganisha vigezo vilivyohifadhiwa vya programu za mikopo ya shamba na kukadiria marejesho kwa sarafu ya nchi.',

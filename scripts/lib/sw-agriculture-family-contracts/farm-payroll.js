@@ -56,6 +56,7 @@ function renderHub(row, context = {}) {
     .sort((first, second) => countryName(first).localeCompare(countryName(second), 'sw'));
   if (countries.length !== 54) throw new Error(`Farm Payroll hub requires 54 countries; found ${countries.length}.`);
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Mishahara ya wafanyakazi wa shamba kwa nchi | AfroTools',
     description: 'Chagua nchi ili kukadiria malipo ghafi, makato, malipo halisi na gharama ya mwajiri kwa kutumia injini ya mishahara ya shamba.',

@@ -160,6 +160,7 @@ function renderHub(row, context) {
   <p><strong>Msaidizi wa AI:</strong> kiungo cha Msaidizi ni cha hiari na hufungua ukurasa tofauti unaoeleza ridhaa kabla ya matumizi ya modeli.</p>
 </section>`;
   return applySeedRateContrastContract(renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Vikokotoo vya kiwango cha mbegu kwa nchi | AfroTools',
     description: 'Chagua mojawapo ya nchi 54 za Afrika ili kukadiria mbegu au vipando kwa Kiswahili.',

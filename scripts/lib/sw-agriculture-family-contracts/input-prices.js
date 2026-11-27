@@ -129,6 +129,7 @@ function renderHub(row, context = {}) {
   const countries = (context.familyRows || []).filter(item => item.country).sort((a, b) => countryName(a).localeCompare(countryName(b), 'sw'));
   if (countries.length !== 15) throw new Error(`Input Prices hub requires 15 manifest countries; found ${countries.length}.`);
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row, title: 'Bei za pembejeo za kilimo kwa nchi | AfroTools',
     description: 'Chagua nchi ili kulinganisha bei zilizohifadhiwa za mbolea, mbegu na viuatilifu kwa sarafu ya nchi hiyo.',
     heading: 'Kilinganisha bei za pembejeo za kilimo',

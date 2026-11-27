@@ -85,6 +85,7 @@ function renderHub(row, context = {}) {
     throw new Error(`Farm Profit hub requires 54 country routes; found ${countries.length}.`);
   }
   return renderPage({
+    useWebPageSchema: true,
     row,
     title: 'Vikokotoo vya faida na hasara ya shamba kwa nchi | AfroTools',
     description: 'Chagua nchi ukadirie mapato, gharama, faida au hasara ya shamba kwa Kiswahili.',

@@ -57,6 +57,7 @@ function renderHub(row, context = {}) {
     .sort((a, b) => countryName(a).localeCompare(countryName(b), 'sw'));
   if (countries.length !== 15) throw new Error(`Fish Farming hub requires 15 manifest countries; found ${countries.length}.`);
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row, title: 'Faida ya ufugaji wa samaki kwa nchi | AfroTools',
     description: 'Chagua nchi ili kukadiria samaki, mavuno, gharama, mapato na faida ya mzunguko wa ufugaji wa samaki.',
     heading: 'Faida ya ufugaji wa samaki',

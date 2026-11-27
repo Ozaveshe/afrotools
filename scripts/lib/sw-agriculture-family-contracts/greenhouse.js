@@ -77,6 +77,7 @@ function renderHub(row, context = {}) {
     .sort((a, b) => countryName(a).localeCompare(countryName(b), 'sw'));
   if (countries.length !== 15) throw new Error(`Greenhouse hub requires 15 manifest countries; found ${countries.length}.`);
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Gharama na faida ya greenhouse kwa nchi | AfroTools',
     description: 'Chagua nchi ili kukadiria gharama za kuanzisha na kuendesha greenhouse, mavuno, mapato na faida kwa data ya nchi hiyo.',

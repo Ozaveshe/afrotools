@@ -207,6 +207,7 @@ function renderHub(row, context) {
   <p><strong>Faragha:</strong> hesabu hufanyika kwenye kivinjari chako na hakuna ulichoingiza kinachotumwa kwa seva.</p>
 </section>`;
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Makisio ya mavuno ya kilimo kwa nchi | AfroTools',
     description: 'Chagua mojawapo ya nchi 54 za Afrika ukadirie mavuno kwa Kiswahili kwa kutumia data ya kilimo ya nchi hiyo.',

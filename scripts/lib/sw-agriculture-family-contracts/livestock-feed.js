@@ -71,6 +71,7 @@ function renderHub(row, context = {}) {
     .sort((a, b) => countryName(a).localeCompare(countryName(b), 'sw'));
   if (countries.length !== 15) throw new Error(`Livestock Feed hub requires 15 manifest countries; found ${countries.length}.`);
   return renderSwahiliAgriculturePage({
+    useWebPageSchema: true,
     row,
     title: 'Kikokotoo cha chakula cha mifugo kwa nchi | AfroTools',
     description: 'Chagua nchi na panga mgao wa ng\'ombe, mbuzi au kondoo kwa viambato, bei na sarafu zilizohifadhiwa kwa nchi hiyo.',
