@@ -102,6 +102,8 @@
         }
     }
     function w() {
+        // The separate unsaved invoice keeps the normal local and cloud draft intact.
+        if (t.body.dataset.invoiceTemporaryDraft === "1") return;
         // Local recovery also works while signed out. An explicit shared invoice
         // takes priority over the draft already on this browser.
         if (s() && l() && !s().isSignedIn()) {
