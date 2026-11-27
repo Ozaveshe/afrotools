@@ -87,54 +87,34 @@
       observation: "The statutory monthly figure rose from ₦30,000 in 2019 to ₦70,000 under the 2024 amendment. The daily and hourly figures are estimates based on 22 working days and 8 hours per day."
     },
     KE: {
-      name: "Kenya",
-      flag: "🇰🇪",
-      currency: "KES",
-      symbol: "KES ",
-      monthly: 16114,
-      basis: "monthly",
-      effectiveDate: "May 2023",
-      law: "Labour Institutions Act (Revised 2022)",
-      sectors: [ {
-        name: "General — Nairobi / Mombasa",
-        rate: "KES 16,114",
-        period: "month"
-      }, {
-        name: "General — Other Areas",
-        rate: "KES 13,572",
-        period: "month"
-      }, {
-        name: "Agriculture (Unskilled)",
-        rate: "KES 8,163",
-        period: "month"
-      }, {
-        name: "Security Guards",
-        rate: "KES 13,572",
-        period: "month"
-      } ],
-      history: [ {
-        year: "2023",
-        nominal: 16114,
-        amount: "KES 16,114"
-      }, {
-        year: "2022",
-        nominal: 15120,
-        amount: "KES 15,120"
-      }, {
-        year: "2018",
-        nominal: 13572,
-        amount: "KES 13,572"
-      }, {
-        year: "2015",
-        nominal: 12926,
-        amount: "KES 12,926"
-      } ],
-      livingWage: 35e3,
-      livingWageFamily: 68e3,
-      livingWageSource: "WageIndicator 2025",
-      notes: "Kenya has a tiered minimum wage system by location and skill. Nairobi and Mombasa pay 19% more than other areas. Agriculture workers earn roughly half the urban minimum. The Minister for Labour reviews every 2 years via gazette notices.",
-      observation: "Kenya uses a location-tiered system — urban workers earn significantly more than rural counterparts. Agriculture workers earn roughly half the city minimum. The gap between KES 16,114 urban minimum and the estimated KES 35,000 living wage is large, especially in Nairobi where housing costs are high. Labour courts are active in wage disputes."
+  "name": "Kenya",
+  "flag": "🇰🇪",
+  "currency": "KES",
+  "symbol": "KES ",
+  "monthly": 18047.4,
+  "basis": "monthly",
+  "effectiveDate": "1 May 2026",
+  "law": "General Order, LN 108/2026, schedule row 1 (general labourer); default reference covers five cities",
+  "sectors": [
+    {
+      "name": "General labourer — Nairobi, Mombasa, Kisumu, Nakuru and Eldoret cities",
+      "rate": "KES 18,047.40",
+      "period": "month, excluding housing allowance"
     },
+    {
+      "name": "General labourer — Former municipalities and town councils of Mavoko, Ruiru and Limuru",
+      "rate": "KES 16,650.95",
+      "period": "month, excluding housing allowance"
+    },
+    {
+      "name": "General labourer — All other areas",
+      "rate": "KES 9,628.07",
+      "period": "month, excluding housing allowance"
+    }
+  ],
+  "notes": "General labourer, including cleaners, gardeners, house servants and day watchmen. Choose the workplace area. Other occupations and agricultural workers have separate schedules.",
+  "observation": "Published monthly figures exclude housing allowance. Scheduled daily and hourly figures include it."
+},
     ZA: {
       name: "South Africa",
       flag: "🇿🇦",
@@ -1962,8 +1942,8 @@
         currency: i.currency,
         symbol: i.symbol,
         monthly: n.monthly,
-        daily: n.daily,
-        hourly: n.hourly,
+        daily: e === "KE" ? 868.44 : n.daily,
+        hourly: e === "KE" ? 161.34 : n.hourly,
         basis: i.basis,
         effectiveDate: i.effectiveDate,
         law: i.law,
@@ -2017,6 +1997,35 @@
       };
     },
     getStateRates: function(e) {
+      if (e === "KE") return [
+  {
+    "code": "cities",
+    "name": "General labourer — Nairobi, Mombasa, Kisumu, Nakuru and Eldoret cities",
+    "rate": 18047.4,
+    "daily": 868.44,
+    "hourly": 161.34,
+    "basis": "monthly",
+    "effectiveDate": "1 May 2026"
+  },
+  {
+    "code": "municipal",
+    "name": "General labourer — Former municipalities and town councils of Mavoko, Ruiru and Limuru",
+    "rate": 16650.95,
+    "daily": 797.8,
+    "hourly": 147.45,
+    "basis": "monthly",
+    "effectiveDate": "1 May 2026"
+  },
+  {
+    "code": "other",
+    "name": "General labourer — All other areas",
+    "rate": 9628.07,
+    "daily": 487.94,
+    "hourly": 90.17,
+    "basis": "monthly",
+    "effectiveDate": "1 May 2026"
+  }
+];
       return "ZA" === e ? n : null;
     },
     getInflationData: function(e) {

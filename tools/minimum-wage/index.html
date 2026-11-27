@@ -969,7 +969,7 @@ function onCountryChange() {
   var stateRates = E.getStateRates(cc);
   if (stateRates) {
     stateSection.style.display = 'block';
-    var opts = '<option value="">— National / all states —</option>';
+    var opts = '<option value="">' + (cc === 'KE' ? stateRates[0].name : '— National / all states —') + '</option>';
     for (var i = 0; i < stateRates.length; i++) {
       var sr = stateRates[i];
       opts += '<option value="' + sr.code + '">' + sr.name +

@@ -62,6 +62,26 @@
     let note=$('monthly-basis-note');
     if (!note) { note=document.createElement('p'); note.id='monthly-basis-note'; details.append(note); }
     note.textContent = labels.basis + ': ' + (labels[ref.basis] || ref.basis) + ' (' + number(ref.amount) + ' ' + c.currency + '). ' + (ref.basis === 'monthly' ? labels.exact : labels.derivedRule) + '. ' + labels.recorded + ': ' + (c.monthly > 0 ? number(c.monthly) + ' ' + c.currency : labels.unset) + '. ' + labels.precision + ' ' + labels.limits;
+    const prompt = salary.closest?.('.mw-compliance-body')?.querySelector('p');
+    if (prompt) {
+      if (!prompt.dataset.defaultText) prompt.dataset.defaultText = prompt.textContent;
+      prompt.textContent = c.code === 'KE' ? (sw ? 'Ingiza mshahara msingi kwa mwezi bila posho ya nyumba.' : 'Enter monthly basic pay excluding housing allowance for the selected general labourer location.') : prompt.dataset.defaultText;
+    }
+    if (c.code === 'KE') {
+      const zones = E.getStateRates('KE');
+      const area = sector || zones[0];
+      const selector = $('state-select');
+      if (selector.options.length) { selector.options[0].textContent = zones[0].name; selector.options[0].hidden = true; if (!selector.value) selector.value = zones[0].code; }
+      $('r-monthly-sub').textContent = area.name + (sw ? ' — bila posho ya nyumba' : ' — excludes housing allowance');
+      for (const period of ['daily','hourly']) {
+        $('r-' + period).textContent = number(area[period]) + ' KES';
+        $('r-' + period + '-sub').textContent = sw ? 'Kiwango cha ratiba, pamoja na posho ya nyumba' : 'Scheduled rate including housing allowance';
+      }
+      note.textContent = area.name + ' · 1 May 2026 · LN 108/2026, schedule row 1. ';
+      const link = document.createElement('a');
+      link.href = 'https://new.kenyalaw.org/akn/ke/act/ln/2026/108/eng@2026-06-26/source.pdf'; link.textContent = sw ? 'Tazama ratiba rasmi' : 'Read the official Kenya Gazette schedule';
+      note.append(link);
+    }
     // The USD badge belongs to the recorded catalogue amount, not this derived card.
     if ($('r-usd')) $('r-usd').textContent = (c.usdMonthly ? '≈ USD ' + number(c.usdMonthly) : labels.unset) + ' — ' + labels.recorded + '. ' + labels.fx;
   }
@@ -109,7 +129,7 @@
     const fmt = n => new Intl.NumberFormat(sw ? 'sw' : 'en', {maximumFractionDigits:2}).format(n) + ' ' + c.currency;
     result.style.display = 'block'; result.className = 'mw-compliance-result ' + (currencyAmount(value) >= minimum ? 'pass' : 'fail');
     $('cr-title').textContent = currencyAmount(value) >= minimum ? copy.above : copy.below;
-    $('cr-detail').textContent = (sector ? sector.name : copy.national) + '. ' + copy.salary + ': ' + fmt(value) + '; ' + copy.reference + ': ' + fmt(minimum) + '; ' + copy.difference + ': ' + fmt(currencyAmount(value) - minimum) + '. ' + (basis === 'monthly' ? copy.monthly : copy.assumptions);
+    $('cr-detail').textContent = (sector ? sector.name : c.code === 'KE' ? E.getStateRates('KE')[0].name : copy.national) + '. ' + copy.salary + ': ' + fmt(value) + '; ' + copy.reference + ': ' + fmt(minimum) + '; ' + copy.difference + ': ' + fmt(currencyAmount(value) - minimum) + '. ' + (basis === 'monthly' ? copy.monthly : copy.assumptions);
     $('cr-action').textContent = copy.effective + ': ' + (sector && sector.effectiveDate || c.effectiveDate) + '. ' + c.law;
     if (c.code === 'NG' && $('ng-wage-sources')) {
       const sourceLink = document.createElement('a');
