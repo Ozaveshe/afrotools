@@ -1,5 +1,6 @@
 !function() {
   "use strict";
+  function cropId(value) { return value === "beans" ? "common_bean" : value; }
   var e = {
     cropProperties: {
       maize: {
@@ -725,7 +726,7 @@
       return r[e] || r.cereal;
     },
     getAvailableCrops: function(a) {
-      return a && a.length ? a.filter(function(a) {
+      return a && a.length ? Array.from(new Set(a.map(cropId))).filter(function(a) {
         return !!e.cropProperties[a];
       }) : Object.keys(e.cropProperties);
     },
@@ -765,6 +766,7 @@
       if (!t || !i) {
         return "";
       }
+        if (a === o) return "The only available crop repeats the previous crop. Add another crop to plan a rotation.";
       var n = [];
       if (t.nFixer && n.push("Fixes " + t.nFixed + " kg N/ha — replenishes nitrogen depleted by previous crop"),
       "cereal" === i.group && "legume" === t.group && n.push("Legume after cereal is the #1 rotation rule: restores soil N, breaks grass pest cycles"),
@@ -773,9 +775,9 @@
         u && n.push("Yield can be " + u + "% higher than continuous " + this.getCropName(a) + " (African field trial data)");
       }
       return "deep" === t.rootDepth && "shallow" === i.rootDepth && n.push("Deep roots access nutrients and water in lower soil horizons, breaking surface compaction"),
-      t.diseaseGroup !== i.diseaseGroup && n.push("Different crop family breaks pest and disease cycles specific to " + this.getCropName(o)),
+      t.family !== i.family && t.diseaseGroup !== i.diseaseGroup && n.push("Different crop family breaks pest and disease cycles specific to " + this.getCropName(o)),
       "restore_soil" === r && "high" === t.residueQuality && n.push("High-quality residue improves organic matter when incorporated"),
-      n.length || n.push("Good rotation partner — different plant family breaks soil pest cycles"),
+      n.length || n.push(t.family === i.family ? "These crops share a plant family; check local pest and disease risks." : "Good rotation partner — different plant family breaks soil pest cycles"),
       n.slice(0, 2).join(". ");
     },
     getIntercrops: function(a) {
@@ -798,6 +800,7 @@
       };
     },
     estimateYieldBoost: function(a) {
+      if (a.length && a.every(function(crop) { return crop === a[0]; })) return 0;
       for (var o = 0, r = 0, t = 1; t < a.length; t++) {
         var i = a[t - 1], n = a[t], s = e.cropProperties[i];
         if (s && s.nFixer) {
@@ -808,7 +811,7 @@
       return r > 0 ? Math.round(o / r) : 15;
     },
     calculate: function(a) {
-      var o = a.countryCode || "", r = a.prevCrop, t = parseInt(a.seasons) || 4, i = a.goal || "maximize_yield", n = a.soilCondition || "average", s = (a.availableCrops || Object.keys(e.cropProperties)).filter(function(a) {
+      var o = a.countryCode || "", r = cropId(a.prevCrop), t = parseInt(a.seasons) || 4, i = a.goal || "maximize_yield", n = a.soilCondition || "average", s = Array.from(new Set((a.availableCrops || Object.keys(e.cropProperties)).map(cropId))).filter(function(a) {
         return !!e.cropProperties[a];
       });
       if (s.length || (s = Object.keys(e.cropProperties)), !e.cropProperties[r]) {
@@ -841,7 +844,7 @@
           score: g ? g.score : 0,
           reason: this.generateReason(f, p, i),
           intercrops: this.getIntercrops(f),
-          warning: null,
+          warning: f === p ? "Only one crop is available; there is no rotation in this season." : null,
           nFixer: e.cropProperties[f].nFixer,
           nFixed: e.cropProperties[f].nFixed || 0,
           alternatives: h.slice(1, 3).map(function(e) {
@@ -861,9 +864,9 @@
         return e.nFixer;
       }).length, D = [], F = 0; F < c.length; F++) {
         var x = c[F], C = this.checkAvoid(x.prevCrop, x.crop);
-        C && x.score < 4 && D.push({
+        (x.warning || (C && x.score < 4)) && D.push({
           season: x.season,
-          message: C.reason,
+          message: x.warning || C.reason,
           crop1: x.prevCrop,
           crop2: x.crop
         });

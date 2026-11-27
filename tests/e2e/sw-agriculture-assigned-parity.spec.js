@@ -37,7 +37,8 @@ for (const app of apps) {
 
     await page.locator("[data-agri-form] button[type=reset]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
-    await page.locator("#scenario").fill("{");
+    if (app.id === "crop-rotation-planner") await page.locator("#rotation-seasons").fill("0");
+    else await page.locator("#scenario").fill("{");
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
     expect(errors).toEqual([]);
