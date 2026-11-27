@@ -141,7 +141,7 @@ for (const file of htmlFiles) {
   <meta property="og:url" content="${canonical}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: pageTitle, description: pageDescription, url: canonical, applicationCategory: 'FinanceApplication', isAccessibleForFree: true, provider: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' } }).replace(/</g, '\\u003c')}</script>
+  <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: pageTitle, description: pageDescription, url: canonical, applicationCategory: 'FinanceApplication', isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', url: canonical }, provider: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' } }).replace(/</g, '\\u003c')}</script>
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/design-system.min.css">
