@@ -756,15 +756,24 @@ function filterAppliances() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+(function startEstimator() {
   document.getElementById('addAppSelect').addEventListener('change', function() {
     var opt = this.options[this.selectedIndex];
     if (opt && opt.dataset.watts) {
       document.getElementById('addWatts').value = opt.dataset.watts;
     }
   });
-  loadElectricityRates().then(init);
-});
+  init();
+  loadElectricityRates().then(function () {
+    var bandSelect = document.getElementById('bandSelect');
+    var chosenBand = bandSelect.value;
+    selectCountry(selectedCountry);
+    if (COUNTRIES[selectedCountry].bands && COUNTRIES[selectedCountry].bands[chosenBand]) {
+      bandSelect.value = chosenBand;
+    }
+    if (lastResult && userApps.length) calculate(false);
+  });
+})();
 
 /* ═══════ APPLIANCE MANAGEMENT ═══════ */
 function addAppliance() {
@@ -840,7 +849,7 @@ function getEmoji(name) {
 }
 
 /* ═══════ CALCULATION ═══════ */
-function calculate() {
+function calculate(scrollToResult) {
   if (userApps.length === 0) { alert('Add at least one appliance.'); return; }
 
   var dailyKwh = 0;
@@ -898,7 +907,7 @@ function calculate() {
   renderResiliencePlan(monthlyKwh, dailyKwh, monthlyCost, genCost, genLitres, breakdown);
 
   document.getElementById('resultSection').classList.add('show');
-  document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (scrollToResult !== false) document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function updateSolar() {
