@@ -33,7 +33,6 @@
           if (row.employeeRatePercent > 0) m.push({ name: row.scheme, rate: row.employeeRatePercent, amount: row.employeeKobo / 100, basis: row.basisKobo / 100, sourceId: row.sourceId });
         });
         y = ngContributions.employeeKobo / 100;
-    if (y > s + i) return { error: true, message: "Contributions exceed cash earnings. Check the selected salary bases.", field: "contributions", code: "contributions-exceed-cash" };
       }
       if (h.pension && h.pension.rate_pct) {
         var u = p * h.pension.rate_pct / 100;
@@ -62,7 +61,13 @@
           notes: h.other.notes
         }), y += f;
       }
-      var d = p > 2 * (o.nationalMinWage_monthly || o.agriMinWage_monthly || 0), g = (ngPolicy ? s + i : p) - y, w = [], _ = 0;
+      // Employer-provided housing and food affect remuneration and deduction bases.
+      // The payslip pays the worker only their cash earnings less deductions.
+      var cashEarnings = s + i;
+      if (y > cashEarnings) {
+        return { error: true, message: "Contributions exceed cash earnings. Check the wage, benefits and contribution bases.", field: "contributions", code: "contributions-exceed-cash" };
+      }
+      var d = p > 2 * (o.nationalMinWage_monthly || o.agriMinWage_monthly || 0), g = cashEarnings - y, w = [], _ = 0;
       if (ngPolicy) {
         ngContributions.rows.forEach(function (row) {
           if (row.employerRatePercent > 0) w.push({ name: "Employer " + row.scheme, amount: row.employerKobo / 100, rate: row.employerRatePercent, basis: row.basisKobo / 100, sourceId: row.sourceId });

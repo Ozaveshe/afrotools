@@ -17,36 +17,15 @@
 <meta property="og:description" content="Estimate planning NPK needs for Rubber, Rice (Paddy), Cassava in Liberia with clear nutrient-removal assumptions.">
 <meta property="og:url" content="https://afrotools.com/agriculture/fertilizer/liberia">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/fr-agriculture-fertilizer.webp">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/fertilizer-nigeria.webp">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Liberia Fertilizer Calculator &mdash; AfroTools">
 <meta name="twitter:description" content="Estimate planning NPK needs for Rubber, Rice (Paddy), Cassava in Liberia with clear assumptions.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fr-agriculture-fertilizer.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fertilizer-nigeria.webp">
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Liberia Fertilizer Calculator",
-  "url": "https://afrotools.com/agriculture/fertilizer/liberia",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "All",
-  "description": "Estimate planning NPK needs for Rubber, Rice (Paddy), Cassava in Liberia using maintained nutrient-removal methods.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/fr-agriculture-fertilizer.webp"
-}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Liberia Fertilizer Calculator","url":"https://afrotools.com/agriculture/fertilizer/liberia","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Estimate planning NPK needs for Rubber, Rice (Paddy), Cassava in Liberia using maintained nutrient-removal methods.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/fertilizer-nigeria.webp"}</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Agriculture","item":"https://afrotools.com/agriculture/"},{"@type":"ListItem","position":3,"name":"Fertilizer Calculator","item":"https://afrotools.com/agriculture/fertilizer/"},{"@type":"ListItem","position":4,"name":"Liberia","item":"https://afrotools.com/agriculture/fertilizer/liberia"}]}
 </script>
@@ -221,7 +200,9 @@
     <div class="card">
       <div class="card-head"><span class="card-title">&#128722; Fertilizer Shopping List</span></div>
       <div class="card-body">
+        <p class="hint" id="fertPriceBasis">These are reference prices per bag. The catalogue gives no price observation date. Confirm the product, bag size, price and any subsidy with your supplier.</p>
         <table class="shop-table" id="shopTable"><thead><tr><th>Product</th><th>Bags</th><th>Price/Bag</th><th>Total</th></tr></thead><tbody></tbody></table>
+        <p id="fertShoppingCoverage" role="status"></p>
         <div class="cost-grid">
           <div class="cost-card"><div class="cost-val" id="rCostMarket">--</div><div class="cost-label">Market price total</div></div>
           <div class="cost-card highlight" id="costSubsidyCard" style="display:none"><div class="cost-val" id="rCostSubsidy">--</div><div class="cost-label">With subsidy</div></div>
@@ -293,6 +274,7 @@
 
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/lr-agri-data.js?v=61f5f47c"></script>
+<script src="/assets/js/agriculture/fertilizer-shopping-budget.js?v=b7bc269e"></script>
 <script src="/engines/fertilizer-engine.js?v=7465f140"></script>
 
 <script>
@@ -325,6 +307,7 @@
     var st=null;if($('soilTestPanel').classList.contains('open'))st={pH:optionalFertilizerNumber('inpPH'),organicMatter:optionalFertilizerNumber('inpOM'),N_ppm:optionalFertilizerNumber('inpN'),P_ppm:optionalFertilizerNumber('inpP'),K_ppm:optionalFertilizerNumber('inpK')};
     var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:Number($('inpFarm').value),targetYieldPerHa:optionalFertilizerNumber('inpTarget'),soilType:$('selSoil').value,previousCrop:$('selPrevCrop').value,soilTest:st},CD,CDB);
     if(r.error){$('fertInputError').textContent=r.message;return}
+    r=window.AfroTools.fertilizerShoppingBudget(r, CD.fertilizers || []);
     var p=$('resultsPanel');p.classList.add('on');p.scrollIntoView({behavior:'smooth',block:'start'});
 
     $('rN').textContent=fmtN(r.perHa.N);$('rP').textContent=fmtN(r.perHa.P);$('rK').textContent=fmtN(r.perHa.K);
@@ -334,6 +317,30 @@
     r.products.forEach(function(p){var tr=document.createElement('tr');tr.innerHTML='<td>'+p.name+' <small>('+p.bagSize_kg+'kg)</small></td><td>'+p.bags+'</td><td>'+fmtC(p.pricePerBag)+'</td><td>'+fmtC(p.totalCostMarket)+'</td>';tb.appendChild(tr)});
     var t1=document.createElement('tr');t1.className='total-row';t1.innerHTML='<td colspan="3">Total (market)</td><td>'+fmtC(r.costMarket)+'</td>';tb.appendChild(t1);
     if(r.costSubsidy!==null){var t2=document.createElement('tr');t2.className='subsidy-row';t2.innerHTML='<td colspan="3">Total (subsidized)</td><td>'+fmtC(r.costSubsidy)+'</td>';tb.appendChild(t2)}
+
+    var supplied = { N: 0, P: 0, K: 0 };
+    r.products.forEach(function(product) {
+      var weight = product.bags * product.bagSize_kg;
+      supplied.N += weight * (product.composition.N || 0) / 100;
+      supplied.P += weight * (product.composition.P2O5 || 0) / 100;
+      supplied.K += weight * (product.composition.K2O || 0) / 100;
+    });
+    var nutrientLabels = { N: 'N', P: 'P₂O₅', K: 'K₂O' };
+    var missing = [], excess = [], unsupported = [];
+    var grade = { N: 'N', P: 'P2O5', K: 'K2O' };
+    Object.keys(nutrientLabels).forEach(function(nutrient) {
+      var gap = Math.round(10 * (r.totalNPK[nutrient] - supplied[nutrient])) / 10;
+      var label = fmtN(Math.abs(gap)) + ' kg ' + nutrientLabels[nutrient];
+      if (gap > 0) {
+        missing.push(label);
+        if (!CD.fertilizers.some(function(p) { return p.composition[grade[nutrient]] > 0; })) unsupported.push(nutrientLabels[nutrient]);
+      }
+      if (gap < 0) excess.push(label);
+    });
+    $('fertShoppingCoverage').textContent = (missing.length ? 'Whole-farm shortfall: ' + missing.join(', ') + '.' : 'The listed bags cover all three whole-farm targets.') +
+      (unsupported.length ? ' No listed product supplies ' + unsupported.join(', ') + '.' : '') +
+      (excess.length ? ' Whole-bag surplus: ' + excess.join(', ') + '.' : '') +
+      ' This is a purchase estimate. Confirm a suitable blend and application rate with a local adviser before applying.';
 
     $('rCostMarket').textContent=fmtC(r.costMarket);
     if(r.costSubsidy!==null){$('costSubsidyCard').style.display='block';$('rCostSubsidy').textContent=fmtC(r.costSubsidy)}else{$('costSubsidyCard').style.display='none'}

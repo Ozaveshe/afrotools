@@ -2,12 +2,12 @@
 
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
-- Public Hausa routes: 106
+- Public Hausa routes: 107
 - Native: 24
-- Localized shells: 58
+- Localized shells: 59
 - Explicit English fallbacks: 24
-- Indexable: 81
-- Sitemap members: 81
+- Indexable: 82
+- Sitemap members: 82
 
 | Route | State | Indexable | Sitemap | Equivalent or fallback | Owner |
 |---|---|---:|---:|---|---|
@@ -52,6 +52,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/duba-genotype/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/fansho-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/farashin-kayayyakin-gona/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
+| /ha/kayan-aiki/farashin-mai/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/gina-cv/ | native | yes | yes | /tools/cv-builder/ | Hausa local-first CV brief builder with TXT export and explicit English full-editor handoff |
 | /ha/kayan-aiki/gwajin-ussd/ | native | yes | yes | /tools/ussd-simulator/ | scripts/build-hausa-ussd-simulator.js + engines/src/hausa-ussd-simulator-engine.js + browser-backed state/JSON/privacy evidence |
 | /ha/kayan-aiki/gyara-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
