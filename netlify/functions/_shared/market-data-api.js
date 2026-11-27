@@ -32,12 +32,10 @@ async function queryRows(path) {
       Authorization: 'Bearer ' + SUPABASE_KEY
     }
   });
-  const text = await response.text();
-  try {
-    return JSON.parse(text);
-  } catch {
-    return [];
-  }
+  if (!response.ok) throw new Error('Market data lookup unavailable');
+  const rows = await response.json();
+  if (!Array.isArray(rows)) throw new Error('Invalid market data response');
+  return rows;
 }
 
 async function handleMarketDataRequest(event, config) {
@@ -80,8 +78,14 @@ async function handleMarketDataRequest(event, config) {
     'limit=' + limit
   ].join('&');
 
-  const rows = await queryRows(path);
-  const data = Array.isArray(rows) ? rows : [];
+  let data;
+  try {
+    data = await queryRows(path);
+  } catch {
+    return jsonResponse(502, { error: 'Market data lookup unavailable' }, {
+      ...headers, 'Cache-Control': 'no-store'
+    });
+  }
 
   return jsonResponse(200, {
     ok: true,
