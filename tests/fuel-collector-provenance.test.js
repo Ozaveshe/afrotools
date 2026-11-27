@@ -28,6 +28,8 @@ function load(options = {}) {
         if (key !== 'fuel-latest') throw new Error('Unexpected data key ' + key);
         return options.previous || null;
       } };
+      if (id === '../../data/fuel/markets.json') return { markets: [] };
+      if (id === '../../scripts/lib/fuel-country-reference') return require('node:module').createRequire(ownerPath)(id);
       throw new Error('Unexpected import: ' + id);
     }
   });

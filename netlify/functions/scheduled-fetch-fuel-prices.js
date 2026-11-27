@@ -15,6 +15,8 @@
 
 const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
 const { getData } = require('./_shared/data-store');
+const { zimbabweAggregateRow } = require('../../scripts/lib/fuel-country-reference');
+const marketData = require('../../data/fuel/markets.json');
 
 // All 54 African countries with GlobalPetrolPrices slugs
 var COUNTRIES = [
@@ -71,7 +73,7 @@ var COUNTRIES = [
   { code: 'TN', name: 'Tunisia', currency: 'TND', region: 'north', slug: 'Tunisia' },
   { code: 'UG', name: 'Uganda', currency: 'UGX', region: 'east', slug: 'Uganda' },
   { code: 'ZM', name: 'Zambia', currency: 'ZMW', region: 'south', slug: 'Zambia' },
-  { code: 'ZW', name: 'Zimbabwe', currency: 'ZWL', region: 'south', slug: 'Zimbabwe' },
+  { code: 'ZW', name: 'Zimbabwe', currency: 'ZWG', region: 'south', slug: 'Zimbabwe' },
 ];
 
 function stripHtml(html) {
@@ -224,6 +226,13 @@ async function fetchFromGlobalPetrolPrices() {
   var observedProducts = 0;
   var countries = (await mapWithConcurrency(COUNTRIES, 6, async function(c) {
     try {
+      if (c.code === 'ZW') {
+        const previous = previousMap.ZW;
+        const reviewed = zimbabweAggregateRow(previous, marketData);
+        if (reviewed !== previous) return reviewed;
+        // Preserve the whole original row if current records prevent a safe currency transition.
+        if (previous && previous.currency !== c.currency) return previous;
+      }
       var fuelResults = await Promise.all([
         fetchCountryFuelPrice(c, 'gasoline').catch(function() { return null; }),
         fetchCountryFuelPrice(c, 'diesel').catch(function() { return null; }),
@@ -296,6 +305,8 @@ async function fetchFromSeedWithForexUpdate() {
 
   var refreshedAt = new Date().toISOString();
   var countries = seed.countries.map(function(c) {
+    const reviewed = zimbabweAggregateRow(c, marketData);
+    if (reviewed !== c || (c.code === 'ZW' && c.official_verified === true)) return reviewed;
     var updated = Object.assign({}, c);
     updated.last_updated = c.last_updated || '';
     updated.source = c.source || 'static-seed';

@@ -3,7 +3,7 @@
 const {status} = require('../../assets/js/lib/fuel-market-observations');
 
 function productDate(row, type) {
-  return row[type].observed_at || row[type].snapshot_date || row.last_updated;
+  return row[type]?.observed_at || row[type]?.snapshot_date || row.last_updated;
 }
 
 // Dual-currency orders publish both prices directly. Never convert a historical
@@ -20,7 +20,10 @@ function publishedDualCurrencyRow(original, market, now) {
     if (!local || local.currency !== 'ZWG' || ref.currency !== 'USD' ||
         ref.unit !== unit || local.unit !== unit || !Number.isFinite(local.price) || !Number.isFinite(ref.price) ||
         local.price <= 0 || ref.price <= 0 ||
-        ref.effective_date <= productDate(original,type) || ref.effective_date > now.slice(0,10)) return null;
+        (ref.effective_date < productDate(original,type) ||
+         (ref.effective_date === productDate(original,type) &&
+          (original.currency !== local.currency || original[type]?.price !== local.price ||
+           original[type]?.usd !== ref.price))) || ref.effective_date > now.slice(0,10)) return null;
     const age = (Date.parse(now) - Date.parse(ref.effective_date)) / 86400000;
     const historical = ref.valid_to ? now.slice(0,10) > ref.valid_to : age > 45;
     references[type] = {...ref, historical};
@@ -30,6 +33,27 @@ function publishedDualCurrencyRow(original, market, now) {
   row.references = references;
   row.lpgDateKnown = true;
   row.last_updated = records.map(ref => ref.effective_date).sort().at(-1);
+  return row;
+}
+
+// The public aggregate has one local currency. Project the reviewed notices
+// together so that a pre-ZiG LPG amount can never be relabelled as ZWG.
+function zimbabweAggregateRow(original, marketData, now = new Date().toISOString()) {
+  if (original?.code !== 'ZW') return original;
+  const market = marketData.markets.find(m => m.market_id === 'zw-national-reference' && m.country_code === 'ZW');
+  const dual = publishedDualCurrencyRow(original, market, now);
+  if (!dual) return original;
+  const row = {...original, currency:dual.currency, last_updated:dual.last_updated,
+    source:'ZERA', source_url:dual.references.petrol.source_url, source_state:'dated_official_notices',
+    source_note:'ZERA published maximum prices in USD and ZWG. Check each product’s effective date and period.',
+    regulated:true, official_verified:true};
+  delete row.forex_refreshed_at;
+  for (const type of ['petrol','diesel','lpg']) {
+    const ref = dual.references[type];
+    row[type] = {...dual[type], effective_date:ref.effective_date, date_basis:'effective',
+      source_url:ref.source_url, source_document_url:ref.source_document_url, historical:ref.historical};
+    if (ref.valid_to) row[type].valid_to = ref.valid_to;
+  }
   return row;
 }
 
@@ -120,4 +144,4 @@ function datedProperties(row, fuel, french) {
   return properties;
 }
 
-module.exports = {countryPageRows, productDate, sourceLine, regionalComparison, datedProperties};
+module.exports = {zimbabweAggregateRow, countryPageRows, productDate, sourceLine, regionalComparison, datedProperties};

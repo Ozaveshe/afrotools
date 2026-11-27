@@ -11,6 +11,8 @@ const ROOT = path.resolve(__dirname, '..');
 const PROJECT_REF = 'zpclagtgczsygrgztlts';
 const DEFAULT_SUPABASE_URL = 'https://' + PROJECT_REF + '.supabase.co';
 const META_PATH = path.join(ROOT, 'data', '_meta.json');
+const { zimbabweAggregateRow } = require('./lib/fuel-country-reference');
+const fuelMarkets = require('../data/fuel/markets.json');
 const FUEL_SOURCE_WORKFLOW_PATH = path.join(ROOT, 'data', 'fuel', 'official-source-workflow.json');
 
 const DATASETS = Object.freeze([
@@ -89,6 +91,7 @@ function enrichFuelSourceMetadata(payload) {
     return [item.code, item];
   }));
 
+  payload.countries = payload.countries.map(country => zimbabweAggregateRow(country, fuelMarkets));
   payload.countries.forEach(function (country) {
     const source = sourcesByCode.get(country.code);
     if (!source) return;
@@ -100,6 +103,13 @@ function enrichFuelSourceMetadata(payload) {
   payload.official_verified_count = payload.countries.filter(function (country) {
     return country.official_verified === true;
   }).length;
+  if (payload.countries.some(country => country.code === 'ZW' && country.source === 'ZERA')) {
+    const sources = new Set(payload.countries.map(country => country.source));
+    const states = new Set(payload.countries.map(country => country.source_state));
+    payload.source = sources.size === 1 ? payload.countries[0].source : 'mixed';
+    payload.source_state = states.size === 1 ? payload.countries[0].source_state : 'mixed';
+    payload.source_note = 'Rows marked official_verified=true have regulator-backed source evidence.';
+  }
   payload.source_reviewed_at = workflow.reviewed_at || payload.source_reviewed_at;
   return payload;
 }
