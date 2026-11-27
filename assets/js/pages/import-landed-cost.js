@@ -30,6 +30,7 @@
     if (currentInput || currentResult || !resultNode.hidden) {
       invalidateEstimate('Shipment inputs changed. Calculate again to update the estimate and exports.');
     }
+    showMarketScope();
   }
   function el(id) { return document.getElementById(id); }
   function value(id) { var node = el(id); return node ? node.value : ''; }
@@ -100,7 +101,11 @@
   }
   function updateFxHelp() {
     var currentMarket = market();
-    if (!currentMarket) return;
+    if (!currentMarket) {
+      el('fxUnit').textContent = '';
+      el('fxHelp').textContent = 'No destination currency or reference rate is available for this market.';
+      return;
+    }
     var source = value('sourceCurrency');
     var reference = referenceForPair(source, currentMarket.currency);
     var rate = reference && engine.calculateFxRate(reference, source, currentMarket.currency);
@@ -115,7 +120,47 @@
     updateFxHelp();
     if (cleared) invalidateEstimate('Enter a new manual exchange rate for this currency pair, or use the reference rate.');
   }
+  var vehicleMarkets = {
+    NG: 'Nigeria', KE: 'Kenya', GH: 'Ghana', UG: 'Uganda', TZ: 'Tanzania', ZM: 'Zambia'
+  };
+  function vehicleLink() {
+    var key = value('destination') === 'unsupported'
+      ? (el('destination').dataset?.requestedMarket || '') : value('destination');
+    var code = Object.keys(vehicleMarkets).find(function(code) {
+      return code === key.toUpperCase() || vehicleMarkets[code].toLowerCase() === key.toLowerCase();
+    });
+    return code ? '/tools/car-import-cost/' + vehicleMarkets[code].toLowerCase() + '/?newQuote=1&country=' + code : '';
+  }
+  function showMarketScope() {
+    if (value('destination') === 'unsupported' || value('goodsType') === 'vehicle') {
+      showUnsupported('Vehicle imports need a vehicle-specific estimate for the selected market.');
+    }
+  }
+  document.addEventListener?.('afrotools:import-handoff-applied', function () {
+    updateDutyBands();
+    updateFxHelp();
+    showMarketScope();
+  });
+  var incoming = window.location?.search && new URLSearchParams(window.location.search).get('destination');
+  if (incoming) {
+    var destination = el('destination');
+    var requested = incoming.trim().toUpperCase();
+    var match = Array.from(destination.options).find(function(option) {
+      return option.value.toUpperCase() === requested || option.textContent.toUpperCase() === requested;
+    });
+    destination.value = match ? match.value : 'unsupported';
+    destination.dataset.requestedMarket = vehicleMarkets[requested] || incoming.trim().slice(0, 60);
+    showMarketScope();
+  }
   function showUnsupported(message, route) {
+    if (value('destination') === 'unsupported') {
+      var requested = el('destination').dataset?.requestedMarket || 'This destination';
+      message = requested + ' has no maintained general-goods duty rules here. Select a supported destination to calculate a general-goods estimate.';
+      el('fxRate').value = '';
+      statusNode.textContent = 'No estimate for this destination.';
+    }
+    if (value('goodsType') === 'vehicle') route = vehicleLink();
+
     resultNode.innerHTML = '<div class="ilc-result-body"><div class="ilc-notice ilc-notice--error"><strong>That workflow is not supported here.</strong><p>' + esc(message) + '</p>' + (route ? '<a class="idv-button idv-button-primary" href="' + esc(route) + '">Open vehicle import calculator</a>' : '') + '</div></div>';
     resultNode.hidden = false;
   }
@@ -150,8 +195,7 @@
     var input = getInput();
     if (input.destination === 'unsupported') {
       analytics('import_unsupported_market', { market: 'other' });
-      showUnsupported('Choose Nigeria, Kenya, Ghana or South Africa. Other destinations need maintained country-specific rules.');
-      statusNode.textContent = 'Unsupported destination shown.';
+      showMarketScope();
       return;
     }
     var reference = referenceForPair(input.sourceCurrency, market()?.currency);
@@ -187,20 +231,27 @@
     else statusNode.textContent = 'Review the highlighted shipment inputs before calculating.';
   });
   el('destination').addEventListener('change', function () {
+    delete el('destination').dataset?.requestedMarket;
+    document.getElementById('afrotools-ai-prefill-notice')?.remove();
     var destination = value('destination');
     analytics('import_destination_selected', { destination: destination });
     updateDutyBands(); resetPairQuote();
-    if (destination === 'unsupported') {
-      analytics('import_unsupported_market', { market: 'other' });
-      showUnsupported('Choose Nigeria, Kenya, Ghana or South Africa. Other destinations need maintained country-specific rules.');
-      statusNode.textContent = 'Unsupported destination shown.';
-    }
+    if (destination === 'unsupported') analytics('import_unsupported_market', { market: 'other' });
+    showMarketScope();
   });
   el('origin').addEventListener('change', function () { analytics('import_origin_selected', { origin: value('origin') }); });
   el('goodsType').addEventListener('change', function () { analytics('import_goods_type_selected', { goods_type: value('goodsType') }); if (value('goodsType') === 'vehicle') showUnsupported(rules.goodsTypes.vehicle.notes, rules.goodsTypes.vehicle.route); });
   el('sourceCurrency').addEventListener('change', resetPairQuote);
   el('dutyRate').addEventListener('change', function () { el('customDutyField').hidden = value('dutyRate') !== 'custom'; if (!el('customDutyField').hidden) el('customDutyRate').focus(); });
-  el('resetImport').addEventListener('click', function () { form.reset(); updateDutyBands(); updateFxHelp(); invalidateEstimate('Reset. Nothing was stored or sent.'); });
+  el('resetImport').addEventListener('click', function () {
+    var destination = value('destination');
+    form.reset();
+    el('destination').value = destination;
+    updateDutyBands();
+    updateFxHelp();
+    invalidateEstimate('Reset. Nothing was stored or sent.');
+    showMarketScope();
+  });
   el('compareScenario').addEventListener('click', function () {
     if (!currentInput || !currentResult) return;
     var other = Object.assign({}, currentInput, { purchaseValue: value('scenarioPurchase') || currentInput.purchaseValue, freight: value('scenarioFreight') || currentInput.freight, fxRate: value('scenarioFx') || currentInput.fxRate });
@@ -235,5 +286,6 @@
     loadReference('/api/forex?base=USD')
   ]).then(function (payload) {
     rules = payload[0]; fxSnapshot = payload[1]; liveFx = payload[2]; updateDutyBands(); updateFxHelp(); statusNode.textContent = fxSnapshot || liveFx ? 'Ready. Choose a confirmed duty rate to calculate.' : 'Reference exchange rates are unavailable. Enter a verified rate if converting currencies.';
+    showMarketScope();
   }).catch(function () { statusNode.textContent = 'The maintained import rules could not be loaded. Please retry later.'; });
 }());

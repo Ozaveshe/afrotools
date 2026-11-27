@@ -16,7 +16,6 @@
       gpa: ["profileGPA"],
     }, null, { allowHiddenFields: true, setAllSelectors: true }),
     config("import-duty", ["/tools/import-duty/"], {
-      destinationCountry: ["destination"],
       currency: ["sourceCurrency"],
       year: ["carYear", "carImportYear"],
       make: ["carMake", "carImportMake"],
@@ -367,6 +366,17 @@
   function activateImportMode(payload) {
     var inputs = payload.normalizedInputs || {};
     var applied = [];
+    var destination = document.getElementById("destination");
+    var requested = String(inputs.destinationCountry || "").trim();
+    if (destination) {
+      var market = Array.from(destination.options).find(function(option) {
+        return option.value.toLowerCase() === requested.toLowerCase() ||
+          option.textContent.trim().toLowerCase() === requested.toLowerCase();
+      });
+      destination.value = market ? market.value : "unsupported";
+      destination.dataset.requestedMarket = requested;
+      if (requested) applied.push("destinationCountry");
+    }
     var isVehicle = inputs.mode === "car" || inputs.mode === "vehicle" ||
       !isEmpty(inputs.make) || !isEmpty(inputs.model) || !isEmpty(inputs.vehicleType) || !isEmpty(inputs.engineCc);
     if (!isVehicle) {
@@ -421,6 +431,7 @@
       landedCostResult.hidden = true;
       landedCostResult.innerHTML = "";
     }
+    document.dispatchEvent(new CustomEvent("afrotools:import-handoff-applied"));
     return [];
   }
 
@@ -583,9 +594,17 @@
       showNotice(payload, []);
       return;
     }
+    if (config.toolId === "import-duty") {
+      var importForm = document.getElementById("importLandedCostForm");
+      if (importForm) {
+        var stamp = String(payload.createdAt);
+        if (importForm.dataset.appliedHandoff === stamp) return;
+        importForm.dataset.appliedHandoff = stamp;
+      }
+    }
     var applied = applyPayload(config, payload);
     showNotice(payload, applied);
-    scheduleRetry(config, payload, applied);
+    if (config.toolId !== "import-duty" || !document.getElementById("importLandedCostForm")) scheduleRetry(config, payload, applied);
   }
 
   function bootConsume() {
