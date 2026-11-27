@@ -271,7 +271,10 @@ function vehicleQuoteAction(country, vehicle) {
   const guidance = country.import_enabled
     ? "Check this vehicle’s import eligibility with Customs before arranging shipment."
     : "This guide has no vehicle-duty calculation for this destination.";
-  return `<section class="cars-panel" aria-labelledby="car-quote-title"><h3 id="car-quote-title">Compare two on-road quotes in ${currency}</h3><p>${guidance} Ask for two written totals in the same currency, including taxes, delivery, registration and other compulsory charges. Use a broker’s complete delivered quote to compare an import with a local offer. Leave out the source-price band shown above.</p>
+  const worksheet = country.code === "BW"
+    ? '<p>Importing a private passenger car for personal use? <a href="/tools/car-import-cost/botswana/">Add your itemised written import charges in Botswana pula</a>. The worksheet covers permanent imports and excludes commercial vehicles and resale.</p>'
+    : "";
+  return `<section class="cars-panel" aria-labelledby="car-quote-title"><h3 id="car-quote-title">Compare two on-road quotes in ${currency}</h3><p>${guidance} Ask for two written totals in the same currency, including taxes, delivery, registration and other compulsory charges. Use a broker’s complete delivered quote to compare an import with a local offer. Leave out the source-price band shown above.</p>${worksheet}
 <form data-car-quote-compare data-currency="${currency}">
 <label>First on-road quote (${currency}) <input name="first" type="number" inputmode="decimal" min="0.01" step="0.01" required></label>
 <label>Second on-road quote (${currency}) <input name="second" type="number" inputmode="decimal" min="0.01" step="0.01" required></label>
