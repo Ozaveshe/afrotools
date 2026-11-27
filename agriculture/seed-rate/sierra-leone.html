@@ -324,10 +324,11 @@
         <div id="costSection">
           <div class="card-section-title">&#128176; Seed Cost Estimate (Sierra Leone)</div>
           <div class="cost-grid">
-            <div class="cost-card"><div class="cost-label">Certified Seed</div><div class="cost-value" id="rCostCert">--</div></div>
-            <div class="cost-card mid"><div class="cost-label">Farm-Saved (est.)</div><div class="cost-value" id="rCostSaved">--</div></div>
-            <div class="cost-card"><div class="cost-label">You Save</div><div class="cost-value" id="rSavings">--</div></div>
+            <div class="cost-card"><div class="cost-label">Certified seed used</div><div class="cost-value" id="rCostCert">--</div></div>
+            <div class="cost-card mid"><div class="cost-label">Farm-saved seed used (est.)</div><div class="cost-value" id="rCostSaved">--</div></div>
+            <div class="cost-card"><div class="cost-label">Estimated difference on seed used</div><div class="cost-value" id="rSavings">--</div></div>
           </div>
+          <p id="rWholeBagCost"></p>
           <p style="font-size:0.72rem;color:#64748b;text-align:center;margin-top:4px;" id="rCostNote"></p>
         </div>
 
@@ -612,6 +613,10 @@
       $('rCostCert').textContent = fmtC(r.costCertified);
       $('rCostSaved').textContent = fmtC(r.costFarmSaved);
       $('rSavings').textContent = fmtC(r.costSavings);
+      var purchaseKg = r.numBags * r.bagSize_kg;
+      $('rWholeBagCost').textContent = purchaseKg > 0 && r.pricePerKg > 0
+        ? 'If you buy whole bags at this unit price: ' + r.numBags + ' × ' + r.bagSize_kg + ' kg = ' + purchaseKg + ' kg, costing ' + fmtC(purchaseKg * r.pricePerKg) + '.'
+        : '';
       $('rCostNote').textContent = 'Based on certified seed price: ' + r.currencySymbol + fmtN(r.pricePerKg, 0) + '/kg. Farm-saved ≈ 45% of certified price.';
     }
 
