@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ha"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kundin jimlolin Hausa, Yarbanci da Kiswahili | AfroTools</title>
+<meta name="description" content="Nemo kalmomi da jimlolin yau da kullum daga Hausa zuwa Yarbanci ko Kiswahili, ko daga ɗaya daga cikinsu zuwa Hausa.">
+<link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/kundin-jimloli/">
+<style>
+* {box-sizing:border-box} body {margin:0;background:#f5f6ef;color:#263229;font:1rem/1.55 Inter,system-ui,sans-serif}
+main,nav {max-width:47rem;margin:auto;padding:1rem clamp(1rem,4vw,2rem)} nav {border-bottom:1px solid #c6d1be} a{color:#245c40}
+h1{font:500 clamp(2.5rem,7vw,4rem)/1.1 Georgia,serif;margin:1rem 0} h2{line-height:1.2}
+fieldset,article{border:1px solid #bdcdbb;border-radius:.5rem;background:white;padding:1rem;margin:1rem 0}
+fieldset{display:grid;gap:1rem}label{display:block;font-weight:650}select,input,button{font:inherit;min-height:2.75rem;border-radius:.35rem}
+select,input{width:100%;color:inherit;background:white;border:1px solid #647669;padding:.4rem .6rem}button{cursor:pointer;padding:.4rem .8rem;color:#16472d;background:white;border:1px solid #427153}
+article h3,article p{margin:0 0 .55rem}article p{font-size:1.2rem}small{color:#405345}
+:focus-visible{outline:3px solid #2856ad;outline-offset:3px}
+</style></head><body>
+<nav aria-label="Hanyar shafi"><a href="/ha/">AfroTools Hausa</a> / <a href="/ha/kayan-aiki/">Kayan aiki</a></nav>
+<main>
+<h1>Kundin jimloli</h1>
+<p>Zaɓi Yarbanci ko Kiswahili, sannan ka nemo kalma ko jimla a kundin. Za ka iya sauya alkiblar fassara don komawa Hausa.</p>
+<fieldset><legend>Zaɓin harshe da bincike</legend>
+<div><label for="language">Harshen da za a yi amfani da shi tare da Hausa</label><select id="language"><option value="yo">Yarbanci (Yorùbá)</option><option value="sw">Kiswahili</option></select></div>
+<div><label for="direction">Alkiblar fassara</label><select id="direction"><option value="from">Daga Hausa</option><option value="to">Zuwa Hausa</option></select></div>
+<div><label id="search-label" for="query">Nemo kalma ko jimla a Hausa</label><input id="query" type="search" autocomplete="off" placeholder="Misali: Na gode"></div>
+</fieldset>
+<h2 id="heading"></h2><p id="count" role="status"></p><div id="results"></div><p id="feedback" role="status"></p>
+<h2>Game da kundin</h2>
+<p>Waɗannan jimlolin misalai ne daga kundin AfroTools. Ba a tantance su ta hannun ƙwararren mai fassara ba. Binciken yana amfani da jimlolin da ke nan kawai. Ba ya fassara sabon sakin layi.</p>
+<p><a id="more" hreflang="en"></a></p>
+</main>
+<script>
+(() => {
+  const phrases = [
+  {
+    "ha": "Na gode",
+    "yo": "Ẹ ṣéun",
+    "sw": "Asante"
+  },
+  {
+    "ha": "Na gode sosai",
+    "yo": "Ẹ ṣéun púpọ̀",
+    "sw": "Asante sana"
+  },
+  {
+    "ha": "Ina kwana",
+    "yo": "Ẹ káàárọ̀",
+    "sw": "Habari za asubuhi"
+  },
+  {
+    "ha": "Ina wuni",
+    "yo": "Ẹ káàsán",
+    "sw": "Habari za mchana"
+  },
+  {
+    "ha": "Ina yini",
+    "yo": "Ẹ káalẹ́",
+    "sw": "Habari za jioni"
+  },
+  {
+    "ha": "Sannu da zuwa",
+    "yo": "Ẹ káàbọ̀",
+    "sw": "Karibu"
+  },
+  {
+    "ha": "Sai an jima",
+    "yo": "Ó dàbọ̀",
+    "sw": "Kwaheri"
+  },
+  {
+    "ha": "Ruwa",
+    "yo": "Omi",
+    "sw": "Maji"
+  },
+  {
+    "ha": "Abinci",
+    "yo": "Ounje",
+    "sw": "Chakula"
+  },
+  {
+    "ha": "Shinkafa",
+    "yo": "Iresi",
+    "sw": "Wali"
+  },
+  {
+    "ha": "Kifi",
+    "yo": "Eja",
+    "sw": "Samaki"
+  },
+  {
+    "ha": "Kasuwa",
+    "yo": "Oja",
+    "sw": "Soko"
+  },
+  {
+    "ha": "Aiki",
+    "yo": "Iṣẹ́",
+    "sw": "Kazi"
+  },
+  {
+    "ha": "Yau",
+    "yo": "Oni",
+    "sw": "Leo"
+  },
+  {
+    "ha": "Gobe",
+    "yo": "Ola",
+    "sw": "Kesho"
+  },
+  {
+    "ha": "Aboki",
+    "yo": "Ore",
+    "sw": "Rafiki"
+  },
+  {
+    "ha": "Tsaya nan",
+    "yo": "Duro nibi",
+    "sw": "Simama hapa"
+  },
+  {
+    "ha": "Ina neman...",
+    "yo": "Mo n wa...",
+    "sw": "Natafuta..."
+  },
+  {
+    "ha": "Mu tafi!",
+    "yo": "Ẹ jẹ́ ká lọ!",
+    "sw": "Twende!"
+  },
+  {
+    "ha": "Barka da nasara",
+    "yo": "Ẹ kú oríire!",
+    "sw": "Hongera!"
+  },
+  {
+    "ha": "Barka da ranar haihuwa",
+    "yo": "Ẹ kú ọjọ́ ìbí!",
+    "sw": "Heri ya siku ya kuzaliwa"
+  },
+  {
+    "ha": "Banki",
+    "yo": "Bánkì / ilé ìfowópamọ́",
+    "sw": "Benki"
+  },
+  {
+    "ha": "Nawa ne?",
+    "yo": "Elo ni?",
+    "sw": "Bei yake ni gani?"
+  }
+];
+  const names = {ha:'Hausa',yo:'Yarbanci',sw:'Kiswahili'};
+  const el = id => document.getElementById(id);
+  const language = el('language'), direction = el('direction'), query = el('query');
+  const requested = new URLSearchParams(location.search).get('harshe');
+  if (requested === 'sw' || requested === 'yo') language.value = requested;
+  function key(text) {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+      .replace(/ƙ/g,'k').replace(/ɗ/g,'d').replace(/ɓ/g,'b').replace(/[’']/g,'').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+  }
+  function render() {
+    const lang = language.value;
+    const from = direction.value === 'from' ? 'ha' : lang;
+    const to = direction.value === 'from' ? lang : 'ha';
+    const search = key(query.value);
+    const matches = phrases.filter(row => !query.value.trim() || (search && key(row[from]).includes(search)));
+    el('heading').textContent = names[from] + ' → ' + names[to];
+    el('search-label').textContent = 'Nemo kalma ko jimla a ' + names[from];
+    query.placeholder = 'Misali: ' + phrases[0][from];
+    el('count').textContent = matches.length ? 'An nuna ' + matches.length + ' daga cikin ' + phrases.length + '.' :
+      'Babu wannan kalma ko jimla a kundin. Gwada wata gajeriyar kalma ko ka share binciken domin ganin duk jimlolin.';
+    const list = el('results');
+    list.replaceChildren();
+    el('feedback').textContent = '';
+    for (const row of matches) {
+      const card = document.createElement('article');
+      const source = document.createElement('h3');
+      source.textContent = row[from]; source.lang = from;
+      const caption = document.createElement('small');
+      caption.textContent = names[to];
+      const output = document.createElement('p');
+      output.textContent = row[to]; output.lang = to;
+      const copy = document.createElement('button');
+      copy.type = 'button'; copy.textContent = 'Kwafi fassarar';
+      copy.setAttribute('aria-label','Kwafi fassarar '+row[from]);
+      copy.addEventListener('click',async () => {
+        try {
+          await navigator.clipboard.writeText(row[to]);
+          if (copy.isConnected) el('feedback').textContent = 'An kwafi fassarar.';
+        } catch {
+          if (copy.isConnected) el('feedback').textContent = 'Kwafi bai yi nasara ba. Za ka iya zaɓar rubutun fassarar ka kwafe shi.';
+        }
+      });
+      card.append(source,caption,output,copy); list.append(card);
+    }
+    const english = lang === 'yo' ? 'yoruba' : 'swahili';
+    el('more').href = '/tools/'+english+'-translator/';
+    el('more').textContent = 'Buɗe cikakken kundin Turanci da ' + names[lang] + ' (shafin Turanci)';
+  }
+  function changeLanguage() {
+    query.value = ''; render();
+    const url = new URL(location.href); url.searchParams.set('harshe',language.value);
+    history.replaceState(null,'',url);
+  }
+  language.addEventListener('change',changeLanguage);
+  direction.addEventListener('change',() => {query.value='';render();});
+  query.addEventListener('input',render);
+  render();
+})();
+</script>
+</body></html>
