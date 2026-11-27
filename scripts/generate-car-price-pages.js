@@ -262,6 +262,23 @@ ${parts.join("\n")}
 </section>`;
 }
 
+function vehicleQuoteAction(country, vehicle) {
+  if (country.import_enabled && !nigeriaImportAgeRestricted(country, vehicle)) {
+    const params = new URLSearchParams({ country: country.code, make: vehicle.make, model: vehicle.model.split("/")[0].trim(), year: String(vehicle.year), newQuote: "1" });
+    return `<p class="cars-static-note"><a href="/tools/car-import-cost/${country.slug}/?${escapeHtml(params.toString())}">Estimate import costs with a seller quote for ${escapeHtml(country.name)}</a>. Check the vehicle details and enter the current purchase price.</p>`;
+  }
+  const currency = escapeHtml(country.currency_code);
+  const guidance = country.import_enabled
+    ? "Check this vehicle’s import eligibility with Customs before arranging shipment."
+    : "This guide has no vehicle-duty calculation for this destination.";
+  return `<section class="cars-panel" aria-labelledby="car-quote-title"><h3 id="car-quote-title">Compare two on-road quotes in ${currency}</h3><p>${guidance} Ask for two written totals in the same currency, including taxes, delivery, registration and other compulsory charges. Use a broker’s complete delivered quote to compare an import with a local offer. Leave out the source-price band shown above.</p>
+<form data-car-quote-compare data-currency="${currency}">
+<label>First on-road quote (${currency}) <input name="first" type="number" inputmode="decimal" min="0.01" step="0.01" required></label>
+<label>Second on-road quote (${currency}) <input name="second" type="number" inputmode="decimal" min="0.01" step="0.01" required></label>
+<button class="cars-button" type="submit">Compare quotes</button><output aria-live="polite"></output>
+</form><script src="/assets/js/pages/car-guide-quote-compare.js" defer></script></section>`;
+}
+
 function vehicleDetailHTML(vehicle, country) {
   const cells = priceBandCells(vehicle, country);
   const sourceBasis = cells.observation
@@ -290,7 +307,8 @@ ${marketObservation(country, vehicle) ? vehicleImageHTML(vehicle) : ""}
 ${rows}
 </tbody>
 </table>
-<p class="cars-static-note">${sourceMarketObservation(vehicle) ? "The USD source band above comes from a dated marketplace asking-price sample described below." : "The source budget above is an older dataset estimate."} It is not a local asking price or dealer quote. Local-currency conversion uses the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. Enter a current seller quote for a useful landed-cost estimate in ${escapeHtml(country.name)}.</p>
+<p class="cars-static-note">${sourceMarketObservation(vehicle) ? "The USD source band above comes from a dated marketplace asking-price sample described below." : "The source budget above is an older dataset estimate."} It is not a local asking price or dealer quote. Local-currency conversion uses the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot.</p>
+${vehicleQuoteAction(country, vehicle)}
 </section>`;
 }
 
@@ -545,6 +563,7 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
         ? nigeriaImportAgeRestricted(country, vehicle)
           ? `See a dated local asking-price sample for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name} and the current import age warning.`
           : `Compare a dated local asking-price sample with an editable import-cost estimate for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`
+        : !country.import_enabled ? `Compare written on-road quotes in ${country.currency_code} and review the source-price assumptions for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`
         : `Explore illustrative source-price and import-cost assumptions for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`,
       country: country.name,
       countryObj: country,
@@ -558,7 +577,7 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
     // but canonicalize to the vehicle page and keep out of sitemaps/index.
     writePage(`cars/import-vs-local/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`, {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model}: Import vs Local in ${country.name} | AfroTools`,
-      description: `Compare importing a ${vehicle.year} ${vehicle.make} ${vehicle.model} versus buying locally in ${country.name}, with source-market, landed-cost, financing, and risk layers.`,
+      description: !country.import_enabled ? `Compare two written on-road quotes for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name} using ${country.currency_code}.` : `Compare importing a ${vehicle.year} ${vehicle.make} ${vehicle.model} versus buying locally in ${country.name}, with source-market, landed-cost, financing, and risk layers.`,
       country: country.name,
       countryObj: country,
       make: vehicle.make,
