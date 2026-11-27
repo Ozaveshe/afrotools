@@ -84,7 +84,7 @@ a{text-decoration:none;color:inherit}
     </div>
   </div>
 </section>
-<p class="en-tip-box" data-day9-creative-boundary role="note">Planning estimate only. Costs, platform royalties, sales, and currency conversions are editable assumptions, not live quotes or guaranteed earnings.</p>
+<p class="en-tip-box" data-day9-creative-boundary role="note">Use the sample terms to compare publishing routes, or enter your contract terms. All figures are planning estimates. Currency conversion uses a built-in rate.</p>
 <div class="en-tool-layout">
   <div class="en-card">
     <div class="en-card-title"><div class="en-card-title-icon">&#x1f4d6;</div>Book Details</div>
@@ -119,12 +119,20 @@ a{text-decoration:none;color:inherit}
         </select>
       </div>
       <div class="en-field">
-        <label class="en-label">Publishing Route</label>
-        <select id="pubRoute" class="en-select" aria-label="Pub Route">
+        <label for="pubRoute" class="en-label">Publishing Route</label>
+        <select id="pubRoute" class="en-select" aria-label="Publishing Route">
           <option value="self" selected>Self-Publishing</option>
           <option value="traditional">Traditional Publisher</option>
           <option value="hybrid">Hybrid Publishing</option>
         </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label" for="authorCostShare">Your share of production costs (%)</label>
+        <input id="authorCostShare" class="en-input" type="number" min="0" max="100" step="any" aria-describedby="routeTermsHelp">
+      </div>
+      <div class="en-field">
+        <label class="en-label" for="authorRoyalty">Your royalty as a share of retail price (%)</label>
+        <input id="authorRoyalty" class="en-input" type="number" min="0" max="100" step="any" aria-describedby="routeTermsHelp">
       </div>
       <div class="en-field">
         <label class="en-label">Retail Price (USD)</label>
@@ -137,7 +145,8 @@ a{text-decoration:none;color:inherit}
     </div>
   </div>
   <div class="en-card">
-    <div class="en-card-title"><div class="en-card-title-icon">&#x270f;&#xfe0f;</div>Publishing Costs</div>
+    <div class="en-card-title"><div class="en-card-title-icon">&#x270f;&#xfe0f;</div>Project production costs</div>
+    <p id="routeTermsHelp">Self-publishers generally fund production. A traditional publisher normally funds it. A hybrid author contributes under the contract. Empty percentage fields use the displayed example for that route. Enter your effective share of the retail price if your royalty is based on net receipts. Estimates exclude advances, taxes and returns.</p>
     <div class="en-form-grid">
       <div class="en-field">
         <label class="en-label">Developmental Editing (USD)</label>
@@ -181,8 +190,9 @@ a{text-decoration:none;color:inherit}
       <div class="en-results-hero-inner">
         <div class="en-results-hero-grid">
           <div>
-            <div class="en-results-hero-label">Total Publishing Budget</div>
+            <div class="en-results-hero-label">Your Publishing Budget</div>
             <div class="en-results-hero-value" id="totalBudget">$0</div>
+            <div class="en-results-hero-sub" id="routeSummary"></div>
             <div class="en-results-hero-sub" id="localBudget"></div>
           </div>
           <div class="en-results-hero-aside">
@@ -194,10 +204,10 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="en-metrics" id="metrics"></div>
     <div class="en-card">
-      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Royalty Comparison by Platform</div>
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Estimated author royalties</div>
       <div class="en-results-table-wrap">
         <table class="en-results-table">
-          <thead><tr><th>Platform</th><th>Royalty %</th><th>Per Copy (USD)</th><th>Monthly (est.)</th><th>Annual (est.)</th></tr></thead>
+          <thead><tr><th>Publishing route</th><th>Royalty %</th><th>Per Copy (USD)</th><th>Monthly (est.)</th><th>Annual (est.)</th></tr></thead>
           <tbody id="royaltyTable"></tbody>
         </table>
       </div>
@@ -206,7 +216,7 @@ a{text-decoration:none;color:inherit}
       <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c6;</div>3-Year Earnings Projection</div>
       <div class="en-results-table-wrap">
         <table class="en-results-table">
-          <thead><tr><th>Year</th><th>Copies Sold</th><th>Gross Revenue</th><th>Publishing Cost</th><th>Net Profit</th></tr></thead>
+          <thead><tr><th>Year</th><th>Copies Sold</th><th>Gross Revenue</th><th>Your upfront cost</th><th>Net Profit</th></tr></thead>
           <tbody id="projTable"></tbody>
         </table>
       </div>
@@ -214,8 +224,8 @@ a{text-decoration:none;color:inherit}
     <div class="en-tip">
       <div class="en-tip-icon">&#x1f4a1;</div>
       <div class="en-tip-body">
-        <div class="en-tip-label">African Publishing Platforms</div>
-        <div class="en-tip-text">Consider Okadabooks and Bambooks for Nigerian ebook distribution (70% royalty). IngramSpark gives access to 39,000+ bookstores globally. Amazon KDP is still the largest ebook platform — price between $2.99–$9.99 to qualify for the 70% royalty tier.</div>
+        <div class="en-tip-label">Comparing contract terms</div>
+        <div class="en-tip-text">Compare the production expenses you cover and the basis for royalties in each offer. See the <a href="https://authorsguild.org/resource/what-authors-should-know-about-hybrid-publishing-contracts/">Authors Guild guide to hybrid publishing contracts</a>.</div>
       </div>
     </div>
   </div>
@@ -230,9 +240,9 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/engines/book-publishing-cost-engine.js?v=67acf33c"></script>
+<script src="/engines/book-publishing-cost-engine.js?v=32d3ed47"></script>
 <script src="/assets/js/pages/creative/creative-result-tools.js?v=d06b5bc3"></script>
-<script src="/assets/js/pages/creative/book-publishing-cost-controller.js?v=af639e17"></script>
+<script src="/assets/js/pages/creative/book-publishing-cost-controller.js?v=35e2f6c7"></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=6259f1f1" defer></script>
 </body>

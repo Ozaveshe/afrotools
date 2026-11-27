@@ -338,3 +338,23 @@ test("African Palette shared engine preserves palette and contrast oracles", () 
   assert.equal(engine.isDark("#0A0A0A"), true);
   assert.equal(engine.getPalette("missing"), null);
 });
+
+test("Publishing routes allocate project costs and calculate author break-even", () => {
+  const engine = loadBrowserEngine("engines/src/book-publishing-cost-engine.js", "BookPublishingCostEngine");
+  const input = { country: "KE", retailPrice: 8, monthlySales: 40, devEdit: 900, printQty: 100, printCost: 3 };
+  for (const [route, budget, breakEven] of [["self", 1200, 215], ["traditional", 0, 0], ["hybrid", 600, 150]]) {
+    const result = engine.calculate({ ...input, pubRoute: route });
+    assert.equal(result.projectTotal, 1200);
+    assert.equal(result.totalUSD, budget);
+    assert.equal(result.breakEven, breakEven);
+    assert.equal(result.projections[0].publishingCost, budget);
+  }
+  const custom = engine.calculate({ ...input, pubRoute: "hybrid", authorCostShare: 25, authorRoyalty: 40 });
+  assert.equal(custom.totalLocal, 39000);
+  assert.equal(custom.royaltyPerCopy, 3.2);
+  assert.equal(custom.breakEven, 94);
+  assert.equal(custom.projections[0].net, 480 * 3.2 - 300);
+  assert.equal(engine.calculate({ ...input, authorRoyalty: 0 }).breakEven, null);
+  assert.equal(engine.calculate({ ...input, authorCostShare: 0, authorRoyalty: 0 }).breakEven, 0);
+  assert.throws(() => engine.calculate({ ...input, authorRoyalty: 101 }), /between 0 and 100/);
+});

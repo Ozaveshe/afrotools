@@ -12,6 +12,35 @@
     return document.getElementById(id).value;
   }
 
+  var routeInput = document.getElementById("pubRoute");
+  var costInput = document.getElementById("authorCostShare");
+  var royaltyInput = document.getElementById("authorRoyalty");
+  var savedTerms = {};
+  var activeRoute;
+
+  function showRouteTerms() {
+    var route = routeInput.value;
+    if (activeRoute !== route) {
+      if (activeRoute) savedTerms[activeRoute] = [costInput.value, royaltyInput.value];
+      var saved = savedTerms[route] || ["", ""];
+      costInput.value = saved[0];
+      royaltyInput.value = saved[1];
+      activeRoute = route;
+    }
+    var defaults = global.AfroTools.BookPublishingCostEngine.routeDefaults(route, Number(value("retailPrice")));
+    costInput.placeholder = String(defaults.costShare);
+    royaltyInput.placeholder = String(defaults.royalty);
+  }
+
+  if (costInput && royaltyInput) {
+    routeInput.closest(".en-tool-layout").addEventListener("input", function () {
+      document.getElementById("results").classList.remove("on");
+    });
+    routeInput.addEventListener("change", showRouteTerms);
+    document.getElementById("retailPrice").addEventListener("input", showRouteTerms);
+    showRouteTerms();
+  }
+
   function calculate() {
     var engine = global.AfroTools && global.AfroTools.BookPublishingCostEngine;
     var tools = global.AfroTools && global.AfroTools.CreativeResultTools;
@@ -22,7 +51,14 @@
     if (!(parseInt(value("monthlySales"), 10) >= 1)) {
       return tools.reject(tools.text("Enter at least one estimated monthly sale.", "Saisissez au moins une vente mensuelle estimée."), "monthlySales");
     }
+    if (costInput && royaltyInput) {
+      var invalid = [costInput, royaltyInput].find(function (field) { return !field.validity.valid; });
+      if (invalid) return tools.reject("Enter a percentage from 0 to 100.", invalid.id);
+    }
     var result = engine.calculate({
+      pubRoute: costInput ? routeInput.value : undefined,
+      authorCostShare: costInput ? costInput.value : undefined,
+      authorRoyalty: royaltyInput ? royaltyInput.value : undefined,
       country: value("country"),
       retailPrice: value("retailPrice"),
       monthlySales: value("monthlySales"),
@@ -43,14 +79,27 @@
       fmt(result.totalLocal) +
       " (using the built-in planning rate)";
     document.getElementById("breakEven").textContent =
-      fmt(result.breakEven) + " copies";
-    document.getElementById("royaltyTable").innerHTML = result.platforms
+      result.breakEven === null ? "No break-even at this royalty" : fmt(result.breakEven) + " copies";
+    var comparison = result.platforms;
+    if (costInput) {
+      var routeLabel = routeInput.selectedOptions[0].textContent;
+      document.getElementById("routeSummary").textContent = routeLabel + " · You cover " +
+        result.authorCostShare + "% of $" + fmt(result.projectTotal, 2) + " in production costs.";
+      comparison = [{
+        name: routeLabel,
+        royalty: result.authorRoyalty / 100,
+        perCopy: result.royaltyPerCopy,
+        monthly: result.royaltyPerCopy * result.monthlySales,
+        annual: result.royaltyPerCopy * result.monthlySales * 12,
+      }];
+    }
+    document.getElementById("royaltyTable").innerHTML = comparison
       .map(function (platform) {
         return (
           '<tr><td class="en-td-value">' +
           platform.name +
           "</td><td>" +
-          (platform.royalty * 100).toFixed(0) +
+          Number((platform.royalty * 100).toFixed(4)) +
           "%</td><td>$" +
           fmt(platform.perCopy, 2) +
           "</td><td>$" +
