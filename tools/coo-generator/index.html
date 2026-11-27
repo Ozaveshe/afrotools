@@ -196,7 +196,7 @@
   <div id="tabOrigin" class="tab-panel">
     <div class="card">
       <div class="card-head">AfCFTA Origin Criteria Checker</div>
-      <p style="font-size:.875rem;color:#64748B;margin:0 0 1rem;">Check if your product qualifies for AfCFTA preferential tariff treatment based on the Rules of Origin.</p>
+      <p style="font-size:.875rem;color:#64748B;margin:0 0 1rem;">Compare your material costs and prepare evidence for the applicable product-specific origin rule.</p>
       <div class="f-grid">
         <div>
           <div class="f-label">Ex-Works Price (USD)</div>
@@ -221,7 +221,7 @@
           </label>
         </div>
       </div>
-      <button type="button" class="gen-btn" style="margin-top:1rem;" onclick="checkOrigin()">🔍 Check Origin Qualification</button>
+      <button type="button" class="gen-btn" style="margin-top:1rem;" onclick="checkOrigin()">🔍 Review origin inputs</button>
     </div>
     <div id="originResults"></div>
   </div>
@@ -445,32 +445,27 @@ document.getElementById('copyCOODraftBtn').addEventListener('click', copyCOODraf
 document.getElementById('saveCOODraftBtn').addEventListener('click', downloadCOODraft);
 
 function checkOrigin() {
-  var params = {
-    exWorksPrice: parseFloat(document.getElementById('exWorksPrice').value) || 0,
-    nonOriginatingMaterialsCost: parseFloat(document.getElementById('nonOrigMat').value) || 0,
-    hasWhollyObtained: document.getElementById('hasWO').checked,
-    hasCTH: document.getElementById('hasCTH').checked
-  };
-  var results = CooEngine.checkOriginCriteria(params);
-  if (!results.length) {
-    document.getElementById('originResults').innerHTML = '<div class="obs-item warn">⚠️ Enter values above to check origin qualification.</div>';
-    return;
+  const price = document.getElementById('exWorksPrice');
+  const materials = document.getElementById('nonOrigMat');
+  const notes = [];
+  if (price.value || materials.value) {
+    if (!price.value || !materials.value || !(price.valueAsNumber > 0) || !(materials.valueAsNumber >= 0)) {
+      document.getElementById('originResults').textContent = 'Enter a positive ex-works price and the non-originating material cost in the same currency, including zero where applicable.';
+      return;
+    }
+    const share = 100 * materials.valueAsNumber / price.valueAsNumber;
+    notes.push('Non-originating materials: ' + share.toFixed(1) + '% of the entered ex-works price. Remaining share: ' + (100 - share).toFixed(1) + '%.');
   }
-  var html = '<div class="card"><div class="card-head">Origin Qualification Results</div><div class="criteria-grid">';
-  results.forEach(function(r) {
-    html += '<div class="criteria-card ' + (r.qualifies ? 'pass' : 'fail') + '">';
-    html += '<div class="criteria-code" style="color:' + (r.qualifies ? '#065F46' : '#991B1B') + ';">' + r.criteria + '</div>';
-    html += '<div class="criteria-name">' + r.label + '</div>';
-    html += '<div class="criteria-status" style="color:' + (r.qualifies ? '#065F46' : '#991B1B') + ';">' + (r.qualifies ? '✅ Qualifies' : '❌ Does not qualify') + '</div>';
-    if (r.percentage) html += '<div style="font-size:.78rem;margin-top:.3rem;color:#334155;">Value added: ' + r.percentage + '% (need ≥40%)</div>';
-    html += '<div style="font-size:.78rem;margin-top:.4rem;color:#64748B;">' + r.desc + '</div>';
-    html += '</div>';
-  });
-  html += '</div></div>';
-  var anyQualifies = results.some(function(r){ return r.qualifies; });
-  if (anyQualifies) html += '<div class="obs-item info">✅ Your product qualifies for AfCFTA preferential treatment under at least one origin criterion. You can claim preferential tariff rates when exporting to AfCFTA member states.</div>';
-  else html += '<div class="obs-item warn">❌ Based on the inputs, your product may not meet AfCFTA Rules of Origin. Consider increasing local value addition or checking if a Specific Process rule applies to your product category.</div>';
-  document.getElementById('originResults').innerHTML = html;
+  if (document.getElementById('hasWO').checked) notes.push('Wholly obtained status is user-reported. Keep the production evidence for verification.');
+  if (document.getElementById('hasCTH').checked) notes.push('Tariff-heading change is user-reported. Check the input and output tariff classifications.');
+  const result = document.getElementById('originResults');
+  result.textContent = notes.length ? notes.join(' ') + ' Check the rule for the exact HS product and the evidence required before claiming a preference.' : 'Enter cost figures or select an origin statement to review.';
+  if (notes.length) {
+    const guide = document.createElement('a');
+    guide.href = 'https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/origin/instruments-and-tools/afcfta/wco_practical-guide-for-the-implementation-of-afcfta-roo_en.pdf';
+    guide.textContent = 'WCO guide to AfCFTA product-specific origin rules';
+    result.append(' ', guide);
+  }
 }
 
 // Init
