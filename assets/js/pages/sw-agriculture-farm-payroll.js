@@ -318,7 +318,7 @@
     if (!input) { clearResult({ keepStatus: true }); return null; }
     if (!validate(input)) return null;
     if (ngForm) { input.contributionSelection = ngForm.read(); input.minimumWageSelection = ngForm.readWage(); input.labourSelection = ngForm.readLabour(); }
-var basis=document.getElementById('nssfMonthlyWages');if(basis){if(basis.validity && !basis.validity.valid){return fail("Weka mshahara wa NSSF wa sifuri au zaidi wenye hadi desimali mbili.", basis);}if(basis.value!=='')input.nssfMonthlyWages=Number(basis.value);}
+var basisIds=['nssfMonthlyWages','shifSalary','housingLevySalary'];for(var fieldId of basisIds){var basis=document.getElementById(fieldId);if(!basis)continue;if(basis.validity && !basis.validity.valid){return fail("Hakikisha kiasi cha mwezi ni sifuri au zaidi, chenye hadi desimali mbili.",basis);}if(basis.value!=='')input[fieldId]=Number(basis.value);}
     var result = engine.calculate(input, country);
     if (ngForm && result && result.error) { ngForm.error(result, byId('formError')); return null; }
     if (!result || result.error) return fail('Injini ya mishahara ya nchi haikutoa matokeo.', byId('workerType'));

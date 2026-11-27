@@ -57,8 +57,18 @@
           notes: h.pension.notes
         }), y += u;
       }
+      var kenyaPayroll = o.currency === "KES" && h.health && h.health.minimumMonthly != null;
+      var healthBase = p, levyBase = p;
+      if (kenyaPayroll) {
+        healthBase = e.shifSalary == null ? s : e.shifSalary;
+        levyBase = e.housingLevySalary == null ? s : e.housingLevySalary;
+        if (![healthBase, levyBase].every(function (v) { return Number.isFinite(v) && v >= 0; })) {
+          return { error: true, field: "contributionSalary", message: "Check the monthly contribution salaries." };
+        }
+      }
       if (h.health && h.health.rate_pct) {
-        var c = p * h.health.rate_pct / 100;
+        var c = healthBase * h.health.rate_pct / 100;
+        if (kenyaPayroll) c = Math.max(h.health.minimumMonthly, Math.round(healthBase * h.health.rate_pct) / 100);
         m.push({
           name: h.health.name,
           rate: h.health.rate_pct,
@@ -67,7 +77,7 @@
         }), y += c;
       }
       if (h.other && h.other.rate_pct) {
-        var f = p * h.other.rate_pct / 100;
+        var f = kenyaPayroll ? Math.round(levyBase * h.other.rate_pct) / 100 : p * h.other.rate_pct / 100;
         m.push({
           name: h.other.name,
           rate: h.other.rate_pct,
@@ -106,6 +116,10 @@
           name: "Employer " + h.health.name,
           amount: k
         }), _ += k;
+      }
+      if (kenyaPayroll) {
+        w.push({ name: "Employer " + h.other.name, amount: f, basis: levyBase });
+        _ += f;
       }
       var F = ngPolicy ? ngLabour.leaveMonthlyBudgetKobo / 100 : p / 26 * (o.laborLaw.annualLeave_days || 15) / 12;
       if (!ngPolicy) w.push({

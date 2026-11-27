@@ -23,7 +23,7 @@ for (const engine of ['engines/src/farm-payroll-engine.js', 'engines/farm-payrol
     }
     const ordinary = api.FarmPayrollEngine.calculate(input, countries.KE);
     assert.equal(ordinary.deductions[1].amount, 1260);
-    assert.equal(ordinary.netPay, 26627.5);
+    assert.equal(ordinary.netPay, 26925);
     const invalid = api.FarmPayrollEngine.calculate({ ...input, nssfMonthlyWages: -1 }, countries.KE);
     assert.equal(invalid.field, 'nssfMonthlyWages');
   });
