@@ -216,7 +216,23 @@ async function supabaseGet(path, deadline) {
   }, deadline);
 }
 
-async function buildCategoryStatus(cat, config, meta, now, read = getData) {
+async function buildCategoryStatus(cat, config, meta, now, read = (key, diagnostics) => getData(key, undefined, diagnostics)) {
+  const diagnostics = { blobState: 'not_checked' };
+  let readOrigin = 'metadata_only';
+  const status = await describeCategory(cat, config, meta, now, async key => {
+    const payload = await read(key, diagnostics);
+    const origins = { live: 'supabase', blob: 'blob', fallback: 'fallback' };
+    readOrigin = !payload ? 'unavailable' : Object.hasOwn(origins, payload.served_from) ? origins[payload.served_from] : 'unknown';
+    if (readOrigin === 'blob') diagnostics.blobState = 'present';
+    return payload;
+  });
+  const state = diagnostics.blobState;
+  return { ...status, blob_state: state,
+    blob_present: state === 'present' ? true : state === 'absent' ? false : null,
+    read_origin: readOrigin };
+}
+
+async function describeCategory(cat, config, meta, now, read) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
   if (cat === 'stocks') {
     const payload = await read(config.blobKey);
@@ -237,11 +253,9 @@ async function buildCategoryStatus(cat, config, meta, now, read = getData) {
   }
   let updatedAt = findTimestamp(catMeta);
   let source = catMeta.source || null;
-  let blobPresent = false;
 
   if (!updatedAt || !source) {
     const blob = await read(config.blobKey);
-    blobPresent = !!blob;
     updatedAt = updatedAt || findTimestamp(blob);
     source = source || (blob && blob.source) || null;
   }
@@ -258,7 +272,6 @@ async function buildCategoryStatus(cat, config, meta, now, read = getData) {
     records_count: catMeta.records_count || null,
     confidence: catMeta.confidence || null,
     blob_key: config.blobKey,
-    blob_present: blobPresent,
   };
 }
 
@@ -439,7 +452,7 @@ exports.handler = async function(event) {
   const params = event.queryStringParameters || {};
   const requestedCat = params.cat || null;
   const deadline = Date.now() + REQUEST_TIMEOUT_MS;
-  const read = key => readWithDeadline(() => getData(key), deadline);
+  const read = (key, diagnostics) => readWithDeadline(() => getData(key, undefined, diagnostics), deadline);
   let meta = {};
   let metadata;
   try {
@@ -460,7 +473,7 @@ exports.handler = async function(event) {
         categories[cat] = await buildCategoryStatus(cat, config, meta, now, read);
       } catch (error) {
         categories[cat] = { ...await buildCategoryStatus(cat, config, {}, now, async () => null),
-          available: false, error: sanitizeError(error) };
+          available: false, error: sanitizeError(error), blob_state: 'unknown', blob_present: null, read_origin: 'error' };
       }
     })),
     buildMarketDataSummary(includeAdmin, deadline),

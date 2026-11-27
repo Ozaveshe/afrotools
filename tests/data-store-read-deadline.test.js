@@ -122,3 +122,16 @@ test('a late primary result cannot replace the selected cache result', async () 
   assert.equal(data.timestamp, snapshot.timestamp);
   assert.equal(store.timers.size, 0);
 });
+for (const [state, read] of [
+  ['present', async () => snapshot],
+  ['absent', async () => null],
+  ['error', async () => { throw new Error('synthetic read failure'); }],
+]) {
+  test('native blob diagnostic records ' + state, async () => {
+    const store = load(async () => ({ ok: false }), read);
+    const diagnostics = { blobState: 'not_checked' };
+    const result = await store.api.getData('fuel-latest', undefined, diagnostics);
+    assert.equal(diagnostics.blobState, state);
+    if (state === 'present') assert.equal(result.served_from, 'blob');
+  });
+}

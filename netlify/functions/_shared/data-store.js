@@ -143,7 +143,7 @@ function withProvenance(data, servedFrom, storageUpdatedAt) {
   return result;
 }
 
-async function getData(key, siteUrl) {
+async function getData(key, siteUrl, diagnostics) {
   // 1. Try Supabase (primary)
   if (SUPABASE_KEY) {
     try {
@@ -171,11 +171,13 @@ async function getData(key, siteUrl) {
     var blob = await withStorageDeadline(function () {
       return store.get(key, { type: 'json' });
     });
+    if (diagnostics) diagnostics.blobState = blob === null ? "absent" : blob === undefined ? "unknown" : "present";
     if (blob) {
       console.log('[data-store] Blob hit for key: ' + key);
       return withProvenance(blob, 'blob');
     }
   } catch (err) {
+    if (diagnostics) diagnostics.blobState = 'error';
     console.log('[data-store] ' + storageDiagnostic('blob-read', key, err));
   }
 

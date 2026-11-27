@@ -171,3 +171,30 @@ test('independent summaries start together rather than blocking scholarship/watc
   assert(owner.keys.includes('scholarships-latest')); assert(owner.keys.includes('automation-health-latest'));
   release(); assert.equal((await result).statusCode, 200);
 });
+test('metadata can establish freshness without establishing blob presence', async () => {
+  const owner = load({ data: { meta: { fuel: { timestamp: SAVED, source: 'registry' } } } });
+  const response = await owner.handler({ httpMethod: 'GET', headers: {}, queryStringParameters: { cat: 'fuel' } });
+  const fuel = JSON.parse(response.body).categories.fuel;
+  assert.equal(fuel.blob_present, null);
+  assert.equal(fuel.blob_state, 'not_checked');
+  assert.equal(fuel.read_origin, 'metadata_only');
+  assert.ok(!owner.keys.includes('fuel-latest'));
+});
+for (const [servedFrom, state, origin, present] of [
+  ['live', 'not_checked', 'supabase', null],
+  ['blob', 'present', 'blob', true],
+  ['fallback', 'absent', 'fallback', false],
+  ['fallback', 'error', 'fallback', null],
+]) {
+  test('category distinguishes ' + origin + ' with native blob ' + state, async () => {
+    const status = await load()._test.buildCategoryStatus('fuel',
+      { metaKey: 'fuel', blobKey: 'fuel-latest', thresholds: { live: 60, stale: 120 } }, {}, Date.now(),
+      async (_key, diagnostics) => {
+        diagnostics.blobState = state;
+        return { served_from: servedFrom, timestamp: SAVED, source: 'fixture' };
+      });
+    assert.equal(status.blob_state, state);
+    assert.equal(status.blob_present, present);
+    assert.equal(status.read_origin, origin);
+  });
+}
