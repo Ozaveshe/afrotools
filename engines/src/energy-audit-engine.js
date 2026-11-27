@@ -29,12 +29,16 @@
         monthlySavingPct: 5,
         effort: "Easy",
         impact: "Medium"
-      }), p += 5), m.push({
-        action: "Install ceiling fans, reduce AC use by 3°C",
-        monthlySavingPct: 8,
-        effort: "Easy",
-        impact: "High"
-      }), p += 8;
+      }), p += 5);
+      if (i > 0) {
+        m.push({
+          action: "Install ceiling fans, reduce AC use by 3°C",
+          monthlySavingPct: 8,
+          effort: "Easy",
+          impact: "High"
+        });
+        p += 8;
+      }
       var f = Math.min(p, 50), v = Math.round(n * f / 100), d = 12 * v, S = [];
       return S.push("Estimated usage: " + Math.round(h) + " kWh/month vs benchmark " + Math.round(u) + " kWh for your household size."),
       S.push("Energy efficiency score: " + g + "/100 — " + y + "."), S.push("Total savings potential: " + f + "% (" + l + v.toLocaleString() + "/month)."),
