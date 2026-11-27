@@ -44,64 +44,14 @@
     }
   };
 
-  // ── Wait for DOM ─────────────────────────────────────────
-  function ready(fn) {
-    if (document.readyState !== 'loading') { fn(); }
-    else { document.addEventListener('DOMContentLoaded', fn); }
-  }
-
-  ready(function () {
-    var data     = window.AfroTools.exportDocsData;
-    var ci       = window.AfroTools.countryIndex;
-    var code     = window.COUNTRY_CODE || 'NG';
-
-    var country  = ci.filter(function (c) { return c.code === code; })[0] || {};
-    var specific = data.countrySpecific[code] || {};
-    var tradeBloc = specific.tradeBloc || 'AFCFTA';
-    var crops    = country.topCrops || [];
-    var cropLabels = data.cropLabels;
-
-    // ── DOM refs ──────────────────────────────────────────
-    var selProduct  = document.getElementById('edSelProduct');
-    var selDest     = document.getElementById('edSelDest');
-    var selShipment = document.getElementById('edSelShipment');
-    var btnGenerate = document.getElementById('edBtnGenerate');
-    var resultsEl   = document.getElementById('edResults');
-    var progressEl  = document.getElementById('edProgress');
-    var btnPrint    = document.getElementById('edBtnPrint');
-    var statsBarEl  = document.getElementById('edStatsBar');
-
-    // ── Populate product dropdown ─────────────────────────
-    if (selProduct) {
-      crops.forEach(function (cropKey) {
-        var label = cropLabels[cropKey];
-        if (!label) return;
-        var opt = document.createElement('option');
-        opt.value = cropKey;
-        opt.textContent = label;
-        selProduct.appendChild(opt);
-      });
-      // Add generic option
-      var generic = document.createElement('option');
-      generic.value = 'other';
-      generic.textContent = 'Other Agricultural Product';
-      selProduct.appendChild(generic);
-    }
-
-    // ── Stats bar (hero pills) ────────────────────────────
-    if (statsBarEl && specific.exportAgency) {
-      statsBarEl.innerHTML =
-        '<span class="ed-stat-pill">&#127968; ' + escapeHtml(specific.exportAgency.split('(')[0].trim()) + '</span>' +
-        '<span class="ed-stat-pill">&#127758; ' + escapeHtml(tradeBloc) + '</span>' +
-        '<span class="ed-stat-pill">&#128202; ' + data.commonDocs.length + '+ Reference Items</span>';
-    }
-
-    // ── Generate checklist ────────────────────────────────
-    function generateChecklist() {
-      var product  = selProduct  ? selProduct.value  : 'other';
-      var dest     = selDest     ? selDest.value     : 'africa';
-      var shipment = selShipment ? selShipment.value : 'container';
-
+  // One selection owner shared by the English and Swahili renderers.
+  function buildChecklist(input, data, countries) {
+    var code=input.countryCode, product=input.product, dest=input.destination, shipment=input.shipment;
+    var country=countries.find(function(row){ return row.code===code; });
+    if(!country || (product!=='other' && country.topCrops.indexOf(product)===-1)
+       || ['africa','eu','us','middle_east','asia','other'].indexOf(dest)===-1
+       || !Object.hasOwn(transportByMode,shipment)) throw new Error('Invalid export checklist selection');
+    var specific=data.countrySpecific[code]||{}, tradeBloc=specific.tradeBloc||'AFCFTA';
       // Build document list
       var docs = [];
 
@@ -164,6 +114,70 @@
       }
 
       return docs;
+  }
+
+  var checklistAPI=Object.freeze({build:buildChecklist});
+  if(typeof module==='object'&&module.exports) module.exports=checklistAPI;
+  if(typeof window==='object'){ window.AfroTools=window.AfroTools||{};window.AfroTools.ExportDocsChecklist=checklistAPI; }
+  if(typeof document==='undefined') return;
+
+  // ── Wait for DOM ─────────────────────────────────────────
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+
+  ready(function () {
+    if (!document.getElementById('edBtnGenerate')) return;
+    var data     = window.AfroTools.exportDocsData;
+    var ci       = window.AfroTools.countryIndex;
+    var code     = window.COUNTRY_CODE || 'NG';
+
+    var country  = ci.filter(function (c) { return c.code === code; })[0] || {};
+    var specific = data.countrySpecific[code] || {};
+    var tradeBloc = specific.tradeBloc || 'AFCFTA';
+    var crops    = country.topCrops || [];
+    var cropLabels = data.cropLabels;
+
+    // ── DOM refs ──────────────────────────────────────────
+    var selProduct  = document.getElementById('edSelProduct');
+    var selDest     = document.getElementById('edSelDest');
+    var selShipment = document.getElementById('edSelShipment');
+    var btnGenerate = document.getElementById('edBtnGenerate');
+    var resultsEl   = document.getElementById('edResults');
+    var progressEl  = document.getElementById('edProgress');
+    var btnPrint    = document.getElementById('edBtnPrint');
+    var statsBarEl  = document.getElementById('edStatsBar');
+
+    // ── Populate product dropdown ─────────────────────────
+    if (selProduct) {
+      crops.forEach(function (cropKey) {
+        var label = cropLabels[cropKey];
+        if (!label) return;
+        var opt = document.createElement('option');
+        opt.value = cropKey;
+        opt.textContent = label;
+        selProduct.appendChild(opt);
+      });
+      // Add generic option
+      var generic = document.createElement('option');
+      generic.value = 'other';
+      generic.textContent = 'Other Agricultural Product';
+      selProduct.appendChild(generic);
+    }
+
+    // ── Stats bar (hero pills) ────────────────────────────
+    if (statsBarEl && specific.exportAgency) {
+      statsBarEl.innerHTML =
+        '<span class="ed-stat-pill">&#127968; ' + escapeHtml(specific.exportAgency.split('(')[0].trim()) + '</span>' +
+        '<span class="ed-stat-pill">&#127758; ' + escapeHtml(tradeBloc) + '</span>' +
+        '<span class="ed-stat-pill">&#128202; ' + data.commonDocs.length + '+ Reference Items</span>';
+    }
+
+    // ── Generate checklist ────────────────────────────────
+    function generateChecklist() {
+      return buildChecklist({countryCode:code,product:selProduct?selProduct.value:'other',
+        destination:selDest?selDest.value:'africa',shipment:selShipment?selShipment.value:'container'},data,ci);
     }
 
     // ── Render results ────────────────────────────────────
