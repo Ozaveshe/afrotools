@@ -264,24 +264,25 @@ function calculate(){
   var netBenefitPerVehicle=totalBenefitPerVehicle-totalCostPerVehicle;
   var totalNetBenefit=netBenefitPerVehicle*vehicles;
   var totalSetupCost=trackerCost*vehicles;
-  var roi=totalSetupCost>0?(totalNetBenefit/totalSetupCost*100):0;
+  var firstYearNet=totalNetBenefit-totalSetupCost;
+  var roiText=totalSetupCost>0?fmt(firstYearNet/totalSetupCost*100)+'%':'—';
   var paybackMonths=totalSetupCost>0&&totalNetBenefit>0?Math.ceil(totalSetupCost/totalNetBenefit*12):999;
-  var paybackStr=paybackMonths<60?paybackMonths+' months':(paybackMonths===999?'N/A':'60+ months');
+  var paybackStr=totalSetupCost===0?'N/A':paybackMonths<60?paybackMonths+' months':(paybackMonths===999?'N/A':'60+ months');
   document.getElementById('netBenefit').textContent=sym+fmt(totalNetBenefit)+'/yr';
-  document.getElementById('roiSub').textContent='ROI: '+fmt(roi,0)+'% | Setup cost: '+sym+fmt(totalSetupCost)+' | '+vehicles+' vehicle'+(vehicles>1?'s':'');
+  document.getElementById('roiSub').textContent='ROI: '+roiText+' | Setup cost: '+sym+fmt(totalSetupCost)+' | '+vehicles+' vehicle'+(vehicles>1?'s':'');
   document.getElementById('paybackPeriod').textContent=paybackStr;
   document.getElementById('metrics').innerHTML=
     '<div class="en-metric"><div class="en-metric-label">Insurance Savings</div><div class="en-metric-value">'+sym+fmt(insDiscountAmt*vehicles/1000)+'k</div><div class="en-metric-unit">'+(insDiscount*100).toFixed(0)+'% premium discount</div></div>'+
     '<div class="en-metric"><div class="en-metric-label">Fuel Savings</div><div class="en-metric-value">'+sym+fmt(fuelSavingAmt*vehicles/1000)+'k</div><div class="en-metric-unit">'+(fuelSavingPct*100).toFixed(0)+'% fuel reduction</div></div>'+
     '<div class="en-metric"><div class="en-metric-label">Theft Protection</div><div class="en-metric-value">'+sym+fmt(theftProtectionValue*vehicles/1000)+'k</div><div class="en-metric-unit">annual risk value</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">ROI</div><div class="en-metric-value">'+fmt(roi,0)+'%</div><div class="en-metric-unit">year 1</div></div>';
+    '<div class="en-metric"><div class="en-metric-label">ROI</div><div class="en-metric-value">'+roiText+'</div><div class="en-metric-unit">year 1</div></div>';
   var rows=[
     {cat:'Insurance premium discount',per:insDiscountAmt,all:insDiscountAmt*vehicles,note:(insDiscount*100).toFixed(0)+'% of annual premium'},
     {cat:'Fuel savings (driver behaviour)',per:fuelSavingAmt,all:fuelSavingAmt*vehicles,note:(fuelSavingPct*100).toFixed(0)+'% of '+sym+fmt(annualFuel)+' annual fuel'},
     {cat:'Theft prevention value',per:theftProtectionValue,all:theftProtectionValue*vehicles,note:'5% annual risk × 70% recovery rate'},
     {cat:'TOTAL ANNUAL BENEFIT',per:totalBenefitPerVehicle,all:totalBenefitPerVehicle*vehicles,note:'Before subscription cost'},
     {cat:'Annual subscription cost',per:-annualSubscription,all:-annualSubscription*vehicles,note:sym+fmt(monthlySub)+'/month × 12'},
-    {cat:'NET ANNUAL BENEFIT',per:netBenefitPerVehicle,all:totalNetBenefit,note:'After all costs'}
+    {cat:'NET ANNUAL BENEFIT',per:netBenefitPerVehicle,all:totalNetBenefit,note:'After subscriptions, before setup'}
   ];
   document.getElementById('roiTable').innerHTML=rows.map(function(r,i){
     var isTotal=(i===rows.length-1)||(i===rows.length-3);

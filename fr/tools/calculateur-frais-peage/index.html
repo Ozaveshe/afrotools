@@ -118,7 +118,7 @@ details[open] summary::after{content:'\2212'}
           <option value="nigeria">Nigéria</option>
           <option value="southafrica">Afrique du Sud</option>
           <option value="ghana">Ghana</option>
-          <option value="kenya">Kenya (aucun péage national)</option>
+          <option value="kenya">Kenya</option>
           <option value="ethiopia">Éthiopie</option>
           <option value="tanzania">Tanzanie</option>
           <option value="cameroon">Cameroun</option>
@@ -221,8 +221,7 @@ var TOLL_ROUTES = {
   southafrica: [
     {name:'N1 Johannesburg-Pretoria', gates:[{name:'Bela-Bela (N1)', car:48},{name:'Carousel (N1)', car:48}]},
     {name:'N3 Johannesburg-Durban', gates:[{name:'Wilge', car:70},{name:'Tugela', car:60},{name:'Bergview', car:65},{name:'Mooi River', car:60},{name:'Mariannhill', car:50}]},
-    {name:'N1 Cape Town-Paarl', gates:[{name:'Huguenot Tunnel', car:130}]},
-    {name:'Nairobi Expressway (Kenya)', gates:[{name:'Zone A', car:100},{name:'Zone B', car:200},{name:'Zone C', car:400},{name:'Full route', car:800}]}
+    {name:'N1 Cape Town-Paarl', gates:[{name:'Huguenot Tunnel', car:130}]}
   ],
   ghana: [
     {name:'Accra-Kumasi (N6)', gates:[{name:'Yamoransa', car:5},{name:'Anwiankwanta', car:5},{name:'Asante Bekwai', car:5},{name:'Kumasi', car:10}]},
@@ -276,11 +275,12 @@ function calcTollFee() {
   var etagDiscount = isEtag ? 0.88 : 1;
 
   var totalOneway = route.gates.reduce(function(s, g){ return s + g.car * mult; }, 0) * etagDiscount;
-  var totalReturn = tripType === 'return' ? totalOneway * 2 : totalOneway;
-  var monthlyTotal = totalReturn * monthly;
+  var totalReturn = totalOneway * 2;
+  var monthlyTotal = (tripType === 'return' ? totalReturn : totalOneway) * monthly;
   var annualTotal = monthlyTotal * 12;
 
-  var fmt = function(n){ return n.toLocaleString('en', {maximumFractionDigits:0}); };
+  var currencies = {nigeria:'NGN', southafrica:'ZAR', ghana:'GHS', kenya:'KES', ethiopia:'ETB', tanzania:'TZS', cameroon:'XAF', senegal:'XOF'};
+  var fmt = function(n){ return currencies[country] + ' ' + n.toLocaleString(document.documentElement.lang, {maximumFractionDigits:0}); };
 
   document.getElementById('tollOneWay').textContent = fmt(Math.round(totalOneway));
   document.getElementById('tollReturn').textContent = fmt(Math.round(totalReturn));

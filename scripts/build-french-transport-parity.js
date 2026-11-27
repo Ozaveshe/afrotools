@@ -1016,7 +1016,7 @@ const appTranslations = {
     '(cost)': '(coût)',
     '/month': '/mois',
     'NET ANNUAL BENEFIT': 'BÉNÉFICE ANNUEL NET',
-    'After all costs': 'Après tous les coûts',
+    'After subscriptions, before setup': 'Après abonnements, avant installation',
     'Total Cost': 'Coût total',
     'Total Benefit': 'Bénéfice total',
     'Net': 'Net',
