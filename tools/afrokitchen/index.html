@@ -1933,6 +1933,29 @@
       : mealPicks.length
         ? 'None of your picks match these filters. Widen the filters to use them.'
         : 'These picks are sides, snacks, drinks, or desserts. Add a main dish, stew, soup, seafood, grill, or rice recipe to fill a day.';
+    if (!eligible.length && mealPicks.length && inputs.maxTime < 999) {
+      var otherFilters = Object.assign({}, inputs, { maxTime: 999 });
+      var nearest = mealPicks.filter(function (recipe) { return matchesPlan(recipe, otherFilters); })
+        .sort(function (a, b) { return recipeTotalMinutes(a) - recipeTotalMinutes(b); })[0];
+      if (nearest) {
+        var minutes = recipeTotalMinutes(nearest);
+        var timeSelect = document.getElementById('ak-plan-time');
+        var nextTime = Array.from(timeSelect.options).find(function (option) {
+          return Number(option.value) >= minutes || option.value === '999';
+        });
+        status.textContent = nearest.name + ' takes ' + minutes + ' minutes. Your plan allows ' + inputs.maxTime + ' minutes per meal. ';
+        var widenTime = document.createElement('button');
+        widenTime.type = 'button';
+        widenTime.className = 'ak-btn ak-btn-secondary';
+        widenTime.textContent = nextTime.value === '999' ? 'Allow any cooking time' : 'Allow up to ' + nextTime.text;
+        widenTime.addEventListener('click', function () {
+          timeSelect.value = nextTime.value;
+          timeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          buildButton.focus();
+        });
+        status.appendChild(widenTime);
+      }
+    }
     if (!mealPicks.length) {
       var browseLink = document.createElement('a');
       browseLink.href = '#browse-panel';
