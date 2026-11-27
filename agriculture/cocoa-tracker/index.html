@@ -578,11 +578,10 @@ function renderResults(res) {
     costBar('Tools', sym + ' ' + fmt(cb.tools.amt), cb.tools.pct) +
     costBar('Transport', sym + ' ' + fmt(cb.transport.amt), cb.transport.pct);
 
-  var mwNote = '';
-  if (mB.minWageRatioFmt) {
-    mwNote = '<strong>Income Context:</strong> A ' + res.inputs.farmSizeHa + '-hectare cocoa farm generates <strong>' + mB.netProfitFmt + '/year</strong> net profit — equivalent to <strong>' + mB.minWageRatioFmt + '</strong> of ' + c.name + '\'s annual minimum wage. (' + c.minWageNote + ')';
-  }
-  document.getElementById('minwage-note').innerHTML = mwNote;
+  document.getElementById('minwage-note').textContent =
+    'Farm income planning: ' + mB.netProfitFmt + ' estimated net profit per year for ' +
+    res.inputs.farmSizeHa + ' ha. Dividing across 12 months gives ' + sym + ' ' +
+    fmt(mB.netProfit / 12) + ' per month on average. Harvest receipts and farm costs can occur in different months.';
 
   // ── MODE C: Quality Premiums ───────────────────────────────────────────
   var grade2Rev = mC.totalYield * c.farmGatePrice_per_kg;
