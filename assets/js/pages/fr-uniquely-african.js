@@ -123,8 +123,9 @@
   function renderKitchenRows(result) {
     var recipe = delegateState.recipe;
     var context = document.querySelector("[data-ua-context]");
-    if (context && recipe) {
-      context.innerHTML = `<strong>${escapeHtml(recipe.name)}</strong><span>${escapeHtml(recipe.name_local || "")}</span><span>${escapeHtml(recipe.country_name || "")} · ${escapeHtml(recipe.region || "")}</span>`;
+    var method = kitchenMethod(recipe);
+    if (context && method) {
+      context.innerHTML = `<strong>${escapeHtml(method.title)}</strong><span>${escapeHtml(method.localName || "")}</span><span>${escapeHtml(method.country)} · ${escapeHtml(method.region)}</span>`;
     }
     table(document.querySelector("[data-ua-table]"), ["Ingrédient", "Quantité adaptée", "Unité"], result.rows.map(function (row) {
       return [row.name, Number.isFinite(row.scaledAmount) ? row.scaledAmount.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) : "Selon goût", row.unit];
@@ -255,11 +256,16 @@
     if (contract.id === "afrokitchen") {
       var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
       var recipe = recipes.find(function (item) { return item.slug === payload.input.recipe; });
-      lines.push("", `Recette: ${recipe ? recipe.name : payload.input.recipe}`, "Ingrédients redimensionnés");
+      lines.push("", `Recette: ${payload.method ? payload.method.title : payload.input.recipe}`, "Ingrédients redimensionnés");
       payload.result.rows.forEach(function (row) {
         var amount = Number.isFinite(row.scaledAmount) ? row.scaledAmount.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) : "Selon goût";
         lines.push(`${row.name}: ${amount}${row.unit ? " " + row.unit : ""}`);
       });
+      if (payload.method) {
+        lines.push("", "Préparation — " + payload.method.title, methodContext(payload.method));
+        payload.method.steps.forEach(function (step, index) { lines.push((index + 1) + ". " + step); });
+        lines.push("Nom dans le catalogue anglais: " + recipe.name, "https://afrotools.com" + payload.method.source);
+      }
     }
     lines.push("", `Source: ${contract.source}`, `Fraîcheur: ${contract.freshness}`, `Confiance: ${contract.confidence}`, `Limites: ${contract.limitations}`);
     return lines.join("\n");
@@ -471,6 +477,7 @@
     var renderer = routeRenderers[contract.id];
     if (renderer) renderer(result, input);
     lastPayload = exportPayload(input, result);
+    if (contract.id === "afrokitchen") lastPayload.method = kitchenMethod(delegateState.recipe);
     root.AfroToolsFrenchUniquelyAfricanResult = { input: input, result: result };
     renderExports(lastPayload);
     section.focus();
@@ -624,12 +631,137 @@
     return { input: input };
   }
 
+  var kitchenMethods = {
+    "nigerian-jollof-rice": {
+      "title": "Riz jollof nigérian",
+      "country": "Nigéria",
+      "region": "Afrique de l’Ouest",
+      "steps": [
+        "Mixez les tomates fraîches, les poivrons rouges, le piment et l’oignon grossièrement haché pour obtenir une purée lisse.",
+        "Faites revenir l’oignon émincé dans l’huile pendant environ 3 minutes. Ajoutez le concentré de tomate et remuez pendant 2 à 3 minutes.",
+        "Versez la purée et ajoutez le laurier, le thym, le curry et les cubes de bouillon. Portez à ébullition, puis laissez réduire à feu moyen pendant 20 à 30 minutes, jusqu’à ce que l’huile remonte à la surface.",
+        "Incorporez le riz étuvé rincé, le bouillon chaud ou l’eau et le sel. À la reprise de l’ébullition, couvrez hermétiquement et faites cuire à feu très doux pendant 30 minutes sans soulever le couvercle.",
+        "Goûtez le riz. S’il est encore ferme, ajoutez un peu d’eau et prolongez la cuisson à couvert de 5 minutes. Retirez le laurier, ajoutez le beurre si vous le souhaitez et égrainez à la fourchette."
+      ]
+    },
+    "ugali-sukuma-wiki": {
+      "title": "Ugali au sukuma wiki",
+      "country": "Kenya",
+      "region": "Afrique de l’Est",
+      "steps": [
+        "Portez l’eau et le sel de l’ugali à ébullition. Versez environ un quart de la farine de maïs en remuant avec une cuillère en bois. Faites cuire 2 minutes, puis incorporez progressivement le reste de la farine.",
+        "Pressez la pâte contre les parois de la casserole avec la cuillère. Couvrez et faites cuire 5 minutes à feu doux. Travaillez-la de nouveau, puis couvrez encore 3 à 5 minutes, jusqu’à ce qu’elle se détache des parois.",
+        "Dans une autre poêle, faites revenir l’oignon dans l’huile pendant 3 minutes. Ajoutez les tomates en dés et laissez-les fondre 2 à 3 minutes.",
+        "Ajoutez le sukuma wiki émincé, le sel destiné aux légumes et le Royco si vous en utilisez. Faites sauter 3 à 5 minutes pour attendrir les feuilles. Servez-les à côté de l’ugali."
+      ]
+    },
+    "ethiopian-doro-wat": {
+      "title": "Doro wat au poulet et aux œufs",
+      "country": "Éthiopie",
+      "region": "Afrique de l’Est",
+      "steps": [
+        "Faites cuire les oignons rouges finement hachés dans une cocotte sans matière grasse. Remuez souvent pendant environ 20 minutes, jusqu’à ce qu’ils brunissent et réduisent de moitié.",
+        "Faites fondre le niter kibbeh dans les oignons. Ajoutez l’ail et le gingembre, cuisez 2 minutes, puis incorporez le berbéré et le concentré de tomate. Remuez 5 minutes.",
+        "Enrobez le poulet de cette pâte, ajoutez l’eau ou le bouillon puis couvrez. Laissez mijoter 35 à 40 minutes, jusqu’à ce que le poulet soit cuit à cœur et la sauce épaisse.",
+        "Entaillez légèrement les œufs durs écalés et déposez-les dans la sauce. Ajoutez le citron, ajustez le sel et le poivre, puis laissez mijoter 10 minutes à découvert. Servez avec de l’injera."
+      ]
+    },
+    "south-african-bobotie": {
+      "title": "Bobotie à la viande hachée",
+      "country": "Afrique du Sud",
+      "region": "Afrique australe",
+      "steps": [
+        "Préchauffez le four à 180 °C. Faites tremper puis essorez le pain. Faites revenir les oignons dans le beurre pendant 5 minutes, puis ajoutez le curry et le curcuma pour 1 minute.",
+        "Ajoutez la viande hachée et faites-la bien dorer. Incorporez le pain, la confiture d’abricot, le vinaigre, les raisins secs et le sel.",
+        "Tassez le mélange dans un plat graissé et plantez-y les feuilles de laurier. Battez les œufs avec le lait et un peu de sel, puis versez sur la viande.",
+        "Enfournez 35 à 40 minutes, jusqu’à ce que la garniture soit prise et dorée. Laissez reposer 5 minutes avant de servir."
+      ]
+    },
+    "senegalese-thieboudienne": {
+      "title": "Thiéboudienne au poisson",
+      "country": "Sénégal",
+      "region": "Afrique de l’Ouest",
+      "steps": [
+        "Hachez le persil avec l’ail et le piment. Entaillez le poisson et glissez la farce dans les entailles. Salez, puis faites dorer le poisson dans l’huile environ 4 minutes par face. Réservez.",
+        "Dans la même huile, faites blondir les oignons. Ajoutez le concentré de tomate et cuisez 5 minutes. Ajoutez le poisson séché, le tamarin et suffisamment d’eau pour couvrir les légumes.",
+        "À ébullition, ajoutez d’abord le manioc et les carottes, puis l’aubergine et le chou. Retirez les légumes à mesure qu’ils deviennent tendres.",
+        "Versez le riz brisé dans la sauce, qui doit le recouvrir d’environ 1 cm. Posez le poisson dessus, couvrez et faites cuire à feu doux jusqu’à absorption de la sauce et cuisson complète du riz et du poisson.",
+        "Dressez le riz sur un plat et répartissez le poisson et les légumes par-dessus. Arrosez avec la sauce restante."
+      ]
+    },
+    "egyptian-koshari": {
+      "title": "Koshari au riz, aux lentilles et aux pâtes",
+      "country": "Égypte",
+      "region": "Afrique du Nord",
+      "steps": [
+        "Faites cuire les lentilles brunes 15 minutes dans l’eau bouillante. Ajoutez le riz et de l’eau fraîche en quantité suffisante, puis poursuivez la cuisson jusqu’à ce que les deux soient tendres.",
+        "Dans une autre casserole, faites cuire les macaronis al dente. Égouttez-les et mélangez-les avec un filet d’huile.",
+        "Faites dorer l’ail dans un peu d’huile. Ajoutez les tomates concassées, le vinaigre, le cumin et le piment. Laissez mijoter 15 minutes pour épaissir la sauce.",
+        "Faites frire les oignons émincés jusqu’à ce qu’ils soient dorés et croustillants. Servez le riz et les lentilles, puis les macaronis et les pois chiches cuits. Nappez de sauce et terminez par les oignons."
+      ]
+    },
+    "moroccan-chicken-tagine": {
+      "title": "Tajine de poulet aux citrons confits",
+      "country": "Maroc",
+      "region": "Afrique du Nord",
+      "steps": [
+        "Mélangez le poulet avec l’oignon râpé, le gingembre, le curcuma, le safran, le poivre, l’huile d’olive et la moitié de la coriandre. Laissez mariner au réfrigérateur au moins 30 minutes.",
+        "Mettez le poulet et sa marinade dans un tajine ou une cocotte. Ajoutez l’eau, couvrez et laissez frémir à feu doux 45 minutes. Retournez les morceaux à mi-cuisson.",
+        "Ajoutez les écorces de citron confit et les olives vertes. Faites cuire encore 10 minutes à découvert, jusqu’à ce que la sauce réduise légèrement et que le poulet soit cuit à cœur.",
+        "Parsemez du reste de coriandre et servez avec du pain ou de la semoule de couscous."
+      ]
+    },
+    "ghanaian-waakye": {
+      "title": "Waakye au riz et aux haricots",
+      "country": "Ghana",
+      "region": "Afrique de l’Ouest",
+      "steps": [
+        "Faites tremper les haricots à œil noir ou les haricots rouges toute une nuit. Égouttez, couvrez d’eau fraîche et ajoutez les tiges de sorgho et le bicarbonate.",
+        "Portez à ébullition et faites cuire environ 25 minutes, jusqu’à ce que les haricots commencent à s’attendrir. Ajoutez le riz lavé et le sel. L’eau doit dépasser le riz d’environ 2,5 cm.",
+        "Couvrez et cuisez à feu moyen. Quand l’eau est presque absorbée, baissez le feu et laissez cuire à la vapeur 10 minutes sous couvercle. Vérifiez que les haricots sont bien tendres.",
+        "Retirez les tiges de sorgho. Servez avec les accompagnements de votre choix, par exemple du shito, des œufs durs ou du poisson frit."
+      ]
+    }
+  };
+
+  function kitchenMethod(recipe) {
+    var entry = recipe && kitchenMethods[recipe.slug];
+    if (!entry) return null;
+    return {
+      title: entry.title, localName: recipe.name_local, country: entry.country, region: entry.region,
+      baseServings: recipe.default_servings, prepMinutes: recipe.prep_time_minutes,
+      cookMinutes: recipe.cook_time_minutes, steps: entry.steps, source: recipe.method_url
+    };
+  }
+
+  function methodContext(method) {
+    return 'Portions de la recette de base: ' + method.baseServings + ' · Préparation: ' + method.prepMinutes + ' min · Cuisson: ' + method.cookMinutes + ' min';
+  }
+
+  function displayKitchenMethod(recipe) {
+    var method = kitchenMethod(recipe);
+    var panel = document.getElementById('kitchen-method');
+    if (!method) { if (panel) panel.remove(); return; }
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.id = 'kitchen-method';
+      panel.className = 'ua-card';
+      panel.setAttribute('aria-labelledby', 'kitchen-method-title');
+      form.after(panel);
+    }
+    panel.innerHTML = '<h2 id="kitchen-method-title">Préparation — ' + escapeHtml(method.title) + '</h2><p>' +
+      escapeHtml(methodContext(method)) + '</p><ol>' + method.steps.map(function (step) {
+        return '<li>' + escapeHtml(step) + '</li>';
+      }).join('') + '</ol><p>Ce calculateur propose huit recettes en français. Les durées sont indicatives. Si vous changez le nombre de portions, vérifiez la cuisson.</p><p><a href="/tools/afrokitchen/" hreflang="en">Parcourir le catalogue complet (en anglais)</a></p>';
+  }
+
   function syncKitchenRecipe() {
     if (contract.id !== "afrokitchen") return;
     var original = form.querySelector('[data-ua-field="originalServings"]');
     var selected = form.querySelector('[data-ua-field="recipe"]');
     var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
     var recipe = recipes.find(function (item) { return selected && item.slug === selected.value; });
+    displayKitchenMethod(recipe);
     var photo = form.querySelector("[data-ua-recipe-photo]");
     if (recipe && recipe.image_url) {
       if (!photo) {
@@ -759,7 +891,8 @@
       if (category) category.value = "staple_price";
     } else if (contract.id === "afrokitchen" && root.AfroKitchenEngine) {
       populateSelect("recipe", root.AfroKitchenEngine.SEED_RECIPES, "slug", function (recipe) {
-        return `${recipe.name} — ${recipe.country_name}`;
+        var method = kitchenMethod(recipe);
+        return method ? method.title + " — " + method.country : recipe.name_local;
       });
       var recipeSelect = document.querySelector('[data-ua-field="recipe"]');
       if (recipeSelect) recipeSelect.value = "nigerian-jollof-rice";
