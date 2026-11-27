@@ -26,7 +26,54 @@
   function sourceLink(node,r){node.replaceChildren();if(r&&/^https:\/\//.test(r.source_url||'')){var a=document.createElement('a');a.href=r.source_url;a.textContent=r.source_name;a.target='_blank';a.rel='noopener noreferrer';node.appendChild(a);}else node.textContent='—';}
   function dateLabel(r){return r&&r.date_basis==='survey-period'?'surveyPeriod':r&&r.date_basis==='snapshot'?'snapshotDate':r&&r.date_basis==='observation'?'observed':'effective';}
   function referenceDate(r){return r&&r.date_basis==='survey-period'?r.period_start+' – '+r.period_end:r&&r.effective_date||'—';}
+  // Operator-published addresses, 14 May 2025. These records contain no price or coordinates.
+  function showNigeriaStations() {
+   if (locale !== 'en') return;
+   var panel = byId('ng-station-directory');
+   if (byId('fuel-country').value !== 'NG') {
+    if (panel) panel.hidden = true;
+    return;
+   }
+   if (panel) { panel.hidden = false; return; }
+   var addresses = [
+    ['Abuja','Gwarinpa','1st Avenue, next to First Bank, Gwarinpa Estate'],
+    ['Abuja','Sultan Abubakar','Conakry Street, opposite Ministerial Quarters, Wuse'],
+    ['Benin City','Lagos Road','14 Urubi Street, opposite Iyare Motors, Use'],
+    ['Ibadan','Sango','Oyo Road'],
+    ['Kaduna','South Bridge','Stadium Roundabout Junction Road'],
+    ['Lagos','Lekki 2','Lekki–Epe Expressway, opposite Nicon Town'],
+    ['Lagos','Alapeere 2','29-9 Olakunle Ajibade Street, Ojota'],
+    ['Lagos','Ojuelegba','39 Ojuelegba Road, Surulere, near Tejuosho Market'],
+    ['Lagos','Sura','Sura Market, Simpson Street, Ikoyi'],
+    ['Port Harcourt','Port-Harcourt 2','Plot 124, Trans-Amadi Industrial Layout Road, by GRA Junction, Aba Road']
+   ];
+   panel = document.createElement('section');
+   panel.id = 'ng-station-directory';
+   panel.className = 'fuel-result-card';
+   panel.setAttribute('aria-labelledby','ng-station-heading');
+   panel.innerHTML = '<h3 id="ng-station-heading">Find a Nigerian fuel station</h3>' +
+    '<p>Search ten TotalEnergies addresses published on 14 May 2025. Confirm opening hours, fuel availability and the pump price directly before travelling.</p>' +
+    '<div class="fuel-field"><label for="ng-station-search">City, area or station name</label><input type="search" id="ng-station-search" placeholder="e.g. Abuja or Gwarinpa" autocomplete="off"></div>' +
+    '<p role="status" id="ng-station-count"></p><ul id="ng-station-addresses"></ul>' +
+    '<p><a href="https://services.totalenergies.ng/news/childrens-day-trivia-fun-may-2025">Operator address list, May 2025</a> · <a href="https://services.totalenergies.ng/find-us">Open TotalEnergies station finder</a></p>';
+   byId('fuel-finder').appendChild(panel);
+   var search = byId('ng-station-search'), list = byId('ng-station-addresses');
+   function filter() {
+    var term = search.value.trim().toLowerCase();
+    var matches = addresses.filter(function(row) { return row.join(' ').toLowerCase().includes(term); });
+    list.replaceChildren();
+    matches.forEach(function(row) {
+     var item = document.createElement('li');
+     item.textContent = row[1] + ' — ' + row[0] + ' · ' + row[2];
+     list.appendChild(item);
+    });
+    byId('ng-station-count').textContent = matches.length ? matches.length + (matches.length === 1 ? ' matching address' : ' matching addresses') : 'No match in this published list. Try a city name or open the operator finder below.';
+   }
+   search.addEventListener('input',filter);
+   filter();
+  }
   function render(){
+   showNigeriaStations();
    invalidate();selected=markets.find(function(m){return m.market_id===byId('fuel-market').value;})||null;record=engine.marketRecord(selected,byId('fuel-type').value);var s=status(record);reference=s.available;historicalChosen=false;
    byId('fuel-result-place').textContent=selected?place(selected):t('unavailable');
    byId('fuel-result-granularity').textContent=selected?t(selected.granularity):'';
