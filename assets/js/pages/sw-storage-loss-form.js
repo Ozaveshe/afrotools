@@ -49,7 +49,7 @@
     var cfg=win.__SW_AGRI_CONFIG__,data=win.STORAGE_DATA,engine=win.AfroTools&&win.AfroTools.StorageLossEngine;
     if (!cfg || cfg.id!=='storage-loss' || !data || !engine) return;
     var form=host.querySelector('form'),status=host.querySelector('[data-status]'),box=host.querySelector('[data-result]'),output=host.querySelector('[data-output]'),latest=null,revision=0;
-    function field(key){return form.elements.namedItem(key);}
+    function field(key){return form.querySelector('[id="'+key+'"]');}
     function options(select, keys, labels) { select.replaceChildren();keys.forEach(function(key){var option=doc.createElement('option');option.value=key;option.textContent=labels(key);select.appendChild(option);}); }
     options(field('crop'),Object.keys(data.lossRates),function(key){return crops[key]||key;});
     options(field('countryCode'),Object.keys(data.countries).filter(function(key){return Boolean(data.countries[key]);}),function(key){return (countries[key]||data.countries[key].name)+' · '+data.countries[key].currency;});

@@ -52,7 +52,7 @@ test('projection removes JSON editing only for storage and keeps report actions'
   const old='<head></head><h2>Hali ya kupanga</h2><textarea id="scenario"></textarea></section><aside class="swa-card">unchanged</aside><script src="/assets/js/pages/sw-agriculture-assigned-parity.js"></script>';
   const html=renderStorageLossForm({id:'storage-loss',input},old);
   assert.doesNotMatch(html,/<textarea/);
-  for(const field of Object.keys(input))assert.match(html,new RegExp(`name="${field}"`));
+  for(const field of Object.keys(input))assert.match(html,new RegExp(`id="${field}"`));assert.doesNotMatch(html, /\bname=/);
   for(const type of ['json','pdf','csv','txt'])assert.match(html,new RegExp(`data-export="${type}"`));
   assert.match(html,/data-local-submit-guard="1"/);
   assert.match(html,/data-import/);
