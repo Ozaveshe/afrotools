@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Keep a manual record of transfers in this tab. Compare the expected payout with the amount the recipient confirmed.">
+  <meta http-equiv="Content-Security-Policy" content="form-action 'none'">
+  <link rel="canonical" href="https://afrotools.com/tools/money-transfer-tracker/">
+  <title>Money transfer tracker | AfroTools</title>
+  <style>
+    * { box-sizing: border-box }
+    body { margin: 0; background: #f2f6f5; color: #172d30; font: 1rem/1.55 Inter, system-ui, sans-serif }
+    main, nav { max-width: 51rem; margin: auto; padding: 1rem clamp(1rem, 4vw, 2rem) }
+    nav { border-bottom: 1px solid #bfd2d1 }
+    h1 { font: 500 clamp(2.5rem, 6vw, 4rem)/1.1 Georgia, serif; margin: 1.2rem 0 }
+    h2, h3 { line-height: 1.2 } a { color: #075d62 }
+    form, article { background: white; border: 1px solid #b8cfcc; border-radius: .7rem; padding: clamp(1rem, 3vw, 1.75rem); margin: 1rem 0 }
+    .fields { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,16rem),1fr)); gap: 1rem }
+    label { display: block; font-weight: 650 }
+    input, select, button { font: inherit; min-height: 2.8rem; border-radius: .3rem; padding: .45rem .65rem }
+    input, select { width: 100%; border: 1px solid #567272; background: white; color: inherit }
+    button { border: 1px solid #075d62; background: #075d62; color: white; cursor: pointer; margin: .6rem .4rem 0 0 }
+    .secondary { background: white; color: #075d62 }
+    :focus-visible { outline: 3px solid #266bcc; outline-offset: 3px }
+  </style>
+</head>
+<body>
+<nav aria-label="Breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/remittance-compare/">Remittance quote comparator</a></nav>
+<main>
+  <h1>Money transfer tracker</h1>
+  <p>Record the payout you expect, then update it when the recipient confirms delivery. Check the provider's own app for live transfer status.</p>
+  <p id="storage">Entries stay in this browser tab and survive a refresh when tab storage is available. Remove records when finished, especially on a shared device.</p>
+  <form id="transfer" autocomplete="off">
+    <h2 id="form-title">Add a transfer</h2>
+    <p>Use the destination currency and payout from your quote. Leave names, account numbers and transaction references out.</p>
+    <div class="fields">
+      <div><label for="date">Date sent</label><input id="date" type="date" required></div>
+      <div><label for="currency">Payout currency code</label><input id="currency" type="text" minlength="3" maxlength="3" pattern="[A-Za-z]{3}" placeholder="e.g. NGN" required></div>
+      <div><label for="expected">Expected payout</label><input id="expected" type="number" min=".01" max="999999999999" step=".01" inputmode="decimal" required></div>
+      <div><label for="state">Status you confirmed</label><select id="state"><option>Sent</option><option>Received</option><option>Returned</option></select></div>
+      <div id="actual-field" hidden><label for="actual">Amount received</label><input id="actual" type="number" min="0" max="999999999999" step=".01" inputmode="decimal" disabled></div>
+    </div>
+    <button type="submit" id="save">Add transfer</button><button type="button" id="cancel" class="secondary" hidden>Cancel edit</button>
+  </form>
+  <p role="status" id="notice"></p>
+  <section aria-labelledby="list-title"><h2 id="list-title">Your transfers</h2><div id="records"></div></section>
+</main>
+<script>
+(() => {
+  const el = id => document.getElementById(id);
+  const storageKey = 'afrotools.manualTransfers.v1';
+  let records = [];
+  let editing = null;
+  function storageIssue() {
+    el('storage').textContent = 'Tab storage is unavailable. Changes on this page may be lost when you refresh. Remove records before leaving a shared device.';
+  }
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(storageKey) || '[]');
+    if (Array.isArray(saved)) records = saved.filter(row => row && Number.isSafeInteger(row.id)
+      && /^\d{4}-\d{2}-\d{2}$/.test(row.date) && /^[A-Z]{3}$/.test(row.currency)
+      && Number.isSafeInteger(row.expected) && row.expected > 0 && ['Sent','Received','Returned'].includes(row.state)
+      && (row.state !== 'Received' || (Number.isSafeInteger(row.actual) && row.actual >= 0)));
+  } catch { storageIssue(); }
+  function persist() {
+    try {
+      if (records.length) sessionStorage.setItem(storageKey, JSON.stringify(records));
+      else sessionStorage.removeItem(storageKey);
+    } catch { storageIssue(); }
+  }
+  function syncActual() {
+    const received = el('state').value === 'Received';
+    el('actual-field').hidden = !received;
+    el('actual').disabled = !received;
+    el('actual').required = received;
+  }
+  function reset() {
+    editing = null;
+    el('transfer').reset();
+    el('form-title').textContent = 'Add a transfer';
+    el('save').textContent = 'Add transfer';
+    el('cancel').hidden = true;
+    syncActual();
+  }
+  function render() {
+    const list = el('records');
+    list.replaceChildren();
+    if (!records.length) list.textContent = 'No transfers recorded in this tab.';
+    for (const record of records) {
+      const card = document.createElement('article');
+      const heading = document.createElement('h3');
+      heading.textContent = 'Transfer ' + record.id + ' · ' + record.state;
+      card.append(heading);
+      const money = cents => record.currency + ' ' + (cents / 100).toLocaleString('en', { maximumFractionDigits: 2 });
+      const details = document.createElement('p');
+      details.textContent = 'Sent ' + record.date + ' · Expected ' + money(record.expected) + '.';
+      if (record.state === 'Received') {
+        const difference = record.actual - record.expected;
+        details.textContent += ' Received ' + money(record.actual) + '. ' + (difference === 0 ? 'Payout matches.' :
+          money(Math.abs(difference)) + (difference < 0 ? ' below' : ' above') + ' expected.');
+      }
+      card.append(details);
+      for (const action of ['Edit', 'Remove']) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'secondary';
+        button.textContent = action + ' transfer ' + record.id;
+        button.addEventListener('click', () => {
+          if (action === 'Remove') {
+            records = records.filter(item => item.id !== record.id);
+            if (editing === record.id) reset();
+            persist();
+            render();
+            el('notice').textContent = 'Removed transfer ' + record.id + '.';
+            el('save').focus();
+            return;
+          }
+          editing = record.id;
+          el('date').value = record.date;
+          el('currency').value = record.currency;
+          el('expected').value = record.expected / 100;
+          el('state').value = record.state;
+          el('actual').value = record.state === 'Received' ? record.actual / 100 : '';
+          el('form-title').textContent = 'Edit transfer ' + record.id;
+          el('save').textContent = 'Save changes';
+          el('cancel').hidden = false;
+          syncActual();
+          el('date').focus();
+        });
+        card.append(button);
+      }
+      list.append(card);
+    }
+  }
+  el('state').addEventListener('change', syncActual);
+  el('cancel').addEventListener('click', () => { reset(); el('date').focus(); });
+  el('transfer').addEventListener('submit', event => {
+    event.preventDefault();
+    const state = el('state').value;
+    const record = {
+      id: editing ?? records.reduce((max, row) => Math.max(max,row.id),0) + 1,
+      date: el('date').value, currency: el('currency').value.toUpperCase(), state,
+      expected: Math.round(el('expected').valueAsNumber * 100),
+      actual: state === 'Received' ? Math.round(el('actual').valueAsNumber * 100) : null
+    };
+    if (editing === null) records.push(record);
+    else records = records.map(row => row.id === editing ? record : row);
+    persist();
+    reset();
+    render();
+    el('notice').textContent = 'Saved transfer ' + record.id + '.';
+  });
+  render();
+})();
+</script>
+</body>
+</html>
