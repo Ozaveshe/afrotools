@@ -38,7 +38,7 @@
     if(!host||!cfg||cfg.id!=='crop-yield'||!data||!engine)return;
     var form=host.querySelector('form'),status=host.querySelector('[data-status]'),box=host.querySelector('[data-result]'),output=host.querySelector('[data-output]'),latest=null,revision=0;
     var keys=['crop','sizeUnit','currency','farmSize','yieldPerHa','marketPrice','inputCosts'];
-    function field(key){return form.elements.namedItem(key);}
+    function field(key){return form.querySelector('[id="'+key+'"]');}
     function selectOptions(key,choices,label){var select=field(key);select.replaceChildren();Object.keys(choices).forEach(function(value){var option=doc.createElement('option');option.value=value;option.textContent=label(value);select.appendChild(option);});}
     selectOptions('crop',data.crops,function(key){return crops[key]||key;});
     selectOptions('sizeUnit',units,function(key){return units[key];});

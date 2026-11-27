@@ -18,5 +18,5 @@ test('explicit unit conversion and losses preserve shared engine behavior',()=>{
 });
 test('only crop-yield projection replaces raw editor and keeps all report formats',()=>{
   const html='<head></head><h2>Hali ya kupanga</h2><textarea></textarea></section><aside class="swa-card">keep</aside><script src="/assets/js/pages/sw-agriculture-assigned-parity.js"></script>';
-  const next=renderCropYieldForm({id:'crop-yield',input},html);assert.doesNotMatch(next,/<textarea/);for(const key of Object.keys(input))assert.match(next,new RegExp(`name="${key}"`));for(const type of ['pdf','csv','json','txt'])assert.match(next,new RegExp(`data-export="${type}"`));assert.match(next,/data-import/);assert.equal(renderCropYieldForm({id:'storage-loss'},html),html);assert.throws(()=>renderCropYieldForm({id:'crop-yield',input},''));
+  const next=renderCropYieldForm({id:'crop-yield',input},html);assert.doesNotMatch(next,/<textarea/);for(const key of Object.keys(input))assert.match(next,new RegExp(`id="${key}"`));assert.doesNotMatch(next, /\bname=/);for(const type of ['pdf','csv','json','txt'])assert.match(next,new RegExp(`data-export="${type}"`));assert.match(next,/data-import/);assert.equal(renderCropYieldForm({id:'storage-loss'},html),html);assert.throws(()=>renderCropYieldForm({id:'crop-yield',input},''));
 });
