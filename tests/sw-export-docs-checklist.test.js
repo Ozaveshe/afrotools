@@ -69,3 +69,6 @@ test('Swahili purposes preserve names/transport selection and do not assert dupl
   assert.match(locale.purpose({doc:{id:'constructor'}},input),/Rejea maalumu/);
   const before=JSON.stringify(data);locale.restoreReport({schemaVersion:1,tool:'export-docs',locale:'sw',input,checked:[]},deps);assert.equal(JSON.stringify(data),before);
 });
+
+// Local-only forms must retain the original empty native FormData boundary.
+test('local checklist fields are id-owned, not native submission names',()=>{const {apps,render}=require('../scripts/build-sw-agriculture-assigned-apps');const html=render(apps.find(app=>app.id==='export-docs'));assert.doesNotMatch(html,/\bname="(?:query|countryCode|product|destination|shipment)"/);});

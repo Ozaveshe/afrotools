@@ -50,7 +50,7 @@
     if(!host||!cfg||cfg.id!=='export-docs'||!a.ExportDocsChecklist||!a.ExportDocsDirectoryEngine||!a.exportDocsData)return;
     var directory=a.ExportDocsDirectoryEngine.buildDirectory(a.countryIndex,a.regionLabels,Object.keys(a.regionLabels));if(!directory.ok)return;
     var form=host.querySelector('form'),status=host.querySelector('[data-status]'),box=host.querySelector('[data-result]'),output=host.querySelector('[data-output]'),latest=null,revision=0;
-    function field(key){return form.elements.namedItem(key);}
+    function field(key){return form.querySelector('[id="'+key+'"]');}
     function options(key,keys,label){field(key).replaceChildren();keys.forEach(function(value){var option=doc.createElement('option');option.value=value;option.textContent=label(value);field(key).appendChild(option);});}
     options('destination',Object.keys(destinations),function(key){return destinations[key];});options('shipment',Object.keys(shipments),function(key){return shipments[key];});
     function clear(message){revision++;latest=null;box.hidden=true;output.replaceChildren();status.textContent=message;}

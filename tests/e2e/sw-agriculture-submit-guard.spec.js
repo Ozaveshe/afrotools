@@ -1,6 +1,27 @@
 const { test, expect } = require('@playwright/test');
 const { apps } = require('../../scripts/build-sw-agriculture-assigned-apps');
 const guarded = apps.filter(app => !['coffee-calculator', 'cooperative-calculator', 'warehouse-receipt'].includes(app.id));
+const fs = require('node:fs'), path = require('node:path');
+const fieldOwners = {
+  'storage-loss': { owner:'sw-storage-loss-form.js', marker:'data-storage-loss-form', field:'#quantityTonnes' },
+  'crop-yield': { owner:'sw-crop-yield-form.js', marker:'data-crop-yield-form', field:'#farmSize' },
+  'export-docs': { owner:'sw-export-docs-checklist.js', marker:'data-export-docs-checklist', field:'#query' },
+};
+function fieldOwner(app) {
+  return Object.hasOwn(fieldOwners,app.id) && fs.existsSync(path.join(__dirname,'../../scripts/lib',fieldOwners[app.id].owner)) ? fieldOwners[app.id] : null;
+}
+async function fillPrivateInput(page,app,value) {
+  const owner=fieldOwner(app);
+  if(owner) {
+    await expect(page.locator('['+owner.marker+']')).toHaveCount(1);
+    await expect(page.locator('#scenario')).toHaveCount(0);
+    await expect(page.locator('[data-agri-form] [name]')).toHaveCount(0);
+    await page.locator(owner.field).fill(value);
+  } else {
+    for(const candidate of Object.values(fieldOwners)) await expect(page.locator('['+candidate.marker+']')).toHaveCount(0);
+    await page.locator('#scenario').fill('{"privateSyntheticAmount":'+value+'}');
+  }
+}
 const token = '122345.789';
 const fertilizer = guarded.find(app => app.id === 'fertilizer-calc');
 test.setTimeout(120000);
@@ -19,14 +40,19 @@ async function assertUnserialized(page) {
   expect(new URL(page.url()).searchParams.has('scenario')).toBe(false);
 }
 
-test('All 17 original JSON workflows fail closed when the whole controller is unavailable', async ({ page }) => {
+test('All 17 local workflows fail closed when their supported controller is unavailable', async ({ page }) => {
   const observed = observe(page);
-  await page.route('**/assets/js/pages/sw-agriculture-assigned-parity.js*', route => route.abort());
+  const aborted=[];
+  const controllers=['sw-agriculture-assigned-parity.js',...Object.values(fieldOwners).map(owner=>owner.owner)];
+  for(const controller of controllers) await page.route('**/assets/js/pages/'+controller+'*',route=>{aborted.push(new URL(route.request().url()).pathname);return route.abort();});
   for (const app of guarded) {
+    const beforeAbort=aborted.length;
     await page.goto('/sw/zana/' + app.slug + '/');
+    const controller=(fieldOwner(app)||{owner:'sw-agriculture-assigned-parity.js'}).owner;
+    expect(aborted.slice(beforeAbort)).toContain('/assets/js/pages/'+controller);
     await expect(page.locator('[data-agri-form] button[type=submit]')).toBeDisabled();
     await expect(page.locator('[data-status]')).toContainText('hakijapakia');
-    await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
+    await fillPrivateInput(page,app,token);
     await assertUnserialized(page);
     await page.locator('[data-agri-form]').evaluate(form => form.requestSubmit());
     await expect(page.locator('[data-result]')).toBeHidden();
@@ -77,12 +103,13 @@ test('Known missing engine is explained in Swahili and healthy reload retains ca
 test('JavaScript unavailable leaves controls disabled and forced native GET has no financial input', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
-    const page = await context.newPage(), observed = observe(page);
-    for (const app of [guarded[0], fertilizer, guarded.find(row => row.id === 'farm-budget')]) {
+    const observations=[];
+    for (const app of [guarded[0], fertilizer, guarded.find(row => row.id === 'farm-budget'), ...guarded.filter(row=>fieldOwner(row))]) {
+      const page=await context.newPage(), observed=observe(page);observations.push(observed);
       await page.goto(baseURL + '/sw/zana/' + app.slug + '/');
       await expect(page.locator('[data-agri-form] button[type=submit]')).toBeDisabled();
       await expect(page.locator('[data-local-script-note]')).toContainText('JavaScript');
-      await page.locator('#scenario').fill('{"privateSyntheticAmount":' + token + '}');
+      await fillPrivateInput(page,app,token);
       await assertUnserialized(page);
       const beforeClick = page.url();
       await page.locator('[data-agri-form] button[type=submit]').click({ force: true });
@@ -105,8 +132,11 @@ test('JavaScript unavailable leaves controls disabled and forced native GET has 
       expect(attempted.postData()).toBe(null);
       expect(forced.url()).toBe(attempted.url());
       await page.unroute('**/*');
+      // Aborting the intentionally forced GET can still be completing its error
+      // navigation. Close this page before the next independent owner case.
+      await page.close();
     }
-    expect(observed).toEqual({ errors: [], leaked: [], navigations: [] });
+    for(const observed of observations) expect(observed).toEqual({ errors: [], leaked: [], navigations: [] });
   } finally { await context.close(); }
 });
 

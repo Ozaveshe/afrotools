@@ -25,9 +25,10 @@ function assertFieldForm(app, html) {
   assert.match(html, /<form data-agri-form data-local-submit-guard="1" novalidate>/);
   assert.doesNotMatch(html, /<textarea\b[^>]*id="scenario"/);
   for (const field of spec.fields) {
-    assert.match(html,new RegExp('<(?:input|select)\\b(?=[^>]*\\bid="'+field+'")(?=[^>]*\\bname="'+field+'")[^>]*>'),app.id+' input '+field);
+    assert.match(html,new RegExp('<(?:input|select)\\b(?=[^>]*\\bid="'+field+'")[^>]*>'),app.id+' input '+field);
     assert.match(html,new RegExp('<label for="'+field+'">'),app.id+' label '+field);
   }
+  assert.doesNotMatch(html, /<(?:input|select)\b[^>]*\bname=/,app.id+' private fields never native-serialize');
   for (const hook of ['data-result','data-output','data-status','data-import','data-local-script-note']) assert.match(html,new RegExp(' '+hook+'(?=[ =/>])'),app.id+' required hook '+hook);
   assert.match(html, /<button type="submit" disabled>/);
   const runtime='/assets/js/pages/'+spec.runtime;
@@ -50,7 +51,8 @@ for (const app of guarded) {
       html.replace('/assets/js/pages/'+spec.runtime,'/assets/js/pages/missing-controller.js'),
       html.replace(' data-output',''),
       html.replace(' data-result',''),
-      html.replace('name="'+field+'"','name="missing-field"'),
+      html.replace('id="'+field+'"','id="'+field+'" name="private-field"'),
+      html.replace('id="'+field+'"','id="missing-field"'),
       html.replace('<label for="'+field+'">','<label for="wrong-field">'),
     ];
     for (const mutation of broken) { assert.throws(()=>assertFieldForm(app,mutation),app.id+' malformed field form cannot fall back');fieldFormMutationNegatives++; }
