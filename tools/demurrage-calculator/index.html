@@ -167,8 +167,10 @@
           <input aria-label="Days since vessel arrival" type="number" id="daysAtPort" class="f-input" min="1" value="15" placeholder="Days since vessel arrival">
         </div>
         <div>
-          <div class="f-label">FX Rate (local per USD)</div>
-          <input aria-label="1 if port charges USD" type="number" id="fxRate" class="f-input" value="1" placeholder="1 if port charges USD">
+          <label class="f-label" for="fxRate">Exchange rate (local currency units per US dollar)</label>
+          <input type="number" id="fxRate" class="f-input" value="1" min="0" step="any" required aria-describedby="fxHelp fxError" oninput="validateExchangeRate()">
+          <small id="fxHelp"></small>
+          <div id="fxError" role="status" aria-live="polite"></div>
         </div>
       </div>
       <div class="f-label">Container Type</div>
@@ -312,16 +314,39 @@ function onPortChange() {
     var fd = port.freeDays[currentCT] || 5;
     document.getElementById('freeDaysNote').textContent = '⭐ Free days at ' + port.name + ': ' + fd + ' days for ' + currentCT + ' containers. Demurrage accrues from day ' + (fd + 1) + '.';
     var fxDefault = port.currency === 'USD' ? '1' : port.currency === 'ZAR' ? '18.5' : port.currency === 'MAD' ? '10' : port.currency === 'TND' ? '3.1' : port.currency === 'XOF' ? '615' : '1';
-    document.getElementById('fxRate').value = fxDefault;
+    var field = document.getElementById('fxRate');
+    field.value = fxDefault;
+    field.readOnly = port.currency === 'USD';
+    document.getElementById('fxHelp').textContent = field.readOnly ? 'Charges are in USD. The exchange rate is 1.' : 'Enter the number of ' + port.currency + ' per US dollar. Check the suggested rate against your quote.';
+    validateExchangeRate();
   }
 }
 
+function validateExchangeRate() {
+  var field = document.getElementById('fxRate');
+  var valid = Number.isFinite(field.valueAsNumber) && field.valueAsNumber > 0;
+  var message = valid ? '' : 'Enter an exchange rate greater than zero.';
+  field.setCustomValidity(message);
+  field.setAttribute('aria-invalid', String(!valid));
+  document.getElementById('fxError').textContent = message;
+  document.getElementById('dmHero').classList.remove('show');
+  ['tierCard', 'addlCard', 'notesCard'].forEach(function(id) {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById('obsPanel').textContent = '';
+  return valid;
+}
+
 function calcDemurrage() {
+  if (!validateExchangeRate()) {
+    document.getElementById('fxRate').focus();
+    return;
+  }
   var result = DemurrageEngine.calculateDemurrage(
     document.getElementById('portCode').value,
     currentCT,
     parseInt(document.getElementById('daysAtPort').value) || 1,
-    parseFloat(document.getElementById('fxRate').value) || 1
+    document.getElementById('fxRate').valueAsNumber
   );
   if (!result) return;
 
