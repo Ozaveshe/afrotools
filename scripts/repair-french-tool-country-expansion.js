@@ -23,7 +23,6 @@ const TARGET_GROUPS = new Set([
 
 const TEXT_REPLACEMENTS = [
   ["Home", "Accueil"],
-  ["Insurance", "Assurance"],
   ["Legal & Compliance", "Droit et conformite"],
   ["Legal &amp; Compliance", "Droit et conformite"],
   ["Energy & Utilities", "Energie et services"],
@@ -221,7 +220,8 @@ function englishSourceToFile(source) {
 }
 
 function applyTextReplacements(html) {
-  let next = html;
+  // Translate the standalone word without changing JavaScript engine names.
+  let next = html.replace(/\bInsurance\b/g, "Assurance");
   for (const [from, to] of TEXT_REPLACEMENTS) {
     next = next.split(from).join(to);
   }

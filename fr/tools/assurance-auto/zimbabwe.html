@@ -129,7 +129,7 @@ window.addEventListener('load', function() {
 "use strict";
 var CC='ZW';
 var D=window.AfroTools.insuranceData;
-var E=window.AfroTools.CarAssuranceEngine;
+var E=window.AfroTools.CarInsuranceEngine;
 
 document.getElementById("calcBtn").addEventListener("click",function(){
 var inputs={};
@@ -141,15 +141,15 @@ inputs.yearsLicensed=document.getElementById("yearsLicensed")?document.getElemen
 inputs.claimHistory=document.getElementById("claimHistory")?document.getElementById("claimHistory").value:"";
 var cc=CC||"NG";
 var r=E.calculate(inputs,cc);
-if(r.error){alert(r.error);return;}
+if(r.error){alert(Number(inputs.vehicleValue)>0 ? "Les données de ce pays sont indisponibles." : "Saisissez une valeur de véhicule supérieure à zéro.");return;}
 
 document.getElementById("resAmount").textContent=r.comprehensiveMin+" — "+r.comprehensiveMax;
-document.getElementById("resSub").textContent="Couverture tous risques (per year)";
-document.getElementById("resTP").textContent=r.thirdPartyMin+" — "+r.thirdPartyMax;
+document.getElementById("resSub").textContent="Couverture tous risques (par an)";
+document.getElementById("resTP").textContent=r.thirdPartyMin==="Not applicable" ? "Sans objet" : r.thirdPartyMin+" — "+r.thirdPartyMax;
 document.getElementById("resComp").textContent=r.comprehensiveMin+" — "+r.comprehensiveMax;
 document.getElementById("resExcess").textContent=r.excess;
-document.getElementById("resProviders").textContent=r.providers||"Contact local providers";
-document.getElementById("resTip").textContent=r.savingTip;
+document.getElementById("resProviders").textContent=r.providers||"Contactez des assureurs locaux";
+document.getElementById("resTip").textContent="Estimation indicative fondée sur les hypothèses du calculateur. Demandez un devis à votre assureur pour connaître la prime et la franchise applicables.";
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 });
