@@ -130,7 +130,7 @@ a{text-decoration:none;color:inherit}
       <div class="en-card-title"><div class="en-card-title-icon">📊</div>Transfer Options Comparison</div>
       <div class="en-results-table-wrap">
         <table class="en-results-table">
-          <thead><tr><th>Transfer Type</th><th>Cost (Per Trip)</th><th>Per Person</th><th>Safety</th><th>Notes</th></tr></thead>
+          <thead><tr><th>Transfer Type</th><th>Group fare range</th><th>Midpoint per person</th><th>Safety</th><th>Notes</th></tr></thead>
           <tbody id="compBody"></tbody>
         </table>
       </div>
@@ -245,7 +245,9 @@ function stars(n){var s='';for(var i=0;i<5;i++)s+=i<n?'★':'☆';return s;}
 function calcTransfer(){
   var ap=document.getElementById('airport').value;
   var dest=document.getElementById('destArea').value;
-  var grp=parseInt(document.getElementById('groupSize').value)||2;
+  var groupField=document.getElementById('groupSize');
+  if(!groupField.reportValidity()) return;
+  var grp=parseInt(groupField.value,10)||2;
 
   var d=AIRPORTS[ap];
   var destInfo=d.destinations[dest];
@@ -264,18 +266,18 @@ function calcTransfer(){
   var rows=types.map(function(t){
     var min=d.baseRates[t.key].min;
     var max=d.baseRates[t.key].max;
-    var midCost=Math.round((min+max)/2);
+      if(t.key==='shuttle'){ min*=grp; max*=grp; }
+      var midCost=(min+max)/2;
     var perPerson=Math.round(midCost/grp);
     var safety=d.safety[t.key];
-    // Shuttle per person (doesn't scale with group)
-    if(t.key==='shuttle') perPerson=Math.round(min/1);
+
     return {
       name:t.icon+' '+t.name,
       cost:sym+' '+min.toLocaleString()+' – '+sym+' '+max.toLocaleString(),
       perPerson:sym+' '+perPerson.toLocaleString(),
       safety:stars(safety)+' ('+safety+'/5)',
       mid:midCost,
-      notes:t.key==='shuttle'?'Per person, shared':'For '+grp+' passengers'
+      notes:t.key==='shuttle'?'Shared fare × '+grp+' passengers':'For '+grp+' passengers'
     };
   });
 
