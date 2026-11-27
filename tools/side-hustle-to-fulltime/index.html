@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Side hustle to full-time budget planner | AfroTools</title>
+  <meta name="description" content="Compare monthly business income after costs with essential household spending. Estimate the monthly gap and how long your available savings could cover it.">
+  <link rel="canonical" href="https://afrotools.com/tools/side-hustle-to-fulltime/">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml">
+  <style>
+    * { box-sizing: border-box }
+    body { margin: 0; color: #182c26; background: #f5f7f1; font: 1rem/1.55 Inter, system-ui, sans-serif }
+    main, nav { max-width: 52rem; margin: auto; padding: 1rem clamp(1rem, 4vw, 2rem) }
+    nav { display: flex; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid #ccd7ce }
+    a { color: #165d45 }
+    h1, h2, p { margin: 0 0 .8rem }
+    h1 { font: 500 clamp(2.3rem, 7vw, 4rem)/1.05 Georgia, serif; max-width: 17ch; margin-top: 1rem }
+    form, section { background: #fff; border: 1px solid #ccd7ce; border-radius: .75rem; padding: clamp(1rem, 3vw, 1.75rem); margin: 1.5rem 0 }
+    .fields { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%, 16rem), 1fr)); gap: 1rem }
+    label { display: block; font-weight: 650 }
+    input, select, button { font: inherit; min-height: 2.8rem; border-radius: .35rem }
+    input, select { width: 100%; border: 1px solid #63796e; background: white; color: #182c26; padding: .45rem .65rem }
+    button { margin-top: 1rem; padding: .6rem 1rem; color: white; background: #165d45; border: 0; font-weight: 650; cursor: pointer }
+    :focus-visible { outline: 3px solid #2062b9; outline-offset: 3px }
+    dt { color: #465951 } dd { margin: 0 0 .65rem; font-weight: 700; overflow-wrap: anywhere }
+  </style>
+</head>
+<body>
+<nav aria-label="Breadcrumb"><a href="/">AfroTools</a><a href="/personal-finance/">Personal finance</a></nav>
+<main>
+  <h1>Side hustle to full-time budget planner</h1>
+  <p>How much would your business need to bring home each month? Compare your expected take-home income with the household costs it needs to cover.</p>
+  <form id="budget">
+    <h2>Your monthly budget</h2>
+    <p id="basis">Use one currency for every amount. Include business expenses and money set aside for tax in business costs. Enter only savings you can use for this transition.</p>
+    <div class="fields">
+      <div><label for="currency">Currency</label><select id="currency"><option value="">My currency units</option><option>NGN</option><option>KES</option><option>GHS</option><option>ZAR</option><option>UGX</option><option>TZS</option><option>ZMW</option><option>XOF</option><option>XAF</option><option>USD</option></select></div>
+      <div><label for="income">Monthly business revenue</label><input id="income" type="number" min="0" max="999999999999" step=".01" inputmode="decimal" required></div>
+      <div><label for="costs">Monthly business costs</label><input id="costs" type="number" min="0" max="999999999999" step=".01" inputmode="decimal" required></div>
+      <div><label for="essentials">Monthly household essentials</label><input id="essentials" type="number" min="0" max="999999999999" step=".01" inputmode="decimal" required></div>
+      <div><label for="savings">Available transition savings</label><input id="savings" type="number" min="0" max="999999999999" step=".01" inputmode="decimal" required></div>
+    </div>
+    <button type="submit">Calculate transition budget</button>
+  </form>
+  <section id="result" hidden tabindex="-1" aria-labelledby="result-heading">
+    <h2 id="result-heading">Your transition budget</h2>
+    <dl><dt>Monthly net business income</dt><dd id="net"></dd><dt id="balance-label"></dt><dd id="balance"></dd><dt>Cash runway</dt><dd id="runway"></dd></dl>
+    <p>Runway divides your available savings by the monthly shortfall, assuming income and expenses stay the same.</p>
+  </section>
+  <p>Still exploring business ideas? <a href="/tools/side-hustle-ranker/">Compare side hustles by skills, time and capital.</a></p>
+</main>
+<script>
+(() => {
+  const field = id => document.getElementById(id);
+  const form = field('budget');
+  const result = field('result');
+  form.addEventListener('input', () => { result.hidden = true; });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const cents = id => Math.round(field(id).valueAsNumber * 100);
+    const net = cents('income') - cents('costs');
+    const balance = net - cents('essentials');
+    const savings = cents('savings');
+    const currency = field('currency').value;
+    const amount = value => (value / 100).toLocaleString('en', { maximumFractionDigits: 2 }) + ' ' + (currency || 'units');
+    field('net').textContent = amount(net);
+    field('balance-label').textContent = balance > 0 ? 'Monthly surplus' : 'Monthly shortfall';
+    field('balance').textContent = amount(Math.abs(balance));
+    if (balance >= 0) {
+      field('runway').textContent = 'No monthly draw on savings at these amounts.';
+    } else {
+      const months = savings / -balance;
+      field('runway').textContent = months === 0 ? '0 months' : months < 0.1 ? 'Less than 0.1 month' :
+        'About ' + months.toLocaleString('en', { maximumFractionDigits: 1 }) + (months === 1 ? ' month' : ' months');
+    }
+    result.hidden = false;
+    result.focus();
+  });
+})();
+</script>
+</body>
+</html>
