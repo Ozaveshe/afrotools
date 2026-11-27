@@ -12,6 +12,13 @@ for (const app of apps) {
     page.on("pageerror", error => errors.push(error.message));
     await page.goto(`/sw/zana/${app.slug}/`);
     await expect(page.locator("html")).toHaveAttribute("lang", "sw");
+    if (app.id === "pesticide-dosage-calculator") {
+      // Fictional inert material; these are arithmetic fixtures only.
+      await page.locator("#label-kind").selectOption("seed-treatment");
+      await page.locator("#label-unit").selectOption("g/kg");
+      await page.locator("#rate").fill("2");
+      await page.locator("#seedKg").fill("5");
+    }
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeVisible();
     const result = JSON.parse(await page.locator("[data-output]").textContent());
@@ -30,6 +37,7 @@ for (const app of apps) {
         expect(payload.locale).toBe("sw");
         await page.locator("[data-import]").setInputFiles(file);
         await expect(page.locator("[data-status]")).toContainText("imefunguliwa");
+        if (app.id === "pesticide-dosage-calculator") await page.locator("[data-agri-form] button[type=submit]").click();
       } else if (format === "csv") expect(bytes.toString("utf8")).toContain("sehemu,thamani");
       else if (format === "txt") expect(bytes.toString("utf8")).toContain(app.name);
       else expect(bytes.subarray(0, 4).toString("ascii")).toBe("%PDF");
@@ -38,6 +46,7 @@ for (const app of apps) {
     await page.locator("[data-agri-form] button[type=reset]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
     if (app.id === "crop-rotation-planner") await page.locator("#rotation-seasons").fill("0");
+    else if (app.id === "pesticide-dosage-calculator") await page.locator("#rate").fill("0");
     else await page.locator("#scenario").fill("{");
     await page.locator("[data-agri-form] button[type=submit]").click();
     await expect(page.locator("[data-result]")).toBeHidden();
