@@ -85,7 +85,7 @@
 
   function takeCycled(pool, count, offset) {
     var result = [];
-    for (var i = 0; i < count; i += 1) result.push(pool[(i + offset) % pool.length]);
+    for (var i = 0; i < Math.min(count, pool.length); i += 1) result.push(pool[(i + offset) % pool.length]);
     return result;
   }
 
@@ -104,12 +104,13 @@
       : ["CreatorTips", "BehindTheScenes", "ContentStrategy", "CreativeBrand"]);
     var localBase = communityTags(topic, lang).concat(topicTags.map(function (tag) { return tag + "Africa"; }));
     var count = Math.max(2, config.recommended);
-    var all = unique(topicTags.concat(broadBase, nicheBase, localBase));
-    while (all.length < count + 4) all.push((lang === "fr" ? "Creation" : "Creative") + (all.length + 1));
-
-    var broad = takeCycled(unique(broadBase.concat(topicTags, localBase)), count, 0);
-    var niche = takeCycled(unique(nicheBase.concat(topicTags, localBase)), count, 1);
-    var community = takeCycled(unique(localBase.concat(topicTags, nicheBase)), count, 0);
+    var extras = lang === "fr"
+      ? ["AtelierCreatif", "ProcessusCreatif", "ConseilsPratiques", "SavoirFaire", "ProjetCreatif", "InspirationDuJour"]
+      : ["StudioPractice", "CreativeProcess", "PracticalTips", "MakerCommunity", "CreativeProject", "StudioNotes"];
+    var alternatives = broadBase.concat(nicheBase, localBase, extras);
+    var broad = takeCycled(unique(broadBase.concat(topicTags, localBase, alternatives)), count, 0);
+    var niche = takeCycled(unique(nicheBase.concat(topicTags, localBase, alternatives)), count, 1);
+    var community = takeCycled(unique(localBase.concat(topicTags, nicheBase, alternatives)), count, 0);
     var names = lang === "fr"
       ? ["PORTÉE ÉQUILIBRÉE", "CIBLAGE DE NICHE", "COMMUNAUTÉ AFRICAINE"]
       : ["BALANCED REACH", "NICHE FOCUS", "AFRICAN COMMUNITY"];
@@ -176,14 +177,25 @@
         "Do not promise reach and do not include engagement-exchange tags.";
     },
     parseSets: function (value) {
-      if (value && typeof value === "object" && Array.isArray(value.sets)) return value;
-      if (typeof value !== "string") return null;
-      try {
-        var match = value.match(/\{[\s\S]*\}/);
-        return match ? JSON.parse(match[0]) : null;
-      } catch (_) {
-        return null;
+      if (typeof value === "string") {
+        try {
+          var match = value.match(/\{[\s\S]*\}/);
+          value = match ? JSON.parse(match[0]) : null;
+        } catch (_) { return null; }
       }
+      if (!value || !Array.isArray(value.sets)) return null;
+      var sets = value.sets.map(function (set) {
+        if (!set || !Array.isArray(set.tags)) return set;
+        var seen = new Set();
+        var tags = set.tags.filter(function (item) {
+          var key = String(item && item.tag || "").trim().replace(/^#+/, "").toLowerCase();
+          if (!key || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        return Object.assign({}, set, { tags: tags, totalTags: tags.length });
+      });
+      return Object.assign({}, value, { sets: sets });
     },
     generateLocal: generateLocal,
     serialize: serialize,

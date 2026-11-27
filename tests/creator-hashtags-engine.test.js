@@ -25,6 +25,19 @@ for (const file of ["engines/src/creator-hashtags-engine.js", "engines/creator-h
     assert.match(result.sets[2].name, /COMMUNAUTÉ/);
     assert.doesNotMatch(JSON.stringify(result), /\b\d+(?:K|M|B)\b/);
 
+    for (const locale of ["en", "fr", "sw"]) {
+      for (const platform of Object.keys(engine.PLATFORMS)) {
+        for (const set of engine.generateLocal("pottery ceramics Accra", platform, locale).sets) {
+          const labels = set.tags.map(item => item.tag.toLowerCase());
+          assert.equal(new Set(labels).size, labels.length);
+          assert.equal(labels.length, engine.PLATFORMS[platform].recommended);
+        }
+      }
+    }
+    const provider = engine.parseSets({ sets: [{ tags: [{tag:"#Clay"}, {tag:"#clay"}, {tag:"#Studio"}] }] });
+    assert.equal(provider.sets[0].totalTags, 2);
+    assert.equal(provider.sets[0].tags[0].tag, "#Clay");
+
     const second = engine.generateLocal("coulisses photo mariage à Dakar", "instagram", "fr");
     assert.deepEqual(JSON.parse(JSON.stringify(second)), JSON.parse(JSON.stringify(result)));
   });
