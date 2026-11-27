@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Soil pH Calculator — Lime Requirement for African Soils | AfroTools">
-<meta name="twitter:description" content="Check soil pH and calculate lime or gypsum needed. Wood ash alternatives for African farmers.">
+<meta name="twitter:description" content="Check soil pH and estimate lime needs for acidic soil. Wood ash alternatives for African farmers.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/soil-ph-calculator.webp">
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Soil pH Calculator & Lime Requirement","url":"https://afrotools.com/agriculture/soil-ph/","description":"Check if your soil pH suits your crops and calculate lime needed. Covers acid and alkaline African soils with wood ash and gypsum alternatives.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/soil-ph-calculator.webp"}</script>
@@ -55,7 +55,7 @@
       "name": "My soil is alkaline — what do I use?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Alkaline soils (pH > 7.5) are common in the Sahel, Egypt, and Sudan. Use gypsum (calcium sulphate) at 2–5 t/ha to improve structure and reduce sodicity. For severely alkaline soils (pH > 8.5), elemental sulphur at 1–3 t/ha can lower pH over 6–12 months."
+        "text": "Ask a soil laboratory for electrical conductivity and sodium adsorption ratio (SAR) or exchangeable sodium percentage (ESP). Review the results, drainage and irrigation water with a local adviser before choosing an amendment."
       }
     }
   ]
@@ -209,7 +209,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
   <div class="hero-inner">
     <p class="breadcrumb"><a href="/">AfroTools</a> › <a href="/agriculture/">Agriculture</a> › Soil pH Calculator</p>
     <h1>Soil pH Calculator &amp; Lime Requirement</h1>
-    <p>Diagnose your soil acidity, find the right crops, and calculate exact lime or gypsum needed — including free wood ash alternatives.</p>
+    <p>Diagnose your soil acidity, find the right crops, and estimate lime needs for acidic soil, and identify follow-up tests for alkaline soil.</p>
     <div class="badge-row">
       <span class="badge">🧪 Acid &amp; Alkaline Soils</span>
       <span class="badge">🌍 Pan-African</span>
@@ -397,7 +397,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
       </details>
       <details>
         <summary>My soil is alkaline — what do I use?</summary>
-        <p>Alkaline soils (pH > 7.5) are common in the Sahel, Egypt, and Sudan. Adding lime would make this worse. Use gypsum (calcium sulphate) at 2–5 t/ha to improve structure and reduce sodicity without affecting pH much. For severely alkaline soils (pH > 8.5), elemental sulphur at 1–3 t/ha can lower pH over 6–12 months.</p>
+        <p>Ask a soil laboratory for electrical conductivity and sodium adsorption ratio (SAR) or exchangeable sodium percentage (ESP). Review the results, drainage and irrigation water with a local adviser before choosing an amendment.</p>
       </details>
       <details>
         <summary>How long does liming take to work?</summary>
@@ -581,8 +581,8 @@ function phDesc(ph) {
   if (ph < 6.5) return 'Mildly acidic — good range for most crops. Nutrient availability is generally good. Minor lime may help sensitive crops.';
   if (ph < 7.0) return 'Neutral to slightly acidic — optimal for the widest range of crops. Most nutrients are readily available.';
   if (ph < 7.5) return 'Neutral — excellent for most crops. No amendment typically needed.';
-  if (ph < 8.0) return 'Mildly alkaline — micronutrient availability (Fe, Zn, Mn) begins to decrease. Gypsum may improve soil structure.';
-  if (ph < 8.5) return 'Moderately alkaline — zinc and iron deficiencies likely. Avoid adding lime. Consider gypsum or organic matter.';
+  if (ph < 8.0) return 'Mildly alkaline — micronutrient availability (Fe, Zn, Mn) begins to decrease. Check salinity and sodium levels.';
+  if (ph < 8.5) return 'Moderately alkaline — zinc and iron deficiencies likely. Avoid adding lime. Check salinity and sodium levels.';
   return 'Strongly alkaline — most nutrients are poorly available. Specialist soil management required.';
 }
 
@@ -655,26 +655,8 @@ function renderLimeScenarios(phVal, texMult, depthMult, qualityCorr, limeName, f
   return html;
 }
 
-function renderAlkalineTreatment(phVal, farmHa) {
-  var html = '';
-  html += '<div class="gypsum-note"><strong>⚠ Alkaline Soil — Do Not Add Lime</strong>Adding lime to alkaline soil raises pH further, making it worse. Use the amendments below instead.</div>';
-  html += '<div class="lime-result" style="margin-top:.85rem">';
-
-  if (phVal <= 8.0) {
-    html += '<div class="lime-stat"><div class="val">2–3 t/ha</div><div class="lbl">Gypsum (CaSO₄) recommended</div></div>';
-    html += '<div class="lime-stat"><div class="val">' + fmt(2.5 * farmHa) + ' t</div><div class="lbl">Total gypsum for farm</div></div>';
-  } else if (phVal <= 8.5) {
-    html += '<div class="lime-stat"><div class="val">3–5 t/ha</div><div class="lbl">Gypsum rate</div></div>';
-    html += '<div class="lime-stat"><div class="val">1–2 t/ha</div><div class="lbl">Elemental sulphur (optional)</div></div>';
-    html += '<div class="lime-stat"><div class="val">' + fmt(4 * farmHa) + ' t</div><div class="lbl">Total gypsum for farm</div></div>';
-  } else {
-    html += '<div class="lime-stat"><div class="val">5 t/ha</div><div class="lbl">Gypsum (high severity)</div></div>';
-    html += '<div class="lime-stat"><div class="val">2–3 t/ha</div><div class="lbl">Elemental sulphur</div></div>';
-    html += '<div class="lime-stat"><div class="val">Specialist needed</div><div class="lbl">Soil reclamation advice</div></div>';
-  }
-  html += '</div>';
-  html += '<p style="font-size:.82rem;color:var(--muted);margin:.75rem 0 0">Gypsum improves soil structure and reduces sodium in sodic soils. Elemental sulphur is converted to sulfuric acid by bacteria over 6–12 months, gradually lowering pH. Organic matter (compost, manure) also helps buffer alkaline soils.</p>';
-  return html;
+function renderAlkalineTreatment() {
+  return '<div class="gypsum-note"><strong>Test for salinity and sodicity</strong>Ask a soil laboratory for electrical conductivity and sodium adsorption ratio (SAR) or exchangeable sodium percentage (ESP). Review the results, drainage and irrigation water with a local adviser before choosing an amendment. <a href="https://extension.colostate.edu/resource/managing-sodic-soils/">Colorado State University Extension guidance</a></div>';
 }
 
 function renderAmendments(phVal, texMult, depthMult, crop) {
@@ -682,9 +664,6 @@ function renderAmendments(phVal, texMult, depthMult, crop) {
 
   if (phVal > 7.5) {
     // Alkaline amendments
-    html += '<div class="amend-card"><div class="amend-icon">🪨</div><div class="amend-name">Gypsum (CaSO₄)</div><div class="amend-rate">2–5 t/ha</div><div class="amend-note">Improves structure of sodic soils. Does not change pH much. Best for high-Na soils in Sahel, Egypt, Sudan.</div></div>';
-    html += '<div class="amend-card"><div class="amend-icon">🟡</div><div class="amend-name">Elemental Sulphur</div><div class="amend-rate">1–3 t/ha</div><div class="amend-note">Bacteria convert it to H₂SO₄ over 6–12 months. Gradually lowers pH. For severe alkalinity (pH > 8.5).</div></div>';
-    html += '<div class="amend-card"><div class="amend-icon">🌿</div><div class="amend-name">Organic Matter</div><div class="amend-rate">5–10 t/ha compost</div><div class="amend-note">Humic acids buffer alkalinity. Improves water retention and micronutrient availability in alkaline soils.</div></div>';
     return html;
   }
 
@@ -715,7 +694,7 @@ function renderTiming(phVal) {
     ];
   } else {
     items = [
-      'For alkaline soils, apply gypsum before the rainy season and incorporate by tilling.',
+      'Ask a soil laboratory for electrical conductivity and sodium adsorption ratio (SAR) or exchangeable sodium percentage (ESP). Review the results, drainage and irrigation water with a local adviser before choosing an amendment.',
       'Elemental sulphur requires warm, moist soil and 6–12 months for bacteria to react — plan ahead.',
       'Grow green manures (Mucuna, Sesbania) to add organic acids and improve sodic soils.',
       'Avoid flood irrigation which can worsen sodicity — use drip or furrow irrigation if possible.',
