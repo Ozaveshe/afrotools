@@ -212,6 +212,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="card">
 <h2>Budget Breakdown</h2>
 <p style="font-size:.85rem;color:#64748b;margin-bottom:.5rem">Edit any line item. Amounts are in local currency. Pre-loaded estimates based on industry averages.</p>
+<p id="budgetError" role="status"></p>
 <table class="budget-table" id="budgetTable">
 <thead><tr><th>Category / Item</th><th style="width:120px;text-align:right">Estimate</th></tr></thead>
 <tbody id="budgetBody"></tbody>
@@ -223,7 +224,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="summary-grid" id="summaryGrid"></div>
 <div class="bar-wrap" id="barChart"></div>
 <div class="actions">
-<button type="button" class="btn" onclick="downloadBudget()">Download Budget (Text)</button>
+<button type="button" class="btn" id="downloadBudgetButton" onclick="downloadBudget()">Download Budget (Text)</button>
 <button type="button" class="btn btn-outline" onclick="loadPreset()">Reset to Preset</button>
 </div>
 <div id="funZone" style="margin-top:1.5rem">
@@ -245,6 +246,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label>Target Outlet</label><select id="pitchOutlet" aria-label="Pitch Outlet"><option value="cinema">Cinema release</option><option value="streaming">Streaming pitch</option><option value="tv">TV / Africa Magic</option><option value="festival">Festival route</option><option value="brand">Brand funded</option></select></div>
 </div>
 <div class="pitch-output" id="pitchOutput"></div>
+<button class="pitch-copy" id="copyPitchButton" type="button" onclick="copyPitchBrief()">Copy pitch brief</button>
+<span id="copyPitchStatus" role="status"></span>
 </div>
 </div>
 
@@ -372,7 +375,7 @@ function loadPreset(){
     cat.items.forEach(item=>{
       const val=preset[idx]||0;
       allItems.push({cat:cat.cat,item,val});
-      html+=`<tr><td style="padding-left:1.5rem">${item}</td><td><input type="number" data-idx="${idx}" value="${val}" min="0" onchange="recalc()" aria-label="Input value"></td></tr>`;
+      html+=`<tr><td style="padding-left:1.5rem">${item}</td><td><input type="number" data-idx="${idx}" value="${val}" min="0" step="any" required aria-label="${item}" aria-describedby="budgetError"></td></tr>`;
       idx++;
     });
   });
@@ -384,6 +387,20 @@ function recalc(){
   const c=document.getElementById('country').value;
   const sym=CURRENCIES[c].sym;
   const inputs=document.querySelectorAll('#budgetTable input[type=number]');
+  const invalid = Array.from(inputs).find(input => !input.validity.valid);
+  document.getElementById('budgetError').textContent = invalid
+    ? 'Enter zero or a positive amount for ' + invalid.getAttribute('aria-label') + '.' : '';
+  document.getElementById('downloadBudgetButton').disabled = Boolean(invalid);
+  document.getElementById('copyPitchButton').disabled = Boolean(invalid);
+  document.getElementById('funZone').hidden = Boolean(invalid);
+  if (invalid) {
+    lastPitchBrief = '';
+    document.getElementById('summaryGrid').replaceChildren();
+    document.getElementById('barChart').replaceChildren();
+    document.getElementById('pitchOutput').replaceChildren();
+    document.getElementById('copyPitchStatus').textContent = '';
+    return;
+  }
   const catTotals={};
   let grandTotal=0;
 
@@ -448,7 +465,8 @@ function updateNollyFun(total, country){
 
 function renderPitchPlan(){
   var box=document.getElementById('pitchOutput');
-  if(!box)return;
+  document.getElementById('copyPitchStatus').textContent = '';
+  if(!box || document.getElementById('copyPitchButton').disabled)return;
   var c=document.getElementById('country').value;
   var sym=CURRENCIES[c].sym;
   var countryLabel=document.getElementById('country').selectedOptions[0].text;
@@ -494,16 +512,22 @@ function renderPitchPlan(){
     '<div class="pitch-metric"><span>Largest bucket</span><strong>'+largest+'</strong></div>'+
     '</div>'+
     '<p><strong>Producer read:</strong> '+risk+'. Keep budget top sheet, detailed line items, cashflow timing and finance plan aligned before sharing with investors.</p>'+
-    '<p><strong>Outlet action:</strong> '+outletNotes[outlet]+'</p>'+
-    '<button class="pitch-copy" type="button" onclick="copyPitchBrief()">Copy pitch brief</button>';
+    '<p><strong>Outlet action:</strong> '+outletNotes[outlet]+'</p>';
 }
 
-function copyPitchBrief(){
+async function copyPitchBrief(){
   if(!lastPitchBrief)return;
-  if(navigator.clipboard){navigator.clipboard.writeText(lastPitchBrief);}
+  const status = document.getElementById('copyPitchStatus');
+  try {
+    await navigator.clipboard.writeText(lastPitchBrief);
+    status.textContent = 'Pitch brief copied.';
+  } catch {
+    status.textContent = 'Copy unavailable. Allow clipboard access in your browser and try again.';
+  }
 }
 
 function downloadBudget(){
+  if (document.getElementById('downloadBudgetButton').disabled) return;
   const c=document.getElementById('country').value;
   const t=document.getElementById('projectType').value;
   const tier=document.getElementById('tier').value;
@@ -540,6 +564,7 @@ function downloadBudget(){
   a.click();
 }
 
+document.getElementById('budgetBody').addEventListener('input', recalc);
 loadPreset();
 ['pitchLogline','pitchDays','pitchFunded','pitchOutlet'].forEach(function(id){
   var el=document.getElementById(id);
