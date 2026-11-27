@@ -140,7 +140,7 @@
         return r.farmSizeHa && r.countryCode && (g = (p = t(r)).totalYield * d), {
           mode: "D",
           farmGate: l,
-          farmGateFmt: e(l, i) + "/kg",
+          farmGateFmt: i + " " + l.toLocaleString("en-US", { minimumFractionDigits: Number.isInteger(l) ? 0 : 2, maximumFractionDigits: 2 }) + "/kg",
           exportFOB: s,
           exportFOBFmt: e(s, i) + "/kg",
           sharePct: c,
