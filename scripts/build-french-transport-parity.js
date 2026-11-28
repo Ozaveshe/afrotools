@@ -340,6 +340,7 @@ const commonTranslations = {
 
 const appTranslations = {
   'car-import-cost': {
+    'Importing a passenger car into Botswana? Total your written quotes in pula.': 'Importation d’une voiture au Botswana : additionnez vos devis en pula (outil en anglais).',
     'Know the true landed cost before you buy': 'Connaissez le coût rendu avant d’acheter',
     'Know the true landed cost before you buy, bid, or ship': 'Connaissez le coût rendu avant d’acheter ou d’expédier',
     'Start with the few details you know. The calculator will split vehicle value, official charges, port or clearing extras, and registration into one planning quote.': 'Commencez avec les informations disponibles. Le calculateur sépare la valeur du véhicule, les coûts du barème, les frais de port ou de transit et l’immatriculation dans une estimation de planification.',

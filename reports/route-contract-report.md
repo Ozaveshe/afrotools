@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11552 |
-| Indexable pages | 7879 |
-| Permanent and temporary redirects | 3214 |
+| Public pages | 11553 |
+| Indexable pages | 7880 |
+| Permanent and temporary redirects | 3213 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4264 |
+| Genuine equivalence groups | 4265 |
 | Documented fallbacks | 15074 |
-| Routes eligible for primary sitemaps | 7879 |
+| Routes eligible for primary sitemaps | 7880 |
 
 ## Locale Coverage
 
-- en: 6144 page records
+- en: 6145 page records
 - fr: 3657 page records
 - ha: 107 page records
 - sw: 1597 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 510
 - legal: 4
 - page: 5408
-- tool: 4004
+- tool: 4005
 - widget: 379
 
 ## Canonical Migrations
@@ -2376,7 +2376,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/calculateur-pourcentage/` -> `/tools/percentage-calc/` (301, owner: _redirects)
 - `/tools/car-import-cost/algeria/` -> `/tools/car-import-cost/` (301, owner: _redirects)
 - `/tools/car-import-cost/angola/` -> `/tools/car-import-cost/` (301, owner: _redirects)
-- `/tools/car-import-cost/botswana/` -> `/tools/car-import-cost/` (301, owner: _redirects)
 - `/tools/car-import-cost/cameroon/` -> `/tools/car-import-cost/` (301, owner: _redirects)
 - `/tools/car-import-cost/cote-divoire/` -> `/tools/car-import-cost/` (301, owner: _redirects)
 - `/tools/car-import-cost/egypt/` -> `/tools/car-import-cost/` (301, owner: _redirects)
@@ -4861,6 +4860,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5e078658ad7d: en=`/tools/afrokitchen/recipes/la-bouillie-td/`; x-default=`/tools/afrokitchen/recipes/la-bouillie-td/`
 - equivalence:5e4433144c43: en=`/climate/`, fr=`/fr/climat-environnement/`, sw=`/sw/hali-ya-hewa-na-mazingira/`; x-default=`/climate/`
 - equivalence:5e54da6f3956: en=`/tools/afrokitchen/recipes/eru-cm/`; x-default=`/tools/afrokitchen/recipes/eru-cm/`
+- equivalence:5e5e39443e7c: en=`/tools/car-import-cost/botswana/`; x-default=`/tools/car-import-cost/botswana/`
 - equivalence:5e676766f791: en=`/agriculture/cocoa-tracker/`, fr=`/fr/agriculture/cocoa-tracker/`, sw=`/sw/zana/kifuatiliaji-kakao/`; x-default=`/agriculture/cocoa-tracker/`
 - equivalence:5e86db89f9b1: en=`/agriculture/farm-profit/cameroon`, fr=`/fr/agriculture/farm-profit/cameroon`, sw=`/sw/kilimo/faida-ya-shamba/cameroon/`; x-default=`/agriculture/farm-profit/cameroon`
 - equivalence:5e8c18a58611: en=`/tools/labour-law-advisor/`; x-default=`/tools/labour-law-advisor/`
@@ -8035,7 +8035,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:1690)
 - `/tools/return-migration` -> `/diaspora/` (_redirects:1692)
 - `/tools/double-taxation` -> `/salary-tax/` (_redirects:1694)
-- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:4100)
+- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:4099)
 - `/admin` -> `/404.html` (netlify.toml:178)
 - `/admin/` -> `/404.html` (netlify.toml:184)
 - `/afrotools-mission-control` -> `/404.html` (netlify.toml:196)
