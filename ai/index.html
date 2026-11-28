@@ -871,6 +871,7 @@
   <script src="/assets/js/ai/usage-limits.js?v=8177fe31"></script>
   <script src="/assets/js/ai/pro-monetization.js?v=754f962e"></script>
   <script src="/assets/js/ai/direct-answer.js?v=dd671162"></script>
+  <script src="/assets/js/ai/country-tax-routing.js"></script>
   <script src="/assets/js/ai/amount-words-routing.js?v=d8f41b02"></script>
   <script>
   (function () {
@@ -4209,6 +4210,27 @@
       showConsentCard(true);
     }
 
+    function routeCountryTaxLocally(query) {
+      var intent = window.AfroToolsCountryTax && window.AfroToolsCountryTax.detect(query);
+      if (!intent) return false;
+      activeMatch = null;
+      workflowState = createEmptyWorkflowState();
+      workflowState.originalQuery = query;
+      workflowState.source = "deterministic";
+      var choices = intent.choices.map(function(tool) {
+        return '<a class="ai-small-button primary" href="' + escapeHtml(tool.href) + '">' + escapeHtml(tool.name) + '</a>';
+      });
+      if (intent.generic && intent.hub && !intent.ambiguous) {
+        choices.push('<a class="ai-browse" href="' + escapeHtml(intent.prefix) + '">All tools for this country</a>');
+      }
+      var heading = intent.ambiguous ? "Which country do you mean?" : intent.generic ? "Which tax do you want to check?" : intent.choices[0].name;
+      resultCards.innerHTML = '<section class="ai-workflow-card" role="listitem" data-country-tax-result><h3 class="ai-card-title">' +
+        escapeHtml(heading) + '</h3><div class="ai-actions">' + choices.join('') + '</div></section>';
+      setState("result");
+      showConsentCard(false);
+      return true;
+    }
+
     function routeAmountWordsLocally(query) {
       var result = amountWordsRouting && amountWordsRouting.detect(query);
       if (!result) return false;
@@ -4366,6 +4388,7 @@
         source: entrySource,
         consentToModel: consentToModel
       });
+      if (!consentToModel && routeCountryTaxLocally(clean)) return;
       if (!consentToModel && routeAmountWordsLocally(clean)) return;
       callRouter(clean, consentToModel).then(function (payload) {
         if (generation !== routeGeneration) return;
