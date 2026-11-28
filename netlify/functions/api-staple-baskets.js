@@ -1,5 +1,5 @@
 const { validateApiKey } = require('./_shared/api-auth');
-const { buildHeaders, jsonResponse, queryRows } = require('./_shared/market-data-api');
+const { buildHeaders, jsonResponse, queryRows, lookupUnavailable } = require('./_shared/market-data-api');
 
 exports.handler = async function (event) {
   const headers = buildHeaders(event);
@@ -26,22 +26,27 @@ exports.handler = async function (event) {
   if (country) templatesPath += '&country_code=eq.' + encodeURIComponent(country);
   if (city) templatesPath += '&city=eq.' + encodeURIComponent(city);
 
-  const [snapshots, recentPrices, templates] = await Promise.all([
-    queryRows(snapshotsPath),
-    queryRows(pricesPath),
-    queryRows(templatesPath)
-  ]);
+  let snapshots, recentPrices, templates;
+  try {
+    [snapshots, recentPrices, templates] = await Promise.all([
+      queryRows(snapshotsPath),
+      queryRows(pricesPath),
+      queryRows(templatesPath)
+    ]);
+  } catch {
+    return lookupUnavailable(headers);
+  }
 
   return jsonResponse(200, {
     ok: true,
-    count: Array.isArray(snapshots) ? snapshots.length : 0,
+    count: snapshots.length,
     filters: {
       country: country || null,
       city: city || null
     },
-    snapshots: Array.isArray(snapshots) ? snapshots : [],
-    recent_prices: Array.isArray(recentPrices) ? recentPrices : [],
-    templates: Array.isArray(templates) ? templates : []
+    snapshots,
+    recent_prices: recentPrices,
+    templates
   }, {
     ...headers,
     'Cache-Control': 'public, max-age=300, s-maxage=900, stale-while-revalidate=1800'

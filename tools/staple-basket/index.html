@@ -261,11 +261,12 @@
   document.getElementById('localCalculate').disabled = false;
 })();
 </script>
-<script src="/assets/js/market-data-app.js?v=1b8c8bd6"></script>
+<script src="/assets/js/market-data-app.js?v=3bdcd75f"></script>
 <script>
 document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 var latestStapleRows = [];
 var latestBasketBrief = '';
+var basketLookupState = 'loading';
 function basketNumber(id, fallback) {
   var el = document.getElementById(id);
   var value = Number(el && el.value);
@@ -306,6 +307,14 @@ function renderStapleBasketPlanner(rows) {
   latestStapleRows = rows || latestStapleRows || [];
   var output = document.getElementById('basketPlanOutput');
   if (!output) return;
+  if (basketLookupState !== 'ready') {
+    latestBasketBrief = basketLookupState === 'loading'
+      ? 'Checking market prices for this filter.'
+      : 'Published prices are unavailable. You can still total your own shopping list below.';
+    output.className = 'basket-empty';
+    output.textContent = latestBasketBrief;
+    return;
+  }
   var priced = latestStapleRows.filter(function (row) { return staplePrice(row) > 0; });
   if (!priced.length) {
     latestBasketBrief = 'Staple Basket plan: no verified staple prices are loaded for this filter yet.';
@@ -384,6 +393,10 @@ if (basketCopyButton) basketCopyButton.addEventListener('click', copyBasketPlan)
 window.MarketDataApp.mount({
   endpoint: '/api/staple-baskets',
   responseKey: 'recent_prices',
+  onLookupState: function (state) {
+    basketLookupState = state;
+    renderStapleBasketPlanner([]);
+  },
   subtype: 'staple_price',
   vertical: 'staple_basket',
   limit: 36,
@@ -397,10 +410,9 @@ window.MarketDataApp.mount({
     { key: 'notes', label: 'Price Context', type: 'textarea', required: false, placeholder: 'Cash price, bulk discount, scarcity, quality grade, or promo note' }
   ],
   renderSummary: function (rows, data) {
-    setTimeout(function () {
-      renderStapleBasketPlanner(rows);
-      renderBasketQuality();
-    }, 0);
+    basketLookupState = 'ready';
+    renderStapleBasketPlanner(rows);
+    renderBasketQuality();
     var uniqueItems = {};
     rows.forEach(function (row) { if (row.product_name) uniqueItems[String(row.product_name).toLowerCase()] = true; });
     return '<div class="md-stat"><div class="md-stat-value">' + (data.snapshots || []).length + '</div><div class="md-stat-label">Basket snapshots</div></div>' +

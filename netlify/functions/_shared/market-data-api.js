@@ -34,8 +34,16 @@ async function queryRows(path) {
   });
   if (!response.ok) throw new Error('Market data lookup unavailable');
   const rows = await response.json();
-  if (!Array.isArray(rows)) throw new Error('Invalid market data response');
+  if (!Array.isArray(rows) || rows.some(row => row === null || typeof row !== 'object' || Array.isArray(row))) {
+    throw new Error('Invalid market data response');
+  }
   return rows;
+}
+
+function lookupUnavailable(headers) {
+  return jsonResponse(502, { error: 'Market data lookup unavailable' }, {
+    ...headers, 'Cache-Control': 'no-store'
+  });
 }
 
 async function handleMarketDataRequest(event, config) {
@@ -82,9 +90,7 @@ async function handleMarketDataRequest(event, config) {
   try {
     data = await queryRows(path);
   } catch {
-    return jsonResponse(502, { error: 'Market data lookup unavailable' }, {
-      ...headers, 'Cache-Control': 'no-store'
-    });
+    return lookupUnavailable(headers);
   }
 
   return jsonResponse(200, {
@@ -107,5 +113,6 @@ module.exports = {
   handleMarketDataRequest,
   buildHeaders,
   jsonResponse,
-  queryRows
+  queryRows,
+  lookupUnavailable
 };

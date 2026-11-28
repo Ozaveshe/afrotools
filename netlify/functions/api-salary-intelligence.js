@@ -1,5 +1,5 @@
 const { validateApiKey } = require('./_shared/api-auth');
-const { buildHeaders, jsonResponse, queryRows } = require('./_shared/market-data-api');
+const { buildHeaders, jsonResponse, queryRows, lookupUnavailable } = require('./_shared/market-data-api');
 
 exports.handler = async function (event) {
   const headers = buildHeaders(event);
@@ -27,11 +27,16 @@ exports.handler = async function (event) {
   if (roleCategory) reportsPath += '&role_category=eq.' + encodeURIComponent(roleCategory);
   if (experienceLevel) reportsPath += '&experience_level=eq.' + encodeURIComponent(experienceLevel);
 
-  const reports = await queryRows(reportsPath);
+  let reports;
+  try {
+    reports = await queryRows(reportsPath);
+  } catch {
+    return lookupUnavailable(headers);
+  }
 
   return jsonResponse(200, {
     ok: true,
-    count: Array.isArray(reports) ? reports.length : 0,
+    count: reports.length,
     filters: {
       country: country || null,
       city: city || null,
@@ -42,7 +47,7 @@ exports.handler = async function (event) {
     as_of: asOf.toISOString(),
     freshness_days: freshnessDays,
     privacy: 'Public approved metadata only. User ids, proof URLs, photos, payloads, contribution ids and salary amounts are withheld.',
-    reports: Array.isArray(reports) ? reports : [],
+    reports,
     amounts_withheld: true,
     amount_note: 'Salary amounts are withheld because the current report schema does not preserve a required row-level currency code.',
     benchmarks: [],
