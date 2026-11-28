@@ -22,7 +22,8 @@ function load(examples) {
   return vm.runInNewContext(source.split(boundary)[0] + '\n({ askingExamplesHTML, staticContentHTML, html, data });', {
     __dirname: path.dirname(generator),
     require(id) { return id === "fs" ? readOnlyFs : realRequire(id); },
-    URL
+    URL,
+    URLSearchParams
   }, { timeout: 10000 });
 }
 const api = load();

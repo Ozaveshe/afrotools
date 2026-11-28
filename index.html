@@ -2948,19 +2948,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function fuelFinderCountryTokens(tool, tokens) {
       if (!isGlobalFuelFinder(tool) || !tokens.some(function(t){return /^(fuel|petrol|diesel|gasoline)$/.test(t);}) ||
-          !tokens.some(function(t){return /^(price|prices|tracker|finder)$/.test(t);})) return [];
+          tokens.some(function(t){return /^(generator|generators|mileage|efficiency|lpg|kerosene)$/.test(t);})) return [];
       var query = ' ' + tokens.join(' ') + ' ';
       var countryTokens = [];
       Object.values(FUEL_FINDER_COUNTRY_NAMES).forEach(function(name) {
         var country = normalizeSearchText(name);
         if (query.indexOf(' ' + country + ' ') !== -1) countryTokens = countryTokens.concat(country.split(' '));
       });
+      // Supported Abuja context is optional ranking metadata; unknown locations still need an actual match.
+      if (tokens.includes('abuja')) countryTokens.push('abuja');
       return countryTokens;
     }
 
     function fuelFinderSearchHref(tool, tokens) {
-      var countryTokens = fuelFinderCountryTokens(tool, tokens);
-      if (!countryTokens.length) return tool.href;
+      if (!isGlobalFuelFinder(tool)) return tool.href;
+      if (!tokens.some(function(t){ return /^(fuel|petrol|diesel|gasoline)$/.test(t); })) return tool.href;
+      if (tokens.some(function(t){ return /^(generator|generators|mileage|efficiency|lpg|kerosene)$/.test(t); })) return tool.href;
       var query = ' ' + tokens.join(' ') + ' ';
       var matches = Object.keys(FUEL_FINDER_COUNTRY_NAMES).filter(function(code) {
         var name = normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[code]);
@@ -2972,7 +2975,15 @@ document.addEventListener('DOMContentLoaded', function() {
           return other !== code && (' ' + normalizeSearchText(FUEL_FINDER_COUNTRY_NAMES[other]) + ' ').indexOf(name) !== -1;
         });
       });
-      return mostSpecific.length === 1 ? '/tools/fuel-tracker/?country=' + mostSpecific[0] + '#fuel-finder' : tool.href;
+      var abuja = tokens.includes('abuja');
+      if (mostSpecific.length > 1 || (abuja && mostSpecific.length && mostSpecific[0] !== 'NG')) return tool.href;
+      var diesel = tokens.includes('diesel'), petrol = tokens.includes('petrol') || tokens.includes('gasoline');
+      var params = new URLSearchParams();
+      if (mostSpecific.length || abuja) params.set('country', mostSpecific[0] || 'NG');
+      if (diesel !== petrol) params.set('fuel', diesel ? 'diesel' : 'petrol');
+      // The Abuja outlet observation covers petrol alone. Diesel retains the national reference.
+      if (abuja && !diesel) params.set('market', 'ng-abuja-nnpc-observed');
+      return params.size ? '/tools/fuel-tracker/?' + params + '#fuel-finder' : tool.href;
     }
 
     function generatedAliases(tool) {
@@ -3238,8 +3249,8 @@ document.addEventListener('DOMContentLoaded', function() {
       results.forEach(function(r, i) {
         var tool = r.t;
         var isLive = tool.status === 'live' || tool.status === 'new';
-        var cat = isGlobalFuelFinder(tool) ? 'Choose a supported market or enter your own price' : (CATEGORY_LABELS[tool.category] || tool.category);
-        var badge = isLive
+        var cat = isGlobalFuelFinder(tool) ? 'Compare dated fuel prices or enter your pump price' : (CATEGORY_LABELS[tool.category] || tool.category);
+        var badge = isGlobalFuelFinder(tool) ? '' : isLive
           ? '<span class="sd-badge sd-badge-live">● Live</span>'
           : '<span class="sd-badge sd-badge-soon">Coming Soon</span>';
         var tag = isLive ? 'a' : 'div';
