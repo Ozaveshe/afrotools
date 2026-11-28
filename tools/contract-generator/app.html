@@ -28,6 +28,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
 /* Template picker */
 .picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}
 .pick-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:.15s}
+.pick-card > span{display:block}
 .pick-card:hover,.pick-card.on{border-color:var(--color-primary);background:var(--blue-light)}
 .pick-card .icon{font-size:1.5rem;margin-bottom:8px}
 .pick-card .name{font-size:.82rem;font-weight:700;color:#111}
@@ -60,6 +61,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
 .disclaimer{background:#FEF3C7;border:1px solid #F59E0B;border-radius:10px;padding:14px;font-size:.75rem;color:#92400E;margin-top:20px;line-height:1.5}
 
 @media(max-width:640px){.picker{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
+.access-note{max-width:960px;margin:12px auto;padding:0 20px}.pick-card:focus-visible{outline:3px solid currentColor;outline-offset:2px}@media(max-width:600px){.topbar{flex-wrap:wrap;height:auto;padding:8px;gap:6px}}
 </style>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -84,8 +86,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
   <span class="topbar-title" id="contractTitle">Choose a template</span>
   <button type="button" class="btn btn-g" onclick="saveContract()">Save</button>
   <button type="button" class="btn btn-g" onclick="showPreview()">Preview</button>
-  <button type="button" class="btn btn-p" onclick="exportPDF()">Download PDF</button>
+  <button type="button" class="btn btn-p" aria-describedby="exportAccess" onclick="exportPDF()">Download PDF</button>
 </div>
+<p id="exportAccess" class="access-note">You can preview the contract as a guest. To save a PDF, sign in or create a free AfroTools account.</p>
 
 <div class="main">
 
@@ -96,27 +99,27 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
   <!-- Step 1: Choose Template -->
   <h3 style="font-size:.85rem;font-weight:800;color:#111;margin:20px 0 12px;">1. Choose a Template</h3>
   <div class="picker" id="tplPicker">
-    <div class="pick-card" onclick="pickTemplate('tenancy')"><div class="icon">🏠</div><div class="name">Tenancy Agreement</div><div class="desc">Landlord & tenant</div></div>
-    <div class="pick-card" onclick="pickTemplate('employment')"><div class="icon">💼</div><div class="name">Employment Contract</div><div class="desc">Employer & employee</div></div>
-    <div class="pick-card" onclick="pickTemplate('nda')"><div class="icon">🔒</div><div class="name">NDA</div><div class="desc">Non-disclosure</div></div>
-    <div class="pick-card" onclick="pickTemplate('freelance')"><div class="icon">💻</div><div class="name">Freelance Agreement</div><div class="desc">Client & contractor</div></div>
-    <div class="pick-card" onclick="pickTemplate('loan')"><div class="icon">💰</div><div class="name">Loan Agreement</div><div class="desc">Lender & borrower</div></div>
+    <button type="button" class="pick-card" aria-pressed="false" onclick="pickTemplate('tenancy',this)"><span class="icon" aria-hidden="true">🏠</span><span class="name">Tenancy Agreement</span><span class="desc">Landlord & tenant</span></button>
+    <button type="button" class="pick-card" aria-pressed="false" onclick="pickTemplate('employment',this)"><span class="icon" aria-hidden="true">💼</span><span class="name">Employment Contract</span><span class="desc">Employer & employee</span></button>
+    <button type="button" class="pick-card" aria-pressed="false" onclick="pickTemplate('nda',this)"><span class="icon" aria-hidden="true">🔒</span><span class="name">NDA</span><span class="desc">Non-disclosure</span></button>
+    <button type="button" class="pick-card" aria-pressed="false" onclick="pickTemplate('freelance',this)"><span class="icon" aria-hidden="true">💻</span><span class="name">Freelance Agreement</span><span class="desc">Client & contractor</span></button>
+    <button type="button" class="pick-card" aria-pressed="false" onclick="pickTemplate('loan',this)"><span class="icon" aria-hidden="true">💰</span><span class="name">Loan Agreement</span><span class="desc">Lender & borrower</span></button>
   </div>
 
   <!-- Step 2: Country -->
   <h3 style="font-size:.85rem;font-weight:800;color:#111;margin:0 0 12px;">2. Select Country</h3>
   <div class="country-bar">
-    <button type="button" class="country-btn on" onclick="pickCountry('nigeria',this)">Nigeria</button>
-    <button type="button" class="country-btn" onclick="pickCountry('kenya',this)">Kenya</button>
-    <button type="button" class="country-btn" onclick="pickCountry('south-africa',this)">South Africa</button>
-    <button type="button" class="country-btn" onclick="pickCountry('ghana',this)">Ghana</button>
+    <button type="button" class="country-btn on" aria-pressed="true" onclick="pickCountry('nigeria',this)">Nigeria</button>
+    <button type="button" class="country-btn" aria-pressed="false" onclick="pickCountry('kenya',this)">Kenya</button>
+    <button type="button" class="country-btn" aria-pressed="false" onclick="pickCountry('south-africa',this)">South Africa</button>
+    <button type="button" class="country-btn" aria-pressed="false" onclick="pickCountry('ghana',this)">Ghana</button>
   </div>
 
   <!-- Step 3: Fill Fields -->
   <div id="formContainer"></div>
 
   <!-- Preview -->
-  <div class="preview" id="previewContainer"></div>
+  <div class="preview" id="previewContainer" role="region" aria-label="Contract preview" tabindex="-1"></div>
 
 </div>
 
@@ -207,18 +210,22 @@ var DATA = {};
 var ss = window.SaveState ? new window.SaveState('contract-generator') : null;
 var _currentId = null;
 
-function pickTemplate(tpl) {
+function pickTemplate(tpl, button) {
   currentTemplate = tpl;
-  document.querySelectorAll('.pick-card').forEach(function(c){c.classList.remove('on');});
-  event.currentTarget.classList.add('on');
+  document.querySelectorAll('.pick-card').forEach(function(card){
+    card.classList.toggle('on', card === button);
+    card.setAttribute('aria-pressed', String(card === button));
+  });
   document.getElementById('contractTitle').textContent = TEMPLATES[tpl].name;
   renderForm();
 }
 
 function pickCountry(country, btn) {
   currentCountry = country;
-  document.querySelectorAll('.country-btn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
+  document.querySelectorAll('.country-btn').forEach(function(button){
+    button.classList.toggle('on', button === btn);
+    button.setAttribute('aria-pressed', String(button === btn));
+  });
 }
 
 function renderForm() {
@@ -227,18 +234,18 @@ function renderForm() {
   var html = '<div class="form-card on"><h3>3. Fill in Details — '+tpl.name+'</h3>';
   tpl.fields.forEach(function(f) {
     var val = DATA[f.id] || '';
-    html += '<div class="field"><label>'+f.label+'</label>';
+    html += '<div class="field"><label for="f_'+f.id+'">'+f.label+'</label>';
     if (f.tip) html += '<div class="tip">'+f.tip+'</div>';
     if (f.type === 'textarea') {
-      html += '<textarea id="f_'+f.id+'" oninput="DATA[\''+f.id+'\']=this.value" aria-label="F">'+esc(val)+'</textarea>';
+      html += '<textarea id="f_'+f.id+'" oninput="DATA[\''+f.id+'\']=this.value">'+esc(val)+'</textarea>';
     } else if (f.type === 'select') {
-      html += '<select id="f_'+f.id+'" onchange="DATA[\''+f.id+'\']=this.value" aria-label="F">';
+      html += '<select id="f_'+f.id+'" onchange="DATA[\''+f.id+'\']=this.value">';
       (f.options||[]).forEach(function(o){html += '<option'+(val===o?' selected':'')+'>'+o+'</option>';});
       html += '</select>';
     } else if (f.type === 'date') {
-      html += '<input aria-label="F '+f.id+'" type="date" id="f_'+f.id+'" value="'+esc(val)+'" oninput="DATA[\''+f.id+'\']=this.value">';
+      html += '<input type="date" id="f_'+f.id+'" value="'+esc(val)+'" oninput="DATA[\''+f.id+'\']=this.value">';
     } else {
-      html += '<input aria-label="F '+f.id+'" type="text" id="f_'+f.id+'" value="'+esc(val)+'" oninput="DATA[\''+f.id+'\']=this.value">';
+      html += '<input type="text" id="f_'+f.id+'" value="'+esc(val)+'" oninput="DATA[\''+f.id+'\']=this.value">';
     }
     html += '</div>';
   });
@@ -251,7 +258,7 @@ function showPreview() {
   var preview = document.getElementById('previewContainer');
   preview.classList.add('on');
   preview.innerHTML = generateContractHTML();
-  preview.scrollIntoView({behavior:'smooth'});
+  preview.focus();
 }
 
 function generateContractHTML() {

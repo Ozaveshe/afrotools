@@ -1055,7 +1055,7 @@ function competitorImplementation(slug, profile) {
     `This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.`,
     `The app-specific checklist is not generic: it starts with "${profile.checklist[0]}".`,
     `Saved workflows can be resumed from the dashboard and handed off to ${nextTool} when the matter naturally continues.`,
-    `Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.`,
+    slug === 'contract-generator' ? 'You can print this planning checklist without an account. Exporting the generated contract requires a free AfroTools account.' : `Print and PDF exports stay local and do not require an email address. Updates require a separate opt-in.`,
   ];
 }
 
@@ -1200,7 +1200,7 @@ function buildWorkflowCopilot(slug, profile) {
     '    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin><span>Send me occasional AfroTools legal checklist updates.</span></label>',
     '    <div class="leg-workflow-actions compact">',
     '      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Subscribe to updates</button>',
-    '      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>',
+    `      <button type="button" class="leg-secondary-btn" data-workflow-print>${slug === "contract-generator" ? "Print or save checklist" : "Print or save PDF"}</button>`,
     '      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>',
     '    </div>',
     '    <div class="leg-gate-status" data-workflow-gate-status role="status" aria-live="polite" aria-atomic="true"></div>',
