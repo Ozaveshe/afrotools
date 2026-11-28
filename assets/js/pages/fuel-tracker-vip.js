@@ -27,6 +27,7 @@
   function dateLabel(r){return r&&r.date_basis==='survey-period'?'surveyPeriod':r&&r.date_basis==='snapshot'?'snapshotDate':r&&r.date_basis==='observation'?'observed':'effective';}
   function referenceDate(r){return r&&r.date_basis==='survey-period'?r.period_start+' – '+r.period_end:r&&r.effective_date||'—';}
   function render(){
+   byId('fuel-coverage-notice').textContent='';
    invalidate();selected=markets.find(function(m){return m.market_id===byId('fuel-market').value;})||null;record=engine.marketRecord(selected,byId('fuel-type').value);var s=status(record);reference=s.available;historicalChosen=false;
    byId('fuel-result-place').textContent=selected?place(selected):t('unavailable');
    byId('fuel-result-granularity').textContent=selected?t(selected.granularity):'';
@@ -80,7 +81,15 @@
    if(!hasReference(fuel.value)&&hasReference(alternative))fuel.value=alternative;
    marketOptions();
    event('fuel_country_selected',{country_code:country});
-  });byId('fuel-market').addEventListener('change',function(){locationRequest++;render();event('fuel_market_selected',{market_id:this.value});});byId('fuel-type').addEventListener('change',function(){marketOptions(byId('fuel-market').value);event('fuel_type_selected',{fuel_type:this.value});});
+  });byId('fuel-market').addEventListener('change',function(){locationRequest++;render();event('fuel_market_selected',{market_id:this.value});});byId('fuel-type').addEventListener('change',function(){
+   var previousId=byId('fuel-market').value;
+   var previous=markets.find(function(m){return m.market_id===previousId;});
+   marketOptions(previousId);
+   if(previous && selected && selected.market_id!==previousId){
+    byId('fuel-coverage-notice').textContent=t('marketChanged',{fuel:t(this.value),previous:place(previous),market:place(selected),coverage:t(selected.granularity)});
+   }
+   event('fuel_type_selected',{fuel_type:this.value});
+  });
   byId('fuel-fill-txt').addEventListener('click',function(){download('txt');});byId('fuel-fill-json').addEventListener('click',function(){download('json');});
   byId('fuel-use-location').addEventListener('click',function(){var request=++locationRequest;byId('fuel-location-status').textContent=t('waiting');event('fuel_location_requested',{location_used:true});if(!navigator.geolocation){byId('fuel-location-status').textContent=t('denied');event('fuel_location_unavailable',{reason:'unsupported'});return;}navigator.geolocation.getCurrentPosition(function(position){if(request!==locationRequest)return;var nearest=engine.nearestMarket(markets.filter(function(m){return typeof m.latitude==='number'&&typeof m.longitude==='number';}).sort(function(a,b){var ar=engine.marketRecord(a,byId('fuel-type').value),br=engine.marketRecord(b,byId('fuel-type').value),as=status(ar),bs=status(br);return Number(bs.available)-Number(as.available)||Number(bs.valid)-Number(as.valid)||String(br&&br.effective_date||'').localeCompare(String(ar&&ar.effective_date||''));}),position.coords.latitude,position.coords.longitude);if(!nearest||!Number.isFinite(nearest.distanceKm)){byId('fuel-location-status').textContent=t('denied');event('fuel_location_unavailable',{reason:'no_market'});return;}byId('fuel-country').value=nearest.market.country_code;marketOptions(nearest.market.market_id);byId('fuel-location-status').textContent=t('matched',{place:place(nearest.market),distance:Math.round(nearest.distanceKm)});event('fuel_location_granted',{location_used:true,market_id:nearest.market.market_id,country_code:nearest.market.country_code});},function(error){if(request!==locationRequest)return;byId('fuel-location-status').textContent=t('denied');event('fuel_location_denied',{reason:error&&error.code===1?'denied':'unavailable'});},{enableHighAccuracy:false,maximumAge:300000,timeout:10000});});
   function load(url){return fetch(url,{cache:'no-store',credentials:'same-origin'}).then(function(response){if(!response.ok)throw Error('load');return response.json();});}
