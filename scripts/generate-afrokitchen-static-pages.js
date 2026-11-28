@@ -1365,8 +1365,7 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
     if (totalDuration) recipeSchema.totalTime = totalDuration; else delete recipeSchema.totalTime;
     recipeSchema.recipeCuisine = [recipe.country_name, recipe.region].filter(Boolean).join(", ");
     recipeSchema.recipeCategory = categoryLabel(recipe);
-    if (recipe.yield_status === "not-recorded") delete recipeSchema.recipeYield;
-    else recipeSchema.recipeYield = `${recipe.default_servings} ${recipe.serving_unit || "servings"}`;
+    if (recipe.yield_status !== "not-recorded") recipeSchema.recipeYield = `${recipe.default_servings} ${recipe.serving_unit || "servings"}`;
     recipeSchema.recipeIngredient = schemaIngredients;
     recipeSchema.recipeInstructions = buildRecipeInstructionSchemas(
       recipe,

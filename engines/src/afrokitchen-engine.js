@@ -4687,6 +4687,7 @@ var AfroKitchenEngine = function() {
       if (isPendingRecipeMethod(e)) return null;
       var recordedYield = hasRecordedRecipeYield(e), r = s(e.ingredients || [], recordedYield ? e.default_servings : 1, recordedYield ? t || e.default_servings : 1), timing = this.getRecipeTiming(e);
       if (['prep_time_minutes', 'cook_time_minutes', 'total_time_minutes'].some(function(field) { return this.classifyRecipeDuration(e[field]).kind === 'invalid'; }, this)) return null;
+      var batchStages = recordedYield ? null : this.getRecipeKunuStages(e);
       // Recipe rich-result nutrition describes one serving, never an unknown stored basis.
       var nutrition, servings = Number(e.default_servings);
       if (Number.isFinite(servings) && servings > 0 && ['per_serving', 'batch'].indexOf(e.nutrition_basis) !== -1) {
@@ -4712,6 +4713,7 @@ var AfroKitchenEngine = function() {
         ...(timing.prep !== null && timing.cook !== null ? { prepTime: "PT" + timing.prep + "M", cookTime: "PT" + timing.cook + "M" } : {}),
         ...(timing.total !== null ? { totalTime: "PT" + timing.total + "M" } : {}),
         ...(recordedYield ? { recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings") } : {}),
+        ...(batchStages ? { recipeYield: batchStages.sourceYield } : {}),
         recipeCategory: "main" === e.category ? "Main Course" : e.category,
         recipeCuisine: e.country_name + ", " + e.region,
         nutrition: nutrition,
