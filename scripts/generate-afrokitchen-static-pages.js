@@ -2230,6 +2230,21 @@ function renderCountryFeaturedDishes(country, recipeImages) {
   </section>`;
 }
 
+const COUNTRY_COURSE_RECIPE_LABELS = {
+  "chikanda": "Chikanda — chilled peanut loaf",
+  "chikanda-zm": "Chikanda — fried peanut cakes",
+  "groundnut-stew-sierra-leone-sl": "Groundnut Stew — chicken or beef",
+  "groundnut-stew-sl": "Groundnut Stew — bone-in chicken with ginger",
+  "isombe": "Isombe — cassava leaves with spinach or amaranth",
+  "isombe-rw": "Isombe — tomato and cassava leaves",
+  "kondowole": "Kondowole — with mustard greens",
+  "kondowole-mw": "Kondowole — cassava flour side",
+  "ladob": "Ladob — plantain and sweet potato",
+  "ladob-sc": "Ladob — plantain or breadfruit",
+  "matapa": "Matapa — coconut milk with shrimp or crab",
+  "matapa-mz": "Matapa — tomato and cassava leaves"
+};
+
 function renderCountryCategoryLanes(country) {
   const groups = countryCategoryGroups(country);
   if (!groups.length) return "";
@@ -2249,7 +2264,7 @@ function renderCountryCategoryLanes(country) {
         <div class="ak-region-recipe-list">
           ${group.recipes
             .slice(0, 6)
-            .map((recipe) => `<a href="${escapeHtml(resolveRecipeHref(recipe))}">${escapeHtml(recipe.name)}</a>`)
+            .map((recipe) => `<a href="${escapeHtml(resolveRecipeHref(recipe))}">${escapeHtml(COUNTRY_COURSE_RECIPE_LABELS[recipe.slug] || recipe.name)}</a>`)
             .join("")}
         </div>
       </article>`
