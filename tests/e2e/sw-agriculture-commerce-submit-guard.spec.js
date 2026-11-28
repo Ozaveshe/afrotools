@@ -46,7 +46,7 @@ for(const workflow of workflows){
     const context=await browser.newContext({baseURL:testInfo.project.use.baseURL,javaScriptEnabled:false,serviceWorkers:'block'});
     const observed=await intercept(context),page=await context.newPage();await page.goto('/sw/zana/'+workflow.slug+'/');
     await expect(page.locator('#scenario')).not.toHaveAttribute('name');await expect(page.locator('[data-agri-form] button[type=submit]')).toBeDisabled();
-    await expect(page.locator('[data-commerce-script-note]')).toBeVisible();await page.locator('#scenario').fill('{"revenue":'+token+'}');
+    await expect(page.locator('[data-commerce-script-note]')).toBeVisible();await expect(page.locator('#scenario')).toBeHidden();await injectRaw(page);
     let attempted;const intercepted=new Promise(resolve=>attempted=resolve);
     await context.route('**/sw/zana/'+workflow.slug+'/**',async route=>{const r=route.request();if(!r.isNavigationRequest())return route.continue();const u=new URL(r.url());await route.abort();attempted({method:r.method(),query:u.searchParams.toString()});});
     await page.locator('[data-agri-form]').evaluate(form=>form.requestSubmit());const request=await intercepted;

@@ -60,5 +60,10 @@ const commerce = {
 const formScripts = {"coffee-calculator":"/assets/js/lib/sw-coffee-form.js","cooperative-calculator":"/assets/js/lib/sw-cooperative-form.js","warehouse-receipt":"/assets/js/lib/sw-warehouse-receipt-form.js"};
 function isCommerceApp(app) { return Object.hasOwn(commerce, app.id); }
 function prepareCommerceApp(app) { return isCommerceApp(app) ? { ...app, ...commerce[app.id], scripts: [...app.scripts, formScripts[app.id]] } : app; }
+const manualPlanning = {
+  "coffee-calculator": "Kwa hesabu ya mkono, zidisha ukubwa wa shamba kwa miti kwa hekta na kilo za matunda kwa mti. Kwa mapato, tumia uzito wa kahawa ya kijani na bei yake kwa kilo, kisha toa gharama za uchakataji.",
+  "cooperative-calculator": "Kwa hesabu ya mkono, toa gharama kutoka mapato ili kupata ziada. Zidisha ziada kwa asilimia ya mfuko wa mgao, kisha gawanya mfuko kulingana na kanuni ya ushirika.",
+  "warehouse-receipt": "Kwa hesabu ya mkono, zidisha tani kwa bei ya mavuno kwa tani. Linganisha thamani hiyo na mapato ya kuuza baadaye baada ya kutoa riba, bima, hifadhi na gharama za kushughulikia mazao."
+};
 function runtimeScripts(app) { return isCommerceApp(app) ? `<script src="/assets/js/pages/sw-agriculture-commerce.js"></script><script src="/assets/js/lib/sw-agriculture-commerce-submit-guard.js"></script><script src="/assets/js/lib/sw-accessibility.js" defer></script>` : `<script src="/assets/js/pages/sw-agriculture-assigned-parity.js"></script>`; }
-module.exports = {isCommerceApp,prepareCommerceApp,runtimeScripts};
+module.exports = {manualPlanning,isCommerceApp,prepareCommerceApp,runtimeScripts};

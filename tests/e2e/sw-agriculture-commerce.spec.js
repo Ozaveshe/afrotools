@@ -189,7 +189,8 @@ for (const workflow of workflows) {
       let intercepted = 0;
       await page.route(pattern, route => { intercepted++; return route.abort(); });
       await page.goto('/sw/zana/' + workflow.slug + '/');
-      await page.locator('#scenario').fill('{"revenue":' + token + '}');
+      await expect(page.locator('#scenario')).toBeHidden();
+      await page.locator('#scenario').evaluate((state, value) => { state.value = JSON.stringify({ revenue: value }); }, token);
       await page.locator('[data-agri-form]').evaluate(form => form.requestSubmit());
       expect(intercepted).toBe(1);
       expect(new URL(page.url()).searchParams.has('scenario')).toBe(false);
