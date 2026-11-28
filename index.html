@@ -2924,12 +2924,57 @@ document.addEventListener('DOMContentLoaded', function() {
       return { id: 'invoice-generator', category: 'document-pdf', name: name, href: href, status: 'live', icon: '🧾' };
     }
 
-    function homepageExactToolMatch(query) {
+    var countryPayePages = {
+      'algeria': 'dz-paye', 'angola': 'ao-paye', 'benin': 'bj-paye', 'botswana': 'bw-paye',
+      'burkina-faso': 'bf-paye', 'burundi': 'bi-paye', 'cameroon': 'cm-paye', 'cape-verde': 'cv-paye',
+      'car': 'cf-paye', 'chad': 'td-paye', 'comoros': 'km-paye', 'congo': 'cg-paye',
+      'cote-divoire': 'ci-paye', 'djibouti': 'dj-paye', 'dr-congo': 'cd-paye', 'egypt': 'eg-paye',
+      'eq-guinea': 'gq-paye', 'eritrea': 'er-paye', 'eswatini': 'sz-paye', 'ethiopia': 'et-paye',
+      'gabon': 'ga-paye', 'gambia': 'gm-paye', 'ghana': 'gh-paye', 'guinea': 'gn-paye',
+      'guinea-bissau': 'gw-paye', 'kenya': 'ke-paye', 'lesotho': 'ls-paye', 'liberia': 'lr-paye',
+      'libya': 'ly-paye', 'madagascar': 'mg-paye', 'malawi': 'mw-paye', 'mali': 'ml-paye',
+      'mauritania': 'mr-paye', 'mauritius': 'mu-paye', 'morocco': 'ma-paye', 'mozambique': 'mz-paye',
+      'namibia': 'na-paye', 'niger': 'ne-paye', 'rwanda': 'rw-paye', 'sao-tome': 'st-paye',
+      'senegal': 'sn-paye', 'seychelles': 'sc-paye', 'sierra-leone': 'sl-paye', 'somalia': 'so-paye',
+      'south-africa': 'za-paye', 'south-sudan': 'ss-paye', 'sudan': 'sd-paye', 'tanzania': 'tz-paye',
+      'togo': 'tg-paye', 'tunisia': 'tn-paye', 'uganda': 'ug-paye', 'zambia': 'zm-paye',
+      'zimbabwe': 'zw-paye', 'nigeria': 'ng-salary-tax'
+    };
+
+    var taxReferenceNames = {
+      'bf-paye': 'Burkina Faso Payroll — Review Required',
+      'st-paye': 'São Tomé Payroll Contributions Checker (INSS)',
+      'er-paye': 'Eritrea Employment Income Tax — Statutory Reference',
+      'km-paye': 'Comoros Employment Income Tax — Statutory Reference',
+      'so-vat': 'Somalia VAT Status and Consumption Tax Evidence'
+    };
+
+    function countryTaxIntent(query) {
       var text = normalizeSearchText(query);
-      if (/^(?:ghana paye(?: calculator)?|paye (?:calculator (?:for |in )?)?ghana|ghana pay as you earn(?: calculator)?)$/.test(text)) {
-        return { id: 'gh-paye', category: 'salary-tax', name: 'Ghana PAYE Calculator', href: '/ghana/gh-paye', status: 'live', icon: 'GH' };
-      }
-      return homepageInvoiceMatch(query);
+      var suffix = text.match(/^(.+?) (paye|pay as you earn|income tax|vat|tax)(?: calculator)?$/);
+      var prefix = text.match(/^(paye|income tax|vat|tax) calculator (?:for |in )?(.+)$/);
+      if (!suffix && !prefix) return null;
+      var country = suffix ? suffix[1] : prefix[2];
+      var kind = suffix ? suffix[2] : prefix[1];
+      var generic = kind === 'tax';
+      var aliases = {
+        'central african republic': 'car', 'equatorial guinea': 'eq-guinea', 'cote d ivoire': 'cote-divoire',
+        'ivory coast': 'cote-divoire', 'sao tome and principe': 'sao-tome', 'cabo verde': 'cape-verde',
+        'republic of the congo': 'congo', 'republic of congo': 'congo', 'democratic republic of the congo': 'dr-congo'
+      };
+      var slug = aliases[country] || country.replace(/ /g, '-');
+      if (!Object.prototype.hasOwnProperty.call(countryPayePages, slug)) return null;
+      var ambiguous = country === 'congo';
+      var choices = [];
+      (ambiguous ? ['congo', 'dr-congo'] : [slug]).forEach(function(code) {
+        var title = code === 'congo' ? 'Republic of the Congo' : code === 'dr-congo' ? 'DR Congo' : country.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+        var paye = countryPayePages[code];
+        (generic ? ['PAYE', 'VAT'] : [kind === 'vat' ? 'VAT' : 'PAYE']).forEach(function(type) {
+          var id = type === 'VAT' ? paye.slice(0, 2) + '-vat' : paye;
+          choices.push({ id: id, category: 'financial', name: taxReferenceNames[id] || title + ' ' + type + ' Calculator', href: '/' + code + '/' + id, status: 'live', icon: '🧮' });
+        });
+      });
+      return { choices: choices, generic: generic, ambiguous: ambiguous, prefix: '/' + slug + '/', hub: slug !== 'car' && slug !== 'eq-guinea' };
     }
 
     function normalizeSearchHref(value) {
@@ -3213,8 +3258,9 @@ document.addEventListener('DOMContentLoaded', function() {
       focusIdx = -1;
       input.removeAttribute('aria-activedescendant');
       if (suppressDropdown) { closeDropdown(); return; }
-      var exactMatch = homepageExactToolMatch(q);
-      if (!q || (!window.AFRO_TOOLS && !exactMatch)) { closeDropdown(); return; }
+      var taxIntent = countryTaxIntent(q);
+      var exactMatch = homepageInvoiceMatch(q);
+      if (!q || (!window.AFRO_TOOLS && !exactMatch && !taxIntent)) { closeDropdown(); return; }
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
@@ -3228,7 +3274,18 @@ document.addEventListener('DOMContentLoaded', function() {
           return bl - al;
         });
       var results;
-      if (exactMatch) {
+      if (taxIntent) {
+        var ranked = taxIntent.generic && !taxIntent.ambiguous ? baseResults.filter(function(entry) {
+          return (entry.t.href || '').indexOf(taxIntent.prefix) === 0 && /tax|paye|vat/i.test(entry.t.name);
+        }) : [];
+        ranked = ranked.map(function(entry) {
+          var match = taxIntent.choices.find(function(t) { return entry.t.href === t.href; });
+          return match && taxReferenceNames[match.id] ? { t: match } : entry;
+        });
+        results = ranked.concat(taxIntent.choices.filter(function(t) {
+          return !ranked.some(function(entry) { return entry.t.href === t.href; });
+        }).map(function(t) { return { t: t }; })).slice(0, 7);
+      } else if (exactMatch) {
         results = [{ t: exactMatch }].concat(baseResults.filter(function(entry) { return entry.t.id !== exactMatch.id; })).slice(0, 7);
       } else {
         requestAIHeroRoute(q, baseResults.length);
@@ -3289,7 +3346,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function doSearch(source) {
       var q = input.value.trim();
-      var exactTool = homepageExactToolMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
+      var taxIntent = countryTaxIntent(q);
+      if (taxIntent) {
+        if (taxIntent.ambiguous || (taxIntent.generic && !taxIntent.hub)) {
+          suppressDropdown = false;
+          renderDropdown(q);
+          dropdown.querySelector('.sd-item').focus();
+        } else navigate(taxIntent.generic && taxIntent.hub ? taxIntent.prefix : taxIntent.choices[0].href);
+        return;
+      }
+      var exactTool = homepageInvoiceMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
         return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
       });
       if (exactTool) { navigate(exactTool.href); return; }
