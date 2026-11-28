@@ -32,6 +32,7 @@
 .basket-quality ul{margin:.35rem 0 0;padding-left:1.1rem;color:#475569}
 @media (max-width:860px){.basket-controls,.basket-plan{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.basket-controls,.basket-plan{grid-template-columns:1fr}.basket-planner-head{display:block}}
+.local-item{min-width:0;border:1px solid #bbb;border-radius:8px;padding:.75rem;margin:1rem 0}.local-item button{margin-top:.5rem}#localResult{overflow-wrap:anywhere}
 </style>
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=ff12ead6">
 <script src="/assets/js/african-workflow.js?v=06d12454" defer></script>
@@ -117,6 +118,28 @@
           </div>
           <div id="basketPlanOutput" class="basket-empty">Loading recent staple prices before building a plan.</div>
         </div>
+        <section class="basket-planner" aria-labelledby="localBasketHeading" id="localBasket">
+          <h2 id="localBasketHeading" class="basket-planner-title">Price your own shopping list</h2>
+          <p>Enter the pack price and how many packs you plan to buy for this shopping cycle. These prices stay on this page and are separate from published market reports.</p>
+          <form id="localBasketForm">
+            <div class="basket-controls">
+              <label class="md-field">Currency code<input class="md-input" id="localCurrency" placeholder="e.g. NGN" required pattern="[A-Za-z]{3}" maxlength="3" autocomplete="off"></label>
+              <label class="md-field">Shopping budget (optional)<input class="md-input" id="localBudget" type="number" min="0" step="any" inputmode="decimal"></label>
+            </div>
+            <div id="localItems"></div>
+            <button type="button" class="md-btn md-btn-secondary" id="localAdd" disabled>Add item</button>
+            <button type="submit" class="md-btn md-btn-primary" id="localCalculate" disabled>Total my list</button>
+            <noscript>Enable JavaScript to total your list here. You can also multiply each pack price by the number of packs and add the amounts together.</noscript>
+          </form>
+          <div id="localResult" role="status" aria-live="polite"></div>
+        </section>
+        <template id="localItemTemplate">
+          <fieldset class="local-item"><legend></legend><div class="basket-controls">
+            <label class="md-field">Item and pack size<input class="md-input" data-item required placeholder="e.g. Rice, 1 kg"></label>
+            <label class="md-field">Price per pack<input class="md-input" data-price type="number" min="0" step="any" inputmode="decimal" required></label>
+            <label class="md-field">Number of packs<input class="md-input" data-count type="number" min="1" step="1" inputmode="numeric" required value="1"></label>
+          </div><button class="md-btn md-btn-secondary" type="button" data-remove>Remove item</button></fieldset>
+        </template>
       </div>
     </div>
   </div>
@@ -165,6 +188,79 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=63f50905"></script>
 <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
+<script>
+(function () {
+  const form = document.getElementById('localBasketForm');
+  const items = document.getElementById('localItems');
+  const result = document.getElementById('localResult');
+  const template = document.getElementById('localItemTemplate');
+  const add = document.getElementById('localAdd');
+
+  function updateRows() {
+    Array.from(items.children).forEach(function (row, index) {
+      row.querySelector('legend').textContent = 'Shopping item ' + (index + 1);
+      row.querySelector('[data-remove]').disabled = items.children.length === 1;
+    });
+    result.replaceChildren();
+  }
+
+  function addRow(focus) {
+    items.appendChild(template.content.cloneNode(true));
+    updateRows();
+    if (focus) items.lastElementChild.querySelector('input').focus();
+  }
+
+  add.addEventListener('click', function () { addRow(true); });
+  items.addEventListener('click', function (event) {
+    if (!event.target.matches('[data-remove]')) return;
+    const row = event.target.closest('fieldset');
+    const next = row.nextElementSibling || row.previousElementSibling;
+    row.remove();
+    updateRows();
+    next.querySelector('input').focus();
+  });
+  form.addEventListener('input', function () { result.replaceChildren(); });
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const currency = document.getElementById('localCurrency').value.toUpperCase();
+    const money = new Intl.NumberFormat(undefined, { style: 'currency', currency: currency, currencyDisplay: 'code' });
+    const factor = 10 ** money.resolvedOptions().maximumFractionDigits;
+    function minorUnits(amount) {
+      const units = Math.round(amount * factor);
+      return Number.isSafeInteger(units) && units / factor === amount ? units : null;
+    }
+    const list = document.createElement('ul');
+    let total = 0;
+    for (const row of items.children) {
+      const name = row.querySelector('[data-item]').value.trim();
+      if (!name) { row.querySelector('[data-item]').focus(); result.textContent = 'Enter an item and pack size.'; return; }
+      const price = row.querySelector('[data-price]').valueAsNumber;
+      const count = row.querySelector('[data-count]').valueAsNumber;
+      const unitPrice = minorUnits(price);
+      if (unitPrice === null) { result.textContent = 'Use a price in the currency’s smallest unit.'; return; }
+      const cost = unitPrice * count;
+      total += cost;
+      if (!Number.isSafeInteger(total)) { result.textContent = 'Use a smaller price or number of packs.'; return; }
+      const line = document.createElement('li');
+      line.textContent = name + ': ' + count + ' × ' + money.format(price) + ' = ' + money.format(cost / factor);
+      list.appendChild(line);
+    }
+    const budget = document.getElementById('localBudget');
+    const summary = document.createElement('p');
+    summary.textContent = 'Shopping list total: ' + money.format(total / factor) + '.';
+    if (budget.value !== '') {
+      const amount = minorUnits(budget.valueAsNumber);
+      if (amount === null) { result.textContent = 'Use a budget in the currency’s smallest unit.'; return; }
+      const difference = (amount - total) / factor;
+      summary.textContent += difference >= 0 ? ' Budget remaining: ' + money.format(difference) + '.' : ' Over budget by ' + money.format(-difference) + '.';
+    }
+    result.replaceChildren(summary, list);
+  });
+  addRow(false);
+  add.disabled = false;
+  document.getElementById('localCalculate').disabled = false;
+})();
+</script>
 <script src="/assets/js/market-data-app.js?v=1b8c8bd6"></script>
 <script>
 document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
@@ -214,7 +310,7 @@ function renderStapleBasketPlanner(rows) {
   if (!priced.length) {
     latestBasketBrief = 'Staple Basket plan: no verified staple prices are loaded for this filter yet.';
     output.className = 'basket-empty';
-    output.textContent = 'No verified prices are loaded for this country/city yet. Submit a few core items first: rice or maize, oil, beans or eggs, vegetables, and one household essential.';
+    output.textContent = 'No verified prices are loaded for this filter. Use the shopping list below to enter prices from your own market or shop.';
     return;
   }
   var household = basketNumber('basketHousehold', 4);
