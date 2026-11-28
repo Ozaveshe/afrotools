@@ -15,8 +15,15 @@ const real = countries.filter(country => fs.existsSync(path.join(root, base, cou
 const missing = countries.filter(country => !real.includes(country));
 
 test('every emitted car-directory link has a real country page or an exact non-forced fallback', () => {
-  assert.equal(real.length, 6);
-  assert.equal(missing.length, 14);
+  const calculatorCountries = real.filter(country => country.import_enabled !== false);
+  const quoteCountries = real.filter(country => country.import_enabled === false);
+  assert.deepEqual(calculatorCountries.map(country => country.code).sort(), ['GH', 'KE', 'NG', 'TZ', 'UG', 'ZM']);
+  assert.deepEqual(quoteCountries.map(country => country.code), ['BW']);
+  assert.equal(real.length, 7);
+  assert.equal(missing.length, 13);
+  const worksheet = fs.readFileSync(path.join(root, base, 'botswana', 'index.html'), 'utf8');
+  assert.match(worksheet, /<form\b[^>]*\bid="quote-form"/);
+  assert.doesNotMatch(worksheet, /\bid="carImportApp"/, 'the quote worksheet does not add a tariff calculator');
   const fallbacks = rules.filter(rule => rule.target.startsWith(base + '#requested-country='));
   assert.equal(fallbacks.length, missing.length);
   for (const country of countries) {
