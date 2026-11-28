@@ -2924,6 +2924,14 @@ document.addEventListener('DOMContentLoaded', function() {
       return { id: 'invoice-generator', category: 'document-pdf', name: name, href: href, status: 'live', icon: '🧾' };
     }
 
+    function homepageExactToolMatch(query) {
+      var text = normalizeSearchText(query);
+      if (/^(?:ghana paye(?: calculator)?|paye (?:calculator (?:for |in )?)?ghana|ghana pay as you earn(?: calculator)?)$/.test(text)) {
+        return { id: 'gh-paye', category: 'salary-tax', name: 'Ghana PAYE Calculator', href: '/ghana/gh-paye', status: 'live', icon: 'GH' };
+      }
+      return homepageInvoiceMatch(query);
+    }
+
     function normalizeSearchHref(value) {
       return String(value || '').split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
     }
@@ -3205,8 +3213,8 @@ document.addEventListener('DOMContentLoaded', function() {
       focusIdx = -1;
       input.removeAttribute('aria-activedescendant');
       if (suppressDropdown) { closeDropdown(); return; }
-      var invoiceMatch = homepageInvoiceMatch(q);
-      if (!q || (!window.AFRO_TOOLS && !invoiceMatch)) { closeDropdown(); return; }
+      var exactMatch = homepageExactToolMatch(q);
+      if (!q || (!window.AFRO_TOOLS && !exactMatch)) { closeDropdown(); return; }
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
@@ -3220,8 +3228,8 @@ document.addEventListener('DOMContentLoaded', function() {
           return bl - al;
         });
       var results;
-      if (invoiceMatch) {
-        results = [{ t: invoiceMatch }].concat(baseResults.filter(function(entry) { return entry.t.id !== invoiceMatch.id; })).slice(0, 7);
+      if (exactMatch) {
+        results = [{ t: exactMatch }].concat(baseResults.filter(function(entry) { return entry.t.id !== exactMatch.id; })).slice(0, 7);
       } else {
         requestAIHeroRoute(q, baseResults.length);
         results = mergeAIHeroResult(baseResults, q).slice(0, 7);
@@ -3281,7 +3289,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function doSearch(source) {
       var q = input.value.trim();
-      var exactTool = homepageInvoiceMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
+      var exactTool = homepageExactToolMatch(q) || window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
         return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
       });
       if (exactTool) { navigate(exactTool.href); return; }
