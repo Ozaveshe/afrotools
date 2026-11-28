@@ -1771,6 +1771,532 @@ var AfroKitchenEngine = function() {
   // Four finite source-attributed display methods. These do not authorize publication
   // or write canonical recipe data. Shared by browser, static/index owners and API.
   var attributedMethods = {
+    "chikanda-zm": {
+      "id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+      "revision": "dish-method-2026-11-27",
+      "fields": {
+        "name": "Chikanda",
+        "description": "An oven-finished Zambian groundnut loaf made with food-grade chikanda powder. Let it cool before cutting slices.",
+        "story": "Use prepared culinary chikanda powder from a trusted food supplier. This oven method makes one batch; the source does not record the number of servings.",
+        "author": "AfroKitchen adaptation of UK Zambian Food",
+        "sources": [
+          {
+            "title": "UK Zambian Food, Chikanda",
+            "url": "https://www.ukzambianfood.com/recipes",
+            "source_type": "culinary reference",
+            "accessed_at": "2026-11-27",
+            "supports": [
+              "Ingredient proportions, stovetop mixing and oven finish"
+            ]
+          },
+          {
+            "title": "Zambian Kitchen, Chikanda",
+            "url": "https://zambiankitchen.com/chikanda-recipe/",
+            "source_type": "culinary reference",
+            "accessed_at": "2026-11-27",
+            "supports": [
+              "Groundnut paste and cooling before slicing"
+            ]
+          }
+        ],
+        "image_alt": "Slices of a dense brown loaf beside a small dish of red sauce.",
+        "image_url": "/assets/img/kitchen/chikanda.webp",
+        "default_servings": null,
+        "prep_time_minutes": null,
+        "cook_time_minutes": null,
+        "ingredients": [
+          {
+            "name": "food-grade chikanda powder",
+            "amount": 0.75,
+            "unit": "cup",
+            "prep_note": null,
+            "id": "chikanda-zm-ingredient-1",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "sort_order": 1,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "finely ground unsalted peanuts",
+            "amount": 3,
+            "unit": "cups",
+            "prep_note": null,
+            "id": "chikanda-zm-ingredient-2",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "sort_order": 2,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "water",
+            "amount": 6,
+            "unit": "cups",
+            "prep_note": null,
+            "id": "chikanda-zm-ingredient-3",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "sort_order": 3,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "baking soda",
+            "amount": 1,
+            "unit": "tsp",
+            "prep_note": null,
+            "id": "chikanda-zm-ingredient-4",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "sort_order": 4,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "fine salt",
+            "amount": 2,
+            "unit": "tsp",
+            "prep_note": null,
+            "id": "chikanda-zm-ingredient-5",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "sort_order": 5,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          }
+        ],
+        "steps": [
+          {
+            "title": "Start the peanut mixture",
+            "instruction": "Heat the oven to 180Â°C. Set aside a spoonful of the ground peanuts, a pinch of the baking soda and a little of the measured water. Put the rest of the peanuts, water, soda and salt in a heavy pot.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "chikanda-zm-step-1",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "step_number": 1,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Thicken on the stove",
+            "instruction": "Bring the mixture to a boil while stirring the bottom. Gradually sprinkle in the chikanda powder and keep beating the thickening paste with a sturdy spoon.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "chikanda-zm-step-2",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "step_number": 2,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Work the paste",
+            "instruction": "Mix the reserved peanuts, baking soda and water until smooth. Work this into the hot paste and stir until the mass pulls away from the pot.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "chikanda-zm-step-3",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "step_number": 3,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Bake the loaf",
+            "instruction": "Transfer to an ovenproof dish and smooth the top with a wet spoon. Bake for 20â€“30 minutes, checking at 20 minutes. The surface should brown and a skewer drawn from the centre should be clean.",
+            "timer_seconds": 1200,
+            "timer_label": "Bake the loaf",
+            "id": "chikanda-zm-step-4",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "step_number": 4,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Cool and slice",
+            "instruction": "Let the loaf cool in its dish until it can hold a slice. Turn it out, then cut across the loaf and serve.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "chikanda-zm-step-5",
+            "recipe_id": "102a11c6-4074-4b1a-b27b-c65b0404b012",
+            "step_number": 5,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "source": "https://www.ukzambianfood.com/recipes",
+        "serving_unit": null,
+        "yield_status": "not-recorded",
+        "total_time_minutes": null,
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "diet_tags": [],
+        "tags": [
+          "groundnuts",
+          "oven-baked"
+        ],
+        "regional_variations": null,
+        "occasion": null,
+        "best_served_with": null,
+        "chef_notes": null
+      }
+    },
+    "kondowole-mw": {
+      "id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+      "revision": "dish-method-2026-11-27",
+      "fields": {
+        "name": "Kondowole",
+        "description": "Malawian kondowole is a firm cassava-flour side. Stir the flour into hot water and beat it until the paste is smooth and elastic.",
+        "story": "Use commercially processed, food-grade cassava flour intended for cooking. The cover shows the finished mound with fish and greens, serving accompaniments you can prepare separately.",
+        "author": "AfroKitchen adaptation of Malawi Heritage Magazine and Baku Kitchen",
+        "sources": [
+          {
+            "title": "Malawi Heritage Magazine, Kondowole",
+            "url": "https://www.infinitymalawi.com/images/magazines/Malawi_Heritage_Magazine.pdf",
+            "source_type": "culinary reference",
+            "accessed_at": "2026-11-27",
+            "supports": [
+              "Northern Malawian stirring and serving method"
+            ]
+          },
+          {
+            "title": "Baku Kitchen, Kondowole",
+            "url": "https://bakukitchen.com/kondowole/",
+            "source_type": "culinary reference",
+            "accessed_at": "2026-11-27",
+            "supports": [
+              "Four-serving flour and water measurements"
+            ]
+          }
+        ],
+        "image_alt": "A pale mound of kondowole on a plate with browned fish and dark leafy greens.",
+        "image_url": "/assets/img/kitchen/kondowole.webp",
+        "default_servings": 4,
+        "prep_time_minutes": 5,
+        "cook_time_minutes": 25,
+        "ingredients": [
+          {
+            "name": "processed food-grade cassava flour",
+            "amount": 400,
+            "unit": "g",
+            "prep_note": null,
+            "id": "kondowole-mw-ingredient-1",
+            "recipe_id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+            "sort_order": 1,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "water",
+            "amount": 1,
+            "unit": "litre",
+            "prep_note": null,
+            "id": "kondowole-mw-ingredient-2",
+            "recipe_id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+            "sort_order": 2,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          }
+        ],
+        "steps": [
+          {
+            "title": "Make a smooth starter",
+            "instruction": "Reserve a cupful of the measured water. Whisk about a quarter of the cassava flour into this cold water until smooth. Bring the remaining water to a boil in a heavy pot.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "kondowole-mw-step-1",
+            "recipe_id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+            "step_number": 1,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Thicken the starter",
+            "instruction": "Pour the slurry into the boiling water in a thin stream, stirring continuously. Once it bubbles again, cook for about 3 minutes, stirring along the bottom.",
+            "timer_seconds": 180,
+            "timer_label": "Thicken the starter",
+            "id": "kondowole-mw-step-2",
+            "recipe_id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+            "step_number": 2,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Beat in the remaining flour",
+            "instruction": "Lower the heat and add the rest of the flour in small handfuls. Fold and press the thick paste against the side of the pot to break up pockets of dry flour. Continue cooking to the flour packetâ€™s directions, until smooth and sticky throughout.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "kondowole-mw-step-3",
+            "recipe_id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+            "step_number": 3,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Shape and serve",
+            "instruction": "Take the pot off the heat and beat the paste until it holds together. Use a damp serving spoon to shape mounds. Serve hot with a relish or fish.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "kondowole-mw-step-4",
+            "recipe_id": "46c2fcf9-851f-41a2-871c-e2eef71fd89b",
+            "step_number": 4,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "source": "https://www.infinitymalawi.com/images/magazines/Malawi_Heritage_Magazine.pdf",
+        "serving_unit": "servings",
+        "yield_status": "recorded",
+        "total_time_minutes": 30,
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "diet_tags": [],
+        "tags": [
+          "cassava",
+          "staple"
+        ],
+        "regional_variations": null,
+        "occasion": null,
+        "best_served_with": null,
+        "chef_notes": null
+      }
+    },
+    "ladob-sc": {
+      "id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+      "revision": "dish-method-2026-11-27",
+      "fields": {
+        "name": "Ladob",
+        "description": "Ripe plantain gently cooked in coconut milk with vanilla, nutmeg and cinnamon. Serve the softened fruit with its coconut sauce.",
+        "story": "This plantain-only version is ladob banann. The cover depicts another serving with orange sweet potato alongside the plantain; sweet potato is used in the linked mixed version.",
+        "author": "AfroKitchen adaptation of Darlene at International Cuisine",
+        "sources": [
+          {
+            "title": "Darlene at International Cuisine, Daube de Banana",
+            "url": "https://www.internationalcuisine.com/daube-de-banana/",
+            "source_type": "culinary reference",
+            "accessed_at": "2026-11-27",
+            "supports": [
+              "Four-serving quantities and two-stage stovetop cooking"
+            ]
+          },
+          {
+            "title": "Seychelles Cultural Foundation, Ladob",
+            "url": "https://seychellesculturalfoundation.com/seychellescuisine/dishes/popup?id=160",
+            "source_type": "culinary reference",
+            "accessed_at": "2026-11-27",
+            "supports": [
+              "Sweet ladob ingredients, tender fruit and creamy sauce"
+            ]
+          }
+        ],
+        "image_alt": "Plantain slices and orange sweet potato in coconut sauce, showing a mixed ladob serving.",
+        "image_url": "/assets/img/kitchen/ladob.webp",
+        "default_servings": 4,
+        "prep_time_minutes": 5,
+        "cook_time_minutes": 45,
+        "ingredients": [
+          {
+            "name": "large ripe plantains",
+            "amount": 2,
+            "unit": "whole",
+            "prep_note": null,
+            "id": "ladob-sc-ingredient-1",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 1,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "coconut milk",
+            "amount": 2,
+            "unit": "cups",
+            "prep_note": null,
+            "id": "ladob-sc-ingredient-2",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 2,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "sugar",
+            "amount": 2,
+            "unit": "tbsp",
+            "prep_note": null,
+            "id": "ladob-sc-ingredient-3",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 3,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "cinnamon sticks",
+            "amount": 2,
+            "unit": "whole",
+            "prep_note": null,
+            "id": "ladob-sc-ingredient-4",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 4,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "vanilla pod",
+            "amount": 1,
+            "unit": "whole",
+            "prep_note": "split lengthwise",
+            "id": "ladob-sc-ingredient-5",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 5,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "ground nutmeg",
+            "amount": 1,
+            "unit": "tsp",
+            "prep_note": null,
+            "id": "ladob-sc-ingredient-6",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 6,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "prep_note": null,
+            "id": "ladob-sc-ingredient-7",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "sort_order": 7,
+            "ingredient_id": null,
+            "is_optional": false,
+            "group_name": null,
+            "substitution": null,
+            "created_at": null
+          }
+        ],
+        "steps": [
+          {
+            "title": "Prepare the fruit",
+            "instruction": "Peel the plantains. Halve each one crosswise, then split each piece lengthwise.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "ladob-sc-step-1",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "step_number": 1,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Layer the pan",
+            "instruction": "Lay the cinnamon sticks in a pan that will hold the fruit snugly. Set the plantain pieces on top, add the sugar, nutmeg, salt and split vanilla pod, then pour over the coconut milk.",
+            "timer_seconds": null,
+            "timer_label": null,
+            "id": "ladob-sc-step-2",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "step_number": 2,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Cook gently",
+            "instruction": "Bring the coconut milk just to a boil and maintain a gentle bubble for about 10 minutes.",
+            "timer_seconds": 600,
+            "timer_label": "Cook gently",
+            "id": "ladob-sc-step-3",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "step_number": 3,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          },
+          {
+            "title": "Finish in the coconut sauce",
+            "instruction": "Lower the heat and simmer for about 35 minutes, checking the bottom of the pan as the sauce thickens. The fruit should be tender when pierced and still hold its shape. Remove the vanilla pod and cinnamon before serving.",
+            "timer_seconds": 2100,
+            "timer_label": "Finish in the coconut sauce",
+            "id": "ladob-sc-step-4",
+            "recipe_id": "63602d28-306c-4f3b-8186-d4008bec16ed",
+            "step_number": 4,
+            "tip": null,
+            "image_url": null,
+            "created_at": null
+          }
+        ],
+        "source": "https://www.internationalcuisine.com/daube-de-banana/",
+        "serving_unit": "servings",
+        "yield_status": "recorded",
+        "total_time_minutes": 50,
+        "calories": null,
+        "protein_g": null,
+        "carbs_g": null,
+        "fat_g": null,
+        "fiber_g": null,
+        "nutrition_basis": null,
+        "diet_tags": [],
+        "tags": [
+          "plantain",
+          "coconut"
+        ],
+        "regional_variations": null,
+        "occasion": null,
+        "best_served_with": null,
+        "chef_notes": null
+      }
+    },
     "mandazi-tanzania-tz": {
       "id": "7b24d43e-e00f-47fe-8943-0dbf74b81bc0",
       "revision": "mandazi-malaquias-20171122-v1",
@@ -4301,6 +4827,18 @@ var AfroKitchenEngine = function() {
     return Object.assign({}, seed, { is_published: true, is_verified: true, reviews: [], avg_rating: null, review_count: 0 });
   }
   return {
+    getReviewedGapFillMethod: function (slug) {
+      var method = attributedMethods[slug];
+      if (!method || method.revision !== 'dish-method-2026-11-27') return null;
+      var fields = JSON.parse(JSON.stringify(method.fields));
+      fields.method_revision = method.revision;
+      for (var row of fields.ingredients.concat(fields.steps)) {
+        delete row.id;
+        delete row.recipe_id;
+        delete row.created_at;
+      }
+      return fields;
+    },
     projectAttributedRecipe: projectAttributedRecipe,
     isAttributedRecipe: isAttributedRecipe,
     isAttributedTarget: isAttributedTarget,

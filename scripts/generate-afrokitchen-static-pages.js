@@ -147,7 +147,7 @@ const RECIPE_TITLE_QUALIFIERS = {
   "bamia-south-sudan-ss": "Okra and Lamb",
   "caldo-chabeu-gw": "Palm Fruit Stew",
   "caldo-mancarra-gw": "Peanut Stew",
-  "chikanda-zm": "Peanut Snack",
+  "chikanda-zm": "Oven-finished groundnut loaf",
   "dholl-puri-mu": "Split Pea Flatbread",
   "fah-fah-dj": "Goat Soup",
   "fouti-guinea-gn": "Fonio Porridge",
@@ -651,6 +651,7 @@ function recipeImageAttributes(src, width, height, card = false) {
 }
 
 function recipeImageAlt(recipe, role) {
+  if (!role && recipe.method_revision === "dish-method-2026-11-27" && recipe.image_alt) return recipe.image_alt;
   if (role === "prep") return `${recipe.name} ingredients/prep step`;
   if (role === "process") return `${recipe.name} cooking/process step`;
   if (role === "serving") return `${recipe.name} serving/detail image`;
@@ -2243,7 +2244,7 @@ function renderCountryFeaturedDishes(country, recipeImages) {
 
 const COUNTRY_COURSE_RECIPE_LABELS = {
   "chikanda": "Chikanda — chilled peanut loaf",
-  "chikanda-zm": "Chikanda — fried peanut cakes",
+  "chikanda-zm": "Chikanda — oven-finished groundnut loaf",
   "groundnut-stew-sierra-leone-sl": "Groundnut Stew — chicken or beef",
   "groundnut-stew-sl": "Groundnut Stew — bone-in chicken with ginger",
   "isombe": "Isombe — cassava leaves with spinach or amaranth",
@@ -2251,7 +2252,7 @@ const COUNTRY_COURSE_RECIPE_LABELS = {
   "kondowole": "Kondowole — with mustard greens",
   "kondowole-mw": "Kondowole — cassava flour side",
   "ladob": "Ladob — plantain and sweet potato",
-  "ladob-sc": "Ladob — plantain or breadfruit",
+  "ladob-sc": "Ladob — plantain with vanilla and cinnamon",
   "matapa": "Matapa — coconut milk with shrimp or crab",
   "matapa-mz": "Matapa — tomato and cassava leaves"
 };
