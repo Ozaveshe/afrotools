@@ -4,20 +4,20 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="6259f1f1" async></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minimum Wage Checker for Africa 2026 — All 54 Countries | AfroTools</title>
-  <meta name="description" content="Check minimum wage rates for all 54 African countries. Compliance checker, living wage gap, inflation erosion, sector-specific rates, and country alerts.">
+  <title>African Minimum Wage Records and Salary Comparison | AfroTools</title>
+  <meta name="description" content="Compare a salary with a recorded minimum wage. Check the effective date, pay period and available sector or location details for 54 African countries.">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-  <meta property="og:title" content="Minimum Wage Checker for Africa 2026 — All 54 Countries | AfroTools">
-  <meta property="og:description" content="Check minimum wage rates for all 54 African countries. Compliance checker, living wage gap, inflation erosion, and country alerts.">
+  <meta property="og:title" content="African Minimum Wage Records and Salary Comparison | AfroTools">
+  <meta property="og:description" content="Compare a salary with a recorded minimum wage. Check the effective date, pay period and available sector or location details for 54 African countries.">
   <meta property="og:image" content="https://afrotools.com/assets/img/tools/minimum-wage.webp">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://afrotools.com/tools/minimum-wage/">
   <meta property="og:site_name" content="AfroTools">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Minimum Wage Checker for Africa 2026 — All 54 Countries | AfroTools">
-  <meta name="twitter:description" content="Compliance checker, living wage gap, inflation erosion, sector rates — all 54 African countries.">
+  <meta name="twitter:title" content="African Minimum Wage Records and Salary Comparison | AfroTools">
+  <meta name="twitter:description" content="Compare a salary with a recorded minimum wage. Check the effective date, pay period and available sector or location details for 54 African countries.">
   <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/minimum-wage.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -36,7 +36,7 @@
       "@type": "WebApplication",
       "name": "Minimum Wage Checker for Africa 2026",
       "url": "https://afrotools.com/tools/minimum-wage/",
-      "description": "Check minimum wage rates for all 54 African countries with compliance checker, living wage gap analysis, inflation erosion tracker, and alert subscriptions.",
+      "description": "Compare a salary with a recorded minimum wage. Check the effective date, pay period and available sector or location details for 54 African countries.",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -348,7 +348,7 @@
     </nav>
     <div class="tl-category-label">💰 SALARY &amp; TAX</div>
     <h1 class="tl-title">African Minimum Wage <span class="tl-accent">Checker &amp; Rates by Country</span></h1>
-    <p class="tl-desc">Check the current minimum wage for any African country — with compliance checker, living wage gap, inflation erosion tracker, sector rates, and country alerts. All 54 countries covered.</p>
+    <p class="tl-desc">Choose a country to see its recorded wage, effective date and pay period. Compare your salary with the relevant sector or location where listed. Before using a figure for payroll, check the applicable official schedule.</p>
     <div class="tl-badges">
       <span>🇳🇬 ₦70,000/mo</span><span>🇰🇪 KES 16,114</span><span>🇿🇦 R27.58/hr</span><span>🇬🇭 GHS 21.77/day</span><span>+ 50 more</span>
     </div>
@@ -364,7 +364,7 @@
         <span class="tl-card-icon">💰</span>
         <div>
           <div class="tl-card-title">Minimum Wage Checker</div>
-          <div class="tl-card-sub">Select a country to view rates, check compliance, and see the living wage gap</div>
+          <div class="tl-card-sub">Select a country to see the dated wage record and compare monthly pay.</div>
         </div>
       </div>
 
@@ -1097,9 +1097,10 @@ function renderCountry(c) {
     var gapInd = Math.round(((c.livingWage - c.monthly) / c.monthly) * 100);
     var gapFam = Math.round(((lwFam - c.monthly) / c.monthly) * 100);
     document.getElementById('r-lw-gap-stat').innerHTML =
-      '<strong>' + c.name + ' minimum wage is ' + fmtWage(c.monthly, c.symbol) + '/month.</strong> ' +
-      'A living wage for one person costs ' + fmtWage(c.livingWage, c.symbol) + ' — a <strong>' + gapInd + '% gap</strong>. ' +
-      'For a family of 4: ' + fmtWage(lwFam, c.symbol) + ' — a <strong>' + gapFam + '% gap</strong>.' +
+      '<strong>' + c.name + ' recorded monthly wage: ' + fmtWage(c.monthly, c.symbol) +
+      (c.effectiveDate ? ' (effective ' + c.effectiveDate + ')' : ' (effective date unavailable)') + '.</strong> ' +
+      'Individual monthly living-cost estimate in this catalogue: ' + fmtWage(c.livingWage, c.symbol) + ' (' + gapInd + '% relative to the recorded wage). ' +
+      (c.livingWageFamily ? 'Recorded family-of-four estimate: ' : 'Illustrative family scenario (twice the individual estimate): ') + fmtWage(lwFam, c.symbol) + ' (' + gapFam + '% relative to the recorded wage). Check a local household budget for present-day costs.' +
       (c.livingWageSource ? '<br><small style="color:#9a3412">Source: ' + c.livingWageSource + '</small>' : '');
   } else {
     lwSec.style.display = 'none';
